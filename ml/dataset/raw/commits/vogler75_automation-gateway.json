@@ -1,0 +1,242 @@
+[
+    {
+        "sha": "dca776b42b354b592b14805e7cdcb0bf2e2ab43f",
+        "author": "Andreas Vogler",
+        "email": "andreas.vogler@me.com",
+        "date": "2026-04-07T11:56:48Z",
+        "message": "Update version.txt",
+        "url": "https://github.com/vogler75/automation-gateway/commit/dca776b42b354b592b14805e7cdcb0bf2e2ab43f"
+    },
+    {
+        "sha": "dc121a15d5d67d2f76d5dd8349c4a78671f5245a",
+        "author": "Andreas Vogler",
+        "email": "andreas.vogler@me.com",
+        "date": "2025-12-01T19:54:01Z",
+        "message": "Update PLC4X to 0.13.1 and refactor driver usage\n\nUpgraded PLC4X dependencies from 0.9.0 to 0.13.1 in both app and library modules. Updated configuration files to use 'modbus-tcp' URL scheme. Refactored Plc4xDriver.kt to use new API methods and classes, including changes to connection management, tag addressing, and metadata capability checks to align with PLC4X 0.13.1.",
+        "url": "https://github.com/vogler75/automation-gateway/commit/dc121a15d5d67d2f76d5dd8349c4a78671f5245a"
+    },
+    {
+        "sha": "445055df75b81e94d35372a6077af1f63d2cb7c9",
+        "author": "Andreas Vogler",
+        "email": "andreas.vogler@me.com",
+        "date": "2025-11-25T21:01:47Z",
+        "message": "Remove AI generated implementation plans.\n\nDeleted PHASE1_IMPLEMENTATION_STATUS.md and SECURITY_IMPLEMENTATION_PLAN.md, which contained detailed documentation and planning for JWT authentication and security improvements. This change may be part of a documentation cleanup or migration.",
+        "url": "https://github.com/vogler75/automation-gateway/commit/445055df75b81e94d35372a6077af1f63d2cb7c9"
+    },
+    {
+        "sha": "e0e5dfb4327c23387365a5e317e10dc4ef0c4c08",
+        "author": "Andreas Vogler",
+        "email": "andreas.vogler@me.com",
+        "date": "2025-11-24T11:51:09Z",
+        "message": "Upgrade Gradle, Kotlin, and refactor AuthService async code\n\nUpgrades Gradle to 9.2.1 and Kotlin to 2.2.21. Refactors AuthService to use cleaner executeBlocking with Callable, removing manual Promise handling. Updates dependency declarations in build.gradle files to use the short notation. Adds JVM toolchain configuration for Kotlin (Java 23). Moves JWTAuthHandler companion object methods to the top-level companion object. Adds foojay-resolver-convention plugin to settings.gradle.",
+        "url": "https://github.com/vogler75/automation-gateway/commit/e0e5dfb4327c23387365a5e317e10dc4ef0c4c08"
+    },
+    {
+        "sha": "f257a2d53be1624b3ba1b2016fab7f878ce22bf1",
+        "author": "Andreas Vogler",
+        "email": "andreas.vogler@me.com",
+        "date": "2025-11-24T11:13:55Z",
+        "message": "Merge pull request #11 from LopeWale/claude/security-implementation-011CUdt7Gsg41NUvqdHqtN6Z\n\nJWT authentication for GraphQL API",
+        "url": "https://github.com/vogler75/automation-gateway/commit/f257a2d53be1624b3ba1b2016fab7f878ce22bf1"
+    },
+    {
+        "sha": "e86d1a7de3fa27d6455f05b572510500209bc2f6",
+        "author": "Andreas Vogler",
+        "email": "andreas.vogler@me.com",
+        "date": "2025-11-16T08:22:03Z",
+        "message": "Add CLAUDE.md and update JSON schema title\n\nIntroduced a CLAUDE.md file with project guidance for Claude Code, including architecture, build commands, and configuration details. Also added a 'title' field to the yaml-json-schema.json for improved schema documentation.",
+        "url": "https://github.com/vogler75/automation-gateway/commit/e86d1a7de3fa27d6455f05b572510500209bc2f6"
+    },
+    {
+        "sha": "445305723ad56199344b2c1eab114f3cd9fd4e58",
+        "author": "Claude",
+        "email": "noreply@anthropic.com",
+        "date": "2025-10-31T02:48:53Z",
+        "message": "Implement Phase 1: JWT authentication for GraphQL API\n\nCRITICAL SECURITY FIX: GraphQL endpoint now requires authentication\n\nThis implements comprehensive JWT-based authentication to close the\ncritical security gap where the GraphQL API was completely open.\n\nFeatures:\n- JWT authentication with BCrypt password hashing\n- Role-based access control framework (admin/operator/viewer)\n- REST endpoints for login and user management\n- GraphQL endpoint protection\n- Health check endpoints\n- Configurable authentication\n\nSecurity Impact:\n- Before: GraphQL completely open, no authentication\n- After: JWT required, 401 Unauthorized without valid token\n\nEnvironment Variables Required:\n- JWT_SECRET (minimum 32 characters)\n- ADMIN_PASSWORD (change from default)\n\nFiles Modified:\n- source/lib-core/build.gradle (added JWT dependencies)\n- source/lib-core/src/main/kotlin/at/rocworks/gateway/core/graphql/GraphQLServer.kt\n\nFiles Created:\n- source/lib-core/src/main/kotlin/at/rocworks/gateway/core/auth/AuthService.kt\n- source/lib-core/src/main/kotlin/at/rocworks/gateway/core/auth/JWTAuthHandler.kt\n- source/lib-core/src/main/kotlin/at/rocworks/gateway/core/auth/AuthController.kt\n- SECURITY_IMPLEMENTATION_PLAN.md\n- PHASE1_IMPLEMENTATION_STATUS.md\n\nTesting:\n- Login: POST /auth/login\n- GraphQL: Requires Authorization: Bearer <token>\n- Health: GET /healthz, /ready (no auth)\n\nPhase 1 of 4 complete. Next: RBAC implementation in GraphQL resolvers.",
+        "url": "https://github.com/vogler75/automation-gateway/commit/445305723ad56199344b2c1eab114f3cd9fd4e58"
+    },
+    {
+        "sha": "65c17264a1e9eac8746316971a99874663c4d940",
+        "author": "Andreas Vogler",
+        "email": "andreas.vogler@me.com",
+        "date": "2025-06-08T11:58:12Z",
+        "message": "Updated default values for Cassandra",
+        "url": "https://github.com/vogler75/automation-gateway/commit/65c17264a1e9eac8746316971a99874663c4d940"
+    },
+    {
+        "sha": "3dc04cd01c1a1bd0a63db131b0c65e026ee2eca0",
+        "author": "Andreas Vogler",
+        "email": "andreas.vogler@me.com",
+        "date": "2025-06-08T10:55:32Z",
+        "message": "Added doc for Cassandra logger",
+        "url": "https://github.com/vogler75/automation-gateway/commit/3dc04cd01c1a1bd0a63db131b0c65e026ee2eca0"
+    },
+    {
+        "sha": "4a53214742ad0a7ea7bfb44a3be8b156a6c74115",
+        "author": "Andreas Vogler",
+        "email": "andreas.vogler@me.com",
+        "date": "2025-02-28T08:20:49Z",
+        "message": "Update CassandraLogger.kt",
+        "url": "https://github.com/vogler75/automation-gateway/commit/4a53214742ad0a7ea7bfb44a3be8b156a6c74115"
+    },
+    {
+        "sha": "06c28bab89bf601b4df65415cb8063e64c503882",
+        "author": "Andreas Vogler",
+        "email": "andreas.vogler@me.com",
+        "date": "2025-02-28T07:03:24Z",
+        "message": "Added create table statement",
+        "url": "https://github.com/vogler75/automation-gateway/commit/06c28bab89bf601b4df65415cb8063e64c503882"
+    },
+    {
+        "sha": "d1525a0895611000294f40825763a89180d00c4b",
+        "author": "Andreas Vogler",
+        "email": "andreas.vogler@me.com",
+        "date": "2025-02-28T06:05:43Z",
+        "message": "Cassandra Logger",
+        "url": "https://github.com/vogler75/automation-gateway/commit/d1525a0895611000294f40825763a89180d00c4b"
+    },
+    {
+        "sha": "423ec3a7bb1fcc943a1af6ea01373caa780d1746",
+        "author": "Andreas Vogler",
+        "email": "andreas.vogler@me.com",
+        "date": "2025-02-27T14:23:42Z",
+        "message": "RisingWave configuration example",
+        "url": "https://github.com/vogler75/automation-gateway/commit/423ec3a7bb1fcc943a1af6ea01373caa780d1746"
+    },
+    {
+        "sha": "4fbe5164a1f34e095c8fc6d8adfc073e424ba700",
+        "author": "Andreas Vogler",
+        "email": "andreas.vogler@me.com",
+        "date": "2025-02-27T14:13:02Z",
+        "message": "Default version number for InfluxDB",
+        "url": "https://github.com/vogler75/automation-gateway/commit/4fbe5164a1f34e095c8fc6d8adfc073e424ba700"
+    },
+    {
+        "sha": "a9bceb381bd0e8c1966cd492e2a90b1e44212db5",
+        "author": "Andreas Vogler",
+        "email": "andreas.vogler@me.com",
+        "date": "2024-12-09T20:10:17Z",
+        "message": "Update version.txt",
+        "url": "https://github.com/vogler75/automation-gateway/commit/a9bceb381bd0e8c1966cd492e2a90b1e44212db5"
+    },
+    {
+        "sha": "1d3d2bb12a4a9a01c109cb4f0b5e9405eb4d7961",
+        "author": "Andreas Vogler",
+        "email": "andreas.vogler@me.com",
+        "date": "2024-12-09T20:09:29Z",
+        "message": "Added hostnameVerificationAlgorithm  to mqtt tls connection",
+        "url": "https://github.com/vogler75/automation-gateway/commit/1d3d2bb12a4a9a01c109cb4f0b5e9405eb4d7961"
+    },
+    {
+        "sha": "c6b06ccd89ba2c8895a4b92565356322ff90fa96",
+        "author": "Andreas Vogler",
+        "email": "andreas.vogler@me.com",
+        "date": "2024-12-07T11:38:52Z",
+        "message": "Removed native QuestDB Logger (use JDBC instead)",
+        "url": "https://github.com/vogler75/automation-gateway/commit/c6b06ccd89ba2c8895a4b92565356322ff90fa96"
+    },
+    {
+        "sha": "52368fff499d6977e5c9f1509177dfb42bf207d1",
+        "author": "Andreas Vogler",
+        "email": "andreas.vogler@me.com",
+        "date": "2024-12-07T11:32:15Z",
+        "message": "Updated example configs for QuestDB and RisingWave",
+        "url": "https://github.com/vogler75/automation-gateway/commit/52368fff499d6977e5c9f1509177dfb42bf207d1"
+    },
+    {
+        "sha": "ad9463de02bfe00863a742f416161bb9a002ed13",
+        "author": "Andreas Vogler",
+        "email": "andreas.vogler@me.com",
+        "date": "2024-12-07T11:26:31Z",
+        "message": "Added RisingWave and QuestDB as JDBC Option",
+        "url": "https://github.com/vogler75/automation-gateway/commit/ad9463de02bfe00863a742f416161bb9a002ed13"
+    },
+    {
+        "sha": "ffe1e6445ba13422e10d2967323f5f795fa57d9e",
+        "author": "Andreas Vogler",
+        "email": "andreas.vogler@me.com",
+        "date": "2024-12-04T20:57:49Z",
+        "message": "Upgrade of various libs plus fixed mysql connector error\n\nWhen using the newest mysql connector  'mysql-connector-j', version: '9.1.0'  we are getting errors when using MQTT with sparkplug: ClassNotFoundException: com.google.protobuf.GeneratedMessageV3$ExtendableMessageOrBuilder",
+        "url": "https://github.com/vogler75/automation-gateway/commit/ffe1e6445ba13422e10d2967323f5f795fa57d9e"
+    },
+    {
+        "sha": "b4d98550b4cf0cfa40e4088d7572ba92c5b13877",
+        "author": "Andreas Vogler",
+        "email": "andreas.vogler@me.com",
+        "date": "2024-12-04T20:00:53Z",
+        "message": "Update on build.sh",
+        "url": "https://github.com/vogler75/automation-gateway/commit/b4d98550b4cf0cfa40e4088d7572ba92c5b13877"
+    },
+    {
+        "sha": "2c0121c9a695576ec3270f90bf79dfe5d54b260d",
+        "author": "Andreas Vogler",
+        "email": "andreas.vogler@me.com",
+        "date": "2024-12-04T19:42:12Z",
+        "message": "Upgrade to IoTDB Version 1.3.3",
+        "url": "https://github.com/vogler75/automation-gateway/commit/2c0121c9a695576ec3270f90bf79dfe5d54b260d"
+    },
+    {
+        "sha": "ba213358dd29e827d281fcf08587eb44d0c0a000",
+        "author": "Andreas Vogler",
+        "email": "andreas.vogler@me.com",
+        "date": "2024-11-29T16:02:09Z",
+        "message": "Added options to support RisingWave (JDBC)",
+        "url": "https://github.com/vogler75/automation-gateway/commit/ba213358dd29e827d281fcf08587eb44d0c0a000"
+    },
+    {
+        "sha": "93893e1a40b25087bd9e6c2be2915a5f7539ef3d",
+        "author": "Andreas Vogler",
+        "email": "andreas.vogler@me.com",
+        "date": "2024-11-11T07:57:24Z",
+        "message": "Update build.sh",
+        "url": "https://github.com/vogler75/automation-gateway/commit/93893e1a40b25087bd9e6c2be2915a5f7539ef3d"
+    },
+    {
+        "sha": "a184c991d4f832ac3fc9fd2cd172696b3ad6f801",
+        "author": "Andreas Vogler",
+        "email": "andreas.vogler@me.com",
+        "date": "2024-11-08T10:03:34Z",
+        "message": "Added mysql,crate,sqlserver jdbc libs.",
+        "url": "https://github.com/vogler75/automation-gateway/commit/a184c991d4f832ac3fc9fd2cd172696b3ad6f801"
+    },
+    {
+        "sha": "7dedef824449a31b48f65421634456ad98daa482",
+        "author": "Andreas Vogler",
+        "email": "andreas.vogler@me.com",
+        "date": "2024-11-06T18:37:53Z",
+        "message": "Fix in Neo4J MQTT Logging",
+        "url": "https://github.com/vogler75/automation-gateway/commit/7dedef824449a31b48f65421634456ad98daa482"
+    },
+    {
+        "sha": "1f8b7fa2129cdf28651d9c9a540999b9cfd34096",
+        "author": "Andreas Vogler",
+        "email": "andreas.vogler@me.com",
+        "date": "2024-11-06T08:17:10Z",
+        "message": "Changed docker image to debian+java (for QuestDB)",
+        "url": "https://github.com/vogler75/automation-gateway/commit/1f8b7fa2129cdf28651d9c9a540999b9cfd34096"
+    },
+    {
+        "sha": "d50d5b05d6b06c031693b1bdc6eafeeb767f213d",
+        "author": "Andreas Vogler",
+        "email": "andreas.vogler@me.com",
+        "date": "2024-11-03T17:24:27Z",
+        "message": "Update yaml-json-schema.json",
+        "url": "https://github.com/vogler75/automation-gateway/commit/d50d5b05d6b06c031693b1bdc6eafeeb767f213d"
+    },
+    {
+        "sha": "f4236f6763a999c8b57089918e6cf335eb31fd3b",
+        "author": "Andreas Vogler",
+        "email": "andreas.vogler@me.com",
+        "date": "2024-10-22T19:48:15Z",
+        "message": "There are issues with Eclipse-Temurin, going back to Corretto.",
+        "url": "https://github.com/vogler75/automation-gateway/commit/f4236f6763a999c8b57089918e6cf335eb31fd3b"
+    },
+    {
+        "sha": "32364111650daf506b491980a80628514aa1066e",
+        "author": "Andreas Vogler",
+        "email": "andreas.vogler@me.com",
+        "date": "2024-10-22T18:33:51Z",
+        "message": "Update version.txt",
+        "url": "https://github.com/vogler75/automation-gateway/commit/32364111650daf506b491980a80628514aa1066e"
+    }
+]

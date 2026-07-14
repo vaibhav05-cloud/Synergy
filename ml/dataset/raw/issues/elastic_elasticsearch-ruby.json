@@ -1,0 +1,350 @@
+[
+    {
+        "id": 4830084153,
+        "number": 3003,
+        "title": "Add support for jruby 10.1",
+        "state": "open",
+        "created_at": "2026-07-07T15:47:36Z",
+        "updated_at": "2026-07-11T16:36:04Z",
+        "closed_at": null,
+        "author": "larouxn",
+        "comments": 2,
+        "labels": [
+            "feature request"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "**Is your feature request related to a problem? Please describe.**\n\nIt would be nice to see latest jruby 10.1 supported.\n\nInspired by https://github.com/elastic/elasticsearch-ruby/pull/3000\n\n**Describe the solution you'd like**\n\njruby 10.1 should be added to the CI config and the codebase updated to support it. That said it may already work just fine without any runtime code changes.\n\n**Describe alternatives you've considered**\n\nNot an alternative but I already tried adding it and it failed CI due to `pry-nav`, see: https://github.com/elastic/elasticsearch-ruby/pull/3000#issuecomment-4902685975.\n\n**Additional context**\n\nSee the PR and comment linked above.",
+        "url": "https://github.com/elastic/elasticsearch-ruby/issues/3003"
+    },
+    {
+        "id": 4682110972,
+        "number": 2983,
+        "title": "Headers conflict with Elastic-Api-Version on serverless",
+        "state": "closed",
+        "created_at": "2026-06-17T09:54:31Z",
+        "updated_at": "2026-06-18T00:12:05Z",
+        "closed_at": "2026-06-18T00:12:05Z",
+        "author": "kaisecheng",
+        "comments": 1,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "**Describe the bug**\n\nAfter upgrading the elasticsearch gem to v9, Logstash serverless tests [started failing](https://buildkite.com/elastic/logstash-serverless-integration-testing/builds/1151).\n\n`Elasticsearch::Client` in v9.x sets `compatible-with=9` in `Content-Type` and `Accept` headers via `set_content_type!`. When a client also sets the `Elastic-Api-Version` header (required for Elasticsearch Serverless), serverless rejects the request with HTTP 400:\n\n```\nThe request includes both the [Elastic-Api-Version] header and a [compatible-with] parameter,\nbut it is not valid to include both of these in a request\n```\n\nThese two versioning mechanisms serve different deployment models and are mutually exclusive on the server side:\n- `compatible-with=N`: REST API compatibility for self-managed/hosted major version upgrades\n- `Elastic-Api-Version: 2023-10-31`: date-based API versioning for serverless\n\nThe v9 client injects `compatible-with=9` at initialization time (`set_content_type!`) unless the caller explicitly sets `Content-Type` and `Accept` headers. Callers that only set `Elastic-Api-Version` (as the Logstash plugins do for serverless) get the conflict.\n\n**Expected behavior**\n\n`set_content_type!` should not add `compatible-with` headers when `Elastic-Api-Version` is already present in `transport_options[:headers]`.\n\n**Your Environment**\n - Ruby Version: JRuby 10.0.3.0 (Ruby 3.4.5)\n - Elasticsearch client version: 9.4.1 / 9.4.2\n - elastic-transport version: 8.5.2\n - Elasticsearch: Serverless\n\n**Additional context**\n\nThis affects Logstash plugins that connect to Elasticsearch Serverless:\n- [logstash-input-elasticsearch](https://github.com/logstash-plugins/logstash-input-elasticsearch) (v5.3.0)\n- [logstash-filter-elasticsearch](https://github.com/logstash-plugins/logstash-filter-elasticsearch) (v4.4.0)\n\nBoth plugins recently upgraded their elasticsearch gem dependency from `< 9` to `< 10` ([input PR#252](https://github.com/logstash-plugins/logstash-input-elasticsearch/pull/252), [filter PR#213](https://github.com/logstash-plugins/logstash-filter-elasticsearch/pull/213)), which resolved to elasticsearch 9.x. Their serverless integration tests now fail: https://buildkite.com/elastic/logstash-serverless-integration-testing/builds/1151\n\nThe root cause is in `Elasticsearch::Client#set_content_type!` ([elasticsearch.rb](https://github.com/elastic/elasticsearch-ruby/blob/main/elasticsearch/lib/elasticsearch.rb#L189-L199)):\n\n```ruby\ndef set_content_type!(arguments)\n  headers = {}\n  user_headers = arguments&.[](:transport_options)&.[](:headers)\n  unless user_headers&.keys&.detect { |h| h =~ /content-?_?type/i }\n    headers['content-type'] = 'application/vnd.elasticsearch+json; compatible-with=9'\n  end\n  unless user_headers&.keys&.detect { |h| h =~ /accept/i }\n    headers['accept'] = 'application/vnd.elasticsearch+json; compatible-with=9'\n  end\n  set_header(headers, arguments) unless headers.empty?\nend\n```",
+        "url": "https://github.com/elastic/elasticsearch-ruby/issues/2983"
+    },
+    {
+        "id": 4647725266,
+        "number": 2973,
+        "title": "`NoMethodError` when `Content-Type` lacks `compatible-with` parameter",
+        "state": "closed",
+        "created_at": "2026-06-12T08:40:30Z",
+        "updated_at": "2026-06-16T16:27:01Z",
+        "closed_at": "2026-06-16T08:21:18Z",
+        "author": "Watson1978",
+        "comments": 3,
+        "labels": [],
+        "assignees": [
+            "picandocodigo"
+        ],
+        "locked": false,
+        "body": "**Describe the bug/error/problem**\nWhile testing the `fluent-plugin-elasticsearch` against `elasticsearch` >= 9.1.2, we encountered a `NoMethodError` when calling the `_bulk` API. \n\nIt seems that the `update_ndjson_headers!` method assumes that the `Content-Type` header always includes the `compatible-with=` parameter, which causes a crash if a client explicitly sends a pure `application/x-ndjson` header.\n\nIn `lib/elasticsearch/api/utils.rb`:\n\n```ruby\nversion = client_headers[current_content].match(/compatible-with=([0-9]+)/)[1] || 9\n```\n\nIf `client_headers[current_content]` is exactly `\"application/x-ndjson\"` (or `\"application/json\"`), the regex `.match` returns `nil`. Attempting to call `[1]` on `nil` triggers the `NoMethodError`, completely crashing the request before it is sent.\n\nIt was introduced at https://github.com/elastic/elasticsearch-ruby/pull/2759\n\n**To Reproduce**\n```ruby\nrequire 'bundler/inline'\n\ngemfile do\n  source 'https://rubygems.org'\n  gem 'elasticsearch', '= 9.1.2'\n  # gem 'elasticsearch', '= 9.1.1'\nend\n\nrequire 'elasticsearch'\n\nputs \"Elasticsearch Client Version: #{Elasticsearch::VERSION}\"\nputs \"-\" * 40\n\nclient = Elasticsearch::Client.new(\n  url: 'http://localhost:9200',\n  transport_options: {\n    headers: {\n      'Content-Type' => 'application/x-ndjson'\n    }\n  }\n)\n\nclient.bulk(body: [\n  { index: { _index: 'test_index', _id: '1' } },\n  { field: 'value' }\n])\n```\n\n* result:\n```\n$ ruby sample.rb\nFetching gem metadata from https://rubygems.org/..........\nResolving dependencies...\nElasticsearch Client Version: 9.1.2\n----------------------------------------\n/home/watson/.rbenv/versions/4.0.5/lib/ruby/gems/4.0.0/gems/elasticsearch-api-9.1.2/lib/elasticsearch/api/utils.rb:185:in 'Elasticsearch::API::Utils#update_ndjson_headers!': undefined method '[]' for nil (NoMethodError)\n\n        version = client_headers[current_content].match(/compatible-with=([0-9]+)/)[1] || 9\n                                                                                   ^^^\n        from /home/watson/.rbenv/versions/4.0.5/lib/ruby/gems/4.0.0/gems/elasticsearch-api-9.1.2/lib/elasticsearch/api/actions/bulk.rb:190:in 'Elasticsearch::API::Actions#bulk'\n        from sample.rb:23:in '<main>'\n```\n\nOr\n\n```\nirb(main):001> ''.match(/compatible-with=([0-9]+)/)[1]\n(irb):1:in '<main>': undefined method '[]' for nil (NoMethodError)\n        from <internal:kernel>:168:in 'Kernel#loop'\n        from /home/watson/.rbenv/versions/3.4.9/lib/ruby/gems/3.4.0/gems/irb-1.18.0/exe/irb:9:in '<top (required)>'\n        from /home/watson/.rbenv/versions/3.4.9/bin/irb:25:in 'Kernel#load'\n        from /home/watson/.rbenv/versions/3.4.9/bin/irb:25:in '<main>'\n```\n\n**Expected behavior**\nAs Question:\n\nIs it strictly mandatory for clients to include `compatible-with=X` in the headers for NDJSON endpoints (like `_bulk` and `_msearch`) starting from 9.1.2?\n\n* If it is an unintended regression: Could we fix this by adding a safe navigation operator? (e.g., `match(/.../)&.[](1) || 9`)\n* If it is strictly required by design: We will update our plugin to explicitly inject the `compatible-with` parameter to avoid this crash.\n\nThank you for your time and great work on this gem!\n\n\n**Your Environment (please complete the following information):**\n - Operating System **any**\n - Ruby Version **any**\n - Elasticsearch client version **9.1.2**\n - Elasticsearch version **9.4.2**\n - Any other relevant information\n\n**Additional context**\nAdd any other context about the problem here.\n",
+        "url": "https://github.com/elastic/elasticsearch-ruby/issues/2973"
+    },
+    {
+        "id": 4526490102,
+        "number": 2961,
+        "title": "Duplicate header check logic issue",
+        "state": "closed",
+        "created_at": "2026-05-26T18:25:57Z",
+        "updated_at": "2026-06-15T20:19:35Z",
+        "closed_at": "2026-06-15T20:19:35Z",
+        "author": "mashhurs",
+        "comments": 1,
+        "labels": [
+            "question"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "Please check the [official documentation](https://www.elastic.co/guide/en/elasticsearch/client/ruby-api/current/ruby_client.html) for information on how to use the client, [examples for the most frequently used cases](https://www.elastic.co/guide/en/elasticsearch/client/ruby-api/current/examples.html), [configuration](https://www.elastic.co/guide/en/elasticsearch/client/ruby-api/current/ruby-config.html) and more.\n\nFor help with Elasticsearch, check out [our discussion forums](https://discuss.elastic.co/).\n\n*Please note that this issue tracker is not a help forum and this issue may be closed.*\n\nThis commit https://github.com/elastic/elasticsearch-ruby/commit/ff9ec8f72261bda1d069d648685687a86627decd#r186029959 recently introduced duplicate header check. After the 9.4.0 release, Logstash CI https://app.travis-ci.com/github/logstash-plugins/logstash-filter-elasticsearch/jobs/639388937 started complaining in a way that ES is rejecting due to duplicate headers. of [`Content-Type`, `content-type`] (capital and small letters difference), logs:\n\n```\nlogstash-1       | === DEBUG: Testing connection to Elasticsearch ===\nlogstash-1       | Client class: Elasticsearch::Client\nlogstash-1       | Client transport class: Elastic::Transport::Transport::HTTP::Manticore\nlogstash-1       | Transport options: {hosts: [\"http://elasticsearch:9200\"], transport_class: Elastic::Transport::Transport::HTTP::Manticore, transport_options: {headers: {\"user-agent\" => \"logstash/9.4.1 (OS=Linux-6.12.76-linuxkit-aarch64; JVM=Eclipse Adoptium-21.0.11) logstash-filter-elasticsearch/4.3.1\", \"x-elastic-product-origin\" => \"logstash-filter-elasticsearch\", \"content-type\" => \"application/vnd.elasticsearch+json; compatible-with=9\", \"accept\" => \"application/vnd.elasticsearch+json; compatible-with=9\", \"x-elastic-client-meta\" => \"es=9.4.0,rb=3.4.5,t=8.5.1,jv=21.0.11,jr=10.0.5.0,mc=0.9.2\", \"Content-Type\" => \"application/vnd.elasticsearch+json; compatible-with=9\", \"User-Agent\" => \"logstash/9.4.1 (OS=Linux-6.12.76-linuxkit-aarch64; JVM=Eclipse Adoptium-21.0.11) logstash-filter-elasticsearch/4.3.1\"}, pool_max: 1000, pool_max_per_route: 100, ssl: {enabled: false}}, ssl: {enabled: false}, retry_on_failure: 0, retry_on_status: [500, 502, 503, 504], logger: nil, tracer: nil, reload_connections: false, delay_on_retry: 0, reload_on_failure: false, randomize_hosts: false, http: {user: nil, password: nil}, enable_meta_header: true}\nlogstash-1       | Methods with 'header': []\nlogstash-1       | Transport instance variables: [:@block, :@connections, :@compression, :@hosts, :@manticore, :@request_options, :@last_request_at, :@resurrect_after, :@options, :@reload_after, :@counter_mtx, :@logger, :@retry_on_status, :@tracer, :@serializer, :@state_mutex, :@protocol, :@counter, :@reload_connections, :@sniffer]\nlogstash-1       | Transport state: #<Elastic::Transport::Transport::HTTP::Manticore:0xa422390 @block=nil, @connections=#<Elastic::Transport::Transport::Connections::Collection:0x53c39950 @connections=[#<Elastic::Transport::Transport::Connections::Connection:0x769d0ef2 @dead=false, @verified=false, @failures=0, @state_mutex=#<Thread::Mutex:0x6d58ed12>, @host={:scheme=>\"http\", :host=>\"elasticsearch\", :path=>\"\", :port=>9200, :protocol=>\"http\"}, @options={resurrect_timeout: 60}, @connection=#<Manticore::Client:0x300b839c @async_requests=#<Thread::Queue:0x34ad750f>, @keepalive=true, @stubs={}, @pool=#<Java::OrgApacheHttpImplConn::PoolingHttpClientConnectionManager:0x2a5917f6>, @finalizer=#<Manticore::Client::Finalizer:0x558fa64a @_objs=[[#<Java::JavaLangRef::WeakReference:0x72769bf5>, [:close]], [#<Java::JavaLangRef::WeakReference:0x5cc85ffc>, [:shutdown]]]>, @use_cookies=false, @client=#<Java::OrgApacheHttpImplClient::InternalHttpClient:0x7388d94d>, @max_pool_size=1000, @options={headers: {\"user-agent\" => \"logstash/9.4.1 (OS=Linux-6.12.76-linuxkit-aarch64; JVM=Eclipse Adoptium-21.0.11) logstash-filter-elasticsearch/4.3.1\", \"x-elastic-product-origin\" => \"logstash-filter-elasticsearch\", \"content-type\" => \"application/vnd.elasticsearch+json; compatible-with=9\", \"accept\" => \"application/vnd.elasticsearch+json; compatible-with=9\", \"x-elastic-client-meta\" => \"es=9.4.0,rb=3.4.5,t=8.5.1,jv=21.0.11,jr=10.0.5.0,mc=0.9.2\", \"Content-Type\" => \"application/vnd.elasticsearch+json; compatible-with=9\", \"User-Agent\" => \"logstash/9.4.1 (OS=Linux-6.12.76-linuxkit-aarch64; JVM=Eclipse Adoptium-21.0.11) logstash-filter-elasticsearch/4.3.1\"}, pool_max: 1000, pool_max_per_route: 100, ssl: {enabled: false}}>>], @selector=#<Elastic::Transport::Transport::Connections::Selector::RoundRobin:0xc53c04e @connections=#<Elastic::Transport::Transport::Connections::Collection:0x53c39950 ...>, @mutex=#<Thread::Mutex:0x18f493d7>, @current=nil>>, @compression=false, @hosts=[{scheme: \"http\", host: \"elasticsearch\", path: \"\", port: 9200, protocol: \"http\"}], @manticore=#<Manticore::Client:0x300b839c @async_requests=#<Thread::Queue:0x34ad750f>, @keepalive=true, @stubs={}, @pool=#<Java::OrgApacheHttpImplConn::PoolingHttpClientConnectionManager:0x2a5917f6>, @finalizer=#<Manticore::Client::Finalizer:0x558fa64a @_objs=[[#<Java::JavaLangRef::WeakReference:0x72769bf5>, [:close]], [#<Java::JavaLangRef::WeakReference:0x5cc85ffc>, [:shutdown]]]>, @use_cookies=false, @client=#<Java::OrgApacheHttpImplClient::InternalHttpClient:0x7388d94d>, @max_pool_size=1000, @options={headers: {\"user-agent\" => \"logstash/9.4.1 (OS=Linux-6.12.76-linuxkit-aarch64; JVM=Eclipse Adoptium-21.0.11) logstash-filter-elasticsearch/4.3.1\", \"x-elastic-product-origin\" => \"logstash-filter-elasticsearch\", \"content-type\" => \"application/vnd.elasticsearch+json; compatible-with=9\", \"accept\" => \"application/vnd.elasticsearch+json; compatible-with=9\", \"x-elastic-client-meta\" => \"es=9.4.0,rb=3.4.5,t=8.5.1,jv=21.0.11,jr=10.0.5.0,mc=0.9.2\", \"Content-Type\" => \"application/vnd.elasticsearch+json; compatible-with=9\", \"User-Agent\" => \"logstash/9.4.1 (OS=Linux-6.12.76-linuxkit-aarch64; JVM=Eclipse Adoptium-21.0.11) logstash-filter-elasticsearch/4.3.1\"}, pool_max: 1000, pool_max_per_route: 100, ssl: {enabled: false}}>, @request_options={headers: {\"user-agent\" => \"logstash/9.4.1 (OS=Linux-6.12.76-linuxkit-aarch64; JVM=Eclipse Adoptium-21.0.11) logstash-filter-elasticsearch/4.3.1\", \"x-elastic-product-origin\" => \"logstash-filter-elasticsearch\", \"content-type\" => \"application/vnd.elasticsearch+json; compatible-with=9\", \"accept\" => \"application/vnd.elasticsearch+json; compatible-with=9\", \"x-elastic-client-meta\" => \"es=9.4.0,rb=3.4.5,t=8.5.1,jv=21.0.11,jr=10.0.5.0,mc=0.9.2\", \"Content-Type\" => \"application/vnd.elasticsearch+json; compatible-with=9\", \"User-Agent\" => \"logstash/9.4.1 (OS=Linux-6.12.76-linuxkit-aarch64; JVM=Eclipse Adoptium-21.0.11) logstash-filter-elasticsearch/4.3.1\"}}, @last_request_at=2026-05-20 23:16:58.047224 UTC, @resurrect_after=60, @options={hosts: [\"http://elasticsearch:9200\"], transport_class: Elastic::Transport::Transport::HTTP::Manticore, transport_options: {headers: {\"user-agent\" => \"logstash/9.4.1 (OS=Linux-6.12.76-linuxkit-aarch64; JVM=Eclipse Adoptium-21.0.11) logstash-filter-elasticsearch/4.3.1\", \"x-elastic-product-origin\" => \"logstash-filter-elasticsearch\", \"content-type\" => \"application/vnd.elasticsearch+json; compatible-with=9\", \"accept\" => \"application/vnd.elasticsearch+json; compatible-with=9\", \"x-elastic-client-meta\" => \"es=9.4.0,rb=3.4.5,t=8.5.1,jv=21.0.11,jr=10.0.5.0,mc=0.9.2\", \"Content-Type\" => \"application/vnd.elasticsearch+json; compatible-with=9\", \"User-Agent\" => \"logstash/9.4.1 (OS=Linux-6.12.76-linuxkit-aarch64; JVM=Eclipse Adoptium-21.0.11) logstash-filter-elasticsearch/4.3.1\"}, pool_max: 1000, pool_max_per_route: 100, ssl: {enabled: false}}, ssl: {enabled: false}, retry_on_failure: 0, retry_on_status: [500, 502, 503, 504], logger: nil, tracer: nil, reload_connections: false, delay_on_retry: 0, reload_on_failure: false, randomize_hosts: false, http: {user: nil, password: nil}, enable_meta_header: true}, @reload_after=10000, @counter_mtx=#<Thread::Mutex:0x64abb917>, @logger=nil, @retry_on_status=[500, 502, 503, 504], @tracer=nil, @serializer=#<Elastic::Transport::Transport::Serializer::MultiJson:0x68596992 @transport=#<Elastic::Transport::Transport::HTTP::Manticore:0xa422390 ...>>, @state_mutex=#<Thread::Mutex:0x5f0c45ae>, @protocol=\"http\", @counter=0, @reload_connections=false, @sniffer=#<Elastic::Transport::Transport::Sniffer:0x66d62c59 @transport=#<Elastic::Transport::Transport::HTTP::Manticore:0xa422390 ...>, @timeout=1>>\n....\n\nlogstash-1       |   1) LogStash::Filters::Elasticsearch run ES|QL queries with simple FROM query with LIMIT processes the event\nlogstash-1       |      Failure/Error: @client.info\nlogstash-1       |      \nlogstash-1       |      Elastic::Transport::Transport::Errors::BadRequest:\nlogstash-1       |        [400] {\"error\":{\"root_cause\":[{\"type\":\"media_type_header_exception\",\"reason\":\"Invalid media-type value on headers [Content-Type]\"}],\"type\":\"media_type_header_exception\",\"reason\":\"Invalid media-type value on headers [Content-Type]\",\"caused_by\":{\"type\":\"illegal_argument_exception\",\"reason\":\"Incorrect header [Content-Type]. Only one value should be provided\"}},\"status\":400}\nlogstash-1       |      Shared Example Group: \"ESQL query execution\" called from ./spec/filters/integration/elasticsearch_esql_spec.rb:112\nlogstash-1       |      # ./lib/logstash/filters/elasticsearch/client.rb:66:in 'info'\nlogstash-1       |      # ./lib/logstash/filters/elasticsearch/client.rb:70:in 'es_version'\nlogstash-1       |      # ./lib/logstash/filters/elasticsearch.rb:526:in 'validate_es_for_esql_support!'\nlogstash-1       |      # ./lib/logstash/filters/elasticsearch.rb:210:in 'register'\nlogstash-1       |      # ./spec/filters/integration/elasticsearch_esql_spec.rb:94:in 'block in <main>'\n```\n\nAs per my analysis, `logstash-filter-elasticsearch` plugin initializes transport client where `Content-Type` (case sensitive, capital letters) header will be set, srouces:\n\n- https://github.com/logstash-plugins/logstash-filter-elasticsearch/blob/962681d623affdd825b9c24611e6dcf7d131867c/lib/logstash/filters/elasticsearch/client.rb#L127\n- https://github.com/elastic/elastic-transport-ruby/blob/2a70012f6f57afcacf705fbf08f4c755de9a8dc7/lib/elastic/transport/transport/base.rb#L398\n- https://github.com/elastic/elastic-transport-ruby/blob/2a70012f6f57afcacf705fbf08f4c755de9a8dc7/lib/elastic/transport/transport/http/manticore.rb#L172\n\nThen, this `set_content_type!` method adds `content-type`. It looks like we are using case sensitivity logic here.\n\nIt looks like using `i` flag will be a solution here:\n```\nunless user_headers&.keys&.detect { |h| h =~ /content-?_?type/i }\n```",
+        "url": "https://github.com/elastic/elasticsearch-ruby/issues/2961"
+    },
+    {
+        "id": 4033160633,
+        "number": 2899,
+        "title": "Elasticsearch Ruby 7.17 - update build",
+        "state": "closed",
+        "created_at": "2026-03-06T09:22:56Z",
+        "updated_at": "2026-03-06T09:48:46Z",
+        "closed_at": "2026-03-06T09:48:46Z",
+        "author": "picandocodigo",
+        "comments": 0,
+        "labels": [
+            "7.x"
+        ],
+        "assignees": [
+            "picandocodigo"
+        ],
+        "locked": false,
+        "body": "[End of support for 7.17 was January 15, 2026](https://www.elastic.co/support/eol).\n\nThis endpoint isn't working anymore: https://artifacts-snapshot.elastic.co/elasticsearch/latest/7.17.json, so we can't get the testing artifacts for 7.17 anymore.\n\nUpdate the build so that the REST tests are no longer used.\n",
+        "url": "https://github.com/elastic/elasticsearch-ruby/issues/2899"
+    },
+    {
+        "id": 3996152910,
+        "number": 2896,
+        "title": "ES Client: Facilitate release notes",
+        "state": "open",
+        "created_at": "2026-02-26T15:17:49Z",
+        "updated_at": "2026-02-26T15:26:01Z",
+        "closed_at": null,
+        "author": "picandocodigo",
+        "comments": 0,
+        "labels": [
+            "CI",
+            "tracking"
+        ],
+        "assignees": [
+            "picandocodigo"
+        ],
+        "locked": false,
+        "body": "We've discussed several alternatives to making the work of writing release notes easier.\nThis issue will track the work around this. Initially there's the idea to make API changes easier to track between release branches.",
+        "url": "https://github.com/elastic/elasticsearch-ruby/issues/2896"
+    },
+    {
+        "id": 3339074123,
+        "number": 2758,
+        "title": "msearch overriding headers so `compatible-with=8` cannot be set",
+        "state": "closed",
+        "created_at": "2025-08-20T18:02:13Z",
+        "updated_at": "2025-11-28T10:01:40Z",
+        "closed_at": "2025-11-28T10:01:40Z",
+        "author": "felixstackadapt",
+        "comments": 2,
+        "labels": [
+            "bug",
+            "9.x"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "**Describe the bug/error/problem**\nWe are currently trying to update the 9.0.3 version of the gem. Our server is running 8.6.2. We were getting this error for our request\n```\n[400] {\"error\":{\"root_cause\":[{\"type\":\"media_type_header_exception\",\"reason\":\"Invalid media-type value on headers [Accept, Content-Type]\"}],\"type\":\"media_type_header_exception\",\"reason\":\"Invalid media-type value on headers [Accept, Content-Type]\",\"caused_by\":{\"type\":\"status_exception\",\"reason\":\"Accept version must be either version 8 or 7, but found 9. Accept=application/vnd.elasticsearch+json; compatible-with=9\"}},\"status\":400}\n```\n\nso we have added the `compatible-with=8` transport_options headers to `Elasticsearch::Client.new` to fix \n\n```\naccept: 'application/vnd.elasticsearch+json; compatible-with=8',\ncontent_type: 'application/vnd.elasticsearch+json; compatible-with=8'\n``` \n\nThis has fixed our `search` requests but not `msearch` as the headers we set before calling msearch gets overridden by msearch itself. \n\nlooking at msearch source code it looks like msearch add `compatible-with=9` to the headers which overrides the ones we set. \n\n```\nheaders.merge!({\n     Content-Type' => 'application/vnd.elasticsearch+x-ndjson; compatible-with=9'\n})\n```\n\nis there a way we can set msearch headers to be compatible-with=8",
+        "url": "https://github.com/elastic/elasticsearch-ruby/issues/2758"
+    },
+    {
+        "id": 3310181329,
+        "number": 2752,
+        "title": "`elasticsearch` gem in tag 9.1.1 has version 9.1.0",
+        "state": "closed",
+        "created_at": "2025-08-11T13:55:21Z",
+        "updated_at": "2025-08-11T15:22:53Z",
+        "closed_at": "2025-08-11T15:08:40Z",
+        "author": "OddBloke",
+        "comments": 3,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "**Describe the bug/error/problem**\n\nThe `elasticsearch` gem is still at version `9.1.0`:\n\nhttps://github.com/elastic/elasticsearch-ruby/blob/6bcff71e22048c9420d88f5b8587e5b41a2d5386/elasticsearch/lib/elasticsearch/version.rb#L19\n\ndespite being tagged as `9.1.1`, which is tripping up our automation.\n\n**Expected behavior**\n\nOur current expectation is that the tags and gemspec versions will be aligned. Please do let me know if this assumption is incorrect, and I can modify our automation!",
+        "url": "https://github.com/elastic/elasticsearch-ruby/issues/2752"
+    },
+    {
+        "id": 3015175124,
+        "number": 2665,
+        "title": "9.0.1 is erroring on Elastic Server 9.0.0",
+        "state": "closed",
+        "created_at": "2025-04-23T20:26:36Z",
+        "updated_at": "2025-07-23T14:04:45Z",
+        "closed_at": "2025-06-06T13:01:43Z",
+        "author": "kapso",
+        "comments": 13,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "This [update](https://github.com/elastic/elasticsearch-ruby/commit/b3e400d3fdaf02d57777575bf6c3aadabcd720dc) seems to be causing this issue\n\n```\n[400] {\"error\":{\"root_cause\":[{\"type\":\"media_type_header_exception\",\"reason\":\"Invalid media-type value on headers [Accept, Content-Type]\"}],\"type\":\"media_type_header_exception\",\"reason\":\"Invalid media-type value on headers [Accept, Content-Type]\",\"caused_by\":{\"type\":\"status_exception\",\"reason\":\"A compatible version is required on both Content-Type and Accept headers if either one has requested a compatible version. Accept=application/vnd.elasticsearch+json; compatible-with=9, Content-Type=application/json\"}},\"status\":400}\n```\n\nVersions:\nElastic Server 9.0.0\nelasticsearch 9.0.1 (gem)\nsearchkick 5.5.0\nRails 8.0.2\nRuby 3.4.3\n",
+        "url": "https://github.com/elastic/elasticsearch-ruby/issues/2665"
+    },
+    {
+        "id": 2789220880,
+        "number": 2556,
+        "title": "ScrollHelper makes additional requests per hit instead of per batch",
+        "state": "closed",
+        "created_at": "2025-01-15T09:01:52Z",
+        "updated_at": "2025-01-15T10:52:40Z",
+        "closed_at": "2025-01-15T10:52:40Z",
+        "author": "dbackeus",
+        "comments": 2,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "**Describe the bug/error/problem**\n\nWhen iterating through hits using `ScrollHelper`, an additional search (with scroll) request is made to ElasticSearch for each resulting hit:\nhttps://github.com/elastic/elasticsearch-ruby/blob/main/elasticsearch/lib/elasticsearch/helpers/scroll_helper.rb#L50\n\nThis leads to massive latency overhead and makes the ScrollHelper pretty much unusable.\n\n**Expected behavior**\n\nAdditional search (with scroll) requests should be made in only after completing iteration of all current elements in the `@docs` array, to see if there are more hits to scroll to.\n",
+        "url": "https://github.com/elastic/elasticsearch-ruby/issues/2556"
+    },
+    {
+        "id": 2321047771,
+        "number": 2389,
+        "title": "Closing open connections to Elasticsearch",
+        "state": "open",
+        "created_at": "2024-05-28T13:17:32Z",
+        "updated_at": "2024-05-28T13:17:32Z",
+        "closed_at": null,
+        "author": "ClearlyClaire",
+        "comments": 0,
+        "labels": [
+            "question"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "We are using `elasticsearch-ruby` through the `chewy` gem, and we import documents in a Sidekiq worker. This means each Sidekiq thread that accesses Elasticsearch has its own instance of the `Elasticsearch::Client`, and when a (possibly unrelated) Sidekiq job fails, that worker thread is closed and a new thread is opened in the same process.\r\n\r\nOne thing we noticed though, is that the underlying Elasticsearch connections are only closed when Ruby's garbage collector collects the dead thread's `Elasticsearch::Client` instance, which seems to be the cause of a file descriptor leak in our application.\r\n\r\nWe think we have found a way to close these connections by adding the following code to the error handler in a custom Sidekiq middleware:\r\n```ruby\r\nChewy.client.transport.transport.connections.each do |connection|\r\n  # This bit of code is tailored for the HTTPClient Faraday adapter\r\n  connection.connection.app.instance_variable_get(:@client)&.reset_all\r\nend\r\n```\r\n\r\nHowever, this piece of code breaks multiple layers of abstractions, going through `chewy`, `elasticsearch`, `elasticsearch-transport`, `faraday` and `faraday-httpclient`, even accessing an otherwise unexposed instance variable at one point.\r\n\r\nIs there a better way of closing connections to Elasticsearch? Are we missing something obvious about their lifecycle?\r\n\r\n---\r\n\r\nDigging into it, my understanding of the issue is that neither `elasticsearch` nor `elasticsearch-transport` provide a method to close connections.\r\n\r\nIt looks like `faraday` has `Faraday::Connection#close` but that appears to not actually be implemented in most adapters, and in particular not in the `faraday-httpclient` adapter that ends up being used in our app.\r\n\r\nOf course, I may have missed something, and would be glad to know what if that's the case!",
+        "url": "https://github.com/elastic/elasticsearch-ruby/issues/2389"
+    },
+    {
+        "id": 2261994049,
+        "number": 2362,
+        "title": "retry_on_conflict not getting passed to update",
+        "state": "closed",
+        "created_at": "2024-04-24T19:09:36Z",
+        "updated_at": "2024-04-24T20:44:27Z",
+        "closed_at": "2024-04-24T20:44:07Z",
+        "author": "lizzzp1",
+        "comments": 1,
+        "labels": [
+            "question"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "Hello,\r\n\r\nI'm using searchkick and passing a client_option of `retry_on_conflict` which I would like to be included in any update requests when partial reindexing. Searchkick passes it on the underlying client, but I don't see it being applied when I make _bulk requests.\r\n\r\nI know I'm simultaneously asking a question about another gem, but I could also be off base about its use within requests.\r\nIt's being passed here:\r\nhttps://github.com/ankane/searchkick/blob/f648810d5cd7f5bc018bb4ff1251831dd6784cbb/lib/searchkick.rb#L106\r\n\r\nbut never see it included in the body. Would appreciate any guidance.\r\n\r\nThank you!",
+        "url": "https://github.com/elastic/elasticsearch-ruby/issues/2362"
+    },
+    {
+        "id": 2231670029,
+        "number": 2344,
+        "title": "end of file reached (Faraday::ConnectionFailed)",
+        "state": "closed",
+        "created_at": "2024-04-08T16:45:22Z",
+        "updated_at": "2024-04-10T14:21:46Z",
+        "closed_at": "2024-04-10T13:20:57Z",
+        "author": "rafaltrojanowski",
+        "comments": 4,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "**Describe the bug/error/problem**\r\n\r\nAs described here https://www.elastic.co/guide/en/elasticsearch/client/ruby-api/8.13/connecting.html#auth-basic\r\nI'm trying to setup connection in Rails initializer in two ways:\r\n1)\r\n```\r\nElasticsearch::Model.client = Elasticsearch::Client.new(\r\n\turl: 'https://elastic:h9jupghdTo73lOQjZccy@localhost:9200',\r\n\ttransport_options: {\r\n\t\tssl: { verify: false }\r\n\t}\r\n)\r\n```\r\nin Rails console I'm getting:\r\n```\r\nirb(main):004> Article.__elasticsearch__.create_index! force: true\r\n=> {\"acknowledged\"=>true, \"shards_acknowledged\"=>true, \"index\"=>\"articles\"}\r\n```\r\nHowever when I set up Elasticsearch in the following way:\r\n2)\r\n```\r\nclient = Elasticsearch::Client.new(\r\n  hosts:\r\n\t  [\r\n  \t   {\r\n    \t   host: 'localhost',\r\n    \t   port: '9200',\r\n    \t   user: 'elastic',\r\n    \t   password: 'h9jupghdTo73lOQjZccy',\r\n    \t   scheme: 'https'\r\n  \t   }\r\n\t  ]\r\n)\r\n```\r\nI'm getting:\r\n```\r\nirb(main):001> Article.__elasticsearch__.create_index! force: true\r\n/Users/rafaltrojanowski/.rbenv/versions/3.1.2/lib/ruby/gems/3.1.0/gems/net-protocol-0.2.2/lib/net/protocol.rb:237:in `rbuf_fill': end of file reached (Faraday::ConnectionFailed)\r\n/Users/rafaltrojanowski/.rbenv/versions/3.1.2/lib/ruby/gems/3.1.0/gems/net-protocol-0.2.2/lib/net/protocol.rb:237:in `rbuf_fill': end of file reached (EOFError)\r\nirb(main):002>\r\n```\r\n\r\n**Expected behavior**\r\n\r\nIt should be possible to initialize ES connection in a second way.\r\n\r\n**Your Environment (please complete the following information):**\r\n - Operating System MacOS Monterey 12.3.1\r\n - Ruby Version 3.1.2p20\r\n - Elasticsearch client version 8.13.1\r\n - Elasticsearch version 8.13.1\r\n - Rails version 7.1.3.2\r\n```\r\n    elasticsearch (7.17.10)\r\n      elasticsearch-api (= 7.17.10)\r\n      elasticsearch-transport (= 7.17.10)\r\n    elasticsearch-api (7.17.10)\r\n      multi_json\r\n    elasticsearch-model (7.2.1)\r\n      activesupport (> 3)\r\n      elasticsearch (~> 7)\r\n      hashie\r\n    elasticsearch-rails (7.2.1)\r\n    elasticsearch-transport (7.17.10)\r\n```\r\n\r\n**Additional context**\r\nAdd any other context about the problem here.\r\n",
+        "url": "https://github.com/elastic/elasticsearch-ruby/issues/2344"
+    },
+    {
+        "id": 2228337478,
+        "number": 2341,
+        "title": "Elasticsearch Client Version Mismatch and Argument Error After Gem Upgrade",
+        "state": "closed",
+        "created_at": "2024-04-05T15:45:24Z",
+        "updated_at": "2024-05-22T07:05:11Z",
+        "closed_at": "2024-05-21T15:32:29Z",
+        "author": "giovannelli",
+        "comments": 6,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "**Describe the bug/error/problem**\r\nAfter upgrading to the latest version of the Elasticsearch gem, I encounter the following error when making a POST request:\r\n\r\n`\"The client is unable to verify that the server is Elasticsearch. Some functionality may not be compatible if the server is running an unsupported product.\"`\r\n\r\nInterestingly, I can still perform queries using the Elasticsearch API endpoint directly. Here's the error stack trace for more context:\r\n\r\n```json\r\n\"debug\": {\r\n  \"title\": \"wrong number of arguments (given 6, expected 2..5)\",\r\n  \"backtrace\": [\r\n    \"/usr/local/bundle/ruby/3.2.0/gems/newrelic_rpm-9.8.0/lib/new_relic/agent/instrumentation/elasticsearch/instrumentation.rb:13:in `perform_request_with_tracing'\",\r\n    \"/usr/local/bundle/ruby/3.2.0/gems/newrelic_rpm-9.8.0/lib/new_relic/agent/instrumentation/elasticsearch/prepend.rb:10:in `perform_request'\",\r\n    \"/usr/src/app/config/initializers/mp_es.rb:87:in `verify_elasticsearch'\",\r\n    \"/usr/src/app/config/initializers/mp_es.rb:72:in `method_missing'\",\r\n    \"/usr/local/bundle/ruby/3.2.0/gems/elasticsearch-api-8.12.2/lib/elasticsearch/api/namespace/common.rb:38:in `perform_request'\",\r\n    \"/usr/local/bundle/ruby/3.2.0/gems/elasticsearch-api-8.12.2/lib/elasticsearch/api/actions/cat/indices.rb:70:in `indices'\",\r\n    \"/usr/src/app/app/models/cluster/plugins/indices.rb:31:in `block in list'\",\r\n    \"/usr/local/bundle/ruby/3.2.0/gems/activesupport-7.1.3.2/lib/active_support/cache.rb:1059:in `block in ...\r\n  ]\r\n}\r\n```\r\n\r\nTo diagnose the issue, I added a monkey patch to the elasticsearch.rb file to log the arguments it received. With the previous gem version, the output was as follows:\r\n\r\n```ruby\r\n[\"POST\", \"staging-carts-2024,staging-carts-2023,staging-carts-2022/_search\", {}, {:_source=>[\"order.id\"], :track_total_hits=>true, :query=>{MY_QUERY}}, {}, {:endpoint=>\"search\", :defined_params=>{:index=>\"staging-carts-2024,staging-carts-2023,staging-carts-2022\"}}]\r\n```\r\n\r\nHowever, with the latest version, I receive the error message about the client being unable to verify the server as Elasticsearch.\r\n\r\nDeploying the project using `Elasticsearch` version `8.12.2`, while retaining the monkey patch for `elasticsearch.rb` from the version 8.13.0 , results in the same error:\r\n\r\nBelow is the monkey-patched file, including the puts statement for debugging:\r\n\r\n```ruby\r\n# Licensed to Elasticsearch B.V. under one or more contributor\r\n# license agreements. See the NOTICE file distributed with\r\n# this work for additional information regarding copyright\r\n# ownership. Elasticsearch B.V. licenses this file to you under\r\n# the Apache License, Version 2.0 (the \"License\"); you may\r\n# not use this file except in compliance with the License.\r\n# You may obtain a copy of the License at\r\n#\r\n#   http://www.apache.org/licenses/LICENSE-2.0\r\n#\r\n# Unless required by applicable law or agreed to in writing,\r\n# software distributed under the License is distributed on an\r\n# \"AS IS\" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY\r\n# KIND, either express or implied.  See the License for the\r\n# specific language governing permissions and limitations\r\n# under the License.\r\n\r\nrequire 'elasticsearch/version'\r\nrequire 'elastic/transport'\r\nrequire 'elasticsearch/api'\r\n\r\nmodule Elasticsearch\r\n  NOT_ELASTICSEARCH_WARNING = 'The client noticed that the server is not Elasticsearch and we do not support this unknown product.'.freeze\r\n  SECURITY_PRIVILEGES_VALIDATION_WARNING = 'The client is unable to verify that the server is Elasticsearch due to security privileges on the server side. Some functionality may not be compatible if the server is running an unsupported product.'.freeze\r\n  VALIDATION_WARNING = 'The client is unable to verify that the server is Elasticsearch. Some functionality may not be compatible if the server is running an unsupported product.'.freeze\r\n\r\n  # This is the stateful Elasticsearch::Client, using an instance of elastic-transport.\r\n  class Client\r\n    include Elasticsearch::API\r\n    # The default port to use if connecting using a Cloud ID.\r\n    # Updated from 9243 to 443 in client version 7.10.1\r\n    #\r\n    # @since 7.2.0\r\n    DEFAULT_CLOUD_PORT = 443\r\n\r\n    # Create a client connected to an Elasticsearch cluster.\r\n    #\r\n    # @param [Hash] arguments - initializer arguments\r\n    # @option arguments [String] :cloud_id - The Cloud ID to connect to Elastic Cloud\r\n    # @option arguments [String, Hash] :api_key Use API Key Authentication, either the base64 encoding of `id` and `api_key`\r\n    #                                           joined by a colon as a String, or a hash with the `id` and `api_key` values.\r\n    # @option arguments [String] :opaque_id_prefix set a prefix for X-Opaque-Id when initializing the client.\r\n    #                                              This will be prepended to the id you set before each request\r\n    #                                              if you're using X-Opaque-Id\r\n    # @option arguments [Hash] :headers Custom HTTP Request Headers\r\n    #\r\n    def initialize(arguments = {}, &)\r\n      @verified = false\r\n      @warned = false\r\n      @opaque_id_prefix = arguments[:opaque_id_prefix] || nil\r\n      api_key(arguments) if arguments[:api_key]\r\n      setup_cloud(arguments) if arguments[:cloud_id]\r\n      set_user_agent!(arguments) unless sent_user_agent?(arguments)\r\n      @transport = Elastic::Transport::Client.new(arguments, &)\r\n    end\r\n\r\n    def method_missing(name, *args, &)\r\n      if methods.include?(name)\r\n        super\r\n      elsif name == :perform_request\r\n        # The signature for perform_request is:\r\n        # method, path, params, body, headers, opts\r\n        if (opaque_id = args[2]&.delete(:opaque_id))\r\n          headers = args[4] || {}\r\n          opaque_id = \"#{@opaque_id_prefix}#{opaque_id}\" if @opaque_id_prefix\r\n          args[4] = headers.merge('X-Opaque-Id' => opaque_id)\r\n        end\r\n        if @verified\r\n          @transport.perform_request(*args, &)\r\n        else\r\n          puts \"=================================================ARGS #{args}\"\r\n          verify_elasticsearch(*args, &)\r\n        end\r\n      else\r\n        @transport.send(name, *args, &)\r\n      end\r\n    end\r\n\r\n    def respond_to_missing?(method_name, *args)\r\n      @transport.respond_to?(method_name) || super\r\n    end\r\n\r\n    private\r\n\r\n      def verify_elasticsearch(...)\r\n        begin\r\n          response = @transport.perform_request(...)\r\n        rescue Elastic::Transport::Transport::Errors::Unauthorized,\r\n               Elastic::Transport::Transport::Errors::Forbidden,\r\n               Elastic::Transport::Transport::Errors::RequestEntityTooLarge => e\r\n          warn(SECURITY_PRIVILEGES_VALIDATION_WARNING)\r\n          @verified = true\r\n          raise e\r\n        rescue Elastic::Transport::Transport::Error => e\r\n          unless @warned\r\n            warn(VALIDATION_WARNING)\r\n            @warned = true\r\n          end\r\n          raise e\r\n        rescue StandardError => e\r\n          warn(VALIDATION_WARNING)\r\n          raise e\r\n        end\r\n        raise Elasticsearch::UnsupportedProductError unless response.headers['x-elastic-product'] == 'Elasticsearch'\r\n\r\n        @verified = true\r\n        response\r\n      end\r\n\r\n      def setup_cloud_host(cloud_id, user, password, port)\r\n        name = cloud_id.split(':')[0]\r\n        base64_decoded = cloud_id.gsub(\"#{name}:\", '').unpack1('m')\r\n        cloud_url, elasticsearch_instance = base64_decoded.split('$')\r\n\r\n        if cloud_url.include?(':')\r\n          url, port = cloud_url.split(':')\r\n          host = \"#{elasticsearch_instance}.#{url}\"\r\n        else\r\n          host = \"#{elasticsearch_instance}.#{cloud_url}\"\r\n          port ||= DEFAULT_CLOUD_PORT\r\n        end\r\n        [{ scheme: 'https', user:, password:, host:, port: port.to_i }]\r\n      end\r\n\r\n      def api_key(arguments)\r\n        api_key = if arguments[:api_key].is_a? Hash\r\n                    encode(arguments[:api_key])\r\n                  else\r\n                    arguments[:api_key]\r\n                  end\r\n        arguments.delete(:user)\r\n        arguments.delete(:password)\r\n        authorization = { 'Authorization' => \"ApiKey #{api_key}\" }\r\n        if (headers = arguments.dig(:transport_options, :headers))\r\n          headers.merge!(authorization)\r\n        else\r\n          arguments[:transport_options] ||= {}\r\n          arguments[:transport_options].merge!({ headers: authorization })\r\n        end\r\n      end\r\n\r\n      def setup_cloud(arguments)\r\n        arguments[:hosts] = setup_cloud_host(\r\n          arguments[:cloud_id],\r\n          arguments[:user],\r\n          arguments[:password],\r\n          arguments[:port]\r\n        )\r\n      end\r\n\r\n      # Encode credentials for the Authorization Header\r\n      # Credentials is the base64 encoding of id and api_key joined by a colon\r\n      # @see https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-create-api-key.html\r\n      def encode(api_key)\r\n        credentials = [api_key[:id], api_key[:api_key]].join(':')\r\n        [credentials].pack('m0')\r\n      end\r\n\r\n      def elasticsearch_validation_request\r\n        @transport.perform_request('GET', '/')\r\n      end\r\n\r\n      def sent_user_agent?(arguments)\r\n        return unless (headers = arguments&.[](:transport_options)&.[](:headers))\r\n\r\n        !!headers.keys.detect { |h| h =~ /user-?_?agent/ }\r\n      end\r\n\r\n      def set_user_agent!(arguments)\r\n        user_agent = [\r\n          \"elasticsearch-ruby/#{Elasticsearch::VERSION}\",\r\n          \"elastic-transport-ruby/#{Elastic::Transport::VERSION}\",\r\n          \"RUBY_VERSION: #{RUBY_VERSION}\"\r\n        ]\r\n        if RbConfig::CONFIG && RbConfig::CONFIG['host_os']\r\n          user_agent << \"#{RbConfig::CONFIG['host_os'].split('_').first[/[a-z]+/i].downcase} #{RbConfig::CONFIG['target_cpu']}\"\r\n        end\r\n        arguments[:transport_options] ||= {}\r\n        arguments[:transport_options][:headers] ||= {}\r\n        arguments[:transport_options][:headers].merge!({ user_agent: user_agent.join('; ') })\r\n      end\r\n  end\r\n\r\n  # Error class for when we detect an unsupported version of Elasticsearch\r\n  class UnsupportedProductError < StandardError\r\n    def initialize(message = NOT_ELASTICSEARCH_WARNING)\r\n      super(message)\r\n    end\r\n  end\r\nend\r\n\r\n# Helper for the meta-header value for Cloud\r\nmodule Elastic\r\n  # If the version is X.X.X.pre/alpha/beta, use X.X.Xp for the meta-header:\r\n  def self.client_meta_version\r\n    regexp = /^([0-9]+\\.[0-9]+\\.[0-9]+)\\.?([a-z0-9.-]+)?$/\r\n    match = Elasticsearch::VERSION.match(regexp)\r\n    return \"#{match[1]}p\" if match[2]\r\n\r\n    Elasticsearch::VERSION\r\n  end\r\n\r\n  # Constant for elastic-transport meta-header\r\n  ELASTICSEARCH_SERVICE_VERSION = [:es, client_meta_version].freeze\r\nend\r\n\r\n```\r\n\r\n**Your Environment (please complete the following information):**\r\n - Operating System` Linux metrics-api-stg-6cd979867d-2st25 5.10.210-201.852.amzn2.x86_64 #1 SMP Tue Feb 27 17:09:32 UTC 2024 x86_64 GNU/Linux`\r\n - Ruby Version` ruby 3.2.2 (2023-03-30 revision e51014f9c0) +jemalloc  +YJIT [x86_64-linux]`\r\n - Elasticsearch client version `8.13.0`\r\n - Elasticsearch version `8.13.1`\r\n - Any other relevant information \r\n\r\n**Additional context**\r\nAdd any other context about the problem here.\r\n",
+        "url": "https://github.com/elastic/elasticsearch-ruby/issues/2341"
+    },
+    {
+        "id": 2134548485,
+        "number": 2309,
+        "title": "Feedback 🗣️",
+        "state": "closed",
+        "created_at": "2024-02-14T14:59:31Z",
+        "updated_at": "2024-10-16T10:09:43Z",
+        "closed_at": "2024-10-16T10:09:43Z",
+        "author": "picandocodigo",
+        "comments": 0,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "The engineering team here at Elastic is looking for developers to participate in research and feedback sessions to learn more about how you use our Ruby client and what improvements we can make to their design and your workflow. If you're interested in sharing your insights into developer experience and language client design, please fill out this [short form](https://forms.gle/bYZwDQXijfhfwshn9). Depending on the number of responses we get, we may either contact you for a 1:1 conversation or a focus group with other developers who use the same client.\r\n\r\nThank you in advance - your feedback is crucial to improving the user experience for all Elasticsearch developers!",
+        "url": "https://github.com/elastic/elasticsearch-ruby/issues/2309"
+    },
+    {
+        "id": 1997803573,
+        "number": 2244,
+        "title": "Segfault when using elasticsearch within spring on MacOS 14.1.1",
+        "state": "closed",
+        "created_at": "2023-11-16T21:20:24Z",
+        "updated_at": "2026-03-06T09:56:11Z",
+        "closed_at": "2026-03-06T09:56:11Z",
+        "author": "dvandersluis",
+        "comments": 5,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "**Describe the bug/error/problem**\r\nIf an elasticsearch command is run within spring, the process segfaults with the following error:\r\n\r\n```\r\nobjc[20558]: +[__NSCFConstantString initialize] may have been in progress in another thread when fork() was called.\r\nobjc[20558]: +[__NSCFConstantString initialize] may have been in progress in another thread when fork() was called. We cannot safely call it or ignore it in the fork() child process. Crashing instead. Set a breakpoint on objc_initializeAfterForkError to debug.\r\n```\r\n\r\n**To Reproduce**\r\nSteps to reproduce the behavior:\r\n\r\n- Have Elasticsearch running on localhost:9200 on a newer version of MacOS\r\n- Create a minimal rails application with `spring` and `elasticsearch` in the Gemfile\r\n- Run `bundle install`\r\n- Run `rails console`\r\n- Enter the following in the REPL:\r\n    ```ruby\r\n    client = Elasticsearch::Client.new\r\n    client.ping\r\n    ```\r\n- The process will segfault with the above error.\r\n\r\n**Expected behavior**\r\nUsing elasticsearch within the Rails console should not segfault.\r\n\r\n**Your Environment (please complete the following information):**\r\n - Operating System: MacOS 14.1.1 (23B81)\r\n - Ruby Version: ruby 3.1.4p223\r\n - Elasticsearch client version: 7.12.0, also tried 8.11.0\r\n - Elasticsearch version: 7.3.2\r\n - Any other relevant information\r\n\r\n**Additional context**\r\n\r\nThis is likely related to a lot of other issues such as:\r\n* https://github.com/rails/rails/issues/38560\r\n* https://github.com/rails/spring/issues/606\r\n* https://github.com/ged/ruby-pg/issues/538\r\n\r\nAn older article may be relevant too: https://blog.phusion.nl/2017/10/13/why-ruby-app-servers-break-on-macos-high-sierra-and-what-can-be-done-about-it/\r\n\r\nAdding `export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES` in `.bash_profile` is often given as a workaround but it's unclear that this is a safe workaround and not just a bandaid.\r\n",
+        "url": "https://github.com/elastic/elasticsearch-ruby/issues/2244"
+    },
+    {
+        "id": 1943390483,
+        "number": 2228,
+        "title": "Enable elasticsearch-transport v7 to use Faraday >=2",
+        "state": "closed",
+        "created_at": "2023-10-14T16:58:22Z",
+        "updated_at": "2023-11-09T15:48:56Z",
+        "closed_at": "2023-11-09T15:48:56Z",
+        "author": "bkmgit",
+        "comments": 1,
+        "labels": [
+            "feature request"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "**Is your feature request related to a problem? Please describe.**\r\nFaraday 2 has been available for some time. It would be helpful to enable elasticsearch transport\r\nto use it rather than be limited to Faraday >~ 1\r\n\r\n**Describe the solution you'd like**\r\nEnable use of both Faraday 1 and Faraday 2\r\n\r\n**Describe alternatives you've considered**\r\nCould be left as is if not possible or very difficult.  Willing to see if this can be implemented.\r\n\r\n**Additional context**\r\nFeature has been added to elastic-transport-ruby but would be helpful to have it for older maintained versions\r\nhttps://github.com/elastic/elasticsearch-ruby/issues/1805\r\n",
+        "url": "https://github.com/elastic/elasticsearch-ruby/issues/2228"
+    },
+    {
+        "id": 1917525097,
+        "number": 2216,
+        "title": "Retry_on_conflicts implementation",
+        "state": "closed",
+        "created_at": "2023-09-28T13:10:36Z",
+        "updated_at": "2024-01-24T15:34:33Z",
+        "closed_at": "2024-01-24T15:34:33Z",
+        "author": "Bhumika2015",
+        "comments": 2,
+        "labels": [
+            "question"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "how we can implement 'retry on conflicts' and 'wait for completion' with this gem ?",
+        "url": "https://github.com/elastic/elasticsearch-ruby/issues/2216"
+    },
+    {
+        "id": 1914870170,
+        "number": 2214,
+        "title": "version conflict error",
+        "state": "closed",
+        "created_at": "2023-09-27T07:24:59Z",
+        "updated_at": "2023-09-27T10:31:03Z",
+        "closed_at": "2023-09-27T10:31:03Z",
+        "author": "Bhumika2015",
+        "comments": 1,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "**Describe the bug/error/problem**\r\nI am getting this error sometimes while updating the index of user.\r\n\"error\": \"[409] {\\\"error\\\":{\\\"root_cause\\\":[{\\\"type\\\":\\\"version_conflict_engine_exception\\\",\\\"reason\\\":\\\"[2568]: version conflict, required seqNo [105769], primary term [1]. current document has seqNo [105774] and primary term [1]\\\",\\\"index_uuid\\\":\\\"ZrDtgX8oQ4CP8hiIN8gIjQ\\\",\\\"shard\\\":\\\"0\\\",\\\"index\\\":\\\"users\\\"}],\\\"type\\\":\\\"version_conflict_engine_exception\\\",\\\"reason\\\":\\\"[2568]: version conflict, required seqNo [105769], primary term [1]. current document has seqNo [105774] and primary term [1]\\\",\\\"index_uuid\\\":\\\"ZrDtgX8oQ4CP8hiIN8gIjQ\\\",\\\"shard\\\":\\\"0\\\",\\\"index\\\":\\\"users\\\"},\\\"status\\\":409}\"\r\n\r\n**To Reproduce**\r\nSteps to reproduce the behavior:\r\n\r\n- Step 1:- update a document simultaneously 15-20 times, I am getting this bug and in my project I need to make this functional as we have so many things going on.\r\n\r\n**Your Environment (please complete the following information):**\r\n - Operating System Ubuntu 20.04\r\n - Ruby Version (2.6.5)\r\n - Elasticsearch client version 7.5.0\r\n - Elasticsearch version 7.5.0",
+        "url": "https://github.com/elastic/elasticsearch-ruby/issues/2214"
+    },
+    {
+        "id": 1781068912,
+        "number": 2137,
+        "title": "How call put_lifecycle method",
+        "state": "closed",
+        "created_at": "2023-06-29T15:29:24Z",
+        "updated_at": "2023-06-29T16:38:10Z",
+        "closed_at": "2023-06-29T16:38:09Z",
+        "author": "icalvete",
+        "comments": 3,
+        "labels": [
+            "question"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "Hi,\r\n\r\nI want to create a lifecycle policy.\r\n\r\nI'm doing it like this....\r\n\r\n```ruby\r\n  $elastic ||= Elasticsearch::Client.new(\r\n    host: $settings['business.elastic_server'],\r\n    user: $settings['business.elastic_username'],\r\n    password: $settings['business.elastic_password'],\r\n    log: false\r\n  )\r\n\r\n $elastic.ilm.put_lifecycle(\r\n    policy: 'my_policy',\r\n    body: {\"policy\":{\"phases\":{\"delete\":{\"min_age\":\"30d\",\"actions\":{\"delete\":{}}}}}}\r\n  )\r\n\r\n```\r\n\r\nThen I got.\r\n\r\n```\r\nelasticsearch-7.15.0/lib/elasticsearch.rb:43:in `method_missing': undefined method `ilm' \r\n```\r\n\r\nWhat is the proper way to call put_lifecycle method? \r\n\r\nThanks",
+        "url": "https://github.com/elastic/elasticsearch-ruby/issues/2137"
+    }
+]

@@ -1,0 +1,356 @@
+[
+    {
+        "id": 4871140146,
+        "number": 469,
+        "title": "Folder tree: INBOX and its subfolders appear twice when accounts have case-differing inbox names",
+        "state": "open",
+        "created_at": "2026-07-13T06:51:08Z",
+        "updated_at": "2026-07-13T06:51:08Z",
+        "closed_at": null,
+        "author": "XtraLarge",
+        "comments": 0,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "Hi, and thanks a lot for mail-archiver!\n\nI ran into a folder-tree display glitch on a multi-account, fairly large archive and did a bit of digging that might save you time. It's purely a tree-rendering thing — the stored data is completely fine (every folder is a single distinct row).\n\nWhat I see\nIn the combined (\"all accounts\") folder tree, an INBOX folder and all of its year subfolders show up twice.\n\nMinimal repro\n- Account A has a folder named \"INBOX\"\n- Account B has a folder named \"Inbox\"  (same name, only differs in case)\n- Account C has dovecot-style subfolders \"INBOX.2024\", \"INBOX.2025\", ...\n- Open the combined folder tree → \"INBOX\" appears twice, each copy carrying the same year subfolders.\n\nRoot cause (in GetFolderTreeAsync)\n- The tree is built across all accounts, grouped by folder name only.\n- allNodes and folderNameSet use StringComparer.OrdinalIgnoreCase, so \"INBOX\" (account A) and \"Inbox\" (account B) collapse onto the same node.\n- Both names still exist as separate entries in validFolderData, so in the node-placement loop the same (merged) node object gets added to the root list twice.\n- The parent scan also treats '.' as a hierarchy separator, so \"INBOX.2024\" etc. attach to that shared \"INBOX\" node — and therefore render under both duplicated copies.\n\nNet effect: INBOX + its subfolders are shown twice. Selecting a single account shows everything correctly (the year folders appear once), which confirms it's tree construction, not data.\n\nPossible direction\nBuilding the tree per account (so folders from different accounts aren't merged or cross-parented) would fix both the duplication and the cross-account nesting. A lighter touch would be to match/parent case-sensitively and only within the same account. Happy to open a PR if that would help — just let me know what you'd prefer.\n\nEnvironment: version 2607.2, PostgreSQL, several IMAP accounts.\n\nThanks again!\n",
+        "url": "https://github.com/s1t5/mail-archiver/issues/469"
+    },
+    {
+        "id": 4867056061,
+        "number": 466,
+        "title": "M365/Graph accounts never get RawHeaders — In-Reply-To/References threading headers permanently missing",
+        "state": "open",
+        "created_at": "2026-07-12T12:39:48Z",
+        "updated_at": "2026-07-13T06:00:35Z",
+        "closed_at": null,
+        "author": "fhalamzie",
+        "comments": 1,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "## Summary\n\nFor mailboxes synced via the Microsoft Graph (M365) provider, `ArchivedEmails.RawHeaders` is never populated — 0% across every M365 account we have, regardless of age. IMAP-synced mailboxes are unaffected (100% populated). As a result, `In-Reply-To`/`References` (and any other raw header) are permanently unavailable for Graph-synced mail, which breaks email-threading downstream for anyone consuming the archive.\n\n## Environment\n\n- Image: `s1t5/mailarchiver:latest`\n- Release: 2607.2 (2026-07-09, rev `11c3ebcd`) — confirmed current as of this report\n- Postgres 17\n\n## Evidence\n\nQuery against `mail_archiver.\"ArchivedEmails\"` joined to `\"MailAccounts\"`, restricted to `\"SentDate\" > 2026-06-01` (results are the same shape across the full archive, this window is just illustrative):\n\n```sql\nSELECT ma.\"Provider\", COUNT(*) AS emails,\n       COUNT(*) FILTER (WHERE ae.\"RawHeaders\" IS NOT NULL AND ae.\"RawHeaders\" != '') AS with_raw_headers\nFROM mail_archiver.\"ArchivedEmails\" ae\nJOIN mail_archiver.\"MailAccounts\" ma ON ma.\"Id\" = ae.\"MailAccountId\"\nWHERE ae.\"SentDate\" > '2026-06-01'\nGROUP BY 1;\n```\n\n| Provider | accounts | emails | `RawHeaders` populated |\n|---|---|---|---|\n| IMAP | 15 | 1,880 | 1,880 (**100%**) |\n| M365 (Graph) | 9 | 1,878 | 0 (**0%**) |\n\nEvery one of our 9 Graph-provider mailboxes has zero rows with a populated `RawHeaders`. IMAP is fully fine.\n\n## Suggested fix\n\nThe Graph `message` resource already exposes raw internet headers via the `internetMessageHeaders` property on the same `GET /messages/{id}` call the Graph sync path presumably already makes — add `internetMessageHeaders` to the `$select` list and persist the returned `{name, value}` pairs (or fold them into a `RawHeaders`-equivalent blob, matching what the IMAP path already stores). No extra API round-trip, no MIME parsing needed.\n\nDocs: https://learn.microsoft.com/en-us/graph/api/resources/message\n\nHappy to help verify against our own M365 accounts once a fix is up.\n",
+        "url": "https://github.com/s1t5/mail-archiver/issues/466"
+    },
+    {
+        "id": 4863945097,
+        "number": 465,
+        "title": "[Bug]: OIDC login events log the reverse-proxy IP instead of the real client IP (logout logs it correctly)",
+        "state": "open",
+        "created_at": "2026-07-11T19:57:23Z",
+        "updated_at": "2026-07-12T08:30:41Z",
+        "closed_at": null,
+        "author": "djanzin",
+        "comments": 2,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Bug Description\n\nAuth: OIDC enabled, external IdP (Authentik)\nReverse proxy: Caddy, sets X-Forwarded-For and X-Real-IP to the real client IP\nApp reached only via the proxy (ASPNETCORE_URLS=http://+:5000)\nSummary\nIn the activity log, OIDC login events record the reverse proxy's internal IP (e.g. ::ffff:10.0.0.2), while logout events and failed-login events record the correct real client IP. So the client IP is captured inconsistently depending on the code path.\n\nEvidence (activity log, IPs anonymized)\ntimestamp   user      type       information\n21:34       <user>    Login      IP: ::ffff:10.0.0.2      <- reverse proxy IP\n21:33       <user>    Logout     IP: <real client IP>     <- correct\n21:33       <user>    Login      IP: ::ffff:10.0.0.2      <- reverse proxy IP\n21:24       <user>    Logout     IP: <real client IP>     <- correct\nFailed local logins also log the correct real client IP.\n\nAnalysis\nThe application already uses UseForwardedHeaders and clearly trusts the proxy (KnownProxies/KnownNetworks), because logout and failed-login events resolve to the real client IP. If the proxy were not trusted, every event would show the proxy IP, which is not the case.\n\nThe login path is the outlier. This strongly suggests a middleware ordering issue: the OIDC callback / authentication middleware captures and logs the client IP before UseForwardedHeaders has rewritten HttpContext.Connection.RemoteIpAddress. Regular requests (logout) pass through the full pipeline first, so they see the corrected IP.\n\nExpected behavior\nOIDC login events should log the real client IP, consistent with logout and failed-login events.\n\nSuggested fix\nEnsure app.UseForwardedHeaders(...) runs before the authentication middleware (and before any OIDC sign-in event logging) in the pipeline, so the corrected RemoteIpAddress is available when the login event is recorded.\n\nNote: cause inferred from behavior plus a symbol scan of MailArchiver.dll, not from source, so the exact call site may differ.\n\n### Steps to Reproduce\n\nRun Mail-Archiver behind a reverse proxy that sets X-Forwarded-For / X-Real-IP to the real client IP (here: Caddy), with the app only reachable through the proxy.\nEnable OIDC with an external IdP and log in via the OIDC button.\nOpen the activity log and look at the Login entry: the IP shown is the reverse proxy's internal IP (::ffff:10.0.0.2), not the client's.\nLog out, then look at the Logout entry: the IP shown is the real client IP.\nCompare both entries for the same session, the IPs are inconsistent.\n\n### Application Version\n\n2607.2\n\n### Installation Type\n\nStandalone\n\n### Management Tools\n\n_No response_\n\n### Host System\n\n_No response_\n\n### Mail Provider\n\n_No response_\n\n### Relevant Log Output\n\n```shell\nEvidence (activity log, IPs anonymized)\ntimestamp   user      type       information\n21:34       <user>    Login      IP: ::ffff:10.0.0.2      <- reverse proxy IP\n21:33       <user>    Logout     IP: <real client IP>     <- correct\n21:33       <user>    Login      IP: ::ffff:10.0.0.2      <- reverse proxy IP\n21:24       <user>    Logout     IP: <real client IP>     <- correct\n```",
+        "url": "https://github.com/s1t5/mail-archiver/issues/465"
+    },
+    {
+        "id": 4855155690,
+        "number": 464,
+        "title": "[Bug]: Weird Issues (Renaming Account & Initial Sync)",
+        "state": "closed",
+        "created_at": "2026-07-10T12:52:01Z",
+        "updated_at": "2026-07-14T05:44:14Z",
+        "closed_at": "2026-07-14T05:44:14Z",
+        "author": "polskikrol",
+        "comments": 3,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Bug Description\n\nSo, see some oddity.\n1) I had a sync job happening, and I just wanted to rename the account, not change it or anything. Well, renaming it appears to have stopped the sync job, and created a new one from scratch. It has been working on my large Inbox folder overnight I presume? I would think that renaming an account should not impact any jobs, as it is just a label. Also, if the underlying email account is the same, shouldnt the sync take less time, as you would presumably already have a large bulk of the emails? Or are we literally downloading everything again and comparing via MD5 sum or something?\n2) Added an additional account and sync completed. Checking archive -> filtering on it, I see 2026 emails. On the dashboard the storage shows 0.0B which is not possible. Also, at this point in time on Dashboard, Storage is 7.8GB, the account I renamed is at 9.9GB and the new account I added is at 0.0B. I would have *presumed* that the dashboard number atop would be the sum of the individual email accounts listed in table below?\n\nI am thinking some the way we determine email storage usage has to be reworked a bit. There are a few other suggestions here as well: https://github.com/s1t5/mail-archiver/discussions/418.\n\n### Steps to Reproduce\n\nNot applicable.\n\n### Application Version\n\n2607.1\n\n### Installation Type\n\nDocker\n\n### Management Tools\n\n_No response_\n\n### Host System\n\n_No response_\n\n### Mail Provider\n\n_No response_\n\n### Relevant Log Output\n\n```shell\nN/A\n```",
+        "url": "https://github.com/s1t5/mail-archiver/issues/464"
+    },
+    {
+        "id": 4837499789,
+        "number": 461,
+        "title": "[Bug]: Sync Progress Bar based on completed folders?",
+        "state": "closed",
+        "created_at": "2026-07-08T12:39:00Z",
+        "updated_at": "2026-07-08T13:52:35Z",
+        "closed_at": "2026-07-08T12:59:41Z",
+        "author": "polskikrol",
+        "comments": 3,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Bug Description\n\nLooks like the sync progress bar is based on completed folders:\n\n<img width=\"488\" height=\"207\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/c3a8b7a1-da1e-4f69-881a-34d4951b1f45\" />\n\nOf course, the Inbox is very large... and my organized folders were much smaller. So on first sync, the progress bar was artificially incorrect at 0% while the Inbox was syncing. It only started moving once the folders started to be processed.\n\n### Steps to Reproduce\n\nOk, well I wrote 'not applicable' here, but will write something. The bug reports is missing a typical question on 'expected behaviour' or 'what should be different', etc.\n\nThinking that we should base the progress bar on total processed files or base it on processed file size of the emails. Not sure what options we have for tracking progress in terms of a) imap protocol or b) database information of already processed files, but thinking that just using Folders will result in a 'slow progress bar' even though massive amounts of files may be processed in a single folder, in this case, the Inbox.\n\n### Application Version\n\n2607.1\n\n### Installation Type\n\nDocker\n\n### Management Tools\n\nMyself, prone to errors when editing files in VI.\n\n### Host System\n\nUbuntu\n\n### Mail Provider\n\nGmail\n\n### Relevant Log Output\n\n```shell\nN/A\n```",
+        "url": "https://github.com/s1t5/mail-archiver/issues/461"
+    },
+    {
+        "id": 4832508056,
+        "number": 460,
+        "title": "[Bug]: Unable to see images",
+        "state": "closed",
+        "created_at": "2026-07-07T21:52:48Z",
+        "updated_at": "2026-07-09T14:10:01Z",
+        "closed_at": "2026-07-09T14:10:01Z",
+        "author": "daxxio",
+        "comments": 4,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Bug Description\n\nHello, not sure if it's me who does something wrong.\nBut I use your docker-compose without environment variables, except for the dbstrings, authentication & timezone.\n\nNo images load at all. Is mailarchiver supposed to save images to the disk? I assumed it does, because the images exists inside of the html file. What could be wrong why my instance does not load any email's images.\n\n### Steps to Reproduce\n\n1) Setup like so:\n```\nservices:\n  mailarchive-app:\n    image: s1t5/mailarchiver:latest\n    restart: always\n    environment:\n      # Database Connection\n      - ConnectionStrings__DefaultConnection=Host=postgres;Database=MailArchiver;Username=mailuser;Password=masterkey;\n\n      # Authentication Settings\n      - Authentication__Username=admin\n      - Authentication__Password=secure123!\n\n      # TimeZone Settings\n      - TimeZone__DisplayTimeZoneId=Europe/Berlin\n    ports:\n      - \"5000:5000\"\n    networks:\n      - postgres\n    volumes:\n      - ./data-protection-keys:/app/DataProtection-Keys\n    depends_on:\n      postgres:\n        condition: service_healthy\n\n  postgres:\n    image: postgres:17-alpine\n    restart: always\n    environment:\n      POSTGRES_DB: MailArchiver\n      POSTGRES_USER: mailuser\n      POSTGRES_PASSWORD: masterkey\n    volumes:\n      - ./postgres-data:/var/lib/postgresql/data\n    networks:\n      - postgres\n    healthcheck:\n      test: [\"CMD-SHELL\", \"pg_isready -U mailuser -d MailArchiver\"]\n      interval: 10s\n      timeout: 5s\n      retries: 5\n      start_period: 10s\n\nnetworks:\n  postgres:\n```\n\n2) Add a mail account and sync emails\n\n3) Open up an email to see no images.\n\n<img width=\"997\" height=\"628\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/d61a47f1-dc71-4183-9c2b-18175f4b06a4\" />\n\n### Application Version\n\n2607.1\n\n### Installation Type\n\nDocker\n\n### Management Tools\n\ndockhand\n\n### Host System\n\nSynology DS1821+\n\n### Mail Provider\n\nGMX.de\n\n### Relevant Log Output\n\n```shell\nno relevant logs...\n```",
+        "url": "https://github.com/s1t5/mail-archiver/issues/460"
+    },
+    {
+        "id": 4824094156,
+        "number": 457,
+        "title": "[Bug]: Personal Outlook account showing as \"not yet authorised\" despite successful authorisation.",
+        "state": "open",
+        "created_at": "2026-07-07T00:14:34Z",
+        "updated_at": "2026-07-13T07:29:54Z",
+        "closed_at": null,
+        "author": "notmaroun",
+        "comments": 10,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Bug Description\n\nHello, when I go to edit the email account, it shows as Authorised - but when I check the account details:\n\n<img width=\"707\" height=\"321\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/ba1391a4-b2dd-4fb8-954a-7a45c448e5de\" />\n\n...it shows as not yet authorised, and syncing doesn't work. I've tried to reauthorise twice - I'm unsure where to go from here. Both IMAP and POP are enabled on the email account.\n\nThe email account itself is 294% full - so I'm trying to use this tool to archive the emails before I delete them off the server. I'm unsure if exceeding Outlook's email storage quota is an issue in this case.\n\n### Steps to Reproduce\n\n1. Add a personal Outlook account and authorise it.\n2. Check the status in the \"edit\" menu - it'll show as authorised.\n3. Check the status in the \"view\" menu - it'll show as not yet authorised.\n4. Try to sync the mailbox - it'll fail.\n\n### Application Version\n\n2607.1\n\n### Installation Type\n\nDocker\n\n### Management Tools\n\nArcane\n\n### Host System\n\nUnraid 7.3.1\n\n### Mail Provider\n\nOutlook\n\n### Relevant Log Output\n\n```shell\n07/07/2026, 10:07:18 AM\nmailarchive-app-1\nSTDOUT\n      Error during sync for account testemail@outlook.com: Authentication failed.\n07/07/2026, 10:07:18 AM\nmailarchive-app-1\nSTDOUT\n      MailKit.Security.AuthenticationException: Authentication failed.\n07/07/2026, 10:07:18 AM\nmailarchive-app-1\nSTDOUT\n         at MailKit.Net.Imap.ImapClient.ProcessAuthenticateResponse(ImapCommand ic, SaslMechanism mechanism)\n07/07/2026, 10:07:18 AM\nmailarchive-app-1\nSTDOUT\n         at MailKit.Net.Imap.ImapClient.AuthenticateAsync(SaslMechanism mechanism, CancellationToken cancellationToken)\n07/07/2026, 10:07:18 AM\nmailarchive-app-1\nSTDOUT\n         at MailArchiver.Services.Providers.Imap.ImapConnectionFactory.AuthenticateMsaAsync(ImapClient client, MailAccount account) in /app/Services/Providers/Imap/ImapConnectionFactory.cs:line 176\n07/07/2026, 10:07:18 AM\nmailarchive-app-1\nSTDOUT\n         at MailArchiver.Services.Providers.Imap.ImapConnectionFactory.AuthenticateClientAsync(ImapClient client, MailAccount account) in /app/Services/Providers/Imap/ImapConnectionFactory.cs:line 108\n07/07/2026, 10:07:18 AM\nmailarchive-app-1\nSTDOUT\n         at MailArchiver.Services.Providers.Imap.ImapMailSyncService.SyncMailAccountAsync(MailAccount account, String jobId) in /app/Services/Providers/Imap/ImapMailSyncService.cs:line 114\n07/07/2026, 10:07:18 AM\nmailarchive-app-1\nSTDOUT\ninfo: MailArchiver.Services.SyncJobService[0]\n07/07/2026, 10:07:18 AM\nmailarchive-app-1\nSTDOUT\n      Completed sync job 1f7d89a8-fdbc-4bf7-a1e3-a09f7015fad6 with status Failed\n07/07/2026, 10:07:18 AM\nmailarchive-app-1\nSTDOUT\nfail: MailArchiver.Controllers.MailAccountsController[0]\n07/07/2026, 10:07:18 AM\nmailarchive-app-1\nSTDOUT\n      Error during IMAP/MSA sync for account testemail@outlook.com: Authentication failed.\n07/07/2026, 10:07:18 AM\nmailarchive-app-1\nSTDOUT\n      MailKit.Security.AuthenticationException: Authentication failed.\n07/07/2026, 10:07:18 AM\nmailarchive-app-1\nSTDOUT\n         at MailKit.Net.Imap.ImapClient.ProcessAuthenticateResponse(ImapCommand ic, SaslMechanism mechanism)\n07/07/2026, 10:07:18 AM\nmailarchive-app-1\nSTDOUT\n         at MailKit.Net.Imap.ImapClient.AuthenticateAsync(SaslMechanism mechanism, CancellationToken cancellationToken)\n07/07/2026, 10:07:18 AM\nmailarchive-app-1\nSTDOUT\n         at MailArchiver.Services.Providers.Imap.ImapConnectionFactory.AuthenticateMsaAsync(ImapClient client, MailAccount account) in /app/Services/Providers/Imap/ImapConnectionFactory.cs:line 176\n07/07/2026, 10:07:18 AM\nmailarchive-app-1\nSTDOUT\n         at MailArchiver.Services.Providers.Imap.ImapConnectionFactory.AuthenticateClientAsync(ImapClient client, MailAccount account) in /app/Services/Providers/Imap/ImapConnectionFactory.cs:line 108\n07/07/2026, 10:07:18 AM\nmailarchive-app-1\nSTDOUT\n         at MailArchiver.Services.Providers.Imap.ImapMailSyncService.SyncMailAccountAsync(MailAccount account, String jobId) in /app/Services/Providers/Imap/ImapMailSyncService.cs:line 114\n07/07/2026, 10:07:18 AM\nmailarchive-app-1\nSTDOUT\n         at MailArchiver.Controllers.MailAccountsController.<>c__DisplayClass34_1.<<Sync>b__1>d.MoveNext() in /app/Controllers/MailAccountsController.cs:line 1238\n07/07/2026, 10:07:18 AM\nmailarchive-app-1\nSTDOUT\ninfo: MailArchiver.Services.SyncJobService[0]\n07/07/2026, 10:07:18 AM\nmailarchive-app-1\nSTDOUT\n      Completed sync job 1f7d89a8-fdbc-4bf7-a1e3-a09f7015fad6 with status Failed\n```",
+        "url": "https://github.com/s1t5/mail-archiver/issues/457"
+    },
+    {
+        "id": 4774823928,
+        "number": 454,
+        "title": "[Bug]:  IMAP sync fails with \"unable to get certificate CRL\" even though the server certificate is valid (free.fr)",
+        "state": "open",
+        "created_at": "2026-06-30T07:54:03Z",
+        "updated_at": "2026-07-12T12:59:16Z",
+        "closed_at": null,
+        "author": "ThomasMillochau",
+        "comments": 0,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Bug Description\n\nSyncing an IMAP account on imap.free.fr:993 fails with both SSL/TLS and STARTTLS, even though the server's certificate is valid and trusted (verified manually with openssl s_client, Verification: OK, Verify return code: 0 (ok)).\nThe actual rejection reason in the logs is:\nThe server's SSL certificate could not be validated for the following reasons:\n- The server certificate has the following errors:\n  • unable to get certificate CRL\n  • unable to get certificate CRL\nThis points to a certificate revocation check failure (CRL/OCSP unreachable from inside the container), not an actual certificate trust problem. The .NET SslStream/X509Chain revocation check appears to be set to a mode that fails hard when the CRL distribution point can't be reached, rather than treating it as a soft failure (which is the more common/expected behavior, since CRL checking failures are common in containerized/restricted-network environments).\n\n\nTo Reproduce\n\nAdd an IMAP account using imap.free.fr, port 993, SSL/TLS.\nTrigger a sync.\nSync fails with SslHandshakeException / AuthenticationException: The remote certificate was rejected by the provided RemoteCertificateValidationCallback.\n\nExpected behavior\n\nThe connection should succeed, or at minimum, revocation-check failures (CRL/OCSP unreachable) should not cause a hard rejection of an otherwise valid certificate — similar to how MailSync__IgnoreSelfSignedCert handles self-signed certs, a separate option (or default behavior) to ignore revocation-check failures (X509RevocationMode.NoCheck or Online with soft-fail) would resolve this.\nEnvironment\n\nMail-Archiver version: 2606.4\nDeployment: Docker\nIMAP provider: free.fr (imap.free.fr:993)\n\nLogs\nfail: MailArchiver.Services.MailSyncBackgroundService[0]\n      Error syncing mail account .....@free.fr: Both SSL/TLS and STARTTLS connection attempts failed\n      ...\n      MailKit.Security.SslHandshakeException: An error occurred while attempting to establish an SSL or TLS connection.\n      The server's SSL certificate could not be validated for the following reasons:\n      • The server certificate has the following errors:\n        • unable to get certificate CRL\n        • unable to get certificate CRL\n       ---> System.Security.Authentication.AuthenticationException: The remote certificate was rejected by the provided RemoteCertificateValidationCallback.\n\n### Steps to Reproduce\n\nAdd an IMAP account using imap.free.fr, port 993, SSL/TLS.\nTrigger a sync.\nSync fails with SslHandshakeException / AuthenticationException: The remote certificate was rejected by the provided RemoteCertificateValidationCallback.\n\n### Application Version\n\n2606.4\n\n### Installation Type\n\nDocker\n\n### Management Tools\n\n_No response_\n\n### Host System\n\nDebian 12\n\n### Mail Provider\n\nimap.free.fr\n\n### Relevant Log Output\n\n```shell\nfail: MailArchiver.Services.MailSyncBackgroundService[0]\n      Error syncing mail account ....@free.fr: Both SSL/TLS and STARTTLS connection attempts failed\n      ...\n      MailKit.Security.SslHandshakeException: An error occurred while attempting to establish an SSL or TLS connection.\n      The server's SSL certificate could not be validated for the following reasons:\n      • The server certificate has the following errors:\n        • unable to get certificate CRL\n        • unable to get certificate CRL\n       ---> System.Security.Authentication.AuthenticationException: The remote certificate was rejected by the provided RemoteCertificateValidationCallback.\n```",
+        "url": "https://github.com/s1t5/mail-archiver/issues/454"
+    },
+    {
+        "id": 4766006656,
+        "number": 453,
+        "title": "[Bug]: Search in to:/from: does not match domain part of email addresses",
+        "state": "closed",
+        "created_at": "2026-06-29T07:35:00Z",
+        "updated_at": "2026-07-06T08:37:47Z",
+        "closed_at": "2026-07-06T08:37:47Z",
+        "author": "migro3466",
+        "comments": 7,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Bug Description\n\nHi,\n\nI think this might be related to #199, but the behavior seems different, so I’m opening a new issue.\n\n### Problem\n\nWhen searching within `to:` or `from:` fields, only the local part of an email address seems to be searchable.\n\n### Observed behavior\n\n* `to:alex` → ✅ works\n* `to:alex@` → ✅ works\n* `to:alex@e` → ❌ no results\n* `to:example` → ❌ no results\n* `to:example.com` → ❌ no results\n\nSearching with the full email address still works correctly:\n\n* `to:alex@example.com` → ✅ works\n\n### Expected behavior\n\nIt would be expected that at least the domain part of the email address is searchable as well, e.g.:\n\n* `to:example`\n* `to:example.com`\n\n### Question\n\nIs this intended behavior (indexing only local-part), or is the domain not being indexed correctly?\nIf this is a regression, could it be related to the search index or require a rebuild after upgrading?\n\nThanks!\n\n\n### Steps to Reproduce\n\nsee above\n\n### Application Version\n\n2606.4\n\n### Installation Type\n\nDocker\n\n### Management Tools\n\n_No response_\n\n### Host System\n\n_No response_\n\n### Mail Provider\n\n_No response_\n\n### Relevant Log Output\n\n```shell\nn/a\n```",
+        "url": "https://github.com/s1t5/mail-archiver/issues/453"
+    },
+    {
+        "id": 4761867822,
+        "number": 452,
+        "title": "[Bug]: deduplication failed",
+        "state": "closed",
+        "created_at": "2026-06-28T10:06:28Z",
+        "updated_at": "2026-06-29T12:34:19Z",
+        "closed_at": "2026-06-29T12:34:19Z",
+        "author": "cturtaut",
+        "comments": 2,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Bug Description\n\nHi,\ni'm using version 2606.4 and deduplication doesn't seem to work.\nmy gmail account has 341.330 mails.\nI've tried restarting mailarchiver but i still have this same error.\nWhat can i do to resolve this issue please ?\nThanks\n\n### Steps to Reproduce\n\nI've just upgraded to version 2606.4 and that's all\n\n### Application Version\n\n2606.4\n\n### Installation Type\n\nDocker\n\n### Management Tools\n\n_No response_\n\n### Host System\n\n_No response_\n\n### Mail Provider\n\n_No response_\n\n### Relevant Log Output\n\n```shell\n2026/06/28 11:56:01,stdout,         at MailArchiver.Services.AttachmentDeduplicationBackgroundService.ExecuteAsync(CancellationToken stoppingToken) in /app/Services/AttachmentDeduplicationBackgroundService.cs:line 74\n\n2026/06/28 11:56:01,stdout,\"         at MailArchiver.Services.AttachmentDeduplicationBackgroundService.RunMigrationAsync(String connectionString, Int32 batchSize, Int32 delayMs, CancellationToken token) in /app/Services/AttachmentDeduplicationBackgroundService.cs:line 237\n\"\n2026/06/28 11:56:01,stdout,\"         at MailArchiver.Services.AttachmentDeduplicationBackgroundService.RunMigrationAsync(String connectionString, Int32 batchSize, Int32 delayMs, CancellationToken token) in /app/Services/AttachmentDeduplicationBackgroundService.cs:line 215\n\"\n2026/06/28 11:56:01,stdout,\"         at MailArchiver.Services.AttachmentDeduplicationBackgroundService.ProcessBatchAsync(NpgsqlConnection connection, Int64 cursor, Int32 batchSize, CancellationToken token) in /app/Services/AttachmentDeduplicationBackgroundService.cs:line 440\n\"\n2026/06/28 11:56:01,stdout,\"         at MailArchiver.Services.AttachmentDeduplicationBackgroundService.ProcessBatchAsync(NpgsqlConnection connection, Int64 cursor, Int32 batchSize, CancellationToken token) in /app/Services/AttachmentDeduplicationBackgroundService.cs:line 380\n\"\n2026/06/28 11:56:01,stdout,\"         at MailArchiver.Services.AttachmentDeduplicationBackgroundService.ProcessBatchAsync(NpgsqlConnection connection, Int64 cursor, Int32 batchSize, CancellationToken token) in /app/Services/AttachmentDeduplicationBackgroundService.cs:line 380\n\"\n2026/06/28 11:56:01,stdout,\"         at Npgsql.NpgsqlCommand.ExecuteNonQuery(Boolean async, CancellationToken cancellationToken)\n\"\n2026/06/28 11:56:01,stdout,\"         at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)\n\"\n2026/06/28 11:56:01,stdout,\"         at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)\n\"\n2026/06/28 11:56:01,stdout,\"         at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)\n\"\n2026/06/28 11:56:01,stdout,\"         at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)\n\"\n2026/06/28 11:56:01,stdout,         at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource<TResult>.GetResult(Int16 token)\n\n2026/06/28 11:56:01,stdout,\"         at Npgsql.Internal.NpgsqlConnector.ReadMessageLong(Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)\n\"\n2026/06/28 11:56:01,stdout,       ---> System.TimeoutException: Timeout during reading attempt\n\n2026/06/28 11:56:01,stdout,      Npgsql.NpgsqlException (0x80004005): Exception while reading from stream\n\n2026/06/28 11:56:01,stdout,      Attachment Deduplication migration failed: Exception while reading from stream. It will resume on the next application start.\n\n2026/06/28 11:56:01,stdout,fail: MailArchiver.Services.AttachmentDeduplicationBackgroundService[0]\n\n2026/06/28 11:55:40,stdout,      Processing batch of 50 messages (starting at 0) in folder INBOX via IMAP\n\n2026/06/28 11:55:40,stdout,info: MailArchiver.Services.Providers.Imap.ImapMailSyncService[0]\n\n2026/06/28 11:55:40,stdout,      Found 15115 messages to process in folder INBOX for account: xxxxxxx\n\n2026/06/28 11:55:40,stdout,info: MailArchiver.Services.Providers.Imap.ImapMailSyncService[0]\n\n2026/06/28 11:55:32,stdout,      Syncing folder: INBOX for account: xxxxxxx\n\n2026/06/28 11:55:32,stdout,info: MailArchiver.Services.Providers.Imap.ImapMailSyncService[0]\n\n2026/06/28 11:55:32,stdout,      Found 50 folders for account: xxxxxxx\n\n2026/06/28 11:55:32,stdout,info: MailArchiver.Services.Providers.Imap.ImapMailSyncService[0]\n\n2026/06/28 11:55:32,stdout,      Total selectable folders found for xxxxxxx: 50\n\n2026/06/28 11:55:32,stdout,info: MailArchiver.Services.Providers.Imap.ImapFolderService[0]\n\n2026/06/28 11:55:32,stdout,      GetFoldersAsync(including non-subscribed) returned 51 folders\n\n2026/06/28 11:55:32,stdout,info: MailArchiver.Services.Providers.Imap.ImapFolderService[0]\n\n2026/06/28 11:55:30,stdout,      Attachment Deduplication migration starting at cursor Id > 6200 (batch size 200)\n\n2026/06/28 11:55:30,stdout,info: MailArchiver.Services.AttachmentDeduplicationBackgroundService[0]\n\n2026/06/28 11:55:28,stdout,      Adding INBOX explicitly: INBOX\n\n2026/06/28 11:55:28,stdout,info: MailArchiver.Services.Providers.Imap.ImapFolderService[0]\n\n2026/06/28 11:55:28,stdout,      Retrieving all folders from IMAP server for account: xxxxxxx\n\n2026/06/28 11:55:28,stdout,info: MailArchiver.Services.Providers.Imap.ImapFolderService[0]\n\n2026/06/28 11:55:28,stdout,      Connected to IMAP server for xxxxxxx\n\n2026/06/28 11:55:28,stdout,info: MailArchiver.Services.Providers.Imap.ImapMailSyncService[0]\n\n2026/06/28 11:55:10,stdout,      Starting IMAP sync for account: xxxxxxx\n```",
+        "url": "https://github.com/s1t5/mail-archiver/issues/452"
+    },
+    {
+        "id": 4758607648,
+        "number": 451,
+        "title": "[Bug]: Searching for \"Umlauts\" in HTML Mails does not seem to work",
+        "state": "closed",
+        "created_at": "2026-06-27T14:05:08Z",
+        "updated_at": "2026-07-05T12:06:22Z",
+        "closed_at": "2026-06-30T17:04:09Z",
+        "author": "kladderadeng",
+        "comments": 4,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Bug Description\n\nSorry for the 2nd post in one day. Just testing this Software, love it so far, but come across a few things I think I should mention.\n\nI have HTML E-Mails imported that have Umlauts (like äöü) in them. I just found out, that I cannot search for words containing those Umlauts. After realizing that in the E-Mail Details page I can switch from HTML to Text, I think I know why, but do not know how to solve it.\n\n### Steps to Reproduce\n\n1. Import HTML E-Mails containing Umlauts. It does not matter if you use the MBOX or EML format.\n2. Try to Full-Text search for one of the words containing an Umlaut.\n3. The search will yield no results.\n\nI don't even know how to solve this. Probably on Import, if E-Mails containing HTML are not just added to the Search Index \"as-is\", but interpreted as HTML and the HTML output is put into the Search Index might solve this?\n\n### Application Version\n\n2606.3\n\n### Installation Type\n\nDocker\n\n### Management Tools\n\nNo\n\n### Host System\n\nUbuntu 24.04\n\n### Mail Provider\n\nNone, Import only\n\n### Relevant Log Output\n\n```shell\nThere is nothing regarding that problem in the docker compose log. If you look at such a Mail in the Details, in HTML it shows 'übel' and in Textmode it shows '&#252;bel'\n```",
+        "url": "https://github.com/s1t5/mail-archiver/issues/451"
+    },
+    {
+        "id": 4758413576,
+        "number": 450,
+        "title": "[Bug]: Timezone not honored for the Database Maintenance Task",
+        "state": "closed",
+        "created_at": "2026-06-27T13:05:20Z",
+        "updated_at": "2026-06-29T08:38:06Z",
+        "closed_at": "2026-06-28T15:20:01Z",
+        "author": "kladderadeng",
+        "comments": 5,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Bug Description\n\nI suppose it is a bug, so sorry in advance if it works as intended.\nFor me, the time in the Container shows always as UTC when entering the Container. This also applies to the Database Maintenance Task, when activated via Docker Compose.\n\nI reside in UTC+0200 and set the Maintenance Task to run at 12:00 and in reality, it runs at 14:00. So 2 hours later.\n\n### Steps to Reproduce\n\n1. Use Mail-Archiver 2606.3 with Docker Compose\n2. Set 'DatabaseMaintenance__DailyExecutionTime=12:00'\n3. Set TimeZone__DisplayTimeZoneId=Europe/Berlin (equals UTC+0200 at the moment)\n4. Wait for the DatabaseMaintenance Job to run and check the Container Logs. It will run and state it ran at 12:00, but if you look in the GUI, it ran at 14:00. Since we set the Timezone to UTC+0200, it ran 2 hours too late.\n\n\n### Application Version\n\n2606.3\n\n### Installation Type\n\nDocker\n\n### Management Tools\n\nNo\n\n### Host System\n\nUbuntu 24.04 LTS Server\n\n### Mail Provider\n\nNone at the Moment\n\n### Relevant Log Output\n\n```shell\n'''\nmailarchive-app-1  | info: MailArchiver.Services.AttachmentDeduplicationBackgroundService[0]\nmailarchive-app-1  |       Attachment Deduplication migration already completed; nothing to do\nmailarchive-app-1  | info: MailArchiver.Services.DatabaseMaintenanceService[0]\nmailarchive-app-1  |       Starting scheduled database maintenance at 06/27/2026 12:57:00\n'''\n```\n\nLet me add this Screenshot, so you can see both, the Docker Compose output and the Log within the Application:\n\n<img width=\"1147\" height=\"473\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/ecc6b665-69de-4386-9288-7adefaa24c13\" />\n\nNow as writing this, the Timezone Parameter in Docker Compose reads as \"Display Timezone\", so maybe it works as intended... but this also means, when the Container runs in UTC, the Maintenance Job will run at different times, depending if it is Summer or Winter time.",
+        "url": "https://github.com/s1t5/mail-archiver/issues/450"
+    },
+    {
+        "id": 4734774164,
+        "number": 447,
+        "title": "[Bug]: In Archive Tab; Selection Mode changes Folder again.",
+        "state": "closed",
+        "created_at": "2026-06-24T12:24:18Z",
+        "updated_at": "2026-06-30T17:04:15Z",
+        "closed_at": "2026-06-30T17:04:15Z",
+        "author": "Pascal619",
+        "comments": 1,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Bug Description\n\nWhen you click on any folder other than the Inbox and then enable the \"Selection Mode\" checkbox, the application unexpectedly switches back to the Inbox folder.\n\n### Steps to Reproduce\n\nOpen the Junk folder (or any other folder) in Archive\nClick \"Selection Mode\".\nThe view silently switches back to the Inbox.\nYou select all emails, assuming you are still in the Junk folder.\nThe selected Inbox emails are then deleted by mistake.\n\n### Application Version\n\n2606.4\n\n### Installation Type\n\nStandalone\n\n### Management Tools\n\n_No response_\n\n### Host System\n\n_No response_\n\n### Mail Provider\n\n_No response_\n\n### Relevant Log Output\n\n```shell\nno logs. sorry.\n```",
+        "url": "https://github.com/s1t5/mail-archiver/issues/447"
+    },
+    {
+        "id": 4704037411,
+        "number": 445,
+        "title": "Search ignores the full-text GIN index when sorting by date, so some searches take 20+ seconds",
+        "state": "closed",
+        "created_at": "2026-06-19T22:59:33Z",
+        "updated_at": "2026-07-09T01:02:10Z",
+        "closed_at": "2026-06-30T17:15:07Z",
+        "author": "jwiegley",
+        "comments": 2,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "I run mail-archiver against a Postgres database with about 250k archived emails, and lately searches were taking anywhere from a tenth of a second to 22 seconds, seemingly at random. I went digging, and it turns out the database isn't missing any index. There's a perfectly good full-text GIN index on the `to_tsvector(...)` expression, and `SearchEmailsOptimizedAsync` builds exactly the query to use it. The planner just doesn't use it.\n\nThe culprit is the `ORDER BY \"SentDate\" DESC LIMIT n` on the end. For any term Postgres estimates as common, it walks the `SentDate` index backward and checks the full-text match as a per-row filter, which means re-running `to_tsvector` over every detoasted body as it goes. When the matches happen to be recent, it finds the first page fast. When they're old or sparse, it walks most of the table.\n\nHere's what `EXPLAIN ANALYZE` showed on my data:\n\n- rare term, GIN index used: under 1 ms\n- common term, recent matches, backward scan + filter: ~90 ms\n- common-ish term, sparse or old matches, same plan: ~22 seconds\n\nA few things make it worse:\n\n- `ParseSearchTermForTsQuery` appends `:*` to every term. The prefix match inflates the planner's row estimate, which is exactly what pushes it toward the backward scan.\n- The filter re-tokenizes the body on every row, and some of mine have >2047-char \"words\" (inline base64), so it's slow and noisy (\"word is too long to be indexed\").\n- The GIN index isn't created by a migration, so unless you've added it by hand, search ends up scanning the whole table anyway.\n\nI worked around it on my end with `ALTER ROLE ... SET enable_indexscan = off`, which forces the bitmap/GIN plan and keeps search under ~50 ms. But that's a blunt instrument, and it shouldn't be necessary.\n\nA real fix could be any of these:\n\n1. Fence the full-text match before the sort and limit: put the `WHERE ... @@ ...` in a subquery with `OFFSET 0`, then `ORDER BY ... LIMIT` the matched rows. That keeps the GIN index in play.\n2. Add a `STORED` generated `tsvector` column with its own GIN index and search that. Then even a filter recheck reads a precomputed vector instead of re-tokenizing the body.\n3. Don't append `:*` unconditionally. Only when prefix matching is actually wanted, or use `websearch_to_tsquery`.\n4. Ship the GIN index as an EF migration so it's there by default.\n\nHappy to test a patch against my archive if that helps.\n\nEnvironment: s1t5/mailarchiver:latest (sha256:6843252b…), Postgres 16, ~250k emails.\n",
+        "url": "https://github.com/s1t5/mail-archiver/issues/445"
+    },
+    {
+        "id": 4656081003,
+        "number": 439,
+        "title": "[Bug]: Es ist möglich eine email-Adresse mehrfach zu erstellen",
+        "state": "closed",
+        "created_at": "2026-06-13T16:01:08Z",
+        "updated_at": "2026-06-13T18:39:54Z",
+        "closed_at": "2026-06-13T18:39:54Z",
+        "author": "lueralba",
+        "comments": 1,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Bug Description\n\nEs ist möglich ein und dieselbe EmailAdresse mehrfach anzulegen !\n\n### Steps to Reproduce\n\n1. Mail Accounts\n2. Account hinzufügen\n3. Schon vorhandene eMailadresse erneut eingeben\n4. Speichern\n5. Die Adresse ist ein weiteres mal vorhanden\n\n### Application Version\n\nother (2606.1)\n\n### Installation Type\n\nDocker\n\n### Management Tools\n\nPortainer\n\n### Host System\n\n_No response_\n\n### Mail Provider\n\n_No response_\n\n### Relevant Log Output\n\n```shell\nnone...\n```",
+        "url": "https://github.com/s1t5/mail-archiver/issues/439"
+    },
+    {
+        "id": 4628841046,
+        "number": 438,
+        "title": "[Bug]: Bei S/MIME signierten/verschlüsselten E-Mails werden Anhänge nicht geladen",
+        "state": "closed",
+        "created_at": "2026-06-10T06:59:42Z",
+        "updated_at": "2026-06-13T18:42:49Z",
+        "closed_at": "2026-06-13T18:42:49Z",
+        "author": "johann8",
+        "comments": 0,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": true,
+        "body": "### Bug Description\n\nWenn man eine mit `S/MIME` signierte/verschlüsselte E-Mail bekommt, dann lädt/anzeigt Mail-Archiver keine E-Mail-Anhänge. Man sieht nur `smime.p7m` als Anhang.\n\n<img width=\"787\" height=\"257\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/0cda1483-63ce-4240-985c-b01eddc85dba\" />\n\n Unter Outlook sind alle Anhänge da.\n\n\n### Steps to Reproduce\n\n1. Eine S/MIME signierte E-Mail empfangen\n2. Im Mail-Archiver wird nur smime.p7m als Anhang angezeigt\n\n### Application Version\n\n2605.2\n\n### Installation Type\n\nDocker\n\n### Management Tools\n\nKein Tool\n\n### Host System\n\nRocky Linux 8\n\n### Mail Provider\n\nMicrosoft 365\n\n### Relevant Log Output\n\n```shell\nKeine Fehler entdeckt\n```",
+        "url": "https://github.com/s1t5/mail-archiver/issues/438"
+    },
+    {
+        "id": 4607019369,
+        "number": 435,
+        "title": "[Bug]: Imported emails are only displayed as incoming",
+        "state": "closed",
+        "created_at": "2026-06-07T10:45:48Z",
+        "updated_at": "2026-06-08T16:52:44Z",
+        "closed_at": "2026-06-08T16:52:44Z",
+        "author": "hammaschlach",
+        "comments": 4,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Bug Description\n\nThis problem still exists: https://github.com/s1t5/mail-archiver/issues/377\nI imported an mbox into a new import-account. Again all mails are shown only as incoming.\nWhich folder am I supposed to choose in the imprt dialogue?\n\n### Steps to Reproduce\n\n1. Import a mbox-file\n2. look in the archive\n\n### Application Version\n\n2605.2\n\n### Installation Type\n\nDocker\n\n### Management Tools\n\n_No response_\n\n### Host System\n\n_No response_\n\n### Mail Provider\n\n_No response_\n\n### Relevant Log Output\n\n```shell\nnone\n```",
+        "url": "https://github.com/s1t5/mail-archiver/issues/435"
+    },
+    {
+        "id": 4606482514,
+        "number": 433,
+        "title": "[Bug]: Text below inline Image is cut off",
+        "state": "closed",
+        "created_at": "2026-06-07T07:00:47Z",
+        "updated_at": "2026-06-16T11:54:27Z",
+        "closed_at": "2026-06-16T11:54:26Z",
+        "author": "rehajel",
+        "comments": 5,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Bug Description\n\nHi,\nwhen I'm viewing an Email that has an inline Image (sent via Apple Mail), the text below the image is cut off.\nThe image itself is only shown as an attachment, but I'm fine with that.\nI suspect that this is not a general problem with all inline images but rather a problem with how apple mail handles this since other attachments and inline images from other mail software seem to work fine.\n\nI attached a screenshot from fastmail client and mail-archiver of the same mail to see the difference.\n\n<img width=\"1300\" height=\"900\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/6eef9f10-5684-4240-bb5b-866424d5ec5d\" />\n<img width=\"1527\" height=\"955\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/a678da0b-b722-44b0-b693-571c1fdc7ba2\" />\n\nJust as an aside:\nI also see this behavior in \"bichon\" - a rustmailer based email archiving software.\n\"Openarchiver\" seems to handle it as I would expect (showing text below the image).\n\nThanks for providing this software and have a nice day :)\n\n-rehajel\n\n### Steps to Reproduce\n\n1. Send or receive an email with an attachment from an apple mail client (ios, macos, ipados...)\n2. Archive mails for relevant mailbox\n3. View sent/received email in mail-archiver.\n4. Observe Cut Off text\n\n\n### Application Version\n\n2605.2\n\n### Installation Type\n\nDocker\n\n### Management Tools\n\nDockhand \n\n### Host System\n\nUnraid 7.3.1\n\n### Mail Provider\n\nfastmail\n\n### Relevant Log Output\n\n```shell\nno relevant logs I think\n```",
+        "url": "https://github.com/s1t5/mail-archiver/issues/433"
+    },
+    {
+        "id": 4585078246,
+        "number": 430,
+        "title": "[Bug]: No details after exporting",
+        "state": "closed",
+        "created_at": "2026-06-04T01:49:41Z",
+        "updated_at": "2026-06-09T10:34:34Z",
+        "closed_at": "2026-06-09T10:34:34Z",
+        "author": "hammaschlach",
+        "comments": 7,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Bug Description\n\nI exported an archive. The result shows that 7 emails were not processed. That’s a nice heads-up, but it’s not particularly helpful since I don’t know which emails were affected.\n<img width=\"844\" height=\"192\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/7b2d4067-0fec-4cb6-b50f-58c6c55fa06f\" />\n\n### Steps to Reproduce\n\n1. Export an archive\n2. Wait for finishing\n\n### Application Version\n\n2605.2\n\n### Installation Type\n\nDocker\n\n### Management Tools\n\nDockhand\n\n### Host System\n\n_No response_\n\n### Mail Provider\n\n_No response_\n\n### Relevant Log Output\n\n```shell\nnothing relevant found\n```",
+        "url": "https://github.com/s1t5/mail-archiver/issues/430"
+    },
+    {
+        "id": 4558413593,
+        "number": 426,
+        "title": "[Bug]: Error reported on mailbox names starting with a dot / full stop / period",
+        "state": "closed",
+        "created_at": "2026-05-31T17:39:39Z",
+        "updated_at": "2026-06-02T13:58:10Z",
+        "closed_at": "2026-06-02T13:58:10Z",
+        "author": "ADBeasley",
+        "comments": 1,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Bug Description\n\nPlease note this may be a quirk with IMAP and older programs than I am currently using as this folder dates back to 2021 at least (possibly older).\n\nI have had a bad habit of creating important mailbox names starting with a dot (full stop) as these are displayed first in the tree view of my mail program / web viewer on the ISP server.\n\nThe initial archive download and resync responds with an error - \"EXAMINE mailbox does not exist\".\n\nAny folder underneath this 'dot' folder gets processed correctly.\n\nAccess to the 'dot' folder in my email client (Mac Mail) reports an error stating the folder name should not start with a dot.\n\nAccess to the 'dot' folder in the web client my ISP provides is fine!\n\nThere are mail messages in the 'dot' folder - these are archived and viewing them reports the folder name without the leading dot.\n\nIn my case I can rename this type of folder with no problem on-going\n\n\n### Steps to Reproduce\n\n1) Create a mailbox folder called Self\n2) Create a mailbox folder within this called .ABCDEFG\n3) Move a test email into this .ABCDEFG folder\n4) Let archive task run / manually run full resync\n\n### Application Version\n\n2605.1\n\n### Installation Type\n\nDocker\n\n### Management Tools\n\nNone\n\n### Host System\n\nUbuntu 26.04 LTS\n\n### Mail Provider\n\nISP mail - uses package called SmarterMail Enterprise Build 9518 (Jan 22, 2026)\n\n### Relevant Log Output\n\n```shell\nDocker log line:\n      Error syncing folder Self/.ABCDEFG: The IMAP server replied to the 'EXAMINE' command with a 'BAD' response: EXAMINE mailbox does not exist\n\n(Note: ABCDEFG is anonymised - sample screen shots can be sent by email)\n```",
+        "url": "https://github.com/s1t5/mail-archiver/issues/426"
+    }
+]

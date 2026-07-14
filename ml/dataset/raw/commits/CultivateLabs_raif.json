@@ -1,0 +1,242 @@
+[
+    {
+        "sha": "2af8aa61ef010379a06eec56d66604fac5e47308",
+        "author": "Ben Roesch",
+        "email": "ben@cultivatelabs.com",
+        "date": "2026-07-11T01:12:01Z",
+        "message": "Merge pull request #503 from CultivateLabs/feature/grok-4-5\n\nAdd Grok 4.5 models and xAI smoke script support",
+        "url": "https://github.com/CultivateLabs/raif/commit/2af8aa61ef010379a06eec56d66604fac5e47308"
+    },
+    {
+        "sha": "72c4a7d1cd495faa9fe87b90f05025e7e49a7178",
+        "author": "Brian Leslie",
+        "email": "bjl1984@gmail.com",
+        "date": "2026-07-10T15:50:03Z",
+        "message": "Merge remote-tracking branch 'origin/main' into feature/grok-4-5\n\n# Conflicts:\n#\tCHANGELOG.md\n#\tdocs/_getting_started/setup.md\n#\tlib/generators/raif/install/templates/initializer.rb",
+        "url": "https://github.com/CultivateLabs/raif/commit/72c4a7d1cd495faa9fe87b90f05025e7e49a7178"
+    },
+    {
+        "sha": "6d7280e9bdce72a61c62ad4d9c227df3d7210428",
+        "author": "Brian Leslie",
+        "email": "bjl1984@gmail.com",
+        "date": "2026-07-10T15:45:08Z",
+        "message": "Add xAI support to bin/smoke_llm_models",
+        "url": "https://github.com/CultivateLabs/raif/commit/6d7280e9bdce72a61c62ad4d9c227df3d7210428"
+    },
+    {
+        "sha": "dc4a985d229812cfbba751b37e50e04735306bac",
+        "author": "Brian Leslie",
+        "email": "bjl1984@gmail.com",
+        "date": "2026-07-10T15:44:07Z",
+        "message": "Add Grok 4.5 models to the LLM registry",
+        "url": "https://github.com/CultivateLabs/raif/commit/dc4a985d229812cfbba751b37e50e04735306bac"
+    },
+    {
+        "sha": "f79f1177d579c8127a056cf694d891a4ab6d0683",
+        "author": "Ben Roesch",
+        "email": "ben@cultivatelabs.com",
+        "date": "2026-07-10T15:27:32Z",
+        "message": "Merge pull request #502 from CultivateLabs/feature/remove-deprecated-provider-models\n\nRemove retired non-Anthropic models; restore Legacy Bedrock Sonnets",
+        "url": "https://github.com/CultivateLabs/raif/commit/f79f1177d579c8127a056cf694d891a4ab6d0683"
+    },
+    {
+        "sha": "8fab95c810c7e1c639d35ace2e038a02d6864540",
+        "author": "Brian Leslie",
+        "email": "bjl1984@gmail.com",
+        "date": "2026-07-10T15:16:33Z",
+        "message": "Correct CHANGELOG model-removal notes",
+        "url": "https://github.com/CultivateLabs/raif/commit/8fab95c810c7e1c639d35ace2e038a02d6864540"
+    },
+    {
+        "sha": "ab1d845cacb6f9d3ed59b986aa5d98c552767867",
+        "author": "Brian Leslie",
+        "email": "bjl1984@gmail.com",
+        "date": "2026-07-09T22:38:26Z",
+        "message": "Remove retired non-Anthropic models; restore Legacy Bedrock Sonnets\n\nRemove models their providers have shut down: open_ai_o1_mini (OpenAI\nretired o1-mini 2025-10-27), google_gemini_3_0_pro (gemini-3-pro-preview\nshut down 2026-03-09, alias redirects to 3.1), and the OpenRouter keys\nopen_router_gemini_2_0_flash, open_router_gemini_3_pro_preview,\nopen_router_grok_4, and open_router_grok_4_1_fast (gone from\nOpenRouter's model list).\n\nUpdate google_gemini_2_5_pro to the stable gemini-2.5-pro API name in\nplace of the retired preview snapshot.\n\nRestore bedrock_claude_3_7_sonnet and bedrock_claude_3_5_sonnet, which\nPR #501 removed early: AWS lists them as Legacy with EOL 2026-07-30,\nand correct the CHANGELOG accordingly.\n\nSync the install generator's initializer template and setup.md model\nlists with the registry.",
+        "url": "https://github.com/CultivateLabs/raif/commit/ab1d845cacb6f9d3ed59b986aa5d98c552767867"
+    },
+    {
+        "sha": "d03dfa762feb766dad791f9ce2fa39651fc4b724",
+        "author": "Ben Roesch",
+        "email": "ben@cultivatelabs.com",
+        "date": "2026-07-09T21:17:57Z",
+        "message": "Merge pull request #501 from CultivateLabs/feature/remove-deprecated-anthropic-models\n\nRemove retired Claude models from the LLM registry",
+        "url": "https://github.com/CultivateLabs/raif/commit/d03dfa762feb766dad791f9ce2fa39651fc4b724"
+    },
+    {
+        "sha": "55d4ca6ee105f4ee2482ea540c5f86dbe75fc18d",
+        "author": "Brian Leslie",
+        "email": "bjl1984@gmail.com",
+        "date": "2026-07-09T20:00:54Z",
+        "message": "Merge remote-tracking branch 'origin/main' into feature/remove-deprecated-anthropic-models",
+        "url": "https://github.com/CultivateLabs/raif/commit/55d4ca6ee105f4ee2482ea540c5f86dbe75fc18d"
+    },
+    {
+        "sha": "cec8728da7e40fa7b5d838d8cfe01df02c6ec58a",
+        "author": "Brian Leslie",
+        "email": "bjl1984@gmail.com",
+        "date": "2026-07-09T19:53:46Z",
+        "message": "Remove retired Claude models from the LLM registry\n\nAnthropic has retired six Claude models on its API (Claude 4 Opus/Sonnet, 3.7 Sonnet, 3.5 Sonnet/Haiku, 3 Opus), so requests to them now fail; their AWS Bedrock equivalents are past end-of-life on Bedrock, and OpenRouter's claude-3.7-sonnet is gone. Removes the registry keys anthropic_claude_4_opus, anthropic_claude_4_sonnet, anthropic_claude_3_7_sonnet, anthropic_claude_3_5_sonnet, anthropic_claude_3_5_haiku, anthropic_claude_3_opus, bedrock_claude_4_opus, bedrock_claude_3_7_sonnet, bedrock_claude_3_5_sonnet, bedrock_claude_3_5_haiku, bedrock_claude_3_opus, and open_router_claude_3_7_sonnet.\n\nBedrock sets its own retirement schedule, so bedrock_claude_4_sonnet (still available there) and bedrock_claude_4_1_opus are kept; anthropic_claude_4_1_opus is also kept (deprecated but functional until its 2026-08-05 retirement).\n\nMigrates the adapter, batch, job, and admin specs that used a removed model as their default onto surviving models (Haiku 4.5, Sonnet 4.5, Bedrock/OpenRouter Sonnet 5); anthropic_spec uses Opus 4.1 so its json_response-tool fallback tests still exercise a model without native structured-output support. The anthropic/ and bedrock/ VCR cassettes are edited in place — only the request model id and token limit are swapped to match the surviving models, leaving the recorded responses unchanged.\n\nAlso updates the install-generator template, setup and evals docs, and locale model names, and adds a CHANGELOG entry linking the providers' deprecation pages.",
+        "url": "https://github.com/CultivateLabs/raif/commit/cec8728da7e40fa7b5d838d8cfe01df02c6ec58a"
+    },
+    {
+        "sha": "c9769150edd4052445aeba8a8f14e634da05b6c7",
+        "author": "Ben Roesch",
+        "email": "ben@cultivatelabs.com",
+        "date": "2026-07-09T18:21:29Z",
+        "message": "Merge pull request #500 from CultivateLabs/feature/model-completion-authorizer\n\nAdd Raif.config.model_completion_authorizer hook",
+        "url": "https://github.com/CultivateLabs/raif/commit/c9769150edd4052445aeba8a8f14e634da05b6c7"
+    },
+    {
+        "sha": "310370ffbf8708f4f1a9086b6aaf245178121895",
+        "author": "Ben Roesch",
+        "email": "ben@cultivatelabs.com",
+        "date": "2026-07-09T18:15:53Z",
+        "message": "Propagate model_completion_authorizer vetoes through Raif::Task.run\n\nAddress Codex review feedback on PR #500: an authorizer veto raised\ninside Raif::Llm#chat was swallowed by Raif::Task.run's rescue\nStandardError, so callers could not distinguish an intentional\nauthorization denial from an ordinary model failure.\n\nLlm#chat now tags any exception raised by the authorizer with the\nRaif::Errors::ModelCompletionAuthorizationError marker module\n(preserving the original class and message). Task.run marks the task\nfailed and then re-raises the tagged veto to its synchronous caller\ninstead of logging/reporting it as a model failure.\n\nConversation responses run in Raif::ConversationEntryJob with no host\ncaller to receive a raise, so a veto there continues to surface as a\nfailed Raif::ConversationEntry rather than propagating.",
+        "url": "https://github.com/CultivateLabs/raif/commit/310370ffbf8708f4f1a9086b6aaf245178121895"
+    },
+    {
+        "sha": "aa1729819e964b0ff5df8201f232f0467d146ee6",
+        "author": "Ben Roesch",
+        "email": "ben@cultivatelabs.com",
+        "date": "2026-07-09T17:07:26Z",
+        "message": "feature/model-completion-authorizer: Add Raif.config.model_completion_authorizer hook\n\nOptional lambda called with llm:/source: keyword args at the start of\nRaif::Llm#chat, before the ModelCompletion is created or any provider API\ncall is made (and before the llm_api_requests_enabled guard). Raise from\nit to veto the request. Lets host apps enforce per-account usage limits,\nincluding stopping in-progress agent runs.",
+        "url": "https://github.com/CultivateLabs/raif/commit/aa1729819e964b0ff5df8201f232f0467d146ee6"
+    },
+    {
+        "sha": "9f7bebb3cee7b2f0ef4739cd9b5cd61c981b436e",
+        "author": "Ben Roesch",
+        "email": "ben@cultivatelabs.com",
+        "date": "2026-07-08T13:14:21Z",
+        "message": "Merge pull request #496 from CultivateLabs/dependabot/bundler/all-dependencies-7506ffb67d\n\nBump annotaterb from 4.22.0 to 4.23.0 in the all-dependencies group across 1 directory",
+        "url": "https://github.com/CultivateLabs/raif/commit/9f7bebb3cee7b2f0ef4739cd9b5cd61c981b436e"
+    },
+    {
+        "sha": "9f8a5874763ceff62bf80a8c118b9b27d125a251",
+        "author": "Ben Roesch",
+        "email": "ben@cultivatelabs.com",
+        "date": "2026-07-08T13:14:04Z",
+        "message": "Merge pull request #497 from CultivateLabs/dependabot/npm_and_yarn/all-dependencies-1caf817742\n\nBump the all-dependencies group across 1 directory with 2 updates",
+        "url": "https://github.com/CultivateLabs/raif/commit/9f8a5874763ceff62bf80a8c118b9b27d125a251"
+    },
+    {
+        "sha": "a6ca8ebdbec9937720b7c3a63695709fa94d2494",
+        "author": "Ben Roesch",
+        "email": "ben@cultivatelabs.com",
+        "date": "2026-07-08T13:13:42Z",
+        "message": "Merge pull request #499 from CultivateLabs/feature/add-latest-llm-models\n\nAdd latest LLM models to the registry",
+        "url": "https://github.com/CultivateLabs/raif/commit/a6ca8ebdbec9937720b7c3a63695709fa94d2494"
+    },
+    {
+        "sha": "1d14465225d97d3c5e1c7e7c5bfe9d70bc0fb241",
+        "author": "Brian Leslie",
+        "email": "bjl1984@gmail.com",
+        "date": "2026-07-07T21:01:46Z",
+        "message": "Don't claim structured output support for new Bedrock Claude models\n\nAWS model cards mark structured outputs as unsupported on the Bedrock\nendpoints for Claude Sonnet 5, Opus 4.8, and Fable 5. With\nsupports_structured_outputs: true, the Bedrock adapter sends\noutput_config.text_format and skips the json_response tool fallback, so\nJSON-schema calls would fail. Drop the flag until AWS lists support.",
+        "url": "https://github.com/CultivateLabs/raif/commit/1d14465225d97d3c5e1c7e7c5bfe9d70bc0fb241"
+    },
+    {
+        "sha": "3e4bcb7a9a30f4fd3364ba2a7e5cc1f5287db2db",
+        "author": "Brian Leslie",
+        "email": "bjl1984@gmail.com",
+        "date": "2026-07-07T20:32:26Z",
+        "message": "Add latest LLM models to the registry\n\nRegister the mid-2026 model releases and their display names:\n\n- Anthropic: Claude Sonnet 5, Opus 4.8, and Fable 5 (direct API, AWS Bedrock, and OpenRouter)\n- OpenAI: GPT-5.5 (Completions + Responses) and GPT-5.5 Pro\n- Google: Gemini 3.5 Flash (direct API and OpenRouter)\n\nPricing, context windows, and API names follow the current provider docs. Note that Fable 5 requires provider_data_share on Bedrock, which AWS has since restricted; the direct and OpenRouter entries work.",
+        "url": "https://github.com/CultivateLabs/raif/commit/3e4bcb7a9a30f4fd3364ba2a7e5cc1f5287db2db"
+    },
+    {
+        "sha": "6f61b28fe6283643619dbde9cba6c35281bec67d",
+        "author": "dependabot[bot]",
+        "email": "49699333+dependabot[bot]@users.noreply.github.com",
+        "date": "2026-07-07T00:24:05Z",
+        "message": "Bump the all-dependencies group across 1 directory with 2 updates\n\nBumps the all-dependencies group with 2 updates in the / directory: [autoprefixer](https://github.com/postcss/autoprefixer) and [postcss](https://github.com/postcss/postcss).\n\n\nUpdates `autoprefixer` from 10.5.0 to 10.5.2\n- [Release notes](https://github.com/postcss/autoprefixer/releases)\n- [Changelog](https://github.com/postcss/autoprefixer/blob/main/CHANGELOG.md)\n- [Commits](https://github.com/postcss/autoprefixer/compare/10.5.0...10.5.2)\n\nUpdates `postcss` from 8.5.15 to 8.5.16\n- [Release notes](https://github.com/postcss/postcss/releases)\n- [Changelog](https://github.com/postcss/postcss/blob/main/CHANGELOG.md)\n- [Commits](https://github.com/postcss/postcss/compare/8.5.15...8.5.16)\n\n---\nupdated-dependencies:\n- dependency-name: autoprefixer\n  dependency-version: 10.5.2\n  dependency-type: direct:production\n  update-type: version-update:semver-patch\n  dependency-group: all-dependencies\n- dependency-name: postcss\n  dependency-version: 8.5.16\n  dependency-type: direct:production\n  update-type: version-update:semver-patch\n  dependency-group: all-dependencies\n...\n\nSigned-off-by: dependabot[bot] <support@github.com>",
+        "url": "https://github.com/CultivateLabs/raif/commit/6f61b28fe6283643619dbde9cba6c35281bec67d"
+    },
+    {
+        "sha": "bf019a2477ab60a104553d47b812c0116b03d4b4",
+        "author": "dependabot[bot]",
+        "email": "49699333+dependabot[bot]@users.noreply.github.com",
+        "date": "2026-07-07T00:23:25Z",
+        "message": "Bump annotaterb in the all-dependencies group across 1 directory\n\nBumps the all-dependencies group with 1 update in the / directory: [annotaterb](https://github.com/drwl/annotaterb).\n\n\nUpdates `annotaterb` from 4.22.0 to 4.23.0\n- [Changelog](https://github.com/drwl/annotaterb/blob/main/CHANGELOG.md)\n- [Commits](https://github.com/drwl/annotaterb/compare/v4.22.0...v4.23.0)\n\n---\nupdated-dependencies:\n- dependency-name: annotaterb\n  dependency-version: 4.23.0\n  dependency-type: direct:production\n  update-type: version-update:semver-minor\n  dependency-group: all-dependencies\n...\n\nSigned-off-by: dependabot[bot] <support@github.com>",
+        "url": "https://github.com/CultivateLabs/raif/commit/bf019a2477ab60a104553d47b812c0116b03d4b4"
+    },
+    {
+        "sha": "bc9b387d79ef84a9bc69b95e1c59a3f8c90d12b3",
+        "author": "Ben Roesch",
+        "email": "ben@cultivatelabs.com",
+        "date": "2026-07-01T14:28:18Z",
+        "message": "Merge pull request #498 from CultivateLabs/bugfix/strip-null-bytes-conversation-history\n\nStrip NUL bytes from agent conversation history before persisting",
+        "url": "https://github.com/CultivateLabs/raif/commit/bc9b387d79ef84a9bc69b95e1c59a3f8c90d12b3"
+    },
+    {
+        "sha": "9bd8d1f10df74ab9c1fde66559e5532810519a90",
+        "author": "Ben Roesch",
+        "email": "ben@cultivatelabs.com",
+        "date": "2026-07-01T14:21:22Z",
+        "message": "Strip NUL bytes from agent conversation history before persisting\n\nTool results carry arbitrary external content (fetched pages, search\nresults) that can contain NUL bytes, which Postgres cannot store in a\njsonb column. A single poisoned tool result would abort the agent's\nsave! with PG::UntranslatableCharacter, failing the whole run.\n\nDeep-strip NUL bytes from each conversation history entry before\npersisting, protecting all agent types at the single chokepoint.",
+        "url": "https://github.com/CultivateLabs/raif/commit/9bd8d1f10df74ab9c1fde66559e5532810519a90"
+    },
+    {
+        "sha": "3dc1417d6616963f0b29ed014392fcf71924ac69",
+        "author": "Ben Roesch",
+        "email": "ben@cultivatelabs.com",
+        "date": "2026-06-23T01:37:11Z",
+        "message": "Merge pull request #493 from CultivateLabs/feature/agent-tool-call-cap\n\nSurface the per-step tool-call cap to the model and in admin",
+        "url": "https://github.com/CultivateLabs/raif/commit/3dc1417d6616963f0b29ed014392fcf71924ac69"
+    },
+    {
+        "sha": "1047397f5fbaadf744b33a2eb0177ffba2f5467a",
+        "author": "Ben Roesch",
+        "email": "ben@cultivatelabs.com",
+        "date": "2026-06-23T01:36:19Z",
+        "message": "Merge pull request #495 from CultivateLabs/dependabot/bundler/all-dependencies-394a68689b\n\nBump faraday from 2.14.2 to 2.14.3 in the all-dependencies group",
+        "url": "https://github.com/CultivateLabs/raif/commit/1047397f5fbaadf744b33a2eb0177ffba2f5467a"
+    },
+    {
+        "sha": "b843ccf995874ab62d748e3d70c19cf339164fa7",
+        "author": "Ben Roesch",
+        "email": "ben@cultivatelabs.com",
+        "date": "2026-06-23T01:34:56Z",
+        "message": "Merge pull request #494 from CultivateLabs/dependabot/github_actions/all-dependencies-640176b5ab\n\nBump actions/checkout from 6 to 7 in the all-dependencies group",
+        "url": "https://github.com/CultivateLabs/raif/commit/b843ccf995874ab62d748e3d70c19cf339164fa7"
+    },
+    {
+        "sha": "acd8ecdbc199bbeb472004c07c14878c3541f58d",
+        "author": "dependabot[bot]",
+        "email": "49699333+dependabot[bot]@users.noreply.github.com",
+        "date": "2026-06-23T00:23:14Z",
+        "message": "Bump faraday from 2.14.2 to 2.14.3 in the all-dependencies group\n\nBumps the all-dependencies group with 1 update: [faraday](https://github.com/lostisland/faraday).\n\n\nUpdates `faraday` from 2.14.2 to 2.14.3\n- [Release notes](https://github.com/lostisland/faraday/releases)\n- [Changelog](https://github.com/lostisland/faraday/blob/main/CHANGELOG.md)\n- [Commits](https://github.com/lostisland/faraday/compare/v2.14.2...v2.14.3)\n\n---\nupdated-dependencies:\n- dependency-name: faraday\n  dependency-version: 2.14.3\n  dependency-type: direct:production\n  update-type: version-update:semver-patch\n  dependency-group: all-dependencies\n...\n\nSigned-off-by: dependabot[bot] <support@github.com>",
+        "url": "https://github.com/CultivateLabs/raif/commit/acd8ecdbc199bbeb472004c07c14878c3541f58d"
+    },
+    {
+        "sha": "532936405f0c83d0abcadd961032105973680323",
+        "author": "dependabot[bot]",
+        "email": "49699333+dependabot[bot]@users.noreply.github.com",
+        "date": "2026-06-23T00:22:57Z",
+        "message": "Bump actions/checkout from 6 to 7 in the all-dependencies group\n\nBumps the all-dependencies group with 1 update: [actions/checkout](https://github.com/actions/checkout).\n\n\nUpdates `actions/checkout` from 6 to 7\n- [Release notes](https://github.com/actions/checkout/releases)\n- [Changelog](https://github.com/actions/checkout/blob/main/CHANGELOG.md)\n- [Commits](https://github.com/actions/checkout/compare/v6...v7)\n\n---\nupdated-dependencies:\n- dependency-name: actions/checkout\n  dependency-version: '7'\n  dependency-type: direct:production\n  update-type: version-update:semver-major\n  dependency-group: all-dependencies\n...\n\nSigned-off-by: dependabot[bot] <support@github.com>",
+        "url": "https://github.com/CultivateLabs/raif/commit/532936405f0c83d0abcadd961032105973680323"
+    },
+    {
+        "sha": "4376e48456571ec0824db57f3958fad91ca4ca15",
+        "author": "Brian Leslie",
+        "email": "=",
+        "date": "2026-06-18T18:59:47Z",
+        "message": "Show each completion's requested tool calls on the admin agent page\n\nAdd a \"Tool calls\" column to the Model Completions table on the agent show\npage, backed by a new Raif::ModelCompletion#tool_call_summary that combines\ndeveloper-managed calls (response_tool_calls) and provider-managed calls\n(provider_managed_tool_calls, e.g. OpenAI/Anthropic web search). A batch\nrejected over max_tool_calls_per_iteration persists no tool invocations, so\nthe agent page previously gave no indication of what the model requested; the\nrequested calls are now visible there.",
+        "url": "https://github.com/CultivateLabs/raif/commit/4376e48456571ec0824db57f3958fad91ca4ca15"
+    },
+    {
+        "sha": "26e157fa1816dc020d7a12305a784a8857e3da0b",
+        "author": "Brian Leslie",
+        "email": "=",
+        "date": "2026-06-18T18:59:30Z",
+        "message": "State the per-step tool-call cap in the agent prompt and corrective feedback\n\nWhen max_tool_calls_per_iteration is set, NativeToolCallingAgent's default\nsystem prompt now states the limit (\"you may make up to N independent tool\ncalls in a single step\") instead of an unbounded \"several\", so the model\nself-limits rather than over-fanning and getting the whole batch rejected.\nThe over-cap corrective feedback is reworded to keep inviting batching up to\nthe cap and tell the model how to recover. Both read correctly at a cap of 1\n(singular wording) and are unchanged when the cap is nil, so the default-prompt\nspec is unaffected.",
+        "url": "https://github.com/CultivateLabs/raif/commit/26e157fa1816dc020d7a12305a784a8857e3da0b"
+    },
+    {
+        "sha": "a982ec4a58345afa8d0e05264b5e200f188b28ae",
+        "author": "Ben Roesch",
+        "email": "ben@cultivatelabs.com",
+        "date": "2026-06-16T21:16:21Z",
+        "message": "Merge pull request #490 from CultivateLabs/feature/agent-parallel-tool-calls\n\nSupport multiple tool calls per agent iteration",
+        "url": "https://github.com/CultivateLabs/raif/commit/a982ec4a58345afa8d0e05264b5e200f188b28ae"
+    }
+]

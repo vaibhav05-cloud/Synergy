@@ -1,0 +1,242 @@
+[
+    {
+        "sha": "2926c06c5dc3064ae6d8db706f1a98a37cfcf3f0",
+        "author": "Romain Vimont",
+        "email": "rom@rom1v.com",
+        "date": "2026-07-12T18:10:40Z",
+        "message": "Update links to 4.1",
+        "url": "https://github.com/Genymobile/scrcpy/commit/2926c06c5dc3064ae6d8db706f1a98a37cfcf3f0"
+    },
+    {
+        "sha": "fa57d7c6b47139797a8e103f87719740718887d4",
+        "author": "Romain Vimont",
+        "email": "rom@rom1v.com",
+        "date": "2026-07-10T19:25:15Z",
+        "message": "Bump version to 4.1",
+        "url": "https://github.com/Genymobile/scrcpy/commit/fa57d7c6b47139797a8e103f87719740718887d4"
+    },
+    {
+        "sha": "ae94ad858cf36503b425479614729c1b6687f67e",
+        "author": "Romain Vimont",
+        "email": "rom@rom1v.com",
+        "date": "2026-07-09T17:39:13Z",
+        "message": "Upgrade libusb (1.0.30)",
+        "url": "https://github.com/Genymobile/scrcpy/commit/ae94ad858cf36503b425479614729c1b6687f67e"
+    },
+    {
+        "sha": "457bcc048abb486ab04e1aee9d2bb1696fbf4280",
+        "author": "Romain Vimont",
+        "email": "rom@rom1v.com",
+        "date": "2026-07-09T17:38:51Z",
+        "message": "Upgrade FFmpeg (8.1.2)",
+        "url": "https://github.com/Genymobile/scrcpy/commit/457bcc048abb486ab04e1aee9d2bb1696fbf4280"
+    },
+    {
+        "sha": "1e0ab9a043b846ef79d3a01f1156ea238653034f",
+        "author": "Romain Vimont",
+        "email": "rom@rom1v.com",
+        "date": "2026-07-09T17:35:17Z",
+        "message": "Upgrade SDL (3.4.12)",
+        "url": "https://github.com/Genymobile/scrcpy/commit/1e0ab9a043b846ef79d3a01f1156ea238653034f"
+    },
+    {
+        "sha": "61ae825916f6173c852b18b87d2a5f7df7a44a77",
+        "author": "orbisai0security",
+        "email": "mediratta01.pally@gmail.com",
+        "date": "2026-07-07T19:43:26Z",
+        "message": "Check allocation size multiplication overflow\n\nUse `sc_allocarray()` to prevent multiplication overflow.\n\nPR #6930 <https://github.com/Genymobile/scrcpy/pull/6930>\n\nSigned-off-by: Romain Vimont <rom@rom1v.com>",
+        "url": "https://github.com/Genymobile/scrcpy/commit/61ae825916f6173c852b18b87d2a5f7df7a44a77"
+    },
+    {
+        "sha": "8c7b53c7a9272ea757fafa8c3b69f4233a8233f1",
+        "author": "QwertyChouskie",
+        "email": "qwertychouskie@users.noreply.github.com",
+        "date": "2025-09-30T13:00:48Z",
+        "message": "Improve warning formatting in README.md\n\nThis makes it stand out more (and just looks nicer).\n\nPR #6395 <https://github.com/Genymobile/scrcpy/pull/6395>\n\nSigned-off-by: Romain Vimont <rom@rom1v.com>",
+        "url": "https://github.com/Genymobile/scrcpy/commit/8c7b53c7a9272ea757fafa8c3b69f4233a8233f1"
+    },
+    {
+        "sha": "f9d5b37d7832eeab6ed37c1d0015404e5c18d066",
+        "author": "Romain Vimont",
+        "email": "rom@rom1v.com",
+        "date": "2026-07-02T16:54:20Z",
+        "message": "Fail early on zero-sized video\n\nThis avoids potential division-by-zero crashes.\n\nRefs #6905 <https://github.com/Genymobile/scrcpy/issues/6905>\nPR #6911 <https://github.com/Genymobile/scrcpy/pull/6911>",
+        "url": "https://github.com/Genymobile/scrcpy/commit/f9d5b37d7832eeab6ed37c1d0015404e5c18d066"
+    },
+    {
+        "sha": "612947cd95e9a72b67118b56d3584aa866720da1",
+        "author": "Romain Vimont",
+        "email": "rom@rom1v.com",
+        "date": "2026-06-22T21:53:26Z",
+        "message": "Fix data race\n\nFields in `struct sc_screen` were written from the decoder thread and\nread from the main thread without proper synchronization.\n\nContrary to what the comment stated, pushing an SDL event does not\nprovide the synchronization required to make these writes visible to the\nmain thread.\n\nPass the session size as data attached to the SDL event to fix the\nissue.\n\nRefs #6905 <https://github.com/Genymobile/scrcpy/issues/6905>\nPR #6911 <https://github.com/Genymobile/scrcpy/pull/6911>",
+        "url": "https://github.com/Genymobile/scrcpy/commit/612947cd95e9a72b67118b56d3584aa866720da1"
+    },
+    {
+        "sha": "ac1f479d53898420629bba3e7caf606045886870",
+        "author": "Romain Vimont",
+        "email": "rom@rom1v.com",
+        "date": "2026-06-22T21:51:46Z",
+        "message": "Extract function to dequeue events\n\nExpose a function to dequeue a single specific event from the SDL event\nqueue.\n\nPR #6911 <https://github.com/Genymobile/scrcpy/pull/6911>",
+        "url": "https://github.com/Genymobile/scrcpy/commit/ac1f479d53898420629bba3e7caf606045886870"
+    },
+    {
+        "sha": "31e8c0ad89f5abf0720aa07b1d2ed475f8ae5165",
+        "author": "Romain Vimont",
+        "email": "rom@rom1v.com",
+        "date": "2026-07-07T19:42:20Z",
+        "message": "Rename sc_delay_buffer to sc_video_regulator\n\nThis component serves the same purpose for video as the audio regulator\ndoes for audio: maintaining a fixed target latency.\n\nRename it to \"video regulator\" for consistency.\n\nPR #6918 <https://github.com/Genymobile/scrcpy/pull/6918>",
+        "url": "https://github.com/Genymobile/scrcpy/commit/31e8c0ad89f5abf0720aa07b1d2ed475f8ae5165"
+    },
+    {
+        "sha": "6a87ba2832a88f892099798582cd272dc6f3834a",
+        "author": "Romain Vimont",
+        "email": "rom@rom1v.com",
+        "date": "2026-07-01T19:47:21Z",
+        "message": "Do not print escape sequences if unsupported\n\nOn Windows, the escape sequences used to save and restore the current\nterminal title are not always supported. In that case, they must not be\nemitted; otherwise, they would be printed verbatim.\n\nPR #6825 <https://github.com/Genymobile/scrcpy/pull/6825>",
+        "url": "https://github.com/Genymobile/scrcpy/commit/6a87ba2832a88f892099798582cd272dc6f3834a"
+    },
+    {
+        "sha": "3615d64f805159c2f8512f33ed949fbee52e3d61",
+        "author": "Romain Vimont",
+        "email": "rom@rom1v.com",
+        "date": "2026-06-24T16:17:09Z",
+        "message": "Restore terminal title on exit\n\nSave the initial terminal title and restore it when exiting.\n\nFrom <https://invisible-island.net/xterm/ctlseqs/ctlseqs.html>:\n\n    Ps = 2 2 ; 2  ->  Save xterm window title on stack.\n    Ps = 2 3 ; 2  ->  Restore xterm window title from stack.\n\nPR #6825 <https://github.com/Genymobile/scrcpy/pull/6825>",
+        "url": "https://github.com/Genymobile/scrcpy/commit/3615d64f805159c2f8512f33ed949fbee52e3d61"
+    },
+    {
+        "sha": "5ea75b8b06bf639edd4139269b9cbc5b4ec6e5ac",
+        "author": "zxmpg41",
+        "email": "kellenberg.kevin@gmail.com",
+        "date": "2026-06-18T11:48:54Z",
+        "message": "Add --no-terminal-title\n\nAdd an option to disable terminal title updates.\n\nPR #6825 <https://github.com/Genymobile/scrcpy/pull/6825>\n\nSigned-off-by: Romain Vimont <rom@rom1v.com>",
+        "url": "https://github.com/Genymobile/scrcpy/commit/5ea75b8b06bf639edd4139269b9cbc5b4ec6e5ac"
+    },
+    {
+        "sha": "5bcfbf6f2b53b2c660cc2e7f7532d5bd49436abe",
+        "author": "zxmpg41",
+        "email": "kellenberg.kevin@gmail.com",
+        "date": "2026-05-11T13:26:43Z",
+        "message": "Set terminal tab title to scrcpy and device name\n\nOn startup, set the terminal tab/window title to \"scrcpy\" so the tab\nis immediately identifiable. Once the device is connected, update the\ntitle to \"scrcpy - <device name>\" (or \"scrcpy - <window-title>\" if\n--window-title is provided). On exit, clear the title so the shell can\nrestore its own.\n\nOSC 0 escape sequences are used for cross-platform support (Windows\nTerminal, macOS Terminal, xterm). On Windows, SetConsoleTitleW() is\nalso called as a fallback for legacy console hosts (cmd.exe, conhost).\n\nThe same behaviour applies in OTG mode.\n\nPR #6825 <https://github.com/Genymobile/scrcpy/pull/6825>\n\nSigned-off-by: Romain Vimont <rom@rom1v.com>",
+        "url": "https://github.com/Genymobile/scrcpy/commit/5bcfbf6f2b53b2c660cc2e7f7532d5bd49436abe"
+    },
+    {
+        "sha": "5022743a2a68701b7bde06cefbcc7c77ffc8f59e",
+        "author": "Romain Vimont",
+        "email": "rom@rom1v.com",
+        "date": "2026-07-01T20:35:44Z",
+        "message": "Fix SDL colorspace for AVCOL_SPC_YCGCO\n\n`AVCOL_SPC_YCGCO` has no corresponding `SDL_Colorspace` value.\n\nTreat it as BT.709, like `AVCOL_SPC_UNSPECIFIED`.\n\nFixes #6924 <https://github.com/Genymobile/scrcpy/issues/6924>",
+        "url": "https://github.com/Genymobile/scrcpy/commit/5022743a2a68701b7bde06cefbcc7c77ffc8f59e"
+    },
+    {
+        "sha": "f78049505adf9c29a3ec2b98528792b2298aa837",
+        "author": "Romain Vimont",
+        "email": "rom@rom1v.com",
+        "date": "2026-07-01T09:44:14Z",
+        "message": "Log texture details in verbose mode\n\nRefs #6830 <https://github.com/Genymobile/scrcpy/issues/6830>\nRefs #6924 <https://github.com/Genymobile/scrcpy/issues/6924>",
+        "url": "https://github.com/Genymobile/scrcpy/commit/f78049505adf9c29a3ec2b98528792b2298aa837"
+    },
+    {
+        "sha": "f498e824b4d12bd02fa5eed3688f043bd5743dcf",
+        "author": "Romain Vimont",
+        "email": "rom@rom1v.com",
+        "date": "2026-06-28T10:27:24Z",
+        "message": "Fix checkstyle warning\n\nFix the following checkstyle warning:\n\n> Implicitly using the default locale is a common source of bugs: Use\n> `toLowerCase(Locale)` instead. For strings meant to be internal use\n> `Locale.ROOT`, otherwise `Locale.getDefault()`.",
+        "url": "https://github.com/Genymobile/scrcpy/commit/f498e824b4d12bd02fa5eed3688f043bd5743dcf"
+    },
+    {
+        "sha": "6f743be989ca6e003b6e95dcdda169c55e48d30a",
+        "author": "Romain Vimont",
+        "email": "rom@rom1v.com",
+        "date": "2026-06-27T11:34:24Z",
+        "message": "Use OpenGL for camera to adapt to the target size\n\nThe camera stream can only be rendered on a surface matching the input\nsize. If the video constraints change the size, an intermediate OpenGL\nfilter is required.\n\nFor example, since 1080 is not a multiple of 16, running scrcpy as\nfollows:\n\n    scrcpy --video-source=camera --camera-size=1920x1080 \\\n           --min-size-alignment=16\n\nresulted in:\n\n    ERROR: Camera configuration error\n\nAn intermediate OpenGL filter allows adapting the size without error.\n\nFixes #6919 <https://github.com/Genymobile/scrcpy/issues/6919>\nPR #6922 <https://github.com/Genymobile/scrcpy/pull/6922>",
+        "url": "https://github.com/Genymobile/scrcpy/commit/6f743be989ca6e003b6e95dcdda169c55e48d30a"
+    },
+    {
+        "sha": "856e97dce4c6c2999a5ead6f15ceba45f54bc243",
+        "author": "Romain Vimont",
+        "email": "rom@rom1v.com",
+        "date": "2026-06-27T17:57:49Z",
+        "message": "Only apply alignment constraint for camera\n\nOnce the camera size has been selected, do not apply any encoder maximum\nsize constraints. Only adjust the size for alignment.\n\nRefs #6919 <https://github.com/Genymobile/scrcpy/issues/6919>\nPR #6922 <https://github.com/Genymobile/scrcpy/pull/6922>",
+        "url": "https://github.com/Genymobile/scrcpy/commit/856e97dce4c6c2999a5ead6f15ceba45f54bc243"
+    },
+    {
+        "sha": "913141a0207f04b86efd60169618777c735072b9",
+        "author": "Romain Vimont",
+        "email": "rom@rom1v.com",
+        "date": "2026-05-18T21:24:32Z",
+        "message": "Add --ignore-video-encoder-constraints\n\nSome encoders report incorrect capabilities (size or alignment). Add an\noption to ignore these constraints.\n\nFixes #6904 <https://github.com/Genymobile/scrcpy/issues/6904>",
+        "url": "https://github.com/Genymobile/scrcpy/commit/913141a0207f04b86efd60169618777c735072b9"
+    },
+    {
+        "sha": "1b0fc0c0c821ab5b692ced5fe1aa5eaa38bf2f87",
+        "author": "eret9616",
+        "email": "947416983@qq.com",
+        "date": "2026-05-19T06:33:53Z",
+        "message": "Trigger media scan after file push\n\nWhen a file is dropped onto the scrcpy window, it is pushed to the\ndevice using `adb push`, which does not trigger a media scan.\n\nManually request the media scanner to scan the \"push directory\" so that\nthe new files immediately appear in Android apps.\n\nFixes #6200 <https://github.com/Genymobile/scrcpy/issues/6200>\nPR #6852 <https://github.com/Genymobile/scrcpy/pull/6852>\n\nSigned-off-by: Romain Vimont <rom@rom1v.com>",
+        "url": "https://github.com/Genymobile/scrcpy/commit/1b0fc0c0c821ab5b692ced5fe1aa5eaa38bf2f87"
+    },
+    {
+        "sha": "b8a3fca786fc7a998602670a27dc53e5b65e1b45",
+        "author": "Romain Vimont",
+        "email": "rom@rom1v.com",
+        "date": "2021-06-13T20:32:36Z",
+        "message": "Add a method to send a broadcast\n\nImplement the equivalent of `Context.sendBroadcast(Intent)`.\n\nPR #6852 <https://github.com/Genymobile/scrcpy/pull/6852>",
+        "url": "https://github.com/Genymobile/scrcpy/commit/b8a3fca786fc7a998602670a27dc53e5b65e1b45"
+    },
+    {
+        "sha": "63110168e59105ef3936aaf67285248634ed4f6d",
+        "author": "yangfl",
+        "email": "yangfl@users.noreply.github.com",
+        "date": "2026-06-03T08:32:25Z",
+        "message": "Add Keywords to desktop entries\n\nAdd search keywords to the .desktop files so users can find scrcpy more\neasily in application launchers.\n\nPR #6889 <https://github.com/Genymobile/scrcpy/pull/6889>\n\nSigned-off-by: Romain Vimont <rom@rom1v.com>",
+        "url": "https://github.com/Genymobile/scrcpy/commit/63110168e59105ef3936aaf67285248634ed4f6d"
+    },
+    {
+        "sha": "1e085efcfc30c6508995e7e8c0cea984eaf5dcbf",
+        "author": "Romain Vimont",
+        "email": "rom@rom1v.com",
+        "date": "2026-05-29T06:42:15Z",
+        "message": "Simplfy memcpy() parameters\n\nRemove useless cast to `char *`, and use `SC_DEVICE_NAME_FIELD_LENGTH`\ndirectly.\n\nRefs #6744 <https://github.com/Genymobile/scrcpy/pull/6744>\nRefs #6875 <https://github.com/Genymobile/scrcpy/pull/6875>",
+        "url": "https://github.com/Genymobile/scrcpy/commit/1e085efcfc30c6508995e7e8c0cea984eaf5dcbf"
+    },
+    {
+        "sha": "a351ff666985dd84c026f452bf0872fb1f516dab",
+        "author": "Romain Vimont",
+        "email": "rom@rom1v.com",
+        "date": "2026-05-29T06:34:47Z",
+        "message": "Add static_assert for memcpy() size\n\nThis guarantees that the string resulting from `memcpy()` is safe:\n - it copies to valid memory;\n - it is null-terminated.\n\nRefs #6744 <https://github.com/Genymobile/scrcpy/pull/6744>\nRefs #6875 <https://github.com/Genymobile/scrcpy/pull/6875>",
+        "url": "https://github.com/Genymobile/scrcpy/commit/a351ff666985dd84c026f452bf0872fb1f516dab"
+    },
+    {
+        "sha": "0bdd750447b0826039d8c6111c2c21dc10d70af1",
+        "author": "Romain Vimont",
+        "email": "rom@rom1v.com",
+        "date": "2026-05-19T18:18:30Z",
+        "message": "Reject recording VP8 in MP4\n\nMuxing VP8 into an MP4 container is not supported.\n\nPR #6769 <https://github.com/Genymobile/scrcpy/pull/6769>",
+        "url": "https://github.com/Genymobile/scrcpy/commit/0bdd750447b0826039d8c6111c2c21dc10d70af1"
+    },
+    {
+        "sha": "58430b1c65d9df4eea1134ecde644a3255d47d61",
+        "author": "Romain Vimont",
+        "email": "rom@rom1v.com",
+        "date": "2026-05-19T18:14:27Z",
+        "message": "Fix VPx recording\n\nContrary to the other video codecs, a VP8 (and sometimes VP9) video\nstream does not contain config packets.\n\nPR #6769 <https://github.com/Genymobile/scrcpy/pull/6769>",
+        "url": "https://github.com/Genymobile/scrcpy/commit/58430b1c65d9df4eea1134ecde644a3255d47d61"
+    },
+    {
+        "sha": "8ced13253851a5a20df4cb44d0c449cbf8616f84",
+        "author": "pngocthach",
+        "email": "jellypnt1311@gmail.com",
+        "date": "2026-04-13T16:50:50Z",
+        "message": "Add support for VP8 and VP9 video encoders\n\nFixes #6763 <https://github.com/Genymobile/scrcpy/issues/6763>\nPR #6769 <https://github.com/Genymobile/scrcpy/pull/6769>\n\nSigned-off-by: Romain Vimont <rom@rom1v.com>",
+        "url": "https://github.com/Genymobile/scrcpy/commit/8ced13253851a5a20df4cb44d0c449cbf8616f84"
+    },
+    {
+        "sha": "f457fd4cf5ff4e91853159cbbbbbb98efa8f30b3",
+        "author": "Romain Vimont",
+        "email": "rom@rom1v.com",
+        "date": "2026-05-25T14:05:33Z",
+        "message": "Apply encoder size constraints only after failure\n\nThe reported video encoder size constraints may be incorrect. Only apply\nthem if encoding fails at the requested size.\n\nRefs #6829 <https://github.com/Genymobile/scrcpy/issues/6829>\nFixes #6848 <https://github.com/Genymobile/scrcpy/issues/6848>\nPR 6859 <https://github.com/Genymobile/scrcpy/pull/6859>",
+        "url": "https://github.com/Genymobile/scrcpy/commit/f457fd4cf5ff4e91853159cbbbbbb98efa8f30b3"
+    }
+]

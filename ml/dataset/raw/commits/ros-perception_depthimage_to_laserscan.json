@@ -1,0 +1,242 @@
+[
+    {
+        "sha": "79b60bf187c85d65b6002a070651d9aec4fc46ed",
+        "author": "Chris Lalancette",
+        "email": "clalancette@gmail.com",
+        "date": "2024-01-08T15:54:32Z",
+        "message": "Remove dead tests. (#77)\n\nThese are for ROS 1.\r\n\r\nSigned-off-by: Chris Lalancette <clalancette@gmail.com>",
+        "url": "https://github.com/ros-perception/depthimage_to_laserscan/commit/79b60bf187c85d65b6002a070651d9aec4fc46ed"
+    },
+    {
+        "sha": "a54f8585eba43fbdaa39a0e4c9745a2046b54fce",
+        "author": "Chris Lalancette",
+        "email": "clalancette@gmail.com",
+        "date": "2023-07-19T12:46:38Z",
+        "message": "2.5.1",
+        "url": "https://github.com/ros-perception/depthimage_to_laserscan/commit/a54f8585eba43fbdaa39a0e4c9745a2046b54fce"
+    },
+    {
+        "sha": "47bdb110bfa0efd91fdf49eee659e18235a3701f",
+        "author": "Chris Lalancette",
+        "email": "clalancette@gmail.com",
+        "date": "2023-07-19T12:45:32Z",
+        "message": "Changelog.\n\nSigned-off-by: Chris Lalancette <clalancette@gmail.com>",
+        "url": "https://github.com/ros-perception/depthimage_to_laserscan/commit/47bdb110bfa0efd91fdf49eee659e18235a3701f"
+    },
+    {
+        "sha": "cd097640cfe7acaa29a38a61890a4e2221f007f9",
+        "author": "Josef",
+        "email": "61586098+JosefGst@users.noreply.github.com",
+        "date": "2023-07-19T12:14:55Z",
+        "message": "fix node name (#71)\n\n* match name from launch to namespace used in param\r\n\r\n* update output frame\r\n\r\nCo-authored-by: Chris Lalancette <clalancette@gmail.com>",
+        "url": "https://github.com/ros-perception/depthimage_to_laserscan/commit/cd097640cfe7acaa29a38a61890a4e2221f007f9"
+    },
+    {
+        "sha": "f7b24c3f10b04218abc42b3621c7838aca8cafa8",
+        "author": "Chris Lalancette",
+        "email": "clalancette@gmail.com",
+        "date": "2023-07-13T12:29:14Z",
+        "message": "Update the code to use a non-deprecated header. (#72)\n\n* Update the code to use a non-deprecated header.\r\n\r\nThis requires a little additional work, since Humble\r\ndoes not have that header.\r\n\r\nSigned-off-by: Chris Lalancette <clalancette@gmail.com>",
+        "url": "https://github.com/ros-perception/depthimage_to_laserscan/commit/f7b24c3f10b04218abc42b3621c7838aca8cafa8"
+    },
+    {
+        "sha": "7b60f8d3396a8e5904f27ac5d910366627a42394",
+        "author": "Chris Lalancette",
+        "email": "clalancette@openrobotics.org",
+        "date": "2022-06-29T16:55:18Z",
+        "message": "Fix the style throughout the codebase to conform to ROS 2 style. (#63)\n\n* Fix the style throughout the codebase to conform to ROS 2 style.\r\n\r\nThere are no functional changes in here, only changes to the\r\nstyle.\r\n\r\nAlso enable the linters so further contributions will have\r\nto conform.\r\n\r\nSigned-off-by: Chris Lalancette <clalancette@openrobotics.org>",
+        "url": "https://github.com/ros-perception/depthimage_to_laserscan/commit/7b60f8d3396a8e5904f27ac5d910366627a42394"
+    },
+    {
+        "sha": "deaf6180f44c0b451cbd29f8731fbc5239ac9618",
+        "author": "Chris Lalancette",
+        "email": "clalancette@openrobotics.org",
+        "date": "2022-01-22T13:40:47Z",
+        "message": "2.5.0",
+        "url": "https://github.com/ros-perception/depthimage_to_laserscan/commit/deaf6180f44c0b451cbd29f8731fbc5239ac9618"
+    },
+    {
+        "sha": "2ebc960ac0229932586be4b4209c6770e7d82d9a",
+        "author": "Chris Lalancette",
+        "email": "clalancette@openrobotics.org",
+        "date": "2022-01-22T13:40:16Z",
+        "message": "Changelog.\n\nSigned-off-by: Chris Lalancette <clalancette@openrobotics.org>",
+        "url": "https://github.com/ros-perception/depthimage_to_laserscan/commit/2ebc960ac0229932586be4b4209c6770e7d82d9a"
+    },
+    {
+        "sha": "ad0c4bd239e161d07f55fcef53572e7442a5c2be",
+        "author": "Shane Loretz",
+        "email": "shane.loretz@gmail.com",
+        "date": "2022-01-22T13:38:41Z",
+        "message": "Install includes to ${PROJECT_NAME} folder and use modern CMake (#58)\n\n* Install includes to ${PROJECT_NAME} folder and use modern CMake\r\n\r\n* Remove traces of rcutils\r\n\r\nSigned-off-by: Shane Loretz <sloretz@openrobotics.org>",
+        "url": "https://github.com/ros-perception/depthimage_to_laserscan/commit/ad0c4bd239e161d07f55fcef53572e7442a5c2be"
+    },
+    {
+        "sha": "e5faecb8532a9cd65736168c4d5a8091bb944862",
+        "author": "Chris Lalancette",
+        "email": "clalancette@openrobotics.org",
+        "date": "2022-01-06T21:55:36Z",
+        "message": "Fix the launch files to work with Rolling. (#59)\n\nStop using the deprecated keywords.\r\n\r\nSigned-off-by: Chris Lalancette <clalancette@openrobotics.org>",
+        "url": "https://github.com/ros-perception/depthimage_to_laserscan/commit/e5faecb8532a9cd65736168c4d5a8091bb944862"
+    },
+    {
+        "sha": "f963b2064d2f2b59d6a592570905ba648e0cde14",
+        "author": "Chris Lalancette",
+        "email": "clalancette@openrobotics.org",
+        "date": "2021-04-08T18:51:05Z",
+        "message": "2.3.1",
+        "url": "https://github.com/ros-perception/depthimage_to_laserscan/commit/f963b2064d2f2b59d6a592570905ba648e0cde14"
+    },
+    {
+        "sha": "22ebeb8160e83a3092a1a923eb5592d5ba134a83",
+        "author": "Chris Lalancette",
+        "email": "clalancette@openrobotics.org",
+        "date": "2021-04-08T18:50:58Z",
+        "message": "Changelog.\n\nSigned-off-by: Chris Lalancette <clalancette@openrobotics.org>",
+        "url": "https://github.com/ros-perception/depthimage_to_laserscan/commit/22ebeb8160e83a3092a1a923eb5592d5ba134a83"
+    },
+    {
+        "sha": "3f836953242aad655846e8478a8d2faa3046c05e",
+        "author": "Chris Lalancette",
+        "email": "clalancette@openrobotics.org",
+        "date": "2021-04-08T18:50:27Z",
+        "message": "Cleanup the CMakeLists.txt (#51)\n\nIn particular:\r\n1.  Change setting of the C++ standard to use CMAKE_CXX_STANDARD\r\n2.  Change setting of the extra compiler flags\r\n3.  Use target_include_directories instead of include_directories.\r\n\r\nSigned-off-by: Chris Lalancette <clalancette@openrobotics.org>",
+        "url": "https://github.com/ros-perception/depthimage_to_laserscan/commit/3f836953242aad655846e8478a8d2faa3046c05e"
+    },
+    {
+        "sha": "91a84ab2f98f9f1ac08c9b519d56ffcad18f2363",
+        "author": "Chris Lalancette",
+        "email": "clalancette@openrobotics.org",
+        "date": "2020-05-28T17:58:41Z",
+        "message": "2.3.0",
+        "url": "https://github.com/ros-perception/depthimage_to_laserscan/commit/91a84ab2f98f9f1ac08c9b519d56ffcad18f2363"
+    },
+    {
+        "sha": "39f2d28e1389778bc56904ba6b381801a120ee48",
+        "author": "Chris Lalancette",
+        "email": "clalancette@openrobotics.org",
+        "date": "2020-05-28T17:58:27Z",
+        "message": "Changelog.\n\nSigned-off-by: Chris Lalancette <clalancette@openrobotics.org>",
+        "url": "https://github.com/ros-perception/depthimage_to_laserscan/commit/39f2d28e1389778bc56904ba6b381801a120ee48"
+    },
+    {
+        "sha": "b4deb1a8a3cc5f3718596a3e2a5fb9e4fe790900",
+        "author": "Chris Lalancette",
+        "email": "clalancette@openrobotics.org",
+        "date": "2020-01-03T14:41:53Z",
+        "message": "Make DepthImageToLaserScan more RAII.\n\nInitialize the variables in the constructor; that way, they\ncan never be uninitialized.\n\nSigned-off-by: Chris Lalancette <clalancette@openrobotics.org>",
+        "url": "https://github.com/ros-perception/depthimage_to_laserscan/commit/b4deb1a8a3cc5f3718596a3e2a5fb9e4fe790900"
+    },
+    {
+        "sha": "bead4200ef6e14f95917241ce52fa2602be4214d",
+        "author": "Chris Lalancette",
+        "email": "clalancette@openrobotics.org",
+        "date": "2020-01-03T13:24:46Z",
+        "message": "Fixes pointed out by clang-tidy.\n\nSigned-off-by: Chris Lalancette <clalancette@openrobotics.org>",
+        "url": "https://github.com/ros-perception/depthimage_to_laserscan/commit/bead4200ef6e14f95917241ce52fa2602be4214d"
+    },
+    {
+        "sha": "f61558a2e71697be3018c2457091255831bbedf2",
+        "author": "Chris Lalancette",
+        "email": "clalancette@openrobotics.org",
+        "date": "2019-11-13T13:54:46Z",
+        "message": "2.2.5",
+        "url": "https://github.com/ros-perception/depthimage_to_laserscan/commit/f61558a2e71697be3018c2457091255831bbedf2"
+    },
+    {
+        "sha": "d62de8d5478f93dc2508222791b31a44a11c6b68",
+        "author": "Chris Lalancette",
+        "email": "clalancette@openrobotics.org",
+        "date": "2019-11-13T13:52:32Z",
+        "message": "Changelog.\n\nSigned-off-by: Chris Lalancette <clalancette@openrobotics.org>",
+        "url": "https://github.com/ros-perception/depthimage_to_laserscan/commit/d62de8d5478f93dc2508222791b31a44a11c6b68"
+    },
+    {
+        "sha": "1a1aa7baf4bfc3ef4dcc119ff079468dd2d483c9",
+        "author": "Chris Lalancette",
+        "email": "clalancette@openrobotics.org",
+        "date": "2019-10-07T15:35:57Z",
+        "message": "Update the README.md to describe the topics and parameters.\n\nSigned-off-by: Chris Lalancette <clalancette@openrobotics.org>",
+        "url": "https://github.com/ros-perception/depthimage_to_laserscan/commit/1a1aa7baf4bfc3ef4dcc119ff079468dd2d483c9"
+    },
+    {
+        "sha": "f951bda8deff794c9adca0a8f8a5a1323952e17f",
+        "author": "Chris Lalancette",
+        "email": "clalancette@openrobotics.org",
+        "date": "2019-10-07T13:49:57Z",
+        "message": "Add in a launch file for composable node.\n\nSigned-off-by: Chris Lalancette <clalancette@openrobotics.org>",
+        "url": "https://github.com/ros-perception/depthimage_to_laserscan/commit/f951bda8deff794c9adca0a8f8a5a1323952e17f"
+    },
+    {
+        "sha": "78924695e7e8451b693308ba34db3e75dce6cada",
+        "author": "Chris Lalancette",
+        "email": "clalancette@openrobotics.org",
+        "date": "2019-10-07T13:40:56Z",
+        "message": "Rename launch file to conform to recommendations.\n\nSigned-off-by: Chris Lalancette <clalancette@openrobotics.org>",
+        "url": "https://github.com/ros-perception/depthimage_to_laserscan/commit/78924695e7e8451b693308ba34db3e75dce6cada"
+    },
+    {
+        "sha": "6ea7e6114b414b59500ddf47504025e67f26e363",
+        "author": "Chris Lalancette",
+        "email": "clalancette@openrobotics.org",
+        "date": "2019-10-07T13:40:21Z",
+        "message": "Remove unnecessary Depth.cfg.\n\nSigned-off-by: Chris Lalancette <clalancette@openrobotics.org>",
+        "url": "https://github.com/ros-perception/depthimage_to_laserscan/commit/6ea7e6114b414b59500ddf47504025e67f26e363"
+    },
+    {
+        "sha": "a1b347f9aee4224f4a63d9e6c96215bb6346a6cf",
+        "author": "Chris Lalancette",
+        "email": "clalancette@openrobotics.org",
+        "date": "2019-10-07T13:33:13Z",
+        "message": "Make depthimage_to_laserscan composable.\n\nSigned-off-by: Chris Lalancette <clalancette@openrobotics.org>",
+        "url": "https://github.com/ros-perception/depthimage_to_laserscan/commit/a1b347f9aee4224f4a63d9e6c96215bb6346a6cf"
+    },
+    {
+        "sha": "bea52f3f2d84222f5fb3be9c3566a5fcff2b5adf",
+        "author": "Chris Lalancette",
+        "email": "clalancette@openrobotics.org",
+        "date": "2019-10-07T13:18:17Z",
+        "message": "Rename header files to .hpp\n\nSigned-off-by: Chris Lalancette <clalancette@openrobotics.org>",
+        "url": "https://github.com/ros-perception/depthimage_to_laserscan/commit/bea52f3f2d84222f5fb3be9c3566a5fcff2b5adf"
+    },
+    {
+        "sha": "769dee33142431c1d678a1c3c7528bbfab4d78f9",
+        "author": "Chris Lalancette",
+        "email": "clalancette@openrobotics.org",
+        "date": "2019-10-07T13:06:01Z",
+        "message": "Style cleanup.\n\nSigned-off-by: Chris Lalancette <clalancette@openrobotics.org>",
+        "url": "https://github.com/ros-perception/depthimage_to_laserscan/commit/769dee33142431c1d678a1c3c7528bbfab4d78f9"
+    },
+    {
+        "sha": "3abb38431ea519c22b74c68ec97b5dda8eb3f3ec",
+        "author": "Chris Lalancette",
+        "email": "clalancette@openrobotics.org",
+        "date": "2019-10-23T22:32:28Z",
+        "message": "2.2.4",
+        "url": "https://github.com/ros-perception/depthimage_to_laserscan/commit/3abb38431ea519c22b74c68ec97b5dda8eb3f3ec"
+    },
+    {
+        "sha": "ef655be1480b600f8b16b6687b4461a369b1f371",
+        "author": "Chris Lalancette",
+        "email": "clalancette@openrobotics.org",
+        "date": "2019-10-23T22:32:21Z",
+        "message": "Changelog.\n\nSigned-off-by: Chris Lalancette <clalancette@openrobotics.org>",
+        "url": "https://github.com/ros-perception/depthimage_to_laserscan/commit/ef655be1480b600f8b16b6687b4461a369b1f371"
+    },
+    {
+        "sha": "9ba0f4e944d05c266ca791a3629facfc5f6e9b83",
+        "author": "Chris Lalancette",
+        "email": "clalancette@openrobotics.org",
+        "date": "2019-10-23T22:30:25Z",
+        "message": "2.2.3",
+        "url": "https://github.com/ros-perception/depthimage_to_laserscan/commit/9ba0f4e944d05c266ca791a3629facfc5f6e9b83"
+    },
+    {
+        "sha": "2bc172bb708a3bc8258d5c1d4298e118859b2e77",
+        "author": "Sean Yen",
+        "email": "seanyen@microsoft.com",
+        "date": "2019-10-22T18:57:16Z",
+        "message": "Export interfaces for Win32 Shared Lib (#44)",
+        "url": "https://github.com/ros-perception/depthimage_to_laserscan/commit/2bc172bb708a3bc8258d5c1d4298e118859b2e77"
+    }
+]

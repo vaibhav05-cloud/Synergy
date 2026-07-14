@@ -1,0 +1,242 @@
+[
+    {
+        "sha": "e62b26318bbcc3c5e239eb5a5dd6d59e7aacb756",
+        "author": "Simon Evans",
+        "email": "si@si.org",
+        "date": "2026-05-30T21:21:35Z",
+        "message": "doc: Update README.md",
+        "url": "https://github.com/spevans/swift-project1/commit/e62b26318bbcc3c5e239eb5a5dd6d59e7aacb756"
+    },
+    {
+        "sha": "ec60278c62ff56d7458ef7669c1a78d07765aa50",
+        "author": "Simon Evans",
+        "email": "si@si.org",
+        "date": "2026-05-17T19:01:56Z",
+        "message": "printf: overhaul printf/kprint macro system with Span-based arg passing\n\n- Replaced the unrolled optional-arg pattern (_PrintfArg, _PrintfArg?,\n  ...) with a single Span<_PrintfArg> parameter. Macro expansions now\n  emit:\n\n  _printf(format, args: ([a._printfArg, b._printfArg] as InlineArray<2, _PrintfArg>).span)\n\n- InlineArray<N,T> is a fixed-size value type with inline storage.\n  Span<T> is ~Escapable so the compiler guarantees the borrow cannot\n  outlive the temporary. With WMO + -O, numeric args are fully\n  stack-allocated.\n\n- The IICE pattern ({ let _a = [...]; return f(_a.span) }()) was tried\n  first but rejected by Swift's Definite Initialisation checker when the\n  expansion site is inside an init — closures capture self which triggers\n  the \"self used before super.init\" error even for already-initialised\n  properties. The inline cast ([] as InlineArray<N,T>).span avoids a\n  closure entirely.\n\n- PrintfMacro now counts % specifiers in static format strings at\n  macro-expansion time and emits a compile error if the argument count\n  doesn't match, e.g.:\n\n  error: format has 2 specifiers but only 1 argument provided\n\n- Fix up callers where incorrect arguments were passed to #kprintf()\n\n- Add comprehensive unit tests and some benchmarks.\n  Covers all format specifiers (%d/%i/%u/%x/%X/%o/%b/%s/%c/%p/%%),\n  all flags (+, space, 0, -, #), field width, precision, size modifiers,\n  Bool and Unicode argument behaviour, and String(asciiBytes:) including\n  an exhaustive byte-range boundary sweep.\n\n- Fix inconsistencies with the C printf standard where appropiate.\n\n- Remove unneeded test stubs and align with printf package.\n\n- Remove duplicate printf files and always use the code in\n  macros/Printf/Sources/Printf/*.swift in kernel/Makefile.\n\n- The code in macros/Printf can now be more easily extracted into a\n  package at some point.",
+        "url": "https://github.com/spevans/swift-project1/commit/ec60278c62ff56d7458ef7669c1a78d07765aa50"
+    },
+    {
+        "sha": "2e8fe230c76f9d46c7e742417bb000ba840ce65a",
+        "author": "Simon Evans",
+        "email": "si@si.org",
+        "date": "2026-05-14T20:39:54Z",
+        "message": "cpu: Get more CPU info including frequencies and use the APIC as the tick source\n\n- Get CPU information including frequencies and add new uarch.swift to\n  extract more detailed CPU family information from the cpuid data.\n\n- Get detailed information about the Time Stamp Counter (TSC) from cpuid\n  and use the PM Timer to calibrate the CPU if the frequency is not\n  available from cpuid.\n\n- Shrink cpu.swift by moving the cpuid capabilites flags, the CPUID\n  wrapper and VMX capabilities into their own files.\n\n- Add an ACPI PM Timer driver that returns the current nanoseconds timer\n  value and adds a wait(milliseconds:) function that loops and pause()es\n  reading the clock. Enhance the FADT interface with getters for the PM\n  Timer device.\n\n- Use the APIC as the periodic timer instead of the HPET or PIT although\n  they are used as a fallback.\n\n- Lower the timer rate from 1000Hz to 100Hz as this spends less time in\n  the interrupt handler.\n\n- Remove the APIC interrupt handlers and merge them into the normal IRQ\n  handlers adding IRQs 240-246.\n\n- Remove CPU specific timer.asm that just incremented the tick count\n  and replace with new functions in Timer.swift\n\n- Use TSC deadline mode if available with a rearm in the interrupt\n  handler, otherwise use periodic interrupt mode. If the crystal\n  frequency is not available via cpuid then calibrate it using the\n  PM Timer.\n\n- Move the APIC from being a member of the InterruptMananger into\n  being a global, accessing it using static functions.\n\n- Enhance the 'showcpu' command to show more information and the APIC\n  calibrated values if it was calibrated.",
+        "url": "https://github.com/spevans/swift-project1/commit/2e8fe230c76f9d46c7e742417bb000ba840ce65a"
+    },
+    {
+        "sha": "66e09198d55d685400a28bec4b4d91fcbc0f5c1a",
+        "author": "Simon Evans",
+        "email": "si@si.org",
+        "date": "2026-05-02T17:44:24Z",
+        "message": "acpi: Split parsing for fixed / AML tables\n\n- When parsing ACPI tables, the fixed binary tables are simple to parse\n  and require no extra resources. Parsing the AML tables (DSDT, SSDT)\n  can however require timers to be in place to allow sleep() operations\n  to be processed. Split the ACPI and early device setup into:\n    1. Parse fixed tables\n    2. Setup timer interrupt\n    3. Parse AML tables.\n\n- Bump the size of a thread stack so that ACPI AML parsing does not\n  overflow the stack as it is running in a thread, not early boot.\n\n- Implement AML sleep using sleep(milliseconds:). This fixes AML parsing\n  on the MacBookPro11,5 which uses sleep().\n\n- Move early timer setup into TimerCore and remove DeviceManager.timer\n\n- Initialise the HPET or PIT directly and not via a PNPDevice as the AML\n  parsing has not yet happened.\n\n- Remove MasterBus.acpiSystemBus\n\n- Directly access InterruptManager as a singleton via static functions\n  instead.\n\n- PIT8254: Tidy up enum case names.",
+        "url": "https://github.com/spevans/swift-project1/commit/66e09198d55d685400a28bec4b4d91fcbc0f5c1a"
+    },
+    {
+        "sha": "3497110069d9c06450dd64f8366fce66855791de",
+        "author": "Simon Evans",
+        "email": "si@si.org",
+        "date": "2026-05-01T22:31:30Z",
+        "message": "acpi: Convert singleton into a struct and access via static funcs\n\n- Move ACPI to a global singleton and remove the\n  SystemTables.acpiTables member.\n\n- When initialising parsing ACPI tables only parse the MCFG, FADT, MADT,\n  DSDT and SSDT tables. Store pointers to any other table.\n\n- This make ACPI more standalone as a subsystem.",
+        "url": "https://github.com/spevans/swift-project1/commit/3497110069d9c06450dd64f8366fce66855791de"
+    },
+    {
+        "sha": "2b7ed75519393d13147165819226ff407f2dca35",
+        "author": "Simon Evans",
+        "email": "si@si.org",
+        "date": "2026-05-09T14:24:51Z",
+        "message": "tty: Fix scroll out of bounds access and speed up using spans\n\n- When accessing the textMemory backed buffer, use spans to access the\n  buffer.\n\n- Make redrawScreen() directly print a char via _printChar() to bypass\n  the textMemory Update.",
+        "url": "https://github.com/spevans/swift-project1/commit/2b7ed75519393d13147165819226ff407f2dca35"
+    },
+    {
+        "sha": "0c0cf1db63357807582ed850206ad071e1e675ef",
+        "author": "Simon Evans",
+        "email": "si@si.org",
+        "date": "2026-04-02T23:10:00Z",
+        "message": "acpi: Add ACPI Time and Alarm Device driver\n\n- Add PNP driver for ACPI000E device, exporting all TAD control methods.\n\n- Add SystemCMOS Operation Region support. Used by TAD to access the\n  CMOS.\n\n- shell: Check TAD in addition to RTC for 'date' and 'sleep' commands.",
+        "url": "https://github.com/spevans/swift-project1/commit/0c0cf1db63357807582ed850206ad071e1e675ef"
+    },
+    {
+        "sha": "f88713cec766c23103db866a77fcfa961c56eca2",
+        "author": "Simon Evans",
+        "email": "si@si.org",
+        "date": "2026-05-04T21:07:05Z",
+        "message": "doc: Update README.md",
+        "url": "https://github.com/spevans/swift-project1/commit/f88713cec766c23103db866a77fcfa961c56eca2"
+    },
+    {
+        "sha": "0e36286f3b6768dd9e8cbccd0faca52f56ecb361",
+        "author": "Simon Evans",
+        "email": "si@si.org",
+        "date": "2025-12-28T23:29:06Z",
+        "message": "hid: Add PS/2 mouse support\n\n- Convert the KBD8042 device into a bus device and add downstream\n  PS2Device drivers to manage the devices attached to it.\n\n- Convert PS2Keyboard into a DeviceDriver and add new driver PS2Mouse.\n\n- Add registerPNPDriver() to allow registering PNP drivers to give more\n  control over device initialisation ordering.\n\n- Add keyboard and mouse container PNPDeviceDrivers to capture the ACPI\n  nodes and extract the hardware settings. init8042() handles registering\n  these drivers so that they can be managed as a device pair.\n\n- The 2 ACPI nodes for PS/2 keyboard and mouse are just used to show up\n  in 'dumppnp' now, the actual drivers are under the KBD8042 bus device.\n\n- Fix Print Screen scan code handling.",
+        "url": "https://github.com/spevans/swift-project1/commit/0e36286f3b6768dd9e8cbccd0faca52f56ecb361"
+    },
+    {
+        "sha": "f4fb1925395bc8b5ba16c83b2ad82f95db77894c",
+        "author": "Simon Evans",
+        "email": "si@si.org",
+        "date": "2026-04-05T16:05:39Z",
+        "message": "usb: Add descriptor decode/encode unit tests\n\n- Adds tests covering:\n    BOSDescriptor\n    ConfigDescriptor\n    DeviceDescriptor\n    EndpointCompanionDescriptor\n    EndpointDescriptor\n    HIDDescriptor\n    HUBDescriptor\n    InterfaceDescriptor\n\n- Update InterfaceDescriptor.init() to validate the descriptor length and\n  type.",
+        "url": "https://github.com/spevans/swift-project1/commit/f4fb1925395bc8b5ba16c83b2ad82f95db77894c"
+    },
+    {
+        "sha": "d22fdf258aa3b653e303f60ee7614567fd7ae6d2",
+        "author": "Simon Evans",
+        "email": "si@si.org",
+        "date": "2026-02-28T15:43:26Z",
+        "message": "usb: Various XHCI, UHCI, hub, and descriptor fixes\n\n- XHCI fixes:\n\n  Clear Run/Stop bit before controller halt.\n  Ownership handoff was incorrect and kept ownership with the BIOS.\n  HCHalted polling loop never re-read USBSTS returning incorrect result\n    after 20ms.\n  Treat Completion Code 13 (Short Packet) as .finished instead of as\n    .timedout.\n  Remove scratchpad buffer allocation gated on scratchPadRestore.\n  Fix port offsets for portLI and portHLPMC.\n  writeCommandTRB() now returns on failure immediately instead of\n   polling for multiple loops.\n\n- UHCI fixes:\n\n  Token.init should only allow addresses upto 127.\n  Add PORTSC debug description.\n  Change Port reset from 1 to 10ms.\n  hcdReset() now returns a status of success/fail.\n  Set root hub USB major to be 1, not 2.\n\n- Hub fixes:\n\n  Remove incorrect assert() although it is compiled out anyway.\n  Hub descriptor minimum length was incorrectly validated as >= 7\n    instead of >=9.\n  PortStatus.indicator had inverted logic.\n  Fix .hostToDevice to .deviceToHost on certain Control messages,\n    harmless but now reads correctly.\n  Hub responseBuffer was 32 bytes, should be 72 bytes to support maximum\n    of 255 ports.\n\n- Descriptor fixes:\n\n  setDescriptor and setReportRequest used .deviceToHost, update to\n    .hostToDevice.\n  getDeviceDescriptor() was always setting speed for USB3 devices to\n    .superSpeed_gen1_x1. Remove this as the speed is set correctly by the\n  HCD beforehand.",
+        "url": "https://github.com/spevans/swift-project1/commit/d22fdf258aa3b653e303f60ee7614567fd7ae6d2"
+    },
+    {
+        "sha": "cc7005ed0f8631bc22f5a1096e68a67cee54ea28",
+        "author": "Simon Evans",
+        "email": "si@si.org",
+        "date": "2026-03-29T11:44:07Z",
+        "message": "acpi: Implement ACPI-based reboot and shutdown\n\n- ADd reboot via the FADT Reset Register with fallback to PCI port 0xCF9\n  and shutdown by reading SLP_TYPx from \\_S5 and asserting SLP_EN in the\n  PM1 control registers.\n\n- Rename facp.swift to fadt.swift and struct FACP to FADT to match the\n  correct ACPI table name. Add properties used by reboot and shutdown.\n\n- Update AMLRegionSpace to cover all region spaces, update the AML parser\n  and GAS struct to match.\n\n- Add ACPIGenericAddressStructure.description for debug output.\n\n- Add 'reboot' and 'shutdown' shell commands.",
+        "url": "https://github.com/spevans/swift-project1/commit/cc7005ed0f8631bc22f5a1096e68a67cee54ea28"
+    },
+    {
+        "sha": "02817cafc02502c73b89feb20414041f116a14b4",
+        "author": "Simon Evans",
+        "email": "si@si.org",
+        "date": "2026-03-23T19:39:39Z",
+        "message": "acpi: Convert AML term-list parsing from recursive to iterative\n\nThe AML parser used recursive descent for nested term lists, causing\ncall-stack depth to grow with scope nesting depth. This required a large\nstack to parse deeply nested scopes.\n\n- Replace recursion with an explicit frame stack in the term-list parser.\n\n- Add an interceptor layer that recognises scope-creating opcodes and\n  signals whether to descend or complete, rather than recursing directly.\n\n- Handle if/else as a two-phase continuation so trailing else blocks are\n  consumed correctly without recursion.\n\n- Leave all non-term-list parse paths (term args, super names, package\n  elements) unchanged",
+        "url": "https://github.com/spevans/swift-project1/commit/02817cafc02502c73b89feb20414041f116a14b4"
+    },
+    {
+        "sha": "3339cdf513060988ab65f47dd82aa2a143944f5f",
+        "author": "Simon Evans",
+        "email": "si@si.org",
+        "date": "2026-02-28T15:43:26Z",
+        "message": "usb: Add descriptor serialisation and improve HCD root hub emulation\n\n- Make the UHCI and XHCI root hub pipes respond to the standard USB\n  control requests (GET_DESCRIPTOR for DEVICE and CONFIGURATION,\n  SET_ADDRESS) in addition to the hub class-specific requests they\n  already handled.\n\n- Move more USBDevice setup from usb-hub.swift to usb-device.swift and\n  make the HCDs behave more like hub USBDevices using exactly the same\n  code path as a real device.\n\n- Update the ConfigDescriptor parser to create the InterfaceDescriptor\n  with endpoints and functionDescriptors in one go. Remove the incorrect\n  HID parsing and just store the function descriptors on each interface\n  in a [UInt8] to be parsed by the device's driver.\n\n- Add write(into:maxLength:) methods on ConfigDescriptor, BOSDescriptor,\n  InterfaceDescriptor, EndpointDescriptor and BOSDescriptor.Capability\n  so that descriptors can be encoded into responses used by the HCDs.\n\n- Update tests.",
+        "url": "https://github.com/spevans/swift-project1/commit/3339cdf513060988ab65f47dd82aa2a143944f5f"
+    },
+    {
+        "sha": "ecb7f20614f3f0fe997040a8f68d25bbf02b746c",
+        "author": "Simon Evans",
+        "email": "si@si.org",
+        "date": "2025-10-05T17:08:41Z",
+        "message": "acpi: Remove excess parsing functions.\n\n- Remove helper functions used by parseTermArg() and just do the parsing\n  in the case body.\n\n- Remove isParsingMethod as there is no special parsing of methods any\n  more.",
+        "url": "https://github.com/spevans/swift-project1/commit/ecb7f20614f3f0fe997040a8f68d25bbf02b746c"
+    },
+    {
+        "sha": "0525cad2112adefc4c1000b52e1534153283b210",
+        "author": "Simon Evans",
+        "email": "si@si.org",
+        "date": "2026-04-03T17:39:15Z",
+        "message": "misc: fixes\n\n- Set serial port COM1 to speed 115200.\n\n- kprintf: check that the format string is ASCII.\n\n- Add 'version' shell command to show the current git commit that was\n  built.\n\n- APCI device PNP0C02 is motherboard resources not an HPET.",
+        "url": "https://github.com/spevans/swift-project1/commit/0525cad2112adefc4c1000b52e1534153283b210"
+    },
+    {
+        "sha": "ab79c98163d9cc64b2343ec6f15759286f77e7c2",
+        "author": "Simon Evans",
+        "email": "si@si.org",
+        "date": "2026-03-10T19:40:51Z",
+        "message": "build: make clean should delete the .build directory",
+        "url": "https://github.com/spevans/swift-project1/commit/ab79c98163d9cc64b2343ec6f15759286f77e7c2"
+    },
+    {
+        "sha": "ee429a559e36ff4df05bdc71442076069708c960",
+        "author": "Simon Evans",
+        "email": "si@si.org",
+        "date": "2026-03-09T20:27:29Z",
+        "message": "build: Update to toolchain 2026-03-09",
+        "url": "https://github.com/spevans/swift-project1/commit/ee429a559e36ff4df05bdc71442076069708c960"
+    },
+    {
+        "sha": "0d119d7b192277534aa74d549dc99ca58e05f0b1",
+        "author": "Simon Evans",
+        "email": "si@si.org",
+        "date": "2026-03-06T07:30:28Z",
+        "message": "build: Fix file paths in DWARF information\n\n- Build the arch *.asm files using a separate Makefile to ensure\n  the full filepath for the source is correct.",
+        "url": "https://github.com/spevans/swift-project1/commit/0d119d7b192277534aa74d549dc99ca58e05f0b1"
+    },
+    {
+        "sha": "aecfc3cf07f8996de413ada59bab9ca123405e93",
+        "author": "Simon Evans",
+        "email": "si@si.org",
+        "date": "2026-03-02T17:28:41Z",
+        "message": "usb: bugfixes\n\n- Improve String descriptor validation.\n\n- Bump UHCI active pipes to 16 as more devices require more active URBs.\n  This is just a workaround until a linked-list of URBs is used.\n\n- Determine the USB Major version (1,2,3) from the device speed.\n\n- Add more information to USBDevice.description.",
+        "url": "https://github.com/spevans/swift-project1/commit/aecfc3cf07f8996de413ada59bab9ca123405e93"
+    },
+    {
+        "sha": "a38100f54c1e426dfde6c4eee9bb492b211d46a1",
+        "author": "Simon Evans",
+        "email": "si@si.org",
+        "date": "2026-02-07T08:57:33Z",
+        "message": "usb: Always create the control pipe and set the device descriptor for root hubs\n\n- Make USBDevice.controlPipe non-optional and create it in initialise()\n  as it is always a valid endpoint.",
+        "url": "https://github.com/spevans/swift-project1/commit/a38100f54c1e426dfde6c4eee9bb492b211d46a1"
+    },
+    {
+        "sha": "7c35e89b5a8e8a82c67d780cc58ac093963a84d7",
+        "author": "Simon Evans",
+        "email": "si@si.org",
+        "date": "2026-01-28T19:58:59Z",
+        "message": "usb: Enumerate a USB2 and USB3 hub on the XHCI HCD\n\n- XHCI HCD now creates 2 USBBuses/RootHubs, for both HighSpeed (USB2)\n  and SuperSpeed (USB3).\n\n- For UHCI/XHCI HCDs store the 1-indexed basePort and the port count.",
+        "url": "https://github.com/spevans/swift-project1/commit/7c35e89b5a8e8a82c67d780cc58ac093963a84d7"
+    },
+    {
+        "sha": "8cff3d8c9f791bbd4316934c198d50956678572d",
+        "author": "Simon Evans",
+        "email": "si@si.org",
+        "date": "2025-11-09T20:28:20Z",
+        "message": "acpi: Exclude PCIBus.devicesMatching() from testing",
+        "url": "https://github.com/spevans/swift-project1/commit/8cff3d8c9f791bbd4316934c198d50956678572d"
+    },
+    {
+        "sha": "420f2058dbd8c7ab25d697fe07e683909372d914",
+        "author": "Simon Evans",
+        "email": "si@si.org",
+        "date": "2025-09-05T17:42:41Z",
+        "message": "dev: Update .gitignore",
+        "url": "https://github.com/spevans/swift-project1/commit/420f2058dbd8c7ab25d697fe07e683909372d914"
+    },
+    {
+        "sha": "005f8a3b7a0637c194469fc84b1ec006bbcad1d9",
+        "author": "Simon Evans",
+        "email": "si@si.org",
+        "date": "2026-01-24T23:18:54Z",
+        "message": "xhci: Ignore TRB transfer event for unexpected TRBS\n\n- The set_address command is causing a TRB transfer event for an old TRB\n  in the ring. Ignore this for now although it is a bug that needs to be\n  properly addressed.",
+        "url": "https://github.com/spevans/swift-project1/commit/005f8a3b7a0637c194469fc84b1ec006bbcad1d9"
+    },
+    {
+        "sha": "c86c5c8fb5ecbac569d3690f026c94827200938b",
+        "author": "Simon Evans",
+        "email": "si@si.org",
+        "date": "2026-01-23T20:42:14Z",
+        "message": "uhci: TD allocation issues\n\n- Call removeControl() when a Control Request finishes even if it\n  failed. This avoids a leak on error.\n\n- Remove some debugging that run in the interrupt handler that\n  called malloc().",
+        "url": "https://github.com/spevans/swift-project1/commit/c86c5c8fb5ecbac569d3690f026c94827200938b"
+    },
+    {
+        "sha": "12e845ca8ec33df472009d4faa4b1697456aea8d",
+        "author": "Simon Evans",
+        "email": "si@si.org",
+        "date": "2026-01-28T19:25:48Z",
+        "message": "usb: URB and RootHub simplification\n\n- Simplify USB.Request and replace unnecessary fields with an enum.\n\n- Remove TransferDirection from the control requests.\n\n- Remove usbDevice from USB.Request.\n\n- Make USB.Request non-copyable.\n\n- Remove bus.submitURB and just submit on the pipe.\n\n- Use a UInt32 for buffer length/bytes transferred to\n\n- Remove HCDRootHub in favour of one USBBus per HCD. The per HCD RootHub\n  is now just a USBDevice.\n\n- Add HCD_XHCIPipe and HCD_UHCI pipes for sending URBs to the HCD virtual\n  USBDevice.\n\n- Store the depth of a USBDevice - number of devices between the HCD and\n  the device itself.",
+        "url": "https://github.com/spevans/swift-project1/commit/12e845ca8ec33df472009d4faa4b1697456aea8d"
+    },
+    {
+        "sha": "c5e0a287692c8f4f9e2d92eeff75f14919b24e77",
+        "author": "Simon Evans",
+        "email": "si@si.org",
+        "date": "2026-01-28T19:20:40Z",
+        "message": "device: Mark Devices as busses using self.devices array != nil\n\n- Add device.setAsBus() to allow devices to be upgraded to a Bus eg\n  USB Hub.",
+        "url": "https://github.com/spevans/swift-project1/commit/c5e0a287692c8f4f9e2d92eeff75f14919b24e77"
+    },
+    {
+        "sha": "977bb48db3fd2c24378fa429c5222f57ff257aca",
+        "author": "Simon Evans",
+        "email": "si@si.org",
+        "date": "2026-01-17T17:04:21Z",
+        "message": "usb: Improve Hub enumeration for HighSpeed hubs\n\n- Update PortStatus with fix to correctly build the status words from the\n  incoming bytes and add support for SuperSpeed.\n\n- Use a better hub enumeration that improves checks for port power and\n  status changes. This fixes enumerating HighSpeed hubs.\n\n- Add UHCI support for clearing a port reset by storing the reset status\n  and responding when needed.",
+        "url": "https://github.com/spevans/swift-project1/commit/977bb48db3fd2c24378fa429c5222f57ff257aca"
+    },
+    {
+        "sha": "51c046343a13ccf836b8caf806afc8fa281ef690",
+        "author": "Simon Evans",
+        "email": "si@si.org",
+        "date": "2026-01-11T16:45:01Z",
+        "message": "xhci: Fixes to HCD, Endpoint Context and Descrptor.\n\n- Fix SlotContext for a LowSpeed/FullSpeed device on a HighSpeed hub.\n\n- Fix maxPacketSize in the Endpoint Descriptor for HighSpeed devices.\n\n- Use the usbDevice's port in the route string.\n\n- Set the XHCI port power bit for the SET_FEATIURE.PORT_POWER hub\n  command.\n\n- Set the interval for LS/FS/HS interrupt and isochronous endpoints in\n  the EndpointContext. This stops excess interrupts for the keyboard.\n\n- Fix the XHCI pipe array to be 31 entries instead of 16 and correctly\n  calculate the number of context entries taking the current pipes into\n  account. Also fix the pipe index to be the endpointId - 1.",
+        "url": "https://github.com/spevans/swift-project1/commit/51c046343a13ccf836b8caf806afc8fa281ef690"
+    }
+]

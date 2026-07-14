@@ -1,0 +1,373 @@
+[
+    {
+        "id": 4881313400,
+        "number": 135,
+        "title": "Searching within messages — Full-text Search",
+        "state": "open",
+        "created_at": "2026-07-14T08:33:02Z",
+        "updated_at": "2026-07-14T08:33:02Z",
+        "closed_at": null,
+        "author": "UntypedLetter",
+        "comments": 0,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "**Is your feature request related to a problem? Please describe.**\nThe currently available search button 🔍 searches only the room names, not the message text.\n\n**Describe the solution you'd like**\nI would like it to sift through all messages in all rooms for a particular search phrase.\n\n**Describe alternatives you've considered**\nI have considered using the Desktop Element just for searching.",
+        "url": "https://github.com/SchildiChat/schildichat-android-next/issues/135"
+    },
+    {
+        "id": 4828210930,
+        "number": 134,
+        "title": "Not receiving new message notification",
+        "state": "open",
+        "created_at": "2026-07-07T11:52:25Z",
+        "updated_at": "2026-07-13T12:15:54Z",
+        "closed_at": null,
+        "author": "UntypedLetter",
+        "comments": 2,
+        "labels": [
+            "bug",
+            "upstream:probably"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "**Describe the bug**\nWhen I send a message from Windows to Android, it does not display any notification on Android. Only when Schildi is opened, then it shows the green circle with 1 inside. Battery is set to unrestricted. Even while Schildi is open, new messages do not produce a banner notification, rather just a badge / green circle. A week or two ago, it was working perfectly, but then something happened. I have already run the notification troubleshooter and tests came correct. The notable thing is that the troubleshooter was able to produce a banner notification, yet newer messages were unable to produce it.\n\n**To Reproduce**\nSteps to reproduce the behavior:\n1. Send a message from Windows Element.\n2. No banner notification is received on Schildi. But when you open Schildi, a green badge will be displayed.\n\n**Expected behavior**\nA banner notification should be triggered for every new message.\n\n**Smartphone (please complete the following information):**\n - Device: Samsung Galaxy A03\n - OS: Android 13\n\n**Additional context**\n - App version: 0.11.4(12100)\n - Store: Google Play\n - Homeserver: matrix.org\n - Related experimental/labs settings: No\n - Logs have been submitted using the app's built-in bug report (/\"rageshake\") mechanism: No\n\n**Upstream relevance**\n - Does this issue exist in Element X Android?\nI don't know since I am not using Element X.",
+        "url": "https://github.com/SchildiChat/schildichat-android-next/issues/134"
+    },
+    {
+        "id": 4786189909,
+        "number": 133,
+        "title": "Unread Message UI Elements for Threads Not Displaying Consistently",
+        "state": "open",
+        "created_at": "2026-07-01T13:53:38Z",
+        "updated_at": "2026-07-02T12:54:45Z",
+        "closed_at": null,
+        "author": "les2marmottes",
+        "comments": 3,
+        "labels": [
+            "upstream"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "Describe the bug\nThreaded messages trigger a push notification and increment the app badge correctly when the app is closed or in the background. However, once the app is opened, these unread messages are not indicated in the chat list. Specifically, they do not spawn a green dot next to the relevant chat (unlike non‑threaded unread messages), they do not contribute to the unread count of a space (at the bottom of the screen), and they are not included when filtering the chat list to show \"Unread\" rooms. This makes it nearly impossible to locate which chat contains the unread threaded message after opening the app based on the badge count.\n\nTo Reproduce\n\n1. Receive a new message in a thread (within a room).\n2. Observe that a push notification appears and the app badge increments.\n3. Open the app without tapping the push notification.\n4. Look at the chat list – no green dot appears next to the room containing the threaded message.\n5. Apply the filter to show only \"Unread\" chats – the room with the threaded unread is not displayed.\n6. Enable the \"jump to unread\" UI button (in SchildiChat) – this button does navigate correctly to the thread with the unread message, showing that the client internally knows about the unread state and its location.\n\nExpected behavior\nUnread messages in threads should behave consistently with unread non-thread messages. They should:\n· Display a green dot next to the room in the chat list and contribute to the unread count shown next to space icons. \n· Cause the room to appear when filtering the chat list by \"Unread\".\n\nScreenshots\n(none relevant) \n\nSmartphone\nPixel 7\nAndroid 16\n\nAdditional context\n· App version: 0.11.4\n· Store: Google Play\n· Homeserver: matrix.org\n· Related experimental/labs settings: Yes I have, and no it does not help! \n· Logs have been submitted via built‑in bug report: no. The bug report function keeps giving me an error and will not submit. \n\nUpstream relevance\n\n· This issue also exists in Element X Android (observed on friends' iOS devices running Element X, so not specific to SchildiChat).\n· If a corresponding bug report exists in Element X, please link it: https://github.com/element-hq/element-x-android/issues/7131\n\nAdditional observations\nThe \"jump to unread\" button in SchildiChat works correctly, confirming that the client has the needed unread state and location information internally, but it is not fully reflected in the main UI components (chat list dot, unread filter).",
+        "url": "https://github.com/SchildiChat/schildichat-android-next/issues/133"
+    },
+    {
+        "id": 4603033441,
+        "number": 129,
+        "title": "Add /discardsession command support",
+        "state": "open",
+        "created_at": "2026-06-06T10:59:55Z",
+        "updated_at": "2026-06-06T13:58:48Z",
+        "closed_at": null,
+        "author": "CommanderRedYT",
+        "comments": 0,
+        "labels": [
+            "enhancement",
+            "open for contributions"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "**Is your feature request related to a problem? Please describe.**\nFor some reason ppl complain when I write with the app on certain rooms because of unable to decrypt message.\nI am getting asked to do `/discardsession`, which afaik doesn't exist in the app, so I have to reset the whole app to fix it.\n\n**Describe the solution you'd like**\nA simple way to reset a rooms crypto.\n\n**Describe alternatives you've considered**\nHaving a button instead of the command would also work for me.\n\n",
+        "url": "https://github.com/SchildiChat/schildichat-android-next/issues/129"
+    },
+    {
+        "id": 4543906394,
+        "number": 127,
+        "title": "[request] separate screenshot behavior from the pinlock",
+        "state": "open",
+        "created_at": "2026-05-28T21:20:52Z",
+        "updated_at": "2026-06-19T22:47:56Z",
+        "closed_at": null,
+        "author": "nahuhh",
+        "comments": 5,
+        "labels": [
+            "question"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "I'm able to take screenshots in schildinext using one device but not another.\n\ni am also able to take screenshots in element X on  both devices.\n\nIve looked through the settings too many times.. is there a setting for this? 🥲 i dont recall changing any settings related to screenshots/privacy",
+        "url": "https://github.com/SchildiChat/schildichat-android-next/issues/127"
+    },
+    {
+        "id": 4502080750,
+        "number": 126,
+        "title": "Opening the image begins to play automatically in a random order.",
+        "state": "closed",
+        "created_at": "2026-05-22T11:01:16Z",
+        "updated_at": "2026-05-22T13:49:00Z",
+        "closed_at": "2026-05-22T11:11:11Z",
+        "author": "tony-studio",
+        "comments": 2,
+        "labels": [
+            "bug",
+            "upstream"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "**Describe the bug**\nIn an E2EE chat room, tapping any image opens the viewer. However, upon returning to the chat and reopening the same image, it immediately starts playing the images in a randomized order.\n\n**To Reproduce**\nSteps to reproduce the behavior:\n1. Go to 'any image'\n2. Click on 'return'\n3. Go to 'same image'\n4. See error\n\n**Expected behavior**\nWhen viewing images, only the selected one is displayed; others will only appear when swiping left or right.\n\n**Smartphone (please complete the following information):**\n - OS: [Android 16]\n\n**Additional context**\n - App version: [0.11.1-ex_26_4_4]\n - Store: [Google Play]\n\n**Upstream relevance**\n - Does this issue exist in Element X Android?\n No.\n",
+        "url": "https://github.com/SchildiChat/schildichat-android-next/issues/126"
+    },
+    {
+        "id": 4452226508,
+        "number": 125,
+        "title": "Telegram-style bulk message selection",
+        "state": "open",
+        "created_at": "2026-05-15T07:44:48Z",
+        "updated_at": "2026-07-04T09:54:54Z",
+        "closed_at": null,
+        "author": "Kommynct",
+        "comments": 3,
+        "labels": [
+            "enhancement",
+            "feature:out of scope"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "**Is your feature request related to a problem? Please describe.**\nMulti-message selection currently feels heavier and more disruptive than necessary. Entering selection mode changes the UI too aggressively and makes bulk actions on non-adjacent messages slower and less natural than they could be.\n\n**Describe the solution you'd like**\nA Telegram-style message selection system:\n\n* long pressing a message immediately selects it\n* tapping additional messages toggles selection\n* scrolling continues normally during selection\n* the chat layout remains visually stable\n* actions appear in a compact contextual toolbar\n\nThe important part is keeping selection lightweight and message-centric instead of feeling like a separate modal workflow.\n\n**Describe alternatives you've considered**\nThe current selection flow works functionally, but feels more cumbersome for large or non-adjacent selections. Checkbox-based or heavily modal approaches used by many apps also tend to interrupt conversational context and increase interaction cost.\n\n**Additional context**\nTelegram’s implementation is a good reference because it preserves spatial continuity and minimizes mode-switching. Selection feels like directly interacting with messages rather than entering a separate UI state, which makes bulk operations much faster and more comfortable.\n",
+        "url": "https://github.com/SchildiChat/schildichat-android-next/issues/125"
+    },
+    {
+        "id": 4386505341,
+        "number": 124,
+        "title": "Really hard to open the menu to react to a message with a mention split by text wrapping",
+        "state": "open",
+        "created_at": "2026-05-05T19:12:33Z",
+        "updated_at": "2026-05-06T06:34:20Z",
+        "closed_at": null,
+        "author": "ledlamp",
+        "comments": 0,
+        "labels": [
+            "bug",
+            "downstream",
+            "feature:messageformat"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "**Describe the bug**\nLook at the video there was this message with a mention wrapped around making it almost impossible to touch and hold it to open the menu on it without touching the mention instead.\n\n**To Reproduce**\nIg send a message like that try to break a mention in half with text wrapping. Here is the msg json\n\n```json\n{\n    \"body\": \"I think I have a photo of [17lifers (at mikuplushfarm)](https:\\/\\/matrix.to\\/#\\/@17lifers:mikuplushfarm.ovh) in thigh highs \",\n    \"format\": \"org.matrix.custom.html\",\n    \"formatted_body\": \"I think I have a photo of <a href=\\\"https:\\/\\/matrix.to\\/#\\/@17lifers:mikuplushfarm.ovh\\\">17lifers (at mikuplushfarm)<\\/a> in thigh highs\",\n    \"m.mentions\": {\n      \"user_ids\": [\n        \"@17lifers:mikuplushfarm.ovh\"\n      ]\n    },\n    \"msgtype\": \"m.text\"\n  }\n```\n\n**Expected behavior**\nThe mention shouldn't hijack the whole entire message\n\n**Screenshots**\n\nVideo of the issue:\n\nhttps://github.com/user-attachments/assets/b38b6418-3606-4eb2-848d-27c383b02ce9\n\n\nAlso right after I made that video I encountered another issue where typing was extremely slow:\n\nhttps://github.com/user-attachments/assets/8e3e7607-3632-4203-bc8c-1d5ea8656af7\n\n**Smartphone (please complete the following information):**\n - Device: Android 16\n - OS: Pixel 6 Pro\n\n**Additional context**\n - App version: 0.11.1\n - Store: croc fdroid\n - Homeserver: matrix.kitty.haus\n - Related experimental/labs settings: no related?\n - Logs have been submitted using the app's built-in bug report (/\"rageshake\") mechanism: no\n\n**Upstream relevance**\n - Does this issue exist in Element X Android? No the mention is not broken by text wrapping on element x and there is no issue.\n\n<img width=\"1440\" height=\"3120\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/6e93895c-9043-4f8b-85ba-f37c72557d5e\" />\n\n - If this issue exists in Element X Android, please also link the corresponding bug report (create a new one if it doesn't exist yet)\n\nAdd any other context about the problem here.\n",
+        "url": "https://github.com/SchildiChat/schildichat-android-next/issues/124"
+    },
+    {
+        "id": 4372363378,
+        "number": 123,
+        "title": "Feature Request: Hide unauthenticated message warnings (for bridged chats)",
+        "state": "open",
+        "created_at": "2026-05-03T16:41:43Z",
+        "updated_at": "2026-05-04T06:26:32Z",
+        "closed_at": null,
+        "author": "Netfloex",
+        "comments": 0,
+        "labels": [
+            "enhancement",
+            "feature:parity:v2"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "**Is your feature request related to a problem? Please describe.**\nWhen using matrix mostly with bridges, it is annoying to have the red time and question mark in all chats.\n\n**Describe the solution you'd like**\nLike in [schildichat-revenge](https://github.com/SchildiChat/schildi-revenge/commit/aadbbf829b9fa61e2fff3dccb66d3360ded29120) an option to disable these warnings\n\n**Describe alternatives you've considered**\nHopefully it will be possible to verify the bot account / puppets in the future, see https://docs.mau.fi/bridges/general/troubleshooting.html#can-i-verify-the-bridge-e2ee-session\n\n",
+        "url": "https://github.com/SchildiChat/schildichat-android-next/issues/123"
+    },
+    {
+        "id": 4370436727,
+        "number": 122,
+        "title": "Feature Request: Download of Media from message context menu",
+        "state": "open",
+        "created_at": "2026-05-03T00:21:34Z",
+        "updated_at": "2026-05-03T08:11:21Z",
+        "closed_at": null,
+        "author": "ThePebble0",
+        "comments": 1,
+        "labels": [
+            "enhancement",
+            "upstream"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "**Is your feature request related to a problem? Please describe.**\nI would like to be able to download the media that i get send. This is specifically useful if you work on Social Media-Posts with others via Chats.\n\n**Describe the solution you'd like**\nI think of an Button in the Context-Menu of the Messages.\n\n**Describe alternatives you've considered**\nDue to the primary use of the Bridges i open the original Messenger-App on the Phone. Or i use the Desktop-Client to download the media.\n\n",
+        "url": "https://github.com/SchildiChat/schildichat-android-next/issues/122"
+    },
+    {
+        "id": 4361322800,
+        "number": 121,
+        "title": "Mention autocomplete thing always doesn't work after a while",
+        "state": "open",
+        "created_at": "2026-04-30T21:19:14Z",
+        "updated_at": "2026-05-01T07:47:39Z",
+        "closed_at": null,
+        "author": "ledlamp",
+        "comments": 0,
+        "labels": [
+            "bug",
+            "upstream:probably"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "**Describe the bug**\nWhenever I have to @ someone, the list of mentions doesn't show up and I either have to type the whole handle, or I have to swipe out of the room, and go back into the room, to make it work again.\n\n**To Reproduce**\nSteps to reproduce the behavior:\n1. Use schildinext like normal for a while\n2. Try to mention someone, does it work?\n\nI don't know how to reproduce it on demand, but the issue just keeps happening. I only mention people occasionally, and the bug happens almost every time I do.\n\n**Expected behavior**\nA clear and concise description of what you expected to happen.\n\nIt should just always work\n\n**Screenshots**\nIf applicable, add screenshots to help explain your problem.\n\n**Smartphone (please complete the following information):**\n - Device: Pixel 6 Pro\n - OS: Android 16\n\n**Additional context**\n - App version: [Look it up in Settings / Help & About. Click \"Version\" there to copy it. \"Latest version\" is not a valid version!] What are u talking about, the version is on the bottom of settings and I can not copy it, so I have to type it manually, it's 0.11.0\n - Store: [e.g. F-Droid, Google Play, SpiritCroc's F-Droid] croc's droid\n - Homeserver: [e.g. matrix.org] matrix.kitty.haus\n - Related experimental/labs settings: [Have you enabled any experimental or labs settings (which ones), and does the issue still exist when disabling these?] thread replies, link previews, select media quality per upload\n - Logs have been submitted using the app's built-in bug report (/\"rageshake\") mechanism: [yes/no] no\n\n**Upstream relevance**\n - Does this issue exist in Element X Android? idk\n - If this issue exists in Element X Android, please also link the corresponding bug report (create a new one if it doesn't exist yet)\n\nAdd any other context about the problem here.\nim still in bed\n",
+        "url": "https://github.com/SchildiChat/schildichat-android-next/issues/121"
+    },
+    {
+        "id": 4354681175,
+        "number": 120,
+        "title": "Feature Request: Support custom CAs (added to Android system pool)",
+        "state": "open",
+        "created_at": "2026-04-30T01:16:32Z",
+        "updated_at": "2026-04-30T06:33:51Z",
+        "closed_at": null,
+        "author": "little-quokka",
+        "comments": 1,
+        "labels": [
+            "enhancement",
+            "wontfix",
+            "upstream"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "**Is your feature request related to a problem? Please describe.**\nI really would like to update to the new schildichat for android, but it does not support custom certificate authorities. \n\nDetails:\n* My matrix server is a self-hosted conduit server that uses a credential signed by my own CA. \n* I manage my own CA with 'step ca'.\n* I don't want to connect my instance to the internet and get a certificate by e.g., Let's Encrypt. \n\nI think this is a feature which will also be necessary for any company to make use of schildichat as they would usually manage their own CA as well. \n\n**Describe the solution you'd like**\nThere are multiple possible solutions to this:\n* network_security_config.xml\n* interactive yes/no on first connect (identical to the old client)\n\n**Describe alternatives you've considered**\nAlternatives are clunky:\n* A reverse proxy at the edge of my network so that the client sees a Let's Encrypt cert. Issues: Hole in the firewall; Let's encrypt overhead; Mix of internal and external CAs;\n* Build my own fork of this client. Issues: Hard to keep up with the fast development of this app. \n\n**Additional context**\nN/A\n",
+        "url": "https://github.com/SchildiChat/schildichat-android-next/issues/120"
+    },
+    {
+        "id": 4303360763,
+        "number": 119,
+        "title": "Wide images sent via webhooks/HTML payloads render as cropped",
+        "state": "closed",
+        "created_at": "2026-04-21T14:41:40Z",
+        "updated_at": "2026-04-21T14:55:55Z",
+        "closed_at": "2026-04-21T14:55:16Z",
+        "author": "bl4ckswordsman",
+        "comments": 1,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "**Describe the bug**\nWhen sending wide format images via webhooks/bots with the img tag, the rendered images show as cropped.\n\n**To Reproduce**\nSteps to reproduce the behavior:\n1. Upload a wide format image to the matrix server and note the mxc:// url.\n2. Send a payload with the image, something like:\n```json\n{\n  \"text\": \"\",\n  \"html\": \"300x100 sample image, with width=300 tag:<br/><img src=\\\"mxc://domain.com/aBcDeFg\\\"  width=\\\"300\\\" alt=\\\"Sample\\\" />\"\n}\n```\n3. See the rendered image, which will be cropped into a square-ish format.\n\n\n**Expected behavior**\nThe rendered image should retain its ratio, and not be cropped but preferably scaled (if necessary)\n\n**Screenshots**\nSchildiChat Next:\n<img width=\"400\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/364c439f-9f08-41b0-aa11-2b7d28e8182f\" />\n\nElement Web:\n<img width=\"427\" height=\"380\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/6da11d48-db41-4b0a-92fb-779e28fdea17\" />\n\nFor reference, this is how it shows in another Android matrix client, FluffyChat:\n<img width=\"350\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/003410ee-7bc7-4ace-bf9e-cfa06dea5a5d\" />\n\n**Smartphone (please complete the following information):**\n - Device: Pixel\n - OS: Android 16\n\n**Additional context**\n - App version: 0.11.0\n - Store: SpiritCroc's F-Droid\n - Homeserver: self-hosted\n - Related experimental/labs settings: Link previews, Disabled Legacy renderer\n - Logs have been submitted using the app's built-in bug report (/\"rageshake\") mechanism: no\n\n**Upstream relevance**\nElement X doesn't even render images.\n",
+        "url": "https://github.com/SchildiChat/schildichat-android-next/issues/119"
+    },
+    {
+        "id": 4256281441,
+        "number": 118,
+        "title": "Show `body` instead of `formatted_body` in notification text",
+        "state": "open",
+        "created_at": "2026-04-13T16:09:11Z",
+        "updated_at": "2026-04-13T20:30:00Z",
+        "closed_at": null,
+        "author": "bl4ckswordsman",
+        "comments": 4,
+        "labels": [
+            "question",
+            "wontfix"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "**Is your feature request related to a problem? Please describe.**\nSince discussions are disabled on this repo, posting here instead, mainly trying to understand if this would be too complex to implement and how it works.\n\nSometimes (as I've discovered playing around with some bot/webhooks), the `content.body` value in message jsons can be shorter and more appropriate than `content.formatted_body` as the notification text (i.e. the text that shows in a push notification/pop up when you receive a new message).\nThis is actually how it works in Element Web and Element Desktop, it always shows the `body` text as the notification text.\n\nIn SC Next and Element X it seems that it only shows the `body` text in the notification when there's no `formatted_body` in the message json.\n\n**Describe the solution you'd like**\nI'm not sure if it can and how it would be implemented, but a solution would be a behavior similar to how notification text shows up in Element Web/Desktop.\n",
+        "url": "https://github.com/SchildiChat/schildichat-android-next/issues/118"
+    },
+    {
+        "id": 4235746478,
+        "number": 117,
+        "title": "User mentions displayed show full \"@user:domain.com\" instead of just \"@user\"",
+        "state": "open",
+        "created_at": "2026-04-10T00:47:38Z",
+        "updated_at": "2026-04-10T05:56:21Z",
+        "closed_at": null,
+        "author": "bl4ckswordsman",
+        "comments": 1,
+        "labels": [
+            "enhancement",
+            "accepted",
+            "feature:messageformat"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "**Is your feature request related to a problem? Please describe.**\nIn Element X, if I mention someone, it displays as `@user` but in SchildiChat Next it displays as `@user:domain.com`.\nA workaround is to enable 'Legacy message renderer' but that creates other display problems as it lacks some formatting options.\n\n**Describe the solution you'd like**\nI think it would be nice if this particular aspect (user mentions) matched Element X. I'm guessing it could be achieved with some sort of adjustment to SchildiChat Next's MXID-to-displayname resolution.\n\n**Describe alternatives you've considered**\nN/A\n\n**Additional context**\n",
+        "url": "https://github.com/SchildiChat/schildichat-android-next/issues/117"
+    },
+    {
+        "id": 4216804104,
+        "number": 115,
+        "title": "Some Spaces showing up twice",
+        "state": "closed",
+        "created_at": "2026-04-07T09:39:21Z",
+        "updated_at": "2026-04-19T10:36:58Z",
+        "closed_at": "2026-04-19T10:36:58Z",
+        "author": "AkshayRao27",
+        "comments": 4,
+        "labels": [
+            "bug",
+            "downstream",
+            "feature:spaces"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "**Describe the bug**\nSpaces created by the Mautrix WhatsApp and Mautrix Signal bridges are showing up twice in Schildi Next. I am still using the Python version of Mautrix Telegram, and that space is one that I've created manually - that one's showing up correctly.\n\n**To Reproduce**\nSteps to reproduce the behavior:\n1. Install Mautrix WhatsApp / Mautrix Signal Bridge\n2. Sign in to bridge\n3. Space shows up twice.\n\n**Expected behavior**\nEach Space should appear only once. Alternatively, it is possible to merge spaces that Schildi Next thinks are duplicates.\n\n**Screenshots**\nSpaces List:\n<img width=\"1344\" height=\"2992\" alt=\"Spaces List\" src=\"https://github.com/user-attachments/assets/fe5ff0c0-d380-4bb8-8427-ac84c384ab4e\" />\n\nExample of Duplicate Space (Signal):\n<img width=\"1344\" height=\"2992\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/8a55f8d0-456c-4b29-b01f-25f79652bf30\" />\n\n<img width=\"1344\" height=\"2992\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/7b82ed3c-2664-4d95-bae6-4fd2a22b5e12\" />\n\nSpaces are behaving correctly on Element Desktop:\n<img width=\"492\" height=\"829\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/57e966a6-5bde-47e3-a71b-d954d905518e\" />\n\n**Smartphone (please complete the following information):**\n - Device: Google Pixel 9 Pro XL\n - OS: Android 16 Build CP1A.260305.018\n\n**Additional context**\n - App version: 0.11.0 (11502)\n - Store: SpiritCroc's F-Droid\n - Homeserver: https://matrix.zelotes.eu\n - Related experimental/labs settings: Yes, and deactivating these three settings doesn't make a difference.\n   - Sync Indicator\n   - Debounce offline state\n   - Enable Thread Replies\n - Logs have been submitted using the app's built-in bug report (/\"rageshake\") mechanism: [yes]\n\n**Upstream relevance**\n - Does this issue exist in Element X Android?\nUnsure, I don't use Element X. I have only ever used Schildi Next.\n\nAdd any other context about the problem here.\n",
+        "url": "https://github.com/SchildiChat/schildichat-android-next/issues/115"
+    },
+    {
+        "id": 4195149387,
+        "number": 114,
+        "title": "Support notification setting per room / user",
+        "state": "closed",
+        "created_at": "2026-04-02T14:54:05Z",
+        "updated_at": "2026-04-02T15:17:43Z",
+        "closed_at": "2026-04-02T15:17:43Z",
+        "author": "tarminu",
+        "comments": 1,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "I would like to have unique notification sounds for specific rooms and users so I know if a new message is something I should look at sooner or if it is low priority and can wait.\n\nI would like to be able to specify the notification sound, priority, lock screen visibility, and other Android notification parameters as needed for the users and rooms I specify.",
+        "url": "https://github.com/SchildiChat/schildichat-android-next/issues/114"
+    },
+    {
+        "id": 4143746434,
+        "number": 113,
+        "title": "No suggested emoji in message context menu (MSC4356)",
+        "state": "closed",
+        "created_at": "2026-03-26T13:06:16Z",
+        "updated_at": "2026-04-03T08:32:07Z",
+        "closed_at": "2026-04-03T08:32:07Z",
+        "author": "DodoLeDev",
+        "comments": 3,
+        "labels": [
+            "bug",
+            "downstream"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "**Describe the bug**\nWhen long pressing a message, I have no suggested emoji in the context menu. I dont know if the app is the culprit or if its an issue with the Matrix server I'm using (Tuwunel), but the problem does not exist on the official Element Desktop app.\n\n**To Reproduce**\nSteps to reproduce the behavior:\n1. Long press a message\n\n**Expected behavior**\nSome emojis should be suggested\n\n**Screenshots**\n![Screenshot_20260326-135015_SchildiChat Next.png](https://github.com/user-attachments/assets/d5107699-2969-452e-9e07-b9d67badd813)\n\n\n**Smartphone (please complete the following information):**\n - OS: crDroid (LineageOS fork)\n\n**Additional context**\n - App version: 0.11.0 (based on Element X 26.03.3)\n - Store: SpiritCroc's F-Droid\n - Homeserver: self-hosting (Tuwunel)\n - Related experimental/labs settings: I have restored the default Element X color scheme. But the problem is still there with default settings\n - Logs have been submitted using the app's built-in bug report (/\"rageshake\") mechanism: no\n\n**Upstream relevance**\n - Does this issue exist in Element X Android?\n - If this issue exists in Element X Android, please also link the corresponding bug report (create a new one if it doesn't exist yet)\n\nAdd any other context about the problem here.\n",
+        "url": "https://github.com/SchildiChat/schildichat-android-next/issues/113"
+    },
+    {
+        "id": 4133284085,
+        "number": 112,
+        "title": "Add possibility to translate to French",
+        "state": "closed",
+        "created_at": "2026-03-25T07:33:00Z",
+        "updated_at": "2026-03-28T09:52:54Z",
+        "closed_at": "2026-03-28T09:52:54Z",
+        "author": "OuraN2O",
+        "comments": 2,
+        "labels": [
+            "invalid"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "Hello, I'd like to help translate Schildichat in French and I don't see it in your translation website\n\nHave a nice day !\n",
+        "url": "https://github.com/SchildiChat/schildichat-android-next/issues/112"
+    },
+    {
+        "id": 4103090985,
+        "number": 111,
+        "title": "Avatars missing for bridged Signal direct chats (mautrix-signal)",
+        "state": "open",
+        "created_at": "2026-03-19T17:16:40Z",
+        "updated_at": "2026-03-30T16:43:46Z",
+        "closed_at": null,
+        "author": "mr8tom",
+        "comments": 2,
+        "labels": [
+            "upstream:probably"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "**Is your feature request related to a problem? Please describe.**\nWhen using **mautrix-signal** bridge with `use_contact_avatars: true`, contact avatars are not displayed in bridged Signal 1:1 (direct) chats. All other Bridges (Whatsapp, Telegram, Instagram) show the avatars. Maybe it's not . Btw, I like your Idea of putting the Bridge-Icon as small Icon next to the Avatar!!\nI testet it with the other apps in comparisson if the Avatar can be seen:\n- Element: Yes, Avatar can be seen\n- SchildiChat Next (Android): Nope\n- SchildiChat Desktop (Alpha): Yes, Avatar can be seen\n- SchildiChat Desktop (Revenge): Nope\n\n<img width=\"953\" height=\"111\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/0f068b33-6651-49cb-b45b-69a7652ecfaa\" />\n\n**Describe the solution you'd like**\nI want Avatars ^^\n\n**Describe alternatives you've considered**\nIt works if I force the room to use a custom avatar (upload jpg)\n\n**Additional context**\nMaybe my config is shitty? private_chat_portal_meta: true forces to use avatar + name over bridge\n```\nvars.yml:\nmatrix_mautrix_signal_configuration_extension_yaml: |\n  bridge:\n    private_chat_portal_meta: true\n  matrix:\n    sync_direct_chat_list: true\n    delivery_receipts: true\n```\n",
+        "url": "https://github.com/SchildiChat/schildichat-android-next/issues/111"
+    }
+]

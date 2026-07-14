@@ -1,0 +1,242 @@
+[
+    {
+        "sha": "6cc534997c2a947174687cee4ccc98db8496ffb5",
+        "author": "Dmitry Romanenko",
+        "email": "Dmitry@Romanenko.in",
+        "date": "2026-07-12T12:14:07Z",
+        "message": "Rewrite theme detection, add testing script (#430)\n\n* Rewrite theme detection, add testing script\n\n* Refactor to simplify adding new themes\n\n* Change opacity of overlay to improve visibility on white backgrounds\n\n* Attempt to fix scaling identification issues\n\n* Various adjustments\n* Add colorblind filter detection\n* Add more precise detection of scaling straight from last EE.cfg (saves state after exiting game)\n* Changes to scaling formulas for finding the right theme\n* New location for theme detection selected\n* Race conditions fixes\n* Fixes for tests\n* Fixes for status updates\n* Fixes for theming showing incorrect background color on buttons\n* Fixes for infinite attempts to reattach to EE.log when game is exited then launched again\n* Add SKILL for tesseract.net to help investigating issues\n\n* refactor(WFInfo): OCR cleanup, Tesseract fallback, overlay dedup\n\nOcr.cs — static split char arrays, pattern matching simplifications,\ndivision shorthand, collection init syntax, method renames\n(ProbeProfilePixel, UpdateEngineAsync), avoid redundant lookups.\n\nTesseractService.cs — try primary tessdata path before fallback,\nengine dispose cleanup on failure.\n\nMain.cs — guard against stacking duplicate ColorblindWarning windows.\n\nSnapItOverlay.xaml(.cs) — extracted SetRectangles helper, fixed typo,\nrepositioned exit prompt for correct centering.\n\nWarframeProcessFinder.cs — reliable _lastDetectionFailed flag for\naccurate status messages.\n\nStyles.xaml — MultiTrigger for hover only when control enabled.\n\nSettingsWindow.xaml.cs — UpdateEngineAsync rename.\n\nColorblindWarning.xaml — removed empty TextBlock style.\n\n* fix: locale change error handling, colorblind I/O off UI thread\n\n- Move OCR.UpdateEngineAsync into Task.Run with existing\n  try/catch/logging/error-popup for locale failures\n- Hoist EE.cfg file I/O into Task.Run at call site, dispatch\n  only window creation to UI thread\n- Remove file I/O from SpawnColorblindWarning (now caller's\n  responsibility)\n\n* fix: serialize locale refresh to prevent concurrent races\n\nCancel in-flight locale refresh before starting a new one\nvia CancellationTokenSource. Check cancellation between\nOCR.UpdateEngineAsync and Main.dataBase.ReloadItems so a\nsuperseded refresh discards its result before mutating data.\n\n* fix: reward screen OOB and theme probe at non-16:9 resolutions\n\n- ExtractPartBoxAutomatically: use fullScreen bitmap dimensions instead of\n  Win32 window rect; clamp clone regions to prevent out-of-bounds on\n  sub-4K screens\n- ScreenScaling: Math.Max → Math.Min — game scales UI to constraining\n  dimension (width for 4:3, height for ultrawide); verified via pixel\n  measurement of theme stripe at 800x600\n- SnapIt: extract DetectScalingBruteForce, add ForceLegacyScaling toggle\n\n* fix: SnapIt scaling fallback used wrong detector for inventory overlay\n\nDetectScalingBruteForce (TextSegments-based) was designed for reward\nscreen text boxes, not the SnapIt inventory grid. Revert to\nDetectUiScale (row-height density) which is layout-agnostic.\nRemove dead DetectScalingBruteForce method.\n\n* feat(legacy-detection): add ForceLegacyDetection for old theme/crop mechanics\n\nRename ForceLegacyScaling → ForceLegacyDetection. When enabled:\n- GetThemeWeighted: full screenshot + trapezoid scan with GetClosestTheme\n  using current ThemePrimary[] colors, LockBits fast pixel access,\n  debug saves trapezoid outline as ThemeScanArea_*\n- ExtractPartBoxAutomatically: oversized initial crop from\n  _window.Window dimensions, pixelRewardLineHeight constant,\n  clamped to bitmap bounds\n- Theme overwrite skips scan entirely\n- SnapIt fallback still uses DetectUiScale when config unreadable",
+        "url": "https://github.com/WFCD/WFinfo/commit/6cc534997c2a947174687cee4ccc98db8496ffb5"
+    },
+    {
+        "sha": "5aaefb33b2e1477ca2f041d513c1d8f0a0e66279",
+        "author": "Dmitry Romanenko",
+        "email": "Dmitry@Romanenko.in",
+        "date": "2026-05-25T01:04:03Z",
+        "message": "Add new theme support and improve localization handling (#423)\n\n* Minor stability improvements\n\n* Patches for blueprint wording, escaping, forma\n\n* Various patches\n\n* Add simple AGENTS.md to simplify debugging\n\n* Adjust scaling formulas to avoid duplication + compensation for Sparse mode\n\n* Fix counting\n\n* Derive size of weights dynamically from theme count\n\n* Remove redundant variables and methods for tesseract services\n\n* Force usage of caveman for some efficiency with tokens\n\n* Refactor post-processing towards conditional fallback straight in method\n\n* Tweak for english accuracy\n\n* Add upscaling where required, compensate mismatches for blueprint fragment\n\n* Correction for overlay display positioning to be scale aware\n\n* Correction for word concatetions\n\n* Compensation for korean, shift to language specific part checks\n\n* Isolate the language specific cleanup for blueprint properly\n\n* Fix headless OCR test framework execution\n\n* Upgrade dependencies\n\n* Less magic numbers more generic configs",
+        "url": "https://github.com/WFCD/WFinfo/commit/5aaefb33b2e1477ca2f041d513c1d8f0a0e66279"
+    },
+    {
+        "sha": "46ccb0c5e35853328199626f6fabbe2c2a766c2f",
+        "author": "Dmitry Romanenko",
+        "email": "Dmitry@Romanenko.in",
+        "date": "2026-04-26T03:30:04Z",
+        "message": "Add multi-language support (#413)\n\n* Fix orders being posted as hidden\n\n* * Add support most languages except of Thai, Japanese and Turkish\n* Add foundation for test framework for OCR\n\n* Coderabbit suggestions\n\n* Various corrections to accuracy and rabbit's review patches\n\n* Sort the error zip parts to ensure part0 always the first one to get settings and debug.log\n\n* Resolve Chinese filtering bug, nitpick corrections for rabbit\n\n* Fix sorting of parts for split zip\n\n* Remove redundant test sections\n\n* Rabbit nitpicks\n\n* Rabbit fixes, cleanup korean from unnecessary manual filtering\n\n* Fix rabbit suggestions\n\n* Rabbit review corrections\n\n* Fix korean, improve chinese, refactor and clean future test bed\n\n* Rabbit review patches\n\n* Rabbit review patches\n\n* Rabbit review patches\n\n* Rabbit review patches, better handling of glyph languages\n\n* Add autogeneration of .zip and update.xml\n\n* Add workaround to avoid I/O blockign\n\n* Hopefully now fully fix the ranges\n\n* Fix rabbit findings\n\n* Various corrections\n\n* Fix various logical issues with mechanics\n\n* Rabbit patches\n\n* Various performance and memory tweaks, deduplication of HTTP clients, extra async handling and screenshots now only saved in filesystem under Debug flag\n\n* Rabbit corrections\n\n* Add better error handling\n\n* Rabbit fixes + logic fix for fissure\n\n* Rabbit patches\n\n* Restore the debug screenshot storing\n\n* Upgrade dependencies and patch zip creation\n\n* Remove redundant file",
+        "url": "https://github.com/WFCD/WFinfo/commit/46ccb0c5e35853328199626f6fabbe2c2a766c2f"
+    },
+    {
+        "sha": "b167a2c3b03e02500c062c49eaf644622ff648f4",
+        "author": "dependabot[bot]",
+        "email": "49699333+dependabot[bot]@users.noreply.github.com",
+        "date": "2026-02-24T01:20:38Z",
+        "message": "Bump System.Resources.Extensions from 10.0.2 to 10.0.3 (#412)\n\n---\nupdated-dependencies:\n- dependency-name: System.Resources.Extensions\n  dependency-version: 10.0.3\n  dependency-type: direct:production\n  update-type: version-update:semver-patch\n...\n\nSigned-off-by: dependabot[bot] <support@github.com>\nCo-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>",
+        "url": "https://github.com/WFCD/WFinfo/commit/b167a2c3b03e02500c062c49eaf644622ff648f4"
+    },
+    {
+        "sha": "58a3a551f48abf117065865bdfdb1d535c4f38a1",
+        "author": "dependabot[bot]",
+        "email": "49699333+dependabot[bot]@users.noreply.github.com",
+        "date": "2026-02-17T02:10:43Z",
+        "message": "Bump Microsoft.Windows.SDK.Contracts from 10.0.26100.7463 to 10.0.26100.7705 (#409)\n\n---\nupdated-dependencies:\n- dependency-name: Microsoft.Windows.SDK.Contracts\n  dependency-version: 10.0.26100.7705\n  dependency-type: direct:production\n  update-type: version-update:semver-patch\n...\n\nSigned-off-by: dependabot[bot] <support@github.com>\nCo-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>",
+        "url": "https://github.com/WFCD/WFinfo/commit/58a3a551f48abf117065865bdfdb1d535c4f38a1"
+    },
+    {
+        "sha": "a0c7db5afb0c9d3d1393a21654e52321eab97202",
+        "author": "dependabot[bot]",
+        "email": "49699333+dependabot[bot]@users.noreply.github.com",
+        "date": "2026-02-17T02:03:52Z",
+        "message": "Bump System.Management from 10.0.2 to 10.0.3 (#410)\n\n---\nupdated-dependencies:\n- dependency-name: System.Management\n  dependency-version: 10.0.3\n  dependency-type: direct:production\n  update-type: version-update:semver-patch\n...\n\nSigned-off-by: dependabot[bot] <support@github.com>\nCo-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>",
+        "url": "https://github.com/WFCD/WFinfo/commit/a0c7db5afb0c9d3d1393a21654e52321eab97202"
+    },
+    {
+        "sha": "95f17a2e7482d6acab617556fb28ca42e7687c3d",
+        "author": "dependabot[bot]",
+        "email": "49699333+dependabot[bot]@users.noreply.github.com",
+        "date": "2026-02-17T02:03:39Z",
+        "message": "Bump Microsoft.Extensions.DependencyInjection from 10.0.2 to 10.0.3 (#408)\n\n---\nupdated-dependencies:\n- dependency-name: Microsoft.Extensions.DependencyInjection\n  dependency-version: 10.0.3\n  dependency-type: direct:production\n  update-type: version-update:semver-patch\n...\n\nSigned-off-by: dependabot[bot] <support@github.com>\nCo-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>",
+        "url": "https://github.com/WFCD/WFinfo/commit/95f17a2e7482d6acab617556fb28ca42e7687c3d"
+    },
+    {
+        "sha": "d8e2fdfd7a65b689a73f849301822351003f4cd3",
+        "author": "dependabot[bot]",
+        "email": "49699333+dependabot[bot]@users.noreply.github.com",
+        "date": "2026-02-17T02:03:30Z",
+        "message": "Bump Microsoft.CodeAnalysis.NetAnalyzers from 10.0.102 to 10.0.103 (#407)\n\n---\nupdated-dependencies:\n- dependency-name: Microsoft.CodeAnalysis.NetAnalyzers\n  dependency-version: 10.0.103\n  dependency-type: direct:production\n  update-type: version-update:semver-patch\n...\n\nSigned-off-by: dependabot[bot] <support@github.com>\nCo-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>",
+        "url": "https://github.com/WFCD/WFinfo/commit/d8e2fdfd7a65b689a73f849301822351003f4cd3"
+    },
+    {
+        "sha": "57bf60dbf83f9e700e5938920783c940ae4071c2",
+        "author": "dependabot[bot]",
+        "email": "49699333+dependabot[bot]@users.noreply.github.com",
+        "date": "2026-02-17T02:03:22Z",
+        "message": "Bump Microsoft.AspNetCore.DataProtection from 10.0.2 to 10.0.3 (#406)\n\n---\nupdated-dependencies:\n- dependency-name: Microsoft.AspNetCore.DataProtection\n  dependency-version: 10.0.3\n  dependency-type: direct:production\n  update-type: version-update:semver-patch\n...\n\nSigned-off-by: dependabot[bot] <support@github.com>\nCo-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>",
+        "url": "https://github.com/WFCD/WFinfo/commit/57bf60dbf83f9e700e5938920783c940ae4071c2"
+    },
+    {
+        "sha": "2c6f578c6a5133a62dd4f5fa399af4eda3865603",
+        "author": "Dmitry Romanenko",
+        "email": "Dmitry@Romanenko.in",
+        "date": "2026-01-27T03:18:25Z",
+        "message": "Fix orders being posted as hidden by default (#405)\n\n* Fix orders being posted as hidden\n\n* Bump version to 9.7.1",
+        "url": "https://github.com/WFCD/WFinfo/commit/2c6f578c6a5133a62dd4f5fa399af4eda3865603"
+    },
+    {
+        "sha": "52169091a633c97f8ced467b78b63039937bef3a",
+        "author": "dependabot[bot]",
+        "email": "49699333+dependabot[bot]@users.noreply.github.com",
+        "date": "2026-01-20T02:26:31Z",
+        "message": "Bump System.Management from 10.0.1 to 10.0.2 (#403)\n\n---\nupdated-dependencies:\n- dependency-name: System.Management\n  dependency-version: 10.0.2\n  dependency-type: direct:production\n  update-type: version-update:semver-patch\n...\n\nSigned-off-by: dependabot[bot] <support@github.com>\nCo-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>",
+        "url": "https://github.com/WFCD/WFinfo/commit/52169091a633c97f8ced467b78b63039937bef3a"
+    },
+    {
+        "sha": "1edbeefe1289ef7757910ab1399326e9687e6dd9",
+        "author": "dependabot[bot]",
+        "email": "49699333+dependabot[bot]@users.noreply.github.com",
+        "date": "2026-01-20T02:24:51Z",
+        "message": "Bump Microsoft.AspNetCore.DataProtection from 10.0.1 to 10.0.2 (#400)\n\n---\nupdated-dependencies:\n- dependency-name: Microsoft.AspNetCore.DataProtection\n  dependency-version: 10.0.2\n  dependency-type: direct:production\n  update-type: version-update:semver-patch\n...\n\nSigned-off-by: dependabot[bot] <support@github.com>\nCo-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>",
+        "url": "https://github.com/WFCD/WFinfo/commit/1edbeefe1289ef7757910ab1399326e9687e6dd9"
+    },
+    {
+        "sha": "b975a52bbae8701e3f844990bdbb74ce54c71ec4",
+        "author": "dependabot[bot]",
+        "email": "49699333+dependabot[bot]@users.noreply.github.com",
+        "date": "2026-01-20T02:24:32Z",
+        "message": "Bump Microsoft.CodeAnalysis.NetAnalyzers from 10.0.101 to 10.0.102 (#401)\n\n---\nupdated-dependencies:\n- dependency-name: Microsoft.CodeAnalysis.NetAnalyzers\n  dependency-version: 10.0.102\n  dependency-type: direct:production\n  update-type: version-update:semver-patch\n...\n\nSigned-off-by: dependabot[bot] <support@github.com>\nCo-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>",
+        "url": "https://github.com/WFCD/WFinfo/commit/b975a52bbae8701e3f844990bdbb74ce54c71ec4"
+    },
+    {
+        "sha": "b060df7a49de3f85ce5d038f8e522fd6394934b4",
+        "author": "dependabot[bot]",
+        "email": "49699333+dependabot[bot]@users.noreply.github.com",
+        "date": "2026-01-20T02:24:18Z",
+        "message": "Bump Microsoft.Extensions.DependencyInjection from 10.0.1 to 10.0.2 (#402)\n\n---\nupdated-dependencies:\n- dependency-name: Microsoft.Extensions.DependencyInjection\n  dependency-version: 10.0.2\n  dependency-type: direct:production\n  update-type: version-update:semver-patch\n...\n\nSigned-off-by: dependabot[bot] <support@github.com>\nCo-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>",
+        "url": "https://github.com/WFCD/WFinfo/commit/b060df7a49de3f85ce5d038f8e522fd6394934b4"
+    },
+    {
+        "sha": "d3e2d2c535e4ff3624e2d05ea257632d487cdf3e",
+        "author": "dependabot[bot]",
+        "email": "49699333+dependabot[bot]@users.noreply.github.com",
+        "date": "2026-01-20T02:24:04Z",
+        "message": "Bump System.Resources.Extensions from 10.0.1 to 10.0.2 (#404)\n\n---\nupdated-dependencies:\n- dependency-name: System.Resources.Extensions\n  dependency-version: 10.0.2\n  dependency-type: direct:production\n  update-type: version-update:semver-patch\n...\n\nSigned-off-by: dependabot[bot] <support@github.com>\nCo-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>",
+        "url": "https://github.com/WFCD/WFinfo/commit/d3e2d2c535e4ff3624e2d05ea257632d487cdf3e"
+    },
+    {
+        "sha": "f3903fd77dd6c9c15df596f594f6a3a103b13d17",
+        "author": "dependabot[bot]",
+        "email": "49699333+dependabot[bot]@users.noreply.github.com",
+        "date": "2026-01-14T00:35:02Z",
+        "message": "Bump Microsoft.Windows.SDK.Contracts from 10.0.26100.7175 to 10.0.26100.7463 (#398)\n\n---\nupdated-dependencies:\n- dependency-name: Microsoft.Windows.SDK.Contracts\n  dependency-version: 10.0.26100.7463\n  dependency-type: direct:production\n  update-type: version-update:semver-patch\n...\n\nSigned-off-by: dependabot[bot] <support@github.com>\nCo-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>",
+        "url": "https://github.com/WFCD/WFinfo/commit/f3903fd77dd6c9c15df596f594f6a3a103b13d17"
+    },
+    {
+        "sha": "59fe7163470a63ded5473f6a1e2d4f83f8c84072",
+        "author": "Dmitry Romanenko",
+        "email": "Dmitry@Romanenko.in",
+        "date": "2025-12-26T20:25:02Z",
+        "message": "Add vanguard support (#396)\n\n* Add vanguard support\n\n* Update version to 9.7.0\n\n* Save example payload just icnase",
+        "url": "https://github.com/WFCD/WFinfo/commit/59fe7163470a63ded5473f6a1e2d4f83f8c84072"
+    },
+    {
+        "sha": "0916fd022c2f46ab750205eced16d10d86e6f6c4",
+        "author": "dependabot[bot]",
+        "email": "49699333+dependabot[bot]@users.noreply.github.com",
+        "date": "2025-12-17T16:33:22Z",
+        "message": "Bump System.Resources.Extensions from 10.0.0 to 10.0.1 (#395)\n\n---\nupdated-dependencies:\n- dependency-name: System.Resources.Extensions\n  dependency-version: 10.0.1\n  dependency-type: direct:production\n  update-type: version-update:semver-patch\n...\n\nSigned-off-by: dependabot[bot] <support@github.com>\nCo-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>",
+        "url": "https://github.com/WFCD/WFinfo/commit/0916fd022c2f46ab750205eced16d10d86e6f6c4"
+    },
+    {
+        "sha": "374a11c61c7a0587c3f752518f3011871418d492",
+        "author": "dependabot[bot]",
+        "email": "49699333+dependabot[bot]@users.noreply.github.com",
+        "date": "2025-12-17T16:30:48Z",
+        "message": "Bump System.Management from 10.0.0 to 10.0.1 (#394)\n\n---\nupdated-dependencies:\n- dependency-name: System.Management\n  dependency-version: 10.0.1\n  dependency-type: direct:production\n  update-type: version-update:semver-patch\n...\n\nSigned-off-by: dependabot[bot] <support@github.com>\nCo-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>",
+        "url": "https://github.com/WFCD/WFinfo/commit/374a11c61c7a0587c3f752518f3011871418d492"
+    },
+    {
+        "sha": "70ee831e629973cd0d7c50a56651a2725c7dc8a5",
+        "author": "dependabot[bot]",
+        "email": "49699333+dependabot[bot]@users.noreply.github.com",
+        "date": "2025-12-17T16:30:30Z",
+        "message": "Bump Microsoft.Extensions.DependencyInjection from 10.0.0 to 10.0.1 (#393)\n\n---\nupdated-dependencies:\n- dependency-name: Microsoft.Extensions.DependencyInjection\n  dependency-version: 10.0.1\n  dependency-type: direct:production\n  update-type: version-update:semver-patch\n...\n\nSigned-off-by: dependabot[bot] <support@github.com>\nCo-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>",
+        "url": "https://github.com/WFCD/WFinfo/commit/70ee831e629973cd0d7c50a56651a2725c7dc8a5"
+    },
+    {
+        "sha": "81801f339e4bee9a381b5cdf04b81272c5422848",
+        "author": "dependabot[bot]",
+        "email": "49699333+dependabot[bot]@users.noreply.github.com",
+        "date": "2025-12-17T16:30:14Z",
+        "message": "Bump Microsoft.CodeAnalysis.NetAnalyzers from 10.0.100 to 10.0.101 (#392)\n\n---\nupdated-dependencies:\n- dependency-name: Microsoft.CodeAnalysis.NetAnalyzers\n  dependency-version: 10.0.101\n  dependency-type: direct:production\n  update-type: version-update:semver-patch\n...\n\nSigned-off-by: dependabot[bot] <support@github.com>\nCo-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>",
+        "url": "https://github.com/WFCD/WFinfo/commit/81801f339e4bee9a381b5cdf04b81272c5422848"
+    },
+    {
+        "sha": "3b8fda7406620b18e8e8e446ebbc62858165bd10",
+        "author": "dependabot[bot]",
+        "email": "49699333+dependabot[bot]@users.noreply.github.com",
+        "date": "2025-12-17T16:29:59Z",
+        "message": "Bump Microsoft.AspNetCore.DataProtection from 10.0.0 to 10.0.1 (#391)\n\n---\nupdated-dependencies:\n- dependency-name: Microsoft.AspNetCore.DataProtection\n  dependency-version: 10.0.1\n  dependency-type: direct:production\n  update-type: version-update:semver-patch\n...\n\nSigned-off-by: dependabot[bot] <support@github.com>\nCo-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>",
+        "url": "https://github.com/WFCD/WFinfo/commit/3b8fda7406620b18e8e8e446ebbc62858165bd10"
+    },
+    {
+        "sha": "fc7af25d5477b8311fb11a2352e0fce77d8d60b8",
+        "author": "dependabot[bot]",
+        "email": "49699333+dependabot[bot]@users.noreply.github.com",
+        "date": "2025-11-25T02:02:29Z",
+        "message": "Bump System.Resources.Extensions from 9.0.10 to 10.0.0 (#390)\n\n---\nupdated-dependencies:\n- dependency-name: System.Resources.Extensions\n  dependency-version: 10.0.0\n  dependency-type: direct:production\n  update-type: version-update:semver-major\n...\n\nSigned-off-by: dependabot[bot] <support@github.com>\nCo-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>",
+        "url": "https://github.com/WFCD/WFinfo/commit/fc7af25d5477b8311fb11a2352e0fce77d8d60b8"
+    },
+    {
+        "sha": "a73d9642e916b435d70fcb97971d560cc2ff7243",
+        "author": "dependabot[bot]",
+        "email": "49699333+dependabot[bot]@users.noreply.github.com",
+        "date": "2025-11-18T02:20:56Z",
+        "message": "Bump Microsoft.Windows.SDK.Contracts from 10.0.26100.6901 to 10.0.26100.7175 (#388)\n\n---\nupdated-dependencies:\n- dependency-name: Microsoft.Windows.SDK.Contracts\n  dependency-version: 10.0.26100.7175\n  dependency-type: direct:production\n  update-type: version-update:semver-patch\n...\n\nSigned-off-by: dependabot[bot] <support@github.com>\nCo-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>",
+        "url": "https://github.com/WFCD/WFinfo/commit/a73d9642e916b435d70fcb97971d560cc2ff7243"
+    },
+    {
+        "sha": "7f2e27606877c101271a02726ecbc8723d747b56",
+        "author": "dependabot[bot]",
+        "email": "49699333+dependabot[bot]@users.noreply.github.com",
+        "date": "2025-11-18T02:18:56Z",
+        "message": "Bump System.Management from 9.0.10 to 10.0.0 (#389)\n\n---\nupdated-dependencies:\n- dependency-name: System.Management\n  dependency-version: 10.0.0\n  dependency-type: direct:production\n  update-type: version-update:semver-major\n...\n\nSigned-off-by: dependabot[bot] <support@github.com>\nCo-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>",
+        "url": "https://github.com/WFCD/WFinfo/commit/7f2e27606877c101271a02726ecbc8723d747b56"
+    },
+    {
+        "sha": "93676b6051c8a2b7bc7ffbd7ead1cb8c70c371bb",
+        "author": "dependabot[bot]",
+        "email": "49699333+dependabot[bot]@users.noreply.github.com",
+        "date": "2025-11-18T02:18:38Z",
+        "message": "Bump Microsoft.Extensions.DependencyInjection from 9.0.10 to 10.0.0 (#387)\n\n---\nupdated-dependencies:\n- dependency-name: Microsoft.Extensions.DependencyInjection\n  dependency-version: 10.0.0\n  dependency-type: direct:production\n  update-type: version-update:semver-major\n...\n\nSigned-off-by: dependabot[bot] <support@github.com>\nCo-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>",
+        "url": "https://github.com/WFCD/WFinfo/commit/93676b6051c8a2b7bc7ffbd7ead1cb8c70c371bb"
+    },
+    {
+        "sha": "902a9fdcc4b8cb7a78354dc74bb49ab85fd3b715",
+        "author": "dependabot[bot]",
+        "email": "49699333+dependabot[bot]@users.noreply.github.com",
+        "date": "2025-11-18T02:18:23Z",
+        "message": "Bump Microsoft.CodeAnalysis.NetAnalyzers from 9.0.0 to 10.0.100 (#386)\n\n---\nupdated-dependencies:\n- dependency-name: Microsoft.CodeAnalysis.NetAnalyzers\n  dependency-version: 10.0.100\n  dependency-type: direct:production\n  update-type: version-update:semver-major\n...\n\nSigned-off-by: dependabot[bot] <support@github.com>\nCo-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>",
+        "url": "https://github.com/WFCD/WFinfo/commit/902a9fdcc4b8cb7a78354dc74bb49ab85fd3b715"
+    },
+    {
+        "sha": "d9d4c3dc99475c3473df7b154a22b4e4c358e46a",
+        "author": "dependabot[bot]",
+        "email": "49699333+dependabot[bot]@users.noreply.github.com",
+        "date": "2025-11-18T02:18:10Z",
+        "message": "Bump Microsoft.AspNetCore.DataProtection from 9.0.10 to 10.0.0 (#385)\n\n---\nupdated-dependencies:\n- dependency-name: Microsoft.AspNetCore.DataProtection\n  dependency-version: 10.0.0\n  dependency-type: direct:production\n  update-type: version-update:semver-major\n...\n\nSigned-off-by: dependabot[bot] <support@github.com>\nCo-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>",
+        "url": "https://github.com/WFCD/WFinfo/commit/d9d4c3dc99475c3473df7b154a22b4e4c358e46a"
+    },
+    {
+        "sha": "c03ed7cf8f74d8a85e1505f938fd7e6ecad2c628",
+        "author": "dependabot[bot]",
+        "email": "49699333+dependabot[bot]@users.noreply.github.com",
+        "date": "2025-10-28T11:11:19Z",
+        "message": "Bump Microsoft.Windows.SDK.Contracts from 10.0.26100.6584 to 10.0.26100.6901 (#384)\n\n---\nupdated-dependencies:\n- dependency-name: Microsoft.Windows.SDK.Contracts\n  dependency-version: 10.0.26100.6901\n  dependency-type: direct:production\n  update-type: version-update:semver-patch\n...\n\nSigned-off-by: dependabot[bot] <support@github.com>\nCo-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>",
+        "url": "https://github.com/WFCD/WFinfo/commit/c03ed7cf8f74d8a85e1505f938fd7e6ecad2c628"
+    },
+    {
+        "sha": "3cf98e195d386dca13d4b835e8dd9a3de3a9bab9",
+        "author": "dependabot[bot]",
+        "email": "49699333+dependabot[bot]@users.noreply.github.com",
+        "date": "2025-10-21T01:11:24Z",
+        "message": "Bump System.Management from 9.0.9 to 9.0.10 (#382)\n\n---\nupdated-dependencies:\n- dependency-name: System.Management\n  dependency-version: 9.0.10\n  dependency-type: direct:production\n  update-type: version-update:semver-patch\n...\n\nSigned-off-by: dependabot[bot] <support@github.com>\nCo-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>",
+        "url": "https://github.com/WFCD/WFinfo/commit/3cf98e195d386dca13d4b835e8dd9a3de3a9bab9"
+    }
+]

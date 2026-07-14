@@ -1,0 +1,242 @@
+[
+    {
+        "sha": "5c571959dbd7ceca95b964e9a92154192bc76a09",
+        "author": "Dalton Luce",
+        "email": "daltonluce42@gmail.com",
+        "date": "2026-04-01T01:08:22Z",
+        "message": "build: bump version to 1.2.0",
+        "url": "https://github.com/da-luce/astroterm/commit/5c571959dbd7ceca95b964e9a92154192bc76a09"
+    },
+    {
+        "sha": "b084e58f1625a1fc2920f0e45fccf79e59829a04",
+        "author": "Dalton Luce",
+        "email": "daltonluce42@gmail.com",
+        "date": "2026-04-01T00:56:10Z",
+        "message": "doc: bash completions to README",
+        "url": "https://github.com/da-luce/astroterm/commit/b084e58f1625a1fc2920f0e45fccf79e59829a04"
+    },
+    {
+        "sha": "a6141be79de57b9c54de83cfbda08ddf6ad7e232",
+        "author": "Adam Tuft",
+        "email": "73994535+adamtuft@users.noreply.github.com",
+        "date": "2026-04-01T00:48:30Z",
+        "message": "feat: add bash completions (#80)\n\n* Add \"split_lines\" function to split a buffer into an array of lines\n\n- Implement \"split_lines\" to split a given buffer into an array of\n  lines, writing the number of lines to an output pointer.\n- Add to src/meson.build\n\nThis is helpful for a later commit where `split_lines` will be used to\niterate over the lines in the embedded cities data.\n\n* Refactor \"city.c\" and add `iter_cities` function.\n\n- The logic in `get_city` for iterating over lines has been moved\n  into `split_lines`.\n- Refactor \"city.c\" to use `split_lines`.\n- Implement `iter_cities` to apply a callback to all cities.\n\n* Move argument definitions into header file and define with macros.\n\n- Arguments are defined in the new file \"arg_definitions.h\" and used by\n  including this file with appropriate macro definitions.\n- Add a \"-b|--bash-completions\" option which prints bash completions to\n  stdout. Use `eval $(astroterm -b)` to enable them in bash.\n\nExplanation: I could have copy-pasted the arguments into the bash\ncompletions code, but this would have made it more brittle to add/change\narguments in the future. This approach means you have a single place\nwhere arguments are defined, and they can be re-used with macros. This\napproach of iterating over cities also means that if the list of cities\nchanges in the future, the completions will remain up-to-date.\n\n* Fix a city with comma-separated name - wasn't getting parsed correctly\n\n* style: run format\n\n* ci: update clang-format\n\n* fix: brute force clang\n\n* fix: update weird city stuff\n\n* fix: update city find search\n\n* fix: fix leak\n\n* test: add tests for iter_city\n\n* fix: fix leak in iter city\n\n* test: add test for split_lines\n\n* style: update test comments\n\n---------\n\nCo-authored-by: Dalton Luce <daltonluce42@gmail.com>",
+        "url": "https://github.com/da-luce/astroterm/commit/a6141be79de57b9c54de83cfbda08ddf6ad7e232"
+    },
+    {
+        "sha": "2ec7e7a3aa57dbacd6d267aee084d179dcb4b70d",
+        "author": "Quentin Bernet",
+        "email": "quentin.bernet@bluewin.ch",
+        "date": "2026-03-30T21:17:30Z",
+        "message": "docs: update nix installation instructions (#81)\n\nIt is generally discouraged to use nix-env to install packages:\r\n\"\"\"\r\nWarning: Using nix-env permanently modifies a local profile of installed packages. This must be updated and maintained by the user in the same way as with a traditional package manager, foregoing many of the benefits that make Nix uniquely powerful. Using nix-shell or a NixOS configuration is recommended instead. \r\n\"\"\"\r\nSee for example \r\nhttps://search.nixos.org/packages?channel=25.05&show=astroterm&from=0&size=50&sort=relevance&type=packages&query=astroterm",
+        "url": "https://github.com/da-luce/astroterm/commit/2ec7e7a3aa57dbacd6d267aee084d179dcb4b70d"
+    },
+    {
+        "sha": "9c44cc9fffbf47c58cd038ccb2e6fdbfb320827d",
+        "author": "Yinghao",
+        "email": "231103865+yinghao-w@users.noreply.github.com",
+        "date": "2026-03-29T22:15:52Z",
+        "message": "fix: SIGFPE when drawing grid (#99)\n\n* Fix: SIGFPE when drawing grid\n\nRefactor: selection of grid line angles\nCo-authored-by: Dalton Luce <102048662+da-luce@users.noreply.github.com>\n\n* style: run format\n\n---------\n\nCo-authored-by: Dalton Luce <102048662+da-luce@users.noreply.github.com>\nCo-authored-by: Dalton Luce <daltonluce42@gmail.com>",
+        "url": "https://github.com/da-luce/astroterm/commit/9c44cc9fffbf47c58cd038ccb2e6fdbfb320827d"
+    },
+    {
+        "sha": "80b4fe1136fcf8706b07ce25b3c7cd6615cf93dd",
+        "author": "Dalton Luce",
+        "email": "daltonluce42@gmail.com",
+        "date": "2026-03-29T21:04:34Z",
+        "message": "build: bump version to 1.1.0\n\nAlso, update docs with braille option",
+        "url": "https://github.com/da-luce/astroterm/commit/80b4fe1136fcf8706b07ce25b3c7cd6615cf93dd"
+    },
+    {
+        "sha": "9c4b316905eab115a2414f73f7ca881cfbd4b6ea",
+        "author": "Dalton Luce",
+        "email": "102048662+da-luce@users.noreply.github.com",
+        "date": "2026-03-29T20:47:05Z",
+        "message": "feat: add braille (#100)\n\n* continues #98\n* draw constellation lines with braille characters\n* Apply suggestion from @da-luce\n\nCo-authored-by: Dalton Luce <102048662+da-luce@users.noreply.github.com>\n\n* style: format code\n\n* test: add braille drawing tests\n\n---------\n\nCo-authored-by: Joseph Botosh <rumly111@gmail.com>",
+        "url": "https://github.com/da-luce/astroterm/commit/9c4b316905eab115a2414f73f7ca881cfbd4b6ea"
+    },
+    {
+        "sha": "d4750989746dc3057feaf5ac6eb2ce1afc33cd29",
+        "author": "Dalton Luce",
+        "email": "102048662+da-luce@users.noreply.github.com",
+        "date": "2026-01-16T01:34:30Z",
+        "message": "fix(codecov): correct configuration (#94)\n\n- Add checkout so Codecov can find codecov.yml settings\n- Add path fix to codecov.yml\n\nCloses #84",
+        "url": "https://github.com/da-luce/astroterm/commit/d4750989746dc3057feaf5ac6eb2ce1afc33cd29"
+    },
+    {
+        "sha": "43efd8697e4bdda2adfb80c58a64d2c855c6f2e2",
+        "author": "Dalton Luce",
+        "email": "daltonluce42@gmail.com",
+        "date": "2026-01-16T00:04:24Z",
+        "message": "chore: bump version to 1.0.10",
+        "url": "https://github.com/da-luce/astroterm/commit/43efd8697e4bdda2adfb80c58a64d2c855c6f2e2"
+    },
+    {
+        "sha": "31a7facc2bb9ff9652cc0eaea208a4a0fdcb28b5",
+        "author": "Dalton Luce",
+        "email": "102048662+da-luce@users.noreply.github.com",
+        "date": "2026-01-15T23:59:14Z",
+        "message": "fix(#91): use dynamic buffer in constellation table (#93)\n\n- Use dynamic buffer in constellation table to avoid stack-buffer overflow on malformed constellation data\n- Also adds some address sanitizer checks to CI/CD\n- Fixes some memory \"leaks\" in tests",
+        "url": "https://github.com/da-luce/astroterm/commit/31a7facc2bb9ff9652cc0eaea208a4a0fdcb28b5"
+    },
+    {
+        "sha": "3614bbcf06fa039b785d8d646f7427da8915d35a",
+        "author": "Dalton Luce",
+        "email": "daltonluce42@gmail.com",
+        "date": "2025-11-02T00:47:24Z",
+        "message": "chore: bump intel macos runners from 13 to 15",
+        "url": "https://github.com/da-luce/astroterm/commit/3614bbcf06fa039b785d8d646f7427da8915d35a"
+    },
+    {
+        "sha": "6d3217f7a5e98f67f9d7776d6ca9634d73ab214f",
+        "author": "Dalton Luce",
+        "email": "daltonluce42@gmail.com",
+        "date": "2025-08-29T18:06:24Z",
+        "message": "build: bump version to 1.0.9",
+        "url": "https://github.com/da-luce/astroterm/commit/6d3217f7a5e98f67f9d7776d6ca9634d73ab214f"
+    },
+    {
+        "sha": "b51add0451c4fcaedecbc4454cedf5ee0188c577",
+        "author": "Dalton Luce",
+        "email": "daltonluce42@gmail.com",
+        "date": "2025-08-29T17:13:12Z",
+        "message": "doc: add CONTRIBUTING.md",
+        "url": "https://github.com/da-luce/astroterm/commit/b51add0451c4fcaedecbc4454cedf5ee0188c577"
+    },
+    {
+        "sha": "7bdf16abdcc611321cc43f069a297e8b3a1eff05",
+        "author": "Dalton Luce",
+        "email": "102048662+da-luce@users.noreply.github.com",
+        "date": "2025-08-29T16:55:58Z",
+        "message": "fix: resolve GitHub issue #87 (#89)\n\n* Improve city generation script, now auto-downloads\n* Regenerate data/cities.csv (seems to resolve issue with Lisbon and some others... not sure why)\n* Add more city tests",
+        "url": "https://github.com/da-luce/astroterm/commit/7bdf16abdcc611321cc43f069a297e8b3a1eff05"
+    },
+    {
+        "sha": "6701a86f95dad77da6da737b4f5e2172a575c07a",
+        "author": "Dalton Luce",
+        "email": "daltonluce42@gmail.com",
+        "date": "2025-07-14T04:42:52Z",
+        "message": "build: bump version to 1.0.8",
+        "url": "https://github.com/da-luce/astroterm/commit/6701a86f95dad77da6da737b4f5e2172a575c07a"
+    },
+    {
+        "sha": "be8e9242949e8387944b3323c603b6f91b2ae09f",
+        "author": "Jonas Malaco",
+        "email": "jonas@protocubo.io",
+        "date": "2025-07-14T04:37:09Z",
+        "message": "fix: Sort cities according to the normalization function used when searching (#79)\n\n* Sort cities according to the normalization function used when searching\n\nA binary search is used to find the city specified with -i/--city.\nTherefore, the cities array must be sorted accordingly to the comparison\nfunction used in the binary search.\n\nThe currently used comparison function normalizes city names. In\nparticular, all names are lowercased, which impacts their\nlexicographical order.\n\nBecause of this, the following example fails without this patch, even\nthough \"Rio de Janeiro\" is in data/cities.csv.\n\n    $ astroterm -mi \"Rio de Janeiro\"\n    ERROR: Could not find city \"Rio de Janeiro\"\n\nTo fix it, use the normalized city names when sorting them in\nfilter_cities.py. The normalization should match the one used at\nruntime. Then regenerate data/cities.csv with:\n\n$ python scripts/filter_cities.py cities15000.txt  data/cities.csv 200000\n\n(cities15000.txt downloaded today from: https://download.geonames.org/export/dump/cities15000.zip)\n\n* test: Add test for PR #79 - normalized city name lookup\n\n---------\n\nCo-authored-by: Dalton Luce <daltonluce42@gmail.com>",
+        "url": "https://github.com/da-luce/astroterm/commit/be8e9242949e8387944b3323c603b6f91b2ae09f"
+    },
+    {
+        "sha": "a9f8ff241e9426b1d66adbb116411bfce1a37f4d",
+        "author": "Orhun Parmaksız",
+        "email": "orhunparmaksiz@gmail.com",
+        "date": "2025-07-14T03:53:21Z",
+        "message": "doc: Update installation for Arch Linux (#75)",
+        "url": "https://github.com/da-luce/astroterm/commit/a9f8ff241e9426b1d66adbb116411bfce1a37f4d"
+    },
+    {
+        "sha": "a91d90949f71bf59586ea7429be8f8ecf6dd9648",
+        "author": "Dalton Luce",
+        "email": "102048662+da-luce@users.noreply.github.com",
+        "date": "2025-07-02T04:42:10Z",
+        "message": "Bump ubuntu runner version (#83)\n\n* bump Ubuntu runner versions\n* remove Ubuntu dependency comment (at some point ubuntu-20.04 was required for builds to succeed?)",
+        "url": "https://github.com/da-luce/astroterm/commit/a91d90949f71bf59586ea7429be8f8ecf6dd9648"
+    },
+    {
+        "sha": "1865c23d4434f029842ed28933619c32398bf89f",
+        "author": "Kian-Meng Ang",
+        "email": "kianmeng.ang@gmail.com",
+        "date": "2025-07-02T04:02:59Z",
+        "message": "doc: Fix typos (#76)\n\nFound via `codespell -S data,./test/third_party -L ded,nast` and `typos\n--hidden --format brief`",
+        "url": "https://github.com/da-luce/astroterm/commit/1865c23d4434f029842ed28933619c32398bf89f"
+    },
+    {
+        "sha": "fef215dd69b096554c12fddaad90b67fdf33b461",
+        "author": "Hellseher",
+        "email": "oleg.bocharov@mirrorweb.com",
+        "date": "2025-02-22T19:02:28Z",
+        "message": "doc: Add intallation note for Guix. (#74)\n\n* doc: Add intallation note for Guix.",
+        "url": "https://github.com/da-luce/astroterm/commit/fef215dd69b096554c12fddaad90b67fdf33b461"
+    },
+    {
+        "sha": "17e6fc1cf647b787749de4985e5737b6a82f583f",
+        "author": "Dalton Luce",
+        "email": "102048662+da-luce@users.noreply.github.com",
+        "date": "2025-02-03T20:24:54Z",
+        "message": "fix build flags in CI, bump to 1.0.7 (#70)",
+        "url": "https://github.com/da-luce/astroterm/commit/17e6fc1cf647b787749de4985e5737b6a82f583f"
+    },
+    {
+        "sha": "582be4646dc91497dd2282920bf827905833bfd1",
+        "author": "Dalton Luce",
+        "email": "daltonluce42@gmail.com",
+        "date": "2025-02-02T03:35:47Z",
+        "message": "remove some readme tags and add example",
+        "url": "https://github.com/da-luce/astroterm/commit/582be4646dc91497dd2282920bf827905833bfd1"
+    },
+    {
+        "sha": "021326193ba0e66337d66a30c35f621d4b631d92",
+        "author": "adiabatic",
+        "email": "adiabatic@users.noreply.github.com",
+        "date": "2025-02-02T03:28:26Z",
+        "message": "`astroterm` is in Homebrew proper (#68)\n\nAdd correct install instructions for Homebrew",
+        "url": "https://github.com/da-luce/astroterm/commit/021326193ba0e66337d66a30c35f621d4b631d92"
+    },
+    {
+        "sha": "f04f98782ad5593616437f720d57e7ae2427fa36",
+        "author": "Adam Perkowski",
+        "email": "adas1per@protonmail.com",
+        "date": "2025-01-27T02:42:05Z",
+        "message": "Add Arch Linux installation instructions (#67)\n\nAdd Arch package at https://aur.archlinux.org/packages/astroterm",
+        "url": "https://github.com/da-luce/astroterm/commit/f04f98782ad5593616437f720d57e7ae2427fa36"
+    },
+    {
+        "sha": "83d8143efff7a4d1894ea2834ef73b6acf6c5be6",
+        "author": "Dalton Luce",
+        "email": "daltonluce42@gmail.com",
+        "date": "2025-01-22T20:30:01Z",
+        "message": "Update to 1.0.6",
+        "url": "https://github.com/da-luce/astroterm/commit/83d8143efff7a4d1894ea2834ef73b6acf6c5be6"
+    },
+    {
+        "sha": "63095bee82f360393b658d215a0bc8d9563cdcea",
+        "author": "Dalton Luce",
+        "email": "daltonluce42@gmail.com",
+        "date": "2025-01-22T20:29:53Z",
+        "message": "bump to 1.0.6",
+        "url": "https://github.com/da-luce/astroterm/commit/63095bee82f360393b658d215a0bc8d9563cdcea"
+    },
+    {
+        "sha": "1c08e7330d6f4c199b79ecb7bc5fa56ba9fcfb43",
+        "author": "Dalton Luce",
+        "email": "102048662+da-luce@users.noreply.github.com",
+        "date": "2025-01-22T20:22:43Z",
+        "message": "force little endian order in bsc5 generation (#64)",
+        "url": "https://github.com/da-luce/astroterm/commit/1c08e7330d6f4c199b79ecb7bc5fa56ba9fcfb43"
+    },
+    {
+        "sha": "9334da160958fcd3d6c71a89fade7676ce7aec2f",
+        "author": "Jonathan Wright",
+        "email": "jonathan@effecthost.com",
+        "date": "2025-01-22T16:14:00Z",
+        "message": "Add packaging info, Fedora install instructions (#63)\n\n* Add packaging info and Fedora install instructions",
+        "url": "https://github.com/da-luce/astroterm/commit/9334da160958fcd3d6c71a89fade7676ce7aec2f"
+    },
+    {
+        "sha": "46c7dd764ae1f92db2bfb7569642d2756117c748",
+        "author": "Dalton Luce",
+        "email": "daltonluce42@gmail.com",
+        "date": "2025-01-18T04:39:43Z",
+        "message": "update nix install instructions\n\n* fix typo in readme\n* add hour long cache to version badges",
+        "url": "https://github.com/da-luce/astroterm/commit/46c7dd764ae1f92db2bfb7569642d2756117c748"
+    },
+    {
+        "sha": "aa9587bf2f1d558ca3a602607fadc8b8d3b0ef24",
+        "author": "Dalton Luce",
+        "email": "102048662+da-luce@users.noreply.github.com",
+        "date": "2025-01-17T23:58:18Z",
+        "message": "Fix time zone display on Windows\n\n* Update `get_timezone` to return time zone bias when on Windows",
+        "url": "https://github.com/da-luce/astroterm/commit/aa9587bf2f1d558ca3a602607fadc8b8d3b0ef24"
+    }
+]

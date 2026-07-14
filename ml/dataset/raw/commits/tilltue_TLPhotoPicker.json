@@ -1,0 +1,242 @@
+[
+    {
+        "sha": "91d7bca65721928af30c6a2bb1a1f517f7862964",
+        "author": "tilltue",
+        "email": "junhyi.park@gmail.com",
+        "date": "2026-06-16T13:57:36Z",
+        "message": "chore: bump version to 2.1.21",
+        "url": "https://github.com/tilltue/TLPhotoPicker/commit/91d7bca65721928af30c6a2bb1a1f517f7862964"
+    },
+    {
+        "sha": "1dc407a94356ee82056116324f42626167afcfd3",
+        "author": "tilltue",
+        "email": "junhyi.park@gmail.com",
+        "date": "2026-06-16T13:56:44Z",
+        "message": "docs: clarify media URL callback dismissal",
+        "url": "https://github.com/tilltue/TLPhotoPicker/commit/1dc407a94356ee82056116324f42626167afcfd3"
+    },
+    {
+        "sha": "eb1182a4d3d4dbeb655d439116c743cea29b00fc",
+        "author": "Rasmussw",
+        "email": "90309130+Rasmussw@users.noreply.github.com",
+        "date": "2026-06-16T13:54:49Z",
+        "message": "fix: self-dismiss media URL callback\n\nDismiss the camera picker and host TLPhotosPickerViewController before invoking didCaptureMediaURL so callers only need to present their next screen.\n\nPreserve dismiss lifecycle hooks and document the present-only callback contract.",
+        "url": "https://github.com/tilltue/TLPhotoPicker/commit/eb1182a4d3d4dbeb655d439116c743cea29b00fc"
+    },
+    {
+        "sha": "fc61678bafd31a636d766e8ce996f497323b169d",
+        "author": "tilltue",
+        "email": "junhyi.park@gmail.com",
+        "date": "2026-06-03T15:58:38Z",
+        "message": "chore: bump version to 2.1.20",
+        "url": "https://github.com/tilltue/TLPhotoPicker/commit/fc61678bafd31a636d766e8ce996f497323b169d"
+    },
+    {
+        "sha": "96cc9c1acd8830ca449b306977f8c447cd9f84f0",
+        "author": "junhyi park",
+        "email": "junhyi.park@gmail.com",
+        "date": "2026-06-03T15:57:46Z",
+        "message": "fix: restore camera media URL callback timing (#385)",
+        "url": "https://github.com/tilltue/TLPhotoPicker/commit/96cc9c1acd8830ca449b306977f8c447cd9f84f0"
+    },
+    {
+        "sha": "e38885fc23dccc59fd7cfc9c7023bd3717322ef5",
+        "author": "junhyi park",
+        "email": "junhyi.park@gmail.com",
+        "date": "2026-06-03T15:57:40Z",
+        "message": "docs: document camera media URL callback (#384)",
+        "url": "https://github.com/tilltue/TLPhotoPicker/commit/e38885fc23dccc59fd7cfc9c7023bd3717322ef5"
+    },
+    {
+        "sha": "8ea6632c6a42149334ca1c826ddf650d4ff7a23b",
+        "author": "tilltue",
+        "email": "junhyi.park@gmail.com",
+        "date": "2026-06-03T11:22:06Z",
+        "message": "chore: bump version to 2.1.19",
+        "url": "https://github.com/tilltue/TLPhotoPicker/commit/8ea6632c6a42149334ca1c826ddf650d4ff7a23b"
+    },
+    {
+        "sha": "d945f7591d1b54cd9070b3fc37f6bf6a81e7dfd2",
+        "author": "tilltue",
+        "email": "junhyi.park@gmail.com",
+        "date": "2026-06-03T09:06:34Z",
+        "message": "fix: avoid duplicate camera picker dismiss",
+        "url": "https://github.com/tilltue/TLPhotoPicker/commit/d945f7591d1b54cd9070b3fc37f6bf6a81e7dfd2"
+    },
+    {
+        "sha": "ef1c31d45b5a9f63bb8e8ecf6daa8001874bd9cd",
+        "author": "Rasmus Wøldike",
+        "email": "rswoldike@gmail.com",
+        "date": "2026-06-01T07:49:47Z",
+        "message": "fix: address review feedback on didCaptureMediaURL callback\n\n- Use info[.imageURL] with imageExportPreset .compatible to preserve EXIF/GPS metadata\n- Only invoke callback on successful file copy (no silent error swallowing)",
+        "url": "https://github.com/tilltue/TLPhotoPicker/commit/ef1c31d45b5a9f63bb8e8ecf6daa8001874bd9cd"
+    },
+    {
+        "sha": "b9689797e5180de9bdbcf7f6d0d4137c4aab1f4d",
+        "author": "Rasmus Wøldike",
+        "email": "rswoldike@gmail.com",
+        "date": "2026-05-12T07:43:39Z",
+        "message": "fix: restore picker dismiss in existing camera roll flow\n\nSigned-off-by: Rasmus Wøldike <rswoldike@gmail.com>",
+        "url": "https://github.com/tilltue/TLPhotoPicker/commit/b9689797e5180de9bdbcf7f6d0d4137c4aab1f4d"
+    },
+    {
+        "sha": "9723e162c1e1a14d60a422f658f2abadc8f1ef6c",
+        "author": "Rasmus Wøldike",
+        "email": "rswoldike@gmail.com",
+        "date": "2026-05-12T07:27:34Z",
+        "message": "feat: add didCaptureMediaURL callback to bypass camera roll\n\nWhen didCaptureMediaURL is set on TLPhotosPickerViewController, captured\nphotos and videos are written to a temp file and the URL is passed to the\ncallback instead of being saved to the photo library. Existing behaviour\nis unchanged when the callback is not set.\n\nSigned-off-by: Rasmus Wøldike <rswoldike@gmail.com>",
+        "url": "https://github.com/tilltue/TLPhotoPicker/commit/9723e162c1e1a14d60a422f658f2abadc8f1ef6c"
+    },
+    {
+        "sha": "bf4a14650ba3adf0890644b91dfb9601da6ba38c",
+        "author": "tilltue",
+        "email": "junhyi.park@gmail.com",
+        "date": "2026-01-20T14:46:15Z",
+        "message": "chore: bump version to 2.1.18\n\nCo-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>",
+        "url": "https://github.com/tilltue/TLPhotoPicker/commit/bf4a14650ba3adf0890644b91dfb9601da6ba38c"
+    },
+    {
+        "sha": "2dcf33d9a95dd3a210868d88a44064080865d126",
+        "author": "tilltue",
+        "email": "junhyi.park@gmail.com",
+        "date": "2026-01-20T14:45:37Z",
+        "message": "fix: make TLPhotoLibrary class public for external access\n\nCo-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>",
+        "url": "https://github.com/tilltue/TLPhotoPicker/commit/2dcf33d9a95dd3a210868d88a44064080865d126"
+    },
+    {
+        "sha": "0d7ca0a9c74a79b99df3d54c2dbe0c5ea30df862",
+        "author": "Graeme Harrison",
+        "email": "gharrison365@gmail.com",
+        "date": "2026-01-17T16:13:14Z",
+        "message": "Update collection view delegate methods to reflect flow layout configurations.",
+        "url": "https://github.com/tilltue/TLPhotoPicker/commit/0d7ca0a9c74a79b99df3d54c2dbe0c5ea30df862"
+    },
+    {
+        "sha": "ecdcb21f184f9ef1002212282f73f993b0a2060b",
+        "author": "Graeme Harrison",
+        "email": "gharrison365@gmail.com",
+        "date": "2025-12-25T22:29:40Z",
+        "message": "Modify TLCollectionViewAdapter class to be open, so that it can be subclassed. Update necessary dependencies to be public.",
+        "url": "https://github.com/tilltue/TLPhotoPicker/commit/ecdcb21f184f9ef1002212282f73f993b0a2060b"
+    },
+    {
+        "sha": "2b02f7092e50176b8e7f0d1128b5d5a83bbdd106",
+        "author": "Jisu Kim",
+        "email": "jisu15.kim@gmail.com",
+        "date": "2026-01-20T01:40:29Z",
+        "message": "fix: consolidate TLPhotoLibrary into single instance",
+        "url": "https://github.com/tilltue/TLPhotoPicker/commit/2b02f7092e50176b8e7f0d1128b5d5a83bbdd106"
+    },
+    {
+        "sha": "e5e6a21db436fc36943a74fc8cb63b8acecb3c0f",
+        "author": "tilltue",
+        "email": "junhyi.park@gmail.com",
+        "date": "2026-01-14T15:02:41Z",
+        "message": "chore: bump version to 2.1.17\n\nReverted PR #378 changes due to critical issues.\n\nCo-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>",
+        "url": "https://github.com/tilltue/TLPhotoPicker/commit/e5e6a21db436fc36943a74fc8cb63b8acecb3c0f"
+    },
+    {
+        "sha": "7ad2468247b566615f3cc5facd52e5865b93f10a",
+        "author": "tilltue",
+        "email": "junhyi.park@gmail.com",
+        "date": "2026-01-14T15:02:06Z",
+        "message": "Revert \"Modify TLCollectionViewAdapter class to be open, so that it can be subclassed. Update necessary dependencies to be public.\"\n\nThis reverts commit 4852917302a4acdb59d07ba3b09c824330999f5c.",
+        "url": "https://github.com/tilltue/TLPhotoPicker/commit/7ad2468247b566615f3cc5facd52e5865b93f10a"
+    },
+    {
+        "sha": "d52136455a5a5d9af7ded2c715aed55e257f7deb",
+        "author": "tilltue",
+        "email": "junhyi.park@gmail.com",
+        "date": "2026-01-14T14:57:21Z",
+        "message": "chore: bump version to 2.1.16\n\nCo-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>",
+        "url": "https://github.com/tilltue/TLPhotoPicker/commit/d52136455a5a5d9af7ded2c715aed55e257f7deb"
+    },
+    {
+        "sha": "4852917302a4acdb59d07ba3b09c824330999f5c",
+        "author": "Graeme Harrison",
+        "email": "gharrison365@gmail.com",
+        "date": "2025-12-25T22:29:40Z",
+        "message": "Modify TLCollectionViewAdapter class to be open, so that it can be subclassed. Update necessary dependencies to be public.",
+        "url": "https://github.com/tilltue/TLPhotoPicker/commit/4852917302a4acdb59d07ba3b09c824330999f5c"
+    },
+    {
+        "sha": "d9cd78497859ee55a21f79a62f13569dce530d96",
+        "author": "tilltue",
+        "email": "junhyi.park@gmail.com",
+        "date": "2025-12-27T13:57:19Z",
+        "message": "chore: bump version to 2.1.15\n\n- Fix selection order not updating for off-screen cells\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nCo-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>",
+        "url": "https://github.com/tilltue/TLPhotoPicker/commit/d9cd78497859ee55a21f79a62f13569dce530d96"
+    },
+    {
+        "sha": "7b18ad578717c945579714f83e9aba6019e332eb",
+        "author": "joonwlee",
+        "email": "joonwlee@ebay.com",
+        "date": "2025-12-26T17:24:28Z",
+        "message": "fix: update selection state in willDisplay regardless of prefetch mode\n\n- Remove usedPrefetch condition from willDisplay to fix off-screen cell order display\n- Ensure cells always show correct selection state when scrolled into view",
+        "url": "https://github.com/tilltue/TLPhotoPicker/commit/7b18ad578717c945579714f83e9aba6019e332eb"
+    },
+    {
+        "sha": "abf45aa36fa634c991e56ce84349cfbc59f2f862",
+        "author": "tilltue",
+        "email": "junhyi.park@gmail.com",
+        "date": "2025-11-20T05:50:03Z",
+        "message": "2.1.14 versoin update",
+        "url": "https://github.com/tilltue/TLPhotoPicker/commit/abf45aa36fa634c991e56ce84349cfbc59f2f862"
+    },
+    {
+        "sha": "fa0f326854422c6fe74937e74ea64c7e099e219f",
+        "author": "tilltue",
+        "email": "junhyi.park@gmail.com",
+        "date": "2025-11-05T13:22:25Z",
+        "message": "chore: bump version to 2.1.13",
+        "url": "https://github.com/tilltue/TLPhotoPicker/commit/fa0f326854422c6fe74937e74ea64c7e099e219f"
+    },
+    {
+        "sha": "63ab72407dd14ff4256c14c6d9daff3afd1fe271",
+        "author": "tilltue",
+        "email": "junhyi.park@gmail.com",
+        "date": "2025-11-05T13:13:58Z",
+        "message": "added release.sh",
+        "url": "https://github.com/tilltue/TLPhotoPicker/commit/63ab72407dd14ff4256c14c6d9daff3afd1fe271"
+    },
+    {
+        "sha": "687813500085d161e8aaccf44b6c68691bbcce72",
+        "author": "Weiz",
+        "email": "weiz.teoh@workyard.com",
+        "date": "2025-10-20T01:17:58Z",
+        "message": "fix photos Button For limit permission not available",
+        "url": "https://github.com/tilltue/TLPhotoPicker/commit/687813500085d161e8aaccf44b6c68691bbcce72"
+    },
+    {
+        "sha": "e559cab6d357acc5c59ed766020e03c84503c230",
+        "author": "Piotr",
+        "email": "piotr.przeliorz@gmail.com",
+        "date": "2025-10-16T11:37:44Z",
+        "message": "Update Configuration.md",
+        "url": "https://github.com/tilltue/TLPhotoPicker/commit/e559cab6d357acc5c59ed766020e03c84503c230"
+    },
+    {
+        "sha": "6ad1bbed35684b86293eca969aa653c42e5183da",
+        "author": "Piotr",
+        "email": "piotr.przeliorz@gmail.com",
+        "date": "2025-10-16T11:19:52Z",
+        "message": "Support iOS 26 UIBarButtonItem APIs",
+        "url": "https://github.com/tilltue/TLPhotoPicker/commit/6ad1bbed35684b86293eca969aa653c42e5183da"
+    },
+    {
+        "sha": "dad0fb0965fd9698341263352aeb1849333d1876",
+        "author": "GitHub Copilot",
+        "email": "copilot@github.com",
+        "date": "2025-10-31T23:54:12Z",
+        "message": "Fix ITMS-91054: Invalid API category declaration in PrivacyInfo.xcprivacy\n\nChanged NSPrivacyAccessedAPICategoryPhotoLibrary to NSPrivacyAccessedAPICategoryFileTimestamp\nper Apple's official privacy API categories documentation.\n\nThe C617.1 reason code specifies accessing file metadata (timestamps, size) which\ncorresponds to the FileTimestamp API category.",
+        "url": "https://github.com/tilltue/TLPhotoPicker/commit/dad0fb0965fd9698341263352aeb1849333d1876"
+    },
+    {
+        "sha": "f0435bf7bf4c63817fe4107c216ba1fdbbaf0130",
+        "author": "tilltue",
+        "email": "junhyi.park@gmail.com",
+        "date": "2025-10-07T14:00:23Z",
+        "message": "refactor: simplify createPicker by removing modalStyle parameter\n\nApplied ToT analysis to remove unnecessary parameter complexity:\n\n**Problem:** modalStyle parameter was optional and only used in 2 examples\n**Solution:** Fixed all pickers to .fullScreen modal presentation\n\n**Changes:**\n\n1. **Standard createPicker method**\n   - Removed `modalStyle` optional parameter\n   - Always applies `.fullScreen` presentation\n   - Simplified API surface\n\n2. **Generic createPicker overload**\n   - Removed `modalStyle` parameter\n   - Consistent `.fullScreen` for all custom subclasses\n   - Updated documentation\n\n3. **All Example Methods**\n   - Removed `modalStyle: .fullScreen` arguments\n   - Cleaner, more concise code\n   - Example 1: 9 lines → 7 lines\n   - Example 4: 7 lines → 5 lines\n\n**Rationale:**\n\n✅ Example app prioritizes consistency over flexibility\n✅ All 10 examples now have uniform modal presentation\n✅ Reduced parameter count improves readability\n✅ Real users create pickers directly (no constraint)\n✅ Verified: Build succeeds with no errors\n\n**Before:**\n```swift\nlet picker = createPicker(\n    CustomPhotoPickerViewController(),\n    modalStyle: .fullScreen,\n    withLogDelegate: true\n) { ... }\n```\n\n**After:**\n```swift\nlet picker = createPicker(\n    CustomPhotoPickerViewController(),\n    withLogDelegate: true\n) { ... }\n```\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nCo-Authored-By: Claude <noreply@anthropic.com>",
+        "url": "https://github.com/tilltue/TLPhotoPicker/commit/f0435bf7bf4c63817fe4107c216ba1fdbbaf0130"
+    }
+]

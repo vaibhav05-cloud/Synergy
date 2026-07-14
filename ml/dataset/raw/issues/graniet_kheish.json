@@ -1,0 +1,20 @@
+[
+    {
+        "id": 2734518674,
+        "number": 1,
+        "title": "Enable Link-Time Optimization (LTO)",
+        "state": "closed",
+        "created_at": "2024-12-12T02:11:16Z",
+        "updated_at": "2024-12-12T05:09:31Z",
+        "closed_at": "2024-12-12T05:09:31Z",
+        "author": "zamazan4ik",
+        "comments": 0,
+        "labels": [
+            "enhancement"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "Hi!\r\n\r\nI noticed that in the `Cargo.toml` file Link-Time Optimization (LTO) for the project is not enabled. I suggest switching it on since it will reduce the binary size (always a good thing to have) and will likely improve the application's performance a bit. If you want to read a bit more about LTO, I can recommend starting from [this](https://doc.rust-lang.org/rustc/codegen-options/index.html#lto) Rustc documentation.\r\n\r\nI suggest enabling LTO only for the Release builds so as not to sacrifice the developers' experience while working on the project since LTO consumes an additional amount of time to finish the compilation routine. If you think that a regular Release build should not be affected by such a change as well, then I suggest adding an additional `dist` or `release-lto` profile where in addition to regular `release` optimizations LTO will also be added. Such a change simplifies life for maintainers and others interested in the project persons who want to build the most performant version of the application. If we enable it on the Cargo profile level, users, who install the application with `cargo install` will get the LTO-optimized version \"automatically\". E.g., check `cargo-outdated` Release [profile](https://github.com/kbknapp/cargo-outdated/blob/master/Cargo.toml#L48). You also could be interested in other optimization options like `codegen-units`, etc.\r\n\r\nBasically, it can be enabled with the following lines:\r\n\r\n```\r\n[profile.release]\r\nlto = true\r\n```\r\n\r\nI have made quick local tests (the latest Khiash at the moment + Fedora 41 + Rust Nightly), and the binary size reduction from enabling `lto = true` is the following (`cargo +nightly build --release` build command):\r\n* `kheish`: from 8.4 Mib to 6.2 Mib\r\n\r\nThank you.",
+        "url": "https://github.com/graniet/kheish/issues/1"
+    }
+]

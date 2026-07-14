@@ -1,0 +1,242 @@
+[
+    {
+        "sha": "ecd48e2f718220a6400ecf49eafd4867a38feb10",
+        "author": "Tim Baek",
+        "email": "tim@openwebui.com",
+        "date": "2026-07-01T08:40:54Z",
+        "message": "0.10.2 (#26642)\n\n* i18n: add pt-BR translations for newly added UI items and consistency pass (#26391)\n\nNew **pt-BR** translations for items introduced in the latest releases, plus a consistency/quality pass across existing strings (grammar, tone, capitalization, pluralization). Placeholders and hotkeys preserved. No logic changes.\n\n* refac\n\n* i18n(th-TH): translate missing Thai keys/fix typo (#26406)\n\n* refac\n\n* refac\n\n* refac\n\n* refac\n\n* refac\n\n* refac\n\n* refac\n\n* refac\n\n* refac\n\n* fix: use updated_at for sidebar chat timestamp (#26454)\n\nThe sidebar time-ago indicator rendered `created_at`, so the relative time stayed pinned to the chat's creation age and never reflected new activity. After sending a message the chat would jump to the top of the list (which sorts by `updated_at`) while still showing a stale label such as \"3w\", which is confusing.\n\nThe indicator was originally added using `updated_at` and was inadvertently switched to `created_at` during a later refactor. Restore `updated_at` (falling back to `created_at` when absent) so the timestamp matches the list ordering and updates whenever a chat is modified.\n\nFixes #26451\n\n* fix: use absolute indexURL for pyodide sandbox (#26625)\n\n* i18n: fix Spanish relative time labels (#26463)\n\n* Update and fix Catalan translation.json (#26409)\n\n* refac\n\n* refac\n\nCo-Authored-By: Syed Osama Ali Shah <86572800+osamaali313@users.noreply.github.com>\n\n* refac\n\nCo-Authored-By: Syed Osama Ali Shah <86572800+osamaali313@users.noreply.github.com>\n\n* refac\n\n* refac\n\n* refac\n\n* refac\n\n* refac\n\n* refac\n\n* refac\n\n* refac\n\n* refac\n\n* refac\n\n* refac\n\n* fix: derive content from output for search (#26405)\n\n* refac\n\n* refac\n\n* refac\n\n* refac\n\n* refac\n\n* refac\n\n* refac\n\n* refac\n\n* refac\n\n* refac\n\n* Update CHANGELOG.md (#26641)\n\n* Update CHANGELOG.md\n\n* Update CHANGELOG.md\n\n---------\n\nCo-authored-by: Tim Baek <tim@openwebui.com>\n\n---------\n\nCo-authored-by: joaoback <156559121+joaoback@users.noreply.github.com>\nCo-authored-by: Sicknine <156204309+SNaytiP@users.noreply.github.com>\nCo-authored-by: Classic298 <27028174+Classic298@users.noreply.github.com>\nCo-authored-by: Algorithm5838 <108630393+Algorithm5838@users.noreply.github.com>\nCo-authored-by: JuanMa Diaz <torgus@gmail.com>\nCo-authored-by: Aleix Dorca <aleixdorca@mac.com>\nCo-authored-by: Syed Osama Ali Shah <86572800+osamaali313@users.noreply.github.com>",
+        "url": "https://github.com/open-webui/open-webui/commit/ecd48e2f718220a6400ecf49eafd4867a38feb10"
+    },
+    {
+        "sha": "4b55e69640627304d291233dc40aaa5a6e15e272",
+        "author": "Classic298",
+        "email": "27028174+Classic298@users.noreply.github.com",
+        "date": "2026-07-01T08:38:33Z",
+        "message": "Update CHANGELOG.md (#26641)\n\n* Update CHANGELOG.md\n\n* Update CHANGELOG.md\n\n---------\n\nCo-authored-by: Tim Baek <tim@openwebui.com>",
+        "url": "https://github.com/open-webui/open-webui/commit/4b55e69640627304d291233dc40aaa5a6e15e272"
+    },
+    {
+        "sha": "90eca2ac257fdbc8ce72a32d5b4a6cbe76da1eba",
+        "author": "Timothy Jaeryang Baek",
+        "email": "tim@openwebui.com",
+        "date": "2026-07-01T08:37:35Z",
+        "message": "refac",
+        "url": "https://github.com/open-webui/open-webui/commit/90eca2ac257fdbc8ce72a32d5b4a6cbe76da1eba"
+    },
+    {
+        "sha": "2e5b094ceaaf1384c6af15454577b941d5e42b52",
+        "author": "Timothy Jaeryang Baek",
+        "email": "tim@openwebui.com",
+        "date": "2026-07-01T08:36:30Z",
+        "message": "refac",
+        "url": "https://github.com/open-webui/open-webui/commit/2e5b094ceaaf1384c6af15454577b941d5e42b52"
+    },
+    {
+        "sha": "80af65c24adac5140a39a2b5687a3b669b86719f",
+        "author": "Timothy Jaeryang Baek",
+        "email": "tim@openwebui.com",
+        "date": "2026-07-01T08:35:46Z",
+        "message": "refac",
+        "url": "https://github.com/open-webui/open-webui/commit/80af65c24adac5140a39a2b5687a3b669b86719f"
+    },
+    {
+        "sha": "7f182ea063d231e0cfe830e57a0e1a783bc03b15",
+        "author": "Timothy Jaeryang Baek",
+        "email": "tim@openwebui.com",
+        "date": "2026-07-01T08:35:27Z",
+        "message": "refac",
+        "url": "https://github.com/open-webui/open-webui/commit/7f182ea063d231e0cfe830e57a0e1a783bc03b15"
+    },
+    {
+        "sha": "54f31c630afa75e9c81acaa048e1bd901254ba92",
+        "author": "Timothy Jaeryang Baek",
+        "email": "tim@openwebui.com",
+        "date": "2026-07-01T08:32:12Z",
+        "message": "refac",
+        "url": "https://github.com/open-webui/open-webui/commit/54f31c630afa75e9c81acaa048e1bd901254ba92"
+    },
+    {
+        "sha": "52ee5cb1b3aa8a8ad40b23d72d82db7c3522dbf8",
+        "author": "Timothy Jaeryang Baek",
+        "email": "tim@openwebui.com",
+        "date": "2026-07-01T08:29:44Z",
+        "message": "refac",
+        "url": "https://github.com/open-webui/open-webui/commit/52ee5cb1b3aa8a8ad40b23d72d82db7c3522dbf8"
+    },
+    {
+        "sha": "4351c78b1e45bb0c5824f9d9eb911b395e343646",
+        "author": "Timothy Jaeryang Baek",
+        "email": "tim@openwebui.com",
+        "date": "2026-07-01T08:22:13Z",
+        "message": "refac",
+        "url": "https://github.com/open-webui/open-webui/commit/4351c78b1e45bb0c5824f9d9eb911b395e343646"
+    },
+    {
+        "sha": "fa2abe4cb6a085a4c9045bf8d8ff4b6beffdef6a",
+        "author": "Timothy Jaeryang Baek",
+        "email": "tim@openwebui.com",
+        "date": "2026-07-01T08:17:06Z",
+        "message": "refac",
+        "url": "https://github.com/open-webui/open-webui/commit/fa2abe4cb6a085a4c9045bf8d8ff4b6beffdef6a"
+    },
+    {
+        "sha": "c98d8ecaccc7284573b050e88b3857c4aeba3860",
+        "author": "Timothy Jaeryang Baek",
+        "email": "tim@openwebui.com",
+        "date": "2026-07-01T08:16:54Z",
+        "message": "refac",
+        "url": "https://github.com/open-webui/open-webui/commit/c98d8ecaccc7284573b050e88b3857c4aeba3860"
+    },
+    {
+        "sha": "092b5857bbda01be53619e26f42b1fa9b64a2b44",
+        "author": "Timothy Jaeryang Baek",
+        "email": "tim@openwebui.com",
+        "date": "2026-07-01T08:09:26Z",
+        "message": "refac",
+        "url": "https://github.com/open-webui/open-webui/commit/092b5857bbda01be53619e26f42b1fa9b64a2b44"
+    },
+    {
+        "sha": "0e5540c2b295e38906be7ece4d3b104303d6c519",
+        "author": "Algorithm5838",
+        "email": "108630393+Algorithm5838@users.noreply.github.com",
+        "date": "2026-07-01T08:05:47Z",
+        "message": "fix: derive content from output for search (#26405)",
+        "url": "https://github.com/open-webui/open-webui/commit/0e5540c2b295e38906be7ece4d3b104303d6c519"
+    },
+    {
+        "sha": "73c0be8389ad6680af55d6f9a0e2dbfc347540dd",
+        "author": "Timothy Jaeryang Baek",
+        "email": "tim@openwebui.com",
+        "date": "2026-07-01T08:01:46Z",
+        "message": "refac",
+        "url": "https://github.com/open-webui/open-webui/commit/73c0be8389ad6680af55d6f9a0e2dbfc347540dd"
+    },
+    {
+        "sha": "645cd9327cc35841c0fe31aae9c884f4ff18d1e7",
+        "author": "Timothy Jaeryang Baek",
+        "email": "tim@openwebui.com",
+        "date": "2026-07-01T07:59:14Z",
+        "message": "refac",
+        "url": "https://github.com/open-webui/open-webui/commit/645cd9327cc35841c0fe31aae9c884f4ff18d1e7"
+    },
+    {
+        "sha": "9562f036f880f92b2d7d622b66c63c6510d4a2cf",
+        "author": "Timothy Jaeryang Baek",
+        "email": "tim@openwebui.com",
+        "date": "2026-07-01T07:57:29Z",
+        "message": "refac",
+        "url": "https://github.com/open-webui/open-webui/commit/9562f036f880f92b2d7d622b66c63c6510d4a2cf"
+    },
+    {
+        "sha": "c416c6cad69cc4ce44faacdad87cc65862625fb4",
+        "author": "Timothy Jaeryang Baek",
+        "email": "tim@openwebui.com",
+        "date": "2026-07-01T07:53:42Z",
+        "message": "refac",
+        "url": "https://github.com/open-webui/open-webui/commit/c416c6cad69cc4ce44faacdad87cc65862625fb4"
+    },
+    {
+        "sha": "4b08d65597e5b634b7191b0bd6d28feeafcc2a48",
+        "author": "Timothy Jaeryang Baek",
+        "email": "tim@openwebui.com",
+        "date": "2026-07-01T07:53:22Z",
+        "message": "refac",
+        "url": "https://github.com/open-webui/open-webui/commit/4b08d65597e5b634b7191b0bd6d28feeafcc2a48"
+    },
+    {
+        "sha": "0016266c0652757e32aa44f2e1fb7311ac08db51",
+        "author": "Timothy Jaeryang Baek",
+        "email": "tim@openwebui.com",
+        "date": "2026-07-01T07:49:33Z",
+        "message": "refac",
+        "url": "https://github.com/open-webui/open-webui/commit/0016266c0652757e32aa44f2e1fb7311ac08db51"
+    },
+    {
+        "sha": "650b81792582268345073ce3757ac14356189d75",
+        "author": "Timothy Jaeryang Baek",
+        "email": "tim@openwebui.com",
+        "date": "2026-07-01T07:49:28Z",
+        "message": "refac",
+        "url": "https://github.com/open-webui/open-webui/commit/650b81792582268345073ce3757ac14356189d75"
+    },
+    {
+        "sha": "64b92ff08a09b1bf338d5d95b7bf6f9db0d7e857",
+        "author": "Timothy Jaeryang Baek",
+        "email": "tim@openwebui.com",
+        "date": "2026-07-01T07:48:29Z",
+        "message": "refac",
+        "url": "https://github.com/open-webui/open-webui/commit/64b92ff08a09b1bf338d5d95b7bf6f9db0d7e857"
+    },
+    {
+        "sha": "b6d4baeb7ea9bc83e5486ca98b3cae07d3869aa7",
+        "author": "Timothy Jaeryang Baek",
+        "email": "tim@openwebui.com",
+        "date": "2026-07-01T07:28:22Z",
+        "message": "refac",
+        "url": "https://github.com/open-webui/open-webui/commit/b6d4baeb7ea9bc83e5486ca98b3cae07d3869aa7"
+    },
+    {
+        "sha": "989c6c13f5d4c5cc255aec77aea14725104d9cb3",
+        "author": "Timothy Jaeryang Baek",
+        "email": "tim@openwebui.com",
+        "date": "2026-07-01T07:26:47Z",
+        "message": "refac",
+        "url": "https://github.com/open-webui/open-webui/commit/989c6c13f5d4c5cc255aec77aea14725104d9cb3"
+    },
+    {
+        "sha": "8fe480250f649824441a7b4d725a502683134713",
+        "author": "Timothy Jaeryang Baek",
+        "email": "tim@openwebui.com",
+        "date": "2026-07-01T07:25:20Z",
+        "message": "refac",
+        "url": "https://github.com/open-webui/open-webui/commit/8fe480250f649824441a7b4d725a502683134713"
+    },
+    {
+        "sha": "ab22fe64bdd10ba86845dcd46dfd7f619b22366f",
+        "author": "Timothy Jaeryang Baek",
+        "email": "tim@openwebui.com",
+        "date": "2026-07-01T07:20:50Z",
+        "message": "refac\n\nCo-Authored-By: Syed Osama Ali Shah <86572800+osamaali313@users.noreply.github.com>",
+        "url": "https://github.com/open-webui/open-webui/commit/ab22fe64bdd10ba86845dcd46dfd7f619b22366f"
+    },
+    {
+        "sha": "688bda09fbe26619613aa487beda8059a5fd55ef",
+        "author": "Timothy Jaeryang Baek",
+        "email": "tim@openwebui.com",
+        "date": "2026-07-01T07:20:16Z",
+        "message": "refac\n\nCo-Authored-By: Syed Osama Ali Shah <86572800+osamaali313@users.noreply.github.com>",
+        "url": "https://github.com/open-webui/open-webui/commit/688bda09fbe26619613aa487beda8059a5fd55ef"
+    },
+    {
+        "sha": "19d8f03bd2c64013b510f2a0eeb3513d452814a3",
+        "author": "Timothy Jaeryang Baek",
+        "email": "tim@openwebui.com",
+        "date": "2026-07-01T07:15:16Z",
+        "message": "refac",
+        "url": "https://github.com/open-webui/open-webui/commit/19d8f03bd2c64013b510f2a0eeb3513d452814a3"
+    },
+    {
+        "sha": "9ed7af823c088640ed7bc8758d431a6a4932b15e",
+        "author": "Aleix Dorca",
+        "email": "aleixdorca@mac.com",
+        "date": "2026-07-01T07:11:24Z",
+        "message": "Update and fix Catalan translation.json (#26409)",
+        "url": "https://github.com/open-webui/open-webui/commit/9ed7af823c088640ed7bc8758d431a6a4932b15e"
+    },
+    {
+        "sha": "980786f574f4d21eb19fc1582fa2831acfe9d983",
+        "author": "JuanMa Diaz",
+        "email": "torgus@gmail.com",
+        "date": "2026-07-01T07:10:37Z",
+        "message": "i18n: fix Spanish relative time labels (#26463)",
+        "url": "https://github.com/open-webui/open-webui/commit/980786f574f4d21eb19fc1582fa2831acfe9d983"
+    },
+    {
+        "sha": "a78f0c030261954f9dd5bf0e2b7e1a4e7d294b26",
+        "author": "Algorithm5838",
+        "email": "108630393+Algorithm5838@users.noreply.github.com",
+        "date": "2026-07-01T07:09:19Z",
+        "message": "fix: use absolute indexURL for pyodide sandbox (#26625)",
+        "url": "https://github.com/open-webui/open-webui/commit/a78f0c030261954f9dd5bf0e2b7e1a4e7d294b26"
+    }
+]

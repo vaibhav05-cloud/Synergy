@@ -1,0 +1,242 @@
+[
+    {
+        "sha": "e0b2cebde50e28e72a4d4f4b841fffe05cc15f76",
+        "author": "Luke Sandberg",
+        "email": "lukesandberg@users.noreply.github.com",
+        "date": "2026-07-14T06:13:12Z",
+        "message": "Improve the NFT error message and ignore comment handling (#95144)\n\nFixes #95125 in two ways\n\nThe OP admits that they misread the message in a few ways, but we can\nfix all of them\n\n1. Be specific about what function might need an annotation in the error\nmessage. A user with a nearby `path.join` might think that that is where\nthe annotation belongs instead of on the function with the warning.\n\n2. Be more flexible with how these `ignore` comments are interpreted\n`fs.readFileSync(path.join(process.cwd(), someVar))` shouldn't require 2\nannotations. Handle this by checking for and detecting `turbopackIgnore`\ncomments in all expressions! This will then bubble up through the linker\nand just cause us to ignore corresponding fs access apis.",
+        "url": "https://github.com/vercel/next.js/commit/e0b2cebde50e28e72a4d4f4b841fffe05cc15f76"
+    },
+    {
+        "sha": "d774f7db29dea81a54ab32f068d810eac6071663",
+        "author": "Niklas Mischkulnig",
+        "email": "4586894+mischnic@users.noreply.github.com",
+        "date": "2026-07-14T06:03:43Z",
+        "message": "Upgrade to swc 73 (#95731)\n\n- [x] Waiting for a swc major bump in\nhttps://github.com/swc-project/plugins...",
+        "url": "https://github.com/vercel/next.js/commit/d774f7db29dea81a54ab32f068d810eac6071663"
+    },
+    {
+        "sha": "1ecd8f1b63a29ccda8c4febb51e1dfa148a9c1dc",
+        "author": "next-js-bot[bot]",
+        "email": "279046576+next-js-bot[bot]@users.noreply.github.com",
+        "date": "2026-07-13T23:32:10Z",
+        "message": "v16.3.0-canary.85",
+        "url": "https://github.com/vercel/next.js/commit/1ecd8f1b63a29ccda8c4febb51e1dfa148a9c1dc"
+    },
+    {
+        "sha": "f1185f1341630928e2f1b487cd30ffedb192d08b",
+        "author": "Sam Poder",
+        "email": "sampoder@berkeley.edu",
+        "date": "2026-07-13T23:23:33Z",
+        "message": "[turbopack] Switch `make_production_chunks` to use floats (#95749)\n\nWe've talked about making this switch, making this switch because\nwithout it the diff for https://github.com/vercel/next.js/pull/95157 was\nvery difficult to read and follow.",
+        "url": "https://github.com/vercel/next.js/commit/f1185f1341630928e2f1b487cd30ffedb192d08b"
+    },
+    {
+        "sha": "63375cd1f75922c8f14524c5be6e3eda8bbb7688",
+        "author": "Luke Sandberg",
+        "email": "lukesandberg@users.noreply.github.com",
+        "date": "2026-07-13T20:37:03Z",
+        "message": "Fix termination handling (#95692)\n\n## Follow-ups for the experimental TypeScript CLI checker\n\nTwo independent improvements to the `experimental.useTypeScriptCli`\nbuild path.\n\n### 1. Make `tsc` responsive to interruption\n\nWhen `next build` is interrupted (Ctrl-C / `SIGTERM`), the TypeScript 7\nnative compiler could keep running to completion instead of stopping —\nleaving a CPU-heavy process alive after the build was abandoned.\n\nThe teardown already handled termination signals and killed the whole\nprocess group; the problem was the signal it sent. The native compiler\nignores `SIGTERM`/`SIGINT`, so the graceful signal never stopped it. We\nnow escalate to `SIGKILL` (Windows: `taskkill /T /F`), which reaps the\ncompiler on interrupt (measured ~200ms vs. running to completion).\n\nThe compiler's signal handling may be improved upstream — see\n[microsoft/typescript-go#4592](https://github.com/microsoft/typescript-go/pull/4592),\nwhich threads an interruption `context` through `tsc build`. That work\nis still in progress; until it lands and ships, this escalation is what\nmakes interruption reliable.\n\n### 2. Skip the jest worker for the CLI checker\n\nThe type-check runs in a jest worker to isolate the TypeScript\ncompiler-API heap so it can be freed after checking. In CLI mode the\ncompiler runs in a separate `tsc` process, so there is no heap to\nisolate and the worker adds nothing but an extra process and\nindirection. CLI mode now runs the setup/config path in-process and\nspawns `tsc` directly. The TypeScript-API checker is unchanged and still\nuses the worker.\n\n### Testing\n\n- Unit tests for `runTypeScriptCli` (spawn options, group-SIGKILL\nteardown, signal handling, listener cleanup, captured-output decoding).\n- Existing `test/production/app-dir/typescript-cli` integration suite\npasses (TS 6, TS 7, opt-in-required, `ignoreBuildErrors`,\n`--debug-build-paths`).\n- Manually verified against a TypeScript 7 project large enough to\ndistinguish a real kill from natural completion: the native compiler is\nreaped ~200ms after interrupt.\n\n<!-- NEXT_JS_LLM_PR -->",
+        "url": "https://github.com/vercel/next.js/commit/63375cd1f75922c8f14524c5be6e3eda8bbb7688"
+    },
+    {
+        "sha": "08f7c980bf744442d320d86f91de1e2e52de48ba",
+        "author": "next-js-bot[bot]",
+        "email": "279046576+next-js-bot[bot]@users.noreply.github.com",
+        "date": "2026-07-13T19:58:15Z",
+        "message": "Restore canary version 16.3.0-canary.84 after v16.3.0-preview.6 preview release",
+        "url": "https://github.com/vercel/next.js/commit/08f7c980bf744442d320d86f91de1e2e52de48ba"
+    },
+    {
+        "sha": "ea219c90884f19a675085806bece2e158e9bd324",
+        "author": "next-js-bot[bot]",
+        "email": "279046576+next-js-bot[bot]@users.noreply.github.com",
+        "date": "2026-07-13T19:58:13Z",
+        "message": "v16.3.0-preview.6",
+        "url": "https://github.com/vercel/next.js/commit/ea219c90884f19a675085806bece2e158e9bd324"
+    },
+    {
+        "sha": "b78f7d3f79a50d51b90110b9d1e46ff8d1b9d1ef",
+        "author": "Tobias Koppers",
+        "email": "tobias.koppers@googlemail.com",
+        "date": "2026-07-13T17:30:46Z",
+        "message": "Turbopack: order CSS modules by chunk-group co-occurrence in linearize (#95579)\n\n## Summary\n\nThe graph-based CSS chunker's `linearize` step produces the global\nmodule order that `split_into_chunks` then cuts into chunks. It\npreviously broke ties between ready modules using a weight-sorted stack.\n\nIt now prefers the ready module that shares the most chunk groups with\nthe previously placed module, so modules that are loaded together end up\nadjacent in the global order and split into better-aligned chunks. On a\nreal world example this measurably lowers the modeled chunk-loading\ncost, with fewer requests and less over-fetched CSS.\n\nThe shared-group count is read from edge weights (how many chunk groups\ntwo modules co-occur in). Since `make_acyclic` deletes edges to break\ncycles, it now returns the edges it cut so `linearize` can still count\nthose conflicting-order co-occurrences — reconstructing the full\nco-occurrence without cloning the graph.\n\n## Verification\n\n- `cargo test -p turbopack-core style_groups_graph::tests` (all pass)\n- Validated on a real world example that the resulting global order is\ndeterministic and the modeled chunk-loading cost decreases.\n\n<!-- NEXT_JS_LLM_PR -->",
+        "url": "https://github.com/vercel/next.js/commit/b78f7d3f79a50d51b90110b9d1e46ff8d1b9d1ef"
+    },
+    {
+        "sha": "41b823880d688b3e9f9aae3323b08ddd457240c2",
+        "author": "Sebastian \"Sebbie\" Silbermann",
+        "email": "sebastian.silbermann@vercel.com",
+        "date": "2026-07-13T14:52:27Z",
+        "message": "[test] Disable i18n-api-support deploy test for Turbopack with adapters (#95739)",
+        "url": "https://github.com/vercel/next.js/commit/41b823880d688b3e9f9aae3323b08ddd457240c2"
+    },
+    {
+        "sha": "a3d7ab97bef384686e186a88175164bdb817afa8",
+        "author": "Sebastian \"Sebbie\" Silbermann",
+        "email": "sebastian.silbermann@vercel.com",
+        "date": "2026-07-13T13:58:02Z",
+        "message": "Fork navigation-testing-lock module (#95611)\n\nEnsures the module graph is not bundled. Right now this has no effect\nsince all the modules imported by `navigation-test-lock` have legit uses\nin prod builds.\n\nAlso nice to not have to fork every single implementation inline.",
+        "url": "https://github.com/vercel/next.js/commit/a3d7ab97bef384686e186a88175164bdb817afa8"
+    },
+    {
+        "sha": "c3d1e893b7e0bec55c217e8507382a690b543b8f",
+        "author": "Joseph",
+        "email": "joseph.chamochumbi@vercel.com",
+        "date": "2026-07-13T12:50:06Z",
+        "message": "docs: runtime prefetching update (#95564)\n\nSync the runtime prefetching guide with latest App Shell changes",
+        "url": "https://github.com/vercel/next.js/commit/c3d1e893b7e0bec55c217e8507382a690b543b8f"
+    },
+    {
+        "sha": "4a4590a37cf4ac3fe53d7d1a8ff0a6441c249faa",
+        "author": "Jimmy Lai",
+        "email": "tim@timneutkens.nl",
+        "date": "2026-07-13T12:01:53Z",
+        "message": "request insights: add agent diagnosis access (4/5) (#93977)\n\n## What\n\nAdds `next experimental-diagnose` and an MCP `get_request_insights` tool\nso agents and local users can inspect Request Insights without opening\nthe DevTools overlay.\n\nStack:\n\n1. request insights: record local framework spans (1/5)\n2. request insights: derive request history and fetch data (2/5)\n3. request insights: expose dev snapshots to tools and HMR (3/5)\n4. request insights: add agent diagnosis access (4/5) ← current\n5. request insights: add DevTools request panel (5/5)\n\n## Review Focus\n\n- CLI error handling and raw JSON output.\n- MCP gating when Request Insights is unavailable.\n- Telemetry registration for the new MCP tool name.\n\n## Proof In This PR\n\n- `pnpm jest packages/next/src/telemetry/events/mcp-telemetry.test.ts\n--runInBand`\n- `pnpm --filter=next types`\n- Stack-tip smoke verifies `next experimental-diagnose --url\nhttp://localhost:3003 --json` against a real dev server.\n\n## Deferred Coverage\n\n- A more curated agent summary format is intentionally deferred until\nthe raw private snapshot contract settles.\n\n<!-- NEXT_JS_LLM_PR -->\n\n---------\n\nCo-authored-by: Tim Neutkens <tim@timneutkens.nl>",
+        "url": "https://github.com/vercel/next.js/commit/4a4590a37cf4ac3fe53d7d1a8ff0a6441c249faa"
+    },
+    {
+        "sha": "93249ee06d6e0c105b1278412768c8e0816d9936",
+        "author": "Niklas Mischkulnig",
+        "email": "4586894+mischnic@users.noreply.github.com",
+        "date": "2026-07-13T07:56:16Z",
+        "message": "Fix Pages router 404 runtime rendering with Adapter (#95264)\n\nThe problem is that the adapter expected a `output.pages` for the `/404`\nroute so that it can add these files to other Pages handlers so that\nthey can render a 404 at runtime (getStaticProps with\nrevaliate/getServerSideProps):\n\n\nhttps://github.com/nextjs/adapter-vercel/blob/650effd340b4f676a9bca6e0cdaba9bf7d34595a/packages/adapter/src/outputs.ts#L421-L438\n\nhttps://github.com/nextjs/adapter-vercel/blob/650effd340b4f676a9bca6e0cdaba9bf7d34595a/packages/adapter/src/node-handler.ts#L331-L340\n\nBut this 404 Pages handler was not actually emitted if it was\nprerendered, where it only emitted the `/404.html` static file. But\nthat's not what the adapter needs.\n\nTests:\n1. Run as an e2e test\n2. Add a variant with dynamically rendered 404 pages\n\nFull e2e test run:\n~~https://github.com/vercel/next.js/actions/runs/29081105397~~\nhttps://github.com/vercel/next.js/actions/runs/29087851475\n\nCloses NEXT-4947",
+        "url": "https://github.com/vercel/next.js/commit/93249ee06d6e0c105b1278412768c8e0816d9936"
+    },
+    {
+        "sha": "db1f3a64daf26f8c3866cc7d6e96b6c3f70d5b6b",
+        "author": "Niklas Mischkulnig",
+        "email": "4586894+mischnic@users.noreply.github.com",
+        "date": "2026-07-13T07:44:27Z",
+        "message": "Fix duplicate static files in adapter (#95681)\n\nWhen using `nextConfig.i18n`, then static files for `404.html` and\n`500.html` were added multiple times to the list.\n\nThese duplicate entries in `outputs.staticFiles` ended up causing race\nconditions in the Vercel adapter because the same output file path was\nwritten concurrently by multiple file operations.",
+        "url": "https://github.com/vercel/next.js/commit/db1f3a64daf26f8c3866cc7d6e96b6c3f70d5b6b"
+    },
+    {
+        "sha": "4736452efad1dbe563b2a351748351ebec0d91b1",
+        "author": "Vercel Release Bot",
+        "email": "88769842+vercel-release-bot@users.noreply.github.com",
+        "date": "2026-07-13T07:03:46Z",
+        "message": "Update font data (#95725)\n\nThis auto-generated PR updates font data with latest available\n\nCo-authored-by: next-js-bot[bot] <279046576+next-js-bot[bot]@users.noreply.github.com>",
+        "url": "https://github.com/vercel/next.js/commit/4736452efad1dbe563b2a351748351ebec0d91b1"
+    },
+    {
+        "sha": "eaf66e8e19cfff3a757d22657f519755705e8f84",
+        "author": "Sebastian \"Sebbie\" Silbermann",
+        "email": "sebastian.silbermann@vercel.com",
+        "date": "2026-07-13T06:36:36Z",
+        "message": "[test] Disable middleware-rewrites deploy test for Turbopack with adapters (#95680)\n\n\nCo-authored-by: Niklas Mischkulnig <4586894+mischnic@users.noreply.github.com>",
+        "url": "https://github.com/vercel/next.js/commit/eaf66e8e19cfff3a757d22657f519755705e8f84"
+    },
+    {
+        "sha": "a7bf1202de7f0dcb3c987e1406946fd16672d586",
+        "author": "next-js-bot[bot]",
+        "email": "279046576+next-js-bot[bot]@users.noreply.github.com",
+        "date": "2026-07-12T23:33:22Z",
+        "message": "v16.3.0-canary.84",
+        "url": "https://github.com/vercel/next.js/commit/a7bf1202de7f0dcb3c987e1406946fd16672d586"
+    },
+    {
+        "sha": "31541356c21bc389150b958379acb26aa7e97b22",
+        "author": "Jimmy Lai",
+        "email": "tim@timneutkens.nl",
+        "date": "2026-07-12T11:47:39Z",
+        "message": "request insights: expose dev snapshots to tools and HMR (3/5) (#93976)\n\n## What\n\nAdds the `experimental.requestInsights` flag, a private dev snapshot\nendpoint, and HMR snapshot/update transport so running dev servers can\nexpose recent request insights to tools and browser clients.\n\nStack:\n\n1. request insights: record local framework spans (1/5)\n2. request insights: derive request history and fetch data (2/5)\n3. request insights: expose dev snapshots to tools and HMR (3/5) ←\ncurrent\n4. request insights: add agent diagnosis access (4/5)\n5. request insights: add DevTools request panel (5/5)\n\n## Review Focus\n\n- Dev-only gating for `experimental.requestInsights`.\n- Private endpoint behavior when enabled and disabled.\n- HMR snapshot/update shape and client-side retention.\n\n## Proof In This PR\n\n- `pnpm --filter=next types`\n- Stack-tip Cache Components smoke verifies the endpoint and HMR-fed\noverlay state against a running dev server.\n\n## Deferred Coverage\n\n- A dedicated isolated dev-server transport test can follow if reviewers\nwant cheaper per-PR coverage than the stack-tip smoke.\n\n<!-- NEXT_JS_LLM_PR -->\n\n---------\n\nCo-authored-by: Tim Neutkens <tim@timneutkens.nl>",
+        "url": "https://github.com/vercel/next.js/commit/31541356c21bc389150b958379acb26aa7e97b22"
+    },
+    {
+        "sha": "510d00b51f145d5190fa06f718c270aaa505b86a",
+        "author": "Jimmy Lai",
+        "email": "tim@timneutkens.nl",
+        "date": "2026-07-12T11:47:38Z",
+        "message": "request insights: derive request history and fetch data (2/5) (#93975)\n\n## What\n\nBuilds the bounded request history store on top of local spans and fetch\nmetrics. Request Insights now keeps the last 100 requests, dedupes fetch\nrecords, and preserves raw span details for later verbose consumers.\n\nStack:\n\n1. request insights: record local framework spans (1/5)\n2. request insights: derive request history and fetch data (2/5) ←\ncurrent\n3. request insights: expose dev snapshots to tools and HMR (3/5)\n4. request insights: add agent diagnosis access (4/5)\n5. request insights: add DevTools request panel (5/5)\n\n## Review Focus\n\n- The request insight schema shared by server, tools, and DevTools.\n- Fetch cache/status mapping from existing `AppRender.fetch` spans.\n- Dedupe between completed fetch spans and direct fetch metrics.\n\n## Proof In This PR\n\n- `pnpm jest packages/next/src/server/lib/trace/request-insights.test.ts\npackages/next/src/server/lib/patch-fetch.test.ts --runInBand`\n- `pnpm --filter=next types`\n\n## Deferred Coverage\n\n- Browser/HMR transport, CLI/MCP access, and the visual panel are later\nPRs.\n\n<!-- NEXT_JS_LLM_PR -->\n\n---------\n\nCo-authored-by: Tim Neutkens <tim@timneutkens.nl>",
+        "url": "https://github.com/vercel/next.js/commit/510d00b51f145d5190fa06f718c270aaa505b86a"
+    },
+    {
+        "sha": "fab0afcbe447034930b2a110f9b018a9c7982a1d",
+        "author": "Jimmy Lai",
+        "email": "tim@timneutkens.nl",
+        "date": "2026-07-12T11:47:38Z",
+        "message": "request insights: record local framework spans (1/5) (#93974)\n\n## What\n\nAdds a dev-only local recorder for framework OTEL spans. This lets Next\nmirror span data into an in-memory store when local span capture is\nenabled, without requiring a user to run an OTEL provider.\n\nStack:\n\n1. request insights: record local framework spans (1/5) ← current\n2. request insights: derive request history and fetch data (2/5)\n3. request insights: expose dev snapshots to tools and HMR (3/5)\n4. request insights: add agent diagnosis access (4/5)\n5. request insights: add DevTools request panel (5/5)\n\n## Review Focus\n\n- Local recorder behavior when no OTEL provider is installed.\n- Preserving existing OTEL span API behavior when a provider is\ninstalled.\n- Request identity propagation through existing app render async\nstorage.\n\n## Proof In This PR\n\n- `pnpm jest packages/next/src/server/lib/trace/tracer.test.ts\npackages/next/src/server/lib/trace/span-store.test.ts --runInBand`\n- `pnpm --filter=next types`\n\n## Deferred Coverage\n\n- Request-level aggregation, fetch enrichment, dev transport, CLI/MCP\naccess, and the DevTools panel are later PRs in this stack.\n\n<!-- NEXT_JS_LLM_PR -->\n\n---------\n\nCo-authored-by: Tim Neutkens <tim@timneutkens.nl>",
+        "url": "https://github.com/vercel/next.js/commit/fab0afcbe447034930b2a110f9b018a9c7982a1d"
+    },
+    {
+        "sha": "1bd2fd585aac793ca2589e6f18f17a412fd11005",
+        "author": "next-js-bot[bot]",
+        "email": "279046576+next-js-bot[bot]@users.noreply.github.com",
+        "date": "2026-07-10T23:34:00Z",
+        "message": "v16.3.0-canary.83",
+        "url": "https://github.com/vercel/next.js/commit/1bd2fd585aac793ca2589e6f18f17a412fd11005"
+    },
+    {
+        "sha": "8b7b6fea864484684b02b264c7b4919b47c6bccc",
+        "author": "Will Binns-Smith",
+        "email": "wbinnssmith@gmail.com",
+        "date": "2026-07-10T19:11:26Z",
+        "message": "Turbopack tests: remove assertions that duplicate webpack results (#95688)\n\nWe forked test assertions in places in the early days of merging\nTurbopack. Now that we more closely align, a bunch of these had the\nexact same assertions. Fold them into one.",
+        "url": "https://github.com/vercel/next.js/commit/8b7b6fea864484684b02b264c7b4919b47c6bccc"
+    },
+    {
+        "sha": "4b1c74a3bc3ebe9ecae256ddd601b674e72cff0b",
+        "author": "Sam Poder",
+        "email": "sampoder@berkeley.edu",
+        "date": "2026-07-10T19:07:17Z",
+        "message": "Fix support for `custom-media-queries` in LightningCSS (#95689)\n\nCloses https://github.com/vercel/next.js/issues/95677. Added an e2e test\nthat roughly matches the original issue and tests that it works.",
+        "url": "https://github.com/vercel/next.js/commit/4b1c74a3bc3ebe9ecae256ddd601b674e72cff0b"
+    },
+    {
+        "sha": "0cfc85ceae3ede57b88b83b83742560cdcd9fb52",
+        "author": "Benjamin Woodruff",
+        "email": "benjamin.woodruff@vercel.com",
+        "date": "2026-07-10T18:27:52Z",
+        "message": "Clarify AI-assisted contribution policy in PR template and AGENTS.md (#95629)\n\n## Summary\n\nDocuments the policy around AI-assisted contributions, for both humans\nand agents:\n\n- `.github/pull_request_template.md`: notes that AI use is encouraged\nfor researching, creating, and reviewing changes, but contributors must\ndeeply understand their contributions, and PR descriptions from external\ncontributors must be written by a human.\n- `.github/ISSUE_TEMPLATE/1.bug_report.yml`: adds the equivalent note\nfor bug reports — issue descriptions from external contributors must be\nwritten by a human, though AI may help create reproductions.\n- `AGENTS.md`: replaces the old \"PR Descriptions\" section with two new\nsections. \"GitHub Pull Requests\" distinguishes branch PRs (agents may\nwrite descriptions) from fork PRs targeting `vercel/next.js` (agents may\nnot). \"GitHub Issues, Comments, and Discussions\" restricts agent-written\nissues, discussions, and comments to members of the\n`vercel`/`vercel-labs` GitHub orgs, tells agents how to check membership\nvia the GitHub API, lists what agents can still help non-members with\n(drafting details, reviewing, reproductions, translation, searching for\nduplicates), and carves out exceptions (commenting on the user's own PR,\nVercel-operated bots, GitHub/Graphite review bots, and forks of the\nrepo).\n- Renames the LLM watermark marker from `NEXT_JS_LLM_PR` to\n`NEXT_JS_LLM` everywhere it appears (`AGENTS.md`,\n`contributing/repository/pull-request-descriptions.md`, and the\n`create-pr`/`backport-pr` skills), since it now also applies to issues,\ndiscussions, and comments. Nothing in the repo consumes the old marker\nname.\n- `.agents/skills/create-pr/SKILL.md`: adds a \"Fork PRs vs Branch PRs\"\nsection referencing the `AGENTS.md` policy. Assorted typo fixes along\nthe way.\n\n## Verification\n\n- `gh api /user/memberships/orgs` and `gh api\norgs/vercel/members/<login>` (confirmed the documented membership checks\nwork and return the documented statuses)\n- Not run: no test/build commands (docs-only change; prettier applied\nvia the pre-commit hook)\n\n<!-- NEXT_JS_LLM -->",
+        "url": "https://github.com/vercel/next.js/commit/0cfc85ceae3ede57b88b83b83742560cdcd9fb52"
+    },
+    {
+        "sha": "2ff53d5e6a29702f8925c9e41066de498daf6717",
+        "author": "Aurora Scharff",
+        "email": "66901228+aurorascharff@users.noreply.github.com",
+        "date": "2026-07-10T17:00:21Z",
+        "message": "docs: add Building guide (#94999)\n\nAdds a **Building** guide (`docs/01-app/02-guides/building.mdx`): what\n`next build` does, how to read the route table (`○` Static, `◐` Partial\nPrerender, `ƒ` Dynamic), prerendering dynamic routes with\n`generateStaticParams`, streaming request-time work, and debugging\nprerender errors. Also links the guide from the deploying page and the\n`next build` CLI reference.",
+        "url": "https://github.com/vercel/next.js/commit/2ff53d5e6a29702f8925c9e41066de498daf6717"
+    },
+    {
+        "sha": "736ec443880882341eae6d5dd02d51212d28ea1b",
+        "author": "Aurora Scharff",
+        "email": "66901228+aurorascharff@users.noreply.github.com",
+        "date": "2026-07-10T16:14:37Z",
+        "message": "docs: add incremental adoption path to Cache Components migration guide (#95325)\n\n## Summary\n\nAdds a clear incremental adoption path to the Cache Components migration\nguide and reorganizes the workflow sections so they read in dependency\norder.\n\n- New **Adopting incrementally** section documenting the staged flow:\nenable the flag, opt routes out with `instant = false` (including the\n`cache-components-instant-false` codemod for a one-pass opt-out), fix\nsynchronous IO, then convert routes one at a time.\n- Makes explicit that **synchronous IO cannot be deferred** by `instant\n= false` (it is an unconditional prerender build error), and documents\nthe actual fix: move the call to request time via `<Suspense>` +\n`connection()` or a Client Component. Previously the guide only said to\n\"fix it,\" implying every route could be deferred.\n- Groups the workflow sections (`Following validation`, `Opting out of\nvalidation`, `Adopting incrementally`) together before the per-API\nreference, instead of leaving them stranded in the middle of the\nreference list.\n- Cross-links the adoption skill's **Incremental** mode to the manual\n`Adopting incrementally` flow so readers see they are the same workflow,\nautomated vs. by hand.\n\n## Verification\n\n- `pnpm prettier --with-node-modules --ignore-path .prettierignore\n--write docs/01-app/02-guides/migrating-to-cache-components.mdx` (clean)\n- Verified the sync-IO behavior against source (`throwIfSyncIOUsed` runs\nbefore the `allowEmptyStaticShell` / `instant = false` gate in\n`dynamic-rendering.ts`).\n- All intra-page anchor links and the `cache-components-instant-false`\ncodemod anchor confirmed to resolve.\n\n<!-- NEXT_JS_LLM_PR -->",
+        "url": "https://github.com/vercel/next.js/commit/736ec443880882341eae6d5dd02d51212d28ea1b"
+    },
+    {
+        "sha": "46681d90f0fd92bb22fbf38b43b507faad47a812",
+        "author": "Janka Uryga",
+        "email": "lolzatu2@gmail.com",
+        "date": "2026-07-10T15:36:41Z",
+        "message": "[PPF] Sync IO is only allowed in the dynamic stage (#95384)\n\nThis PR makes Sync IO behavior more restrictive when\n`partialPrefetching` is on (either globally or for a page).\n\n- Previously, we allowed `await cookies(); Date.now()` in in segments\nthat won't ever be runtime prefetched. This was achieved by separating\nsegments into \"early\" and \"late\" stages and only erroring in the \"early\"\nones.\n- After this PR, it will always be an error to do sync IO anywhere other\nthan after `io()`/`connection()`/uncached IO (i.e. outside the Dynamic\nstage).\n\nWe're doing this mainly because with `partialPrefetching`, `cookies()`\nresolves in App Shells, and sync IO causes a severe deopt in any\nprerender. `allow-runtime` also opts a route into `partialPrefetching`,\nwhich means that even the segments above the runtime prefetch boundary\nwill need an App Shell and can't tolerate Sync IO.\n\nThis PR removes all early/late stage separation, because we no longer\nneed to vary the Sync IO behavior on the segment. Instead, we now pick\nwhether a stageController should use\n- `SyncIOMode.AllowedInRuntimeOrDynamic` (legacy)\n- `SyncIOMode.AllowedInDynamic` (`partialPrefetching`)\n- `SyncIOMode.Untracked` if it needs to opt out\n\nI've removed the existing tests that asserted that sync IO is allowed in\nsegments above the `allow-runtime` boundary. Instead, we check that sync\nio either errors (if partialPrefetching is on) or is allowed (if\npartialPrefetching is off)\n\nCloses NAR-855",
+        "url": "https://github.com/vercel/next.js/commit/46681d90f0fd92bb22fbf38b43b507faad47a812"
+    },
+    {
+        "sha": "3c995a87c18d26cc0b533a66199686ea77255f02",
+        "author": "Janka Uryga",
+        "email": "lolzatu2@gmail.com",
+        "date": "2026-07-10T14:47:05Z",
+        "message": "refactor: remove unnecessary switches from StagedRenderingController (#95383)\n\nWe have a couple switches in `StagedRenderingController` where the main\npurpose ends up being eliminating `Before/Dynamic/Abandoned` (i.e. the\nstart and the end stages). Since we migrated everything to\n`RENDER_STAGE_ORDER` loops, we no longer really need to list all the\nintermediate stages out explicitly in these switches. It's enough to\nrule out the \"special\" stages and let the rest of the code be generic.\nThis saves some work when adding/removing intermediate stages.\n\nView with \"hide whitespace\", otherwise it looks messy.",
+        "url": "https://github.com/vercel/next.js/commit/3c995a87c18d26cc0b533a66199686ea77255f02"
+    },
+    {
+        "sha": "3bb780e7d65f723297c93640d0ca24c730037770",
+        "author": "Tim Neutkens",
+        "email": "tim@timneutkens.nl",
+        "date": "2026-07-10T13:55:29Z",
+        "message": "Keep the request body a plain Readable after middleware so Readable.toWeb() doesn't hang (#95607)\n\nRecreation of https://github.com/vercel/next.js/pull/95370\n\n### What's the problem?\n\nA `POST` (or `PUT`/`PATCH`) request that passes through middleware\nreturning `NextResponse.next()` hangs indefinitely when the downstream\nhandler reads the body via Node's `Readable.toWeb()`. The request never\ncompletes and eventually times out.\n\nReproduction: https://github.com/abir-taheer/next-js-readable-stream-bug\n\n### Root cause\n\nWhen middleware runs, `runMiddleware` clones the request body and later\ncalls `finalize()`, which grafts the buffered stream back onto the\noriginal `IncomingMessage` via `replaceRequestBody()`\n(`packages/next/src/server/body-streams.ts`). `replaceRequestBody`\ncopies the buffered stream's enumerable properties onto the request.\n\nThe buffered stream (`p2`) was a `PassThrough` — a `Duplex` — so its\nwritable-side internals (`_writableState` plus the enumerable `Writable`\nmethods like `write`/`end`) were copied onto the `IncomingMessage`.\nBecause that `_writableState.finished` is `false`, Node stream utilities\nthat inspect it — including `Readable.toWeb()`, which uses\n`finished()`/end-of-stream detection — treat the request as a still-open\nwritable stream and wait forever.\n\n`NextResponse.rewrite()` is unaffected (it builds a new internal request\nand skips this path), and `GET`/`HEAD` requests are fine because there\nis no body to clone.\n\n### The fix\n\n`p2` is only ever fed with `.push()`, so it never needs a writable side.\nMaking it a plain `Readable` instead of a `PassThrough` keeps the\nfinalized request a pure `Readable`, so `Readable.toWeb()` (and any\nother duck-typing based on `_writableState`) behaves correctly. No\nbehavior change for the existing consumers, which only read the stream.\n\n### Testing\n\nAdded `test/unit/body-streams.test.ts`, which drives the real clone →\n`finalize()` flow and asserts the finalized request:\n- is no longer writable (`_writableState` is `undefined`), and\n- is fully consumable via `Readable.toWeb()` (this hangs before the\nfix).\n\nFixes #95335\n\n<!-- NEXT_JS_LLM_PR -->\n\nCo-authored-by: UditDewan <udit.dewan21@gmail.com>\nCo-authored-by: Baradhan-Madhu <26barum@gmail.com>",
+        "url": "https://github.com/vercel/next.js/commit/3bb780e7d65f723297c93640d0ca24c730037770"
+    },
+    {
+        "sha": "a37068f525c86c79f1e973cd6712b8c6d0560cad",
+        "author": "Joseph",
+        "email": "joseph.chamochumbi@vercel.com",
+        "date": "2026-07-10T13:40:39Z",
+        "message": "docs: note default error/not-found UI follows OS color scheme, not app theme (#95673)\n\nGuidance for those who don't customize their own not-found page, pages\nrouter's 404, etc, because the defaults honor the system style, not any\napp-level theme settings.",
+        "url": "https://github.com/vercel/next.js/commit/a37068f525c86c79f1e973cd6712b8c6d0560cad"
+    }
+]

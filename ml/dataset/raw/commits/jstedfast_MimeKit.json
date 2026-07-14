@@ -1,0 +1,242 @@
+[
+    {
+        "sha": "6ff6d680b6437438ababda54e903bc54e597ccd9",
+        "author": "Jeffrey Stedfast",
+        "email": "jestedfa@microsoft.com",
+        "date": "2026-07-11T21:49:11Z",
+        "message": "Update NuGet login action version in release workflow",
+        "url": "https://github.com/jstedfast/MimeKit/commit/6ff6d680b6437438ababda54e903bc54e597ccd9"
+    },
+    {
+        "sha": "c145bb8413edafe7b0664eff7d4ae72f895e23d4",
+        "author": "Jeffrey Stedfast",
+        "email": "jestedfa@microsoft.com",
+        "date": "2026-07-11T21:41:25Z",
+        "message": "Update release workflow\n\nDon't restore MimeKitLite.sln until after building MimeKit.sln",
+        "url": "https://github.com/jstedfast/MimeKit/commit/c145bb8413edafe7b0664eff7d4ae72f895e23d4"
+    },
+    {
+        "sha": "7bf092d07e8db50d893d094b6926dffb6138c029",
+        "author": "Jeffrey Stedfast",
+        "email": "jestedfa@microsoft.com",
+        "date": "2026-07-11T21:36:11Z",
+        "message": "Add nuget restore for solution files in workflow",
+        "url": "https://github.com/jstedfast/MimeKit/commit/7bf092d07e8db50d893d094b6926dffb6138c029"
+    },
+    {
+        "sha": "5d7f2e12172d241c6fb8451f7a605713ae1b92c5",
+        "author": "Jeffrey Stedfast",
+        "email": "jestedfa@microsoft.com",
+        "date": "2026-07-11T21:28:38Z",
+        "message": "Refactor release workflow for version handling and signing",
+        "url": "https://github.com/jstedfast/MimeKit/commit/5d7f2e12172d241c6fb8451f7a605713ae1b92c5"
+    },
+    {
+        "sha": "9bbef2e439e9c6564968add4666ab74a2ae0c2bb",
+        "author": "Jeffrey Stedfast",
+        "email": "jestedfa@microsoft.com",
+        "date": "2026-07-11T20:37:54Z",
+        "message": "Fix path quotes in release workflow for artifacts",
+        "url": "https://github.com/jstedfast/MimeKit/commit/9bbef2e439e9c6564968add4666ab74a2ae0c2bb"
+    },
+    {
+        "sha": "4fc7bcbae7aad00205b439cacfda9652c5ebc729",
+        "author": "Jeffrey Stedfast",
+        "email": "jestedfa@microsoft.com",
+        "date": "2026-07-11T20:33:27Z",
+        "message": "Bumped version to 4.17.1\n\nTesting new release pipeline",
+        "url": "https://github.com/jstedfast/MimeKit/commit/4fc7bcbae7aad00205b439cacfda9652c5ebc729"
+    },
+    {
+        "sha": "021b347b3f089e68fb23b300f77249e60dbea964",
+        "author": "Jeffrey Stedfast",
+        "email": "jestedfa@microsoft.com",
+        "date": "2026-07-11T20:30:25Z",
+        "message": "Refactor GitHub Actions workflow for release process\n\nSplit into 2 jobs to isolate code-signing",
+        "url": "https://github.com/jstedfast/MimeKit/commit/021b347b3f089e68fb23b300f77249e60dbea964"
+    },
+    {
+        "sha": "afca9237c3d4827b8449e5a043968135759ad77d",
+        "author": "Jeffrey Stedfast",
+        "email": "jestedfa@microsoft.com",
+        "date": "2026-07-04T15:02:26Z",
+        "message": "Added release workflow for NuGet package publishing\n\nAdded a Release workflow to publish MimeKit and MimeKitLite packages to NuGet.org.",
+        "url": "https://github.com/jstedfast/MimeKit/commit/afca9237c3d4827b8449e5a043968135759ad77d"
+    },
+    {
+        "sha": "75ae6744f3865e5cac2582c3e257d7072885268a",
+        "author": "Jeffrey Stedfast",
+        "email": "jestedfa@microsoft.com",
+        "date": "2026-07-01T00:28:43Z",
+        "message": "Remove tag creation steps from workflow\n\nRemoved steps for adding new tags based on versioning conditions.",
+        "url": "https://github.com/jstedfast/MimeKit/commit/75ae6744f3865e5cac2582c3e257d7072885268a"
+    },
+    {
+        "sha": "b8f1e89864c0332a6c4ccaf602fde414b7920404",
+        "author": "Jeffrey Stedfast",
+        "email": "jestedfa@microsoft.com",
+        "date": "2026-06-26T02:09:56Z",
+        "message": "Revert \"Use Path.Join instead of Path.Combine (makes CodeQL happier)\"\n\nThis reverts commit b6a5613a718e741babce5fb07fbfae8cef01c30e.",
+        "url": "https://github.com/jstedfast/MimeKit/commit/b8f1e89864c0332a6c4ccaf602fde414b7920404"
+    },
+    {
+        "sha": "b6a5613a718e741babce5fb07fbfae8cef01c30e",
+        "author": "Jeffrey Stedfast",
+        "email": "jestedfa@microsoft.com",
+        "date": "2026-06-26T01:49:19Z",
+        "message": "Use Path.Join instead of Path.Combine (makes CodeQL happier)",
+        "url": "https://github.com/jstedfast/MimeKit/commit/b6a5613a718e741babce5fb07fbfae8cef01c30e"
+    },
+    {
+        "sha": "73e448f185bff08ebc33c49ced59df0d9afc0902",
+        "author": "Jeffrey Stedfast",
+        "email": "jestedfa@microsoft.com",
+        "date": "2026-06-25T13:35:20Z",
+        "message": "Fixed InternetAddressListConverter to allow conversion of empty strings into an empty list\n\nFixes issue #1249",
+        "url": "https://github.com/jstedfast/MimeKit/commit/73e448f185bff08ebc33c49ced59df0d9afc0902"
+    },
+    {
+        "sha": "b6b63a7fb56edf5cd921e4c3905f227caf9d8b4a",
+        "author": "Jeffrey Stedfast",
+        "email": "jestedfa@microsoft.com",
+        "date": "2026-06-12T13:38:48Z",
+        "message": "Removed base, embed, input, link and source tags as \"unsafe\" tags\n\nThese are all void tags in HTML, meaning they do not have inner content.\n\nFixes issue #1247",
+        "url": "https://github.com/jstedfast/MimeKit/commit/b6b63a7fb56edf5cd921e4c3905f227caf9d8b4a"
+    },
+    {
+        "sha": "f0df54b523ce89ea3fb1cea3a9ad0663c2a5f205",
+        "author": "Jeffrey Stedfast",
+        "email": "jestedfa@microsoft.com",
+        "date": "2026-05-31T14:26:37Z",
+        "message": "Bump some nuget dependencies\n\n* Updated System.Text.Encoding.CodePages from 8.0.0 to 9.0.9\n* Updated System.Security.Cryptography.Pkcs from 8.0.1 to 10.0.0\n\nWill update System.Text.Encoding.CodePages to 10.0.0 eventually.",
+        "url": "https://github.com/jstedfast/MimeKit/commit/f0df54b523ce89ea3fb1cea3a9ad0663c2a5f205"
+    },
+    {
+        "sha": "a3500eeb7a0bfd98e729973d1a019f324ee710a4",
+        "author": "Thomas",
+        "email": "tomap@users.noreply.github.com",
+        "date": "2026-05-27T13:39:12Z",
+        "message": "Fix typo in XSS vulnerability description in release notes (#1245)",
+        "url": "https://github.com/jstedfast/MimeKit/commit/a3500eeb7a0bfd98e729973d1a019f324ee710a4"
+    },
+    {
+        "sha": "ce7b503c1ca09997dc77a180aac7b3333f057d85",
+        "author": "Jeffrey Stedfast",
+        "email": "jestedfa@microsoft.com",
+        "date": "2026-05-26T20:53:25Z",
+        "message": "Bumped version to 4.17.0",
+        "url": "https://github.com/jstedfast/MimeKit/commit/ce7b503c1ca09997dc77a180aac7b3333f057d85"
+    },
+    {
+        "sha": "b80e2749c2a32a5442b853f4f931408eca041fc6",
+        "author": "Jeffrey Stedfast",
+        "email": "jestedfa@microsoft.com",
+        "date": "2026-05-17T00:43:40Z",
+        "message": "More unnecessary variable assignments in Parameter.Rfc2047EncodeNextChunk()",
+        "url": "https://github.com/jstedfast/MimeKit/commit/b80e2749c2a32a5442b853f4f931408eca041fc6"
+    },
+    {
+        "sha": "2dacc80693c38fb6b6b3519a12c40346f80d7816",
+        "author": "Jeffrey Stedfast",
+        "email": "jestedfa@microsoft.com",
+        "date": "2026-05-17T00:40:42Z",
+        "message": "Avoid calling virtual SetStream() method in MimeReader .ctor",
+        "url": "https://github.com/jstedfast/MimeKit/commit/2dacc80693c38fb6b6b3519a12c40346f80d7816"
+    },
+    {
+        "sha": "5c19980a5b429509a076397eb432123ecc6361b8",
+        "author": "Jeffrey Stedfast",
+        "email": "jestedfa@microsoft.com",
+        "date": "2026-05-17T00:29:05Z",
+        "message": "Micro-optimization in Parameter.Rfc2047EncodeNextChunk()",
+        "url": "https://github.com/jstedfast/MimeKit/commit/5c19980a5b429509a076397eb432123ecc6361b8"
+    },
+    {
+        "sha": "71d9312451fdb77a9a4b2c511b85871efaef6502",
+        "author": "Jeffrey Stedfast",
+        "email": "jestedfa@microsoft.com",
+        "date": "2026-05-16T16:22:52Z",
+        "message": "More code quality improvements",
+        "url": "https://github.com/jstedfast/MimeKit/commit/71d9312451fdb77a9a4b2c511b85871efaef6502"
+    },
+    {
+        "sha": "9f1dea5eb5d60f647615d4e6b71a88f2d3a421f7",
+        "author": "Jeffrey Stedfast",
+        "email": "jestedfa@microsoft.com",
+        "date": "2026-05-16T16:04:33Z",
+        "message": "Updated BenchmarkDotNet to v0.15.8",
+        "url": "https://github.com/jstedfast/MimeKit/commit/9f1dea5eb5d60f647615d4e6b71a88f2d3a421f7"
+    },
+    {
+        "sha": "4a66338be13ef6a568f8ac553cb1703202703b33",
+        "author": "Jeffrey Stedfast",
+        "email": "jestedfa@microsoft.com",
+        "date": "2026-05-16T15:54:01Z",
+        "message": "Micro-optimizations in Base64Encoders, UUEncoder, and Received.ToString()\n\nRemoved unnecessary variable assignments/increments.",
+        "url": "https://github.com/jstedfast/MimeKit/commit/4a66338be13ef6a568f8ac553cb1703202703b33"
+    },
+    {
+        "sha": "aa0f0adbfba3d185de7cfd1f814e872663bc67f2",
+        "author": "Jeffrey Stedfast",
+        "email": "jestedfa@microsoft.com",
+        "date": "2026-05-16T15:42:38Z",
+        "message": "Fixed string concatenation loop in Received parser",
+        "url": "https://github.com/jstedfast/MimeKit/commit/aa0f0adbfba3d185de7cfd1f814e872663bc67f2"
+    },
+    {
+        "sha": "79222f07a45c7075b07598db3e63dcd093583241",
+        "author": "Jeffrey Stedfast",
+        "email": "jestedfa@microsoft.com",
+        "date": "2026-05-16T15:28:45Z",
+        "message": "Change default TnefPart mime-type to application/ms-tnef\n\nThis is what gets used by O365 Exchange.",
+        "url": "https://github.com/jstedfast/MimeKit/commit/79222f07a45c7075b07598db3e63dcd093583241"
+    },
+    {
+        "sha": "33f6e8c529fed3aaaf2cef2aa92e23accc703682",
+        "author": "Jeffrey Stedfast",
+        "email": "jestedfa@microsoft.com",
+        "date": "2026-05-16T15:27:26Z",
+        "message": "Add 'using' keyword for ValueStringBuilder usage\n\nThis will dispose the builder in case any exceptions are thrown.",
+        "url": "https://github.com/jstedfast/MimeKit/commit/33f6e8c529fed3aaaf2cef2aa92e23accc703682"
+    },
+    {
+        "sha": "6d7dc72ddd2386fbf4cbed7d418b55fb98f9404f",
+        "author": "Jeffrey Stedfast",
+        "email": "jestedfa@microsoft.com",
+        "date": "2026-05-16T13:47:47Z",
+        "message": "Fixed some string concatenation in a loop issues",
+        "url": "https://github.com/jstedfast/MimeKit/commit/6d7dc72ddd2386fbf4cbed7d418b55fb98f9404f"
+    },
+    {
+        "sha": "bbe39237c2b57dda2831cfd3d5cc38b416c2ef50",
+        "author": "Jeffrey Stedfast",
+        "email": "jestedfa@microsoft.com",
+        "date": "2026-05-16T12:47:01Z",
+        "message": "Avoid shadowing member variables by renaming method params and locals",
+        "url": "https://github.com/jstedfast/MimeKit/commit/bbe39237c2b57dda2831cfd3d5cc38b416c2ef50"
+    },
+    {
+        "sha": "76b9b3f5bc9cabfa0e6b9e9598f4ca5cb43c9bfe",
+        "author": "Jeffrey Stedfast",
+        "email": "jestedfa@microsoft.com",
+        "date": "2026-05-16T12:26:40Z",
+        "message": "Get rid of a catch-all in MimeMessage's logic for converting S.N.M objects",
+        "url": "https://github.com/jstedfast/MimeKit/commit/76b9b3f5bc9cabfa0e6b9e9598f4ca5cb43c9bfe"
+    },
+    {
+        "sha": "ec7442808de622f28160954f2d1232a916c733fb",
+        "author": "Jeffrey Stedfast",
+        "email": "jestedfa@microsoft.com",
+        "date": "2026-05-16T12:25:57Z",
+        "message": "Use a ReceivedClauseComparer rather than having ReceivedClause implement IComparable\n\nThis resolves a CodeQL code quality issue.",
+        "url": "https://github.com/jstedfast/MimeKit/commit/ec7442808de622f28160954f2d1232a916c733fb"
+    },
+    {
+        "sha": "10ce3f0c5cddd3f41bf91b1bd45170b23a004c86",
+        "author": "Jeffrey Stedfast",
+        "email": "jestedfa@microsoft.com",
+        "date": "2026-05-16T12:07:35Z",
+        "message": "A few more code quality fixes based on CodeQL reports",
+        "url": "https://github.com/jstedfast/MimeKit/commit/10ce3f0c5cddd3f41bf91b1bd45170b23a004c86"
+    }
+]

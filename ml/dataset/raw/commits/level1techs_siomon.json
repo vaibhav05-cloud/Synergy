@@ -1,0 +1,242 @@
+[
+    {
+        "sha": "561becb1efb807709a6751651d0cc1589c238d79",
+        "author": "wendelltron",
+        "email": "tekwendell@gmail.com",
+        "date": "2026-05-26T22:19:59Z",
+        "message": "Formatting lint fixes for autobuild",
+        "url": "https://github.com/level1techs/siomon/commit/561becb1efb807709a6751651d0cc1589c238d79"
+    },
+    {
+        "sha": "bdea3be8025a18f0bb42e3d78e9e8cef930cb8c4",
+        "author": "wendelltron",
+        "email": "tekwendell@gmail.com",
+        "date": "2026-05-26T22:09:00Z",
+        "message": "Add ite_voltage_scaling field to ASUS W890E-SAGE board template\n\nNew board file from origin/main was missing the ite_voltage_scaling\nfield added to BoardTemplate for ITE voltage scaling support.",
+        "url": "https://github.com/level1techs/siomon/commit/bdea3be8025a18f0bb42e3d78e9e8cef930cb8c4"
+    },
+    {
+        "sha": "d1c7e27eab3e8110caeebc4aea32ef88456a5fee",
+        "author": "wendelltron",
+        "email": "tekwendell@gmail.com",
+        "date": "2026-05-26T21:51:36Z",
+        "message": "Improvements for TRX 50 AI Tops (Gigabyte). Rethinking handling boards that have multiple ite chips (this one) and what we need in the sensor table structure.",
+        "url": "https://github.com/level1techs/siomon/commit/d1c7e27eab3e8110caeebc4aea32ef88456a5fee"
+    },
+    {
+        "sha": "bee9ddf2d192c7952a8d1cd4aaf8fd75c48636ec",
+        "author": "wendelltron",
+        "email": "tekwendell@gmail.com",
+        "date": "2026-04-23T03:35:09Z",
+        "message": "Bump transitive rand dependency to 0.8.6",
+        "url": "https://github.com/level1techs/siomon/commit/bee9ddf2d192c7952a8d1cd4aaf8fd75c48636ec"
+    },
+    {
+        "sha": "58a183826036d0c0e6001d1ae9feed0c5d006421",
+        "author": "wendelltron",
+        "email": "tekwendell@gmail.com",
+        "date": "2026-04-23T03:31:40Z",
+        "message": "Fix clippy warnings in CPU, TUI, and SMBIOS code",
+        "url": "https://github.com/level1techs/siomon/commit/58a183826036d0c0e6001d1ae9feed0c5d006421"
+    },
+    {
+        "sha": "3a4ec7d908497cf88db1511ad5ec1c5801905948",
+        "author": "wendelltron",
+        "email": "tekwendell@gmail.com",
+        "date": "2026-04-23T03:09:31Z",
+        "message": "Merge z890_testing into main\n\nAdd safeties for --direct-io and preliminary support for W890 and Z890 motherboards.\n\n# Conflicts:\n#\tsrc/db/voltage_scaling.rs",
+        "url": "https://github.com/level1techs/siomon/commit/3a4ec7d908497cf88db1511ad5ec1c5801905948"
+    },
+    {
+        "sha": "1bf2830f428ccb4783f024f6deb0f5b667cab6f2",
+        "author": "wendelltron",
+        "email": "tekwendell@gmail.com",
+        "date": "2026-04-23T03:07:56Z",
+        "message": "Add preliminary ASUS W890 board support",
+        "url": "https://github.com/level1techs/siomon/commit/1bf2830f428ccb4783f024f6deb0f5b667cab6f2"
+    },
+    {
+        "sha": "39b4831f88646aaa9eeb01fb10ae9cde029b0537",
+        "author": "Patrick Buckley",
+        "email": "eous@users.noreply.github.com",
+        "date": "2026-04-06T22:09:51Z",
+        "message": "Bump MSRV to 1.88, upgrade ratatui 0.30 and crossterm 0.29 (#61)\n\nResolves two Dependabot security alerts:\n- time 0.3.45 → 0.3.47 (stack exhaustion DoS via RFC 2822)\n- lru 0.12.5 → 0.16.3 (Stacked Borrows soundness in IterMut)\n\nCollapse 28 nested if/if-let blocks into let-chains, which are\nstable since Rust 1.87 and now flagged by clippy.",
+        "url": "https://github.com/level1techs/siomon/commit/39b4831f88646aaa9eeb01fb10ae9cde029b0537"
+    },
+    {
+        "sha": "7829c5524ae773a0d481a61470ba9814b3a25628",
+        "author": "Patrick Buckley",
+        "email": "eous@users.noreply.github.com",
+        "date": "2026-04-06T21:45:13Z",
+        "message": "Fix invalid pointer dereference in network collector (#60)\n\n* Fix invalid pointer dereference in network collector\n\nUse ptr::read() instead of &* to avoid creating references from raw\npointers into getifaddrs-owned memory. Add null check on ifa_name\nbefore CStr::from_ptr. Classify IPv6 scope by address prefix (FE80::/10)\ninstead of relying on sin6_scope_id zone index.\n\n* fix: use reference with inline CodeQL suppression instead of ptr::read\n\nRevert to &* reference style to collapse 6 CodeQL findings back to 1,\nthen suppress that single finding with an inline codeql[] comment citing\nthe getifaddrs/freeifaddrs safety contract. Keeps the null checks on\nifa_name/ifa_addr and the ipv6_scope() address-based classification.",
+        "url": "https://github.com/level1techs/siomon/commit/7829c5524ae773a0d481a61470ba9814b3a25628"
+    },
+    {
+        "sha": "30a28c7e4a65071096e3c89618747236f5175fbc",
+        "author": "Patrick Buckley",
+        "email": "eous@users.noreply.github.com",
+        "date": "2026-04-06T21:28:30Z",
+        "message": "Add least-privilege permissions to CI and AUR workflows (#59)\n\nFixes 7 CodeQL alerts for missing permissions declarations.\nBoth workflows only need contents:read — CI for checkout+build,\nAUR for checkout (push uses SSH secrets, not GITHUB_TOKEN).",
+        "url": "https://github.com/level1techs/siomon/commit/30a28c7e4a65071096e3c89618747236f5175fbc"
+    },
+    {
+        "sha": "1f2487b661cc05d79d3d598049478d4a8a8c0703",
+        "author": "Ewout van Mansom",
+        "email": "ewout@vanmansom.name",
+        "date": "2026-04-06T10:32:14Z",
+        "message": "Package shell completion (#58)",
+        "url": "https://github.com/level1techs/siomon/commit/1f2487b661cc05d79d3d598049478d4a8a8c0703"
+    },
+    {
+        "sha": "fe69f784c86f3f751d59aec273e82a580a7a6a3e",
+        "author": "weriomat",
+        "email": "59094810+weriomat@users.noreply.github.com",
+        "date": "2026-04-06T05:53:11Z",
+        "message": "Add shell completion scripts (#57)\n\nThis is done via the amazing [cargo\nxtask](https://github.com/matklad/cargo-xtask) paradigm.\nAnother possible solution would be to add \"shell completions\" as an\noption to `Commands`. As shell completions are only useful when\npackaging an application I prefer the xtask approach.",
+        "url": "https://github.com/level1techs/siomon/commit/fe69f784c86f3f751d59aec273e82a580a7a6a3e"
+    },
+    {
+        "sha": "641ea34a42e9de6c7812903c0a584ae68e0a26d8",
+        "author": "wendelltron",
+        "email": "tekwendell@gmail.com",
+        "date": "2026-04-05T19:31:44Z",
+        "message": "Tweaks to Asus TRX50 SAGE-A labels and sensor inputs based on 2026 Q1 bios updates.",
+        "url": "https://github.com/level1techs/siomon/commit/641ea34a42e9de6c7812903c0a584ae68e0a26d8"
+    },
+    {
+        "sha": "26fd74211a5655ac2f7461575fd5fd2df3ee29e7",
+        "author": "wendelltron",
+        "email": "tekwendell@gmail.com",
+        "date": "2026-04-05T19:11:25Z",
+        "message": "Updating Readme for more help/troubleshooting steps for SuperIO type chips",
+        "url": "https://github.com/level1techs/siomon/commit/26fd74211a5655ac2f7461575fd5fd2df3ee29e7"
+    },
+    {
+        "sha": "13d674271cdcb27886847d2b53cf908b49f86c82",
+        "author": "Ewout van Mansom",
+        "email": "ewout@vanmansom.name",
+        "date": "2026-04-05T03:39:59Z",
+        "message": "Userspace sensor permissions via udev and setcap (#51)\n\nShip udev rules, tmpfiles.d config, and file capabilities so\nall sensors work without root for logged-in users.\n\nudev rules (packaging/udev/50-siomon.rules):\n- TAG+=\"uaccess\" on /dev/hsmp, /dev/ipmi*, /dev/i2c-*,\n  /dev/port, /dev/sinfo_io — systemd-logind sets POSIX\n  ACLs for the active console user, no group needed\n\ntmpfiles.d (packaging/tmpfiles/siomon.conf):\n- RAPL energy counters (/sys/class/powercap/) are 0400\n  root on many distros — make world-readable at boot\n  via systemd-tmpfiles z directive\n\nFile capabilities (post-install hooks):\n- setcap cap_perfmon,cap_sys_rawio=ep on /usr/bin/sio\n- cap_perfmon: perf_event_open for L3 cache hit rate\n- cap_sys_rawio: /dev/port for Super I/O chips\n\nAUR (packaging/aur/):\n- PKGBUILD installs udev rules and tmpfiles.d config\n- siomon.install runs setcap in post_install; udev and\n  tmpfiles are handled by pre-existing libalpm hooks\n- libcap added to depends for setcap availability\n\nDebian/PPA (packaging/launchpad/debian/):\n- siomon.udev and siomon.tmpfiles copied from canonical\n  sources during CI build for debhelper auto-install\n- postinst runs setcap; udev and tmpfiles are handled\n  by dh_installudev and dh_installtmpfiles via DEBHELPER\n- override_dh_fixperms re-applies caps after strip\n- libcap2-bin added to Build-Depends and Depends\n\nCI workflows:\n- publish-aur.yml copies siomon.install to builder and\n  pushes it to AUR alongside PKGBUILD and .SRCINFO\n- publish-ppa.yml copies canonical udev/tmpfiles into\n  debian/ at build time; sed pattern narrowed to not\n  break with added libcap2-bin in Build-Depends",
+        "url": "https://github.com/level1techs/siomon/commit/13d674271cdcb27886847d2b53cf908b49f86c82"
+    },
+    {
+        "sha": "6760ff394ef6891fa7ed06e824bfc8dadf6f33a1",
+        "author": "wendelltron",
+        "email": "tekwendell@gmail.com",
+        "date": "2026-04-05T01:40:39Z",
+        "message": "Add ASRock Z890 Nova WiFi sensor support",
+        "url": "https://github.com/level1techs/siomon/commit/6760ff394ef6891fa7ed06e824bfc8dadf6f33a1"
+    },
+    {
+        "sha": "153f2e9e84803ed8016b4977b1cf39856d4b07d2",
+        "author": "Patrick Buckley",
+        "email": "eous@users.noreply.github.com",
+        "date": "2026-04-01T07:35:48Z",
+        "message": "Add 30 board templates with sensor labels and voltage scaling (#54)\n\n* Add 30 board templates with sensor labels and voltage scaling\n\nMSI (new vendor, 4 boards):\n- B350 Tomahawk, X370 SLI Plus, X470 GAMING PRO (NCT6795)\n- B450M Mortar (NCT6797)\n\nASRock (7 boards):\n- AB350 Pro4, X370 Taichi, X370 Gaming K4 (NCT6779)\n- B450 Gaming-ITX (NCT6792), A300M DeskMini (NCT6793)\n- Z390 Extreme4 (NCT6791), Z390M-ITX (NCT6793)\n\nASUS (8 boards):\n- TUF X570-PLUS (NCT6798), PRIME Z370-A (NCT6793)\n- H87-PRO, P10S-M WS (NCT6791)\n- P8P67 PRO, P8Z68-V LX, Q1900-ITX (NCT6776)\n- P8B75-V (NCT6779)\n\nGigabyte (11 boards):\n- AX370-GAMING 5, AB350-GAMING 3, AB350N-Gaming WIFI,\n  AX370M-DS3H, X470 ULTRA GAMING (IT8686 + IT8792)\n- Z77-D3H, B75-D3V, H67MA-UD2H (IT8728)\n- H170M-D3H (IT8628), F2A88XM-HD3 (IT8620)\n- GA-870A-UD3 (IT8720)\n\nAdds shared base label constants for MSI NCT6795, Gigabyte IT8686,\nand Gigabyte IT8728 chip families. All voltage scaling factors are\nverified against known resistor divider networks.\n\n* Address review feedback: tighten matching, improve docs and tests\n\n- TUF X570: add \"plus\" to match_substrings to avoid matching X570-PRO\n- Clarify shared constant doc comments as defaults/baselines, noting\n  that boards with different divider networks override inline\n- Fix ambiguity test to actually count matching templates per board\n  name instead of just checking first-match exists\n- Remove phase/batch references from test comments",
+        "url": "https://github.com/level1techs/siomon/commit/153f2e9e84803ed8016b4977b1cf39856d4b07d2"
+    },
+    {
+        "sha": "386e67b6ea3a092b2532f79eac7a774c2598d815",
+        "author": "Patrick Buckley",
+        "email": "eous@users.noreply.github.com",
+        "date": "2026-03-31T05:42:36Z",
+        "message": "Merge pull request #50 from emansom/feature/agents-md-fmt",
+        "url": "https://github.com/level1techs/siomon/commit/386e67b6ea3a092b2532f79eac7a774c2598d815"
+    },
+    {
+        "sha": "774568cb0d762fb7295721137ff272bc0f2e3a57",
+        "author": "Ewout van Mansom",
+        "email": "ewout@vanmansom.name",
+        "date": "2026-03-29T21:56:42Z",
+        "message": "Add formatting directives to AGENTS.md",
+        "url": "https://github.com/level1techs/siomon/commit/774568cb0d762fb7295721137ff272bc0f2e3a57"
+    },
+    {
+        "sha": "80ddfc194f39db546207fc89b96b0b37c2b81750",
+        "author": "Patrick Buckley",
+        "email": "eous@users.noreply.github.com",
+        "date": "2026-03-31T02:39:14Z",
+        "message": "Address AUR release workflow review feedback (#42)\n\nApply least-privilege permissions and explicit inputs to the publish-aur\njob in the release pipeline, addressing Copilot review feedback from #35.\n\nAdd reference comments to PKGBUILD and publish-aur workflow so future\nreviewers can verify design decisions (host-tuple target specifier, empty\nbuild(), ssh-keyscan TOFU) against upstream documentation rather than\nre-flagging them.",
+        "url": "https://github.com/level1techs/siomon/commit/80ddfc194f39db546207fc89b96b0b37c2b81750"
+    },
+    {
+        "sha": "54fd5b25e1c0a9c672ec2b4fbe22584a44eb2160",
+        "author": "Patrick Buckley",
+        "email": "eous@users.noreply.github.com",
+        "date": "2026-03-31T02:38:12Z",
+        "message": "Feature/ite boards voltage scaling (#53)\n\n* Add ITE IT8613/IT8628/IT8655/IT8665/IT8695/IT8696/IT8792 chip support\n\nExtend Super I/O chip detection and direct-IO sensor reading for 7 new\nITE chip families commonly found on Gigabyte and ASUS motherboards.\n\nDetection: add device IDs including non-obvious IT8792E (0x8733) and\nIT87952E (0x8695).\n\nDirect-IO: per-chip ADC resolution (10.9/11/12 mV), per-chip fan/temp\nchannel counts, register 0x77 check for shared temp/voltage registers,\nIT8665 fan 6 alternate register address, IT8613 fan 1 skip.\n\n* Add hwmon voltage scaling, board templates, and vendor matching\n\nAdd HwmonConfig struct with voltage_scaling field to BoardTemplate for\ncorrecting hwmon voltage readings with external resistor divider\nmultipliers. Thread scaling from config through poller to hwmon source.\nUsers can override via [voltage_scaling] in config.toml.\n\nAdd 17 new board templates with sensor labels and voltage scaling:\n- Gigabyte X870 (4 boards), X570 (2), B550 (2), B450 (2), B650M,\n  TRX40, Z690 with ITE chip labels from hardware documentation\n- ASUS Prime B350/B450 with IT8655/IT8665 labels\n- Beelink EQ/SEi mini-PCs with IT8613 labels\n- Shared label/scaling constants to reduce duplication\n\nAdd match_vendor field to BoardTemplate (replaces match_any) for safer\nboard matching. Beelink boards require vendor \"azw\" to avoid false\npositives from their short DMI names (\"EQ\", \"SEi\"). ASUS X670E boards\nwith OR-logic matching split into paired statics.\n\nAdd hwmon voltage scaling to existing NCT6798/6799 boards (WRX90E,\nASRock WRX90, X670E family) using multipliers validated against\nLibreHardwareMonitor Ri/Rf resistor divider values.\n\nFix voltage_scaling.rs divider ratio comments (5:1 not 4:1 for +5V).\n\nhttps://github.com/level1techs/siomon/issues/33\n\n* Address review feedback: tests, allocations, formatting\n\n- Fix test_no_ambiguous_matches to use lookup_board_with_vendor instead\n  of reimplementing matching logic without vendor check\n- Add unit tests for load_voltage_scaling (board resolution, user\n  override, unknown board)\n- Remove Vec allocation in read_fans hot path by iterating the chain\n  directly instead of collecting\n- Format VOLTAGE_REGS_BASE as multi-line for consistency",
+        "url": "https://github.com/level1techs/siomon/commit/54fd5b25e1c0a9c672ec2b4fbe22584a44eb2160"
+    },
+    {
+        "sha": "b8e96bfffefd078a2eebf5583335bab7590404a6",
+        "author": "Ewout van Mansom",
+        "email": "ewout@vanmansom.name",
+        "date": "2026-03-28T17:55:08Z",
+        "message": "Address AUR release workflow review feedback\n\nApply least-privilege permissions and explicit inputs to the publish-aur\njob in the release pipeline, addressing Copilot review feedback from #35.\n\nAdd reference comments to PKGBUILD and publish-aur workflow so future\nreviewers can verify design decisions (host-tuple target specifier, empty\nbuild(), ssh-keyscan TOFU) against upstream documentation rather than\nre-flagging them.",
+        "url": "https://github.com/level1techs/siomon/commit/b8e96bfffefd078a2eebf5583335bab7590404a6"
+    },
+    {
+        "sha": "00a60fe90b2d881ddfdc23e92ecac1d4600e0622",
+        "author": "Patrick Buckley",
+        "email": "eous@users.noreply.github.com",
+        "date": "2026-03-31T00:25:55Z",
+        "message": "Merge pull request #41 from emansom/feature/readme-add-nix\n\nAdd Nix installation instructions to README.md",
+        "url": "https://github.com/level1techs/siomon/commit/00a60fe90b2d881ddfdc23e92ecac1d4600e0622"
+    },
+    {
+        "sha": "42edde5b27ba222fb9bcd4e79c453895038cebd4",
+        "author": "Patrick Buckley",
+        "email": "eous@users.noreply.github.com",
+        "date": "2026-03-31T00:25:28Z",
+        "message": "Disambiguate hwmon chips with duplicate names (#33) (#52)\n\n* Disambiguate hwmon chips with duplicate names (#33)\n\nWhen multiple hwmon sysfs devices share the same name (e.g. jc42 DIMM\ntemp sensors, multiple NVMe drives), they produced identical SensorIds\nand collided in the HashMap — only one reading survived.\n\nDetect duplicate chip names during discovery and append the sysfs device\nsymlink basename to disambiguate (e.g. jc42-9-0018, nvme-nvme0). Falls\nback to the hwmon directory index when no device symlink exists.\n\nAlso fixes is_gpu_hwmon_chip to use prefix matching so multi-GPU systems\nstill get \"GPU \" label prefixes, and pre-expands board template label\noverrides so unqualified names continue to match disambiguated chips.\n\nhttps://github.com/level1techs/siomon/issues/33\n\n* Address review feedback on hwmon disambiguation\n\n- Avoid allocation in is_gpu_hwmon_chip by using strip_prefix instead\n  of format!\n- Fix curr sensor discovery passing original label_overrides instead\n  of effective_overrides\n- Extract expand_label_overrides as a pure testable function\n- Add unit tests for label override expansion (no duplicates, with\n  duplicates, qualified precedence)",
+        "url": "https://github.com/level1techs/siomon/commit/42edde5b27ba222fb9bcd4e79c453895038cebd4"
+    },
+    {
+        "sha": "9de3437b9b19c60c92721dc3a8ca7892071ae84f",
+        "author": "Ewout van Mansom",
+        "email": "ewout@vanmansom.name",
+        "date": "2026-03-28T15:33:41Z",
+        "message": "Add Nix installation instructions to README.md\n\nhttps://github.com/level1techs/siomon/pull/34\nhttps://github.com/NixOS/nixpkgs/pull/501034\n\nCo-authored-by: vinylen <victor@viclab.me>\nCo-authored-by: sheevy <mw.kubica@gmail.com>",
+        "url": "https://github.com/level1techs/siomon/commit/9de3437b9b19c60c92721dc3a8ca7892071ae84f"
+    },
+    {
+        "sha": "56ae8073ee7bb7d3e2ea457f49cc81e00ed1ea8c",
+        "author": "Patrick Buckley",
+        "email": "eous@users.noreply.github.com",
+        "date": "2026-03-30T02:23:35Z",
+        "message": "Merge pull request #39 from emansom/feature/cargo-ignore-dirs\n\nExclude non Rust code from Cargo build",
+        "url": "https://github.com/level1techs/siomon/commit/56ae8073ee7bb7d3e2ea457f49cc81e00ed1ea8c"
+    },
+    {
+        "sha": "8e13457f3bcfc0a758032d001befd508a14f4814",
+        "author": "Ewout van Mansom",
+        "email": "ewout@vanmansom.name",
+        "date": "2026-03-27T16:09:00Z",
+        "message": "Exclude non Rust code from Cargo build",
+        "url": "https://github.com/level1techs/siomon/commit/8e13457f3bcfc0a758032d001befd508a14f4814"
+    },
+    {
+        "sha": "0a8e38c53d168deae30421d45c1d7410f1c06fce",
+        "author": "Patrick Buckley",
+        "email": "eous@users.noreply.github.com",
+        "date": "2026-03-29T08:54:10Z",
+        "message": "Harden SPD page-0 restore and add self-healing to DDR5 temp poller (#49)\n\n* Harden SPD page-0 restore and add self-healing to DDR5 temp poller\n\nSPD EEPROM reader: replace 2-attempt page restore with 5-attempt\nexponential backoff (0/1/5/10/50ms). Verify restoration by reading\nMR11 back — MR0 can't verify page state since it's in the management\nregister range and always returns 0x51 regardless of page.\n\nDDR5 temp poller: reset MR11 to page 0 before each hub temperature\nread. This self-heals from a failed page restore without requiring a\nreboot. Only hub sensors (SPD5118 at 0x50-0x53) have page select;\nTS0/TS1 are unaffected. MR11 is volatile — no EEPROM wear.\n\nRace condition: move SPD collection before poller.spawn() in the TUI\npath so EEPROM page-cycling cannot overlap with temperature polling.\n\n* Update error message to reflect self-healing page restore\n\n* Fix rustfmt comment alignment",
+        "url": "https://github.com/level1techs/siomon/commit/0a8e38c53d168deae30421d45c1d7410f1c06fce"
+    },
+    {
+        "sha": "8e6ed54d1e70e0a04bedd8ab50f2ef69428d539e",
+        "author": "Patrick Buckley",
+        "email": "eous@users.noreply.github.com",
+        "date": "2026-03-29T08:31:06Z",
+        "message": "Fix sparkline gradient on non-TrueColor terminals (#48)\n\n* Fix sparkline gradient not applying on non-TrueColor terminals\n\nThe RGB gradient in sparkline_color was gated behind ColorLevel::TrueColor,\ncausing Color256 and Basic terminals to fall through to a fixed single color\nper category. Per-core CPU heatmap blocks were all the same cyan regardless\nof utilization.\n\nAdd proper tiered color support:\n- TrueColor: 24-bit RGB gradients (unchanged)\n- Color256: map RGB to nearest xterm 6x6x6 cube index (16-231)\n- Basic (16): step through dark/light ANSI color pairs\n- Monochrome: grayscale ramp via 232-255 indexed palette\n\nExtract shared gradient_rgb() to keep TrueColor and Color256 paths\nin sync. Use correct non-linear xterm cube levels (0,95,135,175,215,255)\nin rgb_to_cube rather than linear approximation.\n\n* Address Copilot review: respect NO_COLOR and use theme colors for Basic\n\n- ColorLevel::None returns Color::Reset instead of indexed grayscale,\n  honoring NO_COLOR semantics\n- sparkline_basic takes &self and derives colors from the active theme's\n  panel colors instead of hardcoding ANSI variants",
+        "url": "https://github.com/level1techs/siomon/commit/8e6ed54d1e70e0a04bedd8ab50f2ef69428d539e"
+    },
+    {
+        "sha": "d570d2c1c799abad7f75306bc2d2a62765d8231b",
+        "author": "Patrick Buckley",
+        "email": "eous@users.noreply.github.com",
+        "date": "2026-03-29T06:11:40Z",
+        "message": "Unify DDR5 board probing, restructure board directory, add requirements system (#46)\n\nAdd DDR5 SPD EEPROM reader, temperature sensors, and board quirk system\n\nDDR5 direct I2C probing via DesignWare buses (bypasses AMD FCH SPD mux):\n- SPD EEPROM reader: 1024-byte page-select reads with robust page-0 restore\n- Per-DIMM temperature sensors: Hub (SPD5118), TS0/TS1 (TS5111)\n- SPD parser: timings, CAS latencies, JEDEC manufacturer, part number\n- SPD-to-SMBIOS matching by serial number\n- TUI DIMM view with live sparkline temperatures (press 'm')\n\nBoard quirk system:\n- Restructure board files to vendor/chipset/board.rs hierarchy\n- Unify DDR5 I2C topology into BoardTemplate via Ddr5BusConfig\n- FeatureRequirements map for per-board prerequisites (BIOS version, settings)\n- Post-probe diagnostics with actionable hints on failure\n- Boards opt in to DDR5 probing via ddr5_bus_config field\n\nSafety:\n- MR0 device identity verified before any register writes\n- Page-restore failure logged at error level\n- All DDR5 paths gated behind --direct-io flag\n- Sensor IDs keyed by I2C bus/addr for deterministic DIMM matching\n- Cached file descriptors for I2C polling (eliminates per-poll open/close)\n\nSupported boards: ASUS WRX90E-SAGE (BIOS >= 1317)\n\nCo-authored-by: wendelltron <6278963+wendelltron@users.noreply.github.com>",
+        "url": "https://github.com/level1techs/siomon/commit/d570d2c1c799abad7f75306bc2d2a62765d8231b"
+    }
+]

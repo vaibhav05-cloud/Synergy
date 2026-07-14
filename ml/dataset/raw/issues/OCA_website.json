@@ -1,0 +1,369 @@
+[
+    {
+        "id": 3755949466,
+        "number": 1151,
+        "title": "l10n_cu_website_local_font: \"Style Error\"",
+        "state": "open",
+        "created_at": "2025-12-23T04:05:05Z",
+        "updated_at": "2026-06-21T14:24:35Z",
+        "closed_at": null,
+        "author": "yerandez",
+        "comments": 1,
+        "labels": [
+            "bug",
+            "stale"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "<!-- Provide a general summary of the issue in the Title above. Before opening the issue, please check that there isn't another issue addressing the same problem already created -->\nModule\nl10n_cu_website_local_font\n\nDescribe the bug\nWhen installing the l10n_cu_website_local_font module in Odoo 17, a style compilation error occurs, which blocks the user interface. The error appears with the message: \"Style Error. The style compilation failed. This is an administrator or developer error that must be fixed for the entire database before continuing to work. See the browser connection or server logs for more details.\" This prevents normal use of Odoo until the issue is resolved.\n\nA screenshot of the error is shown below:\n<img width=\"1907\" height=\"916\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/535fcb58-3bec-4125-b7ff-ba85d748b89f\" />\n\nTo Reproduce\nAffected versions:  Odoo 17.0-20250913 (Community) \n\nSteps to reproduce the behavior:\n\nHave a clean installation of Odoo 17.\n\nDownload the l10n_cu_website_local_font module from the OCA repository (branch corresponding to Odoo 17, if available).\n\nPlace the module in the Odoo addons folder.\n\nStart the Odoo server and update the module list.\n\nInstall the l10n_cu_website_local_font module from the Apps menu.\n\nAfter installation, the style compilation error will appear in the user's inbox.\n\nExpected behavior\nThe module should install correctly and allow uploading local fonts to the website without causing style compilation errors, maintaining normal Odoo functionality.\n\nAdditional context\n\n Odoo 17.0-20250913 (Edición Community) \n\nBrowser used: [Specify browser and version, e.g., Chrome 120]\n\nDiagnostic steps already taken:\n\nReviewed Odoo server logs, finding errors related to style compilation.\n\nChecked the browser console, with no additional relevant errors.\n\nCleared style cache and restarted in --dev=reload mode.\n\nUpdated base modules (web, website).\n",
+        "url": "https://github.com/OCA/website/issues/1151"
+    },
+    {
+        "id": 3668505761,
+        "number": 1148,
+        "title": ".",
+        "state": "closed",
+        "created_at": "2025-11-26T17:51:18Z",
+        "updated_at": "2025-11-26T18:48:03Z",
+        "closed_at": "2025-11-26T18:47:50Z",
+        "author": "akim1112",
+        "comments": 0,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": ".",
+        "url": "https://github.com/OCA/website/issues/1148"
+    },
+    {
+        "id": 3465221032,
+        "number": 1128,
+        "title": "Migration to version 19.0",
+        "state": "open",
+        "created_at": "2025-09-29T14:12:20Z",
+        "updated_at": "2026-07-13T13:50:10Z",
+        "closed_at": null,
+        "author": "OCA-git-bot",
+        "comments": 3,
+        "labels": [
+            "help wanted",
+            "work in progress",
+            "no stale"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "# Todo\n\nhttps://github.com/OCA/maintainer-tools/wiki/Migration-to-version-19.0\n\n# Modules to migrate\n\n- [x] website_cookiefirst - By @NICO-SOLUTIONS - #1134\n- [x] website_form_require_legal - By @Alexgars73 - #1130\n- [x] website_forum_subscription - By @pilarvargas-tecnativa - #1205\n- [x] website_google_tag_manager - By @JrAdhoc - #1131\n- [ ] website_legal_page\n- [ ] website_odoo_debranding > website_debranding - By @NICO-SOLUTIONS - OCA/server-brand#112\n- [ ] website_product_document_download_counter\n- [ ] website_search_header\n- [ ] website_snippet_country_dropdown\n- [ ] website_whatsapp\n\nMissing module? Check https://github.com/OCA/maintainer-tools/wiki/%5BFAQ%5D-Missing-modules-in-migration-issue-list",
+        "url": "https://github.com/OCA/website/issues/1128"
+    },
+    {
+        "id": 2874125327,
+        "number": 1091,
+        "title": "TypeError: newBlockEl is undefined",
+        "state": "closed",
+        "created_at": "2025-02-24T07:57:48Z",
+        "updated_at": "2025-02-24T08:29:28Z",
+        "closed_at": "2025-02-24T07:59:12Z",
+        "author": "Lucas-C",
+        "comments": 8,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "## Module\nWebsite builder\n\n## Describe the bug\n![Image](https://github.com/user-attachments/assets/27056ef3-11b9-4e43-9437-1f145b2a0281)\n```\nUncaughtPromiseError > TypeError\n\nUncaught Promise > newBlockEl is undefined\n\nOccured on afr-champtoce.odoo.com on 2025-02-24 07:51:04 GMT\n\nTypeError: newBlockEl is undefined\n    replaceSnippet@https://afr-champtoce.odoo.com/web/assets/6976f32/website.backend_assets_all_wysiwyg.min.js:3261:590\n    _select@https://afr-champtoce.odoo.com/web/assets/6976f32/website.backend_assets_all_wysiwyg.min.js:3001:240\n    _select@https://afr-champtoce.odoo.com/web/assets/6976f32/website.backend_assets_all_wysiwyg.min.js:3413:667\n    OdooClass.extend/Class.include/</prototype[name]@https://afr-champtoce.odoo.com/web/assets/6976f32/website.backend_assets_all_wysiwyg.min.js:7:375\n    exec@https://afr-champtoce.odoo.com/web/assets/6976f32/website.backend_assets_all_wysiwyg.min.js:3015:12\n    always@https://afr-champtoce.odoo.com/web/assets/429bd00/web.assets_web.min.js:4202:42\n```\n\n## To Reproduce\n**Affected versions**: latest - free offer\n\nWebsite: https://afr-champtoce.odoo.com\n\nSteps to reproduce the behavior: I clicked on the button to upgrade the Masonry block:\n![Image](https://github.com/user-attachments/assets/a2eee97a-9fe3-4f1d-9d2a-335fa172e8bb)\n\n**Expected behavior**\nNo crash\n\n**Additional context**\nI'm quite a beginner with Odoo, but I'd be happy to provide more useful information if need be! 🙂",
+        "url": "https://github.com/OCA/website/issues/1091"
+    },
+    {
+        "id": 2792809860,
+        "number": 1085,
+        "title": "[16.0] website_menu_by_user_status: Deprecated class SavepointCase",
+        "state": "closed",
+        "created_at": "2025-01-16T13:38:34Z",
+        "updated_at": "2025-08-24T12:47:34Z",
+        "closed_at": "2025-08-24T12:47:34Z",
+        "author": "iggups",
+        "comments": 1,
+        "labels": [
+            "bug",
+            "stale"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "## Module\nwebsite_menu_by_user_status\n16.0\n\n## Describe the bug\nDeprecationWarning: Deprecated class SavepointCase has been merged into TransactionCase\n\n## To Reproduce\nRun odoo with tests enabled\n\n**Expected behavior**\nNo DeprecationWarning\n\n**Additional context**\nExchange SavepointCase for TransactionCase in /tests/test_website_menu.py line 7",
+        "url": "https://github.com/OCA/website/issues/1085"
+    },
+    {
+        "id": 2575708556,
+        "number": 1063,
+        "title": "Cookies not blocked before consent, 500 error when translating blog posts, and navigation bar issues when cookies are rejected in website_cookiebot module",
+        "state": "closed",
+        "created_at": "2024-10-09T11:53:25Z",
+        "updated_at": "2025-05-18T12:46:12Z",
+        "closed_at": "2025-05-18T12:46:12Z",
+        "author": "annikasmadsen",
+        "comments": 13,
+        "labels": [
+            "stale"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "module: website_cookiebot\r\nversion: 17.0\r\n\r\n**Steps to reproduce**\r\n1. Install the module in the database.\r\n2. Activate the module and insert the domain group ID from the Cookiebot account.\r\n3. Request Cookiebot to scan the website for cookies.\r\n4. After scan is finished, test the functionality of the module on the website.\r\n\r\n**Current behavior**\r\n\r\n1. The module does not automatically block cookies before the user consents. Facebook/Meta, Hotjar, and LinkedIn cookies are loaded before any choice is made in the cookie banner. Even after selecting \"necessary only,\" these cookies are not blocked. See video here: https://drive.google.com/file/d/1RJSeI4Vtvvplmqd8iSiKtjSCed3bRneG/view?usp=sharing.\r\n2. We receive a \"500: Internal Server Error\" when trying to translate a blog post into another language. Odoo support has confirmed that this error is caused by the module, and we have verified this by uninstalling the module, which resolves the error. This happens regardless of cookie consent (whether accepting all or rejecting all). See video here: https://github.com/user-attachments/assets/ba93ec7f-9a37-4d2f-940d-11a80756e62c.\r\n3. If cookies are rejected, the navigation bar is affected. On desktop, the navigation bar flickers when loading a new page. On mobile view, the navigation bar sometimes becomes non-functional; it can be opened, but clicking on menu items does nothing. These issues disappear if all cookies are accepted.\r\n\r\n**Expected behavior**\r\n\r\n1. Cookies should be blocked until user consent is provided, as per the selection in the cookie banner.\r\n2. No internal server errors should occur when translating blog posts.\r\n3. The navigation bar should function correctly regardless of the cookie consent choice.\r\n\r\n\r\n\r\n",
+        "url": "https://github.com/OCA/website/issues/1063"
+    },
+    {
+        "id": 2568741019,
+        "number": 1062,
+        "title": "Migration to version 18.0",
+        "state": "open",
+        "created_at": "2024-10-06T16:21:24Z",
+        "updated_at": "2026-03-30T13:53:12Z",
+        "closed_at": null,
+        "author": "OCA-git-bot",
+        "comments": 6,
+        "labels": [
+            "help wanted",
+            "work in progress",
+            "no stale"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "# Todo\n\nhttps://github.com/OCA/maintainer-tools/wiki/Migration-to-version-18.0\n\n# Modules to migrate\n\n- [x] website_cookiebot - By @StefanRijnhart - #1093\n- [x] website_crm_quick_answer - By @WesleyOliveira98 - #1167\n- [x] website_form_require_legal - By @Alexgars73 - #1100\n- [x] website_forum_subscription - By @eduezerouali-tecnativa - #1125\n- [x] website_google_tag_manager - By @SodexisTeam - #1081\n- [x] website_legal_page - By @victoralmau - #1112\n- [x] website_menu_by_user_status - By @eduezerouali-tecnativa - #1137\n- [x] website_odoo_debranding - By @NICO-SOLUTIONS - #1065\n- [x] website_require_login - By @NICO-SOLUTIONS - #1077\n- [x] website_search_header - By @kobros-tech - #1124\n- [x] website_snippet_country_dropdown - By @pilarvargas-tecnativa - #1090\n- [x] website_whatsapp - By @eugenios73 - #1079\n\nMissing module? Check https://github.com/OCA/maintainer-tools/wiki/%5BFAQ%5D-Missing-modules-in-migration-issue-list",
+        "url": "https://github.com/OCA/website/issues/1062"
+    },
+    {
+        "id": 2563160064,
+        "number": 1061,
+        "title": "[14.0] website_require_login - Error psycopg2.OperationalError: Unable to use a closed cursor in odoo.sh",
+        "state": "closed",
+        "created_at": "2024-10-03T05:32:07Z",
+        "updated_at": "2025-05-11T12:44:54Z",
+        "closed_at": "2025-05-11T12:44:54Z",
+        "author": "SodexisTeam",
+        "comments": 1,
+        "labels": [
+            "bug",
+            "stale"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "**Module:**\r\nwebsite_require_login\r\n\r\n**Describe the bug:**\r\nAfter installing the module on Odoo.sh, we are encountering an error in the \r\n**website = request.env[\"website\"].sudo().get_current_website()** line inside \r\nthe **_dispatch** function in **ir_http.py** file. \r\n\r\nThis below error appears in the logs. Is this normal?\r\n\r\n**Traceback (most recent call last):**\r\n  File \"/usr/lib/python3/dist-packages/werkzeug/serving.py\", line 306, in run_wsgi\r\n    execute(self.server.app)\r\n  File \"/usr/lib/python3/dist-packages/werkzeug/serving.py\", line 294, in execute\r\n    application_iter = app(environ, start_response)\r\n  File \"/home/odoo/src/odoo/odoo/service/server.py\", line 441, in app\r\n    return self.app(e, s)\r\n  File \"/home/odoo/.local/lib/python3.8/site-packages/raven/middleware.py\", line 100, in __call__\r\n    iterable = self.application(environ, start_response)\r\n  File \"/home/odoo/src/odoo/odoo/service/wsgi_server.py\", line 111, in application\r\n    return ProxyFix(application_unproxied)(environ, start_response)\r\n  File \"/usr/lib/python3/dist-packages/werkzeug/middleware/proxy_fix.py\", line 232, in __call__\r\n    return self.app(environ, start_response)\r\n  File \"/home/odoo/src/odoo/odoo/service/wsgi_server.py\", line 88, in application_unproxied\r\n    result = odoo.http.root(environ, start_response)\r\n  File \"/home/odoo/src/odoo/odoo/http.py\", line 1341, in __call__\r\n    return self.dispatch(environ, start_response)\r\n  File \"/home/odoo/src/odoo/odoo/http.py\", line 1307, in __call__\r\n    return self.app(environ, start_wrapped)\r\n  File \"/usr/lib/python3/dist-packages/werkzeug/middleware/shared_data.py\", line 220, in __call__\r\n    return self.app(environ, start_response)\r\n  File \"/home/odoo/src/odoo/odoo/http.py\", line 1530, in dispatch\r\n    result = ir_http._dispatch()\r\n  File \"/home/odoo/src/user/website/website_require_login/models/ir_http.py\", line 18, in _dispatch\r\n    website = request.env[\"website\"].sudo().get_current_website()\r\n  File \"/home/odoo/src/odoo/addons/website/models/website.py\", line 593, in get_current_website\r\n    country_id = self.env['res.country'].search([('code', '=', country)], limit=1).id\r\n  File \"/home/odoo/src/odoo/odoo/models.py\", line 1720, in search\r\n    return res if count else self.browse(res)\r\n  File \"/home/odoo/src/odoo/odoo/models.py\", line 5013, in browse\r\n    if not ids:\r\n  File \"/home/odoo/src/odoo/odoo/osv/query.py\", line 172, in __bool__\r\n    return bool(self._result)\r\n  File \"/home/odoo/src/odoo/odoo/tools/func.py\", line 26, in __get__\r\n    value = self.fget(obj)\r\n  File \"/home/odoo/src/odoo/odoo/osv/query.py\", line 165, in _result\r\n    self._cr.execute(query_str, params)\r\n  File \"<decorator-gen-5>\", line 2, in execute\r\n    \r\n  File \"/home/odoo/src/odoo/odoo/sql_db.py\", line 100, in check\r\n    raise psycopg2.OperationalError('Unable to use a closed cursor.')\r\npsycopg2.OperationalError: Unable to use a closed cursor. - - -\r\n\r\n**To Reproduce**\r\nAffected versions:\r\n14",
+        "url": "https://github.com/OCA/website/issues/1061"
+    },
+    {
+        "id": 2534699747,
+        "number": 1060,
+        "title": "Blogging",
+        "state": "closed",
+        "created_at": "2024-09-18T20:47:43Z",
+        "updated_at": "2024-09-18T20:48:50Z",
+        "closed_at": "2024-09-18T20:48:50Z",
+        "author": "jimmykingdennis",
+        "comments": 0,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "HTML:\n```html\n<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n<meta charset=\"UTF-8\">\n<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n<title>Blogging Website</title>\n<link rel=\"stylesheet\" href=\"styles.css\">\n</head>\n<body>\n<header>\n<h1>Welcome to Our Blogging Website</h1>\n</header>\n<nav>\n<ul>\n<li><a href=\"#\">Home</a></li>\n<li><a href=\"#\">About</a></li>\n<li><a href=\"#\">Contact</a></li>\n</ul>\n</nav>\n<main>\n<article>\n<h2>Latest Blog Post</h2>\n<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam in felis nec justo tincidunt ultricies. Donec nec turpis nec justo tincidunt ultricies.</p>\n</article>\n<aside>\n<h3>Ads</h3>\n<p>Advertise here!</p>\n</aside>\n</main>\n<footer>\n<p>&copy; 2021 Blogging Website. All rights reserved.</p>\n</footer>\n</body>\n</html>\n```\n\nCSS:\n```css\nbody {\n    font-family: Arial, sans-serif;\n    margin: 0;\n    padding: 0;\n}\n\nheader {\n    background-color: #333;\n    color: #fff;\n    text-align: center;\n    padding: 10px 0;\n}\n\nnav {\n    background-color: #444;\n    color: #fff;\n    text-align: center;\n    padding: 10px 0;\n}\n\nnav ul {\n    list-style-type: none;\n    margin: 0;\n    padding: 0;\n}\n\nnav ul li {\n    display: inline;\n    margin: 0 10px;\n}\n\nnav ul li a {\n    color: #fff;\n    text-decoration: none;\n}\n\nmain {\n    display: flex;\n    justify-content: space-between;\n    padding: 20px;\n}\n\narticle {\n    flex: 2;\n}\n\naside {\n    flex: 1;\n    background-color: #f4f4f4;\n    padding: 10px;\n}\n\nfooter {\n    background-color: #333;\n    color: #fff;\n    text-align: center;\n    padding: 10px 0;\n}\n```",
+        "url": "https://github.com/OCA/website/issues/1060"
+    },
+    {
+        "id": 2515614447,
+        "number": 1057,
+        "title": "Website Local Font for Odoo16",
+        "state": "closed",
+        "created_at": "2024-09-10T07:18:45Z",
+        "updated_at": "2024-09-11T04:33:35Z",
+        "closed_at": "2024-09-11T04:33:35Z",
+        "author": "sarav21",
+        "comments": 2,
+        "labels": [
+            "enhancement"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "Hello.\r\n\r\nIs it possible to have the website local font for Odoo16.  Any help, please.",
+        "url": "https://github.com/OCA/website/issues/1057"
+    },
+    {
+        "id": 2079585737,
+        "number": 1029,
+        "title": "Fixed dimensions are set on the table",
+        "state": "closed",
+        "created_at": "2024-01-12T19:44:00Z",
+        "updated_at": "2024-01-12T20:04:40Z",
+        "closed_at": "2024-01-12T20:04:40Z",
+        "author": "brovalex",
+        "comments": 1,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "## Module\r\nWebsite editor\r\n\r\n## Describe the bug\r\nWhen editing the content of the table, a static value for the row height is added for some reason. This creates issue because as text is added to the table, it gets clipped at the fixed dimension. Clicking the \"reset size\" in the table option solves the issue, but it's not a desirable behaviour. \r\n\r\n## To Reproduce\r\n**Affected versions**: tested on 16.3 enterprise\r\n\r\nSteps to reproduce the behavior:\r\n1. In web editor, add a text block\r\n2. Add table to text block\r\n3. Save the page\r\n4. Edit the page\r\n5. Add a row to the table\r\n6. Save the page\r\n7. Inspect the code, the new row has a height assigned e.g. `style=\"height:47px\"`\r\n\r\n**Expected behavior**\r\nThe is no reason to specify a fixed height on a table, td or tr unless the user explicitly asks for it. ",
+        "url": "https://github.com/OCA/website/issues/1029"
+    },
+    {
+        "id": 1983170639,
+        "number": 1015,
+        "title": "Migration to version 17.0",
+        "state": "open",
+        "created_at": "2023-11-08T09:40:07Z",
+        "updated_at": "2025-10-17T14:14:42Z",
+        "closed_at": null,
+        "author": "OCA-git-bot",
+        "comments": 9,
+        "labels": [
+            "help wanted",
+            "work in progress",
+            "no stale"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "# Todo\n\nhttps://github.com/OCA/maintainer-tools/wiki/Migration-to-version-17.0\n\n# Modules to migrate\n\n- [x] website_breadcrumb - By @pilarvargas-tecnativa - #1080\n- [x] website_conditional_visibility_user_group - By @pilarvargas-tecnativa - #1082\n- [x] website_cookiebot - By @adriresu - #1044\n- [x] website_cookiefirst - By @NICO-SOLUTIONS - #1016\n- [ ] website_crm_privacy_policy - By @sbiosca-s73 - #1034\n- [x] website_crm_quick_answer - By @pilarvargas-tecnativa - #1084\n- [ ] website_field_autocomplete - By @arantxa-s73 - #1098\n- [x] website_form_require_legal - By @NICO-SOLUTIONS - #1020\n- [x] website_forum_subscription - By @pilarvargas-tecnativa - #1068\n- [x] website_google_tag_manager - By @SodexisTeam - #1021\n- [x] website_legal_page - By @NICO-SOLUTIONS - #1022\n- [x] website_local_font - By @antoniodavid - #1095\n- [x] website_menu_by_user_status - By @NICO-SOLUTIONS - #1023\n- [x] website_odoo_debranding - By @NICO-SOLUTIONS - #1017\n- [x] website_require_login - By @NICO-SOLUTIONS - #1019\n- [x] website_snippet_big_button - By @pilarvargas-tecnativa - #1072\n- [x] website_snippet_marginless_gallery - By @pilarvargas-tecnativa - #1074\n- [x] website_whatsapp - By @eugenios73 - #1078\n\nMissing module? Check https://github.com/OCA/maintainer-tools/wiki/%5BFAQ%5D-Missing-modules-in-migration-issue-list",
+        "url": "https://github.com/OCA/website/issues/1015"
+    },
+    {
+        "id": 1894357866,
+        "number": 1009,
+        "title": "On web_timeline module when a new element is created, all other data dissapear from the view.",
+        "state": "closed",
+        "created_at": "2023-09-13T11:48:37Z",
+        "updated_at": "2023-09-13T14:26:45Z",
+        "closed_at": "2023-09-13T14:26:44Z",
+        "author": "methodoos",
+        "comments": 1,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "## Module\r\nweb_timeline\r\n\r\n## Describe the bug\r\nWhen a new element is created, all other data dissapear.\r\nhttps://watch.screencastify.com/v/MNIkJF9C0jpfKVEdMabV\r\n\r\n\r\n## To Reproduce\r\n**Affected versions**: 14\r\n\r\nSteps to reproduce the behavior:\r\nPlease see attached video\r\n",
+        "url": "https://github.com/OCA/website/issues/1009"
+    },
+    {
+        "id": 1837389045,
+        "number": 1002,
+        "title": "odoo-addon-website-odoo-debranding package doesn't support python 3.9",
+        "state": "closed",
+        "created_at": "2023-08-04T22:01:23Z",
+        "updated_at": "2024-09-15T12:38:35Z",
+        "closed_at": "2024-09-15T12:38:35Z",
+        "author": "AdamBark",
+        "comments": 4,
+        "labels": [
+            "bug",
+            "stale"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "<!-- Provide a general summary of the issue in the Title above.\r\nBefore opening the issue, please check that there isn't another issue addressing the same problem already created -->\r\n\r\n## Module\r\nodoo-debranding\r\n\r\n## Describe the bug\r\nThe Odoo docker image runs on python 3.9 but the odoo-addon-website-odoo-debranding package on pypi requires 3.10 so pip fails trying to resolve for the v15 package.\r\n\r\n## To Reproduce\r\n**Affected versions**: 16.0.1.0.0.2\r\n\r\nSteps to reproduce the behavior:\r\n1. `docker run -uroot odoo:16 bash` to start a container\r\n2. `pip install odoo-addon-website-odoo-debranding`\r\n\r\n**Expected behavior**\r\nThe odoo-addon-website-odoo-debranding package is installed",
+        "url": "https://github.com/OCA/website/issues/1002"
+    },
+    {
+        "id": 1816174451,
+        "number": 995,
+        "title": "[14.0][website_cookiefirst] not work on odoo.sh",
+        "state": "closed",
+        "created_at": "2023-07-21T17:53:37Z",
+        "updated_at": "2023-07-26T07:55:11Z",
+        "closed_at": "2023-07-26T07:55:10Z",
+        "author": "matteoopenf",
+        "comments": 3,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "\r\n\r\n## Module\r\nwebsite_cookiefirst\r\n\r\n\r\n## Describe the bug\r\nActually in one istance of odoo.sh with multisite the module not work and block add product cart, block reset password and other operation\r\n\r\n\r\n## To Reproduce\r\n**Affected versions**:\r\n\r\n- [ ] 14.0\r\n\r\nSteps to reproduce the behavior:\r\n1. Install the module in multi site istance\r\n2. put the key in configuration\r\n3.  after that we have a block on the shop to add product on the cart, reset password and other operation\r\n\r\n**Expected behavior**\r\nThe module work fine\r\n\r\n**Additional context**\r\n\r\nI think the problem is odoo.sh, but I don't exact which is the problem because actually we have another istance withoutt problem, but it's a single site istance.\r\n\r\n\r\n\r\n",
+        "url": "https://github.com/OCA/website/issues/995"
+    },
+    {
+        "id": 1782635118,
+        "number": 990,
+        "title": "Website require login error log",
+        "state": "closed",
+        "created_at": "2023-06-30T14:31:02Z",
+        "updated_at": "2025-04-06T12:42:02Z",
+        "closed_at": "2025-04-06T12:42:02Z",
+        "author": "esafocus",
+        "comments": 4,
+        "labels": [
+            "bug",
+            "stale"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "<!-- Provide a general summary of the issue in the Title above.\r\nBefore opening the issue, please check that there isn't another issue addressing the same problem already created -->\r\n\r\n## Module\r\nwebsite_require_login\r\n\r\n## Describe the bug\r\nafter installing the module, this error appears in the logs, is this normal?\r\n\r\nTraceback (most recent call last):\r\n  File \"/opt/odoo/odoo/odoo/api.py\", line 794, in get\r\n    return field_cache[record._ids[0]]\r\nKeyError: 1\r\n\r\nDuring handling of the above exception, another exception occurred:\r\n\r\nTraceback (most recent call last):\r\n  File \"/opt/odoo/odoo/odoo/fields.py\", line 993, in __get__\r\n    value = env.cache.get(record, self)\r\n  File \"/opt/odoo/odoo/odoo/api.py\", line 797, in get\r\n    raise CacheMiss(record, field)\r\nodoo.exceptions.CacheMiss: 'website(1,).user_id'\r\n\r\nDuring handling of the above exception, another exception occurred:\r\n\r\nTraceback (most recent call last):\r\n  File \"/opt/odoo/odoo-venv/lib/python3.9/site-packages/werkzeug/serving.py\", line 306, in run_wsgi\r\n    execute(self.server.app)\r\n  File \"/opt/odoo/odoo-venv/lib/python3.9/site-packages/werkzeug/serving.py\", line 294, in execute\r\n    application_iter = app(environ, start_response)\r\n  File \"/opt/odoo/odoo/odoo/service/server.py\", line 441, in app\r\n    return self.app(e, s)\r\n  File \"/opt/odoo/odoo/odoo/service/wsgi_server.py\", line 113, in application\r\n    return application_unproxied(environ, start_response)\r\n  File \"/opt/odoo/odoo/odoo/service/wsgi_server.py\", line 88, in application_unproxied\r\n    result = odoo.http.root(environ, start_response)\r\n  File \"/opt/odoo/odoo/odoo/http.py\", line 1298, in __call__\r\n    return self.dispatch(environ, start_response)\r\n  File \"/opt/odoo/odoo/odoo/http.py\", line 1264, in __call__\r\n    return self.app(environ, start_wrapped)\r\n  File \"/opt/odoo/odoo-venv/lib/python3.9/site-packages/werkzeug/middleware/shared_data.py\", line 220, in __call__\r\n    return self.app(environ, start_response)\r\n  File \"/opt/odoo/odoo/odoo/http.py\", line 1489, in dispatch\r\n    result = ir_http._dispatch()\r\n  File \"/opt/odoo/odoo-custom-addons/oca/website/website_require_login/models/ir_http.py\", line 21, in _dispatch\r\n    if request.uid == website.user_id.id:\r\n  File \"/opt/odoo/odoo/odoo/fields.py\", line 2495, in __get__\r\n    return super().__get__(records, owner)\r\n  File \"/opt/odoo/odoo/odoo/fields.py\", line 1019, in __get__\r\n    recs._fetch_field(self)\r\n  File \"/opt/odoo/odoo/odoo/models.py\", line 3072, in _fetch_field\r\n    self._read(fnames)\r\n  File \"/opt/odoo/odoo/odoo/models.py\", line 3139, in _read\r\n    cr.execute(query_str, params + [sub_ids])\r\n  File \"<decorator-gen-3>\", line 2, in execute\r\n    \r\n  File \"/opt/odoo/odoo/odoo/sql_db.py\", line 100, in check\r\n    raise psycopg2.OperationalError('Unable to use a closed cursor.')\r\npsycopg2.OperationalError: Unable to use a closed cursor. - - -\r\n\r\n## To Reproduce\r\n**Affected versions**:\r\n14\r\n",
+        "url": "https://github.com/OCA/website/issues/990"
+    },
+    {
+        "id": 1781826371,
+        "number": 989,
+        "title": "...",
+        "state": "closed",
+        "created_at": "2023-06-30T03:46:55Z",
+        "updated_at": "2023-06-30T09:38:52Z",
+        "closed_at": "2023-06-30T09:38:52Z",
+        "author": "Eviltraso",
+        "comments": 0,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "**Is your feature request related to a problem?**\nIf so, please provide clear and concise description of what the problem is.\n\n**Describe the solution you'd like**\nA clear and concise description of what you want to happen.\n\n**Describe alternatives you've considered**\nA clear and concise description of any alternative solutions or features you've considered.\n\n**Additional context**\nAdd any other context about the feature request here.",
+        "url": "https://github.com/OCA/website/issues/989"
+    },
+    {
+        "id": 1770987465,
+        "number": 984,
+        "title": "[11.0] Internal Server Error for runbot Website Snippet Presets",
+        "state": "closed",
+        "created_at": "2023-06-23T07:46:37Z",
+        "updated_at": "2024-01-28T12:28:31Z",
+        "closed_at": "2024-01-28T12:28:31Z",
+        "author": "JulienMartinez",
+        "comments": 2,
+        "labels": [
+            "bug",
+            "stale"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "Hi, @sbidoul \r\n\r\nI am looking to use the runbot from the \"Website Snippet Presets\" module to do tests and possibly port it to v16, \r\nhowever this no longer works and returns an \"Internal Server Error\".\r\n\r\nCordially\r\n",
+        "url": "https://github.com/OCA/website/issues/984"
+    },
+    {
+        "id": 1761781081,
+        "number": 981,
+        "title": "\"website_require_login\" Migration",
+        "state": "closed",
+        "created_at": "2023-06-17T11:18:08Z",
+        "updated_at": "2023-06-20T07:26:51Z",
+        "closed_at": "2023-06-20T07:26:51Z",
+        "author": "NICO-SOLUTIONS",
+        "comments": 2,
+        "labels": [
+            "enhancement"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "As i understood correctly... \r\nAccording to the conversation in PR #942 , the module website_require_login available for V14 is not foreseen to be migrated due to integrated functions in V15. There it can be achieved by the visibilty of the menu items and by adding the groups rights to the proper view. \r\nAnyway... i cant see the visibilty feature in V16 anymore. I want to restrict a specific page (should be quite variable to handle) to logged in users. \r\nAm i missing something? \r\n\r\nWhat do you think of migrating this module to V16. For me the module is quite interesting as you can add specific urls. ",
+        "url": "https://github.com/OCA/website/issues/981"
+    },
+    {
+        "id": 1761762127,
+        "number": 980,
+        "title": "GDPR Europe Sign-Up Double-Opt",
+        "state": "closed",
+        "created_at": "2023-06-17T10:08:26Z",
+        "updated_at": "2024-01-21T12:31:55Z",
+        "closed_at": "2024-01-21T12:31:55Z",
+        "author": "KaiBoos",
+        "comments": 8,
+        "labels": [
+            "enhancement",
+            "stale"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "In Europe there was a ruling. A client signed up on a website and entered a wrong mail.\nThe reciever of the mail went to court against the website-provider and was Right.\nEven on Account-Signups a double-opt-in is required. Actually everytime before a mail is sent it need to double opt-out.\n\nCan you double-opt-in on account signup?\n\nThanks for the help!\nKai",
+        "url": "https://github.com/OCA/website/issues/980"
+    }
+]

@@ -1,0 +1,242 @@
+[
+    {
+        "sha": "6107161275b3594e17847d9f5362b9786fa8bf09",
+        "author": "Dan Brown",
+        "email": "development@danb.me",
+        "date": "2026-07-02T09:21:01Z",
+        "message": "URLs: Fixed issue in comparisons when elements missing",
+        "url": "https://github.com/BookStackApp/BookStack/commit/6107161275b3594e17847d9f5362b9786fa8bf09"
+    },
+    {
+        "sha": "ad283ef0ed91d5d70f392a78b62d973d491d3240",
+        "author": "Dan Brown",
+        "email": "development@danb.me",
+        "date": "2026-07-02T08:41:17Z",
+        "message": "Updated packages, translators and licensing pre v26.05.2",
+        "url": "https://github.com/BookStackApp/BookStack/commit/ad283ef0ed91d5d70f392a78b62d973d491d3240"
+    },
+    {
+        "sha": "b87789dde61b5c0a87108694a84162d0450fc339",
+        "author": "Dan Brown",
+        "email": "development@danb.me",
+        "date": "2026-07-02T08:38:17Z",
+        "message": "Merge branch 'sec_jun26' into development",
+        "url": "https://github.com/BookStackApp/BookStack/commit/b87789dde61b5c0a87108694a84162d0450fc339"
+    },
+    {
+        "sha": "a21317500495051a9ca1c6aa055214c95c008a39",
+        "author": "Dan Brown",
+        "email": "danb@noreply.codeberg.org",
+        "date": "2026-07-02T08:36:35Z",
+        "message": "Merge pull request 'Updated translations with latest crowdin changes' (#6166) from l10n_development into development\n\nReviewed-on: https://codeberg.org/bookstack/bookstack/pulls/6166",
+        "url": "https://github.com/BookStackApp/BookStack/commit/a21317500495051a9ca1c6aa055214c95c008a39"
+    },
+    {
+        "sha": "b6e3d304feb199f68b2d04c41956b1b4e5371a72",
+        "author": "Crowdin Bot",
+        "email": "support+bot@crowdin.com",
+        "date": "2026-07-02T08:34:05Z",
+        "message": "New Crowdin translations by GitHub Action",
+        "url": "https://github.com/BookStackApp/BookStack/commit/b6e3d304feb199f68b2d04c41956b1b4e5371a72"
+    },
+    {
+        "sha": "6bba39196c36bd4ac386ca974df6d87480bb7872",
+        "author": "Dan Brown",
+        "email": "danb@noreply.codeberg.org",
+        "date": "2026-07-02T08:32:48Z",
+        "message": "Merge pull request 'Added Serbian language to language_select array' (#6153) from PolarniMeda/bookstack:development into development\n\nReviewed-on: https://codeberg.org/bookstack/bookstack/pulls/6153",
+        "url": "https://github.com/BookStackApp/BookStack/commit/6bba39196c36bd4ac386ca974df6d87480bb7872"
+    },
+    {
+        "sha": "caeea658d117580f801ef55aa450aec2f16d785b",
+        "author": "Dan Brown",
+        "email": "development@danb.me",
+        "date": "2026-07-01T09:45:59Z",
+        "message": "Access: Hardened usage of referring URLs via login\n\nAdds a more substantial URL check, via a new class which is shared and\nused in other parts of the app for consistency.\n\nThanks to mfk25 for reporting.",
+        "url": "https://github.com/BookStackApp/BookStack/commit/caeea658d117580f801ef55aa450aec2f16d785b"
+    },
+    {
+        "sha": "fe39b69c1f626e09bc5066b9e76a9f29aab14a8d",
+        "author": "Dan Brown",
+        "email": "development@danb.me",
+        "date": "2026-07-01T09:20:32Z",
+        "message": "Comments: Added visibility check to comment delete\n\nAligns it with other actions/endpoints, and ensures an extra layer of\ncontrol against malicious use.\n\nThanks to mfk25 for reporting.",
+        "url": "https://github.com/BookStackApp/BookStack/commit/fe39b69c1f626e09bc5066b9e76a9f29aab14a8d"
+    },
+    {
+        "sha": "01dc1e71c5574ba36dabb55d9b2a3e4a234df2cc",
+        "author": "Dan Brown",
+        "email": "development@danb.me",
+        "date": "2026-06-30T22:50:11Z",
+        "message": "Attachments: Added more extensive URL filtering\n\nAdded a central URLFilter class to check & clean URLs used for\nattachments, which is also used for validation, and by the purifier to\nstandardise protocols (and to make protocol config easier in future).\n\nThanks to mfk25 for reporting.",
+        "url": "https://github.com/BookStackApp/BookStack/commit/01dc1e71c5574ba36dabb55d9b2a3e4a234df2cc"
+    },
+    {
+        "sha": "59bbf504cf1c6205c56c9c0d6c9e3c6154904ecc",
+        "author": "Dan Brown",
+        "email": "development@danb.me",
+        "date": "2026-06-30T17:35:34Z",
+        "message": "Content filtering: Added srcset protocol filter\n\nUpstream libraries used did not specifically treat values in srcset as\nURIs like other attributes, so this adds a simple filter for possible\nbad values.\nUpdated tests to cover.\n\nThanks for Gurmandeep Deol for reporting.",
+        "url": "https://github.com/BookStackApp/BookStack/commit/59bbf504cf1c6205c56c9c0d6c9e3c6154904ecc"
+    },
+    {
+        "sha": "f7df78b91b12ff1d8e248ded7747e76203904b8e",
+        "author": "Dan Brown",
+        "email": "development@danb.me",
+        "date": "2026-06-24T12:54:01Z",
+        "message": "CI: Attempted to fix snyk workflow",
+        "url": "https://github.com/BookStackApp/BookStack/commit/f7df78b91b12ff1d8e248ded7747e76203904b8e"
+    },
+    {
+        "sha": "c511f7d9356a73cb96e6ecd605736946dcfb6cbd",
+        "author": "Dan Brown",
+        "email": "development@danb.me",
+        "date": "2026-06-24T12:48:20Z",
+        "message": "CI: Added workflow to sync with snyk",
+        "url": "https://github.com/BookStackApp/BookStack/commit/c511f7d9356a73cb96e6ecd605736946dcfb6cbd"
+    },
+    {
+        "sha": "79a2e017bbf5d4d634e890199e3267d9280f1db1",
+        "author": "Dan Brown",
+        "email": "development@danb.me",
+        "date": "2026-06-11T13:24:09Z",
+        "message": "Maintenance: Fixed type and CI issues\n\n- Fixed issues picked up by PHPStan updates.\n  - Not sure why it was flagging the BookSorter issue, but swapping if\n    statements made it go away.\n- Updated BookSortMapItem with modern syntax.\n- Attempted to fix CI issues by adding DOM extension.\n- Attempted to make migration CI more efficient via tmpfs",
+        "url": "https://github.com/BookStackApp/BookStack/commit/79a2e017bbf5d4d634e890199e3267d9280f1db1"
+    },
+    {
+        "sha": "dad83d473d397efa9f437011c4cffb43cbf8c30d",
+        "author": "PolarniMeda",
+        "email": "polarnimeda@noreply.codeberg.org",
+        "date": "2026-06-11T08:32:03Z",
+        "message": "Added Serbian language to language_select array",
+        "url": "https://github.com/BookStackApp/BookStack/commit/dad83d473d397efa9f437011c4cffb43cbf8c30d"
+    },
+    {
+        "sha": "c74df7e06bb5dcc8c89952b40d277a87ea85807d",
+        "author": "Dan Brown",
+        "email": "development@danb.me",
+        "date": "2026-06-09T11:50:16Z",
+        "message": "Updated translator & dependency attribution before release v26.05.1",
+        "url": "https://github.com/BookStackApp/BookStack/commit/c74df7e06bb5dcc8c89952b40d277a87ea85807d"
+    },
+    {
+        "sha": "6b545d600c579217a25bb312ece3c63db54d9e53",
+        "author": "Dan Brown",
+        "email": "development@danb.me",
+        "date": "2026-06-09T11:48:39Z",
+        "message": "Merge branch 'v26051_sec' into development",
+        "url": "https://github.com/BookStackApp/BookStack/commit/6b545d600c579217a25bb312ece3c63db54d9e53"
+    },
+    {
+        "sha": "cc0b059fa496e265839733ed30a1ba121274dfab",
+        "author": "Dan Brown",
+        "email": "development@danb.me",
+        "date": "2026-06-09T11:47:28Z",
+        "message": "Deps: Updated PHP package versions",
+        "url": "https://github.com/BookStackApp/BookStack/commit/cc0b059fa496e265839733ed30a1ba121274dfab"
+    },
+    {
+        "sha": "9fc46f76f687581e2ee9a54d097320214c0656cf",
+        "author": "Crowdin Bot",
+        "email": "support+bot@crowdin.com",
+        "date": "2026-06-08T04:30:58Z",
+        "message": "New Crowdin translations by GitHub Action",
+        "url": "https://github.com/BookStackApp/BookStack/commit/9fc46f76f687581e2ee9a54d097320214c0656cf"
+    },
+    {
+        "sha": "84a23fb23f8d15935521ad4f3fdc335be6d90744",
+        "author": "Dan Brown",
+        "email": "development@danb.me",
+        "date": "2026-06-07T09:45:40Z",
+        "message": "Logs: Prevented NotifyExceptions for reporting to error logs\n\nThis is to reduce the amount of content which will be logged, since\nthese messages don't really indicate an actual system error but advise\nthe user of something which went wrong with their request.",
+        "url": "https://github.com/BookStackApp/BookStack/commit/84a23fb23f8d15935521ad4f3fdc335be6d90744"
+    },
+    {
+        "sha": "b7325fdf0efde6f863beed67cde488641a05ef83",
+        "author": "Dan Brown",
+        "email": "development@danb.me",
+        "date": "2026-06-07T09:22:52Z",
+        "message": "Attachments: Moved perm checks before validation\n\nAvoids providing responses with potential sensitive attachment info\nbefore permission checks.\nAdded tests to cover.\n\nThanks to Rafael Castilho for reporting.",
+        "url": "https://github.com/BookStackApp/BookStack/commit/b7325fdf0efde6f863beed67cde488641a05ef83"
+    },
+    {
+        "sha": "81f77a95de4b060fa77a5376198a80a24cfcca59",
+        "author": "Dan Brown",
+        "email": "development@danb.me",
+        "date": "2026-06-06T14:21:15Z",
+        "message": "Content Filtering: Limited file protocol to just anchor hrefs\n\nUpdated allow list/purifier system to only allow file protocol use on\nanchor hrefs to avoid potential security concerns with, after export,\ncontent being auto loaded via interactive elements like\nembeds/objects/videos etc...\n\nUpdated tests to cover.\nThanks to Gurmandeep Deol at Seneca Polytechnic for reporting.",
+        "url": "https://github.com/BookStackApp/BookStack/commit/81f77a95de4b060fa77a5376198a80a24cfcca59"
+    },
+    {
+        "sha": "37f2d05118fa98ee9cb68b8a51c6ae90612de813",
+        "author": "Dan Brown",
+        "email": "development@danb.me",
+        "date": "2026-06-06T09:37:06Z",
+        "message": "Search: Prevented tag search using unusable numbers\n\nThese would trigger an error on use, and could be abused to fill logs.\nAdded test to cover.\n\nThanks to Stephen O. / Sakusen for reporting.",
+        "url": "https://github.com/BookStackApp/BookStack/commit/37f2d05118fa98ee9cb68b8a51c6ae90612de813"
+    },
+    {
+        "sha": "f01bb749ab3f11fc465bf5f247dc84e297e4f98a",
+        "author": "Dan Brown",
+        "email": "development@danb.me",
+        "date": "2026-05-30T12:45:25Z",
+        "message": "Workflows: Attempted fixing crowdin files\n\nCurrently causing extra files to be created alongside previous files in\ncrowdin",
+        "url": "https://github.com/BookStackApp/BookStack/commit/f01bb749ab3f11fc465bf5f247dc84e297e4f98a"
+    },
+    {
+        "sha": "d421a191935e9689709f5a949c3d23dfd87d6ecc",
+        "author": "Dan Brown",
+        "email": "development@danb.me",
+        "date": "2026-05-28T11:32:17Z",
+        "message": "Updated translator & dependency attribution before release v26.05",
+        "url": "https://github.com/BookStackApp/BookStack/commit/d421a191935e9689709f5a949c3d23dfd87d6ecc"
+    },
+    {
+        "sha": "67529dd883cf9e70f8e362a9fcfc6edcc4d19a96",
+        "author": "Dan Brown",
+        "email": "development@danb.me",
+        "date": "2026-05-28T09:34:04Z",
+        "message": "Deps: Updated PHP packages, fixed some types for phpstan",
+        "url": "https://github.com/BookStackApp/BookStack/commit/67529dd883cf9e70f8e362a9fcfc6edcc4d19a96"
+    },
+    {
+        "sha": "c26b66887fc70e878c3aad74a9ab8db6217a9d89",
+        "author": "Dan Brown",
+        "email": "danb@noreply.codeberg.org",
+        "date": "2026-05-28T09:29:39Z",
+        "message": "Updated translations with changes from Crowdin (#6139)\n\n## Details\n\n<!-- Write details of your pull request in here -->\n<!-- Include references to any relevant issues/discussions -->\n\n## Checklist\n\n<!-- Put an 'x' in between the brackets below to confirm these elements -->\n\n- [ ] I have read the [BookStack community rules](https://www.bookstackapp.com/about/community-rules/).\n- [ ] This PR does not feature significant use of LLM/AI generation as per the community rules above.\n\nCo-authored-by: Crowdin Bot <support+bot@crowdin.com>\nReviewed-on: https://codeberg.org/bookstack/bookstack/pulls/6139",
+        "url": "https://github.com/BookStackApp/BookStack/commit/c26b66887fc70e878c3aad74a9ab8db6217a9d89"
+    },
+    {
+        "sha": "17b76bb8762316e4fbc145d6e5ed93268f4e1278",
+        "author": "Dan Brown",
+        "email": "danb@noreply.codeberg.org",
+        "date": "2026-05-26T12:54:13Z",
+        "message": "Merge pull request 'Page Editor Contents List View' (#6131) from page_editor_contents into development\n\nReviewed-on: https://codeberg.org/bookstack/bookstack/pulls/6131",
+        "url": "https://github.com/BookStackApp/BookStack/commit/17b76bb8762316e4fbc145d6e5ed93268f4e1278"
+    },
+    {
+        "sha": "0de1196b62efd626066dd893099edab35604a158",
+        "author": "Dan Brown",
+        "email": "development@danb.me",
+        "date": "2026-05-26T12:27:48Z",
+        "message": "Page Editor: Minor fixes\n\n- Removed unused import\n- Added some trailing newlines to code files\n- Prevented <hr>s confusing logic in MD editor\n- Aligned logic to select end of header across editors",
+        "url": "https://github.com/BookStackApp/BookStack/commit/0de1196b62efd626066dd893099edab35604a158"
+    },
+    {
+        "sha": "99e405f80f4be5c3b6cc89afe4a1fd5c4c0cd385",
+        "author": "Dan Brown",
+        "email": "development@danb.me",
+        "date": "2026-05-26T11:58:48Z",
+        "message": "Page Editor: Added contents click handling for TinyMCE editor",
+        "url": "https://github.com/BookStackApp/BookStack/commit/99e405f80f4be5c3b6cc89afe4a1fd5c4c0cd385"
+    },
+    {
+        "sha": "d7ba0dc43082e09bd253bc92998c47293b0b1502",
+        "author": "Dan Brown",
+        "email": "development@danb.me",
+        "date": "2026-05-26T11:50:19Z",
+        "message": "CSP: Renamed CSS CSP option",
+        "url": "https://github.com/BookStackApp/BookStack/commit/d7ba0dc43082e09bd253bc92998c47293b0b1502"
+    }
+]

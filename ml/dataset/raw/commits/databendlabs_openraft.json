@@ -1,0 +1,242 @@
+[
+    {
+        "sha": "dd0808b964a1f0cd6d90134ab0ada0649a4effc5",
+        "author": "VerifiedOrganic",
+        "email": "verifiedorganic@sent.com",
+        "date": "2026-07-13T18:56:15Z",
+        "message": "refactor: resample election timeout per campaign",
+        "url": "https://github.com/databendlabs/openraft/commit/dd0808b964a1f0cd6d90134ab0ada0649a4effc5"
+    },
+    {
+        "sha": "4a491f021f2f84c1dd0a6d14f06f6049fe1e5f31",
+        "author": "Jiawei Zhao",
+        "email": "Phoenix500526@163.com",
+        "date": "2026-07-12T14:47:18Z",
+        "message": "chore: Add AGENTS.md as a symlink to CLAUDE.md\n\nSigned-off-by: Jiawei Zhao <Phoenix500526@163.com>",
+        "url": "https://github.com/databendlabs/openraft/commit/4a491f021f2f84c1dd0a6d14f06f6049fe1e5f31"
+    },
+    {
+        "sha": "311b81df87e43eee4ca6fd574dba6d0fc374a477",
+        "author": "Zhang Yanpo",
+        "email": "drdr.xp@gmail.com",
+        "date": "2026-07-11T12:09:18Z",
+        "message": "docs: rewrite README tagline and features list\n\n# Summary\n\nThe README still framed OpenRaft as tokio-only and listed a generic\nfeature set that undersold what distinguishes it from a standard Raft\nimplementation. This updates the tagline and rewrites the Features\nsection accordingly.\n\n# Details\n\n- Tagline: \"Rust using Tokio\" becomes \"Rust on any async runtime\",\n  reflecting the `AsyncRuntime` trait and its compio/monoio/\n  single-threaded backends.\n- Features: replaces the old 5-item list with an intro line (\"What\n  sets OpenRaft apart from a standard Raft implementation\") and 6\n  bullets — generalized joint membership change, fewer election\n  conflicts via the redesigned Vote, async/event-driven execution,\n  fully pluggable storage/networking/type config, runtime-agnostic\n  execution, deterministic turmoil-based testing, and observability\n  via metrics and tracing.",
+        "url": "https://github.com/databendlabs/openraft/commit/311b81df87e43eee4ca6fd574dba6d0fc374a477"
+    },
+    {
+        "sha": "f30c9712b2240f9728be632e9859333ec6b1a95d",
+        "author": "Zhang Yanpo",
+        "email": "drdr.xp@gmail.com",
+        "date": "2026-07-11T11:43:20Z",
+        "message": "docs: replace contrib.rocks with a generated contributor grid\n\n# Summary\n\nThe README Contributors section embedded a third-party contrib.rocks image\nthat only credited commit authors. It now shows a self-hosted grid of every\ncontributor — commit authors plus issue and pull-request reporters — as small\ncircular-avatar SVGs, produced and refreshed by scripts under\nscripts/contributors/.\n\n# Details\n\n- Add two tools driven by a Makefile: list_contributors.py unions all commit\n  authors and issue/PR authors from GitHub and writes the login list plus a\n  README-ready Markdown block; generate_contributor_svgs.py renders one\n  self-contained SVG per login (a circular avatar and the @handle in GitHub's\n  username font), embedding the avatar as base64 so it renders inline on\n  GitHub's sandboxed image view.\n- Cache downloaded avatars under assets/contributors/avatars/ so refreshing the\n  list only fetches new contributors; the generated login list, Markdown, and\n  avatar SVGs are committed under assets/contributors/ so GitHub can serve them.\n- Drop the contrib.rocks image and its attribution from the README; the\n  contributor list no longer depends on an external service, and\n  scripts/README.md documents how to regenerate everything.",
+        "url": "https://github.com/databendlabs/openraft/commit/f30c9712b2240f9728be632e9859333ec6b1a95d"
+    },
+    {
+        "sha": "27d2351536ac8db020cb393c3358d91ffd39951e",
+        "author": "Zhang Yanpo",
+        "email": "drdr.xp@gmail.com",
+        "date": "2026-07-11T09:23:44Z",
+        "message": "docs: expand and reorder the \"Who uses it\" list\n\n# Summary\n\nBroaden the adoption list with verified downstream openraft users, order\nit by project popularity with Databend first, and record each entry's\nstar count as a hidden comment so popularity stays trackable in the raw\nfile without showing to readers.\n\n# Details\n\n- Add seven downstream users: Walrus, RocketMQ-rust, Hiqlite, Octopii,\n  Renegade, Ahnlich, and tsoracle. Each was confirmed to actually depend\n  on or embed openraft (its own storage/network trait impls or a declared\n  dependency), not merely mention it.\n- Reorder the list by GitHub star count, with Databend pinned first as the\n  flagship user and maintainer.\n- Annotate every entry with an invisible HTML comment carrying its star\n  count plus a snapshot date. GitHub strips these on render, so readers see\n  a clean list while the ordering rationale stays visible in source.",
+        "url": "https://github.com/databendlabs/openraft/commit/27d2351536ac8db020cb393c3358d91ffd39951e"
+    },
+    {
+        "sha": "2998fa52787e12be0dbec89d4469a466c0585639",
+        "author": "Zhang Yanpo",
+        "email": "drdr.xp@gmail.com",
+        "date": "2026-07-11T08:45:19Z",
+        "message": "docs: add features overview to docs module\n\n# Summary\n\nOpenraft's capabilities were scattered across separate guides with no\nsingle entry point. This adds a features page that maps each capability\narea to its primary API and guide, reachable via rustdoc as\n`crate::docs::features`.\n\n# Details\n\n- Add `openraft/src/docs/features.md`: a table covering core integration,\n  cluster formation/membership, leadership/elections, logs/snapshots,\n  reads, monitoring, and runtime controls, each linking to its primary\n  API and guide.\n- Wire the page into `openraft/src/docs/mod.rs` as `pub mod features`.\n- Link the new page from the top-level index in\n  `openraft/src/docs/docs.md`.",
+        "url": "https://github.com/databendlabs/openraft/commit/2998fa52787e12be0dbec89d4469a466c0585639"
+    },
+    {
+        "sha": "6bf9b9e3c4f544abde53d7aaae1ac98e606e0ccb",
+        "author": "Zhang Yanpo",
+        "email": "drdr.xp@gmail.com",
+        "date": "2026-07-10T14:31:37Z",
+        "message": "docs: add leader transfer, pre-vote, and metrics to feature list\n\n# Summary\n\nThe Functionality section only listed a subset of what openraft already\nimplements. Three shipped capabilities were missing entirely: leader\ntransfer, pre-vote, and the metrics APIs.\n\n# Details\n\n- Add \"Leader transfer\" bullet linking to `Trigger::transfer_leader()`.\n- Add \"Pre-vote\" bullet linking to `Config::enable_pre_vote`.\n- Add \"Metrics\" bullet linking to `Raft::metrics()`, `Raft::data_metrics()`,\n  and `Raft::server_metrics()`.",
+        "url": "https://github.com/databendlabs/openraft/commit/6bf9b9e3c4f544abde53d7aaae1ac98e606e0ccb"
+    },
+    {
+        "sha": "ee915f5c456af90b8eb90a1b940e2d8434846916",
+        "author": "Zhang Yanpo",
+        "email": "drdr.xp@gmail.com",
+        "date": "2026-07-11T09:13:34Z",
+        "message": "fix: don't abort publish script for already-published crates\n\n# Summary\n\ncrates.io rejects API requests without a descriptive User-Agent (403),\nso every existence check in the publish script silently read as \"not\npublished.\" Re-running the script after a partial publish therefore\nalways retried `cargo publish` and aborted the whole run instead of\nskipping the crate that was already there.\n\n# Details\n\n- Send a descriptive User-Agent on the crates.io API check, fixing the\n  false negatives that made already-published crates look unpublished.\n- If `cargo publish` still fails, inspect its output for \"already\n  exists on crates.io index\" and treat that as success rather than\n  aborting, covering the race between our own check and the publish\n  attempt.\n- Replace the flat 30s post-publish sleep with a poll loop that checks\n  crates.io every few seconds (up to a bounded timeout), so the script\n  moves on as soon as the new version is actually indexed.\n- Log the resolved HTTP status on every existence check so a future\n  failure is self-diagnosing instead of requiring another investigation.",
+        "url": "https://github.com/databendlabs/openraft/commit/ee915f5c456af90b8eb90a1b940e2d8434846916"
+    },
+    {
+        "sha": "26ccf7868ad8703faa64fe58b43377d1f33159fb",
+        "author": "Zhang Yanpo",
+        "email": "drdr.xp@gmail.com",
+        "date": "2026-07-11T08:14:30Z",
+        "message": "chore: bump version to v0.10.0-alpha.29\n\n# Summary\n\nPrepare the workspace for the next alpha release: move all package versions and\nlocal dependency requirements to v0.10.0-alpha.29 and refresh the documented\nrelease version. Since v0.10.0-alpha.28 there are no new features, two public\nAPI/type changes to the snapshot-data plumbing, and four bug fixes.\n\n# Details\n\n- Update workspace, crate, example, benchmark, and test manifests to depend on\n  v0.10.0-alpha.29, and refresh the README and CONTRIBUTING alpha references so\n  the documented version matches the manifests.\n\n## Changes since v0.10.0-alpha.28\n\n### Changed (API and type changes)\n\n- [dafeedb8] move snapshot data out of RaftTypeConfig. `RaftTypeConfig` no\n  longer carries a `SnapshotData` associated type; snapshot data is now an\n  associated type on `RaftStateMachine`, `RaftNetworkV2`, and `NetSnapshot`,\n  and `impl RaftStateMachine for ()` becomes test-only. Upgrade: move\n  `RaftTypeConfig::SnapshotData` to the concrete `RaftStateMachine` impl (and to\n  the snapshot-transferring network impls); use `SnapshotOf<C, SD>` where no\n  state machine type is available and `SM::SnapshotData` where it is.\n\n- [a7b7eaa2] move snapshot messages off the RaftMsg channel. The `SD`\n  snapshot-data generic parameter is removed from every handle type reachable\n  from `Raft` (`RaftInner`, `AppApi`, `ManagementApi`, `WriteRequest`,\n  `RuntimeConfigHandle`, `Trigger`, `stream_append`, ...); `ProtocolApi` is now\n  generic over `SM` instead of `SD`. `RaftMsg::InstallSnapshot` /\n  `GetSnapshotReceiver` and `ExternalCommand::GetSnapshot` are removed, and\n  `install_full_snapshot` moves to its own dedicated channel.\n\n### Fixed\n\n- [97d92771] wait for the recovery commit to cover the local log.\n- [dd29c2e9] bound state-machine-worker calls against worker death:\n  `get_snapshot`, `begin_receiving_snapshot`, `external_state_machine_request`,\n  and `with_state_machine` no longer hang forever when the state-machine worker\n  dies; they resolve the real stop cause through a bounded wait.\n- [afd6508b] send a snapshot to a follower behind a fully-purged log (#1828).\n- [d0e245a2] re-arm the snapshot policy after an in-flight build completes, so\n  `LogsSinceLast` no longer stalls snapshots on a quiescent node (#1829).",
+        "url": "https://github.com/databendlabs/openraft/commit/26ccf7868ad8703faa64fe58b43377d1f33159fb"
+    },
+    {
+        "sha": "d0e245a2a949794b6062b7482a2ab22217f73e32",
+        "author": "Zhang Yanpo",
+        "email": "drdr.xp@gmail.com",
+        "date": "2026-07-11T07:57:47Z",
+        "message": "fix: re-arm snapshot policy after an in-flight build completes\n\n# Summary\n\nA `SnapshotPolicy::LogsSinceLast` trigger that fired while a snapshot build was\nalready in flight was dropped, yet the policy still recorded the attempt. Once\nthe in-flight build finished nothing re-triggered a build, so on a quiescent\nnode the snapshot could stay arbitrarily far behind `committed` -- stalling\npolicy-gated log purge with it. The policy now records an attempt only when a\nbuild is actually queued, so the dropped trigger re-fires on the first routine\ncheck after the in-flight build completes.\n\n# Details\n\n- `RaftCore::trigger_snapshot` now reports whether a build was queued, and\n  `trigger_routine_actions` advances `snapshot_tried_at` only when it was. A\n  trigger dropped because a build is already in progress no longer advances the\n  baseline `should_snapshot` compares against, so it stops suppressing the\n  policy. Builds deferred by the state machine still record the attempt,\n  preserving their existing threshold debounce.\n\n- Add a deterministic single-node regression test: it holds one build in flight\n  (which pins `applied`), drives `committed` past the threshold a second time\n  with fire-and-forget writes, and asserts the snapshot converges to `committed`\n  once the build completes.\n\n- Fix: #1829",
+        "url": "https://github.com/databendlabs/openraft/commit/d0e245a2a949794b6062b7482a2ab22217f73e32"
+    },
+    {
+        "sha": "afd6508bd1d6ee7c938dbf7711043d09ab0a2e33",
+        "author": "Zhang Yanpo",
+        "email": "drdr.xp@gmail.com",
+        "date": "2026-07-11T04:48:46Z",
+        "message": "fix: send snapshot to a follower behind a fully-purged log\n\n# Summary\n\nWhen the leader had purged its entire log (`purge_upto == last_log_id`)\nand a follower's progress was freshly reset (`matching = None`),\n`next_send` returned `Err(Inflight::None)` on every call -- never\nprobing, never reaching the snapshot branch -- so the follower could\nnever converge until a new entry was proposed. It now sends a snapshot\nin that dead-end.\n\n# Details\n\n- Reorganize the decision logic into two explicit regimes, probing and\n  pipeline, plus two named snapshot conditions, so each branch states its\n  own precondition instead of leaving it implied by clamp arithmetic.\n- The fix lives in the probing regime: when the clamped send range\n  collapses to empty (`start == end`), the leader is fully purged and the\n  probe can carry no entry, so send a snapshot instead of reporting\n  \"nothing to replicate\". The pipeline path (`LogsSince`) is untouched, so\n  a follower legitimately matched at the purge boundary still streams its\n  tail rather than taking a needless snapshot.\n- Add `test_next_send_fully_purged_unknown_follower` covering the\n  fully-purged, unknown-matching dead-end.\n\n- Fix: #1828",
+        "url": "https://github.com/databendlabs/openraft/commit/afd6508bd1d6ee7c938dbf7711043d09ab0a2e33"
+    },
+    {
+        "sha": "c532863af91b7275f5ef06b85a7af96156b198e0",
+        "author": "Zhang Yanpo",
+        "email": "drdr.xp@gmail.com",
+        "date": "2026-07-10T12:00:24Z",
+        "message": "docs: refresh top-level documentation\n\n# Summary\n\nRefresh the repository's entry-point and contributor documentation so it\nmatches the current OpenRaft API, release line, and protocol guidance.\n\n# Details\n\n- Point README guidance at the 0.10 alpha API, update renamed trigger and\n  runtime-configuration references, and align its performance summary with\n  the benchmark table.\n- Clarify contributor and development guidance, preserve the historical release\n  record, and correct mechanical errors in the Raft essentials reference.",
+        "url": "https://github.com/databendlabs/openraft/commit/c532863af91b7275f5ef06b85a7af96156b198e0"
+    },
+    {
+        "sha": "dd29c2e91e28488cc842477007111795a6e543f4",
+        "author": "Zhang Yanpo",
+        "email": "drdr.xp@gmail.com",
+        "date": "2026-07-09T13:12:26Z",
+        "message": "fix: bound state-machine-worker calls against worker death\n\n# Summary\n\nCalls whose responder lives in the state-machine worker -- `get_snapshot`,\n`begin_receiving_snapshot`, `external_state_machine_request`, and\n`with_state_machine` -- resolved a send or upgrade failure by joining\n`RaftCore` unboundedly. But the worker owns that channel's receiving end\nand can die on its own -- e.g. a panic in a state-machine method -- while\n`RaftCore` keeps running, so the join never completed and the call hung\nforever. They now resolve the real stop cause through a bounded wait.\n\n# Details\n\n- Add `RaftInner::get_core_stop_error_bounded()`, mirroring `recv_msg`'s\n  dropped-responder handling: wait up to `RECV_CORE_STOP_TIMEOUT` for\n  `RaftCore` to actually stop, then fall back to `Fatal::Stopped`.\n- `send_sm_command`, `external_state_machine_request`, and\n  `with_state_machine` route every send/upgrade failure through it.\n  `external_state_machine_request` previously masked the real cause behind\n  a bare `Fatal::Stopped`, contradicting its documented outcomes.\n- Add `get_snapshot_returns_stopped_when_sm_worker_dies` and\n  `with_state_machine_returns_stopped_when_func_panics`, backed by a\n  memstore `panic_on_apply` fault that kills the worker while `RaftCore`\n  lives; both assert `Fatal::Stopped` within the bounded wait instead of\n  hanging.",
+        "url": "https://github.com/databendlabs/openraft/commit/dd29c2e91e28488cc842477007111795a6e543f4"
+    },
+    {
+        "sha": "a7b7eaa2d21101f74bf9a0ac2c010cba05e75bf9",
+        "author": "Zhang Yanpo",
+        "email": "drdr.xp@gmail.com",
+        "date": "2026-07-09T13:10:25Z",
+        "message": "change: move snapshot messages off the RaftMsg channel\n\n# Summary\n\n`get_snapshot`, `begin_receiving_snapshot`, and `install_full_snapshot`\nno longer travel on the shared `RaftMsg` channel, so the `SD` snapshot-\ndata generic that existed only to plumb them through `RaftMsg` is removed\nfrom every handle type reachable from `Raft`.\n\n# Details\n\n- `get_snapshot` and `begin_receiving_snapshot` send `sm::Command`\n  directly to the state-machine worker via `ProtocolApi::send_sm_command`,\n  bypassing `RaftCore`; `Engine::handle_begin_receiving_snapshot` is\n  removed as dead code.\n- `install_full_snapshot` gets its own `InstallFullSnapshotRequest<C, SM>`\n  delivered over a dedicated mpsc channel that `RaftCore::main` selects on\n  alongside `rx_api`. `RaftCore` keeps a keepalive clone of that sender so\n  a closed channel is not mistaken for shutdown and an in-flight\n  `stream_append` is not truncated when the last `Raft` handle drops.\n- `RaftMsg::InstallSnapshot`/`GetSnapshotReceiver` and\n  `ExternalCommand::GetSnapshot` are removed, along with their now-dead\n  `RaftMsgName`/`ExternalCommandName` stats variants; `ProtocolApi` is\n  generic over `SM` instead of `SD`.\n- The state-machine worker emits the `RAFT_event id=N input:` marker for\n  every command it processes, restoring the rerouted get/begin-receive\n  ops to the id-tagged core trace.\n- `BatchRaftMsgReceiver`, `StepDownWatcher`, `RaftInner`, `AppApi`,\n  `ManagementApi`, `WriteRequest`, `RuntimeConfigHandle`, `Trigger`, and\n  `stream_append` drop the `SD` parameter; the nested\n  `SnapshotOf<C, SnapshotDataOf<C, SM>>` spelling is aliased as\n  `SmSnapshotOf<C, SM>`.",
+        "url": "https://github.com/databendlabs/openraft/commit/a7b7eaa2d21101f74bf9a0ac2c010cba05e75bf9"
+    },
+    {
+        "sha": "dafeedb82b1101fe5fc70a3e55e289082e72a31a",
+        "author": "Zhang Yanpo",
+        "email": "drdr.xp@gmail.com",
+        "date": "2026-07-09T13:09:32Z",
+        "message": "change: move snapshot data out of RaftTypeConfig\n\n# Summary\n\nSnapshot data is now owned by the state machine and network snapshot\ntraits instead of the global Raft type config. Snapshot transfer follows\nthe component that produces and consumes snapshot bytes, while log\nreplication stays independent of the snapshot payload type.\n\n# Details\n\n- `RaftStateMachine` defines `SnapshotData` and wires its snapshot\n  builder, receive, install, and read APIs through that associated type.\n  `RaftNetworkV2` and `NetSnapshot` define their own `SnapshotData`;\n  `RaftNetworkFactory` only creates a network, and snapshot-type\n  compatibility is enforced where `Raft` builds snapshot-capable\n  replication paths.\n- `GroupRouter` (multiraft) models its snapshot type as an associated\n  `type SnapshotData` rather than a free `SD` generic, dropping the\n  `PhantomData` marker and the extra parameter on `GroupNetworkAdapter`.\n- `impl RaftStateMachine for ()` is now `#[cfg(test)]`-only, so `()` can\n  no longer be passed as a real state machine; `Leader::term()` is\n  implemented for any `SM` rather than only the unit-type default.\n- Legacy network-v1 adapters, test fixtures, stores, examples, and docs\n  provide snapshot data through the state machine or network impl; new\n  `#[since]` markers annotate the changed public bounds.\n\nUpgrade tip:\n\nMove `RaftTypeConfig::SnapshotData` to the concrete `RaftStateMachine`\nimpl as `type SnapshotData`. Network implementations that transfer\nsnapshots define `RaftNetworkV2::SnapshotData` or\n`NetSnapshot::SnapshotData`; use `SnapshotOf<C, SD>` where no state\nmachine type is available and `SM::SnapshotData` where it is.",
+        "url": "https://github.com/databendlabs/openraft/commit/dafeedb82b1101fe5fc70a3e55e289082e72a31a"
+    },
+    {
+        "sha": "4cac00a11fbe78a54df0e4631cd46b0f03df2b8e",
+        "author": "Zhang Yanpo",
+        "email": "drdr.xp@gmail.com",
+        "date": "2026-07-10T08:17:24Z",
+        "message": "test: wait for all followers before restart\n\n# Summary\n\nThe leader-restart state-loss test now establishes that both surviving voters hold the committed entry before the former leader is reset.\n\n# Details\n\nWithout this synchronization, network delay can leave a follower empty, allowing it to grant the reset node a valid vote and making the assertion timing-dependent.",
+        "url": "https://github.com/databendlabs/openraft/commit/4cac00a11fbe78a54df0e4631cd46b0f03df2b8e"
+    },
+    {
+        "sha": "97d92771f83c29819d2928acab0ee751f1eb0c77",
+        "author": "Zhang Yanpo",
+        "email": "drdr.xp@gmail.com",
+        "date": "2026-07-09T10:26:25Z",
+        "message": "fix: wait for recovery commit to cover local log\n\n# Summary\n\nWait for recovery now pins to a quorum-confirmed commit that covers the\nnode's durable log tail, preventing restarted followers from stopping at\nan older leader commit during delayed replication.\n\n# Details\n\nPreviously, wait_for_recovery returned after the first non-null\ncluster_committed value and then waited only for that older index to\napply. With delayed RPCs, a restarted follower could observe commit\nindex 4 before the leader's commit index 5 arrived, so recovery\ncompleted before the state machine reached its pre-restart state.\n\nThe recovery wait now requires cluster_committed to cover the node's\ncurrent durable log tail before applying the second-phase wait. The\nstorage and API docs were updated to describe that stronger recovery\ncondition.",
+        "url": "https://github.com/databendlabs/openraft/commit/97d92771f83c29819d2928acab0ee751f1eb0c77"
+    },
+    {
+        "sha": "a03e1cf69736fd3f30098dbe54a9d3c650409c53",
+        "author": "Zhang Yanpo",
+        "email": "drdr.xp@gmail.com",
+        "date": "2026-07-09T05:04:31Z",
+        "message": "chore: bump version to v0.10.0-alpha.28\n\n# Summary\n\nPrepare the workspace for the next alpha release by moving package\nversions and local dependency requirements to v0.10.0-alpha.28.\n\n# Details\n\n- Update workspace, crate, example, benchmark, and test manifests to\n  depend on the new alpha version.\n- Refresh README alpha references so the documented release version\n  matches the manifests.",
+        "url": "https://github.com/databendlabs/openraft/commit/a03e1cf69736fd3f30098dbe54a9d3c650409c53"
+    },
+    {
+        "sha": "cecb5de8d98f6c4acb15930c407bb6947fb16696",
+        "author": "Zhang Yanpo",
+        "email": "drdr.xp@gmail.com",
+        "date": "2026-07-09T04:05:40Z",
+        "message": "fix: reject stale replication acks after log reversion\n\n# Summary\n\nIn pipeline (`LogsSince`) mode many acks share one `InflightId`, so a log\nreversion can clear the inflight to `None` while acks queued before the\nreset are still arriving. Acting on such stale signals is unsafe: advancing\nthe follower's matched index over logs it has reverted could form a false\nquorum, and re-reading an already-consumed command would replay an\nacknowledged payload. Both are now suppressed.\n\n# Details\n\n- `Inflight::ack()` returns whether the ack matched the live request. A\n  stale ack -- mismatched `InflightId`, or `Inflight::None` after a reversion\n  cleared it -- now returns `false` instead of hitting `unreachable!`, and\n  the progress updater skips advancing `matching` for it.\n- Replication reads of the replicate and committed watch channels switch to\n  `borrow_and_update()`, marking the value seen so a notification still\n  pending after `changed()` resolves does not deliver and replay the same\n  command twice.\n- Add a test that acking a cleared (`None`) inflight is reported stale and\n  leaves the inflight untouched.",
+        "url": "https://github.com/databendlabs/openraft/commit/cecb5de8d98f6c4acb15930c407bb6947fb16696"
+    },
+    {
+        "sha": "354f6a40700870e715e4dcf3b33c61e0b6dbeed3",
+        "author": "Zhang Yanpo",
+        "email": "drdr.xp@gmail.com",
+        "date": "2026-07-09T04:02:41Z",
+        "message": "feat: add borrow_and_update() to the Watch trait\n\n# Summary\n\nThe Watch receiver gains a `borrow_and_update()` method that returns the\nmost recently sent value and marks it as seen, so a following `changed()`\nsleeps until a newer value arrives instead of firing immediately for the\nvalue already consumed. This mirrors tokio's `watch::Receiver`.\n\n# Details\n\n- Add the `borrow_and_update()` method to the public `Watch` trait,\n  annotated `#[since(version = \"0.10.0\")]`, for consumers that read and act\n  on a value in one step and must not be re-notified for it.\n- Implement it in the tokio, monoio, and compio backends by delegating to\n  the underlying tokio watch receiver.\n- Add `test_watch_borrow_and_update_marks_seen()` to the shared runtime\n  test suite, asserting that a plain borrow leaves `changed()` ready while\n  `borrow_and_update()` leaves it pending until a newer value is sent.",
+        "url": "https://github.com/databendlabs/openraft/commit/354f6a40700870e715e4dcf3b33c61e0b6dbeed3"
+    },
+    {
+        "sha": "bd628d5aab1a38259ffcdcd358000c83764df7ca",
+        "author": "Zhang Yanpo",
+        "email": "drdr.xp@gmail.com",
+        "date": "2026-07-07T17:19:12Z",
+        "message": "test: tolerate the injected fatal in the 1795 replication test\n\n# Summary\n\nFix a latent race in `storage_error_stops_replication` that made it fail\nintermittently in CI. The test injects a one-shot storage read error and then\npropagated the result of `add_learner` with `?`, but that injected error is by\ndesign fatal to RaftCore, so `add_learner` can legitimately return it instead\nof `Ok`.\n\n# Details\n\nThe injected `limited_get_log_entries` error is read by the replication stream\nto the new learner, reported to RaftCore as `Notification::StorageError`, and\nconverted into `Fatal::StorageError`, which stops the core and fails any\nin-flight `add_learner` with the same error. The call therefore races the\nshutdown: it returns `Ok` when the membership response wins and the injected\n`StorageError` when the fatal wins. Discard the result instead of using `?`;\nthe assertion that replication never retried with a malformed AppendEntries is\nthe actual behavior under test and holds in both outcomes.\n\n- Fixes #1795 test flakiness",
+        "url": "https://github.com/databendlabs/openraft/commit/bd628d5aab1a38259ffcdcd358000c83764df7ca"
+    },
+    {
+        "sha": "75cb546574bd52fa586bad9b6f498d3eba888501",
+        "author": "Zhang Yanpo",
+        "email": "drdr.xp@gmail.com",
+        "date": "2026-07-05T14:20:40Z",
+        "message": "test: disable elections in hung follower test\n\n# Summary\n\nKeep the hung-follower membership test focused on core-loop responsiveness by preventing follower elections while heartbeats are intentionally disabled.\n\n# Details\n\nThe test waits longer than the default election timeout after disabling heartbeats. On slower CI scheduling, a follower can win a new term before the final write, causing a legitimate `ForwardToLeader` instead of exercising the hung-replication path.\n\nDisabling elections in this fixture removes that unrelated race without changing the behavior under test.",
+        "url": "https://github.com/databendlabs/openraft/commit/75cb546574bd52fa586bad9b6f498d3eba888501"
+    },
+    {
+        "sha": "622093f2d3bfd1f9bd22959c7fa019225f77a112",
+        "author": "Zhang Yanpo",
+        "email": "drdr.xp@gmail.com",
+        "date": "2026-07-05T13:50:40Z",
+        "message": "refactor: keep IdValData local to vec_progress tests\n\n# Summary\n\nMove the test-only `IdValData` fixture out of the shared progress helper and define it beside the vec_progress tests that need application-owned data.\n\n# Details\n\nThe shared progress entry helper now contains only `IdVal`, reducing test-only surface in the progress module.\n\nThe local fixture keeps `VecProgressEntryData` coverage unchanged while dropping the unused `Display` implementation.",
+        "url": "https://github.com/databendlabs/openraft/commit/622093f2d3bfd1f9bd22959c7fa019225f77a112"
+    },
+    {
+        "sha": "bbc1a951f01030ea87208477ffc586fbc1a2ec80",
+        "author": "Zhang Yanpo",
+        "email": "drdr.xp@gmail.com",
+        "date": "2026-07-05T09:53:47Z",
+        "message": "refactor: reshape VecProgress around entries\n\n# Summary\n\nRefactor VecProgress to store typed entries, separate progress updates from\napplication data updates, and make log-reversion resets preserve tracker\nordering without withdrawing quorum-accepted progress.\n\n# Details\n\nVecProgress now works over a VecProgressEntry plus a QuorumSet. Entry types own\ntheir ID and progress value, while optional entry data is exposed only through\nVecProgressEntryData for callers that need data-only mutation.\n\nReplication progress uses explicit update paths: monotonic updates go through\nentry updates, data-only changes cannot touch progress, and allowed log\nreversion uses a reset path that moves lowered voter entries down while keeping\nthe recorded quorum-accepted value monotonic.\n\nThe progress tests now cover random quorum upgrades, resets, edge cases, stats,\nand a custom quorum set. The quorum and mutable-entry invariants are documented\nso future changes preserve the assumptions used by the optimized prefix scan.",
+        "url": "https://github.com/databendlabs/openraft/commit/bbc1a951f01030ea87208477ffc586fbc1a2ec80"
+    },
+    {
+        "sha": "4270082d8120cd368ff1c75bcc0648e07e69607d",
+        "author": "Zhang Yanpo",
+        "email": "drdr.xp@gmail.com",
+        "date": "2026-07-04T04:57:34Z",
+        "message": "refactor: tighten VecProgress quorum coverage\n\n# Summary\n\nExpand VecProgress quorum tests while reducing production access to\nhelpers that are only needed by test code.\n\n# Details\n\nAdd reference-model coverage for monotonic updates, randomized quorum\nupgrades, joint and shrunk quorum transitions, learner and non-member\nedge cases, exact stats behavior, and custom quorum-set semantics.\n\nUse the fallible progress lookup when checking self progress before\nmutation, so missing progress remains explicit and read-only checks do\nnot require mutable access.\n\nGate test-only VecProgress accessors behind `cfg(test)` and keep the\nproduction surface focused on the methods used by runtime code.",
+        "url": "https://github.com/databendlabs/openraft/commit/4270082d8120cd368ff1c75bcc0648e07e69607d"
+    },
+    {
+        "sha": "2c1cdb18a7e3ebc025e45005e536388dff81a128",
+        "author": "Zhang Yanpo",
+        "email": "drdr.xp@gmail.com",
+        "date": "2026-07-03T17:15:48Z",
+        "message": "refactor: fold Progress trait into VecProgress\n\n# Summary\n\nMove the progress-tracking API onto VecProgress directly so callers no longer depend on a separate crate-private trait for the only implementation.\n\n# Details\n\nThe staged changes remove the Progress trait, expose the same operations as inherent VecProgress methods, and drop now-unused Progress imports at call sites.\n\nThis is an internal refactor and does not change public API or intended progress behavior.",
+        "url": "https://github.com/databendlabs/openraft/commit/2c1cdb18a7e3ebc025e45005e536388dff81a128"
+    },
+    {
+        "sha": "1d5cc70630cbf99b398b9f8062e7fd14373dcfcc",
+        "author": "Zhang Yanpo",
+        "email": "drdr.xp@gmail.com",
+        "date": "2026-07-03T09:25:21Z",
+        "message": "fix: return an error instead of hanging on a dropped responder\n\n# Summary\n\nWhen a response channel closes while RaftCore is still running -- for example a\nstate machine drops an ApplyResponder without calling send() -- recv_msg used to\njoin RaftCore to fetch its stop error. A healthy core never finishes, so the\ncaller (e.g. client_write) hung forever. recv_msg now bounds that wait and\nreturns Fatal::Stopped when RaftCore is still running.\n\n# Details\n\n- wait_core_stopped detects a real stop by observing the metrics watch channel,\n  without joining (and thus consuming) RaftCore. get_core_stop_error is only\n  called once a stop is confirmed, so the bounded wait never cancels\n  join_core_task mid-flight -- which would strand CoreState in Joining and panic\n  a later caller through unreachable!().\n- The wait is bounded by RECV_CORE_STOP_TIMEOUT (1s). A real stop surfaces almost\n  immediately: RaftCore reports it in metrics and drops the metrics sender as its\n  task ends, including on panic.\n\n- Ref: #1816",
+        "url": "https://github.com/databendlabs/openraft/commit/1d5cc70630cbf99b398b9f8062e7fd14373dcfcc"
+    },
+    {
+        "sha": "bb51a8316af2c38ded99db7174bf0976c79acab4",
+        "author": "Evan Jones",
+        "email": "evan.jones@datadoghq.com",
+        "date": "2026-07-02T20:00:49Z",
+        "message": "docs: clarify that ApplyResponder::send must be called\n\n# Summary\n\nChange \"should\" to \"must\" to clarify that calling ApplyResponder::send()\nis required, not optional. Dropping a responder without calling\nsend() causes the the originating client_write to block forever.",
+        "url": "https://github.com/databendlabs/openraft/commit/bb51a8316af2c38ded99db7174bf0976c79acab4"
+    },
+    {
+        "sha": "77de93334f32448f512aecc12152b9224478831f",
+        "author": "Zhang Yanpo",
+        "email": "drdr.xp@gmail.com",
+        "date": "2026-06-28T15:28:59Z",
+        "message": "docs: clarify RPC timeout policy\n\n# Summary\n\nClarify that network implementations should enforce RPC timeouts with\n`soft_ttl()`, while `hard_ttl()` remains OpenRaft's upper bound for\nshutting down an in-flight RPC.\n\n# Details\n\n- Document `RPCOption` as the per-call transport policy passed from\n  OpenRaft to network implementations, including the soft and hard TTL\n  responsibilities.\n- Update the network trait and getting-started docs so stream transports\n  treat `hard_ttl()` as an upper bound, not a whole-stream lifetime.\n- Make the HTTP examples apply `option.soft_ttl()` to reqwest request\n  timeouts.\n\n- Fix: #1810",
+        "url": "https://github.com/databendlabs/openraft/commit/77de93334f32448f512aecc12152b9224478831f"
+    },
+    {
+        "sha": "0d3a25fcac30fed8a434baf75e50821451dd2ce2",
+        "author": "Zhang Yanpo",
+        "email": "drdr.xp@gmail.com",
+        "date": "2026-06-28T08:17:55Z",
+        "message": "chore: bump version to v0.10.0-alpha.27\n\n# Summary\n\nPrepare the workspace for the next alpha release by moving package\nversions and local dependency requirements to v0.10.0-alpha.27.\n\n# Details\n\n- Update workspace, crate, example, benchmark, and test manifests to\n  depend on the new alpha version.\n- Refresh README alpha references so the documented release version\n  matches the manifests.",
+        "url": "https://github.com/databendlabs/openraft/commit/0d3a25fcac30fed8a434baf75e50821451dd2ce2"
+    }
+]

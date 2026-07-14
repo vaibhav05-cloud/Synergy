@@ -1,0 +1,242 @@
+[
+    {
+        "sha": "c8b0d60c2d796c214ed76a2461494d3bac06094c",
+        "author": "Jason",
+        "email": "farion1231@gmail.com",
+        "date": "2026-07-14T03:53:55Z",
+        "message": "docs(guides): add Codex + Claude local routing guide in three languages\n\nStep-by-step guide for the v3.17.0 native Anthropic Messages upstream:\nadd a custom Codex provider pointed at a Claude-family /v1/messages\ngateway, pick the anthropic upstream format, enable local routing, and\nverify the chain. Covers the auth-field choice (Bearer vs x-api-key),\nthe Claude Code impersonation toggle, the 8192 max-output fallback, and\na FAQ entry for gateways that restrict keys to Claude Code only.\n\nIncludes four UI screenshots captured from the real 3.17.0 app with\nsample data, and links the guide from the v3.17.0 release notes in all\nthree languages.",
+        "url": "https://github.com/farion1231/cc-switch/commit/c8b0d60c2d796c214ed76a2461494d3bac06094c"
+    },
+    {
+        "sha": "7e73a1ffb2d89c56543dd981b63b64aabb2035a4",
+        "author": "Jason",
+        "email": "farion1231@gmail.com",
+        "date": "2026-07-14T03:53:39Z",
+        "message": "fix(i18n): add missing proxyReasonAnthropicMessages key across locales\n\nThe routing-required toast for Anthropic-format Codex providers only had\na Chinese defaultValue in code; non-Chinese locales showed a mixed-language\nmessage. Add the reason string to zh/en/ja/zh-TW following the phrasing of\nthe sibling proxyReason* keys.",
+        "url": "https://github.com/farion1231/cc-switch/commit/7e73a1ffb2d89c56543dd981b63b64aabb2035a4"
+    },
+    {
+        "sha": "3d176b98cc0bfd151a42882e88ab59b62083b92f",
+        "author": "Jason",
+        "email": "farion1231@gmail.com",
+        "date": "2026-07-13T15:41:54Z",
+        "message": "docs(release): add v3.17.0 release notes",
+        "url": "https://github.com/farion1231/cc-switch/commit/3d176b98cc0bfd151a42882e88ab59b62083b92f"
+    },
+    {
+        "sha": "c154d30b7a7ff3de379eec5d4c723b3200ce116d",
+        "author": "Jason",
+        "email": "farion1231@gmail.com",
+        "date": "2026-07-13T13:24:58Z",
+        "message": "chore(release): v3.17.0",
+        "url": "https://github.com/farion1231/cc-switch/commit/c154d30b7a7ff3de379eec5d4c723b3200ce116d"
+    },
+    {
+        "sha": "6eb217b242576b8d8c4bb0a6bdb4f76fbef75c5c",
+        "author": "Jason",
+        "email": "farion1231@gmail.com",
+        "date": "2026-07-13T09:55:33Z",
+        "message": "revert(proxy): drop the 1-hour cache TTL option and TTL-bucketed write accounting\n\nThe forced 1-hour cache_control TTL (schema v14) was a mistake. Injected\nbreakpoints return to Anthropic's standard 5-minute TTL, caller-owned\nmarkers are preserved verbatim instead of having their TTLs rewritten,\nand the 5m/1h cache-write buckets are removed from usage parsing and\npricing (back to the single aggregate cache-creation rate). The cache\nTTL selector is removed from the rectifier settings panel along with its\ni18n keys in all four locales.\n\nSCHEMA_VERSION returns to 13: the unreleased cache_creation_1h_tokens\ncolumn and the v13->v14 migration are removed. The feature never shipped\nin a release and the introducing commit was never pushed, so no\ndatabases were stamped v14 outside this machine (local DB verified at\nuser_version 13).",
+        "url": "https://github.com/farion1231/cc-switch/commit/6eb217b242576b8d8c4bb0a6bdb4f76fbef75c5c"
+    },
+    {
+        "sha": "ac52c851bfc4854ed0ff8914595a41c41427e495",
+        "author": "Jason",
+        "email": "farion1231@gmail.com",
+        "date": "2026-07-13T08:27:51Z",
+        "message": "fix(codex): infer image capability for generated catalogs and resync takeover live on save\n\nMapped GPT models were rejected by Codex clients with \"model does not\nsupport image inputs\". Two root causes:\n\n- Catalog entries for native-Responses/Anthropic providers cloned a\n  template whose input_modalities defaulted to [\"text\"], so every mapped\n  model was advertised text-only. model_catalog_json replaces Codex's\n  built-in model table wholesale, and both the TUI and the IDE extension\n  block images pre-send when the current model is found without \"image\".\n- Editing the current Codex provider during proxy takeover only refreshed\n  the DB backup, so removing the mapping left a stale model_catalog_json\n  pointer (and its text-only catalog file) active in live config.\n\nChanges:\n\n- New shared model_capabilities module: explicit row declaration first,\n  then a confirmed text-only registry (exact tail match only — prefix\n  matching removed, variants enumerated so future -vl/-vision models fail\n  open), everything else unknown.\n- Catalog generation writes input_modalities from that inference for all\n  tool profiles: unknown models fail open to [\"text\",\"image\"]; only\n  confirmed text-only models are advertised as [\"text\"], giving users a\n  clear client-side prompt instead of silent image stripping.\n- Live catalog reverse-import collapses modalities that match current\n  inference, so registry corrections are not frozen into hidden row\n  overrides and the rectifier's heuristic opt-out keeps working.\n- Saving the current Codex provider while takeover owns live now\n  re-projects the live config (mirrors the hot-switch path), so mapping\n  edits and removals take effect immediately.\n- Media rectifier delegates to the shared module; its preflight toggle is\n  documented (4 locales) as proxy-request-only, never affecting catalog\n  capability declarations.",
+        "url": "https://github.com/farion1231/cc-switch/commit/ac52c851bfc4854ed0ff8914595a41c41427e495"
+    },
+    {
+        "sha": "618723b42fd0e8bd76ac44448d3a5fccbf1a5ab4",
+        "author": "Jason",
+        "email": "farion1231@gmail.com",
+        "date": "2026-07-13T07:37:05Z",
+        "message": "feat(presets): promote SudoCode to paid sponsor across six clients\n\nReplace the legacy sudocode.us provider (a name collision) with the new\npaid sponsor SudoCode on sudocode.chat, updated in place across six\nclients: Claude Code, Codex, Claude Desktop, OpenCode, OpenClaw, Hermes.\n\n- Switch endpoints to api.sudocode.chat, add isPartner +\n  partnerPromotionKey, and add four-locale partnerPromotion copy\n- Claude Code / Desktop use direct passthrough (no model mapping)\n- Codex / OpenCode / OpenClaw / Hermes use gpt-5.6-sol\n- Remove the Gemini entry (outside sponsor scope)\n- Replace the provider icon with the new brand PNG",
+        "url": "https://github.com/farion1231/cc-switch/commit/618723b42fd0e8bd76ac44448d3a5fccbf1a5ab4"
+    },
+    {
+        "sha": "af58740bcddd6fcf6b832bc2da4ce52d15e782bf",
+        "author": "Jason",
+        "email": "farion1231@gmail.com",
+        "date": "2026-07-13T03:53:09Z",
+        "message": "fix(proxy): align Codex OAuth client identity\n\nChatGPT's Codex backend routes model availability by the originator and version header pair. Requests identifying as cc-switch without a version were assigned to a cohort where gpt-5.6-luna resolved to an unavailable internal engine, resulting in a misleading 404 Model not found response.\n\nIdentify takeover requests as codex_cli_rs and send version 0.144.1, satisfying luna's minimal_client_version requirement of 0.144.0. A direct HTTP A/B test confirmed the existing headers returned 404 while the aligned identity completed successfully, so no WebSocket transport workaround is required.",
+        "url": "https://github.com/farion1231/cc-switch/commit/af58740bcddd6fcf6b832bc2da4ce52d15e782bf"
+    },
+    {
+        "sha": "99573d2242108d9b188ea8ee71affed9e0809023",
+        "author": "Jason",
+        "email": "farion1231@gmail.com",
+        "date": "2026-07-13T02:28:47Z",
+        "message": "refactor(presets): pin context window values instead of form fields\n\nDrop the Max Context Tokens / Auto Compact Window template inputs from\nthe Codex and Kimi For Coding presets and hardcode the values in the\npreset env (372000 / 262144). The rare user who wants different numbers\ncan edit them directly in the JSON editor.\n\nBoth keys stay on purpose: the compact window resolves as\nmin(model window, value), so matching the window is behavior-neutral\ntoday, but the explicit env pins compaction locally against\nremote-config experiments dialing it down.",
+        "url": "https://github.com/farion1231/cc-switch/commit/99573d2242108d9b188ea8ee71affed9e0809023"
+    },
+    {
+        "sha": "940ddd332b8afac23aabc34c65c2b15137785ded",
+        "author": "Jason",
+        "email": "farion1231@gmail.com",
+        "date": "2026-07-12T15:46:23Z",
+        "message": "feat(kimi): declare the 256K context window for Kimi For Coding\n\nClaude Code caps unknown model ids at 200K, so the preset's standalone\nCLAUDE_CODE_AUTO_COMPACT_WINDOW=262144 was clamped by min(window, value)\nand never took effect. Pair it with CLAUDE_CODE_MAX_CONTEXT_TOKENS and\nroute the endpoint's kimi-for-coding alias on every tier, since both\ncontext envs are ignored for claude-* prefixed model ids.\n\nSaved providers get the same context defaults injected into effective\nlive settings at switch time, with a mirror-inverse strip on backfill so\ninjected values never harden into provider config. Explicit user values\nalways win over the injected defaults.",
+        "url": "https://github.com/farion1231/cc-switch/commit/940ddd332b8afac23aabc34c65c2b15137785ded"
+    },
+    {
+        "sha": "31ee42854afed29a29740b64c4c13e0682ec7df3",
+        "author": "Jason",
+        "email": "farion1231@gmail.com",
+        "date": "2026-07-12T15:21:06Z",
+        "message": "feat(pricing): seed gpt-5.6 alias rows and 1.25x cache-write rates\n\n- Add the bare gpt-5.6 row (official Sol alias) plus effort-suffix variants\n  mirroring the gpt-5.5 accounting shape, priced at Sol rates\n- The GPT-5.6 family charges cache writes at 1.25x the uncached input rate\n  (new for OpenAI; earlier GPT models keep their correct zero): set\n  6.25 / 3.125 / 1.25 for Sol / Terra / Luna across seed rows\n- Repair earlier zero-value gpt-5.6 tier seeds in existing databases,\n  matching only untouched rows so user-customized prices survive",
+        "url": "https://github.com/farion1231/cc-switch/commit/31ee42854afed29a29740b64c4c13e0682ec7df3"
+    },
+    {
+        "sha": "5c39dfbfbea26f1a6d7d6838091d87e14bbfc17b",
+        "author": "Jason",
+        "email": "farion1231@gmail.com",
+        "date": "2026-07-12T15:20:55Z",
+        "message": "feat(codex): declare gpt-5.6 context window for Claude Code takeover\n\n- Update Codex OAuth presets to the gpt-5.6 family (haiku -> gpt-5.6-luna)\n  and bump the custom Codex template default model\n- Inject CLAUDE_CODE_MAX_CONTEXT_TOKENS / CLAUDE_CODE_AUTO_COMPACT_WINDOW\n  (372000, the ChatGPT Codex catalog window with a ~353K effective budget,\n  openai/codex#31860) into effective live settings so Claude Code stops\n  assuming a 200K window and compacts before the upstream rejects the prompt\n- Gate the injected defaults on every configured model being gpt-5.6*:\n  gpt-5.5's upstream catalog oscillates between 272K and 372K and must not\n  inherit them; explicit user values always win\n- Strip the injected values on switch-away backfill (mirror-inverse of the\n  injection conditions) so program defaults never harden into per-provider\n  explicit values, and keep both keys out of the shared common-config snippet",
+        "url": "https://github.com/farion1231/cc-switch/commit/5c39dfbfbea26f1a6d7d6838091d87e14bbfc17b"
+    },
+    {
+        "sha": "f15184edb0cb7fa1e07c010fad528c82df25b19a",
+        "author": "Jason",
+        "email": "farion1231@gmail.com",
+        "date": "2026-07-12T09:52:12Z",
+        "message": "feat(codex): expose official routing and restore the built-in provider\n\nLet users switch between the built-in OpenAI provider and third-party Codex providers directly from the provider panel while takeover mode remains active.\n\nCentralize the frontend capability predicate so only the fixed codex-official seed receives native-login routing support, and keep copied UUID-based official entries clearly marked as unsupported.\n\nAdd an idempotent backend command that recreates the deleted official seed, wire it into the add-provider flow, refresh localized guidance, and add mutation and provider-action regression coverage.",
+        "url": "https://github.com/farion1231/cc-switch/commit/f15184edb0cb7fa1e07c010fad528c82df25b19a"
+    },
+    {
+        "sha": "f2c6d48e1970cf8ad96061910e680ad3321a029e",
+        "author": "Jason",
+        "email": "farion1231@gmail.com",
+        "date": "2026-07-12T09:52:03Z",
+        "message": "fix(providers): skip reachability probes for official OAuth entries\n\nDo not derive unauthenticated health-check targets from runtime adapter defaults for official providers. Batch checks now skip official entries, and direct base-URL resolution fails explicitly instead of probing first-party endpoints without credentials.\n\nCover the Codex official provider in the stream-check regression tests so future adapter changes cannot silently reintroduce these probes.",
+        "url": "https://github.com/farion1231/cc-switch/commit/f2c6d48e1970cf8ad96061910e680ad3321a029e"
+    },
+    {
+        "sha": "51d6c458ff2ccac7f283dad6f15732ed956c71ac",
+        "author": "Jason",
+        "email": "farion1231@gmail.com",
+        "date": "2026-07-12T09:51:56Z",
+        "message": "feat(codex): route native ChatGPT sessions through proxy takeover\n\nAllow the built-in Codex official provider to participate in takeover mode while preserving Codex's native OAuth or API-key credentials instead of persisting them into provider records.\n\nProject official routing into a dedicated TOML provider, normalize inline tables, clean stale managed placeholders, and fail closed when the live configuration cannot be transformed safely.\n\nValidate forwarded authorization, make official 401/403 responses non-retryable, avoid circuit-breaker pollution, and share the first-party ChatGPT endpoint across the Codex and Claude adapters.",
+        "url": "https://github.com/farion1231/cc-switch/commit/51d6c458ff2ccac7f283dad6f15732ed956c71ac"
+    },
+    {
+        "sha": "13e7c1fcc435ecbc5ca5cb6f4cf4a019c19cc991",
+        "author": "Jason",
+        "email": "farion1231@gmail.com",
+        "date": "2026-07-12T04:19:36Z",
+        "message": "fix(usage): account for Anthropic cache write TTLs\n\nParse and retain Anthropic's ephemeral 5-minute and 1-hour cache-creation token buckets while preserving the existing aggregate cache-write metric for compatibility.\n\nPrice 1-hour writes at the documented premium relative to the configured 5-minute write rate, clamp inconsistent provider details safely, and include TTL buckets in usage diagnostics.\n\nPersist 1-hour cache-write tokens with schema version 14 so zero-cost backfills and later pricing updates retain the original TTL semantics. Keep session import paths compatible through zero-valued detail fields.",
+        "url": "https://github.com/farion1231/cc-switch/commit/13e7c1fcc435ecbc5ca5cb6f4cf4a019c19cc991"
+    },
+    {
+        "sha": "b9263a8040b81caacefe53832c2b1978e7c337fa",
+        "author": "Jason",
+        "email": "farion1231@gmail.com",
+        "date": "2026-07-12T04:19:28Z",
+        "message": "fix(cache): strengthen prompt cache breakpoint injection\n\nHonor both the optimizer master switch and the cache-injection sub-switch before mutating native optimizer requests.\n\nUse the available four-breakpoint budget across tools, system content, the latest cacheable message, and an older user anchor for long tool-heavy conversations.\n\nPreserve caller-owned breakpoint limits, avoid thinking blocks as cache targets, normalize configured TTLs, and add regression coverage for disabled optimization and long histories.",
+        "url": "https://github.com/farion1231/cc-switch/commit/b9263a8040b81caacefe53832c2b1978e7c337fa"
+    },
+    {
+        "sha": "650905af2c72ace22aa743f9c4608ea0ba6f495b",
+        "author": "Jason",
+        "email": "farion1231@gmail.com",
+        "date": "2026-07-12T04:19:21Z",
+        "message": "fix(proxy): harden Responses and Anthropic protocol bridges\n\nFail closed on HTTP 2xx failure envelopes and pre-output SSE failures so semantic upstream errors can trigger failover instead of becoming empty successful replies.\n\nFinalize incomplete and truncated streams explicitly, handle clean EOF and whole JSON responses, and keep tool-call stop reasons and terminal event ordering consistent.\n\nPreserve structured tool results, URL images, documents, system roles, and signed thinking across both conversion directions. Drop incomplete historical tool calls safely and classify malformed completed arguments as non-retryable client requests.\n\nKeep Codex-to-Anthropic prompt caching enabled by default while honoring the dedicated cache-injection switch.",
+        "url": "https://github.com/farion1231/cc-switch/commit/650905af2c72ace22aa743f9c4608ea0ba6f495b"
+    },
+    {
+        "sha": "a078b4b20798c789ecac0fc7fb17ba4c067a7e13",
+        "author": "Jason",
+        "email": "farion1231@gmail.com",
+        "date": "2026-07-11T13:42:43Z",
+        "message": "feat(proxy): session-based prompt_cache_key routing for Codex Chat bridge\n\nCodex always sends prompt_cache_key in its Responses requests, but the\nResponses -> Chat Completions conversion dropped it, breaking session\ncache affinity on upstreams that route by key (e.g. Kimi Coding).\n\n- Re-inject prompt_cache_key after conversion in the forwarder: an\n  explicit client key wins, otherwise a client-provided session ID;\n  generated per-request UUIDs are never sent upstream.\n- Provider-aware gating: \"auto\" enables only known-compatible upstreams\n  (api.openai.com, api.kimi.com/coding) because strict gateways reject\n  unknown fields with HTTP 400 (e.g. Fireworks); an advanced\n  Auto/Enabled/Disabled override is available on the Codex form in all\n  four locales.\n- Kimi For Coding preset opts in explicitly.",
+        "url": "https://github.com/farion1231/cc-switch/commit/a078b4b20798c789ecac0fc7fb17ba4c067a7e13"
+    },
+    {
+        "sha": "0e563b50c508bd50638642909ecce6b632e32953",
+        "author": "Jason",
+        "email": "farion1231@gmail.com",
+        "date": "2026-07-11T04:28:02Z",
+        "message": "fix(cache): surface unsupported breakpoint counts\n\nWarn when caller-provided cache breakpoints already exceed the supported total of four while preserving the original markers and upgrading their TTLs.\n\nClarify that automatic injection is governed by the remaining breakpoint budget, and add regression coverage proving excess caller markers are never deleted or reordered.",
+        "url": "https://github.com/farion1231/cc-switch/commit/0e563b50c508bd50638642909ecce6b632e32953"
+    },
+    {
+        "sha": "27ce0a519c723db56d248da383a7556259d0c480",
+        "author": "Jason",
+        "email": "farion1231@gmail.com",
+        "date": "2026-07-11T04:27:56Z",
+        "message": "fix(proxy): harden Responses reasoning and tool-call conversion\n\nRound-trip encrypted Responses reasoning items through bridge-owned Anthropic thinking blocks, discard orphaned reasoning-only history, and consume the official reasoning text event vocabulary.\n\nTrack concurrent streaming items by stable IDs and output indexes, reuse a dedicated fallback block for keyless legacy reasoning, recover tool arguments from done events, and close blocks in protocol order.\n\nNormalize empty or incomplete non-streaming tool arguments, reject malformed completed calls, and persist upstream usage before returning terminal conversion errors.",
+        "url": "https://github.com/farion1231/cc-switch/commit/27ce0a519c723db56d248da383a7556259d0c480"
+    },
+    {
+        "sha": "f991726ff0cfc30ec32293fe00a6999314a06f9c",
+        "author": "Jason",
+        "email": "farion1231@gmail.com",
+        "date": "2026-07-11T04:27:39Z",
+        "message": "fix(usage): account for cache-write tokens across schema versions\n\nParse cache_write_tokens from OpenAI usage details and preserve cache creation data across Chat, Responses, and Anthropic conversion paths.\n\nAdd explicit input-token semantics to request logs and rollups so legacy rows subtract cache reads only while new total-inclusive rows subtract both cache reads and writes. Migrate v12 databases, normalize rollups to fresh input, and cover historical backfill behavior with regression tests.",
+        "url": "https://github.com/farion1231/cc-switch/commit/f991726ff0cfc30ec32293fe00a6999314a06f9c"
+    },
+    {
+        "sha": "06039540ffca5dafc7c7b26e6cd2c873c043067d",
+        "author": "Jason",
+        "email": "farion1231@gmail.com",
+        "date": "2026-07-10T05:42:09Z",
+        "message": "refactor(health-check): remove per-provider test config",
+        "url": "https://github.com/farion1231/cc-switch/commit/06039540ffca5dafc7c7b26e6cd2c873c043067d"
+    },
+    {
+        "sha": "442799879d38eefd3c9d3056277382067c4f6985",
+        "author": "Jason",
+        "email": "farion1231@gmail.com",
+        "date": "2026-07-10T03:04:59Z",
+        "message": "feat(profiles): add setting to toggle project switcher on main page\n\nAdd a show/hide toggle for the header project profile switcher under\nthe Homepage Display section in settings. Defaults to visible so\nexisting users keep the current behavior.",
+        "url": "https://github.com/farion1231/cc-switch/commit/442799879d38eefd3c9d3056277382067c4f6985"
+    },
+    {
+        "sha": "7479d10db77d689815a7c8e42363c28990c7bc8f",
+        "author": "Jason",
+        "email": "farion1231@gmail.com",
+        "date": "2026-07-10T02:47:07Z",
+        "message": "feat(codex): add default model field to provider form\n\nExpose the top-level `model` key of config.toml as an editable field in\nthe Codex provider form, so users can switch to newly released models\n(e.g. gpt-5.6) without waiting for a preset update — preset updates only\naffect newly added providers, existing ones keep their saved TOML.\n\nThe field syncs bidirectionally with the TOML editor (mirroring the\nbase-URL pattern), suggests models from the mapping catalog plus the\nprovider's /models endpoint, and offers a one-click \"add to mapping\"\naction when the value is outside a non-empty catalog. Hidden for\nofficial providers.\n\nDetails:\n\n- Save-time catalog sync now only backfills the first mapping row into\n  the top-level model when the field was left empty, so the explicit\n  field wins over the implicit row-0 sync\n- Escape model names (and base_url) with TOML basic-string escaping and\n  strip control characters from field input: /models ids are remote\n  data and unescaped interpolation could inject config.toml lines\n  (e.g. a forged [mcp_servers.*] command)\n- The strict model-line matcher now recognizes escaped output, empty\n  strings and single-quoted literals, keeping extract/set round-trips\n  stable; deliberately no key-only loose matching (it would misfire on\n  assignment-looking text inside multiline strings)\n- Invalidate the fetched model list whenever the request identity\n  changes (base URL, full-URL toggle, API key, custom UA) and discard\n  in-flight responses via a sequence guard, so the dropdown never shows\n  a previous provider's models\n- i18n for zh/en/ja/zh-TW",
+        "url": "https://github.com/farion1231/cc-switch/commit/7479d10db77d689815a7c8e42363c28990c7bc8f"
+    },
+    {
+        "sha": "62e44c48385dd9a70f86de49151680b000662ff0",
+        "author": "Jason",
+        "email": "farion1231@gmail.com",
+        "date": "2026-07-10T00:49:48Z",
+        "message": "feat(pricing): seed Tencent Hunyuan Hy3 pricing\n\nAdd Hunyuan Hy3 (released 2026-07-06, 256K context) to seed_model_pricing\nunder both the hunyuan-hy3 and hy3 ids, since the upstream billing id isn't\nyet confirmed and one of the two should match logged usage.\n\nPrices come from Tencent's launch-day list price (CNY 1 / 4 / 0.25 per 1M\ninput / output / cache-hit), converted at 1 USD ~= 7.14: 0.14 / 0.56 / 0.035.\ncache_write is \"0\" (no published write rate). Hy3 actually uses input-length\ntiered billing (<16K / 16-32K / >=32K); the single-price table holds the\nlowest tier, so long-context requests are under-billed until this is revisited\nagainst the official billing page. New model, so seed only.",
+        "url": "https://github.com/farion1231/cc-switch/commit/62e44c48385dd9a70f86de49151680b000662ff0"
+    },
+    {
+        "sha": "a7b4dd9405c89a9f7d2e200d32c75c8bf42212cb",
+        "author": "Jason",
+        "email": "farion1231@gmail.com",
+        "date": "2026-07-10T00:28:04Z",
+        "message": "feat(pricing): seed GPT-5.6 Sol/Terra/Luna pricing\n\nAdd the three GPT-5.6 tiers to seed_model_pricing, cross-checked against\nOpenAI's official pricing page and OpenRouter:\n\n  gpt-5.6-sol    5 / 30 / 0.50 (cache read)\n  gpt-5.6-terra  2.50 / 15 / 0.25\n  gpt-5.6-luna   1 / 6 / 0.10\n\ncache_write is \"0\": OpenAI publishes only a cached-input (read) rate and no\nseparate cache-write price, matching the gpt-5.x family convention. Base ids\nonly for now — effort-suffix variants are deferred until the upstream logging\nsuffix set for 5.6 is confirmed. New model, so seed only (no repair branch,\nno SCHEMA_VERSION bump).",
+        "url": "https://github.com/farion1231/cc-switch/commit/a7b4dd9405c89a9f7d2e200d32c75c8bf42212cb"
+    },
+    {
+        "sha": "c6197ae32450cd70e2bf03b35e3f5f53ac12044c",
+        "author": "风少1227",
+        "email": "fengshao1227@gmail.com",
+        "date": "2026-07-12T13:47:45Z",
+        "message": "fix(proxy): inject a single auth placeholder on managed Claude takeover (#5095)\n\nSwitching the Claude provider from a third-party (DeepSeek/MiMo/...) to a\nmanaged Codex provider wrote both ANTHROPIC_API_KEY and\nANTHROPIC_AUTH_TOKEN as PROXY_MANAGED into ~/.claude/settings.json,\nmaking Claude Code warn \"Both ANTHROPIC_AUTH_TOKEN and ANTHROPIC_API_KEY\nset - auth may not work as expected\" on every run.\n\nThe double key is an accretion artifact: the ManagedAccount takeover\npolicy originally injected only ANTHROPIC_API_KEY (Copilot, #1049), and\nthe Codex fix that preserved ANTHROPIC_AUTH_TOKEN to avoid the login\nprompt (#3784 / PR #3789) added the token on top without removing the\nAPI key insert.\n\nInject exactly one placeholder instead: AUTH_TOKEN for Codex-managed\nproviders (keeps the #3784 fix), API_KEY for Copilot (keeps the #1049\nbehavior). Local-proxy auth is unaffected - the forwarder resolves the\nPROXY_MANAGED placeholder from either header.\n\nUpdates the three Codex takeover tests to assert API_KEY is absent and\nadds a regression test for the exact third-party -> Codex switch from\nthe report.\n\nFixes #4919",
+        "url": "https://github.com/farion1231/cc-switch/commit/c6197ae32450cd70e2bf03b35e3f5f53ac12044c"
+    },
+    {
+        "sha": "f39d463c442e705727531b85f2db98e00ccaf11e",
+        "author": "白喵喵喵喵",
+        "email": "3299332656@qq.com",
+        "date": "2026-07-11T12:11:14Z",
+        "message": "fix(usage): 修复 Codex 子代理使用量未计入统计 (#5187)\n\n* fix(usage): count Codex subagent session tokens\n\n* fix(usage): address Codex subagent review feedback\n\n* fix(usage): preserve Codex migration history\n\n* fix(usage): harden Codex subagent migration\n\n* fix(usage): reimport late Codex subagents\n\n* fix(usage): guard late Codex rollup reimport\n\n* refactor(usage): simplify Codex subagent accounting fix",
+        "url": "https://github.com/farion1231/cc-switch/commit/f39d463c442e705727531b85f2db98e00ccaf11e"
+    },
+    {
+        "sha": "ded0b63a8ec45fbdc20f8add4cbdb0532ceda9d2",
+        "author": "Komi",
+        "email": "renyeheng@gmail.com",
+        "date": "2026-07-11T08:57:46Z",
+        "message": "fix: handle missing provider keys and tool schema types (#5069)\n\n* fix: handle missing api keys and tool schema types\n\n* fix: preserve nested tool schemas\n\n---------\n\nCo-authored-by: Jason <farion1231@gmail.com>",
+        "url": "https://github.com/farion1231/cc-switch/commit/ded0b63a8ec45fbdc20f8add4cbdb0532ceda9d2"
+    }
+]

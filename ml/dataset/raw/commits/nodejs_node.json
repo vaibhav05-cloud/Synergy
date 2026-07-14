@@ -1,0 +1,242 @@
+[
+    {
+        "sha": "ed63b195cd61367db7b611cb601352197569ee0e",
+        "author": "Node.js GitHub Bot",
+        "email": "github-bot@iojs.org",
+        "date": "2026-07-14T01:31:28Z",
+        "message": "deps: update googletest to 8240fa7d62f73e01c7af27d61ed965d6d66698fa\n\nPR-URL: https://github.com/nodejs/node/pull/64439\nReviewed-By: Antoine du Hamel <duhamelantoine1995@gmail.com>\nReviewed-By: Colin Ihrig <cjihrig@gmail.com>\nReviewed-By: Luigi Pinca <luigipinca@gmail.com>",
+        "url": "https://github.com/nodejs/node/commit/ed63b195cd61367db7b611cb601352197569ee0e"
+    },
+    {
+        "sha": "ed6c3ac32bbf6c723670630490aa326a99451c7e",
+        "author": "Node.js GitHub Bot",
+        "email": "github-bot@iojs.org",
+        "date": "2026-07-14T01:31:17Z",
+        "message": "deps: update libffi to 3.7.1\n\nPR-URL: https://github.com/nodejs/node/pull/64438\nReviewed-By: Paolo Insogna <paolo@cowtech.it>\nReviewed-By: Matteo Collina <matteo.collina@gmail.com>",
+        "url": "https://github.com/nodejs/node/commit/ed6c3ac32bbf6c723670630490aa326a99451c7e"
+    },
+    {
+        "sha": "84ee0a311324446515b7175db30031ed919ac374",
+        "author": "Node.js GitHub Bot",
+        "email": "github-bot@iojs.org",
+        "date": "2026-07-14T00:55:40Z",
+        "message": "test: update WPT for urlpattern to 5847ee5cfa\n\nPR-URL: https://github.com/nodejs/node/pull/64436\nReviewed-By: James M Snell <jasnell@gmail.com>\nReviewed-By: Daijiro Wachi <daijiro.wachi@gmail.com>\nReviewed-By: Matteo Collina <matteo.collina@gmail.com>\nReviewed-By: Filip Skokan <panva.ip@gmail.com>\nReviewed-By: Luigi Pinca <luigipinca@gmail.com>",
+        "url": "https://github.com/nodejs/node/commit/84ee0a311324446515b7175db30031ed919ac374"
+    },
+    {
+        "sha": "fd3f8702197e1624757972488db9a9d95f93d53a",
+        "author": "Node.js GitHub Bot",
+        "email": "github-bot@iojs.org",
+        "date": "2026-07-14T00:55:29Z",
+        "message": "test: update WPT for WebCryptoAPI to ec2fee39a4\n\nPR-URL: https://github.com/nodejs/node/pull/64435\nReviewed-By: Filip Skokan <panva.ip@gmail.com>\nReviewed-By: James M Snell <jasnell@gmail.com>\nReviewed-By: Luigi Pinca <luigipinca@gmail.com>",
+        "url": "https://github.com/nodejs/node/commit/fd3f8702197e1624757972488db9a9d95f93d53a"
+    },
+    {
+        "sha": "35115c05adcf6ec81f4a69b8ac7e8d1b7420c206",
+        "author": "Matteo Collina",
+        "email": "hello@matteocollina.com",
+        "date": "2026-07-13T23:32:39Z",
+        "message": "events: avoid retaining removed event names\n\nRestore shape mode for preallocated EventEmitters while deleting dynamic\nnames from ordinary EventEmitters. Keeping every removed name as an\nundefined property causes unbounded memory growth when event names are\nunstructured.\n\nRefs: https://github.com/nodejs/node/pull/64373\nSigned-off-by: Matteo Collina <hello@matteocollina.com>\nPR-URL: https://github.com/nodejs/node/pull/64475\nReviewed-By: Robert Nagy <ronagy@icloud.com>\nReviewed-By: James M Snell <jasnell@gmail.com>",
+        "url": "https://github.com/nodejs/node/commit/35115c05adcf6ec81f4a69b8ac7e8d1b7420c206"
+    },
+    {
+        "sha": "ace91de608624432632f3b052022aadf8bf8a35d",
+        "author": "Matteo Collina",
+        "email": "hello@matteocollina.com",
+        "date": "2026-07-13T20:07:12Z",
+        "message": "stream: use the ring buffer for WHATWG stream request queues\n\nThe [[queue]] backing the controllers became a ring buffer, but the\nread and write request queues (readRequests, readIntoRequests,\nwriteRequests) were left as plain arrays consumed with\nArrayPrototypeShift, which is O(n) and, even for the single pending\nrequest of the await-each regime, far slower than an indexed head\nadvance. Back them with the same Queue, materialized lazily from the\nshared empty queue so acquiring a reader or constructing a writer\nallocates no request storage until a read or write actually parks.\n\npipe-to: +4.7% to +9.4% (all 16 configs, ***)\nreadable-read type=byob: +2.3% (**)\nparked read loop: +15%, write loop: +11% (local harness)\n\nFollow-up to https://github.com/nodejs/node/pull/64312.\n\nSigned-off-by: Matteo Collina <hello@matteocollina.com>\nPR-URL: https://github.com/nodejs/node/pull/64431\nReviewed-By: James M Snell <jasnell@gmail.com>\nReviewed-By: Antoine du Hamel <duhamelantoine1995@gmail.com>",
+        "url": "https://github.com/nodejs/node/commit/ace91de608624432632f3b052022aadf8bf8a35d"
+    },
+    {
+        "sha": "e84b517d67786735139b25c1826c31d5e0c4d4e9",
+        "author": "Efe Karasakal",
+        "email": "hi@efe.dev",
+        "date": "2026-07-13T18:58:47Z",
+        "message": "doc: document net Socket server property\n\nBased on #63458.\n\nCo-authored-by: Herrtian <70463940+Herrtian@users.noreply.github.com>\nSigned-off-by: Efe Karasakal <hi@efe.dev>\nSigned-off-by: Herrtian <70463940+Herrtian@users.noreply.github.com>\nPR-URL: https://github.com/nodejs/node/pull/64364\nReviewed-By: Tim Perry <pimterry@gmail.com>\nReviewed-By: Luigi Pinca <luigipinca@gmail.com>",
+        "url": "https://github.com/nodejs/node/commit/e84b517d67786735139b25c1826c31d5e0c4d4e9"
+    },
+    {
+        "sha": "e7864e609c99832ab629de4c2b663dcd7ee1ff85",
+        "author": "Samuel Kapust",
+        "email": "spkapust@gmail.com",
+        "date": "2026-07-13T17:44:52Z",
+        "message": "src: zero-initialize cap_data in node_credentials.cc\n\nzero-initialize the cap_data array to prevent\nMSan warnings about using uninitialized memory\n\nSigned-off-by: Sam Kapust <samkapust@google.com>\nPR-URL: https://github.com/nodejs/node/pull/64347\nReviewed-By: Jan Martin <jan.krems@gmail.com>\nReviewed-By: Luigi Pinca <luigipinca@gmail.com>",
+        "url": "https://github.com/nodejs/node/commit/e7864e609c99832ab629de4c2b663dcd7ee1ff85"
+    },
+    {
+        "sha": "fc92e9119db86762adec792f6a1ad2e75f30d25f",
+        "author": "Filip Skokan",
+        "email": "panva.ip@gmail.com",
+        "date": "2026-07-13T17:01:04Z",
+        "message": "doc: update a Dispatcher undici doc link\n\nSigned-off-by: Filip Skokan <panva.ip@gmail.com>\nPR-URL: https://github.com/nodejs/node/pull/64358\nRefs: https://github.com/nodejs/undici-website/pull/7\nReviewed-By: Matthew Aitken <maitken033380023@gmail.com>\nReviewed-By: Trivikram Kamat <trivikr.dev@gmail.com>",
+        "url": "https://github.com/nodejs/node/commit/fc92e9119db86762adec792f6a1ad2e75f30d25f"
+    },
+    {
+        "sha": "8c6cbb8e0a7d927e0cb8ce8ad040cbcac2a2b85a",
+        "author": "Joyee Cheung",
+        "email": "joyeec9h3@gmail.com",
+        "date": "2026-07-13T17:00:51Z",
+        "message": "inspector: add --cond to node inspect probe mode\n\nOn a hot path, the probe can record every hit and require\nfiltering afterwards. This patch adds a per-probe `--cond <expr>`\noption that allows limiting the hit to only when the expression\nis truthy at the probe location. V8 evaluates it as the breakpoint's\nnative condition, so the target is not paused when it does not hold,\nand a condition that throws is treated as false. Since in CDP,\na location can only carry one breakpoint per URL pattern,\nprobes sharing a location must share one condition (or none).\nConflicting conditions are rejected.\n\nExample:\n\n```js\n// app.js\nlet total = 0;\nfor (let i = 0; i < 10; i++) {\n  total += i;  // line 4\n}\n```\n\n```\n$ out/Release/node inspect --probe app.js:4 --expr 'total' \\\n                           --cond 'i % 3 === 0' app.js\n```\n\n```\nHit 1 at file:///path/to/app.js:3:3\n  total = 0\nHit 2 at file:///path/to/app.js:3:3\n  total = 3\nHit 3 at file:///path/to/app.js:3:3\n  total = 15\nHit 4 at file:///path/to/app.js:3:3\n  total = 36\nCompleted\n```\n\nSigned-off-by: Joyee Cheung <joyeec9h3@gmail.com>\nPR-URL: https://github.com/nodejs/node/pull/64328\nRefs: https://github.com/nodejs/node/issues/63646\nReviewed-By: James M Snell <jasnell@gmail.com>",
+        "url": "https://github.com/nodejs/node/commit/8c6cbb8e0a7d927e0cb8ce8ad040cbcac2a2b85a"
+    },
+    {
+        "sha": "f90b0218b5c987b3a211aca872a7a23ecff27be4",
+        "author": "Antoine du Hamel",
+        "email": "duhamelantoine1995@gmail.com",
+        "date": "2026-07-13T11:12:48Z",
+        "message": "tools: disable zipping tarballs on GHA\n\nSigned-off-by: Antoine du Hamel <duhamelantoine1995@gmail.com>\nPR-URL: https://github.com/nodejs/node/pull/64423\nReviewed-By: René <contact.9a5d6388@renegade334.me.uk>\nReviewed-By: Luigi Pinca <luigipinca@gmail.com>",
+        "url": "https://github.com/nodejs/node/commit/f90b0218b5c987b3a211aca872a7a23ecff27be4"
+    },
+    {
+        "sha": "1314579f8c82ed70b8cbe736fdea1df48624c285",
+        "author": "Jungwon Sohn",
+        "email": "sjungwon03@gmail.com",
+        "date": "2026-07-13T10:34:05Z",
+        "message": "doc: fix typos in documentation\n\nFix typographical errors in API, contributor, and crypto docs.\n\nSigned-off-by: sjungwon03 <sjungwon03@gmail.com>\nPR-URL: https://github.com/nodejs/node/pull/64466\nReviewed-By: Antoine du Hamel <duhamelantoine1995@gmail.com>\nReviewed-By: Marco Ippolito <marcoippolito54@gmail.com>\nReviewed-By: Jacob Smith <jacob@frende.me>",
+        "url": "https://github.com/nodejs/node/commit/1314579f8c82ed70b8cbe736fdea1df48624c285"
+    },
+    {
+        "sha": "384d7a40ce99c01823e72ea80934afdbc328be66",
+        "author": "Matteo Collina",
+        "email": "hello@matteocollina.com",
+        "date": "2026-07-13T08:50:08Z",
+        "message": "events: optimize once() and removeListener()\n\nUse a closure instead of a bound state object for the once() wrapper,\nkeep the events object shape in removeListener() by storing undefined\ninstead of deleting keys or reallocating the object, and outline the\ncold unhandled 'error' path from emit() and the max-listeners warning\nfrom _addListener() so both fit within V8 inlining budgets.\n\nee-once +25%, ee-add-remove +12-22%, ee-listen-unique +7-15%,\nstreams/pipe +13.9%.\n\nSigned-off-by: Matteo Collina <hello@matteocollina.com>\nPR-URL: https://github.com/nodejs/node/pull/64373\nReviewed-By: James M Snell <jasnell@gmail.com>\nReviewed-By: Yagiz Nizipli <yagiz@nizipli.com>",
+        "url": "https://github.com/nodejs/node/commit/384d7a40ce99c01823e72ea80934afdbc328be66"
+    },
+    {
+        "sha": "e631709909a52e3ca4265219ce9a568bf47a5829",
+        "author": "Trivikram Kamat",
+        "email": "16024985+trivikr@users.noreply.github.com",
+        "date": "2026-07-13T07:47:09Z",
+        "message": "doc: clarify fixes and refs trailer guidance\n\nSigned-off-by: Kamat, Trivikram <16024985+trivikr@users.noreply.github.com>\nPR-URL: https://github.com/nodejs/node/pull/64421\nReviewed-By: Ulises Gascón <ulisesgascongonzalez@gmail.com>\nReviewed-By: Antoine du Hamel <duhamelantoine1995@gmail.com>",
+        "url": "https://github.com/nodejs/node/commit/e631709909a52e3ca4265219ce9a568bf47a5829"
+    },
+    {
+        "sha": "a1e3e6d2d8c446fa7dd127b34a2f5caa128d42ac",
+        "author": "Tim Perry",
+        "email": "1526883+pimterry@users.noreply.github.com",
+        "date": "2026-07-13T05:22:38Z",
+        "message": "test: fix flaky http2 maxOriginSetSize test\n\nSigned-off-by: Tim Perry <pimterry@gmail.com>\nPR-URL: https://github.com/nodejs/node/pull/64407\nReviewed-By: Yagiz Nizipli <yagiz@nizipli.com>\nReviewed-By: Matteo Collina <matteo.collina@gmail.com>\nReviewed-By: Trivikram Kamat <trivikr.dev@gmail.com>",
+        "url": "https://github.com/nodejs/node/commit/a1e3e6d2d8c446fa7dd127b34a2f5caa128d42ac"
+    },
+    {
+        "sha": "71812d1b43515296585d4389a69408fd6306c272",
+        "author": "Antoine du Hamel",
+        "email": "duhamelantoine1995@gmail.com",
+        "date": "2026-07-12T18:10:37Z",
+        "message": "tools: pin to nixpkgs-26.05-darwin on Intel Macs\n\nUnstable channel no longer supports Intel architecture for macOS. We can\nuse the 26.05 channel to keep testing on that platform for a little\nlonger.\n\nSigned-off-by: Antoine du Hamel <duhamelantoine1995@gmail.com>\nPR-URL: https://github.com/nodejs/node/pull/64210\nReviewed-By: Filip Skokan <panva.ip@gmail.com>",
+        "url": "https://github.com/nodejs/node/commit/71812d1b43515296585d4389a69408fd6306c272"
+    },
+    {
+        "sha": "b4c7be323e94e0af8a0f7532c98253dc0afd598e",
+        "author": "Daijiro Wachi",
+        "email": "daijiro.wachi@gmail.com",
+        "date": "2026-07-12T16:53:44Z",
+        "message": "util: make MIMEParams accessors case-insensitive\n\nMIME parameter names are case-insensitive and the parser already\nASCII-lowercases them, but MIMEParams.get(), has(), delete() and set()\ncompared against the raw argument. As a result a parsed parameter was\nunreachable by the casing the caller used (e.g. params.get('Charset')\nreturned null for \"Charset=utf-8\"), and set() could create duplicate,\ncase-colliding parameters.\n\nLowercase the name in the accessors to match the parser, consistent with\nthe whatwg-mimetype reference implementation.\n\nSigned-off-by: Daijiro Wachi <daijiro.wachi@gmail.com>\nPR-URL: https://github.com/nodejs/node/pull/64123\nReviewed-By: Luigi Pinca <luigipinca@gmail.com>\nReviewed-By: James M Snell <jasnell@gmail.com>",
+        "url": "https://github.com/nodejs/node/commit/b4c7be323e94e0af8a0f7532c98253dc0afd598e"
+    },
+    {
+        "sha": "19a95f3d4b4c42e6c016d461f1a05a9dffe3794c",
+        "author": "Daijiro Wachi",
+        "email": "daijiro.wachi@gmail.com",
+        "date": "2026-07-12T16:53:35Z",
+        "message": "buffer: normalize lone \"\\r\" in Blob native line endings\n\n`new Blob(parts, { endings: 'native' })` failed to normalize a\nstandalone carriage return. The replacement regex only matched\n`\\n` and `\\r\\n`, so a lone `\\r` (and runs such as `\\r\\r`) were\nleft untouched instead of being converted to the platform's\nnative line ending.\n\nThe WHATWG \"convert line endings to native\" algorithm requires\n`\\r`, `\\n`, and `\\r\\n` to all be normalized. Match `\\r\\n` before\na lone `\\r` so that CRLF collapses to a single native ending.\n\nRefs: https://w3c.github.io/FileAPI/#convert-line-endings-to-native\n\nSigned-off-by: Daijiro Wachi <daijiro.wachi@gmail.com>\nPR-URL: https://github.com/nodejs/node/pull/64115\nRefs: https://w3c.github.io/FileAPI/#convert-line-endings-to-native\nReviewed-By: Luigi Pinca <luigipinca@gmail.com>\nReviewed-By: Jason Zhang <xzha4350@gmail.com>",
+        "url": "https://github.com/nodejs/node/commit/19a95f3d4b4c42e6c016d461f1a05a9dffe3794c"
+    },
+    {
+        "sha": "c1214611212e1fd5df03ce13adeb5c99ea03739d",
+        "author": "Antoine du Hamel",
+        "email": "duhamelantoine1995@gmail.com",
+        "date": "2026-07-12T15:51:38Z",
+        "message": "tools: add workflow to compare Nix changes\n\nIf a change breaks e.g. the benchmark workflow, it might be not obvious\nto detect as we typically do not run any benchmark when bumping the\nnixpkgs pin.\nThe added workflows will verify that all derivations can be built on all\nplatforms, and report the list of changes.\n\nSigned-off-by: Antoine du Hamel <duhamelantoine1995@gmail.com>\nPR-URL: https://github.com/nodejs/node/pull/64410\nReviewed-By: Yagiz Nizipli <yagiz@nizipli.com>\nReviewed-By: Filip Skokan <panva.ip@gmail.com>\nReviewed-By: Gürgün Dayıoğlu <hey@gurgun.day>",
+        "url": "https://github.com/nodejs/node/commit/c1214611212e1fd5df03ce13adeb5c99ea03739d"
+    },
+    {
+        "sha": "dca0fd1b696aaf4affc4c595e1a3558813d3f6ca",
+        "author": "Tim Perry",
+        "email": "1526883+pimterry@users.noreply.github.com",
+        "date": "2026-07-12T15:11:38Z",
+        "message": "test: fix 2nd flaky blob test case\n\nSigned-off-by: Tim Perry <pimterry@gmail.com>\nPR-URL: https://github.com/nodejs/node/pull/64391\nReviewed-By: Trivikram Kamat <trivikr.dev@gmail.com>\nReviewed-By: James M Snell <jasnell@gmail.com>",
+        "url": "https://github.com/nodejs/node/commit/dca0fd1b696aaf4affc4c595e1a3558813d3f6ca"
+    },
+    {
+        "sha": "47b6ef28e658cf7829f6ca0948fdfa627aee7d7b",
+        "author": "Matteo Collina",
+        "email": "hello@matteocollina.com",
+        "date": "2026-07-12T15:11:28Z",
+        "message": "net: make TCP Server and Socket transferable across worker threads\n\nAllow a listening net.Server or an accepted net.Socket to be moved to\nanother thread by listing it in the transferList of a worker_threads\npostMessage() call. Unix only; Windows throws.\n\nSigned-off-by: Matteo Collina <hello@matteocollina.com>\nPR-URL: https://github.com/nodejs/node/pull/64225\nReviewed-By: James M Snell <jasnell@gmail.com>\nReviewed-By: Anna Henningsen <anna@addaleax.net>\nReviewed-By: Paolo Insogna <paolo@cowtech.it>",
+        "url": "https://github.com/nodejs/node/commit/47b6ef28e658cf7829f6ca0948fdfa627aee7d7b"
+    },
+    {
+        "sha": "2d7fee04f4c77c2638d7450aa0a8cfb8a28f6fce",
+        "author": "Stefano Baghino",
+        "email": "sbaghino@gradle.com",
+        "date": "2026-07-12T14:48:42Z",
+        "message": "http: fix perf_hooks detail.req.url port and proxied path\n\nThe perf_hooks HTTP client entry built the reported URL from the bare\nhostname, dropping non-default ports and IPv6 brackets, and appended\nthe request path even after it had been rewritten to absolute-form for\nproxying, duplicating the protocol and authority.\n\nReport the connection authority captured at request creation and, for\nproxied requests, use the rewritten absolute-form target as-is.\n\nFixes: https://github.com/nodejs/node/issues/59625\nSigned-off-by: Stefano Baghino <stefano@baghino.me>\nPR-URL: https://github.com/nodejs/node/pull/64311\nReviewed-By: Matteo Collina <matteo.collina@gmail.com>\nReviewed-By: Joyee Cheung <joyeec9h3@gmail.com>\nReviewed-By: James M Snell <jasnell@gmail.com>\nReviewed-By: theanarkh <theratliter@gmail.com>",
+        "url": "https://github.com/nodejs/node/commit/2d7fee04f4c77c2638d7450aa0a8cfb8a28f6fce"
+    },
+    {
+        "sha": "a4821c8a7586ab5de2e701bf407626fe43e7fa0d",
+        "author": "Antoine du Hamel",
+        "email": "duhamelantoine1995@gmail.com",
+        "date": "2026-07-12T12:59:42Z",
+        "message": "tools: add option for `benchmark.yml` to post comment on PR\n\nSigned-off-by: Antoine du Hamel <duhamelantoine1995@gmail.com>\nPR-URL: https://github.com/nodejs/node/pull/64395\nReviewed-By: Yagiz Nizipli <yagiz@nizipli.com>\nReviewed-By: Colin Ihrig <cjihrig@gmail.com>\nReviewed-By: Matteo Collina <matteo.collina@gmail.com>",
+        "url": "https://github.com/nodejs/node/commit/a4821c8a7586ab5de2e701bf407626fe43e7fa0d"
+    },
+    {
+        "sha": "892976d17a4060cf647eb9613ce643e6b597daaa",
+        "author": "Moshe Atlow",
+        "email": "moshe@atlow.co.il",
+        "date": "2026-07-12T11:45:05Z",
+        "message": "test_runner: add context.log() and test:log event\n\nAdd a log(message[, data]) method to TestContext and SuiteContext that\nemits a new test:log event. Unlike test:diagnostic, which is buffered\nso it is emitted in the order tests are defined, test:log is emitted\nimmediately, in the order tests execute, including under process\nisolation where it bypasses the per-file declaration order buffer.\nThis gives reporters that render the test tree unbuffered a live,\nattributed logging channel that captured stdout cannot provide under\nconcurrency.\n\nThe event carries the message, an optional opaque structured payload\nthat the runner passes through untouched, and the emitting test's\nname, testId, parentId, nesting, and location. Built-in reporters\nrender it the same way they render test:diagnostic.\n\nSigned-off-by: Moses Atlow <moshe@atlow.co.il>\nPR-URL: https://github.com/nodejs/node/pull/64389\nReviewed-By: Benjamin Gruenbaum <benjamingr@gmail.com>\nReviewed-By: Chemi Atlow <chemi@atlow.co.il>",
+        "url": "https://github.com/nodejs/node/commit/892976d17a4060cf647eb9613ce643e6b597daaa"
+    },
+    {
+        "sha": "17163ead3326a2eda3253c392474c777405a04c7",
+        "author": "Archkon",
+        "email": "180910180+Archkon@users.noreply.github.com",
+        "date": "2026-07-12T11:16:52Z",
+        "message": "http: do not emit socket errors after complete response\n\nSigned-off-by: Archkon <180910180+Archkon@users.noreply.github.com>\nPR-URL: https://github.com/nodejs/node/pull/64278\nFixes: https://github.com/nodejs/node/issues/64272\nReviewed-By: James M Snell <jasnell@gmail.com>\nReviewed-By: Matteo Collina <matteo.collina@gmail.com>",
+        "url": "https://github.com/nodejs/node/commit/17163ead3326a2eda3253c392474c777405a04c7"
+    },
+    {
+        "sha": "794d9b1df019abe1c493961bdcc790267c7f5510",
+        "author": "Archkon",
+        "email": "180910180+Archkon@users.noreply.github.com",
+        "date": "2026-07-12T07:13:19Z",
+        "message": "doc: remove duplicate VirtualProvider description\n\nSigned-off-by: Archkon <180910180+Archkon@users.noreply.github.com>\nPR-URL: https://github.com/nodejs/node/pull/64400\nReviewed-By: Deokjin Kim <deokjin81.kim@gmail.com>\nReviewed-By: Trivikram Kamat <trivikr.dev@gmail.com>",
+        "url": "https://github.com/nodejs/node/commit/794d9b1df019abe1c493961bdcc790267c7f5510"
+    },
+    {
+        "sha": "7c53fb51dc260168a8af6d96d9a3db590d53d2b2",
+        "author": "Archkon",
+        "email": "180910180+Archkon@users.noreply.github.com",
+        "date": "2026-07-12T06:16:34Z",
+        "message": "src: fix some typo errors and rename some variables\n\nSigned-off-by: Archkon <180910180+Archkon@users.noreply.github.com>\nPR-URL: https://github.com/nodejs/node/pull/64301\nReviewed-By: Luigi Pinca <luigipinca@gmail.com>\nReviewed-By: James M Snell <jasnell@gmail.com>\nReviewed-By: Ulises Gascón <ulisesgascongonzalez@gmail.com>",
+        "url": "https://github.com/nodejs/node/commit/7c53fb51dc260168a8af6d96d9a3db590d53d2b2"
+    },
+    {
+        "sha": "14166a59ccde5751cb8bfe301b50d3d3ff2b6176",
+        "author": "Trivikram Kamat",
+        "email": "16024985+trivikr@users.noreply.github.com",
+        "date": "2026-07-12T04:01:07Z",
+        "message": "stream: validate writevSync chunks before queuing\n\nEnsure writevSync() validates every chunk before handing the batch to\nthe push queue. Invalid chunks now throw ERR_INVALID_ARG_TYPE without\nleaving data readable from the failed write.\n\nSigned-off-by: Kamat, Trivikram <16024985+trivikr@users.noreply.github.com>\nAssisted-by: openai:gpt-5.5\nPR-URL: https://github.com/nodejs/node/pull/64300\nFixes: https://github.com/nodejs/node/issues/64299\nReviewed-By: James M Snell <jasnell@gmail.com>",
+        "url": "https://github.com/nodejs/node/commit/14166a59ccde5751cb8bfe301b50d3d3ff2b6176"
+    },
+    {
+        "sha": "abe25457e96521a385c5e914cc1077aafd5d2783",
+        "author": "Efe Karasakal",
+        "email": "hi@efe.dev",
+        "date": "2026-07-11T22:32:41Z",
+        "message": "http: remove unused n arg from IncomingMessage._read\n\nSigned-off-by: Efe Karasakal <hi@efe.dev>\nPR-URL: https://github.com/nodejs/node/pull/64370\nReviewed-By: Tim Perry <pimterry@gmail.com>\nReviewed-By: Luigi Pinca <luigipinca@gmail.com>",
+        "url": "https://github.com/nodejs/node/commit/abe25457e96521a385c5e914cc1077aafd5d2783"
+    },
+    {
+        "sha": "8a3b11c738e218219f8b37e7e2ce960a1fc914ca",
+        "author": "Node.js GitHub Bot",
+        "email": "github-bot@iojs.org",
+        "date": "2026-07-11T10:37:06Z",
+        "message": "deps: update ngtcp2 to 1.24.0\n\nPR-URL: https://github.com/nodejs/node/pull/64297\nReviewed-By: Tim Perry <pimterry@gmail.com>\nReviewed-By: Antoine du Hamel <duhamelantoine1995@gmail.com>",
+        "url": "https://github.com/nodejs/node/commit/8a3b11c738e218219f8b37e7e2ce960a1fc914ca"
+    }
+]

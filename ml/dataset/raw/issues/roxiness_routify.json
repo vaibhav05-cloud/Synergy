@@ -1,0 +1,389 @@
+[
+    {
+        "id": 3751335623,
+        "number": 570,
+        "title": "The automated release is failing 🚨",
+        "state": "closed",
+        "created_at": "2025-12-21T16:36:11Z",
+        "updated_at": "2025-12-21T20:19:36Z",
+        "closed_at": "2025-12-21T20:19:36Z",
+        "author": "github-actions[bot]",
+        "comments": 8,
+        "labels": [
+            "semantic-release"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "## :rotating_light: The automated release from the `v2` branch failed. :rotating_light:\n\nI recommend you give this issue a high priority, so other packages depending on you can benefit from your bug fixes and new features again.\n\nYou can find below the list of errors reported by **semantic-release**. Each one of them has to be resolved in order to automatically publish your package. I’m sure you can fix this 💪.\n\nErrors are usually caused by a misconfiguration or an authentication problem. With each error reported below you will find explanation and guidance to help you to resolve it.\n\nOnce all the errors are resolved, **semantic-release** will release your package the next time you push a commit to the `v2` branch. You can also manually restart the failed CI job that runs **semantic-release**.\n\nIf you are not sure how to resolve this, here are some links that can help you:\n- [Usage documentation](https://github.com/semantic-release/semantic-release/blob/caribou/docs/usage/README.md)\n- [Frequently Asked Questions](https://github.com/semantic-release/semantic-release/blob/caribou/docs/support/FAQ.md)\n- [Support channels](https://github.com/semantic-release/semantic-release#get-help)\n\nIf those don’t help, or if this issue is reporting something you think isn’t right, you can always ask the humans behind **[semantic-release](https://github.com/semantic-release/semantic-release/issues/new)**.\n\n---\n\n### Invalid npm token.\n\nThe [npm token](https://github.com/semantic-release/npm/blob/master/README.md#npm-registry-authentication) configured in the `NPM_TOKEN` environment variable must be a valid [token](https://docs.npmjs.com/getting-started/working_with_tokens) allowing to publish to the registry `https://registry.npmjs.org/`.\n\nIf you are using Two Factor Authentication for your account, set its level to [\"Authorization only\"](https://docs.npmjs.com/getting-started/using-two-factor-authentication#levels-of-authentication) in your account settings. **semantic-release** cannot publish with the default \"\nAuthorization and writes\" level.\n\nPlease make sure to set the `NPM_TOKEN` environment variable in your CI with the exact value of the npm token.\n\n---\n\nGood luck with your project ✨\n\nYour **[semantic-release](https://github.com/semantic-release/semantic-release)** bot :package::rocket:\n\n<!-- semantic-release:github -->",
+        "url": "https://github.com/roxiness/routify/issues/570"
+    },
+    {
+        "id": 3229309818,
+        "number": 567,
+        "title": "ERROR: \"dev:routify\" exited with 134 on Node 22",
+        "state": "closed",
+        "created_at": "2025-07-14T16:22:15Z",
+        "updated_at": "2025-07-18T09:42:18Z",
+        "closed_at": "2025-07-18T09:42:18Z",
+        "author": "nabeelalihashmi",
+        "comments": 1,
+        "labels": [
+            "bug",
+            "needs triage"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Describe the bug\n\nERROR: \"dev:routify\" exited with 134 on Node 22\n\n### Reproduction\n\nUse Node 22 \n\n### Logs\n\n```shell\n\n```\n\n### System Info\n\n```shell\nSystem:\n    OS: Linux 6.8 Ubuntu 22.04.5 LTS 22.04.5 LTS (Jammy Jellyfish)\n    CPU: (8) x64 Intel(R) Core(TM) i5-8250U CPU @ 1.60GHz\n    Memory: 11.81 GB / 15.51 GB\n    Container: Yes\n    Shell: 3.3.1 - /usr/bin/fish\n  Binaries:\n    Node: 22.15.1 - ~/.local/share/nvm/v22.15.1/bin/node\n    npm: 10.9.2 - ~/.local/share/nvm/v22.15.1/bin/npm\n    pnpm: 10.11.0 - ~/.local/share/nvm/v22.15.1/bin/pnpm\n    bun: 1.0.0 - ~/.bun/bin/bun\n  npmPackages:\n    @roxi/routify: ^2.18.18 => 2.18.18\n    svelte: ^4.0.0 => 4.2.19\n    vite: ^4.0.1 => 4.5.5\n```",
+        "url": "https://github.com/roxiness/routify/issues/567"
+    },
+    {
+        "id": 3114485307,
+        "number": 566,
+        "title": "3.0.0-next.284 \"Failed to render\" warning in dev tools but components render",
+        "state": "closed",
+        "created_at": "2025-06-03T15:35:37Z",
+        "updated_at": "2025-06-04T14:14:11Z",
+        "closed_at": "2025-06-04T08:57:11Z",
+        "author": "blackicellc",
+        "comments": 8,
+        "labels": [
+            "bug",
+            "needs triage"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Describe the bug\n\nI updated to 3.0.0-next.284 from 3.0.0-next.283 and now there appears a \"Failed to render\" warning in dev tools but the components render perfectly. The warning: \n```\nFailed to render  (src/routes/_module.svelte) within 5s. Ensure the parent component renders a <slot /> setTimeout handler*setActiveRoute@http://localhost:5173/node_modules/.vite/deps/@roxi_routify.js?v=1b113b30:3126:37\n```\nPerhaps I'm doing something wrong with the slots and the update reveals my mistake?\n\n### Reproduction\n\nTo reproduce: \n\n- update an application using 3.0.0-next.283 to 3.0.0-next.284\n- open dev tools\n- navigate around the app to routes that on the file system have this structure:\n```\nsrc/routes\n├── _module.svelte\n├── about.svelte\n├── cards\n│   └── [id].svelte\n├── cards-to-export.svelte\n└── index.svelte\n```\n- The /cards/n paths all work as expected, however after a few seconds, in the dev tools the following warning appears:\n```\nFailed to render  (src/routes/_module.svelte) within 5s. Ensure the parent component renders a <slot /> setTimeout handler*setActiveRoute@http://localhost:5173/node_modules/.vite/deps/@roxi_routify.js?v=1b113b30:3126:37\n```\n\nFor completeness, here is how the _module.svelte look and how the [id].svelte look (paired down for simplicity). Note: I also tried adding a _module.svelte with a slot at the root of cards (in case the warning's 'parent' referred to was the folder 'cards' and not the '_module.svelte' above 'cards.' The warning persisted. I hope this is enough information.\n\n_module.svelte\n```\n<!-- Required; do not remove -->\n<slot />\n```\n\n[id].svelte\n```\n<script>\n        import {\n\t\tprimaryCardId,\n\t\thasLoaded,\n\t} from '../../lib/components/shared';\n\timport Inserted from '../../lib/components/card-related/inserted.svelte';\n\n\texport let currentCard;\n\n</script>\n\n<div class=\"container card-page\">\n\t<!-- All three need to happen for correct values to cascade down -->\n\t{#if currentCard && $hasLoaded && $primaryCardId != 0}\n\t\t<Inserted id=\"{currentCard.id}\" isFirst=\"{true}\" />\n\t{/if}\n</div>\n\n<style lang=\"scss\">\n\t.container {\n\t\tdisplay: flex;\n\t\tflex-direction: column;\n\t}\n</style>\n\n```\n\n### Logs\n\n```shell\nWarning:\n\nFailed to render  (src/routes/_module.svelte) within 5s. Ensure the parent component renders a <slot /> setTimeout handler*setActiveRoute@http://localhost:5173/node_modules/.vite/deps/@roxi_routify.js?v=1b113b30:3126:37\n```\n\n### System Info\n\n```shell\nSystem:\n    OS: macOS 15.5\n    CPU: (12) arm64 Apple M2 Pro\n    Memory: 68.69 MB / 32.00 GB\n    Shell: 5.9 - /bin/zsh\n  Binaries:\n    Node: 20.11.0 - ~/.nvm/versions/node/v20.11.0/bin/node\n    npm: 10.4.0 - ~/.nvm/versions/node/v20.11.0/bin/npm\n  npmPackages:\n    @roxi/routify: ^3.0.0-next.284 => 3.0.0-next.284 \n    svelte: ^4.0.0 => 4.2.20 \n    vite: ^4.4.2 => 4.5.14\n```",
+        "url": "https://github.com/roxiness/routify/issues/566"
+    },
+    {
+        "id": 3114425917,
+        "number": 565,
+        "title": "update v3.0.0-next.284 now appends \"/;\" to root at route",
+        "state": "closed",
+        "created_at": "2025-06-03T15:18:55Z",
+        "updated_at": "2025-06-04T08:57:57Z",
+        "closed_at": "2025-06-04T08:57:56Z",
+        "author": "blackicellc",
+        "comments": 1,
+        "labels": [
+            "bug",
+            "needs triage"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Describe the bug\n\nI just updated to the latest pre-release 3.x version (v3.0.0-next.284) and all routes now get \"/;\" appended at the root. For example, \n\n- root is now: localhost:5173/;\n- /about is now localhost:5173/about;/about\n- etc.\n\nI uninstalled and went back to 283 and the \"/;\" is gone. \nThere's also a separate warning that might be related. I'm going to file a separate issue so it's easier to follow for bug fixes.\n\n\n### Reproduction\n\nUpdate a project that is using 3.0.0-next.283 to 3.0.0-next.284. \n`npm run dev`\nNavigate to root in a browser.\nYou will see \"/;\" appended\n\n### Logs\n\n```shell\nN/A\n```\n\n### System Info\n\n```shell\nSystem:\n    OS: macOS 15.5\n    CPU: (12) arm64 Apple M2 Pro\n    Memory: 68.69 MB / 32.00 GB\n    Shell: 5.9 - /bin/zsh\n  Binaries:\n    Node: 20.11.0 - ~/.nvm/versions/node/v20.11.0/bin/node\n    npm: 10.4.0 - ~/.nvm/versions/node/v20.11.0/bin/npm\n  npmPackages:\n    @roxi/routify: ^3.0.0-next.284 => 3.0.0-next.284 \n    svelte: ^4.0.0 => 4.2.20 \n    vite: ^4.4.2 => 4.5.14\n```",
+        "url": "https://github.com/roxiness/routify/issues/565"
+    },
+    {
+        "id": 2931763012,
+        "number": 564,
+        "title": "'Unable to access context' on fresh install.",
+        "state": "closed",
+        "created_at": "2025-03-19T13:18:39Z",
+        "updated_at": "2025-03-19T18:49:18Z",
+        "closed_at": "2025-03-19T18:49:17Z",
+        "author": "sambernaerdtphysibel",
+        "comments": 1,
+        "labels": [
+            "bug",
+            "needs triage"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Describe the bug\n\nConsole error when running latest routify\n\n`Routify: Unable to access context.\nIf you're using Svelte 5, ensure $ helpers are accessed at the root level of your component.`\n\n### Reproduction\n\nSteps:\n* In an empty folder, run `npm init routify@latest`\n* Start the project\n* See console error\n\n### Logs\n\n```shell\n\n```\n\n### System Info\n\n```shell\nSystem:\n    OS: Windows 11 10.0.26100\n    CPU: (22) x64 Intel(R) Core(TM) Ultra 7 155H\n    Memory: 8.70 GB / 31.46 GB\n  Binaries:\n    Node: 22.13.1 - C:\\Program Files\\nodejs\\node.EXE\n    npm: 10.9.2 - C:\\Program Files\\nodejs\\npm.CMD\n    pnpm: 10.0.0 - C:\\Program Files\\nodejs\\pnpm.CMD\n    bun: 1.2.2 - ~\\.bun\\bin\\bun.EXE\n```",
+        "url": "https://github.com/roxiness/routify/issues/564"
+    },
+    {
+        "id": 2847120252,
+        "number": 563,
+        "title": "Error using $goto on Svelte 5",
+        "state": "closed",
+        "created_at": "2025-02-12T04:02:16Z",
+        "updated_at": "2025-02-12T11:34:48Z",
+        "closed_at": "2025-02-12T10:52:02Z",
+        "author": "adg-mh",
+        "comments": 3,
+        "labels": [
+            "bug",
+            "needs triage"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Describe the bug\n\nWhen trying to use $goto on a Svelte 5 project an error is thrown and navigation does not occur.\n\n### Reproduction\n\nReproduce by running starter project [here](https://github.com/adg-mh/routify-goto-repro) and click the \"Try to go\" button.\n\n### Logs\n\n```shell\nUncaught Svelte error: lifecycle_outside_component\n`getContext(...)` can only be used during component initialisation\n```\n\n### System Info\n\n```shell\nBinaries:\n    Node: 23.6.0 - <redacted>\\node-v23.6.0-win-x64\\node.EXE\n    npm: 10.9.2 - <redacted>\\node-v23.6.0-win-x64\\npm.CMD\n  npmPackages:\n    @roxi/routify: ^3.0.0-next.245 => 3.0.0-next.245\n    svelte: ^5.0.0 => 5.16.0\n    vite: ^6.0.0 => 6.0.5\n```",
+        "url": "https://github.com/roxiness/routify/issues/563"
+    },
+    {
+        "id": 2746830854,
+        "number": 562,
+        "title": "Install @roxi/routify@next with Deno?",
+        "state": "closed",
+        "created_at": "2024-12-18T05:40:47Z",
+        "updated_at": "2024-12-29T10:59:15Z",
+        "closed_at": "2024-12-29T10:58:34Z",
+        "author": "LaughingBubba",
+        "comments": 2,
+        "labels": [
+            "released on @next",
+            "needs triage"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "Hi is it possible to install v3 with Deno ? (v2 is fine) \r\n\r\n```bash\r\n$> deno --version\r\ndeno 2.1.2 (stable, release, aarch64-apple-darwin)\r\nv8 13.0.245.12-rusty\r\ntypescript 5.6.2\r\n\r\n$> deno i -D npm:@roxi/routify@next --allow-scripts  \r\nAdd npm:@roxi/routify@3.0.0-next.243\r\nerror: Error in @roxi/routify@3.0.0-next.243 parsing version requirement for dependency \"@roxi/routify\": \r\n\"file:.\"\r\n\r\nCaused by:\r\n    0: Invalid version requirement\r\n    1: Unexpected character.\r\n         file:.\r\n         ~\r\n```",
+        "url": "https://github.com/roxiness/routify/issues/562"
+    },
+    {
+        "id": 2662383028,
+        "number": 561,
+        "title": "can't use {@render children()} instead of <slot/> from Svelte 5 in _modules",
+        "state": "open",
+        "created_at": "2024-11-15T15:40:08Z",
+        "updated_at": "2025-06-04T09:01:37Z",
+        "closed_at": null,
+        "author": "fivaz",
+        "comments": 6,
+        "labels": [
+            "bug",
+            "needs triage"
+        ],
+        "assignees": [
+            "jakobrosenberg"
+        ],
+        "locked": false,
+        "body": "### Describe the bug\n\nThe Support of Svelte 5 is almost 100% the only problem is when I try to use {@render children()} instead of <slot/> in _module.svelte files I get the following error:\r\n\r\n> Uncaught Svelte error: invalid_default_snippet\r\n> Cannot use `{@render children(...)}` if the parent component uses `let:` directives. Consider using a named snippet instead\r\n> \n\n### Reproduction\n\nhere is a minimal reproductive example: https://github.com/fivaz/routify-svelte5\r\n\r\nI created this repo using the npm init routify@latest and selecting \"starter-basic-svelte-5\"\n\n### Logs\n\n```shell\nchunk-7AJI2GL6.js?v=839c9c4e:1520 Uncaught Svelte error: invalid_default_snippet\r\nCannot use `{@render children(...)}` if the parent component uses `let:` directives. Consider using a named snippet instead\r\n\r\n\tin Dashboard.svelte\r\n\tin _module.svelte\r\n\tin AnchorDecorator.svelte\r\n\tin ScrollDecorator.svelte\r\n\tin DecoratorWrapper.svelte\r\n\tin RenderFragment.svelte\r\n\tin ComposeFragments.svelte\r\n\tin _module.svelte\r\n\tin AnchorDecorator.svelte\r\n\tin ScrollDecorator.svelte\r\n\tin DecoratorWrapper.svelte\r\n\tin RenderFragment.svelte\r\n\tin ComposeFragments.svelte\r\n\tin AnchorDecorator.svelte\r\n\tin Router.svelte\r\n\tin App.svelte\r\n\r\n    at invalid_default_snippet (http://localhost:5173/node_modules/.vite/deps/chunk-7AJI2GL6.js?v=839c9c4e:1520:19)\r\n    at http://localhost:5173/node_modules/.vite/deps/chunk-4ITRTXZZ.js?v=839c9c4e:1109:7\r\n    at update_reaction (http://localhost:5173/node_modules/.vite/deps/chunk-7AJI2GL6.js?v=839c9c4e:1721:23)\r\n    at update_effect (http://localhost:5173/node_modules/.vite/deps/chunk-7AJI2GL6.js?v=839c9c4e:1812:21)\r\n    at create_effect (http://localhost:5173/node_modules/.vite/deps/chunk-7AJI2GL6.js?v=839c9c4e:1191:7)\r\n    at branch (http://localhost:5173/node_modules/.vite/deps/chunk-7AJI2GL6.js?v=839c9c4e:1323:10)\r\n    at http://localhost:5173/node_modules/.vite/deps/chunk-4ITRTXZZ.js?v=839c9c4e:1107:22\r\n    at update_reaction (http://localhost:5173/node_modules/.vite/deps/chunk-7AJI2GL6.js?v=839c9c4e:1721:23)\r\n    at update_effect (http://localhost:5173/node_modules/.vite/deps/chunk-7AJI2GL6.js?v=839c9c4e:1812:21)\r\n    at create_effect (http://localhost:5173/node_modules/.vite/deps/chunk-7AJI2GL6.js?v=839c9c4e:1191:7)Svelte error: invalid_default_snippet\r\nCannot use `{@render children(...)}` if the parent component uses `let:` directives. Consider using a named snippet instead\r\n    at invalid_default_snippet (http://localhost:5173/node_modules/.vite/deps/chunk-7AJI2GL6.js?v=839c9c4e:1520:19)\r\n    at http://localhost:5173/node_modules/.vite/deps/chunk-4ITRTXZZ.js?v=839c9c4e:1109:7\r\n    at update_reaction (http://localhost:5173/node_modules/.vite/deps/chunk-7AJI2GL6.js?v=839c9c4e:1721:23)\r\n    at update_effect (http://localhost:5173/node_modules/.vite/deps/chunk-7AJI2GL6.js?v=839c9c4e:1812:21)\r\n    at create_effect (http://localhost:5173/node_modules/.vite/deps/chunk-7AJI2GL6.js?v=839c9c4e:1191:7)\r\n    at branch (http://localhost:5173/node_modules/.vite/deps/chunk-7AJI2GL6.js?v=839c9c4e:1323:10)\r\n    at http://localhost:5173/node_modules/.vite/deps/chunk-4ITRTXZZ.js?v=839c9c4e:1107:22\r\n    at update_reaction (http://localhost:5173/node_modules/.vite/deps/chunk-7AJI2GL6.js?v=839c9c4e:1721:23)\r\n    at update_effect (http://localhost:5173/node_modules/.vite/deps/chunk-7AJI2GL6.js?v=839c9c4e:1812:21)\r\n    at create_effect (http://localhost:5173/node_modules/.vite/deps/chunk-7AJI2GL6.js?v=839c9c4e:1191:7)\r\ninvalid_default_snippet @ chunk-7AJI2GL6.js?v=839c9c4e:1520\r\n(anonymous) @ chunk-4ITRTXZZ.js?v=839c9c4e:1109\r\nupdate_reaction @ chunk-7AJI2GL6.js?v=839c9c4e:1721\r\nupdate_effect @ chunk-7AJI2GL6.js?v=839c9c4e:1812\r\ncreate_effect @ chunk-7AJI2GL6.js?v=839c9c4e:1191\r\nbranch @ chunk-7AJI2GL6.js?v=839c9c4e:1323\r\n(anonymous) @ chunk-4ITRTXZZ.js?v=839c9c4e:1107\r\nupdate_reaction @ chunk-7AJI2GL6.js?v=839c9c4e:1721\r\nupdate_effect @ chunk-7AJI2GL6.js?v=839c9c4e:1812\r\ncreate_effect @ chunk-7AJI2GL6.js?v=839c9c4e:1191\r\nblock @ chunk-7AJI2GL6.js?v=839c9c4e:1320\r\nsnippet @ chunk-4ITRTXZZ.js?v=839c9c4e:1098\r\n(anonymous) @ _module.svelte:18\r\n(anonymous) @ chunk-4ITRTXZZ.js?v=839c9c4e:1121\r\n(anonymous) @ chunk-4ITRTXZZ.js?v=839c9c4e:1109\r\nupdate_reaction @ chunk-7AJI2GL6.js?v=839c9c4e:1721\r\nupdate_effect @ chunk-7AJI2GL6.js?v=839c9c4e:1812\r\ncreate_effect @ chunk-7AJI2GL6.js?v=839c9c4e:1191\r\nbranch @ chunk-7AJI2GL6.js?v=839c9c4e:1323\r\n(anonymous) @ chunk-4ITRTXZZ.js?v=839c9c4e:1107\r\nupdate_reaction @ chunk-7AJI2GL6.js?v=839c9c4e:1721\r\nupdate_effect @ chunk-7AJI2GL6.js?v=839c9c4e:1812\r\ncreate_effect @ chunk-7AJI2GL6.js?v=839c9c4e:1191\r\nblock @ chunk-7AJI2GL6.js?v=839c9c4e:1320\r\nsnippet @ chunk-4ITRTXZZ.js?v=839c9c4e:1098\r\nDashboard @ Dashboard.svelte:23\r\n(anonymous) @ chunk-4ITRTXZZ.js?v=839c9c4e:230\r\nupdate_reaction @ chunk-7AJI2GL6.js?v=839c9c4e:1721\r\nupdate_effect @ chunk-7AJI2GL6.js?v=839c9c4e:1812\r\ncreate_effect @ chunk-7AJI2GL6.js?v=839c9c4e:1191\r\nbranch @ chunk-7AJI2GL6.js?v=839c9c4e:1323\r\n(anonymous) @ chunk-4ITRTXZZ.js?v=839c9c4e:224\r\nupdate_reaction @ chunk-7AJI2GL6.js?v=839c9c4e:1721\r\nupdate_effect @ chunk-7AJI2GL6.js?v=839c9c4e:1812\r\ncreate_effect @ chunk-7AJI2GL6.js?v=839c9c4e:1191\r\nblock @ chunk-7AJI2GL6.js?v=839c9c4e:1320\r\nwrapper @ chunk-4ITRTXZZ.js?v=839c9c4e:217\r\n_module @ _module.svelte:18\r\n(anonymous) @ chunk-4ITRTXZZ.js?v=839c9c4e:230\r\nupdate_reaction @ chunk-7AJI2GL6.js?v=839c9c4e:1721\r\nupdate_effect @ chunk-7AJI2GL6.js?v=839c9c4e:1812\r\ncreate_effect @ chunk-7AJI2GL6.js?v=839c9c4e:1191\r\nbranch @ chunk-7AJI2GL6.js?v=839c9c4e:1323\r\n(anonymous) @ chunk-4ITRTXZZ.js?v=839c9c4e:224\r\nupdate_reaction @ chunk-7AJI2GL6.js?v=839c9c4e:1721\r\nupdate_effect @ chunk-7AJI2GL6.js?v=839c9c4e:1812\r\ncreate_effect @ chunk-7AJI2GL6.js?v=839c9c4e:1191\r\nblock @ chunk-7AJI2GL6.js?v=839c9c4e:1320\r\nwrapper @ chunk-4ITRTXZZ.js?v=839c9c4e:217\r\n(anonymous) @ @roxi_routify.js?v=839c9c4e:3107\r\n(anonymous) @ chunk-4ITRTXZZ.js?v=839c9c4e:1169\r\nupdate_reaction @ chunk-7AJI2GL6.js?v=839c9c4e:1721\r\nupdate_effect @ chunk-7AJI2GL6.js?v=839c9c4e:1812\r\ncreate_effect @ chunk-7AJI2GL6.js?v=839c9c4e:1191\r\nbranch @ chunk-7AJI2GL6.js?v=839c9c4e:1323\r\n(anonymous) @ chunk-4ITRTXZZ.js?v=839c9c4e:1169\r\nupdate_reaction @ chunk-7AJI2GL6.js?v=839c9c4e:1721\r\nupdate_effect @ chunk-7AJI2GL6.js?v=839c9c4e:1812\r\ncreate_effect @ chunk-7AJI2GL6.js?v=839c9c4e:1191\r\nblock @ chunk-7AJI2GL6.js?v=839c9c4e:1320\r\ncomponent @ chunk-4ITRTXZZ.js?v=839c9c4e:1162\r\n(anonymous) @ @roxi_routify.js?v=839c9c4e:3106\r\n(anonymous) @ chunk-4ITRTXZZ.js?v=839c9c4e:1121\r\nslot @ chunk-4ITRTXZZ.js?v=839c9c4e:1081\r\n(anonymous) @ @roxi_routify.js?v=839c9c4e:2995\r\n(anonymous) @ chunk-4ITRTXZZ.js?v=839c9c4e:548\r\nupdate_reaction @ chunk-7AJI2GL6.js?v=839c9c4e:1721\r\nupdate_effect @ chunk-7AJI2GL6.js?v=839c9c4e:1812\r\ncreate_effect @ chunk-7AJI2GL6.js?v=839c9c4e:1191\r\nbranch @ chunk-7AJI2GL6.js?v=839c9c4e:1323\r\n(anonymous) @ chunk-4ITRTXZZ.js?v=839c9c4e:548\r\nupdate_reaction @ chunk-7AJI2GL6.js?v=839c9c4e:1721\r\nupdate_effect @ chunk-7AJI2GL6.js?v=839c9c4e:1812\r\ncreate_effect @ chunk-7AJI2GL6.js?v=839c9c4e:1191\r\nblock @ chunk-7AJI2GL6.js?v=839c9c4e:1320\r\nif_block @ chunk-4ITRTXZZ.js?v=839c9c4e:518\r\n(anonymous) @ @roxi_routify.js?v=839c9c4e:2964\r\n(anonymous) @ chunk-4ITRTXZZ.js?v=839c9c4e:548\r\nupdate_reaction @ chunk-7AJI2GL6.js?v=839c9c4e:1721\r\nupdate_effect @ chunk-7AJI2GL6.js?v=839c9c4e:1812\r\ncreate_effect @ chunk-7AJI2GL6.js?v=839c9c4e:1191\r\nbranch @ chunk-7AJI2GL6.js?v=839c9c4e:1323\r\n(anonymous) @ chunk-4ITRTXZZ.js?v=839c9c4e:548\r\nupdate_reaction @ chunk-7AJI2GL6.js?v=839c9c4e:1721\r\nupdate_effect @ chunk-7AJI2GL6.js?v=839c9c4e:1812\r\ncreate_effect @ chunk-7AJI2GL6.js?v=839c9c4e:1191\r\nblock @ chunk-7AJI2GL6.js?v=839c9c4e:1320\r\nif_block @ chunk-4ITRTXZZ.js?v=839c9c4e:518\r\nAnchorDecorator @ @roxi_routify.js?v=839c9c4e:2945\r\n(anonymous) @ chunk-4ITRTXZZ.js?v=839c9c4e:230\r\nupdate_reaction @ chunk-7AJI2GL6.js?v=839c9c4e:1721\r\nupdate_effect @ chunk-7AJI2GL6.js?v=839c9c4e:1812\r\ncreate_effect @ chunk-7AJI2GL6.js?v=839c9c4e:1191\r\nbranch @ chunk-7AJI2GL6.js?v=839c9c4e:1323\r\n(anonymous) @ chunk-4ITRTXZZ.js?v=839c9c4e:224\r\nupdate_reaction @ chunk-7AJI2GL6.js?v=839c9c4e:1721\r\nupdate_effect @ chunk-7AJI2GL6.js?v=839c9c4e:1812\r\ncreate_effect @ chunk-7AJI2GL6.js?v=839c9c4e:1191\r\nblock @ chunk-7AJI2GL6.js?v=839c9c4e:1320\r\nwrapper @ chunk-4ITRTXZZ.js?v=839c9c4e:217\r\n(anonymous) @ @roxi_routify.js?v=839c9c4e:3098\r\n(anonymous) @ chunk-4ITRTXZZ.js?v=839c9c4e:578\r\nupdate_reaction @ chunk-7AJI2GL6.js?v=839c9c4e:1721\r\nupdate_effect @ chunk-7AJI2GL6.js?v=839c9c4e:1812\r\ncreate_effect @ chunk-7AJI2GL6.js?v=839c9c4e:1191\r\nbranch @ chunk-7AJI2GL6.js?v=839c9c4e:1323\r\n(anonymous) @ chunk-4ITRTXZZ.js?v=839c9c4e:578\r\nupdate_reaction @ chunk-7AJI2GL6.js?v=839c9c4e:1721\r\nupdate_effect @ chunk-7AJI2GL6.js?v=839c9c4e:1812\r\ncreate_effect @ chunk-7AJI2GL6.js?v=839c9c4e:1191\r\nblock @ chunk-7AJI2GL6.js?v=839c9c4e:1320\r\nkey_block @ chunk-4ITRTXZZ.js?v=839c9c4e:573\r\n(anonymous) @ @roxi_routify.js?v=839c9c4e:3095\r\n(anonymous) @ chunk-4ITRTXZZ.js?v=839c9c4e:443\r\nupdate_reaction @ chunk-7AJI2GL6.js?v=839c9c4e:1721\r\nupdate_effect @ chunk-7AJI2GL6.js?v=839c9c4e:1812\r\ncreate_effect @ chunk-7AJI2GL6.js?v=839c9c4e:1191\r\nbranch @ chunk-7AJI2GL6.js?v=839c9c4e:1323\r\nupdate2 @ chunk-4ITRTXZZ.js?v=839c9c4e:443\r\n(anonymous) @ chunk-4ITRTXZZ.js?v=839c9c4e:499\r\nupdate_reaction @ chunk-7AJI2GL6.js?v=839c9c4e:1721\r\nupdate_effect @ chunk-7AJI2GL6.js?v=839c9c4e:1812\r\ncreate_effect @ chunk-7AJI2GL6.js?v=839c9c4e:1191\r\nblock @ chunk-7AJI2GL6.js?v=839c9c4e:1320\r\nawait_block @ chunk-4ITRTXZZ.js?v=839c9c4e:468\r\n(anonymous) @ @roxi_routify.js?v=839c9c4e:3092\r\n(anonymous) @ chunk-4ITRTXZZ.js?v=839c9c4e:1121\r\nslot @ chunk-4ITRTXZZ.js?v=839c9c4e:1081\r\n(anonymous) @ @roxi_routify.js?v=839c9c4e:2529\r\n(anonymous) @ chunk-4ITRTXZZ.js?v=839c9c4e:548\r\nupdate_reaction @ chunk-7AJI2GL6.js?v=839c9c4e:1721\r\nupdate_effect @ chunk-7AJI2GL6.js?v=839c9c4e:1812\r\ncreate_effect @ chunk-7AJI2GL6.js?v=839c9c4e:1191\r\nbranch @ chunk-7AJI2GL6.js?v=839c9c4e:1323\r\n(anonymous) @ chunk-4ITRTXZZ.js?v=839c9c4e:548\r\nupdate_reaction @ chunk-7AJI2GL6.js?v=839c9c4e:1721\r\nupdate_effect @ chunk-7AJI2GL6.js?v=839c9c4e:1812\r\ncreate_effect @ chunk-7AJI2GL6.js?v=839c9c4e:1191\r\nblock @ chunk-7AJI2GL6.js?v=839c9c4e:1320\r\nif_block @ chunk-4ITRTXZZ.js?v=839c9c4e:518\r\n(anonymous) @ @roxi_routify.js?v=839c9c4e:2502\r\n(anonymous) @ chunk-4ITRTXZZ.js?v=839c9c4e:1121\r\nslot @ chunk-4ITRTXZZ.js?v=839c9c4e:1081\r\nScrollDecorator @ @roxi_routify.js?v=839c9c4e:2093\r\n(anonymous) @ chunk-4ITRTXZZ.js?v=839c9c4e:230\r\nupdate_reaction @ chunk-7AJI2GL6.js?v=839c9c4e:1721\r\nupdate_effect @ chunk-7AJI2GL6.js?v=839c9c4e:1812\r\ncreate_effect @ chunk-7AJI2GL6.js?v=839c9c4e:1191\r\nbranch @ chunk-7AJI2GL6.js?v=839c9c4e:1323\r\n(anonymous) @ chunk-4ITRTXZZ.js?v=839c9c4e:224\r\nupdate_reaction @ chunk-7AJI2GL6.js?v=839c9c4e:1721\r\nupdate_effect @ chunk-7AJI2GL6.js?v=839c9c4e:1812\r\ncreate_effect @ chunk-7AJI2GL6.js?v=839c9c4e:1191\r\nblock @ chunk-7AJI2GL6.js?v=839c9c4e:1320\r\nwrapper @ chunk-4ITRTXZZ.js?v=839c9c4e:217\r\n(anonymous) @ @roxi_routify.js?v=839c9c4e:2485\r\n(anonymous) @ chunk-4ITRTXZZ.js?v=839c9c4e:1169\r\nupdate_reaction @ chunk-7AJI2GL6.js?v=839c9c4e:1721\r\nupdate_effect @ chunk-7AJI2GL6.js?v=839c9c4e:1812\r\ncreate_effect @ chunk-7AJI2GL6.js?v=839c9c4e:1191\r\nbranch @ chunk-7AJI2GL6.js?v=839c9c4e:1323\r\n(anonymous) @ chunk-4ITRTXZZ.js?v=839c9c4e:1169\r\nupdate_reaction @ chunk-7AJI2GL6.js?v=839c9c4e:1721\r\nupdate_effect @ chunk-7AJI2GL6.js?v=839c9c4e:1812\r\ncreate_effect @ chunk-7AJI2GL6.js?v=839c9c4e:1191\r\nblock @ chunk-7AJI2GL6.js?v=839c9c4e:1320\r\ncomponent @ chunk-4ITRTXZZ.js?v=839c9c4e:1162\r\nDecoratorWrapper @ @roxi_routify.js?v=839c9c4e:2484\r\n(anonymous) @ chunk-4ITRTXZZ.js?v=839c9c4e:230\r\nupdate_reaction @ chunk-7AJI2GL6.js?v=839c9c4e:1721\r\nupdate_effect @ chunk-7AJI2GL6.js?v=839c9c4e:1812\r\ncreate_effect @ chunk-7AJI2GL6.js?v=839c9c4e:1191\r\nbranch @ chunk-7AJI2GL6.js?v=839c9c4e:1323\r\n(anonymous) @ chunk-4ITRTXZZ.js?v=839c9c4e:224\r\nupdate_reaction @ chunk-7AJI2GL6.js?v=839c9c4e:1721\r\nupdate_effect @ chunk-7AJI2GL6.js?v=839c9c4e:1812\r\ncreate_effect @ chunk-7AJI2GL6.js?v=839c9c4e:1191\r\nblock @ chunk-7AJI2GL6.js?v=839c9c4e:1320\r\nwrapper @ chunk-4ITRTXZZ.js?v=839c9c4e:217\r\n(anonymous) @ @roxi_routify.js?v=839c9c4e:3085\r\n(anonymous) @ chunk-4ITRTXZZ.js?v=839c9c4e:1169\r\nupdate_reaction @ chunk-7AJI2GL6.js?v=839c9c4e:1721\r\nupdate_effect @ chunk-7AJI2GL6.js?v=839c9c4e:1812\r\ncreate_effect @ chunk-7AJI2GL6.js?v=839c9c4e:1191\r\nbranch @ chunk-7AJI2GL6.js?v=839c9c4e:1323\r\n(anonymous) @ chunk-4ITRTXZZ.js?v=839c9c4e:1169\r\nupdate_reaction @ chunk-7AJI2GL6.js?v=839c9c4e:1721\r\nupdate_effect @ chunk-7AJI2GL6.js?v=839c9c4e:1812\r\ncreate_effect @ chunk-7AJI2GL6.js?v=839c9c4e:1191\r\nblock @ chunk-7AJI2GL6.js?v=839c9c4e:1320\r\ncomponent @ chunk-4ITRTXZZ.js?v=839c9c4e:1162\r\nRenderFragment @ @roxi_routify.js?v=839c9c4e:3084\r\n(anonymous) @ chunk-4ITRTXZZ.js?v=839c9c4e:230\r\nupdate_reaction @ chunk-7AJI2GL6.js?v=839c9c4e:1721\r\nupdate_effect @ chunk-7AJI2GL6.js?v=839c9c4e:1812\r\ncreate_effect @ chunk-7AJI2GL6.js?v=839c9c4e:1191\r\nbranch @ chunk-7AJI2GL6.js?v=839c9c4e:1323\r\n(anonymous) @ chunk-4ITRTXZZ.js?v=839c9c4e:224\r\nupdate_reaction @ chunk-7AJI2GL6.js?v=839c9c4e:1721\r\nupdate_effect @ chunk-7AJI2GL6.js?v=839c9c4e:1812\r\nShow 197 more frames\r\nShow less\r\napi.js:1 \r\n        \r\n        \r\n       \r\n        \r\n       Chrome is moving towards a new experience that allows users to choose to browse without third-party cookies.\r\napi.js:1 \r\n        \r\n        \r\n       \r\n        \r\n       Chrome is moving towards a new experience that allows users to choose to browse without third-party cookies.\r\napi.js:1 \r\n        \r\n        \r\n       \r\n        \r\n       Chrome is moving towards a new experience that allows users to choose to browse without third-party cookies.\r\napi.js:1 \r\n        \r\n        \r\n       \r\n        \r\n       Chrome is moving towards a new experience that allows users to choose to browse without third-party cookies.\n```\n\n\n### System Info\n\n```shell\nSystem:\r\n    OS: macOS 14.6.1\r\n    CPU: (8) arm64 Apple M2\r\n    Memory: 98.98 MB / 16.00 GB\r\n    Shell: 5.9 - /bin/zsh\r\n  Binaries:\r\n    Node: 20.11.0 - ~/.nvm/versions/node/v20.11.0/bin/node\r\n    Yarn: 3.4.1 - ~/.nvm/versions/node/v20.11.0/bin/yarn\r\n    npm: 10.2.4 - ~/.nvm/versions/node/v20.11.0/bin/npm\r\n    pnpm: 9.1.1 - ~/Library/pnpm/pnpm\r\n  npmPackages:\r\n    @roxi/routify: ^3.0.0-next.240 => 3.0.0-next.241 \r\n    svelte: ^5.0.0 => 5.2.0 \r\n    vite: ^5.2.0 => 5.4.11\n```\n",
+        "url": "https://github.com/roxiness/routify/issues/561"
+    },
+    {
+        "id": 2512589365,
+        "number": 559,
+        "title": "'./lib/utils/config' is not defined by \"exports\" Error",
+        "state": "closed",
+        "created_at": "2024-09-08T21:50:21Z",
+        "updated_at": "2024-11-27T11:42:28Z",
+        "closed_at": "2024-11-27T11:42:28Z",
+        "author": "rishi-gurjar",
+        "comments": 2,
+        "labels": [
+            "bug",
+            "released",
+            "needs triage"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Describe the bug\n\nWhen I try to npm run build my app it throws an error related to Routify. I attempted to update Routify and Node but it did not work. I also cleared node_modules and ran npm i but it still did not work.  \n\n### Reproduction\n\nMy rollup.config.js includes these lines:\r\nimport getConfig from '@roxi/routify/lib/utils/config'\r\nconst { distDir } = getConfig()\r\n\n\n### Logs\n\n```shell\n[!] Error: Package subpath './lib/utils/config' is not defined by \"exports\" in /Users/name/Documents/GitHub/cdj/node_modules/@roxi/routify/package.json\r\nError: Package subpath './lib/utils/config' is not defined by \"exports\" in /Users/name/Documents/GitHub/cdj/node_modules/@roxi/routify/package.json\r\n    at new NodeError (node:internal/errors:387:5)\r\n    at throwExportsNotFound (node:internal/modules/esm/resolve:365:9)\r\n    at packageExportsResolve (node:internal/modules/esm/resolve:649:3)\r\n    at resolveExports (node:internal/modules/cjs/loader:556:36)\r\n    at Function.Module._findPath (node:internal/modules/cjs/loader:596:31)\r\n    at Function.Module._resolveFilename (node:internal/modules/cjs/loader:1014:27)\r\n    at Function.Module._load (node:internal/modules/cjs/loader:873:27)\r\n    at Module.require (node:internal/modules/cjs/loader:1100:19)\r\n    at require (node:internal/modules/cjs/helpers:119:18)\r\n    at Object.<anonymous> (/Users/rishigurjar/Documents/GitHub/cdj/rollup.config.js:13:17)\r\n\r\nERROR: \"build:app\" exited with 1.\n```\n\n\n### System Info\n\n```shell\nSystem:\r\n    OS: macOS 14.4.1\r\n    CPU: (10) arm64 Apple M1 Pro\r\n    Memory: 122.75 MB / 16.00 GB\r\n    Shell: 5.9 - /bin/zsh\r\n  Binaries:\r\n    Node: 16.20.2 - ~/.nvm/versions/node/v16.20.2/bin/node\r\n    Yarn: 1.22.19 - /opt/homebrew/bin/yarn\r\n    npm: 8.19.4 - ~/.nvm/versions/node/v16.20.2/bin/npm\r\n    pnpm: 8.15.4 - ~/.nvm/versions/node/v21.4.0/bin/pnpm\r\n  npmPackages:\r\n    @roxi/routify: ^2.18.17 => 2.18.17 \r\n    svelte: ^3.31.0 => 3.59.2\n```\n",
+        "url": "https://github.com/roxiness/routify/issues/559"
+    },
+    {
+        "id": 2458947175,
+        "number": 558,
+        "title": "Cheerio has been release to stable 1.0.0",
+        "state": "closed",
+        "created_at": "2024-08-10T07:03:18Z",
+        "updated_at": "2024-09-15T11:14:00Z",
+        "closed_at": "2024-08-12T20:38:51Z",
+        "author": "ju-gow",
+        "comments": 7,
+        "labels": [
+            "bug",
+            "released on @next",
+            "needs triage"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Describe the bug\n\n1. updating dependencies\r\n2. cheerio updates to 1.0.0\r\n2. running dev or build not working anymore\r\nsee logs below\r\n\r\nThanks for all, routify is great !\n\n### Reproduction\n\nforcing \"cheerio\": \"1.0.0-rc.12\"\r\nin devDependencies resolves bug\n\n### Logs\n\n```shell\n$ pnpm run build\r\n\r\n> svelte@0.0.0 build /path/to/project\r\n> vite build\r\n\r\nfailed to load config from /path/to/project/vite.config.js\r\nerror during build:\r\nfile:///path/to/project/node_modules/.pnpm/@roxi+routify@3.0.0-next.232_@popperjs+core@2.11.8_spank@2.0.0_vite@5.4.0_terser@5.31.5_/node_modules/@roxi/routify/lib/buildtime/plugins/metaFromFile/metaFromFile.js:1\r\nimport cheerio from 'cheerio'\r\n       ^^^^^^^\r\nSyntaxError: The requested module 'cheerio' does not provide an export named 'default'\r\n    at ModuleJob._instantiate (node:internal/modules/esm/module_job:123:21)\r\n    at async ModuleJob.run (node:internal/modules/esm/module_job:191:5)\r\n    at async ModuleLoader.import (node:internal/modules/esm/loader:336:24)\r\n    at async loadConfigFromBundledFile (file:///path/to/project/node_modules/.pnpm/vite@5.4.0_terser@5.31.5/node_modules/vite/dist/node/chunks/dep-NjL7WTE1.js:66565:15)\r\n    at async loadConfigFromFile (file:///path/to/project/node_modules/.pnpm/vite@5.4.0_terser@5.31.5/node_modules/vite/dist/node/chunks/dep-NjL7WTE1.js:66406:24)\r\n    at async resolveConfig (file:///path/to/project/node_modules/.pnpm/vite@5.4.0_terser@5.31.5/node_modules/vite/dist/node/chunks/dep-NjL7WTE1.js:66014:24)\r\n    at async build (file:///path/to/project/node_modules/.pnpm/vite@5.4.0_terser@5.31.5/node_modules/vite/dist/node/chunks/dep-NjL7WTE1.js:65111:18)\r\n    at async CAC.<anonymous> (file:///path/to/project/node_modules/.pnpm/vite@5.4.0_terser@5.31.5/node_modules/vite/dist/node/cli.js:828:5)\r\n ELIFECYCLE  Command failed with exit code 1.\n```\n\n\n### System Info\n\n```shell\nSystem:\r\n    OS: Linux 6.8 Ubuntu 24.04 LTS 24.04 LTS (Noble Numbat)\r\n    CPU: (4) x64 Intel(R) Core(TM) i3-4010U CPU @ 1.70GHz\r\n    Memory: 2.81 GB / 7.69 GB\r\n    Container: Yes\r\n    Shell: 5.2.21 - /bin/bash\r\n  Binaries:\r\n    Node: 18.19.1 - /usr/bin/node\r\n    npm: 9.2.0 - /usr/bin/npm\r\n    pnpm: 9.7.0 - /usr/local/bin/pnpm\r\n  npmPackages:\r\n    @roxi/routify: next => 3.0.0-next.232 \r\n    svelte: ^4.2.15 => 4.2.18 \r\n    vite: ^5.2.10 => 5.4.0\n```\n",
+        "url": "https://github.com/roxiness/routify/issues/558"
+    },
+    {
+        "id": 2359447036,
+        "number": 556,
+        "title": "I Just thinking aloud, URL rewrite options should be part of AddressReflector",
+        "state": "closed",
+        "created_at": "2024-06-18T09:54:54Z",
+        "updated_at": "2024-06-28T09:29:21Z",
+        "closed_at": "2024-06-28T09:29:21Z",
+        "author": "hyuzea",
+        "comments": 3,
+        "labels": [
+            "needs triage"
+        ],
+        "assignees": [
+            "jakobrosenberg"
+        ],
+        "locked": false,
+        "body": null,
+        "url": "https://github.com/roxiness/routify/issues/556"
+    },
+    {
+        "id": 2358238702,
+        "number": 555,
+        "title": "Routing priority ",
+        "state": "closed",
+        "created_at": "2024-06-17T20:53:27Z",
+        "updated_at": "2024-06-18T19:34:57Z",
+        "closed_at": "2024-06-18T19:34:57Z",
+        "author": "rafadess",
+        "comments": 1,
+        "labels": [
+            "needs triage"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "Hey there,\r\n\r\nDo we have documentation on how Routify resolves ambiguous routes? For example, if I have routes like:\r\n\r\n```\r\n/food/[fruit]\r\n/food/apple\r\n```\r\n\r\nI've noticed that apple takes priority over the slug [fruit], which makes sense to me intuitively, but I haven't found this documented anywhere.\r\n\r\nDoes anyone know where I can find this information?\r\n",
+        "url": "https://github.com/roxiness/routify/issues/555"
+    },
+    {
+        "id": 2302546803,
+        "number": 554,
+        "title": "Support svelte 5",
+        "state": "closed",
+        "created_at": "2024-05-17T11:56:35Z",
+        "updated_at": "2024-11-05T11:04:55Z",
+        "closed_at": "2024-11-05T11:04:54Z",
+        "author": "yairkukielka",
+        "comments": 1,
+        "labels": [
+            "enhancement"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Describe the feature\r\n\r\nRunning a simple project with Vite 5 and the last version of Routify 3 I get this error in the browser \r\n```\r\nUncaught Svelte error: svelte_component_invalid_this_value\r\nThe `this={...}` property of a `<svelte:component>` must be a Svelte component, if defined\r\n\r\n\tin DecoratorWrapper.svelte\r\n\tin ScrollDecorator.svelte\r\n\tin DecoratorWrapper.svelte\r\n\tin RenderFragment.svelte\r\n\tin ComposeFragments.svelte\r\n\tin _module.svelte\r\n\tin AnchorDecorator.svelte\r\n\tin ScrollDecorator.svelte\r\n\tin DecoratorWrapper.svelte\r\n\tin RenderFragment.svelte\r\n\tin ComposeFragments.svelte\r\n\tin AnchorDecorator.svelte\r\n\tin Router.svelte\r\n\tin App.svelte\r\n\r\n    at svelte_component_invalid_this_value (http://localhost:5173/node_modules/.vite/deps/chunk-QS6J2F3K.js?v=3ce9e45e:375:19)\r\n    at validate_dynamic_component (http://localhost:5173/node_modules/.vite/deps/chunk-JLOINEC6.js?v=3ce9e45e:2822:7)\r\n    at http://localhost:5173/node_modules/.vite/deps/@roxi_routify.js?v=82f63852:2632:5\r\n    at http://localhost:5173/node_modules/.vite/deps/chunk-JLOINEC6.js?v=3ce9e45e:1060:30\r\n    at execute_reaction_fn (http://localhost:5173/node_modules/.vite/deps/chunk-QS6J2F3K.js?v=3ce9e45e:1560:29)\r\n    at execute_effect (http://localhost:5173/node_modules/.vite/deps/chunk-QS6J2F3K.js?v=3ce9e45e:1681:20)\r\n    at create_effect (http://localhost:5173/node_modules/.vite/deps/chunk-QS6J2F3K.js?v=3ce9e45e:476:7)\r\n    at branch (http://localhost:5173/node_modules/.vite/deps/chunk-QS6J2F3K.js?v=3ce9e45e:582:10)\r\n    at http://localhost:5173/node_modules/.vite/deps/chunk-JLOINEC6.js?v=3ce9e45e:1060:17\r\n    at execute_reaction_fn (http://localhost:5173/node_modules/.vite/deps/chunk-QS6J2F3K.js?v=3ce9e45e:1560:29)\r\n```\r\n\r\n### Examples\r\n\r\nSee reproduction repository here https://github.com/yairkukielka/routify-vitest-example/tree/svelte5\r\n**You need to be on the `svelte5` branch!** \r\n\r\nEnvinfo:\r\n```\r\n  System:\r\n    OS: macOS 13.6.6\r\n    CPU: (12) x64 Intel(R) Core(TM) i7-8750H CPU @ 2.20GHz\r\n    Memory: 26.98 MB / 16.00 GB\r\n    Shell: 5.9 - /bin/zsh\r\n  Binaries:\r\n    Node: 18.19.1 - ~/.nvm/versions/node/v18.19.1/bin/node\r\n    npm: 10.2.4 - ~/.nvm/versions/node/v18.19.1/bin/npm\r\n  npmPackages:\r\n    @roxi/routify: ^3.0.0-next.223 => 3.0.0-next.225 \r\n    svelte: ^5.0.0-next.136 => 5.0.0-next.136 \r\n    vite: ^5.2.0 => 5.2.11 \r\n```",
+        "url": "https://github.com/roxiness/routify/issues/554"
+    },
+    {
+        "id": 2302501180,
+        "number": 553,
+        "title": "Routify hangs with vitest",
+        "state": "closed",
+        "created_at": "2024-05-17T11:35:34Z",
+        "updated_at": "2025-07-18T09:39:51Z",
+        "closed_at": "2025-07-18T09:39:51Z",
+        "author": "yairkukielka",
+        "comments": 11,
+        "labels": [
+            "bug",
+            "needs triage"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Describe the bug\r\n\r\nWhen running the tests it looks like the process hangs at the end, just after passing the tests.\r\n\r\n### Reproduction\r\n\r\nWhen running tests with vitest. The issue gets resolved if I remove the routify plugin from the vite config file, so it looks like routify is the culprit. After the Vitest default 10 seconds timout, the process is killed by Vitest\r\n\r\nSee reproduction example here https://github.com/yairkukielka/routify-vitest-example\r\n\r\n### Logs\r\n\r\n```shell\r\nnpm run test\r\n\r\n> vitest-routify@0.0.0 test\r\n> vitest run\r\n\r\n[Routify 3] build completed (31 ms)\r\n\r\n RUN  v1.6.0 /Users/myuser/p/exp/routify-vitest-example\r\n\r\n ✓ src/components/component1/Component1.spec.js (1)\r\n   ✓ my description (1)\r\n     ✓ simple test\r\n\r\n Test Files  1 passed (1)\r\n      Tests  1 passed (1)\r\n   Start at  13:30:16\r\n   Duration  454ms (transform 27ms, setup 0ms, collect 14ms, tests 3ms, environment 0ms, prepare 122ms)\r\n\r\nclose timed out after 10000ms\r\nTests closed successfully but something prevents Vite server from exiting\r\nYou can try to identify the cause by enabling \"hanging-process\" reporter. See https://vitest.dev/config/#reporters\r\n```\r\nIf I add this\r\n```\r\n  test: {\r\n    reporters: [\"default\", \"hanging-process\"],\r\n  },\r\n```\r\n to the vite config as the error suggests, I get \r\n\r\n```\r\nThere are 8 handle(s) keeping the process running\r\n\r\n# Tinypool\r\nnode:internal/async_hooks:200                                                                                   \r\nnode:internal/async_hooks:503                                                                                   \r\nfile:///Users/myuser/p/exp/routify-vitest-example/node_modules/tinypool/dist/esm/index.js:37              \r\nfile:///Users/myuser/p/exp/routify-vitest-example/node_modules/tinypool/dist/esm/index.js:58              \r\nfile:///Users/myuser/p/exp/routify-vitest-example/node_modules/tinypool/dist/esm/index.js:952             \r\nfile:///Users/myuser/p/exp/routify-vitest-example/node_modules/vitest/dist/vendor/cli-api.E07AF1Yq.js:8192\r\nfile:///Users/myuser/p/exp/routify-vitest-example/node_modules/vitest/dist/vendor/cli-api.E07AF1Yq.js:8845\r\nfile:///Users/myuser/p/exp/routify-vitest-example/node_modules/vitest/dist/vendor/cli-api.E07AF1Yq.js:8870\r\n\r\n# FILEHANDLE\r\nnode:internal/async_hooks:200\r\n\r\n# FILEHANDLE\r\nnode:internal/async_hooks:200\r\n\r\n# FILEHANDLE\r\nnode:internal/async_hooks:200\r\n\r\n# FILEHANDLE\r\nnode:internal/async_hooks:200\r\n\r\n# FILEHANDLE\r\nnode:internal/async_hooks:200\r\n\r\n# FILEHANDLE\r\nnode:internal/async_hooks:200\r\n\r\n# FILEHANDLE\r\nnode:internal/async_hooks:200\r\nclose timed out after 10000ms\r\nTests closed successfully but something prevents Vite server from exiting\r\nYou can try to identify the cause by enabling \"hanging-process\" reporter. See https://vitest.dev/config/#reporters\r\n```\r\n```\r\n\r\n\r\n### System Info\r\n\r\n```shell\r\nSystem:\r\n    OS: macOS 13.6.6\r\n    CPU: (12) x64 Intel(R) Core(TM) i7-8750H CPU @ 2.20GHz\r\n    Memory: 163.13 MB / 16.00 GB\r\n    Shell: 5.9 - /bin/zsh\r\n  Binaries:\r\n    Node: 18.19.1 - ~/.nvm/versions/node/v18.19.1/bin/node\r\n    npm: 10.2.4 - ~/.nvm/versions/node/v18.19.1/bin/npm\r\n  npmPackages:\r\n    @roxi/routify: ^3.0.0-next.223 => 3.0.0-next.225 \r\n    svelte: ^4.2.12 => 4.2.17 \r\n    vite: ^5.2.0 => 5.2.11\r\n```\r\n",
+        "url": "https://github.com/roxiness/routify/issues/553"
+    },
+    {
+        "id": 2277627762,
+        "number": 552,
+        "title": "Make killWarnings.js more resilient",
+        "state": "closed",
+        "created_at": "2024-05-03T12:56:26Z",
+        "updated_at": "2024-05-12T08:58:18Z",
+        "closed_at": "2024-05-12T08:57:34Z",
+        "author": "yairkukielka",
+        "comments": 1,
+        "labels": [
+            "bug",
+            "released on @next",
+            "needs triage"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Describe the bug\n\nI'm getting this error in the browser that comes from the `killWarnings.js` method \r\n```\r\nTypeError: args[0].match is not a function\r\n    at console.warn (@roxi_routify.js?v=2052a10c:6487:17)\r\n    at Object.errorHandler (chunk-JZVOLWRF.js?v=883c128c:80:54)\r\n    at setupLocale (chunk-JZVOLWRF.js?v=883c128c:1765:19)\r\n    at init2 (chunk-JZVOLWRF.js?v=883c128c:589:5)\r\n    at FlatpickrInstance (chunk-JZVOLWRF.js?v=883c128c:2239:3)\r\n    at _flatpickr (chunk-JZVOLWRF.js?v=883c128c:2256:25)\r\n    at flatpickr (chunk-JZVOLWRF.js?v=883c128c:2274:12)\r\n    at chunk-JZVOLWRF.js?v=883c128c:2591:20\r\n```\r\nThe reason is because a library is raising an error (probably not in a standard way) and the result is that `args[0]` is not a string, as expected by Routify code, but an object.### \n\n### Reproduction\n\nCan't really provide one. But it looks like the `flatpickr` library is raising an error from [here](https://github.com/flatpickr/flatpickr/blob/548330e6e18871d6ca1ca78746c0e89cb12a0303/src/index.ts#L2148) \r\n\r\nIf we surround these lines \r\n```\r\nif (args[0].match(/<.+> was created with unknown prop 'context'/)) return\r\n        if (args[0].match(/<.+> was created with unknown prop 'isRoot'/)) return\r\n        if (args[0].match(/<.+> received an unexpected slot \"default\"\\./)) return\r\n```\r\nWith something like\r\n```\r\n    if (typeof(args[0]) === 'string') {\r\n        // If message contains the word \"context\", then just return\r\n        if (args[0].match(/<.+> was created with unknown prop 'context'/)) return\r\n        if (args[0].match(/<.+> was created with unknown prop 'isRoot'/)) return\r\n        if (args[0].match(/<.+> received an unexpected slot \"default\"\\./)) return\r\n    }\r\n```\r\nThis would be fixed. With this fix Routify wouldn't get in the way of these issues.\n\n### Logs\n\n```shell\nTypeError: args[0].match is not a function\r\n    at console.warn (@roxi_routify.js?v=2052a10c:6487:17)\r\n    at Object.errorHandler (chunk-JZVOLWRF.js?v=883c128c:80:54)\r\n    at setupLocale (chunk-JZVOLWRF.js?v=883c128c:1765:19)\r\n    at init2 (chunk-JZVOLWRF.js?v=883c128c:589:5)\r\n    at FlatpickrInstance (chunk-JZVOLWRF.js?v=883c128c:2239:3)\r\n    at _flatpickr (chunk-JZVOLWRF.js?v=883c128c:2256:25)\r\n    at flatpickr (chunk-JZVOLWRF.js?v=883c128c:2274:12)\r\n    at chunk-JZVOLWRF.js?v=883c128c:2591:20\r\n```\n```\n\n\n### System Info\n\n```shell\nSystem:\r\n    OS: macOS 13.6.6\r\n    CPU: (12) x64 Intel(R) Core(TM) i7-8750H CPU @ 2.20GHz\r\n    Memory: 44.45 MB / 16.00 GB\r\n    Shell: 5.9 - /bin/zsh\r\n  Binaries:\r\n    Node: 18.19.1 - ~/.nvm/versions/node/v18.19.1/bin/node\r\n    npm: 10.2.4 - ~/.nvm/versions/node/v18.19.1/bin/npm\r\n  npmPackages:\r\n    @roxi/routify: ^3.0.0-next.223 => 3.0.0-next.223 \r\n    svelte: ^4.2.15 => 4.2.15 \r\n    vite: ^5.2.10 => 5.2.11\n```\n",
+        "url": "https://github.com/roxiness/routify/issues/552"
+    },
+    {
+        "id": 2266357465,
+        "number": 551,
+        "title": "Update peerDependencies to prevent `npm install` conflicts",
+        "state": "open",
+        "created_at": "2024-04-26T19:09:24Z",
+        "updated_at": "2024-11-05T11:12:49Z",
+        "closed_at": null,
+        "author": "yairkukielka",
+        "comments": 7,
+        "labels": [
+            "needs triage"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "Helllo! Would it be possible to update peerDependencies so we don't have to use the npm `overrides` field?\r\n\r\nUsing svelte 4 and vite 5 I'm getting these warnings when I run `npm install`:\r\n```\r\n           \r\nnpm WARN ERESOLVE overriding peer dependency\r\nnpm WARN While resolving: @sveltejs/vite-plugin-svelte@2.5.3\r\nnpm WARN Found: vite@5.2.10\r\nnpm WARN node_modules/vite\r\nnpm WARN   dev vite@\"^5.2.10\" from the root project\r\nnpm WARN   5 more (@roxi/routify, @sveltejs/vite-plugin-svelte, ...)\r\nnpm WARN \r\nnpm WARN Could not resolve dependency:\r\nnpm WARN peer vite@\"^4.0.0\" from @sveltejs/vite-plugin-svelte@2.5.3\r\nnpm WARN node_modules/@roxi/routify/node_modules/@sveltejs/vite-plugin-svelte\r\nnpm WARN   @sveltejs/vite-plugin-svelte@\"^2.4.6\" from @roxi/routify@3.0.0-next.223\r\nnpm WARN   node_modules/@roxi/routify\r\nnpm WARN   1 more (@sveltejs/vite-plugin-svelte-inspector)\r\nnpm WARN \r\nnpm WARN Conflicting peer dependency: vite@4.5.3\r\nnpm WARN node_modules/vite\r\nnpm WARN   peer vite@\"^4.0.0\" from @sveltejs/vite-plugin-svelte@2.5.3\r\nnpm WARN   node_modules/@roxi/routify/node_modules/@sveltejs/vite-plugin-svelte\r\nnpm WARN     @sveltejs/vite-plugin-svelte@\"^2.4.6\" from @roxi/routify@3.0.0-next.223\r\nnpm WARN     node_modules/@roxi/routify\r\nnpm WARN     1 more (@sveltejs/vite-plugin-svelte-inspector)\r\nnpm WARN ERESOLVE overriding peer dependency\r\nnpm WARN While resolving: @sveltejs/vite-plugin-svelte-inspector@1.0.4\r\nnpm WARN Found: vite@5.2.10\r\nnpm WARN node_modules/vite\r\nnpm WARN   dev vite@\"^5.2.10\" from the root project\r\nnpm WARN   5 more (@roxi/routify, @sveltejs/vite-plugin-svelte, ...)\r\nnpm WARN \r\nnpm WARN Could not resolve dependency:\r\nnpm WARN peer vite@\"^4.0.0\" from @sveltejs/vite-plugin-svelte-inspector@1.0.4\r\nnpm WARN node_modules/@roxi/routify/node_modules/@sveltejs/vite-plugin-svelte/node_modules/@sveltejs/vite-plugin-svelte-inspector\r\nnpm WARN   @sveltejs/vite-plugin-svelte-inspector@\"^1.0.4\" from @sveltejs/vite-plugin-svelte@2.5.3\r\nnpm WARN \r\nnpm WARN Conflicting peer dependency: vite@4.5.3\r\nnpm WARN node_modules/vite\r\nnpm WARN   peer vite@\"^4.0.0\" from @sveltejs/vite-plugin-svelte-inspector@1.0.4\r\nnpm WARN   node_modules/@roxi/routify/node_modules/@sveltejs/vite-plugin-svelte/node_modules/@sveltejs/vite-plugin-svelte-inspector\r\nnpm WARN     @sveltejs/vite-plugin-svelte-inspector@\"^1.0.4\" from @sveltejs/vite-plugin-svelte@2.5.3\r\n```\r\n\r\nI needed to add this section to my package.json to make npm happy:\r\n```\r\n        \"@sveltejs/vite-plugin-svelte\": \"$@sveltejs/vite-plugin-svelte\",\r\n        \"@roxi/routify\": {\r\n            \".\": \"$@roxi/routify\",\r\n            \"vite\": \"$vite\",\r\n            \"svelte\": \"$svelte\"\r\n        }\r\n```\r\nAlso, in package.json I use `\"@sveltejs/vite-plugin-svelte\": \"^3.1.0\",` because it's imported by vite 5.\r\n\r\n## How to fix\r\nI think if we add this to the \"peerDepenencies\" field in routify package.json it would get resolved:\r\n```\r\n    \"peerDependencies\": {\r\n        \"vite\": \"4 || 5\",\r\n        \"svelte\": \">=4\",\r\n        \"@sveltejs/vite-plugin-svelte\": \">=2\"\r\n    },\r\n```",
+        "url": "https://github.com/roxiness/routify/issues/551"
+    },
+    {
+        "id": 2229493534,
+        "number": 550,
+        "title": "Anchors / scroll into view",
+        "state": "closed",
+        "created_at": "2024-04-07T01:04:54Z",
+        "updated_at": "2024-04-07T12:07:07Z",
+        "closed_at": "2024-04-07T09:12:32Z",
+        "author": "xboxfly15",
+        "comments": 3,
+        "labels": [
+            "released on @next"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "I have been trying to get anchors to work, by that I mean externally(you're not already browsing the site) clicking a URL that has a hash at the end, to visit the website and the area scrolling into view. This doesn't seem to be apart of Routify.\r\nI have done some digging and done my best to get it working. I am mainly using this to document so people can find a solution and I think there's 1 or 2 bugs that need fixing.\r\n\r\nFirst off the bugs I think I found:\r\nWhen visiting the URL, I get this error\r\n![b1914817124512083GVidY816b 1](https://github.com/roxiness/routify/assets/19935166/6cc96828-d216-41c6-96f0-7a0445dea52f)\r\nRelating to state being null at https://github.com/roxiness/routify/blame/d1decc0469e8191f0c6b8c25114c06da144dd07a/lib/runtime/Router/urlReflectors/Address.js#L42\r\nI removed \".routify\" to fix that issue.\r\n\r\nI noticed when navigating forward/backwards I get a new error, that I haven't been able to solve and not sure what it relates to:\r\n![896e681712451599dzfppe817b 1](https://github.com/roxiness/routify/assets/19935166/7eb5d777-80c8-4d13-a733-d6dafd01a045)\r\n![7bc9181712451681J1TDSD818b 1](https://github.com/roxiness/routify/assets/19935166/90bd0e69-b8ee-4244-ae21-8c9ee4be525c)\r\nIt is the same line as the other bug, I haven't noticed anything breaking though so I continued.\r\n\r\nI then added this code to my layout _module.svelte file\r\n`afterUpdate(() => setTimeout(() => document.getElementById(location.hash.slice(1))?.scrollIntoView(), 500))`\r\nAlong with smooth scrolling css, this allows anchors to work and scroll into view.\r\n\r\nHope this helps people in the future when trying to get anchors to work and hopefully those errors can be fixed. Thank you contributors for your hard work.",
+        "url": "https://github.com/roxiness/routify/issues/550"
+    },
+    {
+        "id": 2221939777,
+        "number": 549,
+        "title": "After upgrading to 2.18.13 './plugins/rollup' is not defined by \"exports\"",
+        "state": "closed",
+        "created_at": "2024-04-03T05:36:45Z",
+        "updated_at": "2025-04-03T07:12:39Z",
+        "closed_at": "2024-09-25T05:58:14Z",
+        "author": "hobbitronics",
+        "comments": 4,
+        "labels": [
+            "bug",
+            "released",
+            "needs triage",
+            "v2"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Describe the bug\r\n\r\nI was updating some dependencies and went from 2.18.12 to 2.18.13. When I started rollup the build failed with\r\n`[!] Error: Package subpath './plugins/rollup' is not defined by \"exports\" in /Users/john/projects/app-ui/node_modules/@roxi/routify/package.json`\r\nI then reinstalled 2.18.12 and it is working again. If this plugin export has moved I was unable to find it in the documentation and it should be a breaking change. If not, then there is a bug.\r\n\r\n### Reproduction\r\n\r\nUpdate a svelte 3/4 app with rollup using `import routify from '@roxi/routify/plugins/rollup'\r\n` in the rollup.config.js file to routify 2.18.13. \r\nrun `rollup -c -w` and build should fail.\r\nDependencies used:\r\n```\r\n\"dependencies\": {\r\n    \"@rollup/plugin-commonjs\": \"^19.0.1\",\r\n    \"@rollup/plugin-html\": \"^1.0.3\",\r\n    \"@rollup/plugin-json\": \"^4.1.0\",\r\n    \"@rollup/plugin-node-resolve\": \"^13.3.0\",\r\n    \"@roxi/routify\": \"^2.18.16\",\r\n    \"@silintl/ui-components\": \"^11.1.0\",\r\n    \"@tailwindcss/nesting\": \"^0.0.0-insiders.565cd3e\",\r\n    \"@tailwindcss/typography\": \"^0.5.12\",\r\n    \"@tsconfig/svelte\": \"^2.0.1\",\r\n    \"autoprefixer\": \"^10.4.19\",\r\n    \"concurrently\": \"^8.2.2\",\r\n    \"croppie\": \"^2.6.5\",\r\n    \"date-fns\": \"^2.30.0\",\r\n    \"iconify-icon\": \"^1.0.8\",\r\n    \"lodash-es\": \"^4.17.21\",\r\n    \"material-components-web\": \"^14.0.0\",\r\n    \"postcss\": \"^8.4.38\",\r\n    \"postcss-import\": \"^15.1.0\",\r\n    \"postcss-nesting\": \"^12.1.1\",\r\n    \"qs\": \"^6.12.0\",\r\n    \"rollup\": \"^2.79.1\",\r\n    \"rollup-plugin-dotenv\": \"^0.5.0\",\r\n    \"rollup-plugin-includepaths\": \"^0.2.4\",\r\n    \"rollup-plugin-livereload\": \"^2.0.5\",\r\n    \"rollup-plugin-polyfill-node\": \"^0.13.0\",\r\n    \"rollup-plugin-postcss\": \"^4.0.2\",\r\n    \"rollup-plugin-svelte\": \"^7.2.0\",\r\n    \"rollup-plugin-terser\": \"^7.0.2\",\r\n    \"svelte\": \"^3.55.1\",\r\n    \"svelte-preprocess\": \"^5\",\r\n    \"tailwind-utopia\": \"github:domchristie/tailwind-utopia\",\r\n    \"tailwindcss\": \"^3.4.3\",\r\n    \"typescript\": \"^4.9.4\"\r\n  },\r\n  \"devDependencies\": {\r\n    \"@rollup/plugin-typescript\": \"^8.5.0\",\r\n    \"@types/croppie\": \"^2.6.4\",\r\n    \"@types/gtag.js\": \"^0.0.19\",\r\n    \"@types/lodash-es\": \"^4.17.12\",\r\n    \"@types/node\": \"^16.11.6\",\r\n    \"@types/qs\": \"^6.9.14\",\r\n    \"@typescript-eslint/eslint-plugin\": \"^4.33.0\",\r\n    \"@typescript-eslint/parser\": \"^4.33.0\",\r\n    \"eslint\": \"^7.32.0\",\r\n    \"eslint-plugin-svelte3\": \"^3.2.1\",\r\n    \"prettier\": \"3.2.5\",\r\n    \"prettier-plugin-svelte\": \"^3.2.2\",\r\n    \"prettier-plugin-tailwindcss\": \"0.5.13\",\r\n    \"rimraf\": \"^3.0.2\",\r\n    \"sirv-cli\": \"^2.0.2\",\r\n    \"svelte-check\": \"^2.9.0\",\r\n    \"tslib\": \"^2.6.2\"\r\n  }\r\n}\r\n```\r\n\r\n### Logs\r\n\r\n```shell\r\n> build:dev\r\n[0] > rollup -c -w\r\n[0] \r\n[0] [!] Error: Package subpath './plugins/rollup' is not defined by \"exports\" in /Users/john/projects/app-ui/node_modules/@roxi/routify/package.json\r\n[0] Error: Package subpath './plugins/rollup' is not defined by \"exports\" in /Users/john/projects/app-ui/node_modules/@roxi/routify/package.json\r\n[0]     at new NodeError (node:internal/errors:400:5)\r\n[0]     at exportsNotFound (node:internal/modules/esm/resolve:361:10)\r\n[0]     at packageExportsResolve (node:internal/modules/esm/resolve:697:9)\r\n[0]     at resolveExports (node:internal/modules/cjs/loader:538:36)\r\n[0]     at Function.Module._findPath (node:internal/modules/cjs/loader:607:31)\r\n[0]     at Function.Module._resolveFilename (node:internal/modules/cjs/loader:1025:27)\r\n[0]     at Function.Module._load (node:internal/modules/cjs/loader:885:27)\r\n[0]     at Module.require (node:internal/modules/cjs/loader:1105:19)\r\n[0]     at require (node:internal/modules/cjs/helpers:103:18)\r\n[0]     at Object.<anonymous> (/Users/mike/projects/app-ui/rollup.config.js:14:15)\r\n```\r\n\r\n\r\n### System Info\r\n\r\n```shell\r\nSorry, didn't feel like installing envinfo at the moment. npm: 8.19.3, node v18.13.0, macOS 14.4.1 \r\nHardware Overview:\r\n\r\n      Model Name: Mac mini\r\n      Model Identifier: Macmini9,1\r\n      Model Number: Z12N000G0LL/A\r\n      Chip: Apple M1\r\n      Total Number of Cores: 8 (4 performance and 4 efficiency)\r\n      Memory: 16 GB\r\n      System Firmware Version: 10151.101.3\r\n      OS Loader Version: 10151.101.3\r\n      Activation Lock Status: Enabled\r\n```\r\n",
+        "url": "https://github.com/roxiness/routify/issues/549"
+    },
+    {
+        "id": 2172506726,
+        "number": 548,
+        "title": "Suggestion: Allow ts extension in meta files",
+        "state": "open",
+        "created_at": "2024-03-06T21:58:52Z",
+        "updated_at": "2024-03-10T11:04:11Z",
+        "closed_at": null,
+        "author": "dBaliukynas",
+        "comments": 3,
+        "labels": [
+            "enhancement"
+        ],
+        "assignees": [
+            "jakobrosenberg"
+        ],
+        "locked": false,
+        "body": "### Describe the feature\r\n\r\nCurrently, meta files only work with js extension (i.e.  filename.meta.js). Would be great if ts would be supported aswell (i.e., filename.meta.ts). \r\n\r\n### Examples\r\n\r\n_No response_",
+        "url": "https://github.com/roxiness/routify/issues/548"
+    },
+    {
+        "id": 2163646154,
+        "number": 547,
+        "title": "Vite build: missing specifier (^2.18.13)",
+        "state": "closed",
+        "created_at": "2024-03-01T15:31:13Z",
+        "updated_at": "2024-09-13T12:32:55Z",
+        "closed_at": "2024-03-02T14:31:11Z",
+        "author": "Roger-Sa",
+        "comments": 4,
+        "labels": [
+            "released",
+            "needs triage",
+            "v2"
+        ],
+        "assignees": [
+            "jakobrosenberg"
+        ],
+        "locked": false,
+        "body": "Using vite v5.1.4. Builds fine with 2.18.12, but not with 2.18.13/14. \r\n\r\nDon't know if this is a bug or something I am doing wrong. My google-fu has come up short.\r\n\r\n```\r\n    \"scripts\": {\r\n        \"dev\": \"run-p dev:*\",\r\n        \"dev:routify\": \"routify\",\r\n        \"dev:vite\": \"vite\",\r\n        \"preview\": \"vite preview\",\r\n        \"build\": \"run-s build:*\",\r\n        \"build:routify\": \"routify -b\",\r\n        \"build:vite\": \"vite build\"\r\n    },\r\n```\r\n\r\nnpm run dev:\r\n`Missing \"./runtime/buildRoutes\" specifier in \"@roxi/routify\" package [plugin vite:dep-scan]`\r\n`Missing \"./hmr\" specifier in \"@roxi/routify\" package [plugin vite:dep-scan]`\r\n\r\nnpm run build:\r\n`[commonjs--resolver] Missing \"./hmr\" specifier in \"@roxi/routify\" package`\r\n\r\n\r\n\r\n",
+        "url": "https://github.com/roxiness/routify/issues/547"
+    }
+]

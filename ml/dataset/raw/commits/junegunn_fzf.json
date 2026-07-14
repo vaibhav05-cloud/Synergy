@@ -1,0 +1,242 @@
+[
+    {
+        "sha": "24832e97ef9640e5f859ede8dc163cf3c27145cb",
+        "author": "Simon Désaulniers",
+        "email": "sim.desaulniers@gmail.com",
+        "date": "2026-07-09T19:24:41Z",
+        "message": "nushell: fix 0.114.0 nushell str downcase deprecated error\n\nWe switch to `str lowercase` and add a note for the Nushell<0.114.0 user\nthat should display at runtime.\n\nClose #4857",
+        "url": "https://github.com/junegunn/fzf/commit/24832e97ef9640e5f859ede8dc163cf3c27145cb"
+    },
+    {
+        "sha": "6765f464a60e39afc20775f54f7ba40896bf1b81",
+        "author": "Junegunn Choi",
+        "email": "junegunn.c@gmail.com",
+        "date": "2026-07-06T13:11:35Z",
+        "message": "0.74.0",
+        "url": "https://github.com/junegunn/fzf/commit/6765f464a60e39afc20775f54f7ba40896bf1b81"
+    },
+    {
+        "sha": "c110aec3c4e382b504cdb3072f9b2943d8b84d8a",
+        "author": "Junegunn Choi",
+        "email": "junegunn.c@gmail.com",
+        "date": "2026-07-06T12:06:27Z",
+        "message": "Update CHANGELOG",
+        "url": "https://github.com/junegunn/fzf/commit/c110aec3c4e382b504cdb3072f9b2943d8b84d8a"
+    },
+    {
+        "sha": "e54f11c64ef457e0bdae1ab983ab6193cbaaf721",
+        "author": "Junegunn Choi",
+        "email": "junegunn.c@gmail.com",
+        "date": "2026-07-06T12:04:35Z",
+        "message": "Default to native border for Zellij floating pane (#4854)\n\nThe native border is the handle for moving and resizing the pane with\nthe mouse, so use it by default, consistent with tmux. fzf draws its\nown border only when a border style is explicitly specified with\n--border. Extract the shared native-border decision into a helper.",
+        "url": "https://github.com/junegunn/fzf/commit/e54f11c64ef457e0bdae1ab983ab6193cbaaf721"
+    },
+    {
+        "sha": "f7392a8b63ba399582418f097026c80bab30bd12",
+        "author": "Junegunn Choi",
+        "email": "junegunn.c@gmail.com",
+        "date": "2026-07-05T11:15:05Z",
+        "message": "Pre-create become file with O_EXCL\n\nPrevents another user on a shared TMPDIR from planting a file or a\nsymbolic link at the predictable path while fzf is running, like the\nexit status file of the floating pane. Reject an empty become command.",
+        "url": "https://github.com/junegunn/fzf/commit/f7392a8b63ba399582418f097026c80bab30bd12"
+    },
+    {
+        "sha": "eee92b1b2ad734c96f4f29230ed587a3d63eeb7e",
+        "author": "Junegunn Choi",
+        "email": "junegunn.c@gmail.com",
+        "date": "2026-07-05T10:56:30Z",
+        "message": "Clear border text of the floating pane when no label is given",
+        "url": "https://github.com/junegunn/fzf/commit/eee92b1b2ad734c96f4f29230ed587a3d63eeb7e"
+    },
+    {
+        "sha": "77e6394f509c34ebc3144a401b667bcceb6c093e",
+        "author": "Junegunn Choi",
+        "email": "junegunn.c@gmail.com",
+        "date": "2026-07-05T10:35:34Z",
+        "message": "Set --border-label as the title of the tmux floating pane (#4853)\n\nThe pane sets the options itself before running fzf, so that they are\nin place no matter how quickly the command exits, targeted at\n$TMUX_PANE; the default target would resolve to the active pane of\nthe session's current window.\n\n- pane-border-format is set to '#{pane_title}' so that the label is\n  displayed on the border when pane-border-status is enabled;\n  pane-border-status itself is a window option in released tmux\n  versions and is left alone\n- When a border style is explicitly specified with --border, a popup\n  is used instead of a floating pane so that the fzf-drawn border is\n  the only border shown; give 'border-native' to force a floating pane\n- 'none' and 'line' are treated as no border; fzf draws no box for\n  either, so the label is displayed on the native border\n- Remove 'border-fzf' which is now redundant; it was never released\n- The title is escaped for select-pane -T which expands format\n  expressions; a lone ';' is escaped as tmux would treat it as a\n  command separator\n- The label is skipped when ANSI stripping leaves an empty string\n- --border-label-pos is ignored\n- Fix remain-on-exit set on the original pane instead of the floating\n  pane",
+        "url": "https://github.com/junegunn/fzf/commit/77e6394f509c34ebc3144a401b667bcceb6c093e"
+    },
+    {
+        "sha": "1e31e5dfbe1912e0532e9055c68b5c689e096e87",
+        "author": "Junegunn Choi",
+        "email": "junegunn.c@gmail.com",
+        "date": "2026-07-05T05:15:11Z",
+        "message": "Use floating pane instead of popup on tmux 3.7 or above (#4850) (#4852)\n\nUnlike a popup, a floating pane is not modal; you can switch to other\npanes and windows while fzf is running, move and resize the pane with\nthe mouse, zoom it to fullscreen, and use copy-mode in it.\n\n- Floating pane always has a native border, so 'border-native' is\n  implied; give new 'border-fzf' option to fall back to a popup where\n  fzf draws its own border\n- Popup is also used on tmux versions below 3.7, or when the window is\n  too small to fit a floating pane\n- new-pane does not block until the command finishes and does not\n  propagate the exit status; block on a wait-for channel signaled by\n  the pane and pass the exit status through a temporary file\n- Watchdog process signals the channel when the pane is closed\n  abnormally (e.g. kill-pane)\n- Kill the pane when the proxy process is interrupted, like a popup\n  dying with its client\n- Unzoom the window before creating the floating pane; doing so over a\n  zoomed window crashes the tmux server on 3.7b, and newer versions of\n  tmux unzoom the window anyway\n- Floating pane size excludes the border and the position is that of\n  the content area; treat the requested size as the total footprint\n  including the border for consistency with popups\n- Close the pane on exit even when remain-on-exit is on\n- Pre-create the exit status file with O_EXCL to prevent tampering on\n  a shared TMPDIR",
+        "url": "https://github.com/junegunn/fzf/commit/1e31e5dfbe1912e0532e9055c68b5c689e096e87"
+    },
+    {
+        "sha": "a1fb01462d3367d56835df2694ab5ffe2747014a",
+        "author": "Junegunn Choi",
+        "email": "junegunn.c@gmail.com",
+        "date": "2026-07-05T02:08:58Z",
+        "message": "Copy input snapshot on bracketed paste begin\n\n[]rune(t.input) is a same-type conversion that aliases t.input;\nin-place query edits during the paste corrupt the snapshot and skew\nthe paste-end comparison.",
+        "url": "https://github.com/junegunn/fzf/commit/a1fb01462d3367d56835df2694ab5ffe2747014a"
+    },
+    {
+        "sha": "978ded5cd0d4f1e2ee4d37b01f477bf01a7b9d7a",
+        "author": "Junegunn Choi",
+        "email": "junegunn.c@gmail.com",
+        "date": "2026-07-05T02:08:46Z",
+        "message": "Pass bracketed paste actions through wait/track block\n\nA pasted character firing a wait-arming binding swallowed the\nsubsequent bracketed-paste-end, leaving t.pasting set forever and\nsuppressing queryChanged for all later input. Let paste begin/end\nthrough the block so pasting state is maintained and the search for\nthe edited query is dispatched.",
+        "url": "https://github.com/junegunn/fzf/commit/978ded5cd0d4f1e2ee4d37b01f477bf01a7b9d7a"
+    },
+    {
+        "sha": "743930a38d43bcf07cc18e332489a4344e421c56",
+        "author": "Junegunn Choi",
+        "email": "junegunn.c@gmail.com",
+        "date": "2026-07-05T02:07:44Z",
+        "message": "Run bg-transform callbacks while wait/track-blocked\n\nBackground transform results are unrelated to the block; dropping them\nwould silently lose completed work. Applies both the dedicated\nbg-transform-* setters and actions parsed from generic bg-transform\noutput (inBgCallback); a 'wait' in such output joins the ongoing wait.\nSearches initiated by a bg result are not waited for.",
+        "url": "https://github.com/junegunn/fzf/commit/743930a38d43bcf07cc18e332489a4344e421c56"
+    },
+    {
+        "sha": "8ec443ba40a1ecc213d94ee675aa5dd2090a87b2",
+        "author": "Junegunn Choi",
+        "email": "junegunn.c@gmail.com",
+        "date": "2026-07-05T02:05:57Z",
+        "message": "Add 'wait' action to block until search completion (#4825)\n\nBlocks execution of subsequent actions until the current search\ncompletes, so motion actions operate on the complete result set.\n\n  # Move to the best match only after the search is done\n  fzf --bind 'start:change-query(foo)+wait+best'\n\n- Blocks when a search is in progress, will be triggered by preceding\n  actions, or the query was edited in the same binding; no-op otherwise\n- Initial input load counts as a search in progress, so 'start:wait'\n  blocks until the input is fully loaded and searched\n- User input ignored while blocked, including --expect keys; keys bound\n  to abort/cancel cancel the wait and discard pending actions instead\n- Actions deferred by the wait survive across nested lists (trigger\n  chords) and cancel/re-arm chains\n- Debounced feedback after 200ms: dimmed prompt, hidden cursor, and\n  (..) on the info line",
+        "url": "https://github.com/junegunn/fzf/commit/8ec443ba40a1ecc213d94ee675aa5dd2090a87b2"
+    },
+    {
+        "sha": "9e2856559d50637df482b8598fd7b35b2d746485",
+        "author": "Jason Han",
+        "email": "jason.han@duolingo.com",
+        "date": "2026-06-28T12:05:16Z",
+        "message": "Add mouse wheel tests",
+        "url": "https://github.com/junegunn/fzf/commit/9e2856559d50637df482b8598fd7b35b2d746485"
+    },
+    {
+        "sha": "9e4f8e7b7ada3667864c1857d27d251c9c26dd76",
+        "author": "Jason Han",
+        "email": "jason.han@duolingo.com",
+        "date": "2026-06-28T12:05:05Z",
+        "message": "Fix horizontal mouse wheel being treated as vertical scroll\n\nClose #4848",
+        "url": "https://github.com/junegunn/fzf/commit/9e4f8e7b7ada3667864c1857d27d251c9c26dd76"
+    },
+    {
+        "sha": "f2e451596c5d23de0069cdc51ea3fec73b7fe835",
+        "author": "Junegunn Choi",
+        "email": "junegunn.c@gmail.com",
+        "date": "2026-06-23T11:49:50Z",
+        "message": "Skip FZF_CURRENT_ITEM export for items larger than 64 KB\n\nA huge item can overflow ARG_MAX and break exec with E2BIG, failing\npreview and other child commands. (#4806)",
+        "url": "https://github.com/junegunn/fzf/commit/f2e451596c5d23de0069cdc51ea3fec73b7fe835"
+    },
+    {
+        "sha": "109057877b3ddc708097faafe35d5be27307c313",
+        "author": "dependabot[bot]",
+        "email": "49699333+dependabot[bot]@users.noreply.github.com",
+        "date": "2026-06-23T04:36:49Z",
+        "message": "Bump actions/checkout from 5 to 7 (#4844)\n\nBumps [actions/checkout](https://github.com/actions/checkout) from 5 to 7.\n- [Release notes](https://github.com/actions/checkout/releases)\n- [Changelog](https://github.com/actions/checkout/blob/main/CHANGELOG.md)\n- [Commits](https://github.com/actions/checkout/compare/v5...v7)\n\n---\nupdated-dependencies:\n- dependency-name: actions/checkout\n  dependency-version: '7'\n  dependency-type: direct:production\n  update-type: version-update:semver-major\n...\n\nSigned-off-by: dependabot[bot] <support@github.com>\nCo-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>",
+        "url": "https://github.com/junegunn/fzf/commit/109057877b3ddc708097faafe35d5be27307c313"
+    },
+    {
+        "sha": "0fd47770fc5cc3f3fa67c07b085604724305e43e",
+        "author": "dependabot[bot]",
+        "email": "49699333+dependabot[bot]@users.noreply.github.com",
+        "date": "2026-06-23T04:36:36Z",
+        "message": "Bump ruby/setup-ruby from 1.308.0 to 1.314.0 (#4843)\n\nBumps [ruby/setup-ruby](https://github.com/ruby/setup-ruby) from 1.308.0 to 1.314.0.\n- [Release notes](https://github.com/ruby/setup-ruby/releases)\n- [Changelog](https://github.com/ruby/setup-ruby/blob/master/release.rb)\n- [Commits](https://github.com/ruby/setup-ruby/compare/97ecb7b512899eb71ab1bf2310a624c6f1589ac6...9eb537ca036ebaed86729dcb9309076e4c5c3b74)\n\n---\nupdated-dependencies:\n- dependency-name: ruby/setup-ruby\n  dependency-version: 1.314.0\n  dependency-type: direct:production\n  update-type: version-update:semver-minor\n...\n\nSigned-off-by: dependabot[bot] <support@github.com>\nCo-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>",
+        "url": "https://github.com/junegunn/fzf/commit/0fd47770fc5cc3f3fa67c07b085604724305e43e"
+    },
+    {
+        "sha": "3c9965a61a842ef54e976c7195b985ee43a3e776",
+        "author": "bitraid",
+        "email": "bitraid@protonmail.ch",
+        "date": "2026-06-14T14:52:45Z",
+        "message": "fish: Make CTRL-R work on empty/invalid $fish_color{normal,comment} (#4831)\n\nFix #4767\nFix #4830",
+        "url": "https://github.com/junegunn/fzf/commit/3c9965a61a842ef54e976c7195b985ee43a3e776"
+    },
+    {
+        "sha": "3951df85371dd90c6825c90f55a9dcb3d9326862",
+        "author": "Junegunn Choi",
+        "email": "junegunn.c@gmail.com",
+        "date": "2026-06-14T12:55:48Z",
+        "message": "Bind alt-left/alt-right to backward-word/forward-word by default\n\nFix #4833",
+        "url": "https://github.com/junegunn/fzf/commit/3951df85371dd90c6825c90f55a9dcb3d9326862"
+    },
+    {
+        "sha": "5dd698b8694e9b8ffd0b0e0ed280ce3d23cf20b5",
+        "author": "Junegunn Choi",
+        "email": "junegunn.c@gmail.com",
+        "date": "2026-06-14T10:37:22Z",
+        "message": "Add result-final event\n\n- Fires like result, but only after the input stream closes\n- Use for one-shot per-query actions that would otherwise re-fire on\n  every intermediate snapshot during loading\n\nClose #4835",
+        "url": "https://github.com/junegunn/fzf/commit/5dd698b8694e9b8ffd0b0e0ed280ce3d23cf20b5"
+    },
+    {
+        "sha": "f5fbfd848ec0a5c9771dd103e921e7064445c9ba",
+        "author": "Junegunn Choi",
+        "email": "junegunn.c@gmail.com",
+        "date": "2026-06-07T09:06:07Z",
+        "message": "Let bw theme inherit overridden colors\n\n- Mark derived color slots undefined so fg/bg/list-bg propagate\n- Add missing Footer slot (was rendering black)",
+        "url": "https://github.com/junegunn/fzf/commit/f5fbfd848ec0a5c9771dd103e921e7064445c9ba"
+    },
+    {
+        "sha": "dea72834ed35b5d56634075fc7793aa4b9b1d697",
+        "author": "Junegunn Choi",
+        "email": "junegunn.c@gmail.com",
+        "date": "2026-06-07T09:05:59Z",
+        "message": "Keep base fg/bg when resolving colors in bw theme\n\nTrailing prompt space and other base-colored segments no longer reset to terminal default",
+        "url": "https://github.com/junegunn/fzf/commit/dea72834ed35b5d56634075fc7793aa4b9b1d697"
+    },
+    {
+        "sha": "abee152255387a5e0ee0543f275b792265e0ef5e",
+        "author": "LangLangBart",
+        "email": "92653266+LangLangBart@users.noreply.github.com",
+        "date": "2026-06-05T03:12:49Z",
+        "message": "test: ALT-C regression tests\n\ndiscussed in https://github.com/junegunn/fzf/issues/4816",
+        "url": "https://github.com/junegunn/fzf/commit/abee152255387a5e0ee0543f275b792265e0ef5e"
+    },
+    {
+        "sha": "bf114bcc21e17d405e1077729520fce2ad2ebb9d",
+        "author": "LangLangBart",
+        "email": "92653266+LangLangBart@users.noreply.github.com",
+        "date": "2026-06-05T03:11:44Z",
+        "message": "test: install nushell in Dockerfile\n\nref: https://docs.docker.com/reference/dockerfile/#here-documents",
+        "url": "https://github.com/junegunn/fzf/commit/bf114bcc21e17d405e1077729520fce2ad2ebb9d"
+    },
+    {
+        "sha": "838ac7554bdbae2f457f2c4969e1b38f1c28c946",
+        "author": "Junegunn Choi",
+        "email": "junegunn.c@gmail.com",
+        "date": "2026-06-02T11:23:23Z",
+        "message": "make lint",
+        "url": "https://github.com/junegunn/fzf/commit/838ac7554bdbae2f457f2c4969e1b38f1c28c946"
+    },
+    {
+        "sha": "ae78a5c56d6586589f9587902f437385c176eddc",
+        "author": "Junegunn Choi",
+        "email": "junegunn.c@gmail.com",
+        "date": "2026-06-02T11:20:51Z",
+        "message": "Allow bare put action in transform output\n\ntransform/bg-transform now permit bare `put`, inserting the key that\ntriggered the action (`a:transform:echo put` puts `a`).",
+        "url": "https://github.com/junegunn/fzf/commit/ae78a5c56d6586589f9587902f437385c176eddc"
+    },
+    {
+        "sha": "7d647c70c286720c225ebb8ab75896e5dbee6af6",
+        "author": "Yi-Yo Chiang",
+        "email": "5255547+silverneko@users.noreply.github.com",
+        "date": "2026-05-29T16:40:40Z",
+        "message": "[shell][zsh] Don't resolve symlinks in ALT-c (#4816)\n\nThis way ALT-c behaves more aligned with `cd`.\n\nImagine a setup like:\n```\n/foo -> foo_real\n/foo_real/bar\n```\n\nRight now if we first `cd foo` (a symlink to `foo_real`), and\nthen use ALT-c to goto `bar`, then we would end up executing\n`cd /foo_real/bar` instead of `cd /foo/bar`. `$PWD = /foo_real/bar`.\n\nFor comparison, if we first `cd foo` and then `cd bar`, we end up with\n`$PWD = /foo/bar`.\n\nThis commit changes the internal logic of `fzf-cd-widget` to first run\n`cd <result of FZF_ALT_C_COMMAND>` in a subshell to simulate the\nbehavior of `cd`, and then insert the target PWD into the shell history.\nThis way we get behavior consistent with the builtin `cd` command, while\nalso recording reusable shell history.",
+        "url": "https://github.com/junegunn/fzf/commit/7d647c70c286720c225ebb8ab75896e5dbee6af6"
+    },
+    {
+        "sha": "6bd17f8f9ae03f182fa0c1c41b9775bc131f0a24",
+        "author": "Junegunn Choi",
+        "email": "junegunn.c@gmail.com",
+        "date": "2026-05-31T03:37:05Z",
+        "message": "Revert \"[shell][zsh] Don't resolve symlinks in ALT-c (#4816) (#4817)\"\n\nThis reverts commit 249a6df4a489dacd28e2c50395909571671ff707.",
+        "url": "https://github.com/junegunn/fzf/commit/6bd17f8f9ae03f182fa0c1c41b9775bc131f0a24"
+    },
+    {
+        "sha": "249a6df4a489dacd28e2c50395909571671ff707",
+        "author": "Junegunn Choi",
+        "email": "junegunn.c@gmail.com",
+        "date": "2026-05-31T03:34:58Z",
+        "message": "[shell][zsh] Don't resolve symlinks in ALT-c (#4816) (#4817)\n\nThis way ALT-c behaves more aligned with `cd`.\n\nImagine a setup like:\n```\n/foo -> foo_real\n/foo_real/bar\n```\n\nRight now if we first `cd foo` (a symlink to `foo_real`), and\nthen use ALT-c to goto `bar`, then we would end up executing\n`cd /foo_real/bar` instead of `cd /foo/bar`. `$PWD = /foo_real/bar`.\n\nFor comparison, if we first `cd foo` and then `cd bar`, we end up with\n`$PWD = /foo/bar`.\n\nThis commit changes the internal logic of `fzf-cd-widget` to first run\n`cd <result of FZF_ALT_C_COMMAND>` in a subshell to simulate the\nbehavior of `cd`, and then insert the target PWD into the shell history.\nThis way we get behavior consistent with the builtin `cd` command, while\nalso recording reusable shell history.\n\nCo-authored-by: Yi-Yo Chiang <5255547+silverneko@users.noreply.github.com>\n\nClose #4816",
+        "url": "https://github.com/junegunn/fzf/commit/249a6df4a489dacd28e2c50395909571671ff707"
+    },
+    {
+        "sha": "a50619388d76832a18b4fc0db9d61f8dd5e3b518",
+        "author": "Junegunn Choi",
+        "email": "junegunn.c@gmail.com",
+        "date": "2026-05-28T14:02:34Z",
+        "message": "[install] Fix empty-shell detection in install script\n\n${#shells} is the string length, not the shell count.\n\nThanks to @matheus-pacifico for the report.\n\nClose #4813",
+        "url": "https://github.com/junegunn/fzf/commit/a50619388d76832a18b4fc0db9d61f8dd5e3b518"
+    }
+]

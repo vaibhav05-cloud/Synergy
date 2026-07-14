@@ -1,0 +1,364 @@
+[
+    {
+        "id": 3572602421,
+        "number": 104,
+        "title": "Feat: DNS record gossip",
+        "state": "open",
+        "created_at": "2025-10-30T21:42:58Z",
+        "updated_at": "2025-10-30T21:43:10Z",
+        "closed_at": null,
+        "author": "RangerMauve",
+        "comments": 0,
+        "labels": [
+            "enhancement"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "We should have a way to exchange DNS records (like `hyper://agregore.mauve.moe`) with peers on the local network even if DNS is unavailable (e.g. local mesh networks / wifi hotspots).\n\n- [ ] Expose muxer inside [corestore](https://github.com/holepunchto/corestore/blob/main/index.js#L422) when replicating in[hyper-sdk](https://github.com/RangerMauve/hyper-sdk/blob/master/index.js#L403)\n- [ ] Define protocol for doing an ASK for a hostname and a RESPONSE with either a public key for the hostname or empty buffer if they don't have the hostname\n- [ ] When getting ASK, fetch the hostname from the [DNS cache](https://github.com/RangerMauve/hyper-sdk/blob/master/index.js#L75). Respond with the public key or empty buffer\n- [ ] When failing to perform a DNS lookup (and not having a cached value), broadcast an ASK to all known peers and use either the first returned record or fail after a second.\n\nThis has the security risk that peers you're connected to can lie about the DNS key. We might want to wait for a quorum of peers to respond before choosing a key, or having some sort trusted set of peers. This should also have an opt out flag since it introduces a leak of which domains a peer might have visited before which could be used for fingerprinting or extracting info.",
+        "url": "https://github.com/RangerMauve/hyper-sdk/issues/104"
+    },
+    {
+        "id": 1636651147,
+        "number": 101,
+        "title": "Cache DNS to storage for offline use",
+        "state": "closed",
+        "created_at": "2023-03-22T23:59:51Z",
+        "updated_at": "2025-10-30T21:44:16Z",
+        "closed_at": "2025-10-30T21:44:16Z",
+        "author": "RangerMauve",
+        "comments": 2,
+        "labels": [
+            "enhancement"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "- [ ] Either add persistence logic via [dns-query](https://github.com/martinheidegger/dns-query/#persist-nodejs) or over the built in storage\r\n- [ ] In-Memory cache for domains\r\n- [ ] Fetch from In-Memory before TTL\r\n- [ ] Fetch from In-Memory on query fail\r\n- [ ] Periodically save In-Memory cache to storage\r\n- [ ] Persist cache on close\r\n- [ ] Attempt to load cache from storage on load\r\n\r\nIs there a way we can reshare records between peers longer term?",
+        "url": "https://github.com/RangerMauve/hyper-sdk/issues/101"
+    },
+    {
+        "id": 1177276813,
+        "number": 96,
+        "title": "Webpack instructions are outdated--a proposal for an updated config",
+        "state": "closed",
+        "created_at": "2022-03-22T20:33:59Z",
+        "updated_at": "2022-06-04T04:17:33Z",
+        "closed_at": "2022-06-04T04:17:33Z",
+        "author": "HDegroote",
+        "comments": 1,
+        "labels": [
+            "documentation",
+            "help wanted"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "The instructions for compiling with webpack appear to be somewhat outdated. \r\n\r\nIn Webpack Version 5 (the most recent at the time of writing), a bunch of modules which before where automatically added, were removed. The full list is here: https://webpack.js.org/configuration/resolve/#resolvefallback). So these now need to be explicitly added to the config file.\r\n\r\n\r\nThere were some other issues as well (see the comments), but in the end I managed to get webpack working, with the following `webpack.config.js`:\r\n```\r\nconst path = require('path')\r\nvar webpack = require('webpack');\r\n\r\nmodule.exports = {\r\n    'mode': 'development',\r\n    entry: './index.js',\r\n    target: 'web',\r\n    resolve: {\r\n        alias: {\r\n            hyperswarm: 'hyperswarm-web',\r\n            /*\r\n                When using graceful-fs, there is an odd runtime issue because of types at a \r\n                line of Object.setProtoTypeOf            \r\n                See: https://github.com/isaacs/node-graceful-fs/issues/222 \r\n                It Can be resolved by manually removing that line from the bundle, \r\n                which is a very clumsy solution (and it removes some functionality of graceful-fs)\r\n                Or by not mapping fs on graceful-fs, and setting 'fs: false' in fallback. \r\n            */\r\n            //fs: 'graceful-fs',            \r\n        },\r\n        fallback: { \r\n            crypto: require.resolve(\"crypto-browserify\"),\r\n            path: require.resolve(\"path-browserify\"),\r\n            os: require.resolve('os-browserify/browser'),\r\n            stream: require.resolve('stream-browserify'),\r\n            constants: require.resolve('constants-browserify'),\r\n            \r\n            /* \r\n                The ones who follow cause errors which are only detected at runtime\r\n                when they are not added\r\n            */\r\n            buffer: require.resolve('buffer/'),  // Note the trailing slash\r\n            process: 'process/browser', // https://stackoverflow.com/questions/65018431/webpack-5-uncaught-referenceerror-process-is-not-defined\r\n            fs: false\r\n        },\r\n    },\r\n    plugins: [\r\n        //SOURCE: https://viglucci.io/how-to-polyfill-buffer-with-webpack-5\r\n        new webpack.ProvidePlugin({\r\n            Buffer: ['buffer', 'Buffer'],\r\n            process: 'process/browser',\r\n        }),       \r\n    ],\r\n    output: {\r\n        filename: 'bundle.js',\r\n        path: path.resolve(__dirname, 'dist')\r\n    },\r\n}\r\n```\r\n\r\nAfter adding all required packages to the project (yarn or npm add hyperswarm-web crypto-browserify etc.), webpack can create a bundle, and this bundle works (I managed to read an external hyperdrive from the browser). A similar config can also be used to create a Quasar-Vue app. \r\n\r\nThere very well might be other missing packages, which will be detected only at runtime, but I think this config already gives a good idea of how to resolve the issues.\r\n\r\nSome specific remarks concerning the example config in the readme:\r\n\r\n- I got an odd runtime error when using graceful-fs (see comments in the webpack.config.js)\r\n- I think the solution in the current readme for adding util is non-standard, but I couldn't really check for a better way, because it wasn't required to create the bundle in my case.\r\n\r\nIf you want, I can create a pull request to update the Readme, or even include a webpack.config.js in the repo, so there is an example config which works.\r\n\r\n\r\n\r\n\r\n",
+        "url": "https://github.com/RangerMauve/hyper-sdk/issues/96"
+    },
+    {
+        "id": 1171432841,
+        "number": 95,
+        "title": "Websocket error makes sdk unusable",
+        "state": "closed",
+        "created_at": "2022-03-16T18:59:31Z",
+        "updated_at": "2022-03-19T22:01:12Z",
+        "closed_at": "2022-03-19T22:01:12Z",
+        "author": "K0IN",
+        "comments": 0,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "Im building a little webapp with the sdk, and i allways run in this error:\r\n\r\n> hyper-sdk-bundle.js? [sm]:73954 WebSocket connection to 'ws://localhost:4977/' failed: \r\n\r\nAfter this error i cannot read any hyperdrive until i restart the initialization of the sdk.\r\n\r\nAfter some debugging, I found the problem in HyperswarmProxyWSClient::reconnect\r\n![image](https://user-images.githubusercontent.com/19688162/158665867-d7728611-017b-4468-93f8-fd5bce67ecf5.png)\r\n\r\n\r\nI'm not sure if this is a bug in this repo, but it certainly makes this unusable.\r\n\r\n(original code)\r\nhttps://github.com/RangerMauve/hyperswarm-proxy-ws/blob/1eb03231fa86439e83da74dff435bef60c17a8ca/client.js\r\n\r\nI Removed the code in this function, and it seems to work fine (obv. not a great idea for prod)",
+        "url": "https://github.com/RangerMauve/hyper-sdk/issues/95"
+    },
+    {
+        "id": 1052787231,
+        "number": 94,
+        "title": "trying to connect to a beaker hyperdrive getting 'TypeError: expected a string'",
+        "state": "closed",
+        "created_at": "2021-11-13T22:17:47Z",
+        "updated_at": "2021-11-14T05:23:14Z",
+        "closed_at": "2021-11-14T05:23:14Z",
+        "author": "ryanramage",
+        "comments": 1,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "trying to follow the docs in the readme, but getting an error\r\n\r\n```\r\nTypeError: expected a string\r\n    at normalizePath (/Users/ryanr/github/ryanramage/hypermls/node_modules/normalize-path/index.js:12:11)\r\n    at unixify (/Users/ryanr/github/ryanramage/hypermls/node_modules/unixify/index.js:13:14)\r\n    at fixName (/Users/ryanr/github/ryanramage/hypermls/node_modules/hyperdrive/index.js:1314:10)\r\n    at HyperdriveCompat.lstat (/Users/ryanr/github/ryanramage/hypermls/node_modules/hyperdrive/index.js:734:12)\r\n    at HyperdriveCompat.stat (/Users/ryanr/github/ryanramage/hypermls/node_modules/hyperdrive/index.js:763:10)\r\n    at HyperdriveCompat.stat (/Users/ryanr/github/ryanramage/hypermls/node_modules/hyperdrive/index.js:760:49)\r\n    at HyperdriveCompat._walk (/Users/ryanr/github/ryanramage/hypermls/node_modules/hyperdrive/index.js:1079:10)\r\n    at HyperdriveCompat.download (/Users/ryanr/github/ryanramage/hypermls/node_modules/hyperdrive/index.js:1062:17)\r\n    at Proxy.method (/Users/ryanr/github/ryanramage/hypermls/node_modules/@geut/hyperdrive-promise/index.js:61:37)\r\n    at module.exports (/Users/ryanr/github/ryanramage/hypermls/lib/run.js:19:15)\r\n```\r\n\r\non the following code\r\n\r\n```\r\nconst SDK = require('hyper-sdk')\r\nconst ram = require('random-access-memory')\r\nmodule.exports = async () => {\r\n\r\n  const sdk = await SDK({\r\n    persist: false,\r\n    storage: ram\r\n  })\r\n  const {\r\n  \tHypercore,    // Create a new Hypercore\r\n  \tHyperdrive,   // Create a new Hyperdrive\r\n  \tresolveName,  // Resolve hyper:// address to key using hyper-dns\r\n  \tclose         // Cleanup all hyper related resources\r\n  } = sdk\r\n\r\n  const SOME_URL = 'hyper://738fd43caa1c80954cc681b0139580652d4eff32f5eab26b6dfdebea5885ea4b/'\r\n  const drive = Hyperdrive(SOME_URL)\r\n\r\n  await drive.download()\r\n  console.log(await somedrive.readdir('/'))\r\n}\r\n\r\n```\r\n\r\nanything you see wrong with it @RangerMauve ?",
+        "url": "https://github.com/RangerMauve/hyper-sdk/issues/94"
+    },
+    {
+        "id": 995000119,
+        "number": 93,
+        "title": "Add hyper-sdk-bundle.js to npm package",
+        "state": "closed",
+        "created_at": "2021-09-13T15:01:43Z",
+        "updated_at": "2025-10-30T21:46:43Z",
+        "closed_at": "2025-10-30T21:46:02Z",
+        "author": "basham",
+        "comments": 3,
+        "labels": [
+            "enhancement",
+            "help wanted",
+            "building"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "Thanks for adding `hyper-sdk-bundle.js` to the repo, in v3.0.10. However, can you also add it to the npm package? It would make it much easier to import it to projects if it was there, instead of copying and pasting it in the project source code.",
+        "url": "https://github.com/RangerMauve/hyper-sdk/issues/93"
+    },
+    {
+        "id": 993920193,
+        "number": 92,
+        "title": "drive.mkdir() doesn't create directory",
+        "state": "closed",
+        "created_at": "2021-09-11T19:21:16Z",
+        "updated_at": "2023-02-01T17:46:44Z",
+        "closed_at": "2023-02-01T17:46:44Z",
+        "author": "bradjin8",
+        "comments": 2,
+        "labels": [
+            "bug",
+            "help wanted"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "I am trying to create a directory on a drive.\r\nBut it creates a file with the same name, instead of a directory.\r\n\r\n` await drive.mkdir(path)`\r\n\r\ntested on MacOS Catalina, node v14\r\n",
+        "url": "https://github.com/RangerMauve/hyper-sdk/issues/92"
+    },
+    {
+        "id": 963049530,
+        "number": 91,
+        "title": "TypeError: hyperswarm is not a function",
+        "state": "closed",
+        "created_at": "2021-08-06T21:13:40Z",
+        "updated_at": "2023-02-01T17:46:59Z",
+        "closed_at": "2023-02-01T17:46:59Z",
+        "author": "ryan-token",
+        "comments": 3,
+        "labels": [
+            "building"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "When using the `hyper-sdk` via `npm` and requiring it in a file, I get an error that says `Uncaught (in promise) TypeError: hyperswarm is not a function`. This error doesn't occur when I build the bundle for browsers myself and include the `hyper-sdk-bundle.js` file in the project manually - but going this route won't work well for our setup.\r\n\r\nThe full error is below:\r\n<img width=\"1234\" alt=\"hyperswarm-not-a-function\" src=\"https://user-images.githubusercontent.com/5607449/128571280-0523df9c-b445-496c-8247-a87f206dcb9a.png\">\r\n\r\nIt looks like the 'not a function' part it's referring to is from here:\r\n<img width=\"458\" alt=\"hyperswarm-invalid\" src=\"https://user-images.githubusercontent.com/5607449/128571409-5e49de39-8fc9-4f5c-b664-5eb57d72c643.png\">\r\n\r\nAnd that `hyperswarm` comes from the `hyperswarm-web` package:\r\n<img width=\"536\" alt=\"Screen Shot 2021-08-05 at 3 30 13 PM\" src=\"https://user-images.githubusercontent.com/5607449/128571450-bcc02169-1cca-4842-97cf-c6e373791cbe.png\">\r\n\r\nLet me know if you need any additional information or if you'd prefer me to log this issue in the [hyperswarm-web](https://github.com/RangerMauve/hyperswarm-web) repo.",
+        "url": "https://github.com/RangerMauve/hyper-sdk/issues/91"
+    },
+    {
+        "id": 961888575,
+        "number": 90,
+        "title": "Hyperdrive mounts between browser tabs not working",
+        "state": "closed",
+        "created_at": "2021-08-05T14:29:51Z",
+        "updated_at": "2023-02-01T17:49:17Z",
+        "closed_at": "2023-02-01T17:49:16Z",
+        "author": "jb33k",
+        "comments": 2,
+        "labels": [
+            "bug",
+            "help wanted"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "I'm testing and trying to mount a hyperdrive created in another tab but the mount shows up empty.\r\n\r\nIn both tabs I create a new hyperdrive, wait both to be ready, write some files to drive2, get `drive2.key.toString('hex')` from tab 2 and try to mount in tab 1 with `drive1.mount('ext', Buffer.from(drive2_key, 'hex'))`. But I get nothing in the mount. I can see from dev tools that I have an open wss connection to hyperswarm.mauve.moe and messages are being passed.\r\n\r\nIf I try this within one tab, everything works perfectly, so the problem seems to be related to hyperswarm?\r\n\r\nIf I understood README correctly, hyper-sdk is supposed to do everything for me behind the scenes, so I don't need to replicate the drives myself?\r\n\r\nHow can I debug this further?",
+        "url": "https://github.com/RangerMauve/hyper-sdk/issues/90"
+    },
+    {
+        "id": 948055158,
+        "number": 89,
+        "title": "Browser Bundle README Issue",
+        "state": "closed",
+        "created_at": "2021-07-19T21:49:51Z",
+        "updated_at": "2021-08-30T21:51:50Z",
+        "closed_at": "2021-08-30T21:49:36Z",
+        "author": "ryan-token",
+        "comments": 1,
+        "labels": [
+            "documentation",
+            "good first issue"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "Following the [Building a bundle for Browsers](https://github.com/datproject/sdk#building-a-bundle-for-browsers) section of the README, I wasn't able to get things to work until I changed:\r\n\r\n`const SDK = window.hyperSDK` to `const SDK = await window.hyperSDK()` within an `async` function.\r\n\r\nUsing the original way, I was getting an error in the console saying `TypeError: this.Hypercore is not a function`\r\n\r\nIs this expected? If you'd like, I can submit a PR to update the README with an extra line of info showing that one may need to try it the `await` way.",
+        "url": "https://github.com/RangerMauve/hyper-sdk/issues/89"
+    },
+    {
+        "id": 854927869,
+        "number": 84,
+        "title": "\"Building a bundle for Browsers\" section of README missing critical steps",
+        "state": "closed",
+        "created_at": "2021-04-09T23:58:13Z",
+        "updated_at": "2021-08-30T21:53:34Z",
+        "closed_at": "2021-08-30T21:53:34Z",
+        "author": "James-E-A",
+        "comments": 4,
+        "labels": [
+            "documentation"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "When trying to build a JS file for use in a simple webpage as per the instructions:\r\n\r\n```\r\n$ git clone git@github.com:datproject/sdk.git && cd sdk\r\nCloning into 'sdk'...\r\nremote: Enumerating objects: 174, done.\r\nremote: Counting objects: 100% (174/174), done.\r\nremote: Compressing objects: 100% (122/122), done.\r\nremote: Total 740 (delta 95), reused 115 (delta 51), pack-reused 566\r\nReceiving objects: 100% (740/740), 170.42 KiB | 612.00 KiB/s, done.\r\nResolving deltas: 100% (443/443), done.\r\n$ npm run build\r\n\r\n> hyper-sdk@3.0.7 build /tmp/hyper-sdk\r\n> cross-env BABEL_DISABLE_CACHE=1 browserify -t [ babelify --global ] --standalone hyperSDK index.js > hyper-sdk-bundle.js\r\n\r\nsh: cross-env: command not found\r\nnpm ERR! code ELIFECYCLE\r\nnpm ERR! syscall spawn\r\nnpm ERR! file sh\r\nnpm ERR! errno ENOENT\r\nnpm ERR! hyper-sdk@3.0.7 build: `cross-env BABEL_DISABLE_CACHE=1 browserify -t [ babelify --global ] --standalone hyperSDK index.js > hyper-sdk-bundle.js`\r\nnpm ERR! spawn ENOENT\r\nnpm ERR! \r\nnpm ERR! Failed at the hyper-sdk@3.0.7 build script.\r\nnpm ERR! This is probably not a problem with npm. There is likely additional logging output above.\r\nnpm WARN Local package.json exists, but node_modules missing, did you mean to install?\r\n\r\nnpm ERR! A complete log of this run can be found in:\r\nnpm ERR!     /home/user/.npm/_logs/2021-04-09T23_54_32_216Z-debug.log\r\n$ cat ~/.npm/_logs/2021-04-09T23_54_32_216Z-debug.log\r\n0 info it worked if it ends with ok\r\n1 verbose cli [ '/usr/bin/node', '/usr/bin/npm', 'run', 'build' ]\r\n2 info using npm@6.14.10\r\n3 info using node@v12.20.1\r\n4 verbose run-script [ 'prebuild', 'build', 'postbuild' ]\r\n5 info lifecycle hyper-sdk@3.0.7~prebuild: hyper-sdk@3.0.7\r\n6 info lifecycle hyper-sdk@3.0.7~build: hyper-sdk@3.0.7\r\n7 verbose lifecycle hyper-sdk@3.0.7~build: unsafe-perm in lifecycle true\r\n8 verbose lifecycle hyper-sdk@3.0.7~build: PATH: /usr/lib/node_modules/npm/node_modules/npm-lifecycle/node-gyp-bin:/tmp/hyper-sdk/node_modules/.bin:/home/user/.local/bin:/home/user/bin:/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin\r\n9 verbose lifecycle hyper-sdk@3.0.7~build: CWD: /tmp/hyper-sdk\r\n10 silly lifecycle hyper-sdk@3.0.7~build: Args: [\r\n10 silly lifecycle   '-c',\r\n10 silly lifecycle   'cross-env BABEL_DISABLE_CACHE=1 browserify -t [ babelify --global ] --standalone hyperSDK index.js > hyper-sdk-bundle.js'\r\n10 silly lifecycle ]\r\n11 info lifecycle hyper-sdk@3.0.7~build: Failed to exec build script\r\n12 verbose stack Error: hyper-sdk@3.0.7 build: `cross-env BABEL_DISABLE_CACHE=1 browserify -t [ babelify --global ] --standalone hyperSDK index.js > hyper-sdk-bundle.js`\r\n12 verbose stack spawn ENOENT\r\n12 verbose stack     at ChildProcess.<anonymous> (/usr/lib/node_modules/npm/node_modules/npm-lifecycle/lib/spawn.js:48:18)\r\n12 verbose stack     at ChildProcess.emit (events.js:314:20)\r\n12 verbose stack     at maybeClose (internal/child_process.js:1022:16)\r\n12 verbose stack     at Process.ChildProcess._handle.onexit (internal/child_process.js:287:5)\r\n13 verbose pkgid hyper-sdk@3.0.7\r\n14 verbose cwd /tmp/hyper-sdk\r\n15 verbose Linux 5.10.18-100.fc32.x86_64\r\n16 verbose argv \"/usr/bin/node\" \"/usr/bin/npm\" \"run\" \"build\"\r\n17 verbose node v12.20.1\r\n18 verbose npm  v6.14.10\r\n19 error code ELIFECYCLE\r\n20 error syscall spawn\r\n21 error file sh\r\n22 error errno ENOENT\r\n23 error hyper-sdk@3.0.7 build: `cross-env BABEL_DISABLE_CACHE=1 browserify -t [ babelify --global ] --standalone hyperSDK index.js > hyper-sdk-bundle.js`\r\n23 error spawn ENOENT\r\n24 error Failed at the hyper-sdk@3.0.7 build script.\r\n24 error This is probably not a problem with npm. There is likely additional logging output above.\r\n25 verbose exit [ 1, true ]\r\n```\r\n\r\nWhat step are the instructions missing? I'm happy to send a PR to fix the documentation.",
+        "url": "https://github.com/RangerMauve/hyper-sdk/issues/84"
+    },
+    {
+        "id": 834230056,
+        "number": 83,
+        "title": "where does feed / signature validation take place when calling feed.append()?",
+        "state": "closed",
+        "created_at": "2021-03-17T22:36:21Z",
+        "updated_at": "2021-04-01T06:35:01Z",
+        "closed_at": "2021-03-29T01:47:53Z",
+        "author": "alexpmorris",
+        "comments": 2,
+        "labels": [
+            "question"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "I recently did a test changing feed.secretKey after a few calls to `feed.append()`, then called `feed.append()` again. I expected the call to fail. However, it went through without a problem. If I manually called `feed.verify()` after that, only then did I receive a \"Signature verification failed\" error:\r\n\r\n```\r\n> await feed.verify(feed.length-1, feed._storage.signatures.toBuffer().slice(-64))\r\nUncaught Error: Signature verification failed\r\n```  \r\n\r\nThere was no replication or persistence with this test feed, so maybe that's part of the problem, as I don't expect it would be that easy to potentially corrupt a propagated feed.\r\n\r\nBut it also seems that by default, performing this sort of action using a key that doesn't match prior transactions should throw an error.\r\n\r\nAppreciate any additional insight on this issue.",
+        "url": "https://github.com/RangerMauve/hyper-sdk/issues/83"
+    },
+    {
+        "id": 825457419,
+        "number": 82,
+        "title": "Hyperdrive gets stuck loading after adding a hypercore",
+        "state": "closed",
+        "created_at": "2021-03-09T07:38:18Z",
+        "updated_at": "2021-08-30T21:54:17Z",
+        "closed_at": "2021-08-30T21:54:17Z",
+        "author": "lanmower",
+        "comments": 2,
+        "labels": [
+            "question"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "So I add a hyperdrive, everything works fine, add watchers and load some files and everything is hunky dory.\r\n\r\nIf I then add a hypercore (with the intention to use the extension messages) the hypercore works 100% fine, but the drive gets stuck when loading files.\r\n\r\nThe expected behavior would be that my hyperdrive keeps working after the addition of another hypercore.",
+        "url": "https://github.com/RangerMauve/hyper-sdk/issues/82"
+    },
+    {
+        "id": 823851624,
+        "number": 81,
+        "title": "Building and testing on Node 14, errors in the browser relating to gyp?",
+        "state": "closed",
+        "created_at": "2021-03-07T07:15:13Z",
+        "updated_at": "2021-04-01T06:36:26Z",
+        "closed_at": "2021-03-07T08:34:27Z",
+        "author": "lanmower",
+        "comments": 1,
+        "labels": [
+            "documentation"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "Since node 12 build failed on me (error finding is-array import) I tried Node 14, it built but I get this error in the browser\r\n\r\n![image](https://user-images.githubusercontent.com/657315/110232326-9d080c80-7f25-11eb-86e2-4c6dc06efeb0.png)\r\n\r\nDemo at:\r\n\r\nhttps://chakrachain-verify.glitch.me/\r\n\r\nSource code for demo:\r\n\r\n![image](https://user-images.githubusercontent.com/657315/110232238-4995be80-7f25-11eb-8227-e51b5e8215d0.png)\r\n",
+        "url": "https://github.com/RangerMauve/hyper-sdk/issues/81"
+    },
+    {
+        "id": 795129364,
+        "number": 79,
+        "title": "Error in remote readFile: Uncaught TypeError: Cannot read property 'update' of null",
+        "state": "closed",
+        "created_at": "2021-01-27T14:03:59Z",
+        "updated_at": "2021-09-06T17:33:51Z",
+        "closed_at": "2021-09-06T17:33:51Z",
+        "author": "4c656554",
+        "comments": 10,
+        "labels": [
+            "bug",
+            "help wanted",
+            "building"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "My setup.\r\n\r\nTwo chrome based browsers (1. Ubuntu 18.04.5, 2. Win10)\r\n\r\nA website that loads browserified hyper-sdk (from this repo)\r\n\r\nA Node server running hyperswarm-web proxy and signal servers (used by hyper-sdk)\r\n\r\nI can set up and read small text snippets:\r\n\r\ne.g. Computer 1:\r\n\r\n```\r\nlet hypersdk = await window.hyperSDK({swarmOpts:{preferredPort:42420,wsProxy:'wss:/my.url/proxy'}}\r\nlet c1Drive = await hypersdk.Hyperdrive('c1Drive')\r\nawait myDrive.writeFile('test','This is some text')\r\nawait myDrive.writeFile('blob',<1.3MB base64 encoded data (as string)>)\r\n```\r\n\r\n\r\nComputer 2:\r\n\r\n```\r\nlet hypersdk = await window.hyperSDK({swarmOpts:{preferredPort:42420,wsProxy:'wss:/my.url/proxy'}}\r\nlet c1Drive = await hypersdk.Hyperdrive(\"hyper://\"+<key of c1Drive>)\r\nlet txt = await c1Drive.readFile('test')  // works :-)\r\nlet vid = await c1Drive.readFile('blob')  // doesn't work, see error below:\r\n```\r\n\r\nI attempting to read the large file I get the following error, on the console of computer 1. \r\n\r\n```\r\nUncaught TypeError: Cannot read property 'update' of null\r\n    at XSalsa20.update (hyper-sdk-bundle.js:72718)\r\n    at XORJS.update (hyper-sdk-bundle.js:72686)\r\n    at XOR.encrypt (hyper-sdk-bundle.js:62572)\r\n    at SimpleProtocol._sendNow (hyper-sdk-bundle.js:62330)\r\n    at SimpleProtocol._send (hyper-sdk-bundle.js:62318)\r\n    at SimpleProtocol.data (hyper-sdk-bundle.js:62256)\r\n    at Channel.data (hyper-sdk-bundle.js:33587)\r\n    at onvalue (hyper-sdk-bundle.js:36342)\r\n    at Request._callback (hyper-sdk-bundle.js:37014)\r\n    at Request.callback (hyper-sdk-bundle.js:55488)\r\n```\r\n\r\nI will continue to investigate, but posting here in case anyone can recognise what is going wrong.\r\n\r\nThanks",
+        "url": "https://github.com/RangerMauve/hyper-sdk/issues/79"
+    },
+    {
+        "id": 783033532,
+        "number": 75,
+        "title": "Reuse existing identity on new node",
+        "state": "closed",
+        "created_at": "2021-01-11T03:13:07Z",
+        "updated_at": "2021-01-14T17:49:39Z",
+        "closed_at": "2021-01-14T17:48:58Z",
+        "author": "fmsouza",
+        "comments": 5,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "I looked around the docs and issues list for a way to reuse an existing secret key on the SDK startup, but found nothing. Is it possible? And if so, how to do it?\r\n\r\nUse case for that would be using the same identity while accessing your data on the network in different devices. Imagine a Dat based \"Twitter\". I want to post from several different devices (computer, phone, etc.) but using the same identity, so I won't need to have a separate feed of things I posted for each device I am using.",
+        "url": "https://github.com/RangerMauve/hyper-sdk/issues/75"
+    },
+    {
+        "id": 775548328,
+        "number": 74,
+        "title": "Support hybrid backend for web+native",
+        "state": "open",
+        "created_at": "2020-12-28T19:15:45Z",
+        "updated_at": "2020-12-28T19:15:53Z",
+        "closed_at": null,
+        "author": "RangerMauve",
+        "comments": 0,
+        "labels": [
+            "enhancement",
+            "help wanted"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "Similar to webtorrent-hybrid, it should be possible to load the SDK in a hybrid mode on Node.js where it connects to WebRTC in addition to raw hyperswarm to help seed browser networks.\r\n\r\nThis should make applications that use regular web browsers as a fallback more resilient and should make it easier to satisfy this use case.\r\n\r\nSome thoughts:\r\n\r\n- Will we need to wrap hyperswarm-web and hyperswarm in a hyperswarm-hybrid?\r\n- Should node clients be using the proxy? (should probably avoid it, but it could be nice as a last resort instead of a TURN server)\r\n- Can we do deduplication across the sources of peers?\r\n\r\nFeedback / a PR / funding for this feature would be very much appreciated. :P",
+        "url": "https://github.com/RangerMauve/hyper-sdk/issues/74"
+    },
+    {
+        "id": 767461216,
+        "number": 72,
+        "title": "Building a bundle for Browsers fails",
+        "state": "closed",
+        "created_at": "2020-12-15T10:55:55Z",
+        "updated_at": "2021-02-15T16:00:51Z",
+        "closed_at": "2021-02-15T16:00:51Z",
+        "author": "paul90",
+        "comments": 7,
+        "labels": [
+            "bug",
+            "help wanted"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "Looks to be cause by a problem reported upstream as https://github.com/sodium-friends/sodium-universal/issues/6\r\n\r\n`npm run build` fails with:\r\n\r\n```\r\n❯ npm run build\r\n\r\n> hyper-sdk@3.0.2 build /Users/Paul/Projects/hyper/sdk\r\n> cross-env BABEL_DISABLE_CACHE=1 browserify -t [ babelify --global ] --standalone hyperSDK index.js > hyper-sdk-bundle.js\r\n\r\nError: Can't walk dependency graph: Cannot find module './crypto_auth' from '/Users/Paul/Projects/hyper/sdk/node_modules/sodium-universal/index.js'\r\n    required by /Users/Paul/Projects/hyper/sdk/node_modules/sodium-universal/index.js\r\n    at /Users/Paul/Projects/hyper/sdk/node_modules/resolve/lib/async.js:137:35\r\n    at load (/Users/Paul/Projects/hyper/sdk/node_modules/resolve/lib/async.js:156:43)\r\n    at onex (/Users/Paul/Projects/hyper/sdk/node_modules/resolve/lib/async.js:181:17)\r\n    at /Users/Paul/Projects/hyper/sdk/node_modules/resolve/lib/async.js:15:69\r\n    at FSReqCallback.oncomplete (fs.js:183:21)\r\nnpm ERR! code ELIFECYCLE\r\nnpm ERR! errno 1\r\nnpm ERR! hyper-sdk@3.0.2 build: `cross-env BABEL_DISABLE_CACHE=1 browserify -t [ babelify --global ] --standalone hyperSDK index.js > hyper-sdk-bundle.js`\r\nnpm ERR! Exit status 1\r\nnpm ERR!\r\nnpm ERR! Failed at the hyper-sdk@3.0.2 build script.\r\nnpm ERR! This is probably not a problem with npm. There is likely additional logging output above.\r\n\r\nnpm ERR! A complete log of this run can be found in:\r\nnpm ERR!     /Users/Paul/.npm/_logs/2020-12-15T10_44_05_883Z-debug.log\r\n```\r\n\r\nOh, and there is a missing `npm install` between `cd sdk` and `npm run build` in the readme.",
+        "url": "https://github.com/RangerMauve/hyper-sdk/issues/72"
+    },
+    {
+        "id": 731520108,
+        "number": 70,
+        "title": "Uncaught (in promise) Error: Not opened",
+        "state": "closed",
+        "created_at": "2020-10-28T14:56:16Z",
+        "updated_at": "2021-08-30T21:55:34Z",
+        "closed_at": "2021-08-30T21:55:34Z",
+        "author": "glowkeeper",
+        "comments": 5,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "The very first thing I try to do with the sdk gives an error:\r\n\r\n```\r\nconst SDK = require('dat-sdk')\r\nconst sdk = await SDK()\r\n```\r\n\r\nI get _Uncaught (in promise) Error: Not opened_ :\r\n\r\n```\r\n_openAndNotClosed\r\n```\r\n\r\nWhat am I doing wrong?",
+        "url": "https://github.com/RangerMauve/hyper-sdk/issues/70"
+    },
+    {
+        "id": 731399895,
+        "number": 69,
+        "title": "Build fails",
+        "state": "closed",
+        "created_at": "2020-10-28T12:31:49Z",
+        "updated_at": "2021-08-30T21:56:17Z",
+        "closed_at": "2021-08-30T21:56:11Z",
+        "author": "glowkeeper",
+        "comments": 4,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "node v14.15.0\r\nnpm 6.14.8\r\n\r\nI've tried `npm install --save dat-sdk` and `npm install --save dat-sdk@next @geut/sodium-javascript-plus hyperswarm-web`, but both give dependency errors on my build:\r\n\r\n```\r\nWARNING in ./node_modules/sodium-javascript/randombytes.js 23:6-13\r\nCritical dependency: require function is used in a way in which dependencies cannot be statically extracted\r\n @ ./node_modules/sodium-javascript/index.js\r\n @ ./node_modules/sodium-universal/index.js\r\n @ ./node_modules/hypercore-crypto/index.js\r\n @ ./node_modules/dat-sdk/index.js\r\n @ ./src/containers/pages/settings.tsx\r\n @ ./src/containers/pages/index.ts\r\n @ ./src/components/content.tsx\r\n @ ./src/components/pages/main.tsx\r\n @ ./src/components/root.tsx\r\n @ ./src/components/index.tsx\r\n @ multi @babel/polyfill ./src/components/index.tsx\r\n\r\nERROR in ./node_modules/dht-rpc/index.js\r\nModule not found: Error: Can't resolve 'dgram' in '/Users/sh601/gitRepos/Storefront-minima/node_modules/dht-rpc'\r\n @ ./node_modules/dht-rpc/index.js 3:14-30\r\n @ ./node_modules/@hyperswarm/dht/index.js\r\n @ ./node_modules/@hyperswarm/discovery/index.js\r\n @ ./node_modules/@hyperswarm/network/index.js\r\n @ ./node_modules/hyperswarm/swarm.js\r\n @ ./node_modules/@corestore/networker/index.js\r\n @ ./node_modules/dat-sdk/index.js\r\n @ ./src/containers/pages/settings.tsx\r\n @ ./src/containers/pages/index.ts\r\n @ ./src/components/content.tsx\r\n @ ./src/components/pages/main.tsx\r\n @ ./src/components/root.tsx\r\n @ ./src/components/index.tsx\r\n @ multi @babel/polyfill ./src/components/index.tsx\r\n\r\nERROR in ./node_modules/multicast-dns/index.js\r\nModule not found: Error: Can't resolve 'dgram' in '/Users/sh601/gitRepos/Storefront-minima/node_modules/multicast-dns'\r\n @ ./node_modules/multicast-dns/index.js 2:12-28\r\n @ ./node_modules/@hyperswarm/discovery/index.js\r\n @ ./node_modules/@hyperswarm/network/index.js\r\n @ ./node_modules/hyperswarm/swarm.js\r\n @ ./node_modules/@corestore/networker/index.js\r\n @ ./node_modules/dat-sdk/index.js\r\n @ ./src/containers/pages/settings.tsx\r\n @ ./src/containers/pages/index.ts\r\n @ ./src/components/content.tsx\r\n @ ./src/components/pages/main.tsx\r\n @ ./src/components/root.tsx\r\n @ ./src/components/index.tsx\r\n @ multi @babel/polyfill ./src/components/index.tsx\r\n\r\nERROR in ./node_modules/utp-native/index.js\r\nModule not found: Error: Can't resolve 'dns' in '/Users/sh601/gitRepos/Storefront-minima/node_modules/utp-native'\r\n @ ./node_modules/utp-native/index.js 5:12-26\r\n @ ./node_modules/@hyperswarm/network/index.js\r\n @ ./node_modules/hyperswarm/swarm.js\r\n @ ./node_modules/@corestore/networker/index.js\r\n @ ./node_modules/dat-sdk/index.js\r\n @ ./src/containers/pages/settings.tsx\r\n @ ./src/containers/pages/index.ts\r\n @ ./src/components/content.tsx\r\n @ ./src/components/pages/main.tsx\r\n @ ./src/components/root.tsx\r\n @ ./src/components/index.tsx\r\n @ multi @babel/polyfill ./src/components/index.tsx\r\n\r\nERROR in ./node_modules/utp-native/lib/connection.js\r\nModule not found: Error: Can't resolve 'dns' in '/Users/sh601/gitRepos/Storefront-minima/node_modules/utp-native/lib'\r\n @ ./node_modules/utp-native/lib/connection.js 5:12-26\r\n @ ./node_modules/utp-native/index.js\r\n @ ./node_modules/@hyperswarm/network/index.js\r\n @ ./node_modules/hyperswarm/swarm.js\r\n @ ./node_modules/@corestore/networker/index.js\r\n @ ./node_modules/dat-sdk/index.js\r\n @ ./src/containers/pages/settings.tsx\r\n @ ./src/containers/pages/index.ts\r\n @ ./src/components/content.tsx\r\n @ ./src/components/pages/main.tsx\r\n @ ./src/components/root.tsx\r\n @ ./src/components/index.tsx\r\n @ multi @babel/polyfill ./src/components/index.tsx\r\n\r\nERROR in ./node_modules/sodium-javascript/memory.js\r\nModule not found: Error: Can't resolve 'worker_threads' in '/Users/sh601/gitRepos/Storefront-minima/node_modules/sodium-javascript'\r\n @ ./node_modules/sodium-javascript/memory.js 3:50-80\r\n @ ./node_modules/sodium-javascript/index.js\r\n @ ./node_modules/sodium-universal/index.js\r\n @ ./node_modules/hypercore-crypto/index.js\r\n @ ./node_modules/dat-sdk/index.js\r\n @ ./src/containers/pages/settings.tsx\r\n @ ./src/containers/pages/index.ts\r\n @ ./src/components/content.tsx\r\n @ ./src/components/pages/main.tsx\r\n @ ./src/components/root.tsx\r\n @ ./src/components/index.tsx\r\n @ multi @babel/polyfill ./src/components/index.tsx\r\n```\r\n\r\nI was going to try and fix those dependencies myself, but [dgram](https://www.npmjs.com/package/dgram) reckons it's been deprecated (without telling me for what), so that made me a bit nervous. Besides, I thought you might like to know about the errors!\r\n\r\nWhat to do? Any help appreciated...",
+        "url": "https://github.com/RangerMauve/hyper-sdk/issues/69"
+    }
+]

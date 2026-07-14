@@ -1,0 +1,242 @@
+[
+    {
+        "sha": "288db94951a9c93960a20cfd0d72359813ccc909",
+        "author": "Dmitry Karasik",
+        "email": "dmitry@karasik.eu.org",
+        "date": "2026-02-27T13:47:34Z",
+        "message": "Output qr code also if not running interactively (#283)\n\nFor usage inside scripts etc",
+        "url": "https://github.com/google/google-authenticator-libpam/commit/288db94951a9c93960a20cfd0d72359813ccc909"
+    },
+    {
+        "sha": "64544e9f335689f70789257ba19c9628f678ef74",
+        "author": "Thomas Habets",
+        "email": "thomas@habets.se",
+        "date": "2026-02-23T09:35:42Z",
+        "message": "Improve file exists error",
+        "url": "https://github.com/google/google-authenticator-libpam/commit/64544e9f335689f70789257ba19c9628f678ef74"
+    },
+    {
+        "sha": "fa4bf5ebafdee54d2deb1ef69c2a6163a36b2639",
+        "author": "dependabot[bot]",
+        "email": "49699333+dependabot[bot]@users.noreply.github.com",
+        "date": "2026-02-21T11:06:23Z",
+        "message": "Bump flask in /utc-time in the pip group across 1 directory (#284)\n\nBumps the pip group with 1 update in the /utc-time directory: [flask](https://github.com/pallets/flask).\n\n\nUpdates `flask` from 3.0.0 to 3.1.3\n- [Release notes](https://github.com/pallets/flask/releases)\n- [Changelog](https://github.com/pallets/flask/blob/main/CHANGES.rst)\n- [Commits](https://github.com/pallets/flask/compare/3.0.0...3.1.3)\n\n---\nupdated-dependencies:\n- dependency-name: flask\n  dependency-version: 3.1.3\n  dependency-type: direct:production\n  dependency-group: pip\n...\n\nSigned-off-by: dependabot[bot] <support@github.com>\nCo-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>",
+        "url": "https://github.com/google/google-authenticator-libpam/commit/fa4bf5ebafdee54d2deb1ef69c2a6163a36b2639"
+    },
+    {
+        "sha": "625465f77f8a4aaf45cf1c1f61d574dfc429054a",
+        "author": "Thomas Habets",
+        "email": "habets@google.com",
+        "date": "2025-12-01T14:05:47Z",
+        "message": "Fix configure.ac syntax error under some circumstances\n\nFixes #282",
+        "url": "https://github.com/google/google-authenticator-libpam/commit/625465f77f8a4aaf45cf1c1f61d574dfc429054a"
+    },
+    {
+        "sha": "4fcc49f78d74d418de22e980717bb10b21ace187",
+        "author": "Thomas Habets",
+        "email": "habets@google.com",
+        "date": "2025-11-10T18:10:26Z",
+        "message": "Merge branch 'selinux'",
+        "url": "https://github.com/google/google-authenticator-libpam/commit/4fcc49f78d74d418de22e980717bb10b21ace187"
+    },
+    {
+        "sha": "267cbfa31bc17805c4850afd39788d97a7b5374c",
+        "author": "Thomas Habets",
+        "email": "habets@google.com",
+        "date": "2025-11-10T18:09:12Z",
+        "message": "SELinux: conditionally link demo to SELinux",
+        "url": "https://github.com/google/google-authenticator-libpam/commit/267cbfa31bc17805c4850afd39788d97a7b5374c"
+    },
+    {
+        "sha": "665012cf90acadac882db4738b21b7246965ee2a",
+        "author": "Thomas Habets",
+        "email": "habets@google.com",
+        "date": "2025-11-10T18:05:22Z",
+        "message": "SELinux: don't jump past variable initialization",
+        "url": "https://github.com/google/google-authenticator-libpam/commit/665012cf90acadac882db4738b21b7246965ee2a"
+    },
+    {
+        "sha": "6313ae4c2b475e1b73fd272434089cfc4631e14d",
+        "author": "Thomas Habets",
+        "email": "habets@google.com",
+        "date": "2025-11-10T17:57:39Z",
+        "message": "SELinux: fix build when SELinux is not present",
+        "url": "https://github.com/google/google-authenticator-libpam/commit/6313ae4c2b475e1b73fd272434089cfc4631e14d"
+    },
+    {
+        "sha": "75151df21a19e7182c09ae0118379fae890bdf5b",
+        "author": "Johannes Segitz",
+        "email": "jsegitz@suse.de",
+        "date": "2025-11-10T16:34:57Z",
+        "message": "Detect and use libselinux if available",
+        "url": "https://github.com/google/google-authenticator-libpam/commit/75151df21a19e7182c09ae0118379fae890bdf5b"
+    },
+    {
+        "sha": "2a1f725e83d3ffc11d229543c4c2980dffd637b9",
+        "author": "Johannes Segitz",
+        "email": "jsegitz@suse.de",
+        "date": "2025-11-10T16:09:42Z",
+        "message": "Log filure to set SELinux type on secret file at LOG_DEBUG",
+        "url": "https://github.com/google/google-authenticator-libpam/commit/2a1f725e83d3ffc11d229543c4c2980dffd637b9"
+    },
+    {
+        "sha": "a0b6cf1f022f987d21d3d9c597e9f7f9759968ba",
+        "author": "Johannes Segitz",
+        "email": "jsegitz@suse.de",
+        "date": "2025-11-03T12:20:54Z",
+        "message": "Set SELinux type for secret file explicitly\n\nSince the file is changed by creating a temporary file and then\natomically renaming it the normal file handling rules of SELinux\ndon't work properly. Therefor set the SELinux type explicitly on\nthe temporary file.\n\nSee https://bugzilla.suse.com/show_bug.cgi?id=1252092 for more details",
+        "url": "https://github.com/google/google-authenticator-libpam/commit/a0b6cf1f022f987d21d3d9c597e9f7f9759968ba"
+    },
+    {
+        "sha": "95cf23143b30462201adc48228826a9ac3a18b7a",
+        "author": "flowers9",
+        "email": "flowers9@users.noreply.github.com",
+        "date": "2025-02-17T18:19:38Z",
+        "message": "removed extraneous struct (#273)\n\nstruct Params -> Params to keep it consistent with rest of code",
+        "url": "https://github.com/google/google-authenticator-libpam/commit/95cf23143b30462201adc48228826a9ac3a18b7a"
+    },
+    {
+        "sha": "016774b0b75ee8f5e80028998d386de762ba1697",
+        "author": "Thomas Habets",
+        "email": "habets@google.com",
+        "date": "2025-02-13T15:02:48Z",
+        "message": "Up version to 1.11\n\nNotable changes:\n* Change secret key bits to be 160 instead of 128 bits (#266 / #271)\n* Add support for black&white terminals (#268 / #270)\n* Fix `grace_period` for IPv6 link-local addresses (#265)",
+        "url": "https://github.com/google/google-authenticator-libpam/commit/016774b0b75ee8f5e80028998d386de762ba1697"
+    },
+    {
+        "sha": "5eabd7a5f922de2c6b4916736c9248b387b890d2",
+        "author": "flowers9",
+        "email": "flowers9@users.noreply.github.com",
+        "date": "2025-02-13T11:32:18Z",
+        "message": "add support for B&W terminals (#270)\n\nUse current colors to display the qr code by default rather than using black on grey, as we don't actually use white/black printing, just whatever the current foreground and background are (and swap them as needed) and we're printing a border in any case. This allows printing to monochrome terminals by default, where black on grey would translate to black on black.  The old default is available as options to -Q (ANSIg, UTF8g).  Inverted colors are available with ANSIi and UTF8i.\r\n\r\nExplicitly make ANSI the default if no option is chosen.\r\n\r\nRenamed a few defines to better reflect the actual codes (inverse on/off reverse white/black), changed a couple of for loop variables to be consistent (using x for column position).  Also changed isBlack to isInverted to match the define name changes.\r\n\r\nAdded a reset to the start of the output to make sure no pre-existing settings messed with the output, and removed the inverse off code from the default ansi color setup as this was no longer needed.\r\n\r\nMoved from printf/puts to fputs (with additional \\n's as needed) for qr code output as no output was formatted anyway.",
+        "url": "https://github.com/google/google-authenticator-libpam/commit/5eabd7a5f922de2c6b4916736c9248b387b890d2"
+    },
+    {
+        "sha": "57bf744b96fb13f2c142c52538b37fce2e73243e",
+        "author": "Derek Overlock",
+        "email": "overlock.derek@gmail.com",
+        "date": "2025-02-12T10:50:06Z",
+        "message": "Log error message when malloc fails",
+        "url": "https://github.com/google/google-authenticator-libpam/commit/57bf744b96fb13f2c142c52538b37fce2e73243e"
+    },
+    {
+        "sha": "116584ba01ce5bb7858b3cdbad9c597996372872",
+        "author": "Derek Overlock",
+        "email": "overlock.derek@gmail.com",
+        "date": "2025-02-12T08:06:17Z",
+        "message": "Address requested changes - fix malloc and move % character",
+        "url": "https://github.com/google/google-authenticator-libpam/commit/116584ba01ce5bb7858b3cdbad9c597996372872"
+    },
+    {
+        "sha": "de1452b3c3db8d90f39301f3cf6581f83d17e900",
+        "author": "Derek Overlock",
+        "email": "overlock.derek@gmail.com",
+        "date": "2025-02-10T12:28:07Z",
+        "message": "Resolve issue where grace_period option wouldn't support link-local ipv6 addresses",
+        "url": "https://github.com/google/google-authenticator-libpam/commit/de1452b3c3db8d90f39301f3cf6581f83d17e900"
+    },
+    {
+        "sha": "deb1a43f1675f317e3cd04181f161980388d49bc",
+        "author": "flowers9",
+        "email": "flowers9@users.noreply.github.com",
+        "date": "2025-02-11T18:57:03Z",
+        "message": "Update google-authenticator.c\n\nchanged secret creation to be 160 bits instead of 128 bits, to align with the rfc6238 reference implementation.",
+        "url": "https://github.com/google/google-authenticator-libpam/commit/deb1a43f1675f317e3cd04181f161980388d49bc"
+    },
+    {
+        "sha": "5c8f2a7a719c8ab7baa89795f3aea36260ee8d27",
+        "author": "Thomas Habets",
+        "email": "habets@google.com",
+        "date": "2024-04-23T16:06:22Z",
+        "message": "Up version to 1.10\n\nNotable changes:\n* Shorten syslog name to work with rsyslog (#172)\n* Update config file with grace period in  all cases (#193)\n* Remove printing QR code using Google Charts URL (it's turned down)",
+        "url": "https://github.com/google/google-authenticator-libpam/commit/5c8f2a7a719c8ab7baa89795f3aea36260ee8d27"
+    },
+    {
+        "sha": "0a0ebf2e2a5e6d288347208c4d21d6c1aebae4f5",
+        "author": "Thomas Habets",
+        "email": "habets@google.com",
+        "date": "2024-04-15T13:54:48Z",
+        "message": "Remove printing QR code using Google Charts URL\n\nGoogle Charts URLs has been deprecated since 2012, and is finally\nbeing turned off.\n\nThe remaining options for getting secrets into the app are:\n\n1. Have `libqrencode` installed, generating a QR code locally and\n   displaying it on the terminal.\n2. Enter the secret manually via the text representation shown.\n\nFixes #244",
+        "url": "https://github.com/google/google-authenticator-libpam/commit/0a0ebf2e2a5e6d288347208c4d21d6c1aebae4f5"
+    },
+    {
+        "sha": "52ee28a09353a8a3c7fe919120881faae70b7cc0",
+        "author": "Thomas Habets",
+        "email": "thomas@habets.se",
+        "date": "2024-01-17T18:00:09Z",
+        "message": "Fix utc-time for new everything",
+        "url": "https://github.com/google/google-authenticator-libpam/commit/52ee28a09353a8a3c7fe919120881faae70b7cc0"
+    },
+    {
+        "sha": "d46a70b9c8b826adbe64eed624ca92b1228be4e7",
+        "author": "mugglewei",
+        "email": "mugglewei@gmail.com",
+        "date": "2023-09-18T16:26:17Z",
+        "message": "set variable 'buffer' that in base32_decode to unsigned integer type\n\nIn base32_decode, variable 'buffer' is signed integer may lead undefined\nbehavior when left operand.",
+        "url": "https://github.com/google/google-authenticator-libpam/commit/d46a70b9c8b826adbe64eed624ca92b1228be4e7"
+    },
+    {
+        "sha": "366ace3e5849d0d259915ddff22c8ec55e40b3ad",
+        "author": "Thomas Habets",
+        "email": "thomas@habets.se",
+        "date": "2023-05-05T09:30:24Z",
+        "message": "Add `TOTP codes are not accepted` bug template",
+        "url": "https://github.com/google/google-authenticator-libpam/commit/366ace3e5849d0d259915ddff22c8ec55e40b3ad"
+    },
+    {
+        "sha": "fdd8289be83c6154b2fb8d961dbb8a163a9daad4",
+        "author": "Thomas Habets",
+        "email": "habets@google.com",
+        "date": "2022-12-30T15:10:16Z",
+        "message": "Slight improvement in error message formatting",
+        "url": "https://github.com/google/google-authenticator-libpam/commit/fdd8289be83c6154b2fb8d961dbb8a163a9daad4"
+    },
+    {
+        "sha": "55fe25a4830d73fca60e47f5aed32719429a28c0",
+        "author": "Thomas Habets",
+        "email": "thomas@habets.se",
+        "date": "2022-10-13T12:43:36Z",
+        "message": "Update issue templates",
+        "url": "https://github.com/google/google-authenticator-libpam/commit/55fe25a4830d73fca60e47f5aed32719429a28c0"
+    },
+    {
+        "sha": "d5d0f682d52346af1a587a7616910131edf1cdb2",
+        "author": "Thomas Habets",
+        "email": "thomas@habets.se",
+        "date": "2022-10-13T12:22:05Z",
+        "message": "Update issue templates",
+        "url": "https://github.com/google/google-authenticator-libpam/commit/d5d0f682d52346af1a587a7616910131edf1cdb2"
+    },
+    {
+        "sha": "9a7d3ee9770a9b3389f12bf34c19df4802b085d8",
+        "author": "Thomas Habets",
+        "email": "thomas@habets.se",
+        "date": "2022-10-13T12:15:24Z",
+        "message": "Update issue templates",
+        "url": "https://github.com/google/google-authenticator-libpam/commit/9a7d3ee9770a9b3389f12bf34c19df4802b085d8"
+    },
+    {
+        "sha": "f4c74edfbf91a55740985ab66d14b261b1193bb4",
+        "author": "Thomas Habets",
+        "email": "thomas@habets.se",
+        "date": "2022-10-13T12:14:51Z",
+        "message": "Update issue templates",
+        "url": "https://github.com/google/google-authenticator-libpam/commit/f4c74edfbf91a55740985ab66d14b261b1193bb4"
+    },
+    {
+        "sha": "3b4f4dabcc589ee0062ef0f934cb9dc70697c3ab",
+        "author": "Thomas Habets",
+        "email": "habets@google.com",
+        "date": "2022-03-13T10:39:00Z",
+        "message": "Fix markdown for links",
+        "url": "https://github.com/google/google-authenticator-libpam/commit/3b4f4dabcc589ee0062ef0f934cb9dc70697c3ab"
+    },
+    {
+        "sha": "8c021af6d28d12e12fe8c634bcbeaff5d07db46a",
+        "author": "Thomas Habets",
+        "email": "habets@google.com",
+        "date": "2022-02-04T17:31:30Z",
+        "message": "Link to RFCs",
+        "url": "https://github.com/google/google-authenticator-libpam/commit/8c021af6d28d12e12fe8c634bcbeaff5d07db46a"
+    }
+]

@@ -1,0 +1,242 @@
+[
+    {
+        "sha": "71b1e10a8503e073b73c77fcae82913930c42f47",
+        "author": "rosuH",
+        "email": "hi@rosuh.me",
+        "date": "2026-05-18T01:03:20Z",
+        "message": "Remove stale overlong app metadata translations (#375)",
+        "url": "https://github.com/rosuH/EasyWatermark/commit/71b1e10a8503e073b73c77fcae82913930c42f47"
+    },
+    {
+        "sha": "dc87d6826d97933c93f619b2cbd11ba6dbfa40c7",
+        "author": "Weblate (bot)",
+        "email": "noreply@weblate.org",
+        "date": "2026-05-17T08:28:10Z",
+        "message": "Translations update from Hosted Weblate (#373)\n\nCo-authored-by: Languages add-on <noreply-addon-languages@weblate.org>\nCo-authored-by: தமிழ்நேரம் <tamilneram247@gmail.com>\nCo-authored-by: rosuH <hi@rosuh.me>",
+        "url": "https://github.com/rosuH/EasyWatermark/commit/dc87d6826d97933c93f619b2cbd11ba6dbfa40c7"
+    },
+    {
+        "sha": "86058614a577c7f42868920f10b477da0343dc03",
+        "author": "rosuH",
+        "email": "hi@rosuh.me",
+        "date": "2026-05-17T07:45:05Z",
+        "message": "Fix Xiaomi haptic feedback crash (#374)\n\nAdd the VIBRATE permission and guard View.performHapticFeedback so Xiaomi/Android 16 devices do not crash when haptic feedback reaches the vibrator service without permission.\n\nReported by A**** K***.",
+        "url": "https://github.com/rosuH/EasyWatermark/commit/86058614a577c7f42868920f10b477da0343dc03"
+    },
+    {
+        "sha": "f7efaccca0ffc2228466626ec5d37aec7e43b8a7",
+        "author": "rosuH",
+        "email": "hi@rosuh.me",
+        "date": "2026-04-17T12:27:23Z",
+        "message": "chore: ignore local .weblate CLI config files\n\nwlc CLI config may contain API tokens; keep it out of the repo.",
+        "url": "https://github.com/rosuH/EasyWatermark/commit/f7efaccca0ffc2228466626ec5d37aec7e43b8a7"
+    },
+    {
+        "sha": "f87068d40972528ee4ce00a2e8f6236d1a7249e3",
+        "author": "rosuH",
+        "email": "hi@rosuh.me",
+        "date": "2026-04-17T12:26:32Z",
+        "message": "docs(fastlane): shorten EN description to fit F-Droid 4000-char limit (#372)\n\nTrim redundant lines in the source so translations (which expand ~15-25%\nin other languages) land comfortably under the fastlane 4000-char limit\nafter F-Droid's HTML tag injection adds ~425 chars on import.\n\n3150 -> 2681 chars. Credits (UI @tovi, OSS libs, feedback) untouched.",
+        "url": "https://github.com/rosuH/EasyWatermark/commit/f87068d40972528ee4ce00a2e8f6236d1a7249e3"
+    },
+    {
+        "sha": "d319ae581f561a4a5f7b0cb492366d6d9869ae5d",
+        "author": "rosuH",
+        "email": "hi@rosuh.me",
+        "date": "2026-04-17T12:04:56Z",
+        "message": "Merge remote-tracking branch 'weblate/master'",
+        "url": "https://github.com/rosuH/EasyWatermark/commit/d319ae581f561a4a5f7b0cb492366d6d9869ae5d"
+    },
+    {
+        "sha": "c8af8b2fb151d46967798cba07647efef4e82df8",
+        "author": "rosuH",
+        "email": "hi@rosuh.me",
+        "date": "2025-10-26T07:03:50Z",
+        "message": "fix(UI): Compatibility issues(systemBars, photo permissions) (#367)\n\nCo-authored-by: rosuH <hi@rosuh.me>\nCo-authored-by: copilot-swe-agent[bot] <198982749+Copilot@users.noreply.github.com>\nCo-authored-by: Copilot <198982749+Copilot@users.noreply.github.com>",
+        "url": "https://github.com/rosuH/EasyWatermark/commit/c8af8b2fb151d46967798cba07647efef4e82df8"
+    },
+    {
+        "sha": "8b426e25560f80514866a1cda3becac6ab055404",
+        "author": "Максим Горпиніч",
+        "email": "gorpinicmaksim0@gmail.com",
+        "date": "2025-09-24T17:12:33Z",
+        "message": "Added translation using Weblate (Ukrainian)",
+        "url": "https://github.com/rosuH/EasyWatermark/commit/8b426e25560f80514866a1cda3becac6ab055404"
+    },
+    {
+        "sha": "7e4aad29671310ff5cf14c6b778c8cc61717489a",
+        "author": "rosuH",
+        "email": "hi@rosuh.me",
+        "date": "2025-08-30T02:46:33Z",
+        "message": "chore(ci): update gradle setup action to v4 in workflows (#359)\n\n* fix(bitmap): handle null config in getBytesInPixel by providing default ARGB_8888\n\nAlso update SDK and versioning to target and support Android SDK 35\n\n> GENERATE BY https://aicommit.app\n\n* build: upgrade Gradle wrapper to 8.9 and AGP to 8.7.0\n\n> GENERATE BY https://aicommit.app\n\n* chore(ci): update gradle setup action to v4 in workflows\n\n> GENERATE BY https://aicommit.app",
+        "url": "https://github.com/rosuH/EasyWatermark/commit/7e4aad29671310ff5cf14c6b778c8cc61717489a"
+    },
+    {
+        "sha": "5adda5473c91cca8aae6292df17f40e87fa57b7b",
+        "author": "rosuH",
+        "email": "hi@rosuh.me",
+        "date": "2025-08-30T02:29:43Z",
+        "message": "bump target sdk version to 35 (#357)\n\n* fix(bitmap): handle null config in getBytesInPixel by providing default ARGB_8888\n\nAlso update SDK and versioning to target and support Android SDK 35\n\n> GENERATE BY https://aicommit.app\n\n* build: upgrade Gradle wrapper to 8.9 and AGP to 8.7.0\n\n> GENERATE BY https://aicommit.app",
+        "url": "https://github.com/rosuH/EasyWatermark/commit/5adda5473c91cca8aae6292df17f40e87fa57b7b"
+    },
+    {
+        "sha": "1c2e9e4e9d4d046f2d229a331fc31ff60c542252",
+        "author": "rosuH",
+        "email": "hi@rosuh.me",
+        "date": "2025-04-22T15:54:11Z",
+        "message": "refactor(build): remove dynamic version calculation from build script. #31 (#353)\n\nRemoved functions in build.gradle.kts that dynamically calculate versionCode and versionName. Set static values for versionCode and versionName directly. Updated release.yml to retrieve versionName from build.gradle.kts instead of gradle.properties.\n\n> GENERATE BY https://aicommit.app",
+        "url": "https://github.com/rosuH/EasyWatermark/commit/1c2e9e4e9d4d046f2d229a331fc31ff60c542252"
+    },
+    {
+        "sha": "744f548961dbe1ae4d586aac6647c287c679e6d0",
+        "author": "rosuH",
+        "email": "hi@rosuh.me",
+        "date": "2024-10-29T14:38:46Z",
+        "message": "ci: update environment variables for Gradle in workflow files\n\nAdded environment variables to `pr_pre_check.yml`, `publish.yml`, and `release.yml` to optimize Gradle performance by setting JVM and Kotlin daemon options for better memory management and build efficiency.\n\n> GENERATE BY https://aicommit.app",
+        "url": "https://github.com/rosuH/EasyWatermark/commit/744f548961dbe1ae4d586aac6647c287c679e6d0"
+    },
+    {
+        "sha": "5f479829d5a5f8ad2ef5c1576674ae9dfac2b90b",
+        "author": "rosuH",
+        "email": "hi@rosuh.me",
+        "date": "2024-09-15T13:10:22Z",
+        "message": "feat: add window insets handling to AboutActivity #339 (#340)\n\nAdded support for handling window insets in AboutActivity. The code now applies system bar insets as margins to the view for better UI adjustments. Also updated patch version to 5.\r\n\r\n# GENERATE BY https://aicommit.app",
+        "url": "https://github.com/rosuH/EasyWatermark/commit/5f479829d5a5f8ad2ef5c1576674ae9dfac2b90b"
+    },
+    {
+        "sha": "7e77caea27fe667959860964acd6ccbc483e464f",
+        "author": "rosuH",
+        "email": "hi@rosuh.me",
+        "date": "2024-09-13T15:23:22Z",
+        "message": "fix(ContextExtension): update permissions handling for Android Q and above (fix #337) (#338)\n\nRefactored the permissions check logic to correctly handle scoped storage for devices running Android Q and later. Removed redundant code and ensured proper invocation of permission grants.\r\n\r\n# GENERATE BY https://aicommit.app",
+        "url": "https://github.com/rosuH/EasyWatermark/commit/7e77caea27fe667959860964acd6ccbc483e464f"
+    },
+    {
+        "sha": "b5c9148faca7a45b08a67ffa0d78c2d0e468b5e1",
+        "author": "rosuH",
+        "email": "hi@rosuh.me",
+        "date": "2024-09-03T00:16:21Z",
+        "message": "Improve permission handle flow. (#332)\n\n* fix(ci): remove unused status field in publish.yml\r\n\r\n* chore: bump patch version in gradle.properties\r\n\r\n* feat(permission): implement storage permission handling using ActivityResultLauncher\r\n\r\n* feat(permission): refactor storage permission handling methods and introduce new permission check functions\r\n\r\n* fix(gradle): update patch version to 3\r\n\r\n# GENERATE BY https://aicommit.app",
+        "url": "https://github.com/rosuH/EasyWatermark/commit/b5c9148faca7a45b08a67ffa0d78c2d0e468b5e1"
+    },
+    {
+        "sha": "3a9fa63d547671d2989c42efaba0d2dbcbd4c624",
+        "author": "rosuH",
+        "email": "hi@rosuh.me",
+        "date": "2024-07-14T15:09:20Z",
+        "message": "fix(ci): remove unused status field in publish.yml (#319)\n\n* fix(ci): remove unused status field in publish.yml\r\n\r\n* chore: bump patch version in gradle.properties",
+        "url": "https://github.com/rosuH/EasyWatermark/commit/3a9fa63d547671d2989c42efaba0d2dbcbd4c624"
+    },
+    {
+        "sha": "5631eddb954c3ed73adb7266840e3e0f3a7c27fd",
+        "author": "rosuH",
+        "email": "hi@rosuh.me",
+        "date": "2024-07-14T14:14:00Z",
+        "message": "chore: update publish.yml to improve job names (#318)\n\n# GENERATE BY https://aicommit.app",
+        "url": "https://github.com/rosuH/EasyWatermark/commit/5631eddb954c3ed73adb7266840e3e0f3a7c27fd"
+    },
+    {
+        "sha": "bcb47b3fce7c9dc09af0ab8d50e1c6d74572f057",
+        "author": "rosuH",
+        "email": "hi@rosuh.me",
+        "date": "2024-07-14T13:53:16Z",
+        "message": "fix(publish.yml): correct echo command to use proper output variable  (#317)",
+        "url": "https://github.com/rosuH/EasyWatermark/commit/bcb47b3fce7c9dc09af0ab8d50e1c6d74572f057"
+    },
+    {
+        "sha": "3cf01bc725399104ab38327b537d2f6d6c87a65f",
+        "author": "rosuH",
+        "email": "hi@rosuh.me",
+        "date": "2024-07-14T13:08:32Z",
+        "message": "fix(ci): update publish.yml to use secret for service account JSON (#316)",
+        "url": "https://github.com/rosuH/EasyWatermark/commit/3cf01bc725399104ab38327b537d2f6d6c87a65f"
+    },
+    {
+        "sha": "c1d9feaadd684e580a7120594271857dc58d4f3f",
+        "author": "rosuH",
+        "email": "hi@rosuh.me",
+        "date": "2024-07-14T10:38:31Z",
+        "message": "perf(build): increase JVM heap size and enable configuration cache (#315)\n\n* perf(build): increase JVM heap size and enable configuration cache\r\n\r\n# GENERATE BY https://aicommit.app\r\n\r\n* feat(ci): set release version from gradle properties\r\n\r\nAdded steps to dynamically set the release version in the GitHub Actions workflow by extracting version information from gradle.properties. Updated the release action to use softprops/action-gh-release with automatic release notes generation.\r\n\r\n# GENERATE BY https://aicommit.app",
+        "url": "https://github.com/rosuH/EasyWatermark/commit/c1d9feaadd684e580a7120594271857dc58d4f3f"
+    },
+    {
+        "sha": "97d078ab1e0dfd5382d9e556ca371be581948e2c",
+        "author": "rosuH",
+        "email": "hi@rosuh.me",
+        "date": "2024-07-14T09:20:06Z",
+        "message": "chore(ci): remove timeout settings from GitHub Actions workflows (#314)\n\n# GENERATE BY https://aicommit.app",
+        "url": "https://github.com/rosuH/EasyWatermark/commit/97d078ab1e0dfd5382d9e556ca371be581948e2c"
+    },
+    {
+        "sha": "e9ca85cab78b65ef9964bd18979c4d86079ba5ef",
+        "author": "rosuH",
+        "email": "hi@rosuh.me",
+        "date": "2024-07-14T09:06:11Z",
+        "message": "chore(build): update dependencies and Gradle settings (#313)\n\n* chore(build): update dependencies and Gradle settings\r\n\r\n- Replace plugin IDs with versions from libs.versions.toml.\r\n- Update compileSdk to 34.\r\n- Update various dependencies to their latest versions.\r\n- Modify onDraw method arguments to be non-nullable.\r\n- Refactor build scripts to align with new dependency management practices.\r\n\r\n* chore(deps): update buildTools and targetSdk to version 34.0.0\r\n\r\n* feat(build): integrate spotless plugin and update versioning system\r\n\r\n- Import `spotless` plugin and configure for Kotlin and Gradle scripts.\r\n- Read versioning from `gradle.properties` and dynamically generate `versionCode` and `versionName`.\r\n- Update APK file naming convention.\r\n- Simplify and update GitHub Actions workflows for build and release.\r\n- Remove deprecated configurations and improve caching mechanisms.\r\n\r\n* fix(ci): rollback Java version from 21 to 17 in pr_pre_check.yml\r\n\r\n* chore: remove setup of Android SDK from pr_pre_check.yml\r\n\r\n* ci: update GitHub Actions to use setup-java and setup-gradle\r\n\r\nUpdated the `pr_pre_check.yml` and `release.yml` workflows to include `actions/setup-java@v4` with Zulu distribution and Java 17, along with caching for Gradle. Added `gradle/actions/setup-gradle@v3` with Gradle home cache cleanup.\r\n\r\n* fix(ci): update Gradle commands for assembling debug and release builds\r\n\r\n* fix: update Gradle version to wrapper in workflows",
+        "url": "https://github.com/rosuH/EasyWatermark/commit/e9ca85cab78b65ef9964bd18979c4d86079ba5ef"
+    },
+    {
+        "sha": "6e03bc45efb7118b0cc5e4ac4cea5158468c109b",
+        "author": "rosuH",
+        "email": "hi@rosuh.me",
+        "date": "2024-07-10T15:38:24Z",
+        "message": "chore(build): update dependencies and Gradle settings (#312)\n\n- Replace plugin IDs with versions from libs.versions.toml.\r\n- Update compileSdk to 34.\r\n- Update various dependencies to their latest versions.\r\n- Modify onDraw method arguments to be non-nullable.\r\n- Refactor build scripts to align with new dependency management practices.\r\n\r\n# GENERATE BY https://aicommit.app",
+        "url": "https://github.com/rosuH/EasyWatermark/commit/6e03bc45efb7118b0cc5e4ac4cea5158468c109b"
+    },
+    {
+        "sha": "9929aeaf0b1a8c432b0148c4eba40c56bd1a0faf",
+        "author": "Weblate (bot)",
+        "email": "hosted@weblate.org",
+        "date": "2024-03-17T14:42:02Z",
+        "message": "Translations update from Hosted Weblate (#309)\n\n* Translated using Weblate (Chinese (Simplified))\r\n\r\nCurrently translated at 100.0% (94 of 94 strings)\r\n\r\nTranslation: EasyWatermark/App Strings\r\nTranslate-URL: https://hosted.weblate.org/projects/easywatermark/app-strings/zh_Hans/\r\n\r\n* Added translation using Weblate (Dutch)\r\n\r\n* Translated using Weblate (Dutch)\r\n\r\nCurrently translated at 100.0% (3 of 3 strings)\r\n\r\nTranslation: EasyWatermark/App store metadata\r\nTranslate-URL: https://hosted.weblate.org/projects/easywatermark/app-store-metadata/nl/\r\n\r\n* Translated using Weblate (Dutch)\r\n\r\nCurrently translated at 100.0% (94 of 94 strings)\r\n\r\nTranslation: EasyWatermark/App Strings\r\nTranslate-URL: https://hosted.weblate.org/projects/easywatermark/app-strings/nl/\r\n\r\n---------\r\n\r\nCo-authored-by: 大王叫我来巡山 <hamburger2048@users.noreply.hosted.weblate.org>\r\nCo-authored-by: Languages add-on <noreply-addon-languages@weblate.org>\r\nCo-authored-by: Mikachu <micah.sh@proton.me>",
+        "url": "https://github.com/rosuH/EasyWatermark/commit/9929aeaf0b1a8c432b0148c4eba40c56bd1a0faf"
+    },
+    {
+        "sha": "23be1b7dffc98fedfe4b64e5c8892f51b03352b2",
+        "author": "Mikachu",
+        "email": "micah.sh@proton.me",
+        "date": "2024-03-16T08:00:44Z",
+        "message": "Translated using Weblate (Dutch)\n\nCurrently translated at 100.0% (94 of 94 strings)\n\nTranslation: EasyWatermark/App Strings\nTranslate-URL: https://hosted.weblate.org/projects/easywatermark/app-strings/nl/",
+        "url": "https://github.com/rosuH/EasyWatermark/commit/23be1b7dffc98fedfe4b64e5c8892f51b03352b2"
+    },
+    {
+        "sha": "9e1f7e668bab324129d542b7e9e7bc4b89e21880",
+        "author": "Mikachu",
+        "email": "micah.sh@proton.me",
+        "date": "2024-03-16T07:48:20Z",
+        "message": "Translated using Weblate (Dutch)\n\nCurrently translated at 100.0% (3 of 3 strings)\n\nTranslation: EasyWatermark/App store metadata\nTranslate-URL: https://hosted.weblate.org/projects/easywatermark/app-store-metadata/nl/",
+        "url": "https://github.com/rosuH/EasyWatermark/commit/9e1f7e668bab324129d542b7e9e7bc4b89e21880"
+    },
+    {
+        "sha": "3b9ba5e2ea073a7e4c563b0ef681955f00db8a4d",
+        "author": "Languages add-on",
+        "email": "noreply-addon-languages@weblate.org",
+        "date": "2024-03-16T07:48:08Z",
+        "message": "Added translation using Weblate (Dutch)",
+        "url": "https://github.com/rosuH/EasyWatermark/commit/3b9ba5e2ea073a7e4c563b0ef681955f00db8a4d"
+    },
+    {
+        "sha": "bc4462ef900431595183295c6e943019cf09eedf",
+        "author": "大王叫我来巡山",
+        "email": "hamburger2048@users.noreply.hosted.weblate.org",
+        "date": "2024-02-13T06:52:33Z",
+        "message": "Translated using Weblate (Chinese (Simplified))\n\nCurrently translated at 100.0% (94 of 94 strings)\n\nTranslation: EasyWatermark/App Strings\nTranslate-URL: https://hosted.weblate.org/projects/easywatermark/app-strings/zh_Hans/",
+        "url": "https://github.com/rosuH/EasyWatermark/commit/bc4462ef900431595183295c6e943019cf09eedf"
+    },
+    {
+        "sha": "93404e3ef5a83b851456926440aff5bfb847f0cc",
+        "author": "Weblate (bot)",
+        "email": "hosted@weblate.org",
+        "date": "2024-01-28T09:59:33Z",
+        "message": "Translations update from Hosted Weblate (#308)\n\n* Translated using Weblate (Portuguese)\r\n\r\nCurrently translated at 66.6% (2 of 3 strings)\r\n\r\nTranslation: EasyWatermark/App store metadata\r\nTranslate-URL: https://hosted.weblate.org/projects/easywatermark/app-store-metadata/pt/\r\n\r\n* Translated using Weblate (Chinese (Simplified))\r\n\r\nCurrently translated at 100.0% (94 of 94 strings)\r\n\r\nTranslation: EasyWatermark/App Strings\r\nTranslate-URL: https://hosted.weblate.org/projects/easywatermark/app-strings/zh_Hans/\r\n\r\n---------\r\n\r\nCo-authored-by: ssantos <ssantos@web.de>\r\nCo-authored-by: 四象 <siyijiang233@gmail.com>",
+        "url": "https://github.com/rosuH/EasyWatermark/commit/93404e3ef5a83b851456926440aff5bfb847f0cc"
+    },
+    {
+        "sha": "678579cd46d9a18e2e46823c5cdd765281b7fcb1",
+        "author": "Weblate (bot)",
+        "email": "hosted@weblate.org",
+        "date": "2023-12-02T03:02:17Z",
+        "message": "Translated using Weblate (Russian) (#307)\n\nCurrently translated at 0.0% (0 of 3 strings)\r\n\r\nTranslation: EasyWatermark/App store metadata\r\nTranslate-URL: https://hosted.weblate.org/projects/easywatermark/app-store-metadata/ru/\r\n\r\nCo-authored-by: Ronner <fordemailadress@gmail.com>",
+        "url": "https://github.com/rosuH/EasyWatermark/commit/678579cd46d9a18e2e46823c5cdd765281b7fcb1"
+    }
+]

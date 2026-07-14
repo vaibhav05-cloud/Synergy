@@ -1,0 +1,363 @@
+[
+    {
+        "id": 3990464057,
+        "number": 285,
+        "title": "patchChanelog remove additional text from changelog",
+        "state": "open",
+        "created_at": "2026-02-25T16:31:12Z",
+        "updated_at": "2026-02-25T16:33:45Z",
+        "closed_at": null,
+        "author": "egorikftp",
+        "comments": 0,
+        "labels": [
+            "enhancement"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "**Is your feature request related to a problem? Please describe.**\nI sometimes add special highlights related to change. \nFor example:\n\n```\n # Gradle plugin changelog\n\n## Unreleased\n\n## 0.4.0 - 2026-02-25\n\n### Added\n\n- Some release notes\n\nAdditional note for customers.\n\nStructured info:\n\n1. **L1** - text\n2. **L2** - text\n3. **L3** - text\n\n## 0.3.0 - 2026-02-24\n\n### Changed\n\n- Introduce breaking changes\n\n| Before | After       |\n|--------|-------------|\n| `test` | `test test` |\n      \n```\n\nAfter running `patchChangelog` it remove everything that not related to predefined sections.\n\n**Describe the solution you'd like**\nKeep additional text without changes\n\n",
+        "url": "https://github.com/JetBrains/gradle-changelog-plugin/issues/285"
+    },
+    {
+        "id": 3676013223,
+        "number": 278,
+        "title": "Simple way to specify the version prefix for each version by name",
+        "state": "open",
+        "created_at": "2025-11-28T21:56:09Z",
+        "updated_at": "2025-11-29T19:33:00Z",
+        "closed_at": null,
+        "author": "jodiew",
+        "comments": 0,
+        "labels": [
+            "enhancement"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "**Is your feature request related to a problem? Please describe.**\nSome of the comparison links in the `CHANGELOG.md` file in this repository (and others) don't work because the plugin has a default tag prefix of \"v\", but not all the tags have a \"v\" prefix.\n\n**Describe the solution you'd like**\nA property in the changelog section of `build.gradle.kts` that lets you specify a function that takes the version name and returns the prefix to use, similar to the `sectionUrlBuilder`. Something like\n```kts\nchangelog {\n    groups.empty()\n    repositoryUrl = providers.gradleProperty(\"pluginRepositoryUrl\")\n    versionPrefixBuilder = VersionPrefixBuilder { version -> when (version) {\n        \"1.0.0\" -> \"v\"\n        else -> \"\"\n    }   }\n}\n```\n\n**Describe alternatives you've considered**\n- it works to use `sectionUrlBuilder`, by re-creating the default behaviour and just adding new values for the prefixes, this would just be a bit more clear\n- you could re-release with renamed tags, but that seems like bad practice\n- `versionPrefix = \"\"` to set a different default prefix doesn't work as the tags don't all have the same prefix\n\n**Additional context**\nI made a related PR in https://github.com/JetBrains/intellij-platform-plugin-template/pull/557 that fixes the `CHANGELOG.md` in that repository with the `sectionUrlBuilder`. I would also be interested in doing the PR for this if it's decided to be helpful and appropriate.\n\n",
+        "url": "https://github.com/JetBrains/gradle-changelog-plugin/issues/278"
+    },
+    {
+        "id": 3512931113,
+        "number": 274,
+        "title": "patchChangelog command significantly update changelog and break existing data",
+        "state": "closed",
+        "created_at": "2025-10-14T08:34:40Z",
+        "updated_at": "2025-11-25T13:42:44Z",
+        "closed_at": "2025-11-25T13:41:58Z",
+        "author": "egorikftp",
+        "comments": 2,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "**Describe the bug**\nI have changelog in following format\n\n```md\n# Plugin Changelog\n\n## [Unreleased]\n\n### Fixed\n\n- Unreleased fix\n\n## [0.17.2](https://github.com/ComposeGears/Valkyrie/releases/tag/0.17.2) - 2025-10-11\n\n### Fixed\n\n- Fix PSI parsing\n\n```\n\nThen bump version to `0.17.3` and run `./gradlew patchChangelog` command. The changelog changes in this format\n\n```md\n# Plugin Changelog\n\n## [Unreleased]\n\n## [0.17.3] - 2025-10-14\n\n### Fixed\n\n- Unreleased fix\n\n## [0.17.2](https://github.com/ComposeGears/Valkyrie/releases/tag/[0.17.2]) - 2025-10-11\n\n### Fixed\n\n- Fix PSI parsing\n\n[Unreleased]: https://github.com/ComposeGears/Valkyrie/compare/0.17.3...HEAD\n[0.17.3]: https://github.com/ComposeGears/Valkyrie/compare/0.17.2...0.17.3\n[0.17.2]: https://github.com/ComposeGears/Valkyrie/commits/0.17.2\n```\n\n1. broken link in header\n2. Added `[Unreleased]`, `[0.17.3]`,  `[0.17.2]` links block at the end of file\n\n\n**Expected behavior**\n```md\n# Plugin Changelog\n\n## [Unreleased]\n\n## [0.17.3](https://github.com/ComposeGears/Valkyrie/releases/tag/0.17.3) - 2025-10-14\n\n### Fixed\n\n- Unreleased fix\n\n## [0.17.2](https://github.com/ComposeGears/Valkyrie/releases/tag/0.17.2) - 2025-10-11\n\n### Fixed\n\n- Fix PSI parsing\n```\n\n\n**Environment:**\n - OS: macOS\n - Gradle Changelog Plugin Version: 2.4.0\n - Gradle Version: 9.1.0\n\n**Additional context**\nFull changelog:\nhttps://github.com/ComposeGears/Valkyrie/blob/main/tools/idea-plugin/CHANGELOG.md\n",
+        "url": "https://github.com/JetBrains/gradle-changelog-plugin/issues/274"
+    },
+    {
+        "id": 2985013163,
+        "number": 266,
+        "title": "Header links are included in the extracted notes",
+        "state": "closed",
+        "created_at": "2025-04-10T09:13:07Z",
+        "updated_at": "2025-07-26T10:02:19Z",
+        "closed_at": "2025-07-26T10:02:12Z",
+        "author": "Goooler",
+        "comments": 1,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "**Describe the bug**\n\nWrite\n\n```md\n## [9.0.0-beta11] - 2025-03-18\n[9.0.0-beta11]: https://github.com/GradleUp/shadow/releases/tag/9.0.0-beta11\n\n**Added**\n\n- 1\n- 2\n```\n\ninto the changelog.md file and run `./gradlew getChangelog --no-header --console=plain -q`, you'll see:\n\n```md\n**Added**\n\n- 1\n- 2\n\n[9.0.0-beta11]: https://github.com/GradleUp/shadow/releases/tag/9.0.0-beta11\n```\n\n**Expected behavior**\n\n```md\n**Added**\n\n- 1\n- 2\n```\n\n**Environment:**\n - OS: macOS\n - Gradle Changelog Plugin Version 2.2.1\n - Gradle Version 8.13\n",
+        "url": "https://github.com/JetBrains/gradle-changelog-plugin/issues/266"
+    },
+    {
+        "id": 2985006192,
+        "number": 265,
+        "title": "Only `Added` sections are extracted",
+        "state": "closed",
+        "created_at": "2025-04-10T09:10:19Z",
+        "updated_at": "2025-07-26T11:47:02Z",
+        "closed_at": "2025-07-26T11:46:51Z",
+        "author": "Goooler",
+        "comments": 1,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "**Describe the bug**\n\nWrite\n\n```md\n## [9.0.0-beta11] - 2025-03-18\n\n**Added**\n\n- 1\n- 2\n\n**Changed**\n\n- 3\n- 4\n```\n\ninto the changelog.md file and run `./gradlew getChangelog --no-header --console=plain -q`, you'll see:\n\n```\n**Added**\n\n- 1\n- 2\n- 3\n- 4\n```\n\n**Expected behavior**\n\n```md\n**Added**\n\n- 1\n- 2\n\n**Changed**\n\n- 3\n- 4\n```\n\n**Environment:**\n - OS: macOS\n - Gradle Changelog Plugin Version 2.2.1\n - Gradle Version 8.13\n\n",
+        "url": "https://github.com/JetBrains/gradle-changelog-plugin/issues/265"
+    },
+    {
+        "id": 2984877480,
+        "number": 264,
+        "title": "Support extracting release notes file from changelog",
+        "state": "closed",
+        "created_at": "2025-04-10T08:22:16Z",
+        "updated_at": "2025-07-26T12:40:26Z",
+        "closed_at": "2025-07-26T12:40:26Z",
+        "author": "Goooler",
+        "comments": 0,
+        "labels": [
+            "enhancement"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "**Is your feature request related to a problem? Please describe.**\n\nNow we have to extract the release notes string and write it to shell like\n\nhttps://github.com/JetBrains/gradle-changelog-plugin/blob/c3902fd5754ba2622dd101be3c97a05359142e83/.github/workflows/build.yml#L126\n\nIt would be better to support writing it to file directly, as we can pass the file to `gh` cli like \n\n```sh\n# Use release notes from a file\ngh release create v1.2.3 -F release-notes.md\n```\nSee https://github.com/cli/cli/blob/19633d38554c0dfce870d1a63703af514941d878/pkg/cmd/release/create/create.go#L122-L123.\n\nThis feature may help avoid the char escaping in issues in shell like https://github.com/ffurrer2/extract-release-notes/issues/349.\n\n\n**Additional context**\n\nSomething related to https://github.com/ffurrer2/extract-release-notes.\n",
+        "url": "https://github.com/JetBrains/gradle-changelog-plugin/issues/264"
+    },
+    {
+        "id": 2843439948,
+        "number": 262,
+        "title": "Access additional data when building section URL",
+        "state": "closed",
+        "created_at": "2025-02-10T19:37:03Z",
+        "updated_at": "2025-11-25T14:51:13Z",
+        "closed_at": "2025-11-25T14:51:13Z",
+        "author": "HarrisonMc555",
+        "comments": 2,
+        "labels": [
+            "enhancement"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "**Is your feature request related to a problem? Please describe.**\nThe default implementation of the `sectionUrlBuilder` is an implementation of `ChangelogSectionUrlBuilder` that builds the appropriate URL to view the commits from one release to another in GitHub. However, it unsurprisingly does not work for other Git servers. I wrote an implementation of `ChangelogSectionUrlBuilder` that constructs a URL to view commits from one release to another in Bitbucket. However, there is one issue. If I am constructing a URL to look at unreleased changes, I cannot simply have an open-ended \"..\" like you can in a GitHub URL.\n\nAt first, I thought I needed to explicitly include the default branch (e.g. `master`, `main`, etc.) as the endpoint for the range of commits. So, my first implementation retrieved a property from `gradle.properties` and used it when constructing the URL. It looked something like this:\n\n```kotlin\nchangelog {\n    repositoryUrl.set(properties(\"repositoryUrl\").get())\n    // ...\n    sectionUrlBuilder.set(ChangelogSectionUrlBuilder { repositoryUrl, currentVersion, previousVersion, isUnreleased ->\n        // The default implementation creates a GitHub URL, this code creates a Bitbucket URL.\n        val prefix = versionPrefix.get()\n        val parameters = mutableListOf<String>()\n        if (previousVersion != null) parameters.add(\"since=refs%2Ftags%2F$prefix$previousVersion\")\n        val untilRef = if (isUnreleased || currentVersion == null) properties(\"repositoryDefaultBranch\").get() else \"refs%2Ftags%2F$prefix$currentVersion\"\n        parameters.add(\"until=$untilRef\")\n        parameters.add(\"merges=include\")\n        val parametersString = parameters.joinToString(separator = \"&\") { it }\n        \"$repositoryUrl?$parametersString\"\n    })\n}\n```\n\nHowever, if I used this, I would get the following error:\n\n```\nFAILURE: Build failed with an exception.\n\n* What went wrong:\nConfiguration cache problems found in this build.\n\n1 problem was found storing the configuration cache.\n- Task `:getChangelog` of type `org.jetbrains.changelog.tasks.GetChangelogTask`: cannot serialize Gradle script object references as these are not supported with the configuration cache.\n  See https://docs.gradle.org/8.2/userguide/configuration_cache.html#config_cache:requirements:disallowed_types\n```\n\nFrom my understanding (and best guess), I believe this is because attempting to call the `properties` function requires the anonymous implementation of `ChangelogSectionUrlBuilder` to store a reference to the Gradle script object.\n\n**Describe the solution you'd like**\nThe `ChangelogSectionUrlBuilder.build` method takes in all of the parameters that most users would need. However, users of Bitbucket or other Git servers may need additional information. I think it would be reasonable to add an \"extra parameters\" value (or something of the sort) that users could optionally use when constructing the URL. If needed, they could fill the \"extra parameters\" value much like they fill the `repositoryUrl` or `versionPrefix` field. They could access them inside the `sectionUrlBuilder` in the same way that they access `versionPrefix`.\n\n**Describe alternatives you've considered**\nI tried using the `extra` and `extraProperties` fields. The `extra` field reported the same \"cannot serialize Gradle script object references\" issue. The `extraProperties` field had the error \"Cannot get property 'repositoryDefaultBranch' on extra properties extension as it does not exist\".\n\n**Additional context**\nAs it turns out, I was able to get the Bitbucket URL to work without needing the default branch. However, it does seem like this could be a necessary change for other Git servers or even just users with other requirements, so I decided to create this issue anyways.",
+        "url": "https://github.com/JetBrains/gradle-changelog-plugin/issues/262"
+    },
+    {
+        "id": 2806648600,
+        "number": 260,
+        "title": "Changelog moved from Unreleased to Released section is malformed",
+        "state": "open",
+        "created_at": "2025-01-23T11:25:32Z",
+        "updated_at": "2025-01-23T11:25:32Z",
+        "closed_at": null,
+        "author": "hrach",
+        "comments": 0,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "**Describe the bug**\n\nIt seems, that the automation creating PRs for the new release malforms output when moving content from the unreleased section to the released section. It happened to me two times:\n\n- https://github.com/nextras/orm-intellij/pull/100/files\n- https://github.com/nextras/orm-intellij/pull/104/files\n\nIt seems to be related to backticks.\n\n**Environment:**\n - OS: Linux, GitHub actions\n - Gradle Changelog Plugin Version 2.2.1\n - Gradle Version 8.11.1\n",
+        "url": "https://github.com/JetBrains/gradle-changelog-plugin/issues/260"
+    },
+    {
+        "id": 2613847042,
+        "number": 252,
+        "title": "`Execution failed for task ':getChangelog'. > Collection is empty.`",
+        "state": "closed",
+        "created_at": "2024-10-25T11:32:34Z",
+        "updated_at": "2025-07-26T13:14:08Z",
+        "closed_at": "2025-07-26T13:14:08Z",
+        "author": "bric3",
+        "comments": 0,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "**Describe the bug**\r\nIt seems that `getChangelog` task fails on the very first changelog generation with no previous released items. \r\n\r\n```\r\norg.gradle.api.tasks.TaskExecutionException: Execution failed for task ':getChangelog'.\r\n\tat org.gradle.api.internal.tasks.execution.ExecuteActionsTaskExecuter.lambda$executeIfValid$1(ExecuteActionsTaskExecuter.java:130)\r\n\tat org.gradle.internal.Try$Failure.ifSuccessfulOrElse(Try.java:293)\r\n\t...\r\nCaused by: java.util.NoSuchElementException: Collection is empty.\r\n\tat kotlin.collections.CollectionsKt___CollectionsKt.first(_Collections.kt:201)\r\n\tat org.jetbrains.changelog.tasks.GetChangelogTask.run(GetChangelogTask.kt:110)\r\n```\r\n\r\nThe stack trace points to this piece of code\r\n\r\n```kotlin\r\n      when {\r\n                version != null -> get(version)\r\n                unreleased -> unreleasedItem ?: throw MissingVersionException(unreleasedTerm.get())\r\n                else -> releasedItems.first() // <--------\r\n            }\r\n```\r\n\r\n**To Reproduce**\r\nHave an changelog without released items\r\n\r\n`CHANGELOG.md`\r\n```markdown\r\n<!-- Keep a Changelog guide -> https://keepachangelog.com -->\r\n\r\n# Rectangle Actions Plugin Changelog\r\n\r\n## [Unreleased]\r\n\r\n### Changed\r\n\r\n- Bootstrap plugin\r\n```\r\n\r\n`build.gradle.kts`\r\n```kotlin\r\nplugins {\r\n  id(\"org.jetbrains.changelog\") version(\"2.2.1\")\r\n}\r\n\r\n// Configure Gradle Changelog Plugin - read more: https://github.com/JetBrains/gradle-changelog-plugin\r\nchangelog {\r\n  path = \"${rootProject.projectDir}/CHANGELOG.md\"\r\n  repositoryUrl = providers.gradleProperty(\"pluginRepositoryUrl\")\r\n  itemPrefix = \"-\"\r\n  version = providers.gradleProperty(\"pluginVersion\")\r\n  keepUnreleasedSection = true\r\n  unreleasedTerm = \"[Unreleased]\"\r\n  header = provider { \"[${version.get()}] - ${date()}\" }\r\n  groups = emptyList()\r\n}\r\n```\r\n\r\nThen run task `./gradlew getChangelog`\r\n\r\n**Expected behavior**\r\nThe changelog, or a clearer error message. Maybe point to some task to emit unreleased section.\r\n\r\n**Environment:**\r\n - OS: 15.0.1\r\n - Gradle Changelog Plugin Version 2.2.1\r\n - Gradle Version 8.10.2\r\n\r\n**Additional context**\r\nAdd any other context about the problem here.\r\n",
+        "url": "https://github.com/JetBrains/gradle-changelog-plugin/issues/252"
+    },
+    {
+        "id": 2177740066,
+        "number": 219,
+        "title": "Patching reverses order of links when not using a semantic versioning",
+        "state": "closed",
+        "created_at": "2024-03-10T14:15:01Z",
+        "updated_at": "2025-07-26T13:37:56Z",
+        "closed_at": "2025-07-26T13:37:56Z",
+        "author": "novotnyr",
+        "comments": 2,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "**Describe the bug**\r\nWhen not using a SemVer, the list of links at the end of the Changelog is patched to a reverse order.\r\n\r\n**To Reproduce**\r\n\r\n1. Create a changelog with a non-semantic versioning. \r\n\r\n```\r\n# Changelog\r\n\r\n## Unreleased\r\n\r\n### Added\r\n\r\n### Changed\r\n\r\n### Fixed\r\n\r\n## 1.2 - 2024-01-08\r\n\r\n### Added\r\n\r\n- No major stuff in here, but still\r\n\r\n## 1.1 - 2024-01-08\r\n\r\n### Added\r\n\r\n- Version 1.1 stuff\r\n\r\n## 1.0 - 2024-01-08\r\n\r\n### Added\r\n\r\n- Some stuff\r\n\r\n[Unreleased]: https://github.com/novotnyr/gradle-changelog-poc/compare/v1.2...HEAD\r\n[1.2]: https://github.com/novotnyr/gradle-changelog-poc/compare/v1.1...v1.2\r\n[1.1]: https://github.com/novotnyr/gradle-changelog-poc/compare/v1.0...v1.1\r\n[1.0]: https://github.com/novotnyr/gradle-changelog-poc/commits/1.0\r\n```\r\n2. Configure `headerParserRegex = Regex(\"\"\"(\\d+\\.\\d+)\"\"\")` to indicate a nonsemver versioning.\r\n3. Run `./gradlew patchChangelog`\r\n4. The order of links will be reversed:\r\n\r\n```\r\n[Unreleased]: https://github.com/novotnyr/gradle-changelog-poc/compare/v1.2...HEAD\r\n[1.0]: https://github.com/novotnyr/gradle-changelog-poc/commits/1.0\r\n[1.1]: https://github.com/novotnyr/gradle-changelog-poc/compare/v1.0...v1.1\r\n[1.2]: https://github.com/novotnyr/gradle-changelog-poc/compare/v1.1...v1.2\r\n```\r\n\r\n**Expected behavior**\r\nThe order of the links should not be patched to an last-to-recent version order. It should remain ordered as it is (most recent version on top, the past versions in decreasing version order). This is in line with [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) semantics.\r\n\r\n**Environment:**\r\n - OS: MacOS\r\n - Gradle Changelog Plugin Version 2.2.0\r\n - Gradle Version:  8.6\r\n\r\n",
+        "url": "https://github.com/JetBrains/gradle-changelog-plugin/issues/219"
+    },
+    {
+        "id": 2065218459,
+        "number": 211,
+        "title": "Unable to run changelog method in script plugins",
+        "state": "open",
+        "created_at": "2024-01-04T08:29:43Z",
+        "updated_at": "2024-01-04T08:35:30Z",
+        "closed_at": null,
+        "author": "KorewaLidesu",
+        "comments": 0,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "**Describe the bug**\r\nUnable to run changelog method in script plugins.\r\nIf the code below put in `build.gradle` then it will work, but if won't on script plugin.\r\n\r\nI can't reload with `--stacktrace` arguments. So here is [the other option](https://gist.github.com/KorewaLidesu/570e3b81da2bacf88870eb5326511ddf) I have \r\n\r\nCode:\r\n```\r\nprivate String parseChangelog() {\r\n    if (propertyBool('publish_with_changelog')) {\r\n        if (!file('CHANGELOG.md').exists()) {\r\n            throw new GradleException('publish_with_changelog is true, but CHANGELOG.md does not exist in the workspace!')\r\n        }\r\n        String parsedChangelog =\r\n            changelog.renderItem(\r\n                    changelog.getLatest().withHeader(false).withEmptySections(false),\r\n                    Changelog.OutputType.MARKDOWN)\r\n        if (parsedChangelog.isEmpty()) {\r\n            throw new GradleException('publish_with_changelog is true, but the changelog for the latest version is empty!')\r\n        }\r\n        return parsedChangelog\r\n    }\r\n    return null\r\n}\r\n```\r\n\r\n**To Reproduce**\r\nReload project.\r\n\r\n**Expected behavior**\r\nChangelog should be printed.\r\n\r\n**Environment:**\r\n - OS: Window\r\n - Gradle Changelog Plugin Version: 2.2.0\r\n - Gradle Version: 8.3\r\n\r\n**Additional context**\r\nNo infos.\r\n",
+        "url": "https://github.com/JetBrains/gradle-changelog-plugin/issues/211"
+    },
+    {
+        "id": 2022741167,
+        "number": 204,
+        "title": "patchChangeLog breaks CHANGELOG.md file",
+        "state": "closed",
+        "created_at": "2023-12-03T22:24:35Z",
+        "updated_at": "2023-12-17T14:59:54Z",
+        "closed_at": "2023-12-17T14:59:54Z",
+        "author": "hauner",
+        "comments": 1,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "**Describe the bug**\r\n\r\n`patchChangelog`  breaks my `CHANGELOG.md`. This used to work with the 1.x versions.\r\n\r\n**To Reproduce**\r\n\r\ncheckout https://github.com/openapi-processor/openapi-processor-intellij and run `patchChangelog`.\r\n\r\nBelow is the result. The latest version looks ok, but it deletes most of the older versions and the remaining versions do not look right.\r\n\r\nI'm using a `headerParserRegex`, not sure if this has any influence.\r\n\r\nIt still goes wrong if I add a `.0` patch version to all versions that do not have a patch version.\r\n\r\n```\r\n<!-- Keep a Changelog guide -> https://keepachangelog.com -->\r\n\r\n# openapi-processor-intellij Changelog\r\n\r\n## [Unreleased]\r\n\r\n## [2023.3-SNAPSHOT.1] - 2023-12-03\r\n\r\n- support mapping format v5 (since openapi-processor-spring/micronaut 2023.6)\r\n\r\n## [[2023].1-SNAPSHOT.1]\r\n\r\n- support mapping format v3 (since openapi-processor-spring/micronaut 2023.1)\r\n\r\n## [[2022].1-SNAPSHOT.1]\r\n\r\n- 2022.1 compatibility\r\n\r\n## [[2021].1-SNAPSHOT.1]\r\n\r\n- auto-detect the `mapping.yaml` file and set the json schema for editing support (autocompletion & validation)\r\n- add openapi-processor icon for `mapping.yaml`\r\n\r\n[Unreleased]: https://github.com/openapi-processor/openapi-processor-intellij/compare/v2023.3-SNAPSHOT.1...HEAD\r\n[2021]: https://github.com/openapi-processor/openapi-processor-intellij/commits/v2021\r\n[2022]: https://github.com/openapi-processor/openapi-processor-intellij/compare/v2021...v2022\r\n[2023]: https://github.com/openapi-processor/openapi-processor-intellij/compare/v2022...v2023\r\n[2023.3-SNAPSHOT.1]: https://github.com/openapi-processor/openapi-processor-intellij/compare/v2023...v2023.3-SNAPSHOT.1\r\n```\r\n\r\nThe original file looks like this (I stripped some older versions): \r\n\r\n```\r\n<!-- Keep a Changelog guide -> https://keepachangelog.com -->\r\n\r\n# openapi-processor-intellij Changelog\r\n\r\n## [Unreleased]\r\n- support mapping format v5 (since openapi-processor-spring/micronaut 2023.6)\r\n\r\n## 2023.2\r\n- support mapping format v4 (since openapi-processor-spring/micronaut 2023.3)\r\n\r\n## 2023.2-SNAPSHOT.1\r\n- support mapping format v4 (since openapi-processor-spring/micronaut 2023.3)\r\n\r\n## [2023.1]\r\n- support mapping format v3 (since openapi-processor-spring/micronaut 2023.1)\r\n\r\n## [2023.1-SNAPSHOT.1]\r\n- support mapping format v3 (since openapi-processor-spring/micronaut 2023.1)\r\n\r\n## [2022.4]\r\n- Idea 2022.3 compatibility\r\n- allow future Idea builds\r\n- increased minimum version to Idea 2020.3\r\n\r\n## [2022.3]\r\n- support mapping format v2.1 (since openapi-processor-spring/micronaut 2022.5)\r\n\r\n## [2022.3-SNAPSHOT.1]\r\n- support mapping format v2.1 (since openapi-processor-spring/micronaut 2022.5)\r\n\r\n## [2022.2.1]\r\n- Idea 2022.2 compatibility\r\n```\r\n\r\n\r\n**Expected behavior**\r\n\r\n.. it should properly update the changelog.\r\n\r\n**Environment:**\r\n - Gradle Changelog Plugin Version [2.2.0]\r\n - Gradle Version [8.4]\r\n\r\n",
+        "url": "https://github.com/JetBrains/gradle-changelog-plugin/issues/204"
+    },
+    {
+        "id": 1854989121,
+        "number": 190,
+        "title": "Generated markdown is invalid according to markdownlint",
+        "state": "closed",
+        "created_at": "2023-08-17T13:18:32Z",
+        "updated_at": "2023-08-28T09:49:24Z",
+        "closed_at": "2023-08-28T09:49:07Z",
+        "author": "brodock",
+        "comments": 1,
+        "labels": [
+            "enhancement"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "**Describe the bug**\r\nRunning the `patchChangelog`, removes the empty line between the Level 2 and Level 3 Headers and any list item present there, which is considered invalid by markdownlint.\r\n\r\n**To Reproduce**\r\n\r\n1. Include items in the unreleased section.\r\n2. Run `patchChangelog` task\r\n3. Run `markdownlint` against `CHANGELOG.md`\r\n\r\nThis is an example of the violations:\r\n\r\n```\r\nCHANGELOG.md:15 MD022/blanks-around-headings/blanks-around-headers Headings should be surrounded by blank lines [Expected: 1; Actual: 0; Below] [Context: \"### Changed\"]\r\nCHANGELOG.md:16 MD032/blanks-around-lists Lists should be surrounded by blank lines [Context: \"- Some content you added to the Unreleased section\"]\r\n```\r\n\r\n**Expected behavior**\r\nThe generated Markdown should include an empty line after the Level 3 headers. This is enough to comply with both violations.\r\n\r\n**Environment:**\r\n - OS: `macOS Ventura 13.5`\r\n - Gradle Changelog Plugin Version: `2.1.2`\r\n - Gradle Version: `8.2.1`\r\n\r\n**Additional context**\r\nAdd any other context about the problem here.\r\n",
+        "url": "https://github.com/JetBrains/gradle-changelog-plugin/issues/190"
+    },
+    {
+        "id": 1821357155,
+        "number": 188,
+        "title": "Getting Changelog for a version fails when running through gradle wrapper",
+        "state": "closed",
+        "created_at": "2023-07-26T00:21:04Z",
+        "updated_at": "2023-08-28T07:22:11Z",
+        "closed_at": "2023-08-28T07:22:03Z",
+        "author": "anikrajc",
+        "comments": 1,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "**Describe the bug**\r\nWhen running the following command,\r\n```\r\n ./gradlew getChangelog -q --no-header --no-summary --version=1.0.1\r\n```\r\nThe command fails with Gradle Wrapper help menu\r\n```\r\nCommand-line option '--version' does not take an argument.\r\n\r\nUSAGE: gradlew [option...] [task...]\r\n```\r\n\r\n**To Reproduce**\r\nUsing 2.1.2 version of the library on a kotlin multiplatform project. You can reproduce this with any gradle project and running the command through the terminal.\r\n\r\n**Expected behavior**\r\nThe changelog of the given version should have been displayed\r\n\r\n**Environment:**\r\n - OS: macOS\r\n - Gradle Changelog Plugin Version 2.1.2\r\n - Gradle Version 7.6.1\r\n",
+        "url": "https://github.com/JetBrains/gradle-changelog-plugin/issues/188"
+    },
+    {
+        "id": 1796497922,
+        "number": 184,
+        "title": "GitHub Actions use deprecated `set-output` functionality",
+        "state": "closed",
+        "created_at": "2023-07-10T10:51:08Z",
+        "updated_at": "2023-07-10T14:13:30Z",
+        "closed_at": "2023-07-10T14:13:30Z",
+        "author": "danygold",
+        "comments": 0,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "**Describe the bug**\r\n\r\n`Build` and `Release` GitHub Actions use deprecated `set-output` functionaly\r\n\r\n**To Reproduce**\r\nSee for example this [build](https://github.com/JetBrains/gradle-changelog-plugin/actions/runs/5499319765)\r\n\r\n**Expected behavior**\r\nUse environment files: [link](https://github.blog/changelog/2022-10-11-github-actions-deprecating-save-state-and-set-output-commands/)\r\n\r\n**Environment:**\r\n - OS: N/A\r\n - Gradle Changelog Plugin Version N/A\r\n - Gradle Version N/A\r\n",
+        "url": "https://github.com/JetBrains/gradle-changelog-plugin/issues/184"
+    },
+    {
+        "id": 1795313771,
+        "number": 182,
+        "title": "Wrong render in changelog file that use CRLF",
+        "state": "closed",
+        "created_at": "2023-07-09T09:27:29Z",
+        "updated_at": "2023-07-10T14:08:08Z",
+        "closed_at": "2023-07-10T14:08:08Z",
+        "author": "danygold",
+        "comments": 0,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "**Describe the bug**\r\nPlugin currently fully supports only `CHANGELOG.md` files that use `LF` line separator. Using a different line separator can leads wrong markdown/html/plain text render.\r\nPR #177 resolve a regression introduced in 2.1.0 version of plugin, and take stability to the `patchchangelog` task, but there are some other bugs that are present.\r\n\r\nMain bug are:\r\n- `HTML render` generate wrong link\r\n- `HTML render` generate an HTML that contains unnedeed new line\r\n- `Plain text render` generate a wrong formatting (E.g. duplicated empty line)\r\n- `Markdown render` add an unnecessary newline between links\r\n\r\n**To Reproduce**\r\nPlease check [this test repository](https://github.com/danygold/gradle-changelog-plugin/tree/test/crlf_wrong_render). I added some unit test, and the result can be view at this [link](https://github.com/danygold/gradle-changelog-plugin/actions/runs/5499027970/jobs/10020984906)\r\n\r\n**Expected behavior**\r\nOutput of the plugin is consistent with all line separator.\r\n\r\n**Environment:**\r\n - OS: Windows\r\n - Gradle Changelog Plugin Version 2.1.1\r\n - Gradle Version 8.1.1\r\n\r\n**Additional context**\r\nThis issue isn't a regression of a recent version of plugin (2.0.0 is the last version that i tested for a possible regression)\r\n",
+        "url": "https://github.com/JetBrains/gradle-changelog-plugin/issues/182"
+    },
+    {
+        "id": 1794462178,
+        "number": 181,
+        "title": "Properties `itemPrefix` and `lineSeparator` of class `org.jetbrains.changelog.Changelog.Item` are unused",
+        "state": "closed",
+        "created_at": "2023-07-07T22:05:41Z",
+        "updated_at": "2023-07-10T14:33:20Z",
+        "closed_at": "2023-07-10T14:33:20Z",
+        "author": "rybak",
+        "comments": 1,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "**Describe the bug**\r\nClass `org.jetbrains.changelog.Changelog.Item`  has two unused properties: `itemPrefix` and `lineSeparator`. They are only used by private function `copy` to pass the value to the constructor.\r\n\r\n**To Reproduce**\r\n1. Add the following code to `src/test/kotlin/org/jetbrains/changelog/ChangelogTesting.kt` in the repository:\r\n```kotlin\r\npackage org.jetbrains.changelog\r\n\r\nfun main() {\r\n    val changelog = Changelog(\r\n        \"\", null, null, null, ChangelogPluginConstants.UNRELEASED_TERM, ChangelogPluginConstants.GROUPS,\r\n        ChangelogPluginConstants.SEM_VER_REGEX,\r\n        \"+ This prefix from Changelog is used: \",\r\n        null, { _, _, _, _ -> \"\" },\r\n        \"\\n\\n\" // <---- this line separator is used\r\n    )\r\n\r\n    println(\r\n        changelog.renderItem(\r\n            Changelog.Item(\r\n                \"\", \"\", \"\", false, mapOf(\"Example section\" to setOf(\"Example\", \"of\", \"list\")),\r\n                \" this itemPrefix is ignored\", \" the line separator from Item is ignored too\"\r\n            ),\r\n            Changelog.OutputType.MARKDOWN\r\n        )\r\n    )\r\n}\r\n```\r\n2. Launch function `main()`\r\n\r\n**Actual behavior**\r\nOutput of the program uses the values of itemPrefix and lineSeparator from class `Changelog`:\r\n```\r\n## \r\n\r\n\r\n\r\n### Example section\r\n\r\n+ This prefix from Changelog is used:  Example\r\n\r\n+ This prefix from Changelog is used:  of\r\n\r\n+ This prefix from Changelog is used:  list\r\n\r\n\r\n```\r\nthough user of class `Item` might expect the values passed into the constructor to be used.\r\n\r\n**Expected behavior**\r\nClass `Changelog.Item` doesn't have the unused properties. Even though I'm experimenting with using the class `Item` directly, I'm OK with just dropping these properties, which would lead to a compilation error on upgrade, if the class is used directly.\r\n\r\nStarting to use the properties doesn't seem useful. It might break changelog formatting unexpectedly after an upgrade, unlike a compilation error if they were just removed.\r\n\r\nMaybe a deprecation period could be used, with eventual removal.\r\n\r\n**Additional context**\r\nEven though function `renderItem()` calls `with(item)`, properties `itemPrefix` and `lineSeparator` are `private` in class `Item`, so properties with the same name of the class `Changelog` get used in lines:\r\n\r\n```kotlin\r\n                yield(lineSeparator)\r\n// [...]\r\n                            .map { \"$itemPrefix $it\" }\r\n```",
+        "url": "https://github.com/JetBrains/gradle-changelog-plugin/issues/181"
+    },
+    {
+        "id": 1792506604,
+        "number": 179,
+        "title": "org.jetbrains.changelog.Changelog.Item.plus doesn't keep `withHeader` and other boolean flags",
+        "state": "closed",
+        "created_at": "2023-07-07T00:32:00Z",
+        "updated_at": "2023-07-10T14:12:32Z",
+        "closed_at": "2023-07-07T11:38:57Z",
+        "author": "rybak",
+        "comments": 1,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "**Describe the bug**\r\nI'm trying to _add_ additional list items to `<change-notes>` in the Gradle task `patchPluginXml` of Gradle IntelliJ Plugin. I'm trying to modify output of the Changelog Plugin. Unfortunately, function `org.jetbrains.changelog.Changelog.Item.plus` loses the value of `withHeader` and other boolean flags, which were set up in the call chain before `plus()` is invoked.\r\n\r\nBelow is a minimal example that doesn't require Gradle IntelliJ Plugin.\r\n\r\n**To Reproduce**\r\nThis is code, slightly modified from [IntelliJ Platform Plugin Template](https://github.com/JetBrains/intellij-platform-plugin-template/blob/main/build.gradle.kts#L72-L102). Two methods `withHeader` and `withEmptySections` are used as an example – these are just the two boolean flags that I've checked, others are probably affected in the same way. \r\n\r\n1. Put the following code at the top level of the `build.gradle.kts`, for simplicity:\r\n```kotlin\r\nwith(project.changelog) {\r\n\tval extraItems = mapOf(\r\n\t\t\"Extra section\" to setOf(\"[Extra link](https://example.org)\")\r\n\t)\r\n\tprintln(renderItem(\r\n\t\tgetUnreleased()\r\n\t\t\t.withHeader(false)\r\n\t\t\t.withEmptySections(true)\r\n\t\t\t.plus(Changelog.Item(\"\", \"\", \"\", false, extraItems, \"\", \"\")),\r\n\t\tChangelog.OutputType.MARKDOWN\r\n\t))\r\n}\r\n```\r\n2. Put the following Markdown text in `CHANGELOG.md`:\r\n```\r\n# Changelog\r\n\r\n## [Unreleased]\r\n\r\n### Added\r\n- Example added item, \"Changed\" is empty\r\n\r\n### Changed\r\n\r\n## [0.2.0-alpha]\r\n\r\n[Unreleased]: https://github.com/rybak/intellij-copy-commit-reference/compare/v0.2.0-alpha...HEAD\r\n[0.2.0-alpha]: https://github.com/rybak/intellij-copy-commit-reference/compare/v0.1.0-alpha.1...v0.2.0-alpha\r\n```\r\n3. Run `./gradlew`\r\n\r\n**Actual behavior**\r\nHeader `## [Unreleased]` is printed in the log, empty section is absent:\r\n```\r\n## [Unreleased]\r\n\r\n### Added\r\n- Example added item, \"Changed\" is empty\r\n\r\n### Extra section\r\n- [Extra link](https://example.org)\r\n\r\n[Unreleased]: https://github.com/rybak/intellij-copy-commit-reference/compare/v0.2.0-alpha...HEAD\r\n```\r\n\r\n**Expected behavior**\r\nHeader is _not_ printed in the log, empty section is present:\r\n```\r\n### Added\r\n- Example added item, \"Changed\" is empty\r\n\r\n### Changed\r\n\r\n### Extra section\r\n- [Extra link](https://example.org)\r\n\r\n[Unreleased]: https://github.com/rybak/intellij-copy-commit-reference/compare/v0.2.0-alpha...HEAD\r\n```\r\n\r\n**Environment:**\r\n - Gradle Changelog Plugin Version 2.1.0\r\n - Gradle Version 8.1.1\r\n\r\n**Additional context**\r\n* Workaround – call `with*` functions _after_ the `plus` function:\r\n```kotlin\r\nwith(project.changelog) {\r\n\tval extraItems = mapOf(\r\n\t\t\"Extra section\" to setOf(\"[Extra link](https://example.org)\")\r\n\t)\r\n\tprintln(renderItem(\r\n\t\tgetUnreleased()\r\n\t\t\t.plus(Changelog.Item(\"\", \"\", \"\", false, extraItems, \"\", \"\"))\r\n\t\t\t.withHeader(false)\r\n\t\t\t.withEmptySections(true),\r\n\t\tChangelog.OutputType.MARKDOWN\r\n\t))\r\n}\r\n```\r\n* I'm not yet familiar with how `copy()` works in Kotlin, but this bug has something to do with the fact that [function `plus()`](https://github.com/JetBrains/gradle-changelog-plugin/blob/main/src/main/kotlin/org/jetbrains/changelog/Changelog.kt#L318-L327) is not calling [`private fun copy`](https://github.com/JetBrains/gradle-changelog-plugin/blob/main/src/main/kotlin/org/jetbrains/changelog/Changelog.kt#L289-L327). Instead, the [constructor, which sets the default values for affected flags](https://github.com/JetBrains/gradle-changelog-plugin/blob/main/src/main/kotlin/org/jetbrains/changelog/Changelog.kt#L254-L268) is invoked.",
+        "url": "https://github.com/JetBrains/gradle-changelog-plugin/issues/179"
+    },
+    {
+        "id": 1769101515,
+        "number": 176,
+        "title": "patchChangelog breaks changelog format in version 2.1.0",
+        "state": "closed",
+        "created_at": "2023-06-22T07:24:42Z",
+        "updated_at": "2023-07-10T14:12:10Z",
+        "closed_at": "2023-07-06T16:16:56Z",
+        "author": "danygold",
+        "comments": 1,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "**Describe the bug**\r\n`patchChangelog` in version 2.1.0 breaks changelog format adding unneccessary new line.\r\n\r\n**To Reproduce**\r\nUse [CHANGELOG.md](https://github.com/JetBrains/gradle-changelog-plugin/files/11830060/CHANGELOG.md) and run `gradle patchChangelog`\r\n\r\n**Expected behavior**\r\nChangelog is patched and format is not manipulated.\r\n- Version 2.0.0 - [CHANGELOG_2_0_0.md](https://github.com/JetBrains/gradle-changelog-plugin/files/11830085/CHANGELOG_2_0_0.md) (Expected behaviour)\r\n- Version 2.1.0 [CHANGELOG_2_1_0.md](https://github.com/JetBrains/gradle-changelog-plugin/files/11830094/CHANGELOG_2_1_0.md) (Wrong changelog format)\r\n\r\n\r\n**Environment:**\r\n - OS: Windows 11\r\n - Gradle Changelog Plugin Version 2.1.0\r\n - Gradle Version 8.1.1\r\n\r\n**Additional context**\r\nIn previous version before 2.1.0, `patchCahngelog` works propertly as expected\r\n",
+        "url": "https://github.com/JetBrains/gradle-changelog-plugin/issues/176"
+    },
+    {
+        "id": 1756242834,
+        "number": 175,
+        "title": "Duplicated and incorrect repository links",
+        "state": "closed",
+        "created_at": "2023-06-14T07:26:37Z",
+        "updated_at": "2024-07-04T12:13:01Z",
+        "closed_at": "2024-07-04T12:13:01Z",
+        "author": "krasa",
+        "comments": 1,
+        "labels": [
+            "bug",
+            "feedback required"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "**Describe the bug**\r\n- duplicated repository links after every `publishPlugin` https://github.com/krasa/StringManipulation/blob/test/CHANGELOG.md?plain=1\r\n- incorrect link  https://plugins.jetbrains.com/plugin/2162-string-manipulation/versions/test/347843\r\n![image](https://github.com/JetBrains/gradle-changelog-plugin/assets/1160875/85ff14ad-fe88-4130-a20b-31ed0b457fb8)\r\n\r\n\r\n**To Reproduce**\r\n- have an unreleased change `foo` https://github.com/krasa/StringManipulation/commit/2c1129a5f91874681ebad700c33425e54c6ea459\r\n- increment plugin version and do `publishPlugin` -> result https://github.com/krasa/StringManipulation/commit/7a46157ceb32dd96d2409b0824dbf25c1b637e48 + https://plugins.jetbrains.com/plugin/2162-string-manipulation/versions/test/347843\r\n\r\n**Expected behavior**\r\n- not duplicating links\r\n- proper link in the What’s New section\r\n\r\n**Environment:**\r\n - OS: Win10\r\n - Gradle Changelog Plugin Version 2.1.0\r\n - Gradle Version 8.1\r\n \r\n\r\n\r\n**Additional context**\r\n- disabled `org.gradle.configuration-cache` for testing purposes\r\n- [changelog config ](https://github.com/krasa/StringManipulation/blob/7a46157ceb32dd96d2409b0824dbf25c1b637e48/build.gradle.kts#L80-L83)  + https://github.com/krasa/StringManipulation/blob/7a46157ceb32dd96d2409b0824dbf25c1b637e48/build.gradle.kts#L123-L132",
+        "url": "https://github.com/JetBrains/gradle-changelog-plugin/issues/175"
+    }
+]

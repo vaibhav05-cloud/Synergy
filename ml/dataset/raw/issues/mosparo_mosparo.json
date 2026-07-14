@@ -1,0 +1,373 @@
+[
+    {
+        "id": 4845189011,
+        "number": 435,
+        "title": "bug with scheduled task",
+        "state": "open",
+        "created_at": "2026-07-09T09:55:07Z",
+        "updated_at": "2026-07-11T13:00:24Z",
+        "closed_at": null,
+        "author": "ffPjrZUGXfcxuAj",
+        "comments": 4,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [
+            "zepich"
+        ],
+        "locked": false,
+        "body": "`[2026-07-09T09:53:47.292923+00:00] deprecation.INFO: User Deprecated: Class \"Doctrine\\ORM\\Proxy\\Autoloader\" is deprecated. Use native lazy objects instead. (Autoloader.php:74 called by DoctrineBundle.php:136, https://github.com/doctrine/orm/pull/12005, package doctrine/orm) {\"exception\":\"[object] (ErrorException(code: 0): User Deprecated: Class \\\"Doctrine\\\\ORM\\\\Proxy\\\\Autoloader\\\" is deprecated. Use native lazy objects instead. (Autoloader.php:74 called by DoctrineBundle.php:136, https://githu..`\n\nwith mosparo:rule-packages:refresh comand",
+        "url": "https://github.com/mosparo/mosparo/issues/435"
+    },
+    {
+        "id": 4831908597,
+        "number": 434,
+        "title": "OpenID Connect login",
+        "state": "open",
+        "created_at": "2026-07-07T20:15:18Z",
+        "updated_at": "2026-07-08T08:05:53Z",
+        "closed_at": null,
+        "author": "muety",
+        "comments": 1,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "Would be cool if you could SSO log in to Mosparo via an OpenID Connect-compatible provider! Apart from that: thanks a lot for this amazing project 🙌.",
+        "url": "https://github.com/mosparo/mosparo/issues/434"
+    },
+    {
+        "id": 4785742535,
+        "number": 433,
+        "title": "unix_socket",
+        "state": "open",
+        "created_at": "2026-07-01T12:58:14Z",
+        "updated_at": "2026-07-01T17:56:05Z",
+        "closed_at": null,
+        "author": "ffPjrZUGXfcxuAj",
+        "comments": 1,
+        "labels": [],
+        "assignees": [
+            "zepich"
+        ],
+        "locked": false,
+        "body": "how i can connect to mysql using unix_socket ?",
+        "url": "https://github.com/mosparo/mosparo/issues/433"
+    },
+    {
+        "id": 4750581006,
+        "number": 432,
+        "title": "Error 500 after Upgrade from 1.4.13 to latest stable 1.5",
+        "state": "closed",
+        "created_at": "2026-06-26T08:36:36Z",
+        "updated_at": "2026-07-11T09:18:18Z",
+        "closed_at": "2026-07-11T09:18:18Z",
+        "author": "OvalMedia",
+        "comments": 9,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [
+            "zepich"
+        ],
+        "locked": false,
+        "body": "I started an upgrade from the backend. The requirement checks were all green before I started the upgrade.\nIt all ended with a server error 500.\n\nThis is from the log:\n\n`request.INFO: Matched route \"administration_update_finalize\". {\"route\":\"administration_update_finalize\",\"route_parameters\":{\"_route\":\"administration_update_finalize\",\"_controller\":\"Mosparo\\\\Controller\\\\Administration\\\\UpdateController::finalize\"},\"request_uri\":\"https://mosparo.example.com/administration/update/finalize\",\"method\":\"GET\"} []\n[2026-06-26T10:21:51.368475+02:00] security.DEBUG: Checking for authenticator support. {\"firewall_name\":\"main\",\"authenticators\":2} []\n[2026-06-26T10:21:51.368486+02:00] security.DEBUG: Checking support on authenticator. {\"firewall_name\":\"main\",\"authenticator\":\"Scheb\\\\TwoFactorBundle\\\\Security\\\\Http\\\\Authenticator\\\\TwoFactorAuthenticator\"} []\n[2026-06-26T10:21:51.368493+02:00] security.DEBUG: Authenticator does not support the request. {\"firewall_name\":\"main\",\"authenticator\":\"Scheb\\\\TwoFactorBundle\\\\Security\\\\Http\\\\Authenticator\\\\TwoFactorAuthenticator\"} []\n[2026-06-26T10:21:51.368495+02:00] security.DEBUG: Checking support on authenticator. {\"firewall_name\":\"main\",\"authenticator\":\"Symfony\\\\Component\\\\Security\\\\Http\\\\Authenticator\\\\FormLoginAuthenticator\"} []\n[2026-06-26T10:21:51.368498+02:00] security.DEBUG: Authenticator does not support the request. {\"firewall_name\":\"main\",\"authenticator\":\"Symfony\\\\Component\\\\Security\\\\Http\\\\Authenticator\\\\FormLoginAuthenticator\"} []\n[2026-06-26T10:21:51.369098+02:00] security.DEBUG: Read existing security token from the session. {\"key\":\"_security_main\",\"token_class\":\"Symfony\\\\Component\\\\Security\\\\Core\\\\Authentication\\\\Token\\\\UsernamePasswordToken\"} []\n[2026-06-26T10:21:51.380658+02:00] security.DEBUG: User was reloaded from a user provider. {\"provider\":\"Symfony\\\\Bridge\\\\Doctrine\\\\Security\\\\User\\\\EntityUserProvider\",\"username\":\"mosparo@oval-media.de\"} []\n[2026-06-26T10:21:51.384693+02:00] request.CRITICAL: Uncaught PHP Exception Doctrine\\DBAL\\Exception\\InvalidFieldNameException: \"An exception occurred while executing a query: SQLSTATE[42S22]: Column not found: 1054 Unknown column 't0.silent_mode_enabled' in 'SELECT'\" at ExceptionConverter.php line 52 {\"exception\":\"[object] (Doctrine\\\\DBAL\\\\Exception\\\\InvalidFieldNameException(code: 1054): An exception occurred while executing a query: SQLSTATE[42S22]: Column not found: 1054 Unknown column 't0.silent_mode_enabled' in 'SELECT' at /vendor/doctrine/dbal/src/Driver/API/MySQL/ExceptionConverter.php:52)\\n[previous exception] [object] (Doctrine\\\\DBAL\\\\Driver\\\\PDO\\\\Exception(code: 1054): SQLSTATE[42S22]: Column not found: 1054 Unknown column 't0.silent_mode_enabled' in 'SELECT' at /vendor/doctrine/dbal/src/Driver/PDO/Exception.php:24)\\n[previous exception] [object] (PDOException(code: 42S22): SQLSTATE[42S22]: Column not found: 1054 Unknown column 't0.silent_mode_enabled' in 'SELECT' at /vendor/doctrine/dbal/src/Driver/PDO/Statement.php:55)\"} []\n[2026-06-26T10:21:51.396777+02:00] security.DEBUG: Stored the security token in the session. {\"key\":\"_security_main\"} []\n[2026-06-26T10:22:07.587278+02:00] request.INFO: Matched route \"administration_update_finalize\". {\"route\":\"administration_update_finalize\",\"route_parameters\":{\"_route\":\"administration_update_finalize\",\"_controller\":\"Mosparo\\\\Controller\\\\Administration\\\\UpdateController::finalize\"},\"request_uri\":\"https://mosparo.example.com/administration/update/finalize\",\"method\":\"GET\"} []\n[2026-06-26T10:22:07.604005+02:00] security.DEBUG: Checking for authenticator support. {\"firewall_name\":\"main\",\"authenticators\":2} []\n[2026-06-26T10:22:07.604015+02:00] security.DEBUG: Checking support on authenticator. {\"firewall_name\":\"main\",\"authenticator\":\"Scheb\\\\TwoFactorBundle\\\\Security\\\\Http\\\\Authenticator\\\\TwoFactorAuthenticator\"} []\n[2026-06-26T10:22:07.604022+02:00] security.DEBUG: Authenticator does not support the request. {\"firewall_name\":\"main\",\"authenticator\":\"Scheb\\\\TwoFactorBundle\\\\Security\\\\Http\\\\Authenticator\\\\TwoFactorAuthenticator\"} []\n[2026-06-26T10:22:07.604026+02:00] security.DEBUG: Checking support on authenticator. {\"firewall_name\":\"main\",\"authenticator\":\"Symfony\\\\Component\\\\Security\\\\Http\\\\Authenticator\\\\FormLoginAuthenticator\"} []\n[2026-06-26T10:22:07.604030+02:00] security.DEBUG: Authenticator does not support the request. {\"firewall_name\":\"main\",\"authenticator\":\"Symfony\\\\Component\\\\Security\\\\Http\\\\Authenticator\\\\FormLoginAuthenticator\"} []\n[2026-06-26T10:22:07.604977+02:00] security.DEBUG: Read existing security token from the session. {\"key\":\"_security_main\",\"token_class\":\"Symfony\\\\Component\\\\Security\\\\Core\\\\Authentication\\\\Token\\\\UsernamePasswordToken\"} []\n[2026-06-26T10:22:07.614490+02:00] security.DEBUG: User was reloaded from a user provider. {\"provider\":\"Symfony\\\\Bridge\\\\Doctrine\\\\Security\\\\User\\\\EntityUserProvider\",\"username\":\"mosparo@oval-media.de\"} []\n[2026-06-26T10:22:07.617915+02:00] request.CRITICAL: Uncaught PHP Exception Doctrine\\DBAL\\Exception\\InvalidFieldNameException: \"An exception occurred while executing a query: SQLSTATE[42S22]: Column not found: 1054 Unknown column 't0.silent_mode_enabled' in 'SELECT'\" at ExceptionConverter.php line 52 {\"exception\":\"[object] (Doctrine\\\\DBAL\\\\Exception\\\\InvalidFieldNameException(code: 1054): An exception occurred while executing a query: SQLSTATE[42S22]: Column not found: 1054 Unknown column 't0.silent_mode_enabled' in 'SELECT' at /vendor/doctrine/dbal/src/Driver/API/MySQL/ExceptionConverter.php:52)\\n[previous exception] [object] (Doctrine\\\\DBAL\\\\Driver\\\\PDO\\\\Exception(code: 1054): SQLSTATE[42S22]: Column not found: 1054 Unknown column 't0.silent_mode_enabled' in 'SELECT' at /vendor/doctrine/dbal/src/Driver/PDO/Exception.php:24)\\n[previous exception] [object] (PDOException(code: 42S22): SQLSTATE[42S22]: Column not found: 1054 Unknown column 't0.silent_mode_enabled' in 'SELECT' at /vendor/doctrine/dbal/src/Driver/PDO/Statement.php:55)\"} []\n[2026-06-26T10:22:07.624025+02:00] security.DEBUG: Stored the security token in the session. {\"key\":\"_security_main\"} []\n`",
+        "url": "https://github.com/mosparo/mosparo/issues/432"
+    },
+    {
+        "id": 4735196872,
+        "number": 431,
+        "title": "demo form code",
+        "state": "closed",
+        "created_at": "2026-06-24T13:20:16Z",
+        "updated_at": "2026-06-24T14:51:41Z",
+        "closed_at": "2026-06-24T14:51:41Z",
+        "author": "ffPjrZUGXfcxuAj",
+        "comments": 2,
+        "labels": [],
+        "assignees": [
+            "zepich"
+        ],
+        "locked": false,
+        "body": "It's possibile to have a code of demo form?",
+        "url": "https://github.com/mosparo/mosparo/issues/431"
+    },
+    {
+        "id": 4734859193,
+        "number": 430,
+        "title": "Delete project Error",
+        "state": "closed",
+        "created_at": "2026-06-24T12:36:07Z",
+        "updated_at": "2026-06-26T08:58:16Z",
+        "closed_at": "2026-06-26T08:58:16Z",
+        "author": "ffPjrZUGXfcxuAj",
+        "comments": 3,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [
+            "zepich"
+        ],
+        "locked": false,
+        "body": "When i try to delete e project i have error 500 mosparo 1.5.2",
+        "url": "https://github.com/mosparo/mosparo/issues/430"
+    },
+    {
+        "id": 4718583907,
+        "number": 429,
+        "title": "Error upgrading from 1.4.13 to 1.5.2",
+        "state": "closed",
+        "created_at": "2026-06-22T16:27:17Z",
+        "updated_at": "2026-06-23T06:51:50Z",
+        "closed_at": "2026-06-23T06:51:50Z",
+        "author": "demon-ru",
+        "comments": 3,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "After performing the usual routine actions to upgrade to the new version, I get a 500 error and a message in the logs:\n```\nrequest.CRITICAL: \nUncaught PHP Exception ArgumentCountError: \"Too few arguments to function Mosparo\\Helper\\InterfaceHelper::__construct(), 2 passed in \n/var/www/captcha/var/cache/prod/ContainerMYTN9j3/Mosparo_KernelProdContainer.php on line 500 and exactly 3 expected\" at InterfaceHelper.php line 18 \n```\nif you try to clear the cache in the console, then there is a slightly different error:\n```\nsudo -u www-data php bin/console cache:clear\n[2026-06-22T16:10:38.510367+00:00] console.CRITICAL: Error thrown while running command \"cache:clear\". Message: \"Class \"Mosparo\\Rule\\RuleTypeManager\" not found\" {\"exception\":\"[object] (Error(code: 0): Class \\\"Mosparo\\\\Rule\\\\RuleTypeManager\\\" not found at /var/www/captcha/var/cache/prod/ContainerMYTN9j3/Mosparo_KernelProdContainer.php:616)\",\"command\":\"cache:clear\",\"message\":\"Class \\\"Mosparo\\\\Rule\\\\RuleTypeManager\\\" not found\"} []\n16:10:38 CRITICAL  [console] Error thrown while running command \"cache:clear\". Message: \"Class \"Mosparo\\Rule\\RuleTypeManager\" not found\" [\"exception\" => Error { …},\"command\" => \"cache:clear\",\"message\" => \"Class \"Mosparo\\Rule\\RuleTypeManager\" not found\"]\n[2026-06-22T16:10:38.519134+00:00] console.DEBUG: Command \"cache:clear\" exited with code \"1\" {\"command\":\"cache:clear\",\"code\":1} []\n[2026-06-22T16:10:38.519257+00:00] php.CRITICAL: Uncaught Error: Class \"Mosparo\\Rule\\RuleTypeManager\" not found {\"exception\":\"[object] (Error(code: 0): Class \\\"Mosparo\\\\Rule\\\\RuleTypeManager\\\" not found at /var/www/captcha/var/cache/prod/ContainerMYTN9j3/Mosparo_KernelProdContainer.php:616)\"} []\n\nIn Mosparo_KernelProdContainer.php line 616:\n\n  Attempted to load class \"RuleTypeManager\" from namespace \"Mosparo\\Rule\".\n  Did you forget a \"use\" statement for \"Mosparo\\Rules\\FieldRule\\RuleTypeManager\"?\n```\n\nWhat did I do wrong or what else can I try to successfully upgrade to the new version?",
+        "url": "https://github.com/mosparo/mosparo/issues/429"
+    },
+    {
+        "id": 4716869879,
+        "number": 428,
+        "title": "Extension for phpBB",
+        "state": "open",
+        "created_at": "2026-06-22T13:04:37Z",
+        "updated_at": "2026-07-01T17:36:32Z",
+        "closed_at": null,
+        "author": "Neustradamus",
+        "comments": 5,
+        "labels": [
+            "extension"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "Dear @mosparo team, @zepich,\n\nCan you create an extension for phpBB?\n- https://www.phpbb.com/\n\nThis Internet forum is very used in the World:\n- https://en.wikipedia.org/wiki/phpBB\n\nThanks in advance.\n",
+        "url": "https://github.com/mosparo/mosparo/issues/428"
+    },
+    {
+        "id": 4694001952,
+        "number": 427,
+        "title": "getProjectStatistic() fails on PostgreSQL — ORDER BY on non-aggregated column (SQLSTATE 42803)",
+        "state": "closed",
+        "created_at": "2026-06-18T15:55:50Z",
+        "updated_at": "2026-06-18T20:47:38Z",
+        "closed_at": "2026-06-18T20:47:38Z",
+        "author": "lporcheron",
+        "comments": 4,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [
+            "zepich"
+        ],
+        "locked": false,
+        "body": "**Mosparo version:** 1.5.1\n**Database:** PostgreSQL\n\n## Description\n\nOpening the project list page throws a 500 error on PostgreSQL. The page renders fine on MySQL/MariaDB but fails on PostgreSQL because of stricter `GROUP BY` / `ORDER BY` enforcement.\n\n## Error\n\n```\nSQLSTATE[42803]: Grouping error: 7 ERROR: column \"d0_.date\" must appear in\nthe GROUP BY clause or be used in an aggregate function\n... WHERE d0_.project_id = $1 AND d0_.date >= $2 ORDER BY d0_.date DESC\n```\n\nThrown via Twig in `templates/project/list.html.twig` at line 254, where `get_project_statistics(project, statistic)` is called.\n\n## Root cause\n\nIn `src/Twig/ProjectExtension.php`, method `getProjectStatistic()`, the query selects only aggregate functions with no `GROUP BY`, so it returns a single aggregated row — but it still calls `->orderBy('ds.date', 'DESC')`:\n\n```php\n$qb = $this->entityManager->createQueryBuilder()\n    ->select('SUM(ds.numberOfValidSubmissions) AS valid, SUM(ds.numberOfSpamSubmissions) AS spam, MAX(ds.updatedAt) AS last')\n    ->from(DayStatistic::class, 'ds')\n    ->where('ds.project = :project')\n    ->andWhere('ds.date >= :date')\n    ->setParameter('project', $project->getId())\n    ->setParameter('date', (new \\DateTime())->sub(new \\DateInterval(sprintf('P%dD', $days)))->format('Y-m-d'))\n    ->orderBy('ds.date', 'DESC')\n;\n```\n\nOrdering by `ds.date`, which is neither aggregated nor part of a `GROUP BY`, is rejected by PostgreSQL. MySQL/MariaDB tolerates it, which is why the bug is database-specific. Unlike MySQL's `ONLY_FULL_GROUP_BY`, PostgreSQL has no setting to relax this, so it must be fixed in code.\n\n## Proposed fix\n\nRemove the `->orderBy('ds.date', 'DESC')` call. The query returns a single aggregated row, so the ordering has no effect and is safe to drop.\n\n## Steps to reproduce\n\n1. Run Mosparo 1.5.1 on PostgreSQL with at least one project that has day-statistics rows.\n2. Open the project list page with statistics enabled (`statistic != -1`).\n3. The page returns a 500 with the error above.\n",
+        "url": "https://github.com/mosparo/mosparo/issues/427"
+    },
+    {
+        "id": 4690592547,
+        "number": 426,
+        "title": "After updating to 1.5.0, I've got the error message : mosparo returned no submit token",
+        "state": "closed",
+        "created_at": "2026-06-18T08:28:09Z",
+        "updated_at": "2026-06-18T12:38:47Z",
+        "closed_at": "2026-06-18T09:45:09Z",
+        "author": "BDphilBen",
+        "comments": 8,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "Hello,\n\nI upgraded to version 1.5.0 this morning, and since then, all my forms are displaying the error message \"mosparo returned no submit token\", making it impossible to submit them.\n\nDid I miss something during the update?\n\nI've searched but unfortunately haven't found an answer.\n\nI'm using manual integrations that worked perfectly before.\n\nThank you in advance.",
+        "url": "https://github.com/mosparo/mosparo/issues/426"
+    },
+    {
+        "id": 4689573434,
+        "number": 425,
+        "title": "bbpress",
+        "state": "closed",
+        "created_at": "2026-06-18T05:44:46Z",
+        "updated_at": "2026-06-21T18:50:13Z",
+        "closed_at": "2026-06-21T18:50:13Z",
+        "author": "ffPjrZUGXfcxuAj",
+        "comments": 3,
+        "labels": [
+            "extension"
+        ],
+        "assignees": [
+            "zepich"
+        ],
+        "locked": false,
+        "body": "Please can integrate bbpress registration and post topic, reply for guest user in wordpress plugin?",
+        "url": "https://github.com/mosparo/mosparo/issues/425"
+    },
+    {
+        "id": 4639409216,
+        "number": 416,
+        "title": "How select redis DB",
+        "state": "closed",
+        "created_at": "2026-06-11T10:08:40Z",
+        "updated_at": "2026-06-18T05:43:38Z",
+        "closed_at": "2026-06-18T05:43:38Z",
+        "author": "ffPjrZUGXfcxuAj",
+        "comments": 4,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "I see i can set redis host and port but how i can set the db number?",
+        "url": "https://github.com/mosparo/mosparo/issues/416"
+    },
+    {
+        "id": 4631050599,
+        "number": 415,
+        "title": "Plugin for Flarum",
+        "state": "closed",
+        "created_at": "2026-06-10T12:10:34Z",
+        "updated_at": "2026-06-26T11:50:01Z",
+        "closed_at": "2026-06-26T11:50:01Z",
+        "author": "ffPjrZUGXfcxuAj",
+        "comments": 7,
+        "labels": [
+            "extension"
+        ],
+        "assignees": [
+            "zepich"
+        ],
+        "locked": false,
+        "body": "There is a plugin for integrate with flarum?",
+        "url": "https://github.com/mosparo/mosparo/issues/415"
+    },
+    {
+        "id": 4530274956,
+        "number": 414,
+        "title": "mosparo blocks login/registration when AIOS Honeypot field is active",
+        "state": "closed",
+        "created_at": "2026-05-27T07:02:33Z",
+        "updated_at": "2026-06-01T06:42:03Z",
+        "closed_at": "2026-06-01T06:41:45Z",
+        "author": "adambichler",
+        "comments": 2,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "## Description\nWhen using mosparo alongside the **All In One Security (AIOS)** [plugin](https://wordpress.org/plugins/all-in-one-wp-security-and-firewall/), enabling the AIOS Honeypot field (on the AIOS plugin settings) on login or registration pages causes mosparo to incorrectly flag the form submission as invalid. As a result, users are unable to log in or register.\n\n## Expected Behavior\nmosparo should process the form submission normally without interfering with AIOS's honeypot field, allowing legitimate login/registration attempts to proceed.\n\n## Actual Behavior\nmosparo treats the submission as invalid/spam when AIOS's honeypot field is active, blocking the login/registration action entirely.\n\n## Steps to Reproduce\n1. Install and activate `mosparo` (v1.4.13) and `All In One Security (AIOS)` (v5.4.7)\n2. In AIOS settings, enable the **Honeypot** field for the login and/or registration pages\n3. Attempt to submit a valid login or registration form\n4. Observe that mosparo blocks the submission and prevents the action from completing (see screenshot)\n\n## Environment\n- **WordPress Version:** 7.0\n- **mosparo Version:** 1.4.13\n- **AIOS Version:** 5.4.7\n- **PHP Version:** 8.4.18\n- **Browser/OS:** Chrome on macOS\n\n## Additional Context\n- Disabling the AIOS honeypot field resolves the issue, but removes that layer of security.\n\n<img width=\"1309\" height=\"577\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/6f1c263d-a176-46f5-b8d3-f18b1c2ed3b1\" />\n<img width=\"1320\" height=\"622\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/03784a0f-cf31-4e06-a90b-4df68ab946f8\" />",
+        "url": "https://github.com/mosparo/mosparo/issues/414"
+    },
+    {
+        "id": 4517157277,
+        "number": 413,
+        "title": "Forminator conditional fields issue",
+        "state": "closed",
+        "created_at": "2026-05-25T13:12:50Z",
+        "updated_at": "2026-05-27T07:05:16Z",
+        "closed_at": "2026-05-27T07:05:16Z",
+        "author": "adambichler",
+        "comments": 2,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "##  Bug Report: Mosparo incorrectly flags hidden Forminator select fields as failed verification\n\n### Summary\nWhen using mosparo alongside the Forminator plugin in WordPress, conditional visibility rules that hide a `select` field cause mosparo to treat the hidden field as a failed verification. This results in the entire form submission being marked as invalid, even though the user never interacted with the field.\n\n### Steps to Reproduce\n1. Instal, activate and set up both **mosparo** and **Forminator** in WordPress.\n2. Create a Forminator form containing:\n   - At least one `select` field\n   - Another field used to trigger conditional visibility\n3. Configure a conditional visibility rule so the second `select` field is hidden based on the value of the trigger field.\n4. Enable mosparo verification for the form.\n5. Submit the form with the `select` field hidden (condition met).\n6. Check the mosparo verification status/logs for the submission.\n\n### Expected Behavior\nmosparo should ignore fields that are hidden via conditional visibility, or correctly recognize that the hidden `select` field does not require user interaction/verification. The submission should pass verification successfully.\n\n### Actual Behavior\nmosparo treats the hidden `select` field as a failed verification, causing the submission verification status to be marked as `invalid`.\n\n### Environment\n- **WordPress Version:** 7.0\n- **mosparo Version:** 1.4.13\n- **Forminator Version:** 1.53.2\n- **PHP Version:** 8.4.18\n- **Browser/OS:** Chrome/Mac\n\n### Additional Context\n- This behavior only occurs when the `select` field is hidden via Forminator's conditional visibility feature.\n- Visible `select` fields verify correctly.\n- Screenshot of the log\n- import code for sample forminator form configuration (sample.txt): [sample-form.txt](https://github.com/user-attachments/files/28223585/sample-form.txt)\n<img width=\"1308\" height=\"789\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/e234da7a-1380-464b-9b34-115ce0050cdd\" />\n",
+        "url": "https://github.com/mosparo/mosparo/issues/413"
+    },
+    {
+        "id": 4384429683,
+        "number": 411,
+        "title": "How to access to Statistic API ?",
+        "state": "closed",
+        "created_at": "2026-05-05T13:29:21Z",
+        "updated_at": "2026-06-17T08:12:21Z",
+        "closed_at": "2026-06-17T08:12:21Z",
+        "author": "zulf10",
+        "comments": 1,
+        "labels": [
+            "question"
+        ],
+        "assignees": [
+            "zepich"
+        ],
+        "locked": false,
+        "body": "Hello,\n\nI'm trying to access the statistics via the API `/api/v1/statistic/by-date`.\nDocumentation seem clear https://documentation.mosparo.io/docs/api/statistic but not work for me.\n\nTo reproduce, i use instruction from documentation with this php script (replace public key and private key by project API keys) : \n```\n<?php\n\n$publicKey = 'REDACTED';\n$privateKey = 'REDACTED';\n$apiEndpoint = '/api/v1/statistic/by-date';\n$formData = [];\n\n$hmacHash = hash_hmac('sha256', $apiEndpoint . json_encode($formData), $privateKey);\n$authHeader = base64_encode($publicKey . ':' . $hmacHash);\n\nprint_r($authHeader);\necho \"\\n\";\n\n?>\n```\n\nResult not show expected HmacHash.\n\nCurl result show debug information reason `hmac_hash_invalid`\n```\ncurl https://MOSPARO_URL/api/v1/statistic/by-date -H \"Authorization: REDACTED\" | jq .\n```\n\n\nI don't know if this is good practice.\n\nThanks,\nZulf",
+        "url": "https://github.com/mosparo/mosparo/issues/411"
+    },
+    {
+        "id": 4115430079,
+        "number": 405,
+        "title": "Submission rules",
+        "state": "closed",
+        "created_at": "2026-03-22T09:16:26Z",
+        "updated_at": "2026-06-17T08:06:29Z",
+        "closed_at": "2026-06-17T08:06:29Z",
+        "author": "zepich",
+        "comments": 1,
+        "labels": [
+            "enhancement",
+            "doc-prepared"
+        ],
+        "assignees": [
+            "zepich"
+        ],
+        "locked": false,
+        "body": "### Explanation\n\nTo filter spam, a user creates rules that rate the content based on the field values. Some spammers use a strategy of submitting many random values, mostly containing lowercase and uppercase letters and numbers.\n\nBecause real values contain both lowercase and uppercase characters as well as numbers, detecting these values is hard with simple field rules.\n\nThe solution is to check the submission as a whole to determine whether it contains such unrealistic values. Since it requires validating multiple fields and making decisions based on additional settings, it's not possible to do so with the user's normal field rules.\n\nTo add this functionality, we decided to add the required logic in mosparo itself. We thought about adding a security feature, but on the one hand, it isn't a security feature (a security feature is protection around the form or form submission, typically not validating the submitted content). On the other hand, we expect that, in the future, more such logical rules will be required.\n\nBecause of all this, we decided to split the rules into `Field rules`, which are the current rules, and add another option, `Submission rules`, provided by mosparo, which can be enabled/disabled and configured by the user. We plan to add other rule types in future versions (which is why this split makes sense).\n\nThe first submission rule will detect these unrealistic values.\n\n### Changes / next steps\n\n- [x] Adjust the structure for the rules and add the sub navigation\n- [x] Add the functionality to manage the submission rules\n- [x] Add the submission rule to detect the unrealistic values\n- [x] Add the required logic to process the submission rules\n- [x] Adjust the submission view page to display the submission rules correctly\n- [x] Adjust the import and export functionality to handle the submission rules correctly\n\n### Inspired by\n\n- @GeorgBNM\n- Jens\n\n### Discussed in\n\n- #367",
+        "url": "https://github.com/mosparo/mosparo/issues/405"
+    },
+    {
+        "id": 4115374648,
+        "number": 404,
+        "title": "Add throughput statistics and reset functionality",
+        "state": "closed",
+        "created_at": "2026-03-22T08:45:42Z",
+        "updated_at": "2026-06-17T08:09:02Z",
+        "closed_at": "2026-06-17T08:09:02Z",
+        "author": "zepich",
+        "comments": 1,
+        "labels": [
+            "enhancement",
+            "doc-prepared"
+        ],
+        "assignees": [
+            "zepich"
+        ],
+        "locked": false,
+        "body": "### Explanation\n\nIf the security features \"Delay\" or \"Lockout\" are enabled, requests are counted, and if the threshold is reached, the user is delayed or blocked. But this functionality is working more or less in the background. The project owner has no information about the number of delayed or blocked requests.\n\nAdditionally, especially when someone is testing a form, these functionalities can accidentally delay or block the wrong user, and resetting the delay or lockout is not possible without adjusting the configuration.\n\nTo enhance that, the idea is to count delayed and blocked requests per project and display the counts in a dashboard chart. Additionally, a `Throughput statistics` functionality is added to the administration area, where all the statistics are visible, both the submissions and the requests. An additional reset functionality allows the user to reset the delays, the lockouts, or both.\n\n### Changes / next steps\n\n- [x] Add the number of delayed and blocked requests to the DayStatistic entity\n- [x] Count the numbers in the API requests\n- [x] Add the chart in the project dashboard\n- [x] Add the `Throughput statistics` functionality in the administration area\n- [x] Add the reset functionality in the administration area \n\n### Inspired by\n\n- @PinkImagination\n",
+        "url": "https://github.com/mosparo/mosparo/issues/404"
+    },
+    {
+        "id": 4112194165,
+        "number": 403,
+        "title": "1.4.9 => 1.4.12: language autodetection broken ?",
+        "state": "closed",
+        "created_at": "2026-03-21T11:35:49Z",
+        "updated_at": "2026-03-23T17:37:04Z",
+        "closed_at": "2026-03-23T14:37:55Z",
+        "author": "softlion",
+        "comments": 3,
+        "labels": [],
+        "assignees": [
+            "zepich"
+        ],
+        "locked": false,
+        "body": "Hi,\nI upgraded from 1.4.9 to 1.4.12, but now the antispam box display the text in english instead of french (the browser language).\nIs that a known issue ?\n\n<img width=\"494\" height=\"160\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/d0db2eff-56b8-4203-9d02-deaabd4f61f6\" />\n\nAlso I PR to the helm repo, not sure you saw it.\n",
+        "url": "https://github.com/mosparo/mosparo/issues/403"
+    },
+    {
+        "id": 4076450563,
+        "number": 402,
+        "title": "Add silent mode",
+        "state": "closed",
+        "created_at": "2026-03-14T18:40:09Z",
+        "updated_at": "2026-06-17T08:08:05Z",
+        "closed_at": "2026-06-17T08:08:04Z",
+        "author": "zepich",
+        "comments": 1,
+        "labels": [
+            "enhancement",
+            "doc-prepared"
+        ],
+        "assignees": [
+            "zepich"
+        ],
+        "locked": false,
+        "body": "### Explanation\n\nIn some cases, it's better to run a spam check without notifying the user that spam was detected. This is not possible right now with mosparo. The idea is to add functionality that allows mosparo to accept every submission, even spam, and to inform the website's backend via the verification request that the submission was not good. This way, a website can silently ignore bad data from a user while the user thinks that the submission was successful.\n\n### Changes / next steps\n\n- [x] Add the options in the advanced project settings\n- [x] Adjust the import and export functionality\n- [x] Adjust the frontend API to accept any submission\n- [x] Adjust the backend API to block spam submissions\n\n### Suggested by\n\n- @gitlabisbetterthangithub",
+        "url": "https://github.com/mosparo/mosparo/issues/402"
+    }
+]

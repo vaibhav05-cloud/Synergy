@@ -1,0 +1,361 @@
+[
+    {
+        "id": 4783433514,
+        "number": 511,
+        "title": "Stundenplan entlädt sich bei jedem neu öffnen der App",
+        "state": "closed",
+        "created_at": "2026-07-01T07:30:15Z",
+        "updated_at": "2026-07-01T07:44:39Z",
+        "closed_at": "2026-07-01T07:44:39Z",
+        "author": "e30301",
+        "comments": 1,
+        "labels": [
+            "enhancement"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Problem Statement\n\nEs wäre toll, wenn der Stundenplan im zustand, wie er beim letzten laden war, auf dem Telefon gespeichert werden würde, damit man nicht immer eine Internetverbindung braucht, um den Stundenplan anzusehen.\n\n### Solution Ideas\n\n_No response_",
+        "url": "https://github.com/SapuSeven/BetterUntis/issues/511"
+    },
+    {
+        "id": 4108843570,
+        "number": 507,
+        "title": "Ability to view and download attachments/files for direct messages",
+        "state": "open",
+        "created_at": "2026-03-20T16:32:37Z",
+        "updated_at": "2026-03-22T19:59:18Z",
+        "closed_at": null,
+        "author": "Dominik917",
+        "comments": 1,
+        "labels": [
+            "enhancement",
+            "work in progress"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Steps to Reproduce\n\nOpen a message that contains file attachments.\n\n### Expected Result\n\nThe files should be shown in the message and be downloadable.\n\n### Actual Result\n\nOnly the message is shown, but not the attachments.\n\n### Android Version\n\nAndroid 16\n\n### BetterUntis Version\n\nVersion 5.0.0-beta04\n\n### Installation Source\n\nF-Droid\n\n### Additional information\n\nIt is also not possible to reply or write messages, as you can see in the Info Center or in the messages you received.",
+        "url": "https://github.com/SapuSeven/BetterUntis/issues/507"
+    },
+    {
+        "id": 4048162482,
+        "number": 506,
+        "title": "Publish signing fingerprint hash for GitHub release",
+        "state": "open",
+        "created_at": "2026-03-09T22:07:44Z",
+        "updated_at": "2026-03-10T08:45:48Z",
+        "closed_at": null,
+        "author": "Eiernase",
+        "comments": 1,
+        "labels": [
+            "enhancement"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Problem Statement\n\nThis can be used to verify the APK using AppVerifier when installing through Obtainium. Currently there is no way to verify its authenticity.\n\n### Solution Ideas\n\nPlease publish the hash of the fingerprint used to sign the GitHub release.",
+        "url": "https://github.com/SapuSeven/BetterUntis/issues/506"
+    },
+    {
+        "id": 4044993576,
+        "number": 505,
+        "title": "Apply system proxy",
+        "state": "open",
+        "created_at": "2026-03-09T11:19:27Z",
+        "updated_at": "2026-03-11T21:21:30Z",
+        "closed_at": null,
+        "author": "RandomModderJDK",
+        "comments": 6,
+        "labels": [
+            "enhancement"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Problem Statement\n\nI would like to use this wonderful replacement app in my schools wifi. My school requires to use a HTTP proxy to access internet.\nFor that the app would need to apply these proxy settings as this is not the default behaviour.\n\n### Solution Ideas\n\nFor actually implementing a solution I see two ways:\n1. Use the HTTP_PROXY system property -> this doesn't support PAC proxies, because the settings are applied when they are resolved and are not static\n2. So my final proposal is to use the first approach and a BroadcastReceiver that listens for proxy updates. I provided an example for flutter here:\nhttps://github.com/RandomModderJDK/native_flutter_proxy/blob/a1e3994feeda1057615d859ffe1d6d110f77c8e3/android/src/main/kotlin/com/victorblaess/native_flutter_proxy/FlutterProxyPlugin.kt",
+        "url": "https://github.com/SapuSeven/BetterUntis/issues/505"
+    },
+    {
+        "id": 4020445133,
+        "number": 504,
+        "title": "Cache Timetable",
+        "state": "open",
+        "created_at": "2026-03-04T06:58:34Z",
+        "updated_at": "2026-03-10T08:50:39Z",
+        "closed_at": null,
+        "author": "heschy2",
+        "comments": 1,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Problem Statement\n\nMy school is rather weird with Internet, the details of that are irrelevant, my point is: I sometimes dont have Internet when I try to access my timetable.\n\nIf I open the App before School I can see my tinetable. If I open the App at school, the timetable is empty and due to aforementioned weirdness, it cannot be downloaded. This happens even if the timetable was already viewed before school.\n\n### Solution Ideas\n\nFor such situations I would welcome if the timetable got cached once retrieved and didnt need to be retrieved everytime I open the app.\n\nI am pretty sure an older version if the app did this (before it stopped working entirely, so just going back id not an option). That would also explain the currently useless \"Last refreshed: ...\" indicator.\n\nIf the app already does this, this is obviously not a feature request but a bug report, so here are some details on my system:\n\n```\nApp Version: 5.0.0-beta4 (29198884)\nAndroid Version: Android 15\nPhone: Fairphone 5 (FP5)\nOS Version: Calyx OS 6.10.20 (security is risk, yes, I am aware)\nGoogle Play: MicroG is installed but disabled\n```",
+        "url": "https://github.com/SapuSeven/BetterUntis/issues/504"
+    },
+    {
+        "id": 3730511640,
+        "number": 503,
+        "title": "\"Eigener Stundenplan\" is empty",
+        "state": "open",
+        "created_at": "2025-12-15T13:41:19Z",
+        "updated_at": "2026-02-11T08:32:36Z",
+        "closed_at": null,
+        "author": "comdoxx",
+        "comments": 5,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Steps to Reproduce\n\nI recently changed my phone and didn't care. Now I wanted to use BetterUntis again and thus I upgraded to 5.0.0b4, threw away the old credentials and started from scratch and logged in\n\n### Expected Result\n\n\"Eigener Stundenplan\" shows up.\n\n### Actual Result\n\nHowever, the \"Eigener Stundenplan\" keeps empty. If - on the other hand - I switch over to \"Klassen\" and pick the correct one, everything is fine. So, this is not a login issue and I have no alerts at all.\n\n### Android Version\n\nAndroid 16\n\n### BetterUntis Version\n\n5.0.0b4\n\n### Installation Source\n\nGitHub Release\n\n### Additional information\n\n_No response_",
+        "url": "https://github.com/SapuSeven/BetterUntis/issues/503"
+    },
+    {
+        "id": 3712232427,
+        "number": 502,
+        "title": "Stunden mit Lehrer/Raumtausch werden nicht als Irreguläre Stunden erkannt",
+        "state": "open",
+        "created_at": "2025-12-09T18:53:44Z",
+        "updated_at": "2026-04-23T08:20:54Z",
+        "closed_at": null,
+        "author": "moorjan",
+        "comments": 2,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Steps to Reproduce\n\nNach einer Stunde mit Lehrkrafttausch oder Raumtausch suchen\n\n### Expected Result\n\nHätte mit der Irregular-Farbe markiert werden sollen\n\n### Actual Result\n\nIst normale Stundenfarbe\n\n### Android Version\n\n16 BP2A.250605.015\n\n### BetterUntis Version\n\n5.0.0-beta04 (29198884)\n\n### Installation Source\n\nGoogle Play\n\n### Additional information\n\n_No response_",
+        "url": "https://github.com/SapuSeven/BetterUntis/issues/502"
+    },
+    {
+        "id": 3697723741,
+        "number": 501,
+        "title": "line breaking",
+        "state": "open",
+        "created_at": "2025-12-05T06:50:42Z",
+        "updated_at": "2026-03-23T19:34:39Z",
+        "closed_at": null,
+        "author": "myxvcx",
+        "comments": 2,
+        "labels": [
+            "enhancement"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Problem Statement\n\nI would really like a feature that it splitts up the name of a lessen into two lines if it is to long.\n\n<img width=\"430\" height=\"419\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/4ec540e6-0bb0-4a1a-a66b-41b67cd3a05e\" />\nI imagine it something like this.\n\n### Solution Ideas\n\n_No response_",
+        "url": "https://github.com/SapuSeven/BetterUntis/issues/501"
+    },
+    {
+        "id": 3687754545,
+        "number": 500,
+        "title": "Info center broken (announcements incomplete)",
+        "state": "open",
+        "created_at": "2025-12-02T22:28:29Z",
+        "updated_at": "2026-03-20T13:41:02Z",
+        "closed_at": null,
+        "author": "novamax",
+        "comments": 3,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Steps to Reproduce\n\nInfo center shows only one incomplete line in bold (e.g. \"AGs fallen aus...\" (some 30 characters - almost complete heading). Second line reads \"<div>Abwesend}: ...\" (again some 30 characters only of several lines of announcements).\n\nBelow, there is a separate field with an info sign in a circle, followed by \"Unbekannter Fehler\", and below \"Unauthorized\". For reference:I use a profile with anonymous login.\n\n### Expected Result\n\nInfo center should show complete comments over several lines (like Untis mobile or webUntis does).\n\n### Actual Result\n\nAs described above. I cannot click on these announcements to open them or the like, but the `<div>` part suggests there is some mixup.\n\n### Android Version\n\nAndroid 16 (GraphenOS)\n\n### BetterUntis Version\n\n5.0.0-beta04 (29198884)\n\n### Installation Source\n\nF-Droid\n\n### Additional information\n\n_No response_",
+        "url": "https://github.com/SapuSeven/BetterUntis/issues/500"
+    },
+    {
+        "id": 3678264771,
+        "number": 499,
+        "title": "Multiple Children",
+        "state": "open",
+        "created_at": "2025-11-30T19:22:50Z",
+        "updated_at": "2025-12-05T12:18:43Z",
+        "closed_at": null,
+        "author": "retr0virus",
+        "comments": 1,
+        "labels": [
+            "enhancement"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Problem Statement\n\nIt seems not to be possible (or I didn't find the option) to see multiple children in your app. In the original one I (as a parent) can select between all my children and see their timetables, their absences and so on.\nWhen I look in the absences in your app, I see all the times of my children mixed but without any hint, which one is for which of my children.\nIn your app I can add multiple time tables but again I don't see which one is related to which of my children.\n\n### Solution Ideas\n\nPlease at least add the info (e.g. to the absences), to which pupil the displayed information is related.\nMaybe even add a global filter for them, similar to the original app.",
+        "url": "https://github.com/SapuSeven/BetterUntis/issues/499"
+    },
+    {
+        "id": 3584919630,
+        "number": 498,
+        "title": "Custom lesson length",
+        "state": "open",
+        "created_at": "2025-11-04T06:23:02Z",
+        "updated_at": "2025-11-04T06:23:02Z",
+        "closed_at": null,
+        "author": "noobproxmox",
+        "comments": 0,
+        "labels": [
+            "enhancement"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Problem Statement\n\nI currently have the problem that the displayed lesson length no longer corresponds to the lesson length in reality. At our school, a lesson lasts only 45 minutes. In addition, the break times specified by my school are not applied.\n(I don't think this is a bug, so I'm submitting a feature request.) \n\n\n### Solution Ideas\n\nThe transfer of predefined lesson lengths, breaks, and all resulting predetermined items on the timeline from the school. ",
+        "url": "https://github.com/SapuSeven/BetterUntis/issues/498"
+    },
+    {
+        "id": 3492627951,
+        "number": 496,
+        "title": "Excluding lessons with a button.",
+        "state": "closed",
+        "created_at": "2025-10-07T18:46:09Z",
+        "updated_at": "2025-10-10T22:28:38Z",
+        "closed_at": "2025-10-10T22:28:38Z",
+        "author": "Hirowoko",
+        "comments": 1,
+        "labels": [
+            "enhancement"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Problem Statement\n\nI can't see the teachers i have (seems like a problem with the API, an issue was created by someone). And thats the only thing i can distinguish my lesson with others'.\n\n### Solution Ideas\n\nAdding a button to hide certain lessons, so only my lessons are shown.\n\n![Image](https://github.com/user-attachments/assets/1536c2cd-cdd2-408a-9462-fa3483323dc0)\n![Image](https://github.com/user-attachments/assets/e7c81cd8-9dda-4533-af2f-4a0ac2668b4e)",
+        "url": "https://github.com/SapuSeven/BetterUntis/issues/496"
+    },
+    {
+        "id": 3470825712,
+        "number": 495,
+        "title": "add info symbol if lession has extra info",
+        "state": "open",
+        "created_at": "2025-09-30T19:33:23Z",
+        "updated_at": "2026-04-19T21:57:24Z",
+        "closed_at": null,
+        "author": "Platzhalten",
+        "comments": 1,
+        "labels": [
+            "enhancement"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Problem Statement\n\nthere is no indicater when there is info added to the lession\n\n<img width=\"183\" height=\"284\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/7c44dfb0-0b57-416f-9725-fa27533f263b\" />\n\nthe i on the buttom right \n\n### Solution Ideas\n\nadd the same symbol",
+        "url": "https://github.com/SapuSeven/BetterUntis/issues/495"
+    },
+    {
+        "id": 3433708509,
+        "number": 492,
+        "title": "Solution Proposal for API shutdown in the end of 2025",
+        "state": "open",
+        "created_at": "2025-09-19T09:54:28Z",
+        "updated_at": "2025-11-02T14:58:08Z",
+        "closed_at": null,
+        "author": "PythonTilk",
+        "comments": 6,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "According to the api docs of WebUntis, api version v1 and v2 will shutdown in the end of 2025. v3 requires a shared token for every school, that only the IT department of every school can acquire. I stumbled upon this since im currently trying to recreate BetterUntis for IOS. Do you guys have any solutions for this problem?",
+        "url": "https://github.com/SapuSeven/BetterUntis/issues/492"
+    },
+    {
+        "id": 3385798093,
+        "number": 491,
+        "title": "The app crashs after changing an element color",
+        "state": "open",
+        "created_at": "2025-09-04T23:25:46Z",
+        "updated_at": "2026-04-14T11:09:18Z",
+        "closed_at": null,
+        "author": "Marco-9456",
+        "comments": 2,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Steps to Reproduce\n\nIch habe einen Fehler gefunden, bei dem die App abstürzt, wenn man versucht, die Farbe für eine element z.B eine Klassenarbeit zu ändern. Hier sind die Schritte, um ihn zu reproduzieren:\n1. ​In den Einstellungen die Standardfarbe für Klassenarbeiten von Gelb auf eine beliebige Farbe ändern und setze den slider auf die Mitte.\n​2. Zur Kalenderwoche scrollen, in der die Klassenarbeit stattfindet.\n\n​Die App stürzt ab, sobald man versucht, auf die Woche zuzugreifen.\n\n![Image](https://github.com/user-attachments/assets/6c688ebd-6ed8-4d00-aeee-7fbe8f4827ce)\n\n### Expected Result\n\nDas die app app nicht abstürzt und sich die Farbe ändert.\n\n### Actual Result\n\nDie app ist abgestürzt.\n\n### Android Version\n\nAndroid 12\n\n### BetterUntis Version\n\n5.0.0-beta04\n\n### Installation Source\n\nGitHub Release\n\n### Additional information\n\n_No response_",
+        "url": "https://github.com/SapuSeven/BetterUntis/issues/491"
+    },
+    {
+        "id": 3377344087,
+        "number": 490,
+        "title": "[Feature Request] Detailed Day View",
+        "state": "open",
+        "created_at": "2025-09-02T20:07:29Z",
+        "updated_at": "2025-09-12T15:01:23Z",
+        "closed_at": null,
+        "author": "MoLP5776",
+        "comments": 3,
+        "labels": [
+            "enhancement"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Problem Statement\n\nIn the normal Untis App one is able to see a detailed day view when pressing on the date of the day. Doing this displays only the subjects of the chosen day.\n\nWould it be possible to add such a feature to BetterUntis?\nWith best regards,\nMoLP5776\n\n### Solution Ideas\n\n_No response_",
+        "url": "https://github.com/SapuSeven/BetterUntis/issues/490"
+    },
+    {
+        "id": 3375891659,
+        "number": 489,
+        "title": "Irregular lesson aren't colored correctly",
+        "state": "open",
+        "created_at": "2025-09-02T12:47:04Z",
+        "updated_at": "2025-10-07T19:54:38Z",
+        "closed_at": null,
+        "author": "Shadowbee27",
+        "comments": 1,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Steps to Reproduce\n\nSet your own colors\n\n### Expected Result\n\nIrregular lesson are colored with the \"Irregul lessons\" color\n\n### Actual Result\n\nThey are shown with the \"Regular lessons\" color\n\n### Android Version\n\nAndroid 16\n\n### BetterUntis Version\n\n5.0.0-beta04\n\n### Installation Source\n\nF-Droid\n\n### Additional information\n\nThis issue doesn't persist for cancelled lessons or lessons with tests",
+        "url": "https://github.com/SapuSeven/BetterUntis/issues/489"
+    },
+    {
+        "id": 3356623207,
+        "number": 488,
+        "title": "Can't show class name in timetable",
+        "state": "open",
+        "created_at": "2025-08-26T18:05:25Z",
+        "updated_at": "2025-08-26T18:05:25Z",
+        "closed_at": null,
+        "author": "rusty-genius",
+        "comments": 0,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Steps to Reproduce\n\nIt is not possible to see the name of the class in the timetable. I can only see which subject I teach which is not enough.\n\n### Expected Result\n\nShould show classname in timetable\n\n### Actual Result\n\nNo classname in timetable\n\n### Android Version\n\nall versions\n\n### BetterUntis Version\n\n5 beta 4 (29198884)\n\n### Installation Source\n\nF-Droid\n\n### Additional information\n\n_No response_",
+        "url": "https://github.com/SapuSeven/BetterUntis/issues/488"
+    },
+    {
+        "id": 3232328364,
+        "number": 485,
+        "title": "Homework Todo list",
+        "state": "open",
+        "created_at": "2025-07-15T13:45:05Z",
+        "updated_at": "2025-07-15T13:45:05Z",
+        "closed_at": null,
+        "author": "Shadowbee27",
+        "comments": 0,
+        "labels": [
+            "enhancement"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Problem Statement\n\nThe Homeworklist is just a list and you would need remember want you have already done.\n\n### Solution Ideas\n\nMake it a Todolist where you can check a box if you have done it.",
+        "url": "https://github.com/SapuSeven/BetterUntis/issues/485"
+    },
+    {
+        "id": 3197107911,
+        "number": 482,
+        "title": "scroll is not limited",
+        "state": "closed",
+        "created_at": "2025-07-02T20:31:00Z",
+        "updated_at": "2025-07-02T20:38:47Z",
+        "closed_at": "2025-07-02T20:38:47Z",
+        "author": "Platzhalten",
+        "comments": 1,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Steps to Reproduce\n\ni dont know but it appeard about a week ago \n\n### Expected Result\n\nhttps://github.com/user-attachments/assets/34d3c5d0-275c-49b9-b622-cf61c2bd279d\n\n### Actual Result\n\ni dont know why but i cant upload the video\n\nbut the scroll is not limited to the lessions\n\n\n### Android Version\n\nAndroid 15\n\n### BetterUntis Version\n\nVersion 5.0.0-beta02\n\n### Installation Source\n\nF-Droid\n\n### Additional information\n\nthis does not affect all timetable ",
+        "url": "https://github.com/SapuSeven/BetterUntis/issues/482"
+    }
+]

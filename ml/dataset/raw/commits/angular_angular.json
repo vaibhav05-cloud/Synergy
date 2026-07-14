@@ -1,0 +1,242 @@
+[
+    {
+        "sha": "d5e0b131eda884f5eb1db4bb74c36b590513baa4",
+        "author": "Kam",
+        "email": "erkamyaman35@gmail.com",
+        "date": "2026-07-13T20:17:08Z",
+        "message": "feat(docs-infra): show Angie in the error snack bar\n\nThe error snack bar (the chunk-load reload prompt and the embedded\neditor's memory / mobile alerts) showed only text and an action button.\nAdd an Angie press-kit pose to the left of the message so the failure\nstate matches the mascot treatment already used for the preview error\ncard and the empty search states.\n\nThe pose is data-driven: ErrorSnackBarData gains a required `pose` field\nso each caller picks the mascot that fits the message tone (`greeting`\nfor the docs-updated reload prompt and the mobile notice, `error` for\nthe out-of-memory warning). The message moves into a `<p>` that flexes\nto fill the row, keeping the action button aligned to the right.\n\nPresentation only; when and why the snack bar appears is unchanged.",
+        "url": "https://github.com/angular/angular/commit/d5e0b131eda884f5eb1db4bb74c36b590513baa4"
+    },
+    {
+        "sha": "d55f5c4ce5ead65dde265da11883270b549f3c55",
+        "author": "Matthieu Riegler",
+        "email": "kyro38@gmail.com",
+        "date": "2026-07-13T17:12:12Z",
+        "message": "docs: Add mention that about signal narrowing on `@switch` blocks",
+        "url": "https://github.com/angular/angular/commit/d55f5c4ce5ead65dde265da11883270b549f3c55"
+    },
+    {
+        "sha": "f6a00ffde56950f9e69070c2af280e05495c9f59",
+        "author": "Kam",
+        "email": "erkamyaman35@gmail.com",
+        "date": "2026-07-12T19:04:15Z",
+        "message": "docs(docs-infra): remove orphaned IDX config left behind by #68946\n\nPR #68946 removed the \"Open in Firebase Studio\" (Project IDX) launcher\nfrom the embedded editor, but left its supporting configuration behind:\na per-tutorial `idx/dev.nix` workspace file in seven tutorials, plus an\n`'idx'` entry in `excludeFromRoot` whose only job was to keep those\nfolders out of the StackBlitz/download bundle.\n\nWith the launcher gone nothing reads these files anymore, so remove the\nseven `dev.nix` configs and the now-dead `'idx'` exclude entry.",
+        "url": "https://github.com/angular/angular/commit/f6a00ffde56950f9e69070c2af280e05495c9f59"
+    },
+    {
+        "sha": "aca737143135a3adef2d405952b3a98c96723180",
+        "author": "Shuaib Hasan Akib",
+        "email": "akibh805@gmail.com",
+        "date": "2026-07-10T23:31:43Z",
+        "message": "fix(docs-infra): don't show `$` prompt on empty lines\n\nFenced shell code blocks prepended a `$` prompt to every rendered line  via a CSS `::before`, including blank lines are not commands to run.",
+        "url": "https://github.com/angular/angular/commit/aca737143135a3adef2d405952b3a98c96723180"
+    },
+    {
+        "sha": "f94da4d5ca248e231751c50f6f5eb8f294d6ac0c",
+        "author": "Kam",
+        "email": "erkamyaman35@gmail.com",
+        "date": "2026-07-11T09:24:13Z",
+        "message": "fix(docs-infra): render the Console tab error badge in the embedded editor\n\nThe Console tab's error-count badge lives in an `<ng-template\nmat-tab-label>`, but the component didn't import `MatTabLabel`, so\nMaterial ignored the templated label and fell back to the plain\n\"Console\" text. Import it so the badge renders when there are errors.",
+        "url": "https://github.com/angular/angular/commit/f94da4d5ca248e231751c50f6f5eb8f294d6ac0c"
+    },
+    {
+        "sha": "13d9cc36c0de75d84dadd92ea412b5bdd3c45d4f",
+        "author": "Alan Agius",
+        "email": "17563226+alan-agius4@users.noreply.github.com",
+        "date": "2026-07-13T08:39:00Z",
+        "message": "refactor: remove obsolete @types/babel__core dependency\n\nRemove the obsolete @types/babel__core dependency from packages/compiler-cli and packages/localize. This dependency is no longer needed as Babel v8 ships with its own built-in TypeScript definitions.",
+        "url": "https://github.com/angular/angular/commit/13d9cc36c0de75d84dadd92ea412b5bdd3c45d4f"
+    },
+    {
+        "sha": "f48d2769db37bfcd438487919cabb0a1bc36189a",
+        "author": "Georgi Serev",
+        "email": "hawk.dvp@gmail.com",
+        "date": "2026-07-10T21:27:03Z",
+        "message": "refactor(devtools): add static nodes for html-only block content in the component tree\n\nAdd `<html_content>` static nodes to the component tree for control flow blocks that render only HTML content.",
+        "url": "https://github.com/angular/angular/commit/f48d2769db37bfcd438487919cabb0a1bc36189a"
+    },
+    {
+        "sha": "4fad2c0a5dbc415b8c7a8e5988f4cb15e55bc9e2",
+        "author": "Angular Robot",
+        "email": "angular-robot@google.com",
+        "date": "2026-07-10T18:12:36Z",
+        "message": "docs: update cross-repo adev docs\n\nUpdated Angular adev cross repo docs files.",
+        "url": "https://github.com/angular/angular/commit/4fad2c0a5dbc415b8c7a8e5988f4cb15e55bc9e2"
+    },
+    {
+        "sha": "72cc548d34460e727ea6e1ce730eebb81c9055fb",
+        "author": "Kam",
+        "email": "erkamyaman35@gmail.com",
+        "date": "2026-07-10T08:38:36Z",
+        "message": "feat(docs-infra): add Angie to the embedded editor error state\n\nWhen the embedded editor fails to boot the preview sandbox, the error\ncard showed only a text message. Add the press-kit Error pose above the\nmessage so the failure state matches the mascot treatment already used\nfor the loading steps and the empty search states.\n\nThe card is also centered in the preview pane (previously pinned 5% from\nthe top) so the pose and message read as one block. Behaviour is\nunchanged; this is presentation only.",
+        "url": "https://github.com/angular/angular/commit/72cc548d34460e727ea6e1ce730eebb81c9055fb"
+    },
+    {
+        "sha": "e6378eb330b2b7084e8c5e6fb1e85208a9f3e218",
+        "author": "Kam",
+        "email": "erkamyaman35@gmail.com",
+        "date": "2026-07-10T07:10:21Z",
+        "message": "fix(docs-infra): avoid search dialog empty-state flicker while re-querying\n\nThe search dialog picked its empty state (\"Start typing\" vs \"No results\nfound\") with `!resultsResource.hasValue()`, which during a re-query looks\nidentical to a freshly opened dialog since the resource resets its value and\nreports `loading`. This flipped the message and mascot back to \"Start typing\"\nmid-search, causing a question -> magnifying-glass -> question flicker on every\nkeystroke. Add an `emptyState` signal that holds the previous state while a\nsearch is settling, so the dialog only changes once results resolve.",
+        "url": "https://github.com/angular/angular/commit/e6378eb330b2b7084e8c5e6fb1e85208a9f3e218"
+    },
+    {
+        "sha": "ce4f7adc9513080a037c416270fa53421b5a9493",
+        "author": "Doug Parker",
+        "email": "dgp1130@users.noreply.github.com",
+        "date": "2026-07-09T23:36:46Z",
+        "message": "refactor(core): remove deprecated `unregisterTool` from `ModelContext`\n\nIn the WebMCP specification, tools are unregistered by aborting the `AbortSignal` provided in `registerTool(tool, {signal})`. The deprecated `unregisterTool` method on `ModelContext` is no longer needed or part of the standard, and is now removed from the TypeScript interface definition.",
+        "url": "https://github.com/angular/angular/commit/ce4f7adc9513080a037c416270fa53421b5a9493"
+    },
+    {
+        "sha": "f908140d718b202d600be9e4a83839bd475a38a9",
+        "author": "Doug Parker",
+        "email": "dgp1130@users.noreply.github.com",
+        "date": "2026-07-09T23:35:51Z",
+        "message": "refactor(core): update WebMCP tool registration to be asynchronous\n\nIn the latest WebMCP specification and Chromium preview builds, `document.modelContext.registerTool` was updated to be asynchronous and return a `Promise`: https://groups.google.com/a/chromium.org/g/chrome-ai-dev-preview/c/xQWt0b1sZIE/m/UJznbNCIAwAJ?utm_medium=email&utm_source=footer\n\nThis commit update adjusts Angular's experimental WebMCP implementation (`declareExperimentalWebMcpTool` and form registration) to be async as well, returning `Promise<void>`.",
+        "url": "https://github.com/angular/angular/commit/f908140d718b202d600be9e4a83839bd475a38a9"
+    },
+    {
+        "sha": "a8264df6c5263d2bf9179c61d53015d964f6f3b4",
+        "author": "Angular Robot",
+        "email": "angular-robot@google.com",
+        "date": "2026-07-09T23:25:21Z",
+        "message": "build: update github/codeql-action action to v4.37.0\n\nSee associated pull request for more information.",
+        "url": "https://github.com/angular/angular/commit/a8264df6c5263d2bf9179c61d53015d964f6f3b4"
+    },
+    {
+        "sha": "8cf7f6ec099ccd38d8364765cd2fa15358011009",
+        "author": "Angular Robot",
+        "email": "angular-robot@google.com",
+        "date": "2026-07-10T17:04:52Z",
+        "message": "build: update all non-major dependencies\n\nSee associated pull request for more information.",
+        "url": "https://github.com/angular/angular/commit/8cf7f6ec099ccd38d8364765cd2fa15358011009"
+    },
+    {
+        "sha": "1fb46782073171ca6f4f05241aaa64deaa40a5d9",
+        "author": "Matthew Beck",
+        "email": "me@mattrb.com",
+        "date": "2026-07-10T00:21:55Z",
+        "message": "Revert \"fix(core): allow static attributes for explicit input transforms\"\n\nThis reverts commit 9b9b0e93c90c0ecfc7f075a64908cce00eb03f38.\n\nThis broke g3. Not sure yet why it didn't break externally. We can\ninvestigate and fix following this revert.",
+        "url": "https://github.com/angular/angular/commit/1fb46782073171ca6f4f05241aaa64deaa40a5d9"
+    },
+    {
+        "sha": "b178e833074ea636348034b8fb702950d053401f",
+        "author": "leonsenft",
+        "email": "leonsenft@users.noreply.github.com",
+        "date": "2026-07-07T21:25:44Z",
+        "message": "ci: fix workflows broken by renamed command\n\nThis command was renamed in\nhttps://github.com/angular/dev-infra/commit/ff4046900c623801d13f764a1ee59ce7d2b49599.",
+        "url": "https://github.com/angular/angular/commit/b178e833074ea636348034b8fb702950d053401f"
+    },
+    {
+        "sha": "4cf5135743eab51ddc15257c7304cee14d857dc6",
+        "author": "Angular Robot",
+        "email": "angular-robot@google.com",
+        "date": "2026-07-09T13:31:05Z",
+        "message": "build: update cross-repo angular dependencies\n\nSee associated pull request for more information.",
+        "url": "https://github.com/angular/angular/commit/4cf5135743eab51ddc15257c7304cee14d857dc6"
+    },
+    {
+        "sha": "2a4f58273112d0ed508fac624e56f56d97e511fa",
+        "author": "arshiya tabasum",
+        "email": "arshi@bugqore.com",
+        "date": "2026-07-07T06:22:01Z",
+        "message": "fix(localize): use Object.hasOwn for placeholder lookup in translate\n\n`translate()` looked up substitutions with `message.substitutions.hasOwnProperty(placeholder)`. A message whose placeholder is named `hasOwnProperty` stores that key on the plain substitutions object, shadowing the method, so the lookup calls the substitution value and throws a TypeError. Use `Object.hasOwn` instead, which resolves through `Object` and is unaffected by the shadowed key, matching the recent `I18nSelectPipe` fix.",
+        "url": "https://github.com/angular/angular/commit/2a4f58273112d0ed508fac624e56f56d97e511fa"
+    },
+    {
+        "sha": "12fe700ad8842a21d597820729cfed36a90a05ce",
+        "author": "Bhuvansh855",
+        "email": "bhuvanshkataria@gmail.com",
+        "date": "2026-06-19T14:42:21Z",
+        "message": "test(forms): register writeback test control as CVA\n\nRegister the custom writeback test control as an NG_VALUE_ACCESSOR\nso it is recognized as a valid formField host during debounce\nwriteback testing.",
+        "url": "https://github.com/angular/angular/commit/12fe700ad8842a21d597820729cfed36a90a05ce"
+    },
+    {
+        "sha": "2e0cb52dbf0f519ffc5c99b95e5f4b965fa332a7",
+        "author": "Bhuvansh855",
+        "email": "bhuvanshkataria@gmail.com",
+        "date": "2026-06-19T07:08:49Z",
+        "message": "fix(forms): prevent stale CVA writeback during debounce\n\nUse controlValue() instead of value() when synchronizing\nControlValueAccessor instances.\n\nWhen debounce is active, value() can still contain the\nprevious model value while controlValue() reflects the\nlatest user-entered value. This prevents stale values\nfrom being written back to the CVA before the debounce\nis flushed.\n\nAdds a regression test covering the debounce scenario.",
+        "url": "https://github.com/angular/angular/commit/2e0cb52dbf0f519ffc5c99b95e5f4b965fa332a7"
+    },
+    {
+        "sha": "9b9b0e93c90c0ecfc7f075a64908cce00eb03f38",
+        "author": "cexbrayat",
+        "email": "cedric@ninja-squad.com",
+        "date": "2026-06-18T15:36:54Z",
+        "message": "fix(core): allow static attributes for explicit input transforms\n\nThis is a follow-up to #67997, which allowed explicit read generics with input transforms, such as `input<boolean>(false, {transform: booleanAttribute})`.\n\nThat fixed the declaration, but static template attributes like `dismissible=\"true\"` and bare `dismissible` were still checked as strings against the read type. Allow the fallback write type to include static attribute strings so these template forms compile.",
+        "url": "https://github.com/angular/angular/commit/9b9b0e93c90c0ecfc7f075a64908cce00eb03f38"
+    },
+    {
+        "sha": "cf6d6939851d3739f7dab97dd0e017a3032b382e",
+        "author": "Michael Small",
+        "email": "michael.small@relationshipone.com",
+        "date": "2026-07-09T17:59:53Z",
+        "message": "docs: remove \\'s from schematics helloWorld block",
+        "url": "https://github.com/angular/angular/commit/cf6d6939851d3739f7dab97dd0e017a3032b382e"
+    },
+    {
+        "sha": "5ff14e991545851763888987fa034b594189748f",
+        "author": "hawkgs",
+        "email": "hawk.dvp@gmail.com",
+        "date": "2026-07-09T14:53:36Z",
+        "message": "fix(devtools): bump settings z-index due to overlapping elements\n\nFixes the bug where the Transfer State table header is overlapping the settings window.",
+        "url": "https://github.com/angular/angular/commit/5ff14e991545851763888987fa034b594189748f"
+    },
+    {
+        "sha": "454af71609b0ebd3878f9f3ec197cbd7dbdba7ac",
+        "author": "franmc01",
+        "email": "francmarinc@gmail.com",
+        "date": "2026-07-08T21:25:38Z",
+        "message": "docs: show ng-add schema files in schematics-for-libraries guide\n\nThe ng-add walkthrough references two files it never shows: the\ncollection points to `ng-add/schema.json` and `index.ts` imports its\n`Schema` interface from `ng-add/schema.ts`. Add the missing code blocks,\nmirroring the generation-support section, so the example is complete.\n\nFixes #57005",
+        "url": "https://github.com/angular/angular/commit/454af71609b0ebd3878f9f3ec197cbd7dbdba7ac"
+    },
+    {
+        "sha": "368575533332213aa893053cee3a05bf77ed93e5",
+        "author": "hawkgs",
+        "email": "hawk.dvp@gmail.com",
+        "date": "2026-07-08T19:43:24Z",
+        "message": "refactor(devtools): stop component inspector on esc press\n\nStop the component inspector when Escape is pressed similarly to Chrome DevTools.",
+        "url": "https://github.com/angular/angular/commit/368575533332213aa893053cee3a05bf77ed93e5"
+    },
+    {
+        "sha": "c92d9952601df14484694d6b4c961fbb42790136",
+        "author": "Kam",
+        "email": "erkamyaman35@gmail.com",
+        "date": "2026-07-08T19:21:11Z",
+        "message": "feat(docs-infra): add Angie to the embedded editor loading steps\n\nWhile the embedded editor's preview sandbox boots, the pane shows a plain\ntext label for each step (Booting, Creating project, Installing packages,\nInitializing dev server). Add an Angie pose above the label so the wait\ntells a small story. Behaviour is unchanged; this is presentation only.\n\nPoses map to the existing LoadingStep values:\n  Starting / Booting / Creating project -> greeting\n  Installing packages                   -> coding-01\n  Initializing dev server               -> superhero\n\nThe mascot sits in a fixed-size box (object-fit: contain) so swapping\nposes of different aspect ratios never shifts the label or progress bar.",
+        "url": "https://github.com/angular/angular/commit/c92d9952601df14484694d6b4c961fbb42790136"
+    },
+    {
+        "sha": "4fc6d6f765ab039a9b77c149913e9f98c0c5980f",
+        "author": "Shuaib Hasan Akib",
+        "email": "akibh805@gmail.com",
+        "date": "2026-07-08T17:25:20Z",
+        "message": "docs: update ng-content syntax to self-closing tags in content projection and component harnesses guides",
+        "url": "https://github.com/angular/angular/commit/4fc6d6f765ab039a9b77c149913e9f98c0c5980f"
+    },
+    {
+        "sha": "13b6bbd6a02190e7cf87f652b2521b1e462c2474",
+        "author": "Shuaib Hasan Akib",
+        "email": "akibh805@gmail.com",
+        "date": "2026-07-08T17:10:17Z",
+        "message": "docs(platform-server): add error reference page for NG05703 and wire up RuntimeError\n\nAdd a dedicated error reference page for NG05703 (suspicious URL origin\nchange during SSR) and update the error to use RuntimeError with a\nnegative code so the error message automatically includes a link to the\ndocs page in both dev and production builds.\n\nUpdate affected tests in url_spec.ts, platform_location_spec.ts, and\nintegration_spec.ts to match the new NG05703-prefixed error message\nformat.\n\nFixes: #69667",
+        "url": "https://github.com/angular/angular/commit/13b6bbd6a02190e7cf87f652b2521b1e462c2474"
+    },
+    {
+        "sha": "53ca8c25cba7f12e3a0c4a0d98242a0a3215b750",
+        "author": "hawkgs",
+        "email": "hawk.dvp@gmail.com",
+        "date": "2026-07-09T10:04:31Z",
+        "message": "test(language-service): empty template literal interpolation\n\nEnsure that empty template literal interpolation is handled gracefully.",
+        "url": "https://github.com/angular/angular/commit/53ca8c25cba7f12e3a0c4a0d98242a0a3215b750"
+    },
+    {
+        "sha": "da52137724b8cce79b036026fa1aa07bc730389c",
+        "author": "hawkgs",
+        "email": "hawk.dvp@gmail.com",
+        "date": "2026-07-09T09:56:46Z",
+        "message": "fix(compiler): parsing of an empty template literal interpolation\n\nEven if we have an `EmptyExpr`, add that expression to the expressions array when a literal is parsed.\nThe lack of the expression results in a discrepancy in the sizes of the `elements` and the `expressions`\narrays of a `TemplateLiteral`, that result in an error when we visit that same literal due to the missing\nexpression.\n\nFixes #69699",
+        "url": "https://github.com/angular/angular/commit/da52137724b8cce79b036026fa1aa07bc730389c"
+    }
+]

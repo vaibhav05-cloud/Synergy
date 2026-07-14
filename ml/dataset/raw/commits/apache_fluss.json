@@ -1,0 +1,242 @@
+[
+    {
+        "sha": "641e5a3f5fdae2f6a3c3c7aed6ae17a882908361",
+        "author": "Femi",
+        "email": "44889206+Olawoyin007@users.noreply.github.com",
+        "date": "2026-07-14T03:35:44Z",
+        "message": "[rust] Add SnapshotId type alias and use it in snapshot metadata paths (#3642)\n\nTableId, PartitionId, and BucketId already have type aliases in lib.rs, but\nsnapshot_id was still spelled i64 everywhere. Add a matching SnapshotId alias\nso snapshot-related signatures read consistently with the other ID types.\n\nApplied to the hand-written sites: LakeSnapshot (metadata/table.rs),\nLakeSnapshotInfo, KvSnapshot, KvSnapshotLeaseForBucket, the admin client\nmethods (get_kv_snapshot_metadata, get_lake_snapshot), and the\nGetKvSnapshotMetadataRequest / GetLakeSnapshotRequest constructors. Generated\nproto code is untouched; HashMap<TableBucket, i64> offset values stay i64\nsince they are offsets, not snapshot IDs.\n\nNo behavior change (the alias resolves to the same type). Ported from\napache/fluss-rust#657 at the maintainer's request after the fluss-rust repo\nwas merged into this monorepo.",
+        "url": "https://github.com/apache/fluss/commit/641e5a3f5fdae2f6a3c3c7aed6ae17a882908361"
+    },
+    {
+        "sha": "89b7c0cad6b6c3e7e931fb1848a0cf597c89481d",
+        "author": "Liurnly",
+        "email": "masterwangzx@gmail.com",
+        "date": "2026-07-13T13:56:43Z",
+        "message": "[lake/paimon] Support custom Paimon path (#3523)",
+        "url": "https://github.com/apache/fluss/commit/89b7c0cad6b6c3e7e931fb1848a0cf597c89481d"
+    },
+    {
+        "sha": "e5e6bb49cee5d2c0a8e167f6588c206a227e0f87",
+        "author": "yunhong",
+        "email": "337361684@qq.com",
+        "date": "2026-07-13T12:37:42Z",
+        "message": "[server] Add configurable disk write-limit recover ratio (#3612)",
+        "url": "https://github.com/apache/fluss/commit/e5e6bb49cee5d2c0a8e167f6588c206a227e0f87"
+    },
+    {
+        "sha": "52c16789b8b3676e4b467eebe8aee53ca2bd3094",
+        "author": "Junbo Wang",
+        "email": "beryllwang@gmail.com",
+        "date": "2026-07-11T02:50:17Z",
+        "message": "[client] Fix data hole in primary key table batch read (#3627)",
+        "url": "https://github.com/apache/fluss/commit/52c16789b8b3676e4b467eebe8aee53ca2bd3094"
+    },
+    {
+        "sha": "3acc1c14acf72351bff13f171ea287a0f074076a",
+        "author": "Hongshun Wang",
+        "email": "125648852+loserwang1024@users.noreply.github.com",
+        "date": "2026-07-10T06:07:35Z",
+        "message": "[server] Manage multiple users for sasl/plain authentication via cluster properties (#3047)",
+        "url": "https://github.com/apache/fluss/commit/3acc1c14acf72351bff13f171ea287a0f074076a"
+    },
+    {
+        "sha": "02cc35f4de13cae2e16f12ea489b6e7f6ec6ce2f",
+        "author": "yunhong",
+        "email": "337361684@qq.com",
+        "date": "2026-07-10T05:35:27Z",
+        "message": "[hotfix][dist] Disable Log4j shutdown hook in foreground mode (#3634)",
+        "url": "https://github.com/apache/fluss/commit/02cc35f4de13cae2e16f12ea489b6e7f6ec6ce2f"
+    },
+    {
+        "sha": "671d2bbbacf16dfc54cdc46e74e3dc6d9eb43716",
+        "author": "Junbo Wang",
+        "email": "beryllwang@gmail.com",
+        "date": "2026-07-10T02:19:44Z",
+        "message": "[lake/tiering] Add pendingRecordLag metric for lake tiering (#3469)",
+        "url": "https://github.com/apache/fluss/commit/671d2bbbacf16dfc54cdc46e74e3dc6d9eb43716"
+    },
+    {
+        "sha": "dd653f0b0c28e9d036a06104944882d2950a71d2",
+        "author": "Prajwal Banakar",
+        "email": "prajwal.banakara@gmail.com",
+        "date": "2026-07-09T16:52:22Z",
+        "message": "[rust][tests] Add DynamicWriteBatchSizeEstimator integration tests (#3588)\n\n* [rust][tests] Add DynamicWriteBatchSizeEstimator integration tests\n\n* [rust][tests] Add DynamicWriteBatchSizeEstimator integration tests\n\n* Address review: verify estimator grows in shrink_then_grow test",
+        "url": "https://github.com/apache/fluss/commit/dd653f0b0c28e9d036a06104944882d2950a71d2"
+    },
+    {
+        "sha": "c4d6c49de798635e0d47406faafdcd927a878e74",
+        "author": "Anton Borisov",
+        "email": "148864665+fresh-borzoni@users.noreply.github.com",
+        "date": "2026-07-09T16:51:37Z",
+        "message": "[cpp] Encode CreateTable column types losslessly (#3603)",
+        "url": "https://github.com/apache/fluss/commit/c4d6c49de798635e0d47406faafdcd927a878e74"
+    },
+    {
+        "sha": "e1b09078d28c8da1f886e4ba987570991beb82ff",
+        "author": "yunhong",
+        "email": "337361684@qq.com",
+        "date": "2026-07-09T13:08:05Z",
+        "message": "[server] Require new leader ack for leader-only rebalance (#3556)",
+        "url": "https://github.com/apache/fluss/commit/e1b09078d28c8da1f886e4ba987570991beb82ff"
+    },
+    {
+        "sha": "8b7cd096b98400cddfd290d3f098d9c0c5f8b369",
+        "author": "yunhong",
+        "email": "337361684@qq.com",
+        "date": "2026-07-08T07:56:16Z",
+        "message": "[server] Add negative cache for non-existent partition IDs in metadata requests (#3511)",
+        "url": "https://github.com/apache/fluss/commit/8b7cd096b98400cddfd290d3f098d9c0c5f8b369"
+    },
+    {
+        "sha": "4da3ebf9849abcf398fb01b0db425dba32d7445f",
+        "author": "Junfan Zhang",
+        "email": "zuston@apache.org",
+        "date": "2026-07-07T11:16:51Z",
+        "message": "[tiering] fix flink tiering duplicate write result (#3608)",
+        "url": "https://github.com/apache/fluss/commit/4da3ebf9849abcf398fb01b0db425dba32d7445f"
+    },
+    {
+        "sha": "e929eda3403e791cc8730a634dd4830b0ee6bb7f",
+        "author": "yunhong",
+        "email": "337361684@qq.com",
+        "date": "2026-07-07T04:04:32Z",
+        "message": "[server] Periodically checkpoint log recovery points (#3547)",
+        "url": "https://github.com/apache/fluss/commit/e929eda3403e791cc8730a634dd4830b0ee6bb7f"
+    },
+    {
+        "sha": "d1591a326ccda426b59ec76475e09d051feb196e",
+        "author": "Mitchell",
+        "email": "hiremichaeltech@gmail.com",
+        "date": "2026-07-07T02:20:02Z",
+        "message": "chore: bump arrow stack to 59 (#3600)",
+        "url": "https://github.com/apache/fluss/commit/d1591a326ccda426b59ec76475e09d051feb196e"
+    },
+    {
+        "sha": "6320400ff662ae36ac76fbb755748d246b44ea28",
+        "author": "yunhong",
+        "email": "337361684@qq.com",
+        "date": "2026-07-07T02:15:25Z",
+        "message": "[server] Reject KV leader promotion under disk write lock (#3539)",
+        "url": "https://github.com/apache/fluss/commit/6320400ff662ae36ac76fbb755748d246b44ea28"
+    },
+    {
+        "sha": "c5a0c00a22999e375afc2ac3e50f5c6cb26886a1",
+        "author": "Anton Borisov",
+        "email": "anton.borisov@fresha.com",
+        "date": "2026-07-07T01:01:53Z",
+        "message": "[docs] Document S3 custom AWS credentials provider mode",
+        "url": "https://github.com/apache/fluss/commit/c5a0c00a22999e375afc2ac3e50f5c6cb26886a1"
+    },
+    {
+        "sha": "bfaaffb853ce1149e11a93b81dcb3f600baf3b1a",
+        "author": "litiliu",
+        "email": "litiliu@cisco.com",
+        "date": "2026-07-07T00:57:09Z",
+        "message": "[fs] Support AWS S3 credentials provider mode",
+        "url": "https://github.com/apache/fluss/commit/bfaaffb853ce1149e11a93b81dcb3f600baf3b1a"
+    },
+    {
+        "sha": "9f0284ddccef51ad417abf6fccadba4a0d33ea96",
+        "author": "Anton Borisov",
+        "email": "148864665+fresh-borzoni@users.noreply.github.com",
+        "date": "2026-07-07T01:28:57Z",
+        "message": "[docs] Add rust/python/c++/elixir component tags (#3602)",
+        "url": "https://github.com/apache/fluss/commit/9f0284ddccef51ad417abf6fccadba4a0d33ea96"
+    },
+    {
+        "sha": "20b008ce566740f5d92527c89a0fc731b59dc11f",
+        "author": "yunhong",
+        "email": "337361684@qq.com",
+        "date": "2026-07-06T17:05:40Z",
+        "message": "[server] Limit max bucket num per table partition (#3597)",
+        "url": "https://github.com/apache/fluss/commit/20b008ce566740f5d92527c89a0fc731b59dc11f"
+    },
+    {
+        "sha": "ceb2f6525466be798f578ea90d9b881b62731750",
+        "author": "Anton Borisov",
+        "email": "148864665+fresh-borzoni@users.noreply.github.com",
+        "date": "2026-07-06T13:47:55Z",
+        "message": "[ci] Fix stale elixir NIF cache; run client suites on workflow change (#3598)",
+        "url": "https://github.com/apache/fluss/commit/ceb2f6525466be798f578ea90d9b881b62731750"
+    },
+    {
+        "sha": "27bdac4b6579862530f8cb7f2e27492fc68223fc",
+        "author": "Xuyang",
+        "email": "xyzhong188@163.com",
+        "date": "2026-07-06T12:42:49Z",
+        "message": "[test] Raise disk write-limit ratio in FlussClusterExtension to avoid test flakiness (#3594)",
+        "url": "https://github.com/apache/fluss/commit/27bdac4b6579862530f8cb7f2e27492fc68223fc"
+    },
+    {
+        "sha": "cf180274ccd606398bd1841b12f6e4c9be454780",
+        "author": "yunhong",
+        "email": "337361684@qq.com",
+        "date": "2026-07-03T02:55:54Z",
+        "message": "[server] Apply ZooKeeper max buffer size without config path",
+        "url": "https://github.com/apache/fluss/commit/cf180274ccd606398bd1841b12f6e4c9be454780"
+    },
+    {
+        "sha": "dbdef8e704295ab44c10cd417c0ee2678fdbf271",
+        "author": "yunhong",
+        "email": "337361684@qq.com",
+        "date": "2026-07-03T01:27:17Z",
+        "message": "[common] Limit default max bucket count to 20000",
+        "url": "https://github.com/apache/fluss/commit/dbdef8e704295ab44c10cd417c0ee2678fdbf271"
+    },
+    {
+        "sha": "dfa33de7c589e8d05c13f79ce62f73bfd32ea629",
+        "author": "MehulBatra",
+        "email": "66407733+MehulBatra@users.noreply.github.com",
+        "date": "2026-07-06T03:28:37Z",
+        "message": "[docs] Reorganize Streaming Lakehouse documentation to higlight deployment and core features  (#2699)\n\n---------\n\nCo-authored-by: luoyuxia <luoyuxia@alumni.sjtu.edu.cn>",
+        "url": "https://github.com/apache/fluss/commit/dfa33de7c589e8d05c13f79ce62f73bfd32ea629"
+    },
+    {
+        "sha": "6ecf55cd9e8ee6f222b5ae2d9cb87b153b9aaca5",
+        "author": "Junbo Wang",
+        "email": "beryllwang@gmail.com",
+        "date": "2026-07-06T02:23:33Z",
+        "message": "[rust/elixir] Align rustler version to 0.38.0 in mix.exs and mix.lock (#3587)",
+        "url": "https://github.com/apache/fluss/commit/6ecf55cd9e8ee6f222b5ae2d9cb87b153b9aaca5"
+    },
+    {
+        "sha": "400e132bfe8bc0793f54b22250329de55f3bc223",
+        "author": "Anton Borisov",
+        "email": "anton.borisov@fresha.com",
+        "date": "2026-05-29T07:56:28Z",
+        "message": "[FIP-40] Adapt imported fluss-rust to the monorepo (proto, CI, docs, release)",
+        "url": "https://github.com/apache/fluss/commit/400e132bfe8bc0793f54b22250329de55f3bc223"
+    },
+    {
+        "sha": "89eafb9d6bf6a1f0b263ffbe601e43eefb5e8ccc",
+        "author": "Anton Borisov",
+        "email": "anton.borisov@fresha.com",
+        "date": "2026-07-04T11:39:40Z",
+        "message": "[FIP-40] Import fluss-rust under fluss-rust/ with preserved history",
+        "url": "https://github.com/apache/fluss/commit/89eafb9d6bf6a1f0b263ffbe601e43eefb5e8ccc"
+    },
+    {
+        "sha": "8cd8d16283d83a6b9dabb1e41d0cf2e41219f34a",
+        "author": "bryndenZh",
+        "email": "49369598+bryndenZh@users.noreply.github.com",
+        "date": "2026-07-04T06:44:24Z",
+        "message": "[lake] Fix union read duplicating rows for non-String partition columns (#3500)\n\n---------\n\nCo-authored-by: luoyuxia <luoyuxia@alumni.sjtu.edu.cn>",
+        "url": "https://github.com/apache/fluss/commit/8cd8d16283d83a6b9dabb1e41d0cf2e41219f34a"
+    },
+    {
+        "sha": "c1e528af167b1bd59dc3389b8c007adcd5fc8345",
+        "author": "Junfan Zhang",
+        "email": "zuston@apache.org",
+        "date": "2026-07-04T02:06:32Z",
+        "message": "[dist] Fix incorrect package name of ZK in logger conf (#2768)\n\n---------\n\nCo-authored-by: luoyuxia <luoyuxia@alumni.sjtu.edu.cn>",
+        "url": "https://github.com/apache/fluss/commit/c1e528af167b1bd59dc3389b8c007adcd5fc8345"
+    },
+    {
+        "sha": "38fae3467ccd95c0a4929c3fe6aef69035630de0",
+        "author": "Evan",
+        "email": "binary-signal@users.noreply.github.com",
+        "date": "2026-07-03T17:54:19Z",
+        "message": "[client] Avoid per-record AutoPartitionStrategy construction in WriterClient.doSend in log tables (#3529)\n\n* perf(write): skip auto-partition work for non-partitioned tables\n\nBuilding the AutoPartitionStrategy on every record needlessly cost CPU in the hot write path, even for tables without partition keys.\n\nGuard the dynamic partition creation call in WriterClient.doSend behind a partition-keys check so the strategy is only resolved for partitioned tables, and cache AutoPartitionStrategy lazily in TableConfig via a volatile field rather than rebuilding it on each access.\n\nSigned-off-by: Evan <binary-signal@users.noreply.github.com>\n\n* address comments\n\n- test  the strategy is memoized, so repeated calls return the same instancetestAutoPartitionStrategyIsCached\n\n- use tableInfo.isPartitioned instead of !tableInfo.getPartitionKeys().isEmpty()\n\n- address comments\n\nSigned-off-by: Evan <binary-signal@users.noreply.github.com>\n\n* Address review feedback on #3529\n\ninstead of memoizing the strategy on TableConfig, pass TableInfo into\ncheckAndCreatePartitionAsync and resolve getAutoPartitionStrategy()\ninside the create branch. The strategy is only needed when a partition\nis actually created, so on the common \"already exists\" path it is never\nbuilt. This removes the cached field\n\n- WriterClient: pass tableInfo instead of pre-computing the strategy\n- DynamicPartitionCreator: resolve partitionKeys + strategy in the create branch only\n- TableConfig: drop the cached volatile field and stale javadoc\n- Remove the caching test added previously\n\nSigned-off-by: Evan <binary-signal@users.noreply.github.com>\n\n---------\n\nSigned-off-by: Evan <binary-signal@users.noreply.github.com>",
+        "url": "https://github.com/apache/fluss/commit/38fae3467ccd95c0a4929c3fe6aef69035630de0"
+    }
+]

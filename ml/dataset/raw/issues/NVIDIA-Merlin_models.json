@@ -1,0 +1,373 @@
+[
+    {
+        "id": 3156747334,
+        "number": 1248,
+        "title": "[BUG] - Changing the embedding dimensions of the schema has no effect on the subsequent model architecture",
+        "state": "open",
+        "created_at": "2025-06-18T12:47:37Z",
+        "updated_at": "2025-06-18T12:47:37Z",
+        "closed_at": null,
+        "author": "hkristof03",
+        "comments": 0,
+        "labels": [
+            "bug",
+            "status/needs-triage"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Bug description\n\nThe default embedding dimensions for categorical features computed by NVTabular often causes embedding collapse. I detailed this issue [here](https://github.com/NVIDIA-Merlin/NVTabular/issues/1890). When you modify the embedding dimensions directly in the schema, it won't change the architecture of the subsequent model built from the modified schema. Moreover, the schema of the model will reflect the modified embedding dimensions, even though the number of parameters of the model will not change.\n\n### Steps/Code to reproduce bug\n\n```\nimport nvtabular as nvt\nfrom nvtabular import ops\nfrom nvtabular.loader.tensorflow import KerasSequenceLoader\nfrom merlin.core.dispatch import get_lib\nfrom merlin.schema.tags import Tags\nfrom merlin.schema.schema import Schema\nimport merlin.models.tf as mm\nfrom merlin.dataloader.ops.embeddings import EmbeddingOperator\nfrom merlin.models.utils.dataset import unique_rows_by_features\nimport tensorflow as tf\n\nimport numpy as np\nimport pandas as pd\n\n\ndef generate_categorical_data(cardinalities, num_rows=1_000_000, seed=2025):\n    \n    np.random.seed(seed)\n\n    data = {}\n    \n    for i, cardinality in enumerate(cardinalities, 1):\n        feature_name = f'feature_{i}'\n        data[feature_name] = np.random.randint(0, cardinality, size=num_rows)\n\n    return pd.DataFrame(data)\n\n\ndef map_cardinality_to_embedding_dimension(cardinality: int) -> int:\n    \"\"\"\"\"\"\n    if cardinality < 32:\n        emb_dim = 2\n    elif cardinality < 128:\n        emb_dim = 4\n    elif cardinality < 1024:\n        emb_dim = 8\n    elif cardinality < 32768:\n        emb_dim = 16\n    else:\n        emb_dim = 32\n    \n    return emb_dim\n\ndef print_schema(schema: Schema):\n    \n    for col in schema.column_names:\n        card = schema[col].properties['embedding_sizes']['cardinality']\n        dim = schema[col].properties['embedding_sizes']['dimension']\n        print(f'{col} cardinality: {card} dimension: {dim}')\n\ndef build_model(schema: Schema, set_embedding_dims: bool = False) -> mm.TwoTowerModelV2:\n\n    dimensions = [2048, 256, 16]\n    activation = 'relu'\n    normalization = 'batch_norm'\n    dropout = 0.5\n    logits_temperature = 1.0\n    \n    user_emb_dims, item_emb_dims = {}, {}\n\n    user_schema = schema.select_by_tag(Tags.USER)\n    item_schema = schema.select_by_tag(Tags.ITEM)\n\n    if set_embedding_dims:\n        for col in user_schema.column_names:\n            user_emb_dims[col] = schema[col].properties['embedding_sizes']['dimension']\n\n        for col in item_schema.column_names:\n            item_emb_dims[col] = schema[col].properties['embedding_sizes']['dimension']\n    \n    user_embeddings_block = mm.Embeddings(\n        user_schema.select_by_tag(Tags.CATEGORICAL),\n        infer_embedding_sizes=False,\n        dim=user_emb_dims\n    )\n    user_inputs = mm.InputBlockV2(\n        user_schema, categorical=user_embeddings_block\n    )\n    query_tower = mm.Encoder(\n        user_inputs, \n        mm.MLPBlock(\n            dimensions=dimensions, \n            no_activation_last_layer=True,\n            activation=activation,\n            dropout=dropout,\n            normalization=normalization\n        )\n    )\n    item_embeddings_block = mm.Embeddings(\n        item_schema.select_by_tag(Tags.CATEGORICAL),\n        infer_embedding_sizes=False,\n        dim=item_emb_dims\n    )\n    item_inputs = mm.InputBlockV2(\n        item_schema, categorical=item_embeddings_block\n    )\n    candidate_tower = mm.Encoder(\n        item_inputs, \n        mm.MLPBlock(\n            dimensions=dimensions, \n            no_activation_last_layer=True,\n            activation=activation,\n            dropout=dropout,\n            normalization=normalization\n        )\n    )\n    model = mm.TwoTowerModelV2(\n        query_tower, \n        candidate_tower,\n        logits_temperature=logits_temperature,\n        negative_samplers=[mm.InBatchSamplerV2()]\n    )\n    model.compile()\n\n    return model\n\n# Generate random data\ncol_user_id = 'user_id'\ncol_item_id = 'item_id'\ncardinalities = [3, 5, 12, 20, 29, 50, 80, 230, 760, 1100, 4679, 8900]\n\ndf = generate_categorical_data(cardinalities)\ndf[col_user_id] = np.random.randint(0, 10_000, len(df))\ndf[col_item_id] = np.random.randint(0, 20_000, len(df))\n\n# Create workflow, dataset, data loader\ncat_columns = [col for col in df.columns if 'feature_' in col]\n\nuser_id = nvt.ColumnSelector(col_user_id) >> ops.Categorify(freq_threshold=1, dtype='int32') >> ops.AddTags(tags=[Tags.USER_ID, Tags.USER])\nitem_id = nvt.ColumnSelector(col_item_id) >> ops.Categorify(freq_threshold=1, dtype='int32') >> ops.AddTags(tags=[Tags.ITEM_ID, Tags.ITEM])\n\nuser_cat_features = nvt.ColumnSelector(cat_columns) >> ops.Categorify(freq_threshold=1, dtype='int32') >> ops.AddTags(tags=[Tags.USER])\n\nfeatures = user_id + user_cat_features + item_id\n\nworkflow = nvt.Workflow(features)\n\nds = nvt.Dataset(df)\nds_tr = workflow.fit_transform(ds)\nds_loader = KerasSequenceLoader(ds_tr, batch_size=32)\n\n# print cardinalities and dimensions\nschema = ds_tr.schema\n\nprint_schema(schema)\n\nmodel = build_model(schema, set_embedding_dims=False)\n\n_ = model(next(iter(ds_loader))[0])\n\nprint(f'{model.count_params():,}')\n\n# Modify embedding dimensions in schema\n\nfor col in schema.column_names:\n    card = schema[col].properties['embedding_sizes']['cardinality']\n    dim = map_cardinality_to_embedding_dimension(card)\n    schema[col].properties['embedding_sizes']['dimension'] = dim\n    \nprint_schema(schema)\n\n# Results in the same number of parameters, even though the schema is different...\n\nmodel = build_model(schema, set_embedding_dims=False)\n\n_ = model(next(iter(ds_loader))[0])\n\nprint(f'{model.count_params():,}')\n\n# Verify model's schema also reflect the changes...\nprint_schema(model.schema)\n\n# Set the embedding dimensions directly in the Embeddings block\n\nmodel = build_model(schema, set_embedding_dims=True)\n\n_ = model(next(iter(ds_loader))[0])\n\nprint(f'{model.count_params():,}')\n```\n\n### Expected behavior\n\n1. The first model building with the default dimensions produces a model with parameters of 2,552,849.\n2. The second model building with the modified schema and embedding dimensions produces the same number of parameters of 2,552,849.\n3. Moreover, the model's schema reflect the changes in the schema with the modified embedding dimensions.\n4. The third model building with directly setting the embedding dimensions in the Embeddings block produces a different model with parameters of 2,041,385.\n\n**Consequence: modifying the embedding dimensions of the schema has no effect the subsequent model and the model's  schema reflects wrong embedding dimensions.**\n\n### Environment details\nhttps://catalog.ngc.nvidia.com/orgs/nvidia/teams/merlin/containers/merlin-tensorflow-training\n",
+        "url": "https://github.com/NVIDIA-Merlin/models/issues/1248"
+    },
+    {
+        "id": 3078017865,
+        "number": 1247,
+        "title": "[QST] DLRM predictive performance vs older models (e.g., XGBoost)",
+        "state": "open",
+        "created_at": "2025-05-20T19:23:38Z",
+        "updated_at": "2025-05-20T19:23:38Z",
+        "closed_at": null,
+        "author": "RyanZotti",
+        "comments": 0,
+        "labels": [
+            "status/needs-triage"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "# ❓ Questions & Help\n\n## Details\n\nHow does DLRM compare to models like XGBoost in terms of predictive performance in ranking in recommender systems? Are deep learning methods consistently superior? I've been able to replicate AUROC of DLRM on Criteo, and got around 0.79 AUROC. I then trained the model on my employer's proprietary dataset, and got an even better AUROC value of 0.88. However, NDCG@5 on the internal dataset shows that DLRM (NDCG@5 of 0.04) does substantially worse than XGBoost (NDCG@5  of 0.19) and worse than our basic manual heuristics ranker (NDCG@5  of 0.17). Our internal dataset uses similar features to those found in Criteo: user ID embeddings, product ID embeddings, dense features, etc.\n\nIs this more common across the industry than I realized? I would have expected DLRM to do substantially better given that it uses deep learning. However, after doing more research it seems recent recommender systems challenges on [Kaggle](https://www.kaggle.com/competitions?tagIds=13311-Recommender+Systems) show mostly gradient boosting models amongst the winners. Nvidia researchers seemed to notice a similar trend [here](https://docs.nvidia.com/deeplearning/performance/recsys-best-practices/index.html) and [here](https://dl.acm.org/doi/10.1145/3415959.3416001). Is this still the case?\n",
+        "url": "https://github.com/NVIDIA-Merlin/models/issues/1247"
+    },
+    {
+        "id": 2827959615,
+        "number": 1246,
+        "title": "[ALERT] Access to NVIDIA's Self-Hosted Runners is Expiring",
+        "state": "open",
+        "created_at": "2025-02-03T16:16:56Z",
+        "updated_at": "2025-02-03T16:16:57Z",
+        "closed_at": null,
+        "author": "nvidia-runner-mgmt[bot]",
+        "comments": 0,
+        "labels": [
+            "nvidia-runners"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "This repository has been configured to receive notifications when access to NVIDIA's self-hosted runners is within 30 days of expiration.\n\nSee this [link](https://github.com/nv-gha-runners/enterprise-runner-configuration/blob/main/docs/renewing-access.md) for more information on how to renew access to the runners.\n\nPlease note that repository maintainers are responsible for closing this issue once access to the runners has been renewed. Failure to do so will prevent this repository from receiving future expiration notifications.",
+        "url": "https://github.com/NVIDIA-Merlin/models/issues/1246"
+    },
+    {
+        "id": 2696666370,
+        "number": 1245,
+        "title": "[QST] What is the proper way to load checkpoint to merlin.models.torch.DLRMModel",
+        "state": "open",
+        "created_at": "2024-11-27T01:38:57Z",
+        "updated_at": "2024-11-27T01:38:57Z",
+        "closed_at": null,
+        "author": "breadbread1984",
+        "comments": 0,
+        "labels": [
+            "status/needs-triage"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "# ❓ Questions & Help\r\n\r\nDLRMModel cannot load trained checkpoint properly.\r\n\r\n## Details\r\n\r\nthe torch implement of DLRMModel has an interaction layer implement with a member defined in register_buffer in condition block (see https://github.com/NVIDIA-Merlin/models/blob/eb1e54196a64a70950b2a7e7744d2150e052d53e/merlin/models/torch/blocks/dlrm.py#L67). the newly created interaction has no such member until the forward is called. therefore, the checkpoint cannot be loaded properly. what is the recommended way of loading?\r\n",
+        "url": "https://github.com/NVIDIA-Merlin/models/issues/1245"
+    },
+    {
+        "id": 2390406286,
+        "number": 1244,
+        "title": "[QST] Data loader with EmbeddingOperator using pretrained embeddings is very slow",
+        "state": "open",
+        "created_at": "2024-07-04T09:32:02Z",
+        "updated_at": "2024-07-04T10:36:16Z",
+        "closed_at": null,
+        "author": "CarloNicolini",
+        "comments": 0,
+        "labels": [
+            "status/needs-triage"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "# ❓ Questions & Help\r\nI am experiencing a large degradation in the performance of the `Loader` when adding a transform with `EmbeddingOperator`, for loading data from a pretrained embeddings numpy array.\r\nI have been following the method exposed in [this tutorial notebook](https://github.com/NVIDIA-Merlin/models/blob/main/examples/usecases/entertainment-with-pretrained-embeddings.ipynb)\r\n\r\nWithout the `transforms` argument the entire dataset is consumed in 6 seconds, while with the loading from *pretrained embeddings array* it takes almost 40 minutes!\r\nMy \"validation.parquet\" is a small NVTabular dataset with 16 partitions, totalling almost 200 MB.\r\nSpecifically with the `transforms` enabled, I am seeing a very low CPU and GPU utilization, as well as close to zero GPU memory consumption. Nor the CPU or the GPU gets utilized more than 6%.\r\nIt seems very strange to me that simply reading `batch_size`  specific rows from a numpy array takes that much time, even considering moving them to GPU.\r\n\r\n\r\n## Details\r\nHere is a minimal working example to reproduce this degradation.\r\n\r\n```python\r\nfrom __future__ import annotations\r\n\r\nfrom pathlib import Path\r\n\r\nimport numpy as np\r\nfrom merlin.dataloader.ops.embeddings import EmbeddingOperator\r\nfrom merlin.io.dataset import Dataset\r\nfrom merlin.loader.tensorflow import Loader\r\nfrom tqdm.auto import tqdm\r\n\r\n\r\ndef test_pretrained_loader():\r\n    data_path = \"validation.parquet\"\r\n    data_path = Path(data_path)\r\n    X = Dataset(data_path, engine=\"parquet\")\r\n    pretrained_array = np.zeros((1_000_000, 2), dtype=np.float32)\r\n\r\n    loader = Loader(\r\n        X,\r\n        batch_size=4096,\r\n        shuffle=True,\r\n        transforms=[\r\n            EmbeddingOperator(\r\n                pretrained_array,\r\n                lookup_key=\"recruitment_id\",\r\n                embedding_name=\"embeddings\",\r\n            )\r\n        ],\r\n        device=\"gpu\",\r\n    )\r\n\r\n    for batch in tqdm(loader, desc=\"Iterating batches...\"):\r\n        pass\r\n\r\n\r\nif __name__ == \"__main__\":\r\n    test_pretrained_loader()\r\n```\r\n\r\n\r\n## Question\r\nIs this behaviour intended? What are possible bottlenecks for this? Is something like data prefetching or asynchronous loading applicable here?\r\n\n```[tasklist]\n### Tasks\n```\n",
+        "url": "https://github.com/NVIDIA-Merlin/models/issues/1244"
+    },
+    {
+        "id": 2338581113,
+        "number": 1243,
+        "title": "[QST] Questions about topk_model.evaluate()",
+        "state": "closed",
+        "created_at": "2024-06-06T15:45:50Z",
+        "updated_at": "2024-07-15T16:24:32Z",
+        "closed_at": "2024-07-15T16:24:31Z",
+        "author": "ZhanqiuHu",
+        "comments": 2,
+        "labels": [
+            "status/needs-triage"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "# ❓ Questions & Help\r\n\r\n## Details\r\n<!-- Description of your question -->\r\n\r\nI was looking at [this tutorial](https://nvidia-merlin.github.io/models/stable/examples/05-Retrieval-Model.html) and came across these two lines of code. I'm curious about what evaluation and sampling methods are used to compute the topk metrics, and how evaluation batch size and shuffling affect the computed metrics.\r\n\r\n```\r\neval_loader = mm.Loader(valid, batch_size=1024).map(mm.ToTarget(schema, \"item_id\"))\r\nmetrics = topk_model.evaluate(eval_loader, return_dict=True)\r\n```\r\n\r\nThank!",
+        "url": "https://github.com/NVIDIA-Merlin/models/issues/1243"
+    },
+    {
+        "id": 2333429141,
+        "number": 1242,
+        "title": "[BUG] ModelCheckpoint Callback results in an error due to unsupported overwrite=True parameter",
+        "state": "open",
+        "created_at": "2024-06-04T12:38:12Z",
+        "updated_at": "2024-06-29T07:47:29Z",
+        "closed_at": null,
+        "author": "hkristof03",
+        "comments": 7,
+        "labels": [
+            "bug",
+            "status/needs-triage"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Bug description\r\nThe[ callback ModelCheckpoint calls](https://github.com/tensorflow/tensorflow/blob/d0228dc874ed4f19f750e5df7e8ac61827fa7332/tensorflow/python/keras/callbacks.py#L1434) the model's save method, which is overwritten by the [Merlin BaseModel implementation](https://github.com/NVIDIA-Merlin/models/blob/eb1e54196a64a70950b2a7e7744d2150e052d53e/merlin/models/tf/models/base.py#L1687). The callback passes the `overwrite=True` parameter to the save method, which is not supported and raises an error.\r\n\r\n<!-- A clear and concise description of what the bug is. -->\r\n\r\n### Steps/Code to reproduce bug\r\n\r\n<!-- Follow this guide http://matthewrocklin.com/blog/work/2018/02/28/minimal-bug-reports to craft a minimal bug report. This helps us reproduce the issue you're having and resolve the issue more quickly. -->\r\n\r\n1. Create a `ModelCheckpoint` callback.\r\n2. Pass it to the `model.fit()` method.\r\n",
+        "url": "https://github.com/NVIDIA-Merlin/models/issues/1242"
+    },
+    {
+        "id": 2332633487,
+        "number": 1241,
+        "title": "[QST] How to deploy model using Pretrain Embeddings with EmbeddingOperator in Triton",
+        "state": "open",
+        "created_at": "2024-06-04T06:08:11Z",
+        "updated_at": "2024-07-04T09:33:36Z",
+        "closed_at": null,
+        "author": "jhnealand",
+        "comments": 1,
+        "labels": [
+            "status/needs-triage"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "# ❓ Questions & Help\r\n\r\n## Details\r\n\r\nI have trained both a Two Tower and DLRM model using PreTrained embeddings using a Loader with EmbeddingOperator following the approach from this example:  \r\n\r\nhttps://github.com/NVIDIA-Merlin/models/blob/main/examples/usecases/entertainment-with-pretrained-embeddings.ipynb\r\n\r\nMy models train, and I would now like to deploy them to a Triton ensemble.\r\n\r\nHere is the Loader I used with the EmbeddingOperator to look up the pretrained embeddings.\r\n\r\n```\r\ntrain_loader = mm.Loader(\r\n    train,\r\n    batch_size=1024,\r\n    transforms=[\r\n        EmbeddingOperator(\r\n            item_embedding_array,\r\n            lookup_key=\"liked\",\r\n            embedding_name=\"liked\",\r\n        )\r\n    ],\r\n)\r\n```\r\n\r\nPrior to using PreTrained Embeddings, my workflow to deploy the model looked like this:\r\n\r\n```\r\nworkflow =  nvt.Workflow(['item_id'] +(['liked', .... some other informants ], \r\n                                       >> TransformWorkflow(retrieval_item_workflow)                                     \r\n                                       >> PredictTensorflow(retrieval_model.candidate_encoder)))\r\n```\r\n\r\nI think I need to add a step in this workflow that looks up the pre-trained embeddings for the \"liked\" column. I've tried inserting an EmbeddingOperator step in the workflow directly:\r\n\r\n```\r\nworkflow =  nvt.Workflow(['item_id'] +(informant_columns, \r\n                                       >> TransformWorkflow(retrieval_item_workflow)                                   \r\n                                       >> EmbeddingOperator( item_embedding_array,\r\n                                                                                lookup_key=\"liked\",\r\n                                                                                embedding_name=\"liked\")\r\n                                       >> PredictTensorflow(retrieval_model.candidate_encoder)))\r\n```\r\n\r\nI've also tried putting the EmbeddingOperator as part of my NVTabular workflow (ie. retrieval_item_workflow). \r\n\r\nWhat is the correct way to deply a model that has been trained with an EmbeddingOperator transform in the Loader?\r\n\r\n\r\n\r\n \r\n",
+        "url": "https://github.com/NVIDIA-Merlin/models/issues/1241"
+    },
+    {
+        "id": 2331159252,
+        "number": 1240,
+        "title": "[QST] `StopIteration` error in `model.fit` at validation time",
+        "state": "open",
+        "created_at": "2024-06-03T13:26:11Z",
+        "updated_at": "2024-07-15T16:39:56Z",
+        "closed_at": null,
+        "author": "CarloNicolini",
+        "comments": 1,
+        "labels": [
+            "status/needs-triage"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "# ❓ Questions & Help\r\nI am using the Nvidia Merlin Docker 23.08 Tensorflow container.\r\n\r\nI've created my training and validation datasets and saved them into parquet following the standard procedure done with the nvt.workflow.\r\n\r\n\r\nI am now facing some issues training a two towers model based largely on the examples provided in the notebooks, but with many more list features (such as `genres` in the MovieLens dataset).\r\nThe training starts and the loss function decreases but at the validation step I get an `Unknown error` that seems to originate from a missing index in the underlying cudf DataFrame, which in turn comes out from a StopIteration when validation data is evaluated.\r\n\r\n```python\r\nUnknownError: Graph execution error:\r\n\r\n2 root error(s) found.\r\n  (0) UNKNOWN:  IndexError: single positional indexer is out-of-bounds\r\nTraceback (most recent call last):\r\n\r\n  File \"/usr/local/lib/python3.10/dist-packages/merlin/dataloader/loader_base.py\", line 332, in _get_next_batch\r\n    batch = next(self._batch_itr)\r\n\r\nStopIteration\r\n\r\n\r\nDuring handling of the above exception, another exception occurred:\r\n\r\n\r\nTraceback (most recent call last):\r\n\r\n  File \"/usr/local/lib/python3.10/dist-packages/tensorflow/python/ops/script_ops.py\", line 267, in __call__\r\n    ret = func(*args)\r\n\r\n  File \"/usr/local/lib/python3.10/dist-packages/tensorflow/python/autograph/impl/api.py\", line 642, in wrapper\r\n    return func(*args, **kwargs)\r\n\r\n  File \"/usr/local/lib/python3.10/dist-packages/tensorflow/python/data/ops/from_generator_op.py\", line 198, in generator_py_func\r\n    values = next(generator_state.get_iterator(iterator_id))\r\n\r\n  File \"/usr/local/lib/python3.10/dist-packages/keras/engine/data_adapter.py\", line 902, in wrapped_generator\r\n    for data in generator_fn():\r\n\r\n  File \"/usr/local/lib/python3.10/dist-packages/keras/engine/data_adapter.py\", line 1049, in generator_fn\r\n    yield x[i]\r\n\r\n  File \"/usr/local/lib/python3.10/dist-packages/merlin/dataloader/tensorflow.py\", line 93, in __getitem__\r\n    return self.__next__()\r\n\r\n  File \"/usr/local/lib/python3.10/dist-packages/merlin/dataloader/tensorflow.py\", line 97, in __next__\r\n    converted_batch = self.convert_batch(super().__next__())\r\n\r\n  File \"/usr/local/lib/python3.10/dist-packages/merlin/dataloader/loader_base.py\", line 261, in __next__\r\n    return self._get_next_batch()\r\n\r\n  File \"/usr/local/lib/python3.10/dist-packages/merlin/dataloader/loader_base.py\", line 344, in _get_next_batch\r\n    batch = next(self._batch_itr)\r\n\r\n  File \"/usr/local/lib/python3.10/dist-packages/merlin/dataloader/loader_base.py\", line 369, in make_tensors\r\n    tensors_by_name = self._convert_df_to_tensors(gdf)\r\n\r\n  File \"/usr/local/lib/python3.10/dist-packages/nvtx/nvtx.py\", line 115, in inner\r\n    result = func(*args, **kwargs)\r\n\r\n  File \"/usr/local/lib/python3.10/dist-packages/merlin/dataloader/loader_base.py\", line 548, in _convert_df_to_tensors\r\n    if isinstance(leaves[0], list):\r\n\r\n  File \"/usr/local/lib/python3.10/dist-packages/nvtx/nvtx.py\", line 115, in inner\r\n    result = func(*args, **kwargs)\r\n\r\n  File \"/usr/local/lib/python3.10/dist-packages/cudf/core/series.py\", line 1293, in __getitem__\r\n    return self.loc[arg]\r\n\r\n  File \"/usr/local/lib/python3.10/dist-packages/nvtx/nvtx.py\", line 115, in inner\r\n    result = func(*args, **kwargs)\r\n\r\n  File \"/usr/local/lib/python3.10/dist-packages/cudf/core/series.py\", line 270, in __getitem__\r\n    return self._frame.iloc[arg]\r\n\r\n  File \"/usr/local/lib/python3.10/dist-packages/nvtx/nvtx.py\", line 115, in inner\r\n    result = func(*args, **kwargs)\r\n\r\n  File \"/usr/local/lib/python3.10/dist-packages/cudf/core/series.py\", line 187, in __getitem__\r\n    data = self._frame._get_elements_from_column(arg)\r\n\r\n  File \"/usr/local/lib/python3.10/dist-packages/cudf/core/single_column_frame.py\", line 398, in _get_elements_from_column\r\n    return self._column.element_indexing(int(arg))\r\n\r\n  File \"/usr/local/lib/python3.10/dist-packages/cudf/core/column/column.py\", line 539, in element_indexing\r\n    raise IndexError(\"single positional indexer is out-of-bounds\")\r\n\r\nIndexError: single positional indexer is out-of-bounds\r\n\r\n\r\n\t [[{{node PyFunc}}]]\r\n\t [[IteratorGetNext]]\r\n\t [[retrieval_model_v2_1/parallel_block_5/encoder_2/prepare_features_3/prepare_list_features_3/StatefulPartitionedCall_16/RaggedFromRowSplits/RowPartitionFromRowSplits/assert_non_negative/assert_less_equal/Assert/Assert/data_0/_2484]]\r\n  (1) UNKNOWN:  IndexError: single positional indexer is out-of-bounds\r\nTraceback (most recent call last):\r\n\r\n  File \"/usr/local/lib/python3.10/dist-packages/merlin/dataloader/loader_base.py\", line 332, in _get_next_batch\r\n    batch = next(self._batch_itr)\r\n\r\nStopIteration\r\n\r\nDuring handling of the above exception, another exception occurred:\r\n\r\nTraceback (most recent call last):\r\n\r\n  File \"/usr/local/lib/python3.10/dist-packages/tensorflow/python/ops/script_ops.py\", line 267, in __call__\r\n    ret = func(*args)\r\n\r\n  File \"/usr/local/lib/python3.10/dist-packages/tensorflow/python/autograph/impl/api.py\", line 642, in wrapper\r\n    return func(*args, **kwargs)\r\n\r\n  File \"/usr/local/lib/python3.10/dist-packages/tensorflow/python/data/ops/from_generator_op.py\", line 198, in generator_py_func\r\n    values = next(generator_state.get_iterator(iterator_id))\r\n\r\n  File \"/usr/local/lib/python3.10/dist-packages/keras/engine/data_adapter.py\", line 902, in wrapped_generator\r\n    for data in generator_fn():\r\n\r\n  File \"/usr/local/lib/python3.10/dist-packages/keras/engine/data_adapter.py\", line 1049, in generator_fn\r\n    yield x[i]\r\n\r\n  File \"/usr/local/lib/python3.10/dist-packages/merlin/dataloader/tensorflow.py\", line 93, in __getitem__\r\n    return self.__next__()\r\n\r\n  File \"/usr/local/lib/python3.10/dist-packages/merlin/dataloader/tensorflow.py\", line 97, in __next__\r\n    converted_batch = self.convert_batch(super().__next__())\r\n\r\n  File \"/usr/local/lib/python3.10/dist-packages/merlin/dataloader/loader_base.py\", line 261, in __next__\r\n    return self._get_next_batch()\r\n\r\n  File \"/usr/local/lib/python3.10/dist-packages/merlin/dataloader/loader_base.py\", line 344, in _get_next_batch\r\n    batch = next(self._batch_itr)\r\n\r\n  File \"/usr/local/lib/python3.10/dist-packages/merlin/dataloader/loader_base.py\", line 369, in make_tensors\r\n    tensors_by_name = self._convert_df_to_tensors(gdf)\r\n\r\n  File \"/usr/local/lib/python3.10/dist-packages/nvtx/nvtx.py\", line 115, in inner\r\n    result = func(*args, **kwargs)\r\n\r\n  File \"/usr/local/lib/python3.10/dist-packages/merlin/dataloader/loader_base.py\", line 548, in _convert_df_to_tensors\r\n    if isinstance(leaves[0], list):\r\n\r\n  File \"/usr/local/lib/python3.10/dist-packages/nvtx/nvtx.py\", line 115, in inner\r\n    result = func(*args, **kwargs)\r\n\r\n  File \"/usr/local/lib/python3.10/dist-packages/cudf/core/series.py\", line 1293, in __getitem__\r\n    return self.loc[arg]\r\n\r\n  File \"/usr/local/lib/python3.10/dist-packages/nvtx/nvtx.py\", line 115, in inner\r\n    result = func(*args, **kwargs)\r\n\r\n  File \"/usr/local/lib/python3.10/dist-packages/cudf/core/series.py\", line 270, in __getitem__\r\n    return self._frame.iloc[arg]\r\n\r\n  File \"/usr/local/lib/python3.10/dist-packages/nvtx/nvtx.py\", line 115, in inner\r\n    result = func(*args, **kwargs)\r\n\r\n  File \"/usr/local/lib/python3.10/dist-packages/cudf/core/series.py\", line 187, in __getitem__\r\n    data = self._frame._get_elements_from_column(arg)\r\n\r\n  File \"/usr/local/lib/python3.10/dist-packages/cudf/core/single_column_frame.py\", line 398, in _get_elements_from_column\r\n    return self._column.element_indexing(int(arg))\r\n\r\n  File \"/usr/local/lib/python3.10/dist-packages/cudf/core/column/column.py\", line 539, in element_indexing\r\n    raise IndexError(\"single positional indexer is out-of-bounds\")\r\n\r\nIndexError: single positional indexer is out-of-bounds\r\n\r\n\r\n\t [[{{node PyFunc}}]]\r\n\t [[IteratorGetNext]]\r\n0 successful operations.\r\n0 derived errors ignored. [Op:__inference_test_function_919093]\r\n```\r\n\r\nI've then tried to run some test iterations on the valid dataset and found with my surprise that even the `mm.Loader` cannot correctly iterate on the validation dataset.\r\n\r\nIn other words, I've verified that I cannot consume all the batches from the dataset, unless I set the `batch_size` to 1 which every number is divisible from.\r\nIndeed, this simple loop raise `StopIteration`.\r\n\r\n```python\r\nfor batch in mm.Loader(validation, batch_size=512):\r\n    pass\r\n```\r\n\r\nI hope this is something bad on my side. I didn't do the `shuffle_by_keys` method on the loaded dataset, nor in the phase of its creation. Is this related?\r\n",
+        "url": "https://github.com/NVIDIA-Merlin/models/issues/1240"
+    },
+    {
+        "id": 2283086669,
+        "number": 1239,
+        "title": "[QST] How to get candidate features after using pre-trained embedding tables?",
+        "state": "open",
+        "created_at": "2024-05-07T12:02:28Z",
+        "updated_at": "2024-07-04T09:37:32Z",
+        "closed_at": null,
+        "author": "hkristof03",
+        "comments": 3,
+        "labels": [
+            "status/needs-triage"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "# ❓ Questions & Help\r\n\r\n## Details\r\n\r\nI am following the [tutorial here](https://github.com/NVIDIA-Merlin/models/blob/main/examples/usecases/entertainment-with-pretrained-embeddings.ipynb)to include pre-computed embeddings when I train a Two Tower Retrieval model. Specifically, I am using this method to not to include the Embedding Table as part of the model:\r\n\r\n```\r\nloader = mm.Loader(\r\n    train,\r\n    batch_size=1024,\r\n    transforms=[\r\n        EmbeddingOperator(\r\n            pretrained_movie_embs,\r\n            lookup_key=\"movieId\",\r\n            embedding_name=\"pretrained_movie_embeddings\",\r\n        ),\r\n    ],\r\n)\r\n```\r\n\r\nI am trying to match this solution with the Retrieval Model[ tutorial here](https://github.com/NVIDIA-Merlin/models/blob/main/examples/05-Retrieval-Model.ipynb).\r\n\r\n\r\n```\r\n# Top-K evaluation\r\ncandidate_features = unique_rows_by_features(train, Tags.ITEM, Tags.ITEM_ID)\r\ncandidate_features.head()\r\n\r\ntopk = 20\r\ntopk_model = model.to_top_k_encoder(candidate_features, k=topk, batch_size=128)\r\n\r\n# we can set `metrics` param in the `compile(), if we want\r\ntopk_model.compile(run_eagerly=False)\r\n```\r\n\r\n<!-- Description of your question -->\r\n\r\nThe problem is that `loader.output_schema` is different from `loader.dataset.schema`. The utility function `unique_rows_by_features` requires a dataset as the first argument, but passing `loader.dataset` doesn't work as this dataset doesn't contain the embedding vectors yet. \r\n\r\nMy question is, using the method to include pre-trained embeddings described above, how should one get the `candidate_features`, required by the Candidate Tower from the `loader`?\r\n\r\nThank you in advance if you take your time to answer!\r\n",
+        "url": "https://github.com/NVIDIA-Merlin/models/issues/1239"
+    },
+    {
+        "id": 2053384413,
+        "number": 1234,
+        "title": "[QST] Status: CUDA driver version is insufficient for CUDA runtime version",
+        "state": "open",
+        "created_at": "2023-12-22T04:58:29Z",
+        "updated_at": "2023-12-22T04:59:07Z",
+        "closed_at": null,
+        "author": "dking21st",
+        "comments": 0,
+        "labels": [
+            "status/needs-triage"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "# ❓ Questions & Help\r\nUsing merlin tensorflow container to build a docker image but it shows an error:\r\n```\r\n2023-12-22, 04:15:17 KST] {pod_manager.py:203} INFO - Traceback (most recent call last):\r\n[2023-12-22, 04:15:17 KST] {pod_manager.py:203} INFO -   File \"/usr/lib/python3.8/runpy.py\", line 194, in _run_module_as_main\r\n[2023-12-22, 04:15:17 KST] {pod_manager.py:203} INFO -     return _run_code(code, main_globals, None,\r\n[2023-12-22, 04:15:17 KST] {pod_manager.py:203} INFO -   File \"/usr/lib/python3.8/runpy.py\", line 87, in _run_code\r\n[2023-12-22, 04:15:17 KST] {pod_manager.py:203} INFO -     exec(code, run_globals)\r\n[2023-12-22, 04:15:17 KST] {pod_manager.py:203} INFO -   File \"/ads_content/batch/scripts/ads/ads_content/preranking/train_ohouse_ads_content_merlin.py\", line 15, in <module>\r\n[2023-12-22, 04:15:17 KST] {pod_manager.py:203} INFO -     import merlin.models.tf as mm\r\n[2023-12-22, 04:15:17 KST] {pod_manager.py:203} INFO -   File \"/usr/local/lib/python3.8/dist-packages/merlin/models/tf/__init__.py\", line 108, in <module>\r\n[2023-12-22, 04:15:17 KST] {pod_manager.py:203} INFO -     from merlin.models.tf.models.retrieval import (\r\n[2023-12-22, 04:15:17 KST] {pod_manager.py:203} INFO -   File \"/usr/local/lib/python3.8/dist-packages/merlin/models/tf/models/retrieval.py\", line 22, in <module>\r\n[2023-12-22, 04:15:17 KST] {pod_manager.py:203} INFO -     from merlin.models.tf.prediction_tasks.retrieval import ItemRetrievalTask\r\n[2023-12-22, 04:15:17 KST] {pod_manager.py:203} INFO -   File \"/usr/local/lib/python3.8/dist-packages/merlin/models/tf/prediction_tasks/retrieval.py\", line 33, in <module>\r\n[2023-12-22, 04:15:17 KST] {pod_manager.py:203} INFO -     class ItemRetrievalTask(MultiClassClassificationTask):\r\n[2023-12-22, 04:15:17 KST] {pod_manager.py:203} INFO -   File \"/usr/local/lib/python3.8/dist-packages/merlin/models/tf/prediction_tasks/retrieval.py\", line 70, in ItemRetrievalTask\r\n[2023-12-22, 04:15:17 KST] {pod_manager.py:203} INFO -     DEFAULT_METRICS = TopKMetricsAggregator.default_metrics(top_ks=[10])\r\n[2023-12-22, 04:15:17 KST] {pod_manager.py:203} INFO - [INFO]: sparse_operation_kit is imported\r\n[2023-12-22, 04:15:17 KST] {pod_manager.py:203} INFO - [SOK INFO] Import /usr/local/lib/python3.8/dist-packages/merlin_sok-1.2.0-py3.8-linux-x86_64.egg/sparse_operation_kit/lib/libsok_experiment.so\r\n[2023-12-22, 04:15:17 KST] {pod_manager.py:203} INFO - [SOK INFO] Import /usr/local/lib/python3.8/dist-packages/merlin_sok-1.2.0-py3.8-linux-x86_64.egg/sparse_operation_kit/lib/libsok_experiment.so\r\n[2023-12-22, 04:15:17 KST] {pod_manager.py:203} INFO - [SOK INFO] Initialize finished, communication tool: horovod\r\n[2023-12-22, 04:15:17 KST] {pod_manager.py:203} INFO -   File \"/usr/local/lib/python3.8/dist-packages/merlin/models/tf/metrics/topk.py\", line 491, in default_metrics\r\n[2023-12-22, 04:15:17 KST] {pod_manager.py:203} INFO -     metrics.extend([RecallAt(k), MRRAt(k), NDCGAt(k), AvgPrecisionAt(k), PrecisionAt(k)])\r\n[2023-12-22, 04:15:17 KST] {pod_manager.py:203} INFO -   File \"/usr/local/lib/python3.8/dist-packages/merlin/models/tf/metrics/topk.py\", line 362, in __init__\r\n[2023-12-22, 04:15:17 KST] {pod_manager.py:203} INFO -     super().__init__(recall_at, k=k, pre_sorted=pre_sorted, name=name, **kwargs)\r\n[2023-12-22, 04:15:17 KST] {pod_manager.py:203} INFO -   File \"/usr/local/lib/python3.8/dist-packages/merlin/models/tf/metrics/topk.py\", line 234, in __init__\r\n[2023-12-22, 04:15:17 KST] {pod_manager.py:203} INFO -     super().__init__(name=name, **kwargs)\r\n[2023-12-22, 04:15:17 KST] {pod_manager.py:203} INFO -   File \"/usr/local/lib/python3.8/dist-packages/keras/dtensor/utils.py\", line 144, in _wrap_function\r\n[2023-12-22, 04:15:17 KST] {pod_manager.py:203} INFO -     init_method(instance, *args, **kwargs)\r\n[2023-12-22, 04:15:17 KST] {pod_manager.py:203} INFO -   File \"/usr/local/lib/python3.8/dist-packages/keras/metrics/base_metric.py\", line 613, in __init__\r\n[2023-12-22, 04:15:17 KST] {pod_manager.py:203} INFO -     super().__init__(\r\n[2023-12-22, 04:15:17 KST] {pod_manager.py:203} INFO -   File \"/usr/local/lib/python3.8/dist-packages/keras/metrics/base_metric.py\", line 430, in __init__\r\n[2023-12-22, 04:15:17 KST] {pod_manager.py:203} INFO -     self.total = self.add_weight(\"total\", initializer=\"zeros\")\r\n[2023-12-22, 04:15:17 KST] {pod_manager.py:203} INFO -   File \"/usr/local/lib/python3.8/dist-packages/keras/metrics/base_metric.py\", line 366, in add_weight\r\n[2023-12-22, 04:15:17 KST] {pod_manager.py:203} INFO -     return super().add_weight(\r\n[2023-12-22, 04:15:17 KST] {pod_manager.py:203} INFO -   File \"/usr/local/lib/python3.8/dist-packages/keras/engine/base_layer.py\", line 712, in add_weight\r\n[2023-12-22, 04:15:17 KST] {pod_manager.py:203} INFO -     variable = self._add_variable_with_custom_getter(\r\n[2023-12-22, 04:15:17 KST] {pod_manager.py:203} INFO -   File \"/usr/local/lib/python3.8/dist-packages/tensorflow/python/trackable/base.py\", line 489, in _add_variable_with_custom_getter\r\n[2023-12-22, 04:15:17 KST] {pod_manager.py:203} INFO -     new_variable = getter(\r\n[2023-12-22, 04:15:17 KST] {pod_manager.py:203} INFO -   File \"/usr/local/lib/python3.8/dist-packages/keras/engine/base_layer_utils.py\", line 134, in make_variable\r\n[2023-12-22, 04:15:17 KST] {pod_manager.py:203} INFO -     return tf1.Variable(\r\n[2023-12-22, 04:15:17 KST] {pod_manager.py:203} INFO -   File \"/usr/local/lib/python3.8/dist-packages/tensorflow/python/util/traceback_utils.py\", line 153, in error_handler\r\n[2023-12-22, 04:15:17 KST] {pod_manager.py:203} INFO -     raise e.with_traceback(filtered_tb) from None\r\n[2023-12-22, 04:15:17 KST] {pod_manager.py:203} INFO -   File \"/usr/local/lib/python3.8/dist-packages/keras/initializers/initializers.py\", line 171, in __call__\r\n[2023-12-22, 04:15:17 KST] {pod_manager.py:203} INFO -     return tf.zeros(shape, dtype)\r\n[2023-12-22, 04:15:17 KST] {pod_manager.py:203} INFO - tensorflow.python.framework.errors_impl.InternalError: cudaGetDevice() failed. Status: CUDA driver version is insufficient for CUDA runtime version\r\n```\r\n\r\n\r\n## Details\r\nMy dockerfile:\r\n```\r\nFROM --platform=linux/amd64 nvcr.io/nvidia/merlin/merlin-tensorflow:23.06 as prod\r\n\r\nWORKDIR /ads_content\r\n\r\nCOPY ./data-airflow .\r\nCOPY ./ads/images/requirements.txt .\r\n\r\nWORKDIR /root\r\n\r\nRUN pip install tf2onnx==1.15.1 \r\nRUN pip install -r /ads_content/requirements.txt\r\nRUN pip install requests \"urllib3<2\"\r\n\r\nWORKDIR /ads_content\r\n\r\nENTRYPOINT [\"python3\"]\r\n```\r\n\r\n<!-- Description of your question -->\r\nI'm trying to deploy merlin TF model training & AWS S3 uploading job using Airflow KubernetePodOperator and Docker Image. As I'm new to docker and airflow, I'm having a good amount of trouble. \r\nI think I kept things pretty simple with my docker file - what am I doing wrong?",
+        "url": "https://github.com/NVIDIA-Merlin/models/issues/1234"
+    },
+    {
+        "id": 2049738085,
+        "number": 1233,
+        "title": "[QST] best practice to build a docker image to train merlin tensorflow models?",
+        "state": "open",
+        "created_at": "2023-12-20T02:45:16Z",
+        "updated_at": "2023-12-28T19:20:25Z",
+        "closed_at": null,
+        "author": "dking21st",
+        "comments": 0,
+        "labels": [
+            "status/needs-triage"
+        ],
+        "assignees": [
+            "jperez999"
+        ],
+        "locked": false,
+        "body": "# ❓ Questions & Help\r\nI'm trying several different docker base - merlin / tensorflow / rapidsai / nvidia... but I kept fail to avoid version issue & driver issue.\r\nI'm new to docker and airflow, and seems like I'm keep getting confused.  \r\nI will appreciate if anyone can see my requirements & dockerfile to see what am I doing wrong. \r\n\r\n## Details\r\n* I would like to build a docker image that will be used in airflow to train model. \r\n* models I would like to use are tensorflow models (https://github.com/NVIDIA-Merlin/models/tree/main/merlin/models/tf) \r\n* Here is the setup I would like to mimick: when I tested initially on colab notebook, everything worked well with this setup:\r\n```\r\nPython Version: 3.10\r\nDriver: \r\nCUDA - 11.8\r\nCUDNN - 8\r\nLibraries: \r\nRUN pip install tensorflow==2.12.0\r\nRUN pip install --no-cache-dir \\\r\n    --extra-index-url=https://pypi.nvidia.com \\\r\n    cudf-cu11==23.12.* dask-cudf-cu11==23.12.*\r\nRUN pip install -U git+https://github.com/NVIDIA-Merlin/models==23.04\r\nRUN pip install -U git+https://github.com/NVIDIA-Merlin/nvtabular.git@release-23.04\r\nRUN pip install -U git+https://github.com/NVIDIA-Merlin/core.git@release-23.04\r\nRUN pip install -U git+https://github.com/NVIDIA-Merlin/dataloader.git@release-23.04\r\nRUN pip install merlin-systems==23.04\r\nRUN pip install tf2onnx==1.15.1\r\n```\r\n\r\n<!-- Description of your question -->\r\n\r\ndockerfile that worked best so far, but failed due to cudf issue:\r\n\r\n```\r\nFROM --platform=linux/amd64 tensorflow/tensorflow:2.12.0-gpu as prod\r\n\r\nWORKDIR /ads_content\r\n\r\nCOPY ./data-airflow .\r\nCOPY ./ads/images/requirements.txt .\r\n\r\nRUN apt-get update && yes|apt-get upgrade\r\n\r\n# Add sudo\r\nRUN apt-get -y install sudo\r\n\r\n# Adding wget and bzip2\r\nRUN apt-get install -y wget bzip2\r\n\r\nRUN apt-get install -y build-essential libssl-dev zlib1g-dev libbz2-dev libffi-dev gcc-x86-64-linux-gnu\r\n\r\nWORKDIR /root\r\n\r\n# Set requirements\r\nRUN pip install --upgrade pip\r\nRUN apt-get install -y git\r\n\r\n#RAPIDs\r\nRUN pip install --no-cache-dir \\\r\n    --extra-index-url=https://pypi.nvidia.com \\\r\n    cudf-cu11==23.4.* dask-cudf-cu11==23.4*\r\n\r\nRUN pip install -U git+https://github.com/NVIDIA-Merlin/models.git@release-23.04\r\nRUN pip install -U git+https://github.com/NVIDIA-Merlin/nvtabular.git@release-23.04\r\nRUN pip install -U git+https://github.com/NVIDIA-Merlin/core.git@release-23.04\r\nRUN pip install -U git+https://github.com/NVIDIA-Merlin/dataloader.git@release-23.04\r\nRUN pip install merlin-systems==23.04\r\nRUN pip install tf2onnx==1.15.1\r\n\r\nRUN pip install -r /ads_content/requirements.txt\r\n\r\nWORKDIR /ads_content\r\n\r\nENTRYPOINT [\"python3\"]\r\n\r\n```\r\n\r\nProblem of this image was that version of cudf is limited to 23.04, as this image uses Python 3.8 (which is not supporting cudf 23.12). This low version of cudf blocked me from using gpu on data processing.  \r\n\r\nOther base images, like rapidsai / merlin, I'm always experiencing driver issue.\r\nI see that merlin is recommended to use with image nvcr.io/nvidia/merlin/merlin-tensorflow:23.06. \r\nCan someone share me an example docker file, on how to use existing container from merlin / or somewhere else to train tensorflow model successfully on airflow? ",
+        "url": "https://github.com/NVIDIA-Merlin/models/issues/1233"
+    },
+    {
+        "id": 2017030687,
+        "number": 1230,
+        "title": "[BUG] when the model is loaded and saved again, the argument names disappear (become 'args_0, args_0_1 etc)",
+        "state": "open",
+        "created_at": "2023-11-29T16:56:58Z",
+        "updated_at": "2024-06-07T18:25:22Z",
+        "closed_at": null,
+        "author": "rnyak",
+        "comments": 2,
+        "labels": [
+            "bug",
+            "status/needs-triage",
+            "P0"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Bug description\r\n\r\nwhen the model (it is transformer based XLNet model that we are training)  is loaded and saved again, the argument names disappear (become 'args_0, args_0_1 etc) and the saved model becomes invalid. Because of that we cannot export the reloaded model using Merlin Systems, therefore cannot generate the config files to serve on Triton.\r\n\r\n### Steps/Code to reproduce bug\r\n\r\nPlease run these two gists in order to repro the issue:\r\n\r\n1. https://gist.github.com/rnyak/0baa9e80cb419128379f5e91e8a30ed5\r\n2.  https://gist.github.com/rnyak/d222fe2eb7b2ecbf87d924a762c1f7d4#file-sbr_xlnet_load-py\r\n\r\n### Expected behavior\r\n\r\n<!-- A clear and concise description of what you expected to happen. -->\r\n\r\n### Environment details\r\n\r\n- Merlin version: We are using merlin-tensorflow:23.08 image with the latest main branch pulled and installed.\r\n- Platform: \r\n- Python version:\r\n- PyTorch version (GPU?):\r\n- Tensorflow version (GPU?): \r\n",
+        "url": "https://github.com/NVIDIA-Merlin/models/issues/1230"
+    },
+    {
+        "id": 2004181878,
+        "number": 1229,
+        "title": "[QST] How to use negative sampling with ranking models ?",
+        "state": "open",
+        "created_at": "2023-11-21T12:28:55Z",
+        "updated_at": "2024-07-04T22:15:04Z",
+        "closed_at": null,
+        "author": "PaulSteffen-betclic",
+        "comments": 1,
+        "labels": [
+            "status/needs-triage"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "# ❓ Questions & Help\r\n\r\n## Details\r\n\r\nI have a dataset with only positive implicit feedbacks and I would like to train a ranking model on these data.\r\nHow to use negative sampling with ranking models ?\r\nThanks.\r\n",
+        "url": "https://github.com/NVIDIA-Merlin/models/issues/1229"
+    },
+    {
+        "id": 1993603227,
+        "number": 1228,
+        "title": "[BUG] Ranking model predict constant",
+        "state": "open",
+        "created_at": "2023-11-14T21:28:11Z",
+        "updated_at": "2023-11-14T21:28:11Z",
+        "closed_at": null,
+        "author": "PaulSteffen-betclic",
+        "comments": 0,
+        "labels": [
+            "bug",
+            "status/needs-triage"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Bug description\r\n\r\nAfter a training which seems to be ok, the ranking model predict constant.\r\n\r\n### Steps/Code to reproduce bug\r\n\r\n```\r\nimport nvtabular as nvt\r\nimport merlin.models.tf as mm\r\nimport merlin.io\r\nfrom merlin.models.tf.transforms.negative_sampling import InBatchNegatives\r\n\r\noutput_path = \"data/processed\"\r\nprocessed_train = nvt.Dataset(f\"{output_path}/interactions/train/*.parquet\")\r\nprocessed_valid = nvt.Dataset(f\"{output_path}/interactions/valid/*.parquet\")\r\n\r\nn_per_positive = 12\r\nadd_negatives = InBatchNegatives(processed_train.schema, n_per_positive, seed=42, prep_features=True, run_when_testing=True)\r\n\r\ntrain_ranking_loader = Loader(processed_train, schema=schema, batch_size=batch_size, shuffle=True)\r\nvalid_ranking_loader = Loader(processed_valid, schema=schema, batch_size=batch_size, shuffle=True)\r\n\r\nmodel = mm.DLRMModel(\r\n    processed_train.schema,\r\n    embedding_dim=64,\r\n    bottom_block=mm.MLPBlock([128, 64]),\r\n    top_block=mm.MLPBlock([64, 128, 512]),\r\n    prediction_tasks=mm.BinaryClassificationTask(\"Click\"),\r\n)\r\n\r\ncompile_args = {\r\n    \"optimizer\": tf.keras.optimizers.legacy.Adam(learning_rate=learning_rate),\r\n    \"run_eagerly\": False,\r\n    \"metrics\": [mm.RecallAt(10), mm.NDCGAt(10)],\r\n    \"weighted_metrics\": [tf.keras.metrics.BinaryAccuracy(),tf.keras.metrics.AUC()]\r\n}\r\n\r\nmodel.compile(**compile_args)\r\nmodel.fit(train_ranking_loader.map(add_negatives),              \r\n          validation_data=valid_ranking_loader.map(add_negatives), \r\n          class_weights={0: 1, 1: n_per_positive}, \r\n          epochs=5)\r\n```\r\n\r\nThis code produce the following output:\r\n\r\n<img width=\"1388\" alt=\"image\" src=\"https://github.com/NVIDIA-Merlin/models/assets/46781050/82d37d2f-db73-4248-b4ca-14dbcc01d25f\">\r\n\r\nBut when I try to predict with this model `ranking_scores = model.batch_predict(potential_interactions_loader, batch_size=1024)`, I have the following warning message:\r\n\r\n<img width=\"1434\" alt=\"image\" src=\"https://github.com/NVIDIA-Merlin/models/assets/46781050/b895ebaa-4e6f-44da-a485-e1722d7ced32\">\r\n\r\n& the prediction is constant:\r\n\r\n<img width=\"178\" alt=\"image\" src=\"https://github.com/NVIDIA-Merlin/models/assets/46781050/aae72934-f3f4-401a-83c2-0a6adb034fd2\">\r\n\r\nI'm asking if it's due to the 2nd warning message during prediction.\r\n\r\nN.B: it's not due to `potential_interactions_loader` because I obtain the same kind of issue trying to predict with `valid_ranking_loader`.\r\n\r\n### Expected behavior\r\n\r\nGet probability of click, obtained in the past but impossible to reproduce without identified reason.\r\n\r\n### Environment details\r\n\r\n- Merlin version: 23.8.0\r\n- Platform: macOS\r\n- Python version: 3.10.12\r\n- Tensorflow version (GPU?): 2.12.0+nv23.6\r\n\r\nnotebook is run in a container from the following nightly image available here:\r\n[nvcr.io/nvidia/merlin/merlin-tensorflow:nightly\r\n](https://catalog.ngc.nvidia.com/orgs/nvidia/teams/merlin/containers/merlin-tensorflow/tags)\r\n\r\nin which the last version of merlin models is pulled.\r\n\r\nThanks.\r\n\r\n",
+        "url": "https://github.com/NVIDIA-Merlin/models/issues/1228"
+    },
+    {
+        "id": 1987837155,
+        "number": 1227,
+        "title": "[BUG] does not install dependencies.",
+        "state": "open",
+        "created_at": "2023-11-10T15:26:37Z",
+        "updated_at": "2023-11-11T12:14:30Z",
+        "closed_at": null,
+        "author": "Space-Dream-42",
+        "comments": 0,
+        "labels": [
+            "bug",
+            "status/needs-triage"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Bug description\r\n\r\nMerlin Model does not install all dependencies. E.g it is not possible to execute the Jupyter Notebook examples/01-Getting-started.ipynb.\r\n\r\n### Steps/Code to reproduce bug\r\n\r\n1. Set up a virtual environment. \r\n2. Run `pip install -v merlin-models` in the terminal.\r\n3. Install Jupyter in your virtual environment.\r\n4. Run `jupyter notebook` in your terminal.\r\n5. Open: examples/01-Getting-started.ipynb\r\n6. Execute the import cell.\r\n\r\nResult:\r\nImportError: No module named tensorflow.\r\n\r\n### Expected behavior\r\n\r\nNo import errors.\r\n\r\n### Environment details\r\n\r\n- Merlin version: v23.08.00\r\n- Platform: MacOS\r\n- Python version: Python 3.9.6\r\n\r\n",
+        "url": "https://github.com/NVIDIA-Merlin/models/issues/1227"
+    },
+    {
+        "id": 1986526721,
+        "number": 1226,
+        "title": "[BUG] Error with prepare_aliccp()",
+        "state": "open",
+        "created_at": "2023-11-09T22:43:48Z",
+        "updated_at": "2024-05-04T12:40:08Z",
+        "closed_at": null,
+        "author": "ZhanqiuHu",
+        "comments": 2,
+        "labels": [
+            "bug",
+            "status/needs-triage"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "\r\nI ran into this error when running `prepare_aliccp()` on downloaded Ali-CCP datasets. \r\n\r\n``` \r\nTraceback (most recent call last):\r\n  File \"/share/suh-scrap/zh338/aliccp/preprocess.py\", line 13, in <module>\r\n    prepare_aliccp(DATA_DIR, convert_train=False, convert_test=True)\r\n  File \"/home/zh338/.conda/envs/merlin-env/lib/python3.10/site-packages/merlin/datasets/ecommerce/aliccp/dataset.py\", line 164, in prepare_aliccp\r\n    _convert_data(\r\n  File \"/home/zh338/.conda/envs/merlin-env/lib/python3.10/site-packages/merlin/datasets/ecommerce/aliccp/dataset.py\", line 449, in _convert_data\r\n    merlin.io.Dataset(tmp_files, dtypes=dtypes).to_parquet(out_dir)\r\n  File \"/home/zh338/.conda/envs/merlin-env/lib/python3.10/site-packages/merlin/io/dataset.py\", line 380, in __init__\r\n    self.infer_schema()\r\n  File \"/home/zh338/.conda/envs/merlin-env/lib/python3.10/site-packages/merlin/io/dataset.py\", line 1240, in infer_schema\r\n    dtypes = self.sample_dtypes(n=n, annotate_lists=True)\r\n  File \"/home/zh338/.conda/envs/merlin-env/lib/python3.10/site-packages/merlin/io/dataset.py\", line 1264, in sample_dtypes\r\n    _real_meta = _set_dtypes(_real_meta, self.dtypes)\r\n  File \"/home/zh338/.conda/envs/merlin-env/lib/python3.10/site-packages/merlin/io/dataset.py\", line 1301, in _set_dtypes\r\n    chunk[col] = chunk[col].astype(dtype)\r\n  File \"/home/zh338/.conda/envs/merlin-env/lib/python3.10/site-packages/pandas/core/generic.py\", line 6240, in astype\r\n    new_data = self._mgr.astype(dtype=dtype, copy=copy, errors=errors)\r\n  File \"/home/zh338/.conda/envs/merlin-env/lib/python3.10/site-packages/pandas/core/internals/managers.py\", line 448, in astype\r\n    return self.apply(\"astype\", dtype=dtype, copy=copy, errors=errors)\r\n  File \"/home/zh338/.conda/envs/merlin-env/lib/python3.10/site-packages/pandas/core/internals/managers.py\", line 352, in apply\r\n    applied = getattr(b, f)(**kwargs)\r\n  File \"/home/zh338/.conda/envs/merlin-env/lib/python3.10/site-packages/pandas/core/internals/blocks.py\", line 526, in astype\r\n    new_values = astype_array_safe(values, dtype, copy=copy, errors=errors)\r\n  File \"/home/zh338/.conda/envs/merlin-env/lib/python3.10/site-packages/pandas/core/dtypes/astype.py\", line 299, in astype_array_safe\r\n    new_values = astype_array(values, dtype, copy=copy)\r\n  File \"/home/zh338/.conda/envs/merlin-env/lib/python3.10/site-packages/pandas/core/dtypes/astype.py\", line 230, in astype_array\r\n    values = astype_nansafe(values, dtype, copy=copy)\r\n  File \"/home/zh338/.conda/envs/merlin-env/lib/python3.10/site-packages/pandas/core/dtypes/astype.py\", line 170, in astype_nansafe\r\n    return arr.astype(dtype, copy=True)\r\nTypeError: int() argument must be a string, a bytes-like object or a real number, not 'NoneType'\r\n```\r\n\r\n\r\nI saw another issue (#507 ) talking about a similar problem but didn't really mention the solution/workaround, so I'm wondering what is a workaround to avoid this error?\r\n\r\nThanks! \r\n\r\n",
+        "url": "https://github.com/NVIDIA-Merlin/models/issues/1226"
+    },
+    {
+        "id": 1979919100,
+        "number": 1224,
+        "title": "[BUG] Can't reuse a loaded model saved after training ",
+        "state": "closed",
+        "created_at": "2023-11-06T19:31:32Z",
+        "updated_at": "2023-11-14T18:14:41Z",
+        "closed_at": "2023-11-14T18:14:40Z",
+        "author": "PaulSteffen-betclic",
+        "comments": 5,
+        "labels": [
+            "bug",
+            "status/needs-triage"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Bug description\r\n\r\nCan't use a loaded model, saved after using `.fit()` method.\r\n\r\n### Steps/Code to reproduce bug\r\n\r\n<!-- Follow this guide http://matthewrocklin.com/blog/work/2018/02/28/minimal-bug-reports to craft a minimal bug report. This helps us reproduce the issue you're having and resolve the issue more quickly. -->\r\n\r\n```\r\nimport pandas as pd\r\nimport tensorflow as tf\r\n\r\nimport nvtabular as nvt\r\nimport merlin.models.tf as mm\r\nfrom merlin.schema.tags import Tags\r\nfrom merlin.models.utils.dataset import unique_by_tag\r\n\r\ninteractions_df = pd.DataFrame({\r\n   'CustomerIdCat': [42, 76],\r\n   'ItemIdCat': [1, 2],\r\n   'ItemFeature1': [3, 3],\r\n   'ItemFeature2': [72, 15]\r\n})\r\n\r\nitems_df = pd.DataFrame({\r\n   'ItemIdCat': [2, 2],\r\n   'ItemFeature1': [3, 3],\r\n   'ItemFeature2': [15, 15]\r\n})\r\n\r\ntrain = nvt.Dataset(interactions_df)\r\nitem_candidates = nvt.Dataset(items_df, schema=schema.select_by_tag(Tags.ITEM))\r\n\r\ntrain_retrieval_loader = Loader(train, schema=train.schema, batch_size=1024)\r\n\r\ntower_dim = 8\r\n\r\n# create user schema using USER tag\r\nuser_schema = schema.select_by_tag(Tags.USER_ID)\r\n# create user (query) tower input block\r\nuser_inputs = mm.InputBlockV2(user_schema)\r\n# create user (query) encoder block\r\nquery_tower = mm.Encoder(user_inputs, mm.MLPBlock([16, tower_dim], no_activation_last_layer=True))\r\n\r\n# create item schema using ITEM tag\r\nitem_schema = schema.select_by_tag(Tags.ITEM)\r\n# create item (candidate) tower input block\r\nitem_inputs = mm.InputBlockV2(item_schema)\r\n# create item (candidate) encoder block\r\ncandidate_tower = mm.Encoder(item_inputs, mm.MLPBlock([16, tower_dim], no_activation_last_layer=True))\r\n\r\nretrieval_model = mm.TwoTowerModelV2(query_tower, candidate_tower)\r\n\r\nwith tf.device('/cpu:0'):\r\n    retrieval_model.compile(optimizer=\"adam\", run_eagerly=True, metrics=[mm.RecallAt(10), mm.NDCGAt(10)])\r\n    retrieval_model.fit(train_retrieval_loader, epochs=1, batch_size=1024)\r\n\r\nretrieval_model.save(\"dir_models/two_tower\")\r\n\r\nloaded_model = tf.keras.models.load_model(\"dir_models/two_tower\")\r\n\r\ncandidate_features = unique_by_tag(item_candidates, Tags.ITEM, Tags.ITEM_ID)\r\n\r\ntopk_model = loaded_model.to_top_k_encoder(candidate_features, k=10, batch_size=128)\r\n```\r\n\r\nFirst, a warning is logged when saving the retrieval model:\r\n<img width=\"1412\" alt=\"image\" src=\"https://github.com/NVIDIA-Merlin/models/assets/46781050/00573483-2e4b-4ced-8c6a-bf09809f9f12\">\r\n\r\nThen, an error occured when using the loaded model:\r\n<img width=\"1442\" alt=\"image\" src=\"https://github.com/NVIDIA-Merlin/models/assets/46781050/4e3994e8-8bcf-442d-842c-f441a0aa64e3\">\r\n\r\n\r\n### Expected behavior\r\n\r\nUse the loaded model to create a top k encoder.\r\n\r\n### Environment details\r\n\r\n- Merlin version: 23.8.0& 23.8.0+5.g16d289a77\r\n- Platform: macOS\r\n- Python version: 3.10.12\r\n- Tensorflow version (GPU?): 2.12.0 (yes)\r\n",
+        "url": "https://github.com/NVIDIA-Merlin/models/issues/1224"
+    },
+    {
+        "id": 1962796349,
+        "number": 1223,
+        "title": "[QST] Train Ranking Model Using Pre-Train Model",
+        "state": "open",
+        "created_at": "2023-10-26T06:29:26Z",
+        "updated_at": "2023-10-26T06:29:26Z",
+        "closed_at": null,
+        "author": "mustfkeskin",
+        "comments": 0,
+        "labels": [
+            "status/needs-triage"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "# ❓ Questions & Help\r\n\r\n## Details\r\nI want to built ranking model using pre-train embeddings\r\n\r\n1) I can train a model using embedding lookups, but the input of the model will be an id-based feature\r\n2) I want to give embedding to my model at inference time not id based feature. How can I do this?\r\n\r\n<!-- Description of your question -->\r\n[I follow this tutorial](https://github.com/NVIDIA-Merlin/models/blob/main/examples/usecases/entertainment-with-pretrained-embeddings.ipynb). I don't have any problems while training the DCN model. After the model training is completed, I want to change the input of the model id to embedding.\r\n\r\nMy code\r\n```\r\nimport nvtabular as nvt\r\nfrom nvtabular import ops\r\ncat_features = [\"query\", \"title\"] >> ops.Categorify(dtype=\"int32\", \r\n                                                    out_path=\"../data/categories\",\r\n                                                    freq_threshold={\"query\":0, \"title\":0}\r\n                                                   )\r\n\r\n\r\nfrom merlin.models.utils.example_utils import workflow_fit_transform\r\n\r\ntrain_path = os.path.join(\"../data/train.parquet\")\r\nvalid_path = os.path.join(\"../data/val.parquet\")\r\noutput_path = os.path.join(\"../data/integration\")\r\n\r\nworkflow_fit_transform(output, train_path, valid_path, output_path)\r\n\r\n\r\nquery_embs = np.random.random((2000, 64))\r\ntitle_embs = np.random.random((2000, 64))\r\n\r\n\r\nembed_dims = {}\r\nembed_dims = {\"query\" : query_embs.shape[1],\r\n              \"title\" : title_embs.shape[1]\r\n             }\r\n\r\nembeddings_init = {\r\n    \"query\": mm.TensorInitializer(query_embs),\r\n    \"title\": mm.TensorInitializer(title_embs),\r\n}\r\n\r\nembeddings_block = mm.Embeddings(\r\n    train.schema.select_by_tag(Tags.CATEGORICAL),\r\n    infer_embedding_sizes=True,\r\n    embeddings_initializer=embeddings_init,\r\n    trainable={'query': False,\r\n               'title': False},\r\n    dim=embed_dims,\r\n)\r\ninput_block = mm.InputBlockV2(train.schema, categorical=embeddings_block)\r\n\r\n\r\nmodel = mm.DCNModel(\r\n    train.schema,\r\n    depth=2,\r\n    input_block=input_block,\r\n    deep_block=mm.MLPBlock([64, 32]),\r\n    prediction_tasks=mm.BinaryOutput(target_column)\r\n)\r\n\r\nmodel.compile(optimizer=\"adam\")\r\nmodel.fit(train, batch_size=1024, epochs=10)\r\n```\r\n",
+        "url": "https://github.com/NVIDIA-Merlin/models/issues/1223"
+    },
+    {
+        "id": 1957363225,
+        "number": 1221,
+        "title": "[BUG] Error when using class_weight with DLRMModel",
+        "state": "open",
+        "created_at": "2023-10-23T14:51:37Z",
+        "updated_at": "2023-11-02T18:17:21Z",
+        "closed_at": null,
+        "author": "PaulSteffen-betclic",
+        "comments": 1,
+        "labels": [
+            "bug",
+            "status/needs-triage"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Bug description\r\n\r\nWhen I try to use the `class_weight` arg in `.fit()` method of `DLRMModel`, I got the following error:\r\n\r\n![image](https://github.com/NVIDIA-Merlin/models/assets/46781050/b68218a0-3853-4c34-9136-7170cdb0ffe6)\r\n\r\nCan someone know why please ?\r\nAs shown in the following link, it seems to work with earlier versions:\r\nhttps://github.com/NVIDIA-Merlin/publications/blob/2761dade6d725615f0dd2c9491c54f8b397912e0/tutorials/RecSys22tutorial/04-Building-multi-stage-RecSys.ipynb#L731\r\n\r\nThanks\r\n\r\n### Steps/Code to reproduce bug\r\n\r\n```\r\nimport nvtabular as nvt\r\nimport tensorflow as tf\r\nimport merlin.models.tf as mm\r\n\r\nfrom merlin.models.tf.transforms.negative_sampling import InBatchNegatives\r\nfrom merlin.dataloader.tensorflow import Loader\r\n\r\nprocessed_train = nvt.Dataset(f\"{output_path}/train/*.parquet\")\r\nschema = processed_train.schema\r\ntarget_column = schema.select_by_tag(Tags.TARGET).column_names[0]\r\n\r\nbatch_size, n_per_positive = 2048, 64\r\nadd_negatives = InBatchNegatives(schema, n_per_positive, seed=42, prep_features=True, run_when_testing=True)\r\n\r\ntrain_loader = Loader(processed_train, batch_size=batch_size).map(add_negatives)\r\nvalid_loader = Loader(processed_valid, batch_size=batch_size).map(add_negatives)\r\n\r\nranking_model = mm.DLRMModel(\r\n    schema,\r\n    embedding_dim=16,\r\n    bottom_block=mm.MLPBlock([32, 16]),\r\n    top_block=mm.MLPBlock([32, 16, 8]),\r\n    prediction_tasks=mm.BinaryClassificationTask(target_column),\r\n)\r\n\r\nranking_model.compile(optimizer='adam', run_eagerly=False, metrics=[], \r\n              weighted_metrics=[tf.keras.metrics.BinaryAccuracy(),tf.keras.metrics.AUC()]\r\n             )\r\nranking_model.fit(train_loader, class_weight = {0: 1, 1: n_per_positive}, epochs=2, train_metrics_steps=100) #error when using class_weight\r\n```\r\n\r\n### Expected behavior\r\n\r\nSuccess to use class_weight (required with the negative sampling step).\r\n\r\n### Environment details\r\n\r\n- Merlin version: 23.8.0\r\n- Platform: macOs\r\n- Python version: 3.11.6\r\n- Tensorflow version (GPU?): 2.12.1 (CPU for dev)",
+        "url": "https://github.com/NVIDIA-Merlin/models/issues/1221"
+    }
+]

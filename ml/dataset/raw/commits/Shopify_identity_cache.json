@@ -1,0 +1,242 @@
+[
+    {
+        "sha": "596fd7fa91ba7eacdd667dd308765722219884c7",
+        "author": "Edouard CHIN",
+        "email": "chin.edouard@gmail.com",
+        "date": "2026-02-27T15:55:24Z",
+        "message": "Merge pull request #624 from byroot/cas-serialization\n\nImprove MemCacheStoreCAS patch to properly pass serialized entries to Dalli",
+        "url": "https://github.com/Shopify/identity_cache/commit/596fd7fa91ba7eacdd667dd308765722219884c7"
+    },
+    {
+        "sha": "150ae4e1b77956f201dc2f78414a497ec980415f",
+        "author": "Jean Boussier",
+        "email": "jean.boussier@gmail.com",
+        "date": "2026-02-27T14:22:29Z",
+        "message": "Improve MemCacheStoreCAS patch to properly pass serialized entries to Dalli\n\nInstead it was relying on the fact that dalli will Marshal those, but\nit's much preferable to rely on the Active Support layer instead, given\nDalli 4 deprecate Marshal and Dalli 5 no longer does it by default.",
+        "url": "https://github.com/Shopify/identity_cache/commit/150ae4e1b77956f201dc2f78414a497ec980415f"
+    },
+    {
+        "sha": "4e468b94a6042e41d19b5c8f0472baf3c46199e3",
+        "author": "Edouard CHIN",
+        "email": "chin.edouard@gmail.com",
+        "date": "2026-02-25T05:26:26Z",
+        "message": "Merge pull request #623 from eiskrenkov/ei-ruby-4\n\nAdd gem benchmark to gemspec to support Ruby 4",
+        "url": "https://github.com/Shopify/identity_cache/commit/4e468b94a6042e41d19b5c8f0472baf3c46199e3"
+    },
+    {
+        "sha": "d4489aee4fd5c1ca5515aa718b2c8aaf222cd2f4",
+        "author": "Edouard CHIN",
+        "email": "chin.edouard@gmail.com",
+        "date": "2026-02-25T05:15:59Z",
+        "message": "Add rdoc as a development dependency:\n\n- rdoc is no longer a default gem on Ruby 4",
+        "url": "https://github.com/Shopify/identity_cache/commit/d4489aee4fd5c1ca5515aa718b2c8aaf222cd2f4"
+    },
+    {
+        "sha": "fb40ccc5ac39f7deb4791eae4c432d239402b316",
+        "author": "Egor Iskrenkov",
+        "email": "egor@iskrenkov.me",
+        "date": "2026-02-24T20:06:58Z",
+        "message": "Add gem benchmark to gemspec to support Ruby 4",
+        "url": "https://github.com/Shopify/identity_cache/commit/fb40ccc5ac39f7deb4791eae4c432d239402b316"
+    },
+    {
+        "sha": "4e9907d137017fe4ac17e2835f08e2f1a19ab2d1",
+        "author": "Rafael Mendonça França",
+        "email": "rafael.franca@shopify.com",
+        "date": "2026-01-22T22:31:50Z",
+        "message": "Merge pull request #617 from Shopify/dependabot/github_actions/ruby/setup-ruby-1.284.0\n\nBump ruby/setup-ruby from 1.266.0 to 1.284.0",
+        "url": "https://github.com/Shopify/identity_cache/commit/4e9907d137017fe4ac17e2835f08e2f1a19ab2d1"
+    },
+    {
+        "sha": "eaf2cc120e13167e5f06983506e401f1d3a145c0",
+        "author": "Rafael Mendonça França",
+        "email": "rafael.franca@shopify.com",
+        "date": "2026-01-22T22:31:42Z",
+        "message": "Merge pull request #613 from Shopify/dependabot/bundler/uri-1.0.4\n\nBump uri from 1.0.3 to 1.0.4",
+        "url": "https://github.com/Shopify/identity_cache/commit/eaf2cc120e13167e5f06983506e401f1d3a145c0"
+    },
+    {
+        "sha": "4b987498ef5e36b34f69db15d0fa598b785bf2bc",
+        "author": "Rafael Mendonça França",
+        "email": "rafael.franca@shopify.com",
+        "date": "2026-01-22T22:31:32Z",
+        "message": "Merge pull request #608 from Shopify/dependabot/github_actions/actions/checkout-6.0.1\n\nBump actions/checkout from 5.0.0 to 6.0.1",
+        "url": "https://github.com/Shopify/identity_cache/commit/4b987498ef5e36b34f69db15d0fa598b785bf2bc"
+    },
+    {
+        "sha": "2da61af534723be04ba12ff5a2303d43d74d667c",
+        "author": "dependabot[bot]",
+        "email": "49699333+dependabot[bot]@users.noreply.github.com",
+        "date": "2026-01-19T01:42:30Z",
+        "message": "Bump ruby/setup-ruby from 1.266.0 to 1.284.0\n\nBumps [ruby/setup-ruby](https://github.com/ruby/setup-ruby) from 1.266.0 to 1.284.0.\n- [Release notes](https://github.com/ruby/setup-ruby/releases)\n- [Changelog](https://github.com/ruby/setup-ruby/blob/master/release.rb)\n- [Commits](https://github.com/ruby/setup-ruby/compare/4ff6f3611a42bc75eee1e5138240eb1613f48c8f...80740b3b13bf9857e28854481ca95a84e78a2bdf)\n\n---\nupdated-dependencies:\n- dependency-name: ruby/setup-ruby\n  dependency-version: 1.284.0\n  dependency-type: direct:production\n  update-type: version-update:semver-minor\n...\n\nSigned-off-by: dependabot[bot] <support@github.com>",
+        "url": "https://github.com/Shopify/identity_cache/commit/2da61af534723be04ba12ff5a2303d43d74d667c"
+    },
+    {
+        "sha": "a6b6ccb571a188787cf34c585ee7e3c22a4a945d",
+        "author": "Adrianna Chang",
+        "email": "adrianna.chang@shopify.com",
+        "date": "2026-01-09T17:28:30Z",
+        "message": "Merge pull request #615 from Shopify/relase-1.6.4\n\nRelease 1.6.4",
+        "url": "https://github.com/Shopify/identity_cache/commit/a6b6ccb571a188787cf34c585ee7e3c22a4a945d"
+    },
+    {
+        "sha": "7417178d8407fa991cfe6c33de34484f13e1fe38",
+        "author": "Adrianna Chang",
+        "email": "adrianna.chang@shopify.com",
+        "date": "2026-01-09T16:41:02Z",
+        "message": "Release 1.6.4",
+        "url": "https://github.com/Shopify/identity_cache/commit/7417178d8407fa991cfe6c33de34484f13e1fe38"
+    },
+    {
+        "sha": "d86056cef66a53289e27d59c3df7952069b0644f",
+        "author": "Adrianna Chang",
+        "email": "adrianna.chang@shopify.com",
+        "date": "2026-01-09T16:39:58Z",
+        "message": "Merge pull request #602 from Shopify/ac-fix-commit-callback-patch\n\nPatch `run_callbacks` instead of `_run_commit_callbacks`",
+        "url": "https://github.com/Shopify/identity_cache/commit/d86056cef66a53289e27d59c3df7952069b0644f"
+    },
+    {
+        "sha": "8c6a19f639c59d478c48ccf8f70eb8e1f5f14170",
+        "author": "Adrianna Chang",
+        "email": "adrianna.chang@shopify.com",
+        "date": "2025-10-22T19:03:28Z",
+        "message": "Patch run_callbacks instead of _run_commit_callbacks\n\nRef: https://github.com/rails/rails/pull/55736/commits/207a254cedef2c381c2898bac960b91ce14ab3a7\n\n_run_commit_callbacks is now a no-op; Rails aliases it to a `run_commit_callbacks!` implementation.\nWe could patch the `!` version, but it can lead to issues depending on when callbacks are defined and\nwhen the `IdentityCache` module is included. Overriding `run_callbacks` is a more robust solution.",
+        "url": "https://github.com/Shopify/identity_cache/commit/8c6a19f639c59d478c48ccf8f70eb8e1f5f14170"
+    },
+    {
+        "sha": "426acc2821edef30c18589522d577086b46413a4",
+        "author": "dependabot[bot]",
+        "email": "49699333+dependabot[bot]@users.noreply.github.com",
+        "date": "2025-12-30T21:15:25Z",
+        "message": "Bump uri from 1.0.3 to 1.0.4\n\nBumps [uri](https://github.com/ruby/uri) from 1.0.3 to 1.0.4.\n- [Release notes](https://github.com/ruby/uri/releases)\n- [Commits](https://github.com/ruby/uri/compare/v1.0.3...v1.0.4)\n\n---\nupdated-dependencies:\n- dependency-name: uri\n  dependency-version: 1.0.4\n  dependency-type: indirect\n...\n\nSigned-off-by: dependabot[bot] <support@github.com>",
+        "url": "https://github.com/Shopify/identity_cache/commit/426acc2821edef30c18589522d577086b46413a4"
+    },
+    {
+        "sha": "a777e8ed9f08634c028217b33cc0839cb09e133f",
+        "author": "dependabot[bot]",
+        "email": "49699333+dependabot[bot]@users.noreply.github.com",
+        "date": "2025-12-08T01:15:46Z",
+        "message": "Bump actions/checkout from 5.0.0 to 6.0.1\n\nBumps [actions/checkout](https://github.com/actions/checkout) from 5.0.0 to 6.0.1.\n- [Release notes](https://github.com/actions/checkout/releases)\n- [Changelog](https://github.com/actions/checkout/blob/main/CHANGELOG.md)\n- [Commits](https://github.com/actions/checkout/compare/08c6903cd8c0fde910a37f88322edcfb5dd907a8...8e8c483db84b4bee98b60c0593521ed34d9990e8)\n\n---\nupdated-dependencies:\n- dependency-name: actions/checkout\n  dependency-version: 6.0.1\n  dependency-type: direct:production\n  update-type: version-update:semver-major\n...\n\nSigned-off-by: dependabot[bot] <support@github.com>",
+        "url": "https://github.com/Shopify/identity_cache/commit/a777e8ed9f08634c028217b33cc0839cb09e133f"
+    },
+    {
+        "sha": "460c68c333b3605273b1e1355f657a07e570ec8f",
+        "author": "Rafael Mendonça França",
+        "email": "rafael.franca@shopify.com",
+        "date": "2025-10-29T22:33:35Z",
+        "message": "Merge pull request #597 from Shopify/dependabot/bundler/rexml-3.4.2\n\nBump rexml from 3.4.1 to 3.4.2",
+        "url": "https://github.com/Shopify/identity_cache/commit/460c68c333b3605273b1e1355f657a07e570ec8f"
+    },
+    {
+        "sha": "f37f1f2e8857a1c6dd5e65bdcf630ee213a0ba8c",
+        "author": "Rafael Mendonça França",
+        "email": "rafael.franca@shopify.com",
+        "date": "2025-10-29T22:33:19Z",
+        "message": "Merge pull request #604 from Shopify/dependabot/github_actions/ruby/setup-ruby-1.266.0\n\nBump ruby/setup-ruby from 1.263.0 to 1.266.0",
+        "url": "https://github.com/Shopify/identity_cache/commit/f37f1f2e8857a1c6dd5e65bdcf630ee213a0ba8c"
+    },
+    {
+        "sha": "7ef44fdc19ae3c828e87bebeac3287678407fddd",
+        "author": "dependabot[bot]",
+        "email": "49699333+dependabot[bot]@users.noreply.github.com",
+        "date": "2025-10-27T01:36:08Z",
+        "message": "Bump ruby/setup-ruby from 1.263.0 to 1.266.0\n\nBumps [ruby/setup-ruby](https://github.com/ruby/setup-ruby) from 1.263.0 to 1.266.0.\n- [Release notes](https://github.com/ruby/setup-ruby/releases)\n- [Changelog](https://github.com/ruby/setup-ruby/blob/master/release.rb)\n- [Commits](https://github.com/ruby/setup-ruby/compare/0481980f17b760ef6bca5e8c55809102a0af1e5a...4ff6f3611a42bc75eee1e5138240eb1613f48c8f)\n\n---\nupdated-dependencies:\n- dependency-name: ruby/setup-ruby\n  dependency-version: 1.266.0\n  dependency-type: direct:production\n  update-type: version-update:semver-minor\n...\n\nSigned-off-by: dependabot[bot] <support@github.com>",
+        "url": "https://github.com/Shopify/identity_cache/commit/7ef44fdc19ae3c828e87bebeac3287678407fddd"
+    },
+    {
+        "sha": "1a86936aaf4049ea5870dabc9a6585c5896cdd4b",
+        "author": "Rafael Mendonça França",
+        "email": "rafael.franca@shopify.com",
+        "date": "2025-10-01T20:58:05Z",
+        "message": "Merge pull request #600 from Shopify/dependabot/github_actions/ruby/setup-ruby-1.263.0\n\nBump ruby/setup-ruby from 1.257.0 to 1.263.0",
+        "url": "https://github.com/Shopify/identity_cache/commit/1a86936aaf4049ea5870dabc9a6585c5896cdd4b"
+    },
+    {
+        "sha": "5bb0e43f55428b346a133bd90c78e099d0678bc0",
+        "author": "dependabot[bot]",
+        "email": "49699333+dependabot[bot]@users.noreply.github.com",
+        "date": "2025-09-29T01:29:51Z",
+        "message": "Bump ruby/setup-ruby from 1.257.0 to 1.263.0\n\nBumps [ruby/setup-ruby](https://github.com/ruby/setup-ruby) from 1.257.0 to 1.263.0.\n- [Release notes](https://github.com/ruby/setup-ruby/releases)\n- [Changelog](https://github.com/ruby/setup-ruby/blob/master/release.rb)\n- [Commits](https://github.com/ruby/setup-ruby/compare/44511735964dcb71245e7e55f72539531f7bc0eb...0481980f17b760ef6bca5e8c55809102a0af1e5a)\n\n---\nupdated-dependencies:\n- dependency-name: ruby/setup-ruby\n  dependency-version: 1.263.0\n  dependency-type: direct:production\n  update-type: version-update:semver-minor\n...\n\nSigned-off-by: dependabot[bot] <support@github.com>",
+        "url": "https://github.com/Shopify/identity_cache/commit/5bb0e43f55428b346a133bd90c78e099d0678bc0"
+    },
+    {
+        "sha": "4c2a92c7a7232edf306052cd6450ad7e92fa6105",
+        "author": "dependabot[bot]",
+        "email": "49699333+dependabot[bot]@users.noreply.github.com",
+        "date": "2025-09-17T19:34:11Z",
+        "message": "Bump rexml from 3.4.1 to 3.4.2\n\nBumps [rexml](https://github.com/ruby/rexml) from 3.4.1 to 3.4.2.\n- [Release notes](https://github.com/ruby/rexml/releases)\n- [Changelog](https://github.com/ruby/rexml/blob/master/NEWS.md)\n- [Commits](https://github.com/ruby/rexml/compare/v3.4.1...v3.4.2)\n\n---\nupdated-dependencies:\n- dependency-name: rexml\n  dependency-version: 3.4.2\n  dependency-type: indirect\n...\n\nSigned-off-by: dependabot[bot] <support@github.com>",
+        "url": "https://github.com/Shopify/identity_cache/commit/4c2a92c7a7232edf306052cd6450ad7e92fa6105"
+    },
+    {
+        "sha": "ac8310e063772cb32ff2191d8391423b9fa2e02b",
+        "author": "Rafael Mendonça França",
+        "email": "rafael.franca@shopify.com",
+        "date": "2025-09-12T15:09:13Z",
+        "message": "Merge pull request #594 from olleolleolle/patch-1\n\nidentity_cache.gemspec: Drop configuration of executables, none exist…",
+        "url": "https://github.com/Shopify/identity_cache/commit/ac8310e063772cb32ff2191d8391423b9fa2e02b"
+    },
+    {
+        "sha": "04d243bccf40082ec829a2b3b4e620e7371aebd2",
+        "author": "Rafael Mendonça França",
+        "email": "rafael.franca@shopify.com",
+        "date": "2025-09-12T15:05:25Z",
+        "message": "Merge pull request #596 from Shopify/dependabot/github_actions/ruby/setup-ruby-1.257.0\n\nBump ruby/setup-ruby from 1.247.0 to 1.257.0",
+        "url": "https://github.com/Shopify/identity_cache/commit/04d243bccf40082ec829a2b3b4e620e7371aebd2"
+    },
+    {
+        "sha": "9353107a2294a3482d135ce9bd860061bb240b75",
+        "author": "Rafael Mendonça França",
+        "email": "rafael.franca@shopify.com",
+        "date": "2025-09-12T15:05:12Z",
+        "message": "Merge pull request #593 from Shopify/dependabot/github_actions/actions/checkout-5.0.0\n\nBump actions/checkout from 4.2.2 to 5.0.0",
+        "url": "https://github.com/Shopify/identity_cache/commit/9353107a2294a3482d135ce9bd860061bb240b75"
+    },
+    {
+        "sha": "760e9a8e6acfe0803cff67b528f6cb50c700565b",
+        "author": "dependabot[bot]",
+        "email": "49699333+dependabot[bot]@users.noreply.github.com",
+        "date": "2025-09-01T03:02:33Z",
+        "message": "Bump ruby/setup-ruby from 1.247.0 to 1.257.0\n\nBumps [ruby/setup-ruby](https://github.com/ruby/setup-ruby) from 1.247.0 to 1.257.0.\n- [Release notes](https://github.com/ruby/setup-ruby/releases)\n- [Changelog](https://github.com/ruby/setup-ruby/blob/master/release.rb)\n- [Commits](https://github.com/ruby/setup-ruby/compare/472790540115ce5bd69d399a020189a8c87d641f...44511735964dcb71245e7e55f72539531f7bc0eb)\n\n---\nupdated-dependencies:\n- dependency-name: ruby/setup-ruby\n  dependency-version: 1.257.0\n  dependency-type: direct:production\n  update-type: version-update:semver-minor\n...\n\nSigned-off-by: dependabot[bot] <support@github.com>",
+        "url": "https://github.com/Shopify/identity_cache/commit/760e9a8e6acfe0803cff67b528f6cb50c700565b"
+    },
+    {
+        "sha": "eb1307fed8b1b1837dd9c5680343dda7e4a1279a",
+        "author": "Olle Jonsson",
+        "email": "olle.jonsson@gmail.com",
+        "date": "2025-08-19T13:35:12Z",
+        "message": "identity_cache.gemspec: Drop configuration of executables, none exist in the gem",
+        "url": "https://github.com/Shopify/identity_cache/commit/eb1307fed8b1b1837dd9c5680343dda7e4a1279a"
+    },
+    {
+        "sha": "074c47cc8fd25c3f57120306901a044e2e9687c6",
+        "author": "dependabot[bot]",
+        "email": "49699333+dependabot[bot]@users.noreply.github.com",
+        "date": "2025-08-18T01:48:40Z",
+        "message": "Bump actions/checkout from 4.2.2 to 5.0.0\n\nBumps [actions/checkout](https://github.com/actions/checkout) from 4.2.2 to 5.0.0.\n- [Release notes](https://github.com/actions/checkout/releases)\n- [Changelog](https://github.com/actions/checkout/blob/main/CHANGELOG.md)\n- [Commits](https://github.com/actions/checkout/compare/11bd71901bbe5b1630ceea73d27597364c9af683...08c6903cd8c0fde910a37f88322edcfb5dd907a8)\n\n---\nupdated-dependencies:\n- dependency-name: actions/checkout\n  dependency-version: 5.0.0\n  dependency-type: direct:production\n  update-type: version-update:semver-major\n...\n\nSigned-off-by: dependabot[bot] <support@github.com>",
+        "url": "https://github.com/Shopify/identity_cache/commit/074c47cc8fd25c3f57120306901a044e2e9687c6"
+    },
+    {
+        "sha": "616e582c870ab840e1c205b77aff75503d37ce86",
+        "author": "Gannon McGibbon",
+        "email": "gannon.mcgibbon@shopify.com",
+        "date": "2025-07-25T19:12:31Z",
+        "message": "Merge pull request #586 from Shopify/fix_ci\n\nUpdate gems, fix ci setup",
+        "url": "https://github.com/Shopify/identity_cache/commit/616e582c870ab840e1c205b77aff75503d37ce86"
+    },
+    {
+        "sha": "41d824d9be198a98c420656f38efbc4301275844",
+        "author": "Gannon McGibbon",
+        "email": "gannon.mcgibbon@gmail.com",
+        "date": "2025-07-25T18:56:57Z",
+        "message": "Rubocop",
+        "url": "https://github.com/Shopify/identity_cache/commit/41d824d9be198a98c420656f38efbc4301275844"
+    },
+    {
+        "sha": "fb675e57f21ba17f18eb46b55586086c609681fb",
+        "author": "Gannon McGibbon",
+        "email": "gannon.mcgibbon@gmail.com",
+        "date": "2025-07-25T16:43:23Z",
+        "message": "Update gems, fix ci setup\n\n- Update gems\n- Bump Ruby on CI matrix",
+        "url": "https://github.com/Shopify/identity_cache/commit/fb675e57f21ba17f18eb46b55586086c609681fb"
+    }
+]

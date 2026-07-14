@@ -1,0 +1,242 @@
+[
+    {
+        "sha": "9f70a3dcdaf216177b9b7b85426fc8e473bfad4e",
+        "author": "Beni Cherniavsky-Paskin",
+        "email": "cben@redhat.com",
+        "date": "2025-04-03T16:09:00Z",
+        "message": "feat: clarify message \"No typescript errors found.\" (#808)\n\nWhen this message appears in context of webpack-dev-server,\nit could be unclear what kind of errors (webpack build vs. typescript).\nSometimes there is a prior \"Error checking in progress\" message,\nbut not always, and may be far above the \"No errors found.\"",
+        "url": "https://github.com/TypeStrong/fork-ts-checker-webpack-plugin/commit/9f70a3dcdaf216177b9b7b85426fc8e473bfad4e"
+    },
+    {
+        "sha": "147aa11bcac1cb4478280663ac5b4642a54c2fc8",
+        "author": "Piotr Oleś",
+        "email": "piotrek.oles@gmail.com",
+        "date": "2025-04-03T16:07:10Z",
+        "message": "chore(deps): update chokidar to ^4.0.1 (#858)",
+        "url": "https://github.com/TypeStrong/fork-ts-checker-webpack-plugin/commit/147aa11bcac1cb4478280663ac5b4642a54c2fc8"
+    },
+    {
+        "sha": "434c7a262d431663146de8f457831afcc1a9f4dc",
+        "author": "Piotr Oleś",
+        "email": "piotrek.oles@gmail.com",
+        "date": "2025-03-31T10:38:10Z",
+        "message": "test: fix e2e tests (#856)\n\n* chore: switch to yarn 4\n* refactor: remove unused enabled field from ts config\n* refactor: fix type error from nullable type\n* test: update unit tests to not check unsupported options\n* test: update tests to handle colors from code-frame package\n* test: remove assertion to support new behaviour of webpack\n* chore: update ci workflow\n* chore: update yarn version in config\n* chore: update workflwo commands\n* chore: upgrade node version in ci workflow\n* chore: update lock file after changes\n* chore: disable immutable installs in e2e tests\n* test: disable solution builder test\n* test: use different hash function because of ssl breaking change\n* test: update cwd test\n* test: update type-definitions test\n* test: update webpack node api test",
+        "url": "https://github.com/TypeStrong/fork-ts-checker-webpack-plugin/commit/434c7a262d431663146de8f457831afcc1a9f4dc"
+    },
+    {
+        "sha": "0fab463b21c6edc4d94834568a3f440241d57887",
+        "author": "dependabot[bot]",
+        "email": "49699333+dependabot[bot]@users.noreply.github.com",
+        "date": "2024-05-15T09:36:00Z",
+        "message": "chore(deps): bump ip from 1.1.5 to 1.1.9 (#839)\n\nBumps [ip](https://github.com/indutny/node-ip) from 1.1.5 to 1.1.9.\r\n- [Commits](https://github.com/indutny/node-ip/compare/v1.1.5...v1.1.9)\r\n\r\n---\r\nupdated-dependencies:\r\n- dependency-name: ip\r\n  dependency-type: indirect\r\n...\r\n\r\nSigned-off-by: dependabot[bot] <support@github.com>\r\nCo-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>",
+        "url": "https://github.com/TypeStrong/fork-ts-checker-webpack-plugin/commit/0fab463b21c6edc4d94834568a3f440241d57887"
+    },
+    {
+        "sha": "4ed4c9f97b4fa79b216ef6b1e46a219076c5119f",
+        "author": "Fyodor Petrakov",
+        "email": "jakephin2015@gmail.com",
+        "date": "2024-05-15T09:35:39Z",
+        "message": "docs: add pnpm to Installation guide (#840)",
+        "url": "https://github.com/TypeStrong/fork-ts-checker-webpack-plugin/commit/4ed4c9f97b4fa79b216ef6b1e46a219076c5119f"
+    },
+    {
+        "sha": "a38f079f5566c77979516c8e33ea4b730f771af0",
+        "author": "dependabot[bot]",
+        "email": "49699333+dependabot[bot]@users.noreply.github.com",
+        "date": "2024-05-15T09:34:34Z",
+        "message": "chore(deps): bump actions/cache from 3 to 4 (#837)\n\nBumps [actions/cache](https://github.com/actions/cache) from 3 to 4.\r\n- [Release notes](https://github.com/actions/cache/releases)\r\n- [Changelog](https://github.com/actions/cache/blob/main/RELEASES.md)\r\n- [Commits](https://github.com/actions/cache/compare/v3...v4)\r\n\r\n---\r\nupdated-dependencies:\r\n- dependency-name: actions/cache\r\n  dependency-type: direct:production\r\n  update-type: version-update:semver-major\r\n...\r\n\r\nSigned-off-by: dependabot[bot] <support@github.com>\r\nCo-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>",
+        "url": "https://github.com/TypeStrong/fork-ts-checker-webpack-plugin/commit/a38f079f5566c77979516c8e33ea4b730f771af0"
+    },
+    {
+        "sha": "594370ae928ca32dd4413867b598cc034415b80a",
+        "author": "dependabot[bot]",
+        "email": "49699333+dependabot[bot]@users.noreply.github.com",
+        "date": "2024-01-12T09:09:12Z",
+        "message": "chore(deps): bump actions/setup-node from 3 to 4 (#829)\n\nBumps [actions/setup-node](https://github.com/actions/setup-node) from 3 to 4.\r\n- [Release notes](https://github.com/actions/setup-node/releases)\r\n- [Commits](https://github.com/actions/setup-node/compare/v3...v4)\r\n\r\n---\r\nupdated-dependencies:\r\n- dependency-name: actions/setup-node\r\n  dependency-type: direct:production\r\n  update-type: version-update:semver-major\r\n...\r\n\r\nSigned-off-by: dependabot[bot] <support@github.com>\r\nCo-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>",
+        "url": "https://github.com/TypeStrong/fork-ts-checker-webpack-plugin/commit/594370ae928ca32dd4413867b598cc034415b80a"
+    },
+    {
+        "sha": "26a81edca9c7d9abada1e76e76fb978f903f97a3",
+        "author": "Mahmoud Alkhraishi",
+        "email": "mkhraisha@hotmail.com",
+        "date": "2023-10-29T19:58:05Z",
+        "message": "chore(package): update cosmiconfig (#818)\n\nCo-authored-by: Piotr Oleś <piotrek.oles@gmail.com>",
+        "url": "https://github.com/TypeStrong/fork-ts-checker-webpack-plugin/commit/26a81edca9c7d9abada1e76e76fb978f903f97a3"
+    },
+    {
+        "sha": "d49389e3e69b52f1507f8a74a3427a851a304d20",
+        "author": "dependabot[bot]",
+        "email": "49699333+dependabot[bot]@users.noreply.github.com",
+        "date": "2023-10-29T19:57:35Z",
+        "message": "chore(deps): bump @babel/traverse from 7.4.4 to 7.23.2 (#828)\n\nBumps [@babel/traverse](https://github.com/babel/babel/tree/HEAD/packages/babel-traverse) from 7.4.4 to 7.23.2.\r\n- [Release notes](https://github.com/babel/babel/releases)\r\n- [Changelog](https://github.com/babel/babel/blob/main/CHANGELOG.md)\r\n- [Commits](https://github.com/babel/babel/commits/v7.23.2/packages/babel-traverse)\r\n\r\n---\r\nupdated-dependencies:\r\n- dependency-name: \"@babel/traverse\"\r\n  dependency-type: indirect\r\n...\r\n\r\nSigned-off-by: dependabot[bot] <support@github.com>\r\nCo-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>",
+        "url": "https://github.com/TypeStrong/fork-ts-checker-webpack-plugin/commit/d49389e3e69b52f1507f8a74a3427a851a304d20"
+    },
+    {
+        "sha": "d5e7e32e95666b5f5ee18d96f3f053ed36ea12f0",
+        "author": "Sylvain Reucherand",
+        "email": "sreucherand@users.noreply.github.com",
+        "date": "2023-10-29T19:57:21Z",
+        "message": "fix: issue-webpack-error should not add colors to file string (#825)\n\nCo-authored-by: Piotr Oleś <piotrek.oles@gmail.com>",
+        "url": "https://github.com/TypeStrong/fork-ts-checker-webpack-plugin/commit/d5e7e32e95666b5f5ee18d96f3f053ed36ea12f0"
+    },
+    {
+        "sha": "c999a139751c442185bea7388ccc6330c5e0ac1e",
+        "author": "dependabot[bot]",
+        "email": "49699333+dependabot[bot]@users.noreply.github.com",
+        "date": "2023-10-29T09:51:14Z",
+        "message": "chore(deps): bump actions/checkout from 3 to 4 (#822)\n\nBumps [actions/checkout](https://github.com/actions/checkout) from 3 to 4.\r\n- [Release notes](https://github.com/actions/checkout/releases)\r\n- [Changelog](https://github.com/actions/checkout/blob/main/CHANGELOG.md)\r\n- [Commits](https://github.com/actions/checkout/compare/v3...v4)\r\n\r\n---\r\nupdated-dependencies:\r\n- dependency-name: actions/checkout\r\n  dependency-type: direct:production\r\n  update-type: version-update:semver-major\r\n...\r\n\r\nSigned-off-by: dependabot[bot] <support@github.com>\r\nCo-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>",
+        "url": "https://github.com/TypeStrong/fork-ts-checker-webpack-plugin/commit/c999a139751c442185bea7388ccc6330c5e0ac1e"
+    },
+    {
+        "sha": "45a3c28f7b16caef67a80918dffc9144f4656e0d",
+        "author": "dependabot[bot]",
+        "email": "49699333+dependabot[bot]@users.noreply.github.com",
+        "date": "2023-10-29T09:50:56Z",
+        "message": "chore(deps): bump word-wrap from 1.2.3 to 1.2.4 (#820)\n\nBumps [word-wrap](https://github.com/jonschlinkert/word-wrap) from 1.2.3 to 1.2.4.\r\n- [Release notes](https://github.com/jonschlinkert/word-wrap/releases)\r\n- [Commits](https://github.com/jonschlinkert/word-wrap/compare/1.2.3...1.2.4)\r\n\r\n---\r\nupdated-dependencies:\r\n- dependency-name: word-wrap\r\n  dependency-type: indirect\r\n...\r\n\r\nSigned-off-by: dependabot[bot] <support@github.com>\r\nCo-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>",
+        "url": "https://github.com/TypeStrong/fork-ts-checker-webpack-plugin/commit/45a3c28f7b16caef67a80918dffc9144f4656e0d"
+    },
+    {
+        "sha": "510bde4934e9fbdece70bc66046214d16d6ffc76",
+        "author": "lrworth",
+        "email": "luke@worth.id.au",
+        "date": "2023-10-29T09:50:26Z",
+        "message": "chore: import webpack using \"* as webpack\" syntax (#780)\n\nAvoids problems like the following:\r\n\r\n```\r\n$ npx tsc\r\nnode_modules/fork-ts-checker-webpack-plugin/lib/plugin.d.ts:1:13 - error TS1259: Module '\".../node_modules/webpack/types\"' can only be default-imported using the 'allowSyntheticDefaultImports' flag\r\n\r\n1 import type webpack from 'webpack';\r\n              ~~~~~~~\r\n\r\n  node_modules/webpack/types.d.ts:13189:1\r\n    13189 export = exports;\r\n          ~~~~~~~~~~~~~~~~~\r\n    This module is declared with 'export =', and can only be used with a default import when using the 'allowSyntheticDefaultImports' flag.\r\n\r\nFound 1 error in node_modules/fork-ts-checker-webpack-plugin/lib/plugin.d.ts:1\r\n```",
+        "url": "https://github.com/TypeStrong/fork-ts-checker-webpack-plugin/commit/510bde4934e9fbdece70bc66046214d16d6ffc76"
+    },
+    {
+        "sha": "d461689a99a7cf19c3fe6d330b18f8638b7d3369",
+        "author": "volnyansky",
+        "email": "stas@kultprosvet.net",
+        "date": "2023-10-29T09:49:39Z",
+        "message": "fix: compiler crashes are not handled (#806)",
+        "url": "https://github.com/TypeStrong/fork-ts-checker-webpack-plugin/commit/d461689a99a7cf19c3fe6d330b18f8638b7d3369"
+    },
+    {
+        "sha": "d3b462e08fd6ee501b786a3f0e43477f74001d9a",
+        "author": "Lucian Buzzo",
+        "email": "lucian.buzzo@gmail.com",
+        "date": "2023-10-04T07:02:09Z",
+        "message": "chore(node): drop support for node v12 (#823)\n\nThis change removes \"official\" support for node v12, which is now\r\nunmaintained and hasn't been supported since 30th April 2022.\r\nIf users still need to use node v12 they can continue using the v8\r\nversion of this package.\r\n\r\nBREAKING CHANGE: Drop support for Node.js v12\r\n\r\nSigned-off-by: Lucian Buzzo <lucian.buzzo@gmail.com>",
+        "url": "https://github.com/TypeStrong/fork-ts-checker-webpack-plugin/commit/d3b462e08fd6ee501b786a3f0e43477f74001d9a"
+    },
+    {
+        "sha": "73f67297afd806738653fdf0acd59dd9c08f3624",
+        "author": "dependabot[bot]",
+        "email": "49699333+dependabot[bot]@users.noreply.github.com",
+        "date": "2023-06-27T14:48:07Z",
+        "message": "chore(deps): bump semver from 7.3.5 to 7.5.2 (#819)\n\nBumps [semver](https://github.com/npm/node-semver) from 7.3.5 to 7.5.2.\r\n- [Release notes](https://github.com/npm/node-semver/releases)\r\n- [Changelog](https://github.com/npm/node-semver/blob/main/CHANGELOG.md)\r\n- [Commits](https://github.com/npm/node-semver/compare/v7.3.5...v7.5.2)\r\n\r\n---\r\nupdated-dependencies:\r\n- dependency-name: semver\r\n  dependency-type: direct:production\r\n...\r\n\r\nSigned-off-by: dependabot[bot] <support@github.com>\r\nCo-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>",
+        "url": "https://github.com/TypeStrong/fork-ts-checker-webpack-plugin/commit/73f67297afd806738653fdf0acd59dd9c08f3624"
+    },
+    {
+        "sha": "5afee9fbcec648e2c69fd12c6b65fd0186ba36aa",
+        "author": "dependabot[bot]",
+        "email": "49699333+dependabot[bot]@users.noreply.github.com",
+        "date": "2023-04-15T08:23:18Z",
+        "message": "chore(deps-dev): bump webpack from 5.67.0 to 5.76.0 (#805)\n\nBumps [webpack](https://github.com/webpack/webpack) from 5.67.0 to 5.76.0.\r\n- [Release notes](https://github.com/webpack/webpack/releases)\r\n- [Commits](https://github.com/webpack/webpack/compare/v5.67.0...v5.76.0)\r\n\r\n---\r\nupdated-dependencies:\r\n- dependency-name: webpack\r\n  dependency-type: direct:development\r\n...\r\n\r\nSigned-off-by: dependabot[bot] <support@github.com>\r\nCo-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>",
+        "url": "https://github.com/TypeStrong/fork-ts-checker-webpack-plugin/commit/5afee9fbcec648e2c69fd12c6b65fd0186ba36aa"
+    },
+    {
+        "sha": "83cbefbfa7960d6ff5701d61e22307c52a7a2604",
+        "author": "Henning",
+        "email": "henning.kvinnesland@gmail.com",
+        "date": "2023-03-05T21:04:25Z",
+        "message": "fix: #775 node_modules not ignored on Windows (#802)",
+        "url": "https://github.com/TypeStrong/fork-ts-checker-webpack-plugin/commit/83cbefbfa7960d6ff5701d61e22307c52a7a2604"
+    },
+    {
+        "sha": "22eb69521ef480e9e464796ab5edfa7dbdf06be8",
+        "author": "Piotr Oleś",
+        "email": "piotrek.oles@gmail.com",
+        "date": "2023-03-05T08:18:40Z",
+        "message": "feat: drop support for Vue.js (#801)\n\nThis commit drops support for Vue.js in the plugin. For the last few\nyears, support for Vue.js has been broken, and the implementation of\nVue.js support was a hacky work-around. Unfortunately, TypeScript\ndoesn't expose an API to do that properly, and while I created a feature\nproposal API on the TypeScript repository, the TypeScript team has other\npriorities. As I won't have time to support this feature and am\nreceiving justified bug reports, I believe it's better to make it clear\nthat Vue.js is not supported by the plugin instead of pretending that it\nis.\n\nBREAKING CHANGE: 🧨 Drop support for Vue.js",
+        "url": "https://github.com/TypeStrong/fork-ts-checker-webpack-plugin/commit/22eb69521ef480e9e464796ab5edfa7dbdf06be8"
+    },
+    {
+        "sha": "5243592f215ee04a23a98cb7bee10e1de23d2b21",
+        "author": "Piotr Oleś",
+        "email": "piotrek.oles@gmail.com",
+        "date": "2023-03-04T21:18:27Z",
+        "message": "test: change typescript versions in e2e --build test\n\nFor some reason, e2e tests for older TypeScript versions stopped working\none day. I updated them to cover more recent versions.",
+        "url": "https://github.com/TypeStrong/fork-ts-checker-webpack-plugin/commit/5243592f215ee04a23a98cb7bee10e1de23d2b21"
+    },
+    {
+        "sha": "21835028a4f276742c1b048f0acbc77fb4f924f9",
+        "author": "dependabot[bot]",
+        "email": "49699333+dependabot[bot]@users.noreply.github.com",
+        "date": "2023-02-25T21:07:45Z",
+        "message": "chore(deps): bump http-cache-semantics from 4.1.0 to 4.1.1 (#796)\n\nBumps [http-cache-semantics](https://github.com/kornelski/http-cache-semantics) from 4.1.0 to 4.1.1.\r\n- [Release notes](https://github.com/kornelski/http-cache-semantics/releases)\r\n- [Commits](https://github.com/kornelski/http-cache-semantics/compare/v4.1.0...v4.1.1)\r\n\r\n---\r\nupdated-dependencies:\r\n- dependency-name: http-cache-semantics\r\n  dependency-type: indirect\r\n...\r\n\r\nSigned-off-by: dependabot[bot] <support@github.com>\r\nCo-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>",
+        "url": "https://github.com/TypeStrong/fork-ts-checker-webpack-plugin/commit/21835028a4f276742c1b048f0acbc77fb4f924f9"
+    },
+    {
+        "sha": "3ae3406986753518ffa0a4dd294b7c732bb128c9",
+        "author": "Piotr Oleś",
+        "email": "piotrek.oles@gmail.com",
+        "date": "2023-01-10T21:45:57Z",
+        "message": "feat: add `formatter.pathType` option for absolute path (#792)\n\nAdd `formatter.pathType` option with available values `relative`\r\n(default) and `absolute`. If you set it to `absolute`, the plugin will\r\nprint absolute paths to error locations.\r\n\r\n✅ Closes: #789",
+        "url": "https://github.com/TypeStrong/fork-ts-checker-webpack-plugin/commit/3ae3406986753518ffa0a4dd294b7c732bb128c9"
+    },
+    {
+        "sha": "90ff8814b0570574c34ae25e2be1267dfc5f0f52",
+        "author": "dependabot[bot]",
+        "email": "49699333+dependabot[bot]@users.noreply.github.com",
+        "date": "2023-01-10T19:41:22Z",
+        "message": "chore(deps): bump json5 from 1.0.1 to 1.0.2 (#791)\n\nBumps [json5](https://github.com/json5/json5) from 1.0.1 to 1.0.2.\r\n- [Release notes](https://github.com/json5/json5/releases)\r\n- [Changelog](https://github.com/json5/json5/blob/main/CHANGELOG.md)\r\n- [Commits](https://github.com/json5/json5/compare/v1.0.1...v1.0.2)\r\n\r\n---\r\nupdated-dependencies:\r\n- dependency-name: json5\r\n  dependency-type: indirect\r\n...\r\n\r\nSigned-off-by: dependabot[bot] <support@github.com>\r\n\r\nSigned-off-by: dependabot[bot] <support@github.com>\r\nCo-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>",
+        "url": "https://github.com/TypeStrong/fork-ts-checker-webpack-plugin/commit/90ff8814b0570574c34ae25e2be1267dfc5f0f52"
+    },
+    {
+        "sha": "4eb03ec73d64dff4f8713ebb43e65cf44d5c499d",
+        "author": "John Reilly",
+        "email": "johnny_reilly@hotmail.com",
+        "date": "2023-01-02T08:35:33Z",
+        "message": "chore: blog.johnnyreilly.com (#790)",
+        "url": "https://github.com/TypeStrong/fork-ts-checker-webpack-plugin/commit/4eb03ec73d64dff4f8713ebb43e65cf44d5c499d"
+    },
+    {
+        "sha": "9b67b6ffa000aa6768eaac948f23e44ea79e851b",
+        "author": "dependabot[bot]",
+        "email": "49699333+dependabot[bot]@users.noreply.github.com",
+        "date": "2022-12-16T09:09:32Z",
+        "message": "chore(deps): bump minimatch from 3.0.4 to 3.0.5 (#788)\n\nBumps [minimatch](https://github.com/isaacs/minimatch) from 3.0.4 to 3.0.5.\r\n- [Release notes](https://github.com/isaacs/minimatch/releases)\r\n- [Changelog](https://github.com/isaacs/minimatch/blob/main/changelog.md)\r\n- [Commits](https://github.com/isaacs/minimatch/compare/v3.0.4...v3.0.5)\r\n\r\n---\r\nupdated-dependencies:\r\n- dependency-name: minimatch\r\n  dependency-type: direct:production\r\n...\r\n\r\nSigned-off-by: dependabot[bot] <support@github.com>\r\n\r\nSigned-off-by: dependabot[bot] <support@github.com>\r\nCo-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>",
+        "url": "https://github.com/TypeStrong/fork-ts-checker-webpack-plugin/commit/9b67b6ffa000aa6768eaac948f23e44ea79e851b"
+    },
+    {
+        "sha": "365025de93927603948cc28da850f7b1cd144450",
+        "author": "Piotr Oleś",
+        "email": "piotrek.oles@gmail.com",
+        "date": "2022-12-15T23:36:44Z",
+        "message": "docs: add watchOptions.ignore to the example on README (#786)",
+        "url": "https://github.com/TypeStrong/fork-ts-checker-webpack-plugin/commit/365025de93927603948cc28da850f7b1cd144450"
+    },
+    {
+        "sha": "3e1684bc3141b895a8d1c49333d7653a7d8ff7e9",
+        "author": "Piotr Oleś",
+        "email": "piotrek.oles@gmail.com",
+        "date": "2022-12-15T22:35:02Z",
+        "message": "Merge pull request #787 from TypeStrong/fix/fix-typings-in-ci\n\nfix: fix e2e type-definitions test",
+        "url": "https://github.com/TypeStrong/fork-ts-checker-webpack-plugin/commit/3e1684bc3141b895a8d1c49333d7653a7d8ff7e9"
+    },
+    {
+        "sha": "b525ded69e06174e0295a1620ccf443bd06d2434",
+        "author": "Piotr Oleś",
+        "email": "piotrek.oles@gmail.com",
+        "date": "2022-12-15T21:16:38Z",
+        "message": "test: undefined update fixtures for type-definitions test\n\nThis test were failing because newer version of webpack doesn't support\nTypeScript 3.9.0. I upgraded TypeScript version in the fixtures to fix\nthis issue.",
+        "url": "https://github.com/TypeStrong/fork-ts-checker-webpack-plugin/commit/b525ded69e06174e0295a1620ccf443bd06d2434"
+    },
+    {
+        "sha": "55f71d3993eea47f4c34a9fec6a47b8e6eb0d4e1",
+        "author": "Piotr Oleś",
+        "email": "piotrek.oles@gmail.com",
+        "date": "2022-12-15T21:15:06Z",
+        "message": "chore: fix husky scripts",
+        "url": "https://github.com/TypeStrong/fork-ts-checker-webpack-plugin/commit/55f71d3993eea47f4c34a9fec6a47b8e6eb0d4e1"
+    },
+    {
+        "sha": "ef45f3e66abf6fb283c0e05f093168fc85ff2050",
+        "author": "dependabot[bot]",
+        "email": "49699333+dependabot[bot]@users.noreply.github.com",
+        "date": "2022-07-20T19:29:22Z",
+        "message": "chore(deps): bump terser from 5.7.1 to 5.14.2 (#767)\n\nBumps [terser](https://github.com/terser/terser) from 5.7.1 to 5.14.2.\r\n- [Release notes](https://github.com/terser/terser/releases)\r\n- [Changelog](https://github.com/terser/terser/blob/master/CHANGELOG.md)\r\n- [Commits](https://github.com/terser/terser/commits)\r\n\r\n---\r\nupdated-dependencies:\r\n- dependency-name: terser\r\n  dependency-type: indirect\r\n...\r\n\r\nSigned-off-by: dependabot[bot] <support@github.com>\r\n\r\nCo-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>",
+        "url": "https://github.com/TypeStrong/fork-ts-checker-webpack-plugin/commit/ef45f3e66abf6fb283c0e05f093168fc85ff2050"
+    }
+]

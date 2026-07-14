@@ -1,0 +1,242 @@
+[
+    {
+        "sha": "087281be23fc4e615cf4b2aa117b10070b85ca7d",
+        "author": "Maurice",
+        "email": "maurice@makaay.nl",
+        "date": "2026-05-31T14:44:52Z",
+        "message": "Update CHANGELOG.md",
+        "url": "https://github.com/mmakaay/esphome-xiaomi_bslamp2/commit/087281be23fc4e615cf4b2aa117b10070b85ca7d"
+    },
+    {
+        "sha": "85fe41b376c12ab027a06151309c971fb62160c5",
+        "author": "Maurice",
+        "email": "maurice@makaay.nl",
+        "date": "2026-05-31T13:59:34Z",
+        "message": "Prepare for release",
+        "url": "https://github.com/mmakaay/esphome-xiaomi_bslamp2/commit/85fe41b376c12ab027a06151309c971fb62160c5"
+    },
+    {
+        "sha": "a092a6a41cc2c31d40e425b06c14f0bde7d69f76",
+        "author": "Maurice",
+        "email": "maurice@makaay.nl",
+        "date": "2026-05-31T13:45:11Z",
+        "message": "docs: Update night light documentation",
+        "url": "https://github.com/mmakaay/esphome-xiaomi_bslamp2/commit/a092a6a41cc2c31d40e425b06c14f0bde7d69f76"
+    },
+    {
+        "sha": "963a9535a088224a2821e853e1946597fc2b6ae5",
+        "author": "Maxim Khvatalin",
+        "email": "khmm12@gmail.com",
+        "date": "2026-05-15T11:04:47Z",
+        "message": "feat: tune night light calibration range",
+        "url": "https://github.com/mmakaay/esphome-xiaomi_bslamp2/commit/963a9535a088224a2821e853e1946597fc2b6ae5"
+    },
+    {
+        "sha": "274fb9f607c5e69aee12ffd58d6d7ad17eb11ed8",
+        "author": "Maxim Khvatalin",
+        "email": "khmm12@gmail.com",
+        "date": "2026-05-15T10:08:49Z",
+        "message": "fix: keep night light calibration during transitions\n\nShare a single NightLightCalibration value across the night light handler, light output, and transition transformer so Home Assistant light updates do not fall back to default attenuation values.\n\nApply off/night transitions immediately to avoid low-level color drift while preserving normal transitions from RGB and white modes.",
+        "url": "https://github.com/mmakaay/esphome-xiaomi_bslamp2/commit/274fb9f607c5e69aee12ffd58d6d7ad17eb11ed8"
+    },
+    {
+        "sha": "caaaee1e735b4b4b75db9e3638f05b52c559c2e0",
+        "author": "Maxim Khvatalin",
+        "email": "khmm12@gmail.com",
+        "date": "2026-05-15T00:23:05Z",
+        "message": "feat: add YAML defaults for night light calibration\n\nExpose fixed RGB attenuation defaults through the platform light schema and shared package substitutions, so users can configure stock-compatible night light color temperature calibration from YAML.",
+        "url": "https://github.com/mmakaay/esphome-xiaomi_bslamp2/commit/caaaee1e735b4b4b75db9e3638f05b52c559c2e0"
+    },
+    {
+        "sha": "0082f7a357218b12ad2a147bb4e66e15d6fede12",
+        "author": "Maxim Khvatalin",
+        "email": "khmm12@gmail.com",
+        "date": "2026-05-14T23:37:39Z",
+        "message": "feat: add night light calibration controls\n\nExpose Home Assistant template number controls for tuning night light color-temperature calibration.\n\nThe calibration package adds tint, temperature, and level sliders that are restored by ESPHome and applied immediately to the active light state.\n\nThe implementation keeps the default behavior configurable through YAML substitutions, clamps generated RGB attenuation values to the useful range, and includes an optional developer package for raw RGB calibration.",
+        "url": "https://github.com/mmakaay/esphome-xiaomi_bslamp2/commit/0082f7a357218b12ad2a147bb4e66e15d6fede12"
+    },
+    {
+        "sha": "02b3328ca200cfba9d0176032cc58294d7aa945b",
+        "author": "Maurice Makaay",
+        "email": "maurice@h2b.nl",
+        "date": "2026-04-15T20:35:31Z",
+        "message": "Fix light state not restored after power cycle\n\nESPHome 2023.4.0 changed the default restore_mode\nfrom RESTORE_DEFAULT_OFF to ALWAYS_OFF. Override\nthe default so state is saved to flash and restored\non boot.\n\nAlso replace the obsolete MyLightStateRTCState\nstruct with ESPHome's LightStateRTCState. The old\nstruct had a different memory layout, causing\ndisco_stop() to read misaligned data.",
+        "url": "https://github.com/mmakaay/esphome-xiaomi_bslamp2/commit/02b3328ca200cfba9d0176032cc58294d7aa945b"
+    },
+    {
+        "sha": "337a51f421b703ca44e5b934d3e01ef1849c93cd",
+        "author": "Maurice Makaay",
+        "email": "maurice@h2b.nl",
+        "date": "2026-04-15T19:53:11Z",
+        "message": "Fix disco_off action\n\nWrap raw bool via cg.templatable() for TemplatableFn compatibility.\nThis makes the functionality compatible with esphome 2026.4.0.",
+        "url": "https://github.com/mmakaay/esphome-xiaomi_bslamp2/commit/337a51f421b703ca44e5b934d3e01ef1849c93cd"
+    },
+    {
+        "sha": "62f26be9bcaf2a7bc1bdcbde3dfbf3f0ef71ce23",
+        "author": "Maurice Makaay",
+        "email": "maurice@h2b.nl",
+        "date": "2026-04-15T19:26:11Z",
+        "message": "Update documentation for 2016.4.0 release",
+        "url": "https://github.com/mmakaay/esphome-xiaomi_bslamp2/commit/62f26be9bcaf2a7bc1bdcbde3dfbf3f0ef71ce23"
+    },
+    {
+        "sha": "a5e437ec94d6e4091db8b03b55d34c1673c23dd7",
+        "author": "Maurice Makaay",
+        "email": "maurice@h2b.nl",
+        "date": "2026-04-15T19:23:28Z",
+        "message": "Update CHANGELOG.md",
+        "url": "https://github.com/mmakaay/esphome-xiaomi_bslamp2/commit/a5e437ec94d6e4091db8b03b55d34c1673c23dd7"
+    },
+    {
+        "sha": "536f871afb4906fe7ea740bbc6eab9b338e15730",
+        "author": "Maurice Makaay",
+        "email": "maurice@h2b.nl",
+        "date": "2026-04-15T19:19:19Z",
+        "message": "Fix ESPHome 2026.4.0 compatibility\n\nCallbackManager copy constructor was deleted in ESPHome 2026.4.0.\nPass CallbackManagers by pointer instead of by value in the light\ntransition transformer.\n\nThe TEMPLATABLE_VALUE macro now uses TemplatableFn which only accepts\nfunction pointers. Wrap raw constants via cg.templatable() in the\nfront panel LED action codegen.",
+        "url": "https://github.com/mmakaay/esphome-xiaomi_bslamp2/commit/536f871afb4906fe7ea740bbc6eab9b338e15730"
+    },
+    {
+        "sha": "280680cb8000dc04ce1b94f8fba57800a89b1b3a",
+        "author": "Maurice Makaay",
+        "email": "maurice@h2b.nl",
+        "date": "2026-03-20T20:16:45Z",
+        "message": "Prepare for release",
+        "url": "https://github.com/mmakaay/esphome-xiaomi_bslamp2/commit/280680cb8000dc04ce1b94f8fba57800a89b1b3a"
+    },
+    {
+        "sha": "8332a573ebb9c4ac0e8508ade2ba1299098e3a97",
+        "author": "Maurice Makaay",
+        "email": "maurice@h2b.nl",
+        "date": "2026-03-20T19:59:07Z",
+        "message": "Fix register_action missing synchronous= parameter\n\nFixes compile-time warnings:\n\nWARNING register_action('...', ...) is missing the synchronous=\nparameter. Defaulting to synchronous=False (safe but prevents StringRef\noptimization). Check the C++ class: use synchronous=False if\nplay_next_() is deferred to a callback, timer, or loop(); use\nsynchronous=True if play_next_() always runs before the initial\nplay/play_complex call returns",
+        "url": "https://github.com/mmakaay/esphome-xiaomi_bslamp2/commit/8332a573ebb9c4ac0e8508ade2ba1299098e3a97"
+    },
+    {
+        "sha": "585e9d4c94342d5bf90457e5fe66cf4d99f53e16",
+        "author": "Maurice Makaay",
+        "email": "maurice@h2b.nl",
+        "date": "2025-11-24T14:34:07Z",
+        "message": "Prepare for release",
+        "url": "https://github.com/mmakaay/esphome-xiaomi_bslamp2/commit/585e9d4c94342d5bf90457e5fe66cf4d99f53e16"
+    },
+    {
+        "sha": "729a03c2c7b51abd79a030e75eb7ad4e353f11fb",
+        "author": "Maurice Makaay",
+        "email": "maurice@h2b.nl",
+        "date": "2025-11-24T14:30:00Z",
+        "message": "Update CHANGELOG.md",
+        "url": "https://github.com/mmakaay/esphome-xiaomi_bslamp2/commit/729a03c2c7b51abd79a030e75eb7ad4e353f11fb"
+    },
+    {
+        "sha": "a375b547075ea716bf2ef786da9d32c601ab6291",
+        "author": "Zack Baldwin",
+        "email": "zack@zackb.com",
+        "date": "2025-11-20T18:20:54Z",
+        "message": "Fix ESPHome 2025.11 compatibility: Update Action::play() method signatures\n\n- Update play() method signatures in automation classes to match ESPHome 2025.11 API\n- Change from 'Ts... x' to 'const Ts &...x' parameter format\n- Fixed in both light/automation.h and output/automation.h files\n- Affects ActivatePresetAction, DiscoAction, SetLEDsAction, SetLevelAction, and UpdateLEDsAction classes\n- Resolves compilation errors when building with ESPHome 2025.11+",
+        "url": "https://github.com/mmakaay/esphome-xiaomi_bslamp2/commit/a375b547075ea716bf2ef786da9d32c601ab6291"
+    },
+    {
+        "sha": "698cb120d21c1275ed2ffe23700d2c4bff36d833",
+        "author": "Maurice Makaay",
+        "email": "maurice@h2b.nl",
+        "date": "2025-07-29T13:40:40Z",
+        "message": "Fix typo in CHANGELOG.md",
+        "url": "https://github.com/mmakaay/esphome-xiaomi_bslamp2/commit/698cb120d21c1275ed2ffe23700d2c4bff36d833"
+    },
+    {
+        "sha": "b77e7ff9624c70a2768da52890f87d31a999df81",
+        "author": "Maurice Makaay",
+        "email": "maurice@h2b.nl",
+        "date": "2025-07-29T11:57:13Z",
+        "message": "Update minimum ESPHome version requirement",
+        "url": "https://github.com/mmakaay/esphome-xiaomi_bslamp2/commit/b77e7ff9624c70a2768da52890f87d31a999df81"
+    },
+    {
+        "sha": "b684281c71492dc7b9e099907b3f6e38026de44f",
+        "author": "Maurice Makaay",
+        "email": "maurice@h2b.nl",
+        "date": "2025-07-29T11:42:21Z",
+        "message": "Add core.yaml version update to release plan",
+        "url": "https://github.com/mmakaay/esphome-xiaomi_bslamp2/commit/b684281c71492dc7b9e099907b3f6e38026de44f"
+    },
+    {
+        "sha": "e701927230f961f453da9f9e136b72d58df16588",
+        "author": "Maurice Makaay",
+        "email": "maurice@h2b.nl",
+        "date": "2025-07-29T11:40:09Z",
+        "message": "Update changelog for 2025.7.0 release",
+        "url": "https://github.com/mmakaay/esphome-xiaomi_bslamp2/commit/e701927230f961f453da9f9e136b72d58df16588"
+    },
+    {
+        "sha": "384ef61db5bd43be916ddd733a5791f885378fc0",
+        "author": "Maurice Makaay",
+        "email": "maurice@h2b.nl",
+        "date": "2025-07-29T11:32:52Z",
+        "message": "Fix deprecation warning for text sensor schema",
+        "url": "https://github.com/mmakaay/esphome-xiaomi_bslamp2/commit/384ef61db5bd43be916ddd733a5791f885378fc0"
+    },
+    {
+        "sha": "43669ccf348ac9fb5edee18c587de283994c181a",
+        "author": "Maurice Makaay",
+        "email": "maurice@h2b.nl",
+        "date": "2025-07-29T11:31:53Z",
+        "message": "Fix deprecation warning for sensor schema",
+        "url": "https://github.com/mmakaay/esphome-xiaomi_bslamp2/commit/43669ccf348ac9fb5edee18c587de283994c181a"
+    },
+    {
+        "sha": "43619444a4d27d84bdf7f489be6415ce04d116bb",
+        "author": "Maurice Makaay",
+        "email": "maurice@h2b.nl",
+        "date": "2025-07-29T11:29:00Z",
+        "message": "Fix deprecation warning for binary sensor schema",
+        "url": "https://github.com/mmakaay/esphome-xiaomi_bslamp2/commit/43619444a4d27d84bdf7f489be6415ce04d116bb"
+    },
+    {
+        "sha": "f7aa38547c04d395ef0eaaf12040de5ec547d86b",
+        "author": "BlairC1",
+        "email": "138264849+BlairC1@users.noreply.github.com",
+        "date": "2025-07-28T22:37:29Z",
+        "message": "Update color_handler_color_temperature.h\n\nupdate to use std::lerp",
+        "url": "https://github.com/mmakaay/esphome-xiaomi_bslamp2/commit/f7aa38547c04d395ef0eaaf12040de5ec547d86b"
+    },
+    {
+        "sha": "3621001d537fa265b23601c19e0314807b79cd8b",
+        "author": "BlairC1",
+        "email": "138264849+BlairC1@users.noreply.github.com",
+        "date": "2025-07-28T22:35:21Z",
+        "message": "Update color_handler_night_light.h\n\nupdate to use std::lerp",
+        "url": "https://github.com/mmakaay/esphome-xiaomi_bslamp2/commit/3621001d537fa265b23601c19e0314807b79cd8b"
+    },
+    {
+        "sha": "3ce0374c99161d054be35f1dc9c9b9ff68f48f3c",
+        "author": "BlairC1",
+        "email": "138264849+BlairC1@users.noreply.github.com",
+        "date": "2025-07-28T22:32:47Z",
+        "message": "Update color_handler_rgb.h\n\nupdate to use std::lerp",
+        "url": "https://github.com/mmakaay/esphome-xiaomi_bslamp2/commit/3ce0374c99161d054be35f1dc9c9b9ff68f48f3c"
+    },
+    {
+        "sha": "221b661bbac58f0465386b4f9ee7e35bb81bafe6",
+        "author": "BlairC1",
+        "email": "138264849+BlairC1@users.noreply.github.com",
+        "date": "2025-07-28T22:27:10Z",
+        "message": "Update light_transformer.h\n\nUpdate to use std::lerp",
+        "url": "https://github.com/mmakaay/esphome-xiaomi_bslamp2/commit/221b661bbac58f0465386b4f9ee7e35bb81bafe6"
+    },
+    {
+        "sha": "d7317d193fe334a497a910235311d11ba93002f9",
+        "author": "tr4nt0r",
+        "email": "4445816+tr4nt0r@users.noreply.github.com",
+        "date": "2025-03-27T16:00:10Z",
+        "message": "Add version, manufacturer and modelnr",
+        "url": "https://github.com/mmakaay/esphome-xiaomi_bslamp2/commit/d7317d193fe334a497a910235311d11ba93002f9"
+    },
+    {
+        "sha": "1d3d1abc0ab5b7f9d9f994d50caf869122c91cf6",
+        "author": "Maurice Makaay",
+        "email": "maurice@h2b.nl",
+        "date": "2025-03-12T16:12:37Z",
+        "message": "Prepare for release",
+        "url": "https://github.com/mmakaay/esphome-xiaomi_bslamp2/commit/1d3d1abc0ab5b7f9d9f994d50caf869122c91cf6"
+    }
+]

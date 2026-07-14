@@ -1,0 +1,371 @@
+[
+    {
+        "id": 4838257162,
+        "number": 286,
+        "title": "Plans for DU and Option/Result",
+        "state": "closed",
+        "created_at": "2026-07-08T14:13:33Z",
+        "updated_at": "2026-07-12T13:11:48Z",
+        "closed_at": "2026-07-12T13:11:48Z",
+        "author": "petrroll",
+        "comments": 0,
+        "labels": [
+            "Lib:Core"
+        ],
+        "assignees": [],
+        "locked": true,
+        "body": "Hi, do you have plans to adjust Option, Result types to use DU of .NET 11? ",
+        "url": "https://github.com/dotnet/dotNext/issues/286"
+    },
+    {
+        "id": 4666976347,
+        "number": 284,
+        "title": "WriteAheadLog (6.x): make a committed write durable across a graceful restart with a batched FlushInterval",
+        "state": "closed",
+        "created_at": "2026-06-15T16:31:50Z",
+        "updated_at": "2026-06-22T12:07:21Z",
+        "closed_at": "2026-06-22T12:07:21Z",
+        "author": "msallin",
+        "comments": 0,
+        "labels": [
+            "Lib:Cluster"
+        ],
+        "assignees": [],
+        "locked": true,
+        "body": "DotNext.Net.Cluster 6.3.0, .NET 10. `RaftCluster` (TCP) with a hand-assigned `WriteAheadLog` as `AuditTrail` over a `SimpleStateMachine`, one cluster per pod. Membership and restart leadership are already solved with a persistent configuration storage (per #207); this question is purely about WAL durability.\n\nI expose a synchronous storage API, so a write must be durable before it returns, or at minimum survive a graceful (SIGTERM) restart. Completion is detected with a waiter completed inside `SimpleStateMachine.ApplyAsync`: I `await ReplicateAsync(...)` then await the waiter, so a write returns once the entry is **applied**.\n\n- With `FlushInterval = TimeSpan.Zero` (flush on every commit in the background) this is reliable: a node restarted from the same WAL recovers everything via `InitializeAsync`. But it fsyncs on every commit.\n- With a positive `FlushInterval` (to batch flushes for throughput), a graceful shutdown loses the un-snapshotted tail. A single committed entry written then immediately followed by `DisposeAsync` is **not** recovered after a restart, even when I call `FlushAsync()` before disposing the cluster and the log. A longer run (e.g. 200 writes) **is** recovered, because the periodic flusher and snapshots cover it.\n\nQuestions:\n\n1. Is there a supported way to make a committed write **durable on return** — awaiting the flush, not just the apply — so the caller knows it is on stable storage?\n2. With a hand-assigned `WriteAheadLog`, what is the correct **flush-on-graceful-shutdown** sequence so a positive `FlushInterval` does not lose the most recent committed-but-unflushed entries? Is `FlushAsync()` the right call, and where must it run relative to `RaftCluster.StopAsync()` and disposal?\n3. Or is `FlushInterval = TimeSpan.Zero` the only mode that guarantees a committed entry survives a restart, with any positive interval being best-effort (up to one interval lost on a stop)?\n\nGoal: one cluster per pod that can batch flushes for throughput yet never lose a committed write across a graceful restart. Happy to provide a minimal repro.\n",
+        "url": "https://github.com/dotnet/dotNext/issues/284"
+    },
+    {
+        "id": 3677943735,
+        "number": 279,
+        "title": "Possible memory leaks with AsyncAutoResetEvent",
+        "state": "closed",
+        "created_at": "2025-11-30T15:48:02Z",
+        "updated_at": "2026-07-12T17:58:18Z",
+        "closed_at": "2026-07-12T17:58:18Z",
+        "author": "KostyaLocal",
+        "comments": 12,
+        "labels": [
+            "need info",
+            "Lib:Threading"
+        ],
+        "assignees": [
+            "sakno"
+        ],
+        "locked": false,
+        "body": "use case: \n   Class MyClass : BackgroundService {\n    private readonly AsyncAutoResetEvent _wakeEvent = new(false);\n protected override async Task ExecuteAsync(CancellationToken ct) {\n const int delay = 100;\n        var timer = Stopwatch.StartNew();\n while (!ct.IsCancellationRequested) {\n         var remaining = (double)Math.Max(0, delay - timer.ElapsedMilliseconds);\n         await _wakeEvent.WaitAsync(TimeSpan.FromMilliseconds(remaining), CancellationToken.None);\n         timer.Restart();\n  }\n}",
+        "url": "https://github.com/dotnet/dotNext/issues/279"
+    },
+    {
+        "id": 3659373039,
+        "number": 277,
+        "title": "Cluster membership modification blocked following unreachable-member socket failure",
+        "state": "closed",
+        "created_at": "2025-11-24T15:20:32Z",
+        "updated_at": "2025-11-29T10:11:42Z",
+        "closed_at": "2025-11-29T10:11:42Z",
+        "author": "pwhsoft",
+        "comments": 1,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "When calling AddMemberAsync on the cluster, if the target member is not reachable, a SocketException (via HttpRequestException) is thrown. After this failure, any further attempts to add members also fail with a ConcurrentMembershipModificationException, preventing membership changes altogether.\n\n**Steps to Reproduce:**\n\nUse AddMemberAsync<TAddress>(…) to add a new member to the cluster.\n\nConfigure the new member’s address so that it is unreachable (e.g., DNS cannot resolve or TCP connection fails).\n\nObserve that a SocketException occurs with message like “Name or service not known”.\n\nThen attempt to add another (or same) member. Instead of retrying the original error, the next call fails with a ConcurrentMembershipModificationException.\n\n**Expected Behavior:**\n\nThe unreachable member should cause the call to fail, but the cluster should remain in a state allowing further membership changes.\n\nSubsequent calls to AddMemberAsync should either succeed (if target is reachable) or fail independently (if target unreachable), rather than being blocked by the earlier failure.\n\n**Actual Behavior:**\n\nThe first call fails with a SocketException / HttpRequestException.\n\nAfter this, further calls fail immediately with:\n```\nDotNext.Net.Cluster.Consensus.Raft.RaftCluster`1+ConcurrentMembershipModificationException[…]: Cluster membership cannot be modified concurrently\n```\n\nEssentially, the cluster appears “locked” for membership modification once a member is unreachable.\n\n**Environment / Additional Context:**\nThe error originates in RaftCluster<T>.AddMemberAsync (line ~275 in Membership.cs).\n\nUnderlying exceptions:\n\nMemberUnavailableException: Member is not reachable through the network\n→ HttpRequestException: Name or service not known\n→ SocketException (0xFFFDFFFF): Name or service not known\n\nSubsequent: ConcurrentMembershipModificationException thrown from AddMemberAsync (line ~257 in Membership.cs).\n\nOccurs with unreachable DNS/host (e.g., prod-data-raft-rms-1.prod-data-raft-xxx.xxxxxx-data-raft-prod.svc.cluster.local:80) in Kubernetes cluster.\n\nThe root issue may be that the cluster membership state remains in a “modification pending” status after the initial unreachable member, thus preventing subsequent modifications.\n\n**Possible Solution / Suggestion:**\n\nEnsure that when adding a member fails due to unreachable address/network error, the membership modification lock is released so that further calls can proceed.\n\nConsider marking the failed member addition attempt as “rolled back” or “timed out” instead of leaving the cluster in a pending modification state.\n\nAdd timeout and error-handling around unreachable members to prevent blocking the membership subsystem.\n\n**Impact:**\nThis bug prevents adding any new members after a single unreachable member attempt, reducing cluster resilience and making dynamic membership changes unreliable in network-partition scenarios.",
+        "url": "https://github.com/dotnet/dotNext/issues/277"
+    },
+    {
+        "id": 3574967458,
+        "number": 276,
+        "title": "The local cluster member is not a leader - Change exception type from InvalidOperationException to a more specific NotALeaderException",
+        "state": "closed",
+        "created_at": "2025-10-31T13:28:51Z",
+        "updated_at": "2025-11-04T16:00:24Z",
+        "closed_at": "2025-11-04T16:00:24Z",
+        "author": "pwhsoft",
+        "comments": 2,
+        "labels": [
+            "Lib:Cluster"
+        ],
+        "assignees": [
+            "sakno"
+        ],
+        "locked": false,
+        "body": "Currently, when attempting to perform a Raft operation on a non-leader node, the following exception is thrown:\n```\nSystem.InvalidOperationException: The local cluster member is not a leader\n ---> System.OperationCanceledException: The operation was canceled.\n```\n\n\nProblem:\nInvalidOperationException is too generic for this scenario and makes it difficult to distinguish between general invalid operations and leadership-related errors.\n\nSuggestion:\nIntroduce a more specific exception type (e.g., NotALeaderException, LeaderUnavailableException, or similar) to clearly signal that the operation failed because the current node is not the Raft cluster leader.\n\nRationale:\n\nImproves error handling for client applications.\n\nMakes it easier to implement leader redirection or retry logic.\n\nBetter reflects the semantics of Raft operations.\n\nStack trace (for reference):\n```\nSystem.InvalidOperationException: The local cluster member is not a leader\n ---> System.OperationCanceledException: The operation was canceled.\n   at DotNext.Result`1.get_Value() in /_/src/DotNext/Result.cs:line 177\n   ...\n   at DotNext.Net.Cluster.Consensus.Raft.RaftCluster`1.ReplicateAsync[TEntry](TEntry entry, CancellationToken token)\n\n```",
+        "url": "https://github.com/dotnet/dotNext/issues/276"
+    },
+    {
+        "id": 3541465098,
+        "number": 275,
+        "title": "AsyncReaderWriterLock deadlocks with upgradeable locks",
+        "state": "closed",
+        "created_at": "2025-10-22T16:01:31Z",
+        "updated_at": "2025-11-04T16:00:23Z",
+        "closed_at": "2025-11-04T16:00:23Z",
+        "author": "soerendd",
+        "comments": 2,
+        "labels": [
+            "Lib:Threading"
+        ],
+        "assignees": [
+            "sakno"
+        ],
+        "locked": false,
+        "body": "I try to use AsyncReaderWriterLock and the documentation states\n\n> Behavior of UpgradeToWriteLockAsync and DowngradeFromWriteLock methods is the same as in [ReaderWriterLock](https://docs.microsoft.com/en-us/dotnet/api/system.threading.readerwriterlock). You need to be in the read lock to call the upgrade. After calling of DowngradeFromWriteLock method the current flow keeping the read lock so you need to call Release method to release the lock completely.\n\nFor me it does not work and ends with a deadlock. All tasks/threads can enter the UpgradeableRead (in the bcl version of ReaderWriterLockSlim its different, as also in the vs threading lib). But then all of them try to get the write and fail (probably because there are readers).\nThe code below shows all three version and the last one (dotnext) deadlocks. Maybe I'm doing it wrong.\n\nSide-question: Actually I'm in the need of a async reader writer lock which lets in all readers and only upgrades if either all readers left or also waiting for a write (like the ReaderWriterLock but not the ReaderWriterLockSlim). Is there such a beast :-)? \n\n```csharp\nusing Microsoft.VisualStudio.Threading;\nusing AsyncReaderWriterLock = DotNext.Threading.AsyncReaderWriterLock;\n\nnamespace RWLockFailure;\n\nclass Program\n{\n    static async Task Main(string[] args)\n    {\n        await TestSyncLock();\n\n        await TestSyncSlimLock();\n\n        await TestVsAsyncLock();\n\n        await TestDotNextAsyncLock();\n\n        Console.WriteLine(\"Done\");\n    }\n\n    private static async Task TestSyncSlimLock()\n    {\n        var rwLock = new ReaderWriterLockSlim();\n\n        var tasks = new List<Task>(Enumerable.Range(0, 5).Select(_ => Task.Run(() => ConcurrentMethod(rwLock))));\n        await Task.WhenAll(tasks);\n\n        return;\n\n        void ConcurrentMethod(ReaderWriterLockSlim lockToUse)\n        {\n            Console.WriteLine(\"SyncSlim: Enter concurrent method\");\n            lockToUse.EnterUpgradeableReadLock();\n            try\n            {\n                Console.WriteLine(\"SyncSlim: got read lock\");\n                Console.Out.Flush();\n                Thread.Sleep(2000);\n\n                lockToUse.EnterWriteLock();\n                try\n                {\n                    Console.WriteLine(\"SyncSlim: Got write lock\");\n                }\n                finally\n                {\n                    lockToUse.ExitWriteLock();\n                }\n            }\n            finally\n            {\n                lockToUse.ExitUpgradeableReadLock();\n            }\n        }\n    }\n\n    private static async Task TestSyncLock()\n    {\n        var rwLock = new ReaderWriterLock();\n\n        var tasks = new List<Task>(Enumerable.Range(0, 5).Select(_ => Task.Run(() => ConcurrentMethod(rwLock))));\n        await Task.WhenAll(tasks);\n\n        return;\n\n        void ConcurrentMethod(ReaderWriterLock lockToUse)\n        {\n            Console.WriteLine(\"Sync: Enter concurrent method\");\n            lockToUse.AcquireReaderLock(Timeout.Infinite);\n            try\n            {\n                Console.WriteLine(\"Sync: got read lock\");\n                Console.Out.Flush();\n                Thread.Sleep(2000);\n\n                var cookie = lockToUse.UpgradeToWriterLock(Timeout.Infinite);\n                try\n                {\n                    Console.WriteLine(\"Sync: Got write lock\");\n                }\n                finally\n                {\n                    lockToUse.DowngradeFromWriterLock(ref cookie);\n                }\n            }\n            finally\n            {\n                lockToUse.ReleaseReaderLock();\n            }\n        }\n    }\n\n    private static async Task TestVsAsyncLock()\n    {\n        var rwLock = new Microsoft.VisualStudio.Threading.AsyncReaderWriterLock(JoinableTaskContext.CreateNoOpContext());\n\n        var tasks = new List<Task>(Enumerable.Range(0, 5).Select(_ => Task.Run(async () => await ConcurrentMethod(rwLock))));\n        await Task.WhenAll(tasks);\n\n        return;\n\n        async Task ConcurrentMethod(Microsoft.VisualStudio.Threading.AsyncReaderWriterLock lockToUse)\n        {\n            Console.WriteLine(\"VsAsync: Enter concurrent method\");\n            var releaser = await lockToUse.UpgradeableReadLockAsync();\n            try\n            {\n                Console.WriteLine(\"VsAsync: Got read lock\");\n                await Task.Delay(TimeSpan.FromSeconds(2));\n\n                var writeLockReleaser = await lockToUse.WriteLockAsync();\n                try\n                {\n                    Console.WriteLine(\"VsAsync: Got write lock\");\n                }\n                finally\n                {\n                    await writeLockReleaser.DisposeAsync();\n                }\n            }\n            finally\n            {\n                await releaser.DisposeAsync();\n            }\n        }\n    }\n\n\n    private static async Task TestDotNextAsyncLock()\n    {\n        var rwLock = new AsyncReaderWriterLock();\n\n        var tasks = new List<Task>(Enumerable.Range(0, 5).Select(_ => Task.Run(async () => await ConcurrentMethod(rwLock))));\n        await Task.WhenAll(tasks);\n\n        return;\n\n        async Task ConcurrentMethod(AsyncReaderWriterLock lockToUse)\n        {\n            Console.WriteLine(\"Async: Enter concurrent method\");\n            await lockToUse.EnterReadLockAsync();\n            try\n            {\n                Console.WriteLine(\"Async: Got read lock\");\n                await Task.Delay(TimeSpan.FromSeconds(2));\n                await lockToUse.UpgradeToWriteLockAsync();\n                try\n                {\n                    Console.WriteLine(\"Async: Got write lock\");\n                }\n                finally\n                {\n                    lockToUse.DowngradeFromWriteLock();\n                }\n            }\n            finally\n            {\n                lockToUse.Release();\n            }\n        }\n    }\n}\n```",
+        "url": "https://github.com/dotnet/dotNext/issues/275"
+    },
+    {
+        "id": 3466729816,
+        "number": 273,
+        "title": "AsyncExclusiveLock does not contain AcquireLockAsync Method",
+        "state": "closed",
+        "created_at": "2025-09-29T21:47:11Z",
+        "updated_at": "2025-10-08T14:11:43Z",
+        "closed_at": "2025-10-08T14:11:43Z",
+        "author": "surgicalcoder",
+        "comments": 1,
+        "labels": [
+            "documentation"
+        ],
+        "assignees": [
+            "sakno"
+        ],
+        "locked": false,
+        "body": "Documentation on https://dotnet.github.io/dotNext/features/threading/exclusive.html states that you can call a AcquireLockAsync method on AsyncExclusiveLock  , but as of 5.25.2, this method does not exist.\n\nMethod last seen in 5.23.0 and appears to have been removed in 5.24.0 onwards.",
+        "url": "https://github.com/dotnet/dotNext/issues/273"
+    },
+    {
+        "id": 3397853025,
+        "number": 271,
+        "title": "DotNext.Threading 5.24.0 locking no longer works? And should have been major version bump",
+        "state": "closed",
+        "created_at": "2025-09-09T10:46:45Z",
+        "updated_at": "2025-09-11T07:23:43Z",
+        "closed_at": "2025-09-11T07:23:31Z",
+        "author": "cmeeren",
+        "comments": 4,
+        "labels": [],
+        "assignees": [
+            "sakno"
+        ],
+        "locked": false,
+        "body": "After updating from 5.23.0 to 5.24.0, I can no longer call\n\n```f#\nmyThing.AcquireReadLockAsync(...)\n```\n\n(The same applies for `WriteLock`.)\n\nFirstly, this is a breaking change, so the major version should have been incremented. (I also don't understand the [rationale](https://github.com/dotnet/dotNext/discussions/267) behind this; it worked perfectly well, didn't it?)\n\nSecondly, and more importantly, it is not clear to me what the migration path is. Based on the changelog, I guessed I could do:\n\n```f#\nAsyncLockAcquisition.AcquireReadLockAsync(myThing, ...)\n```\n\nHowever, when I changed my code to this, it seems to behave as if no locks are taken at all. (I get lots of exceptions for enumerations, NREs, etc. that all disappear when I revert to 5.23.0 and use the extension methods I have always used.) So I believe these calls are not equivalent, but I'm at a loss as to what I should do instead.",
+        "url": "https://github.com/dotnet/dotNext/issues/271"
+    },
+    {
+        "id": 3131158274,
+        "number": 266,
+        "title": "Default-initialization of `Result` struct type not handled",
+        "state": "closed",
+        "created_at": "2025-06-09T18:54:55Z",
+        "updated_at": "2025-06-29T16:49:46Z",
+        "closed_at": "2025-06-29T16:49:46Z",
+        "author": "NickStrupat",
+        "comments": 7,
+        "labels": [
+            "question"
+        ],
+        "assignees": [
+            "sakno"
+        ],
+        "locked": false,
+        "body": "Hi folks,\n\nI was just perusing some implementations of `Result` types and noticed yours doesn't seem to handle the case where a `Result` instance has been default-initialized. I'm wondering if I missed something. If not, would you be interested in handling that case?\n\nhttps://github.com/dotnet/dotNext/blob/503b46b44240c3b14fa1c7ef754c4dacaa7ad708/src/DotNext/Result.cs#L135",
+        "url": "https://github.com/dotnet/dotNext/issues/266"
+    },
+    {
+        "id": 2990493461,
+        "number": 260,
+        "title": "throwing Result<T>.Error hides the stack trace",
+        "state": "closed",
+        "created_at": "2025-04-12T14:09:29Z",
+        "updated_at": "2025-04-22T22:37:49Z",
+        "closed_at": "2025-04-22T09:30:17Z",
+        "author": "gabor-budai",
+        "comments": 8,
+        "labels": [],
+        "assignees": [
+            "sakno"
+        ],
+        "locked": false,
+        "body": "The [exmple](https://dotnet.github.io/dotNext/features/core/result.html) shows that if the method invocation wasn't successful, then it's possible to throw or rethrow the exception.\nWhen the exception is rethrown, the original stack trace information will be lost.\nI think these are the possible solutions:\n\n1. `Result<T>.Error` should return `ExceptionDispatchInfo` instead of `Exception` (this breaks compatiblity).\n2. Make `ExcpetionDispatchInfo` public.\n3. Introducing a new like `ThrowIfFailed` that throws the expcetion via `ExcpetionDispatchInfo.Throw`.",
+        "url": "https://github.com/dotnet/dotNext/issues/260"
+    },
+    {
+        "id": 2802261810,
+        "number": 256,
+        "title": "Incorrect reads performed by PoolingBufferedStream",
+        "state": "closed",
+        "created_at": "2025-01-21T16:10:54Z",
+        "updated_at": "2025-01-21T17:21:48Z",
+        "closed_at": "2025-01-21T17:21:48Z",
+        "author": "sakno",
+        "comments": 0,
+        "labels": [],
+        "assignees": [
+            "sakno"
+        ],
+        "locked": false,
+        "body": "`PoolingBufferedStream` reads incorrectly when the requested data is larger than the buffered data.",
+        "url": "https://github.com/dotnet/dotNext/issues/256"
+    },
+    {
+        "id": 2761022852,
+        "number": 255,
+        "title": "Proposal: Add support for Length property to SparseStream class and add a new way to create",
+        "state": "closed",
+        "created_at": "2024-12-27T15:39:06Z",
+        "updated_at": "2024-12-29T19:54:42Z",
+        "closed_at": "2024-12-29T19:54:42Z",
+        "author": "sakno",
+        "comments": 3,
+        "labels": [],
+        "assignees": [
+            "sakno"
+        ],
+        "locked": false,
+        "body": "\n### Discussed in https://github.com/dotnet/dotNext/discussions/253\n\n<div type='discussions-op-text'>\n\n<sup>Originally posted by **xoma-zver** December 20, 2024</sup>\n**Length Property:**\r\nThis proposal suggests adding support for the Length property to the SparseStream class. This would provide a way to retrieve the total length of the stream.\r\n\r\nPotential benefits:\r\n\r\n- Improved usability for users who need to know the length of the stream\r\n- Better compatibility with other stream classes that support Length property\r\n\r\nPotential drawbacks:\r\n\r\n- One significant drawback of implementing the Length property is that it would require enumerating all the underlying streams and retrieving their lengths at the time of SparseStream creation. Enumerating all underlying streams to retrieve their lengths at creation time could be costly or impossible, limiting the flexibility of the SparseStream class and potentially leading to performance issues or errors if the underlying streams don't support length retrieval. .\r\n\r\n**New way to create:**\r\nThe second proposal implies the possibility of creating a SparseStream instance not only using Combine, but also as an extension method of ReadOnlySpan/IEnumerable, which will simplify the creation of combined streams from a set of streams and avoid awkward constructions like:\r\n```csharp\r\nvar fileStreams = filePaths.Select(File.OpenRead).Cast<Stream>().ToArray();\r\nawait using var stream = fileStreams.First().Combine(fileStreams.AsSpan(1));\r\n```</div>",
+        "url": "https://github.com/dotnet/dotNext/issues/255"
+    },
+    {
+        "id": 2759046813,
+        "number": 254,
+        "title": "AOT compilation of DotNext.Net.Cluster (and the RaftNode example) fails",
+        "state": "closed",
+        "created_at": "2024-12-25T18:14:09Z",
+        "updated_at": "2024-12-29T19:54:42Z",
+        "closed_at": "2024-12-29T19:54:41Z",
+        "author": "guillermoeuillades",
+        "comments": 5,
+        "labels": [],
+        "assignees": [
+            "sakno"
+        ],
+        "locked": false,
+        "body": "The AOT compilation of the RaftNode example does not work. After removing Kestrel and other HTTP dependencies that were blocking AOT compilation, I encountered a reflection dependency in DotNext.Reflection.TaskType.\n\n`\"C:\\Users\\administrator\\.nuget\\packages\\runtime.win-x64.microsoft.dotnet.ilcompiler\\8.0.11\\tools\\\\ilc\" @\"obj\\Release\\net8.0\\win-x64\\native\\RaftNode.ilc.rsp\"\nEXEC(0,0): Error : One or more errors occurred. (Code generation failed for method '[DotNext]DotNext.Reflection.TaskType..cctor()')\nSystem.AggregateException: One or more errors occurred. (Code generation failed for method '[DotNext]DotNext.Reflection.TaskType..cctor()')\n ---> ILCompiler.CodeGenerationFailedException: Code generation failed for method '[DotNext]DotNext.Reflection.TaskType..cctor()'\n ---> System.NotImplementedException: Open instance delegates\n   at ILCompiler.DelegateCreationInfo.Create(TypeDesc, MethodDesc, TypeDesc, NodeFactory, Boolean) + 0x475\n   at Internal.IL.ILImporter.ImportCall(ILOpcode, Int32) + 0x18ad\n   at Internal.IL.ILImporter.ImportBasicBlock(ILImporter.BasicBlock) + 0x1d04\n   at Internal.IL.ILImporter.ImportBasicBlocks() + 0x55\n   at Internal.IL.ILImporter.Import() + 0x745\n   at ILCompiler.ILScanner.CompileSingleMethod(ScannedMethodNode methodCodeNodeNeedingCode) + 0x5c\n   --- End of inner exception stack trace ---`\n\nUpon further investigation, I found the issue in\nsrc/cluster/DotNext.Net.Cluster/Net/Cluster/Consensus/Raft/Tcp/TcpServer.cs, particularly in commit [413e0b185c07eaa84115951747e417ffed754af9](https://github.com/dotnet/dotNext/commit/413e0b185c07eaa84115951747e417ffed754af9), where TaskType was introduced.\n\n  \n`using static Reflection.TaskType;`\n...\n\n\n`\nprotected override void Dispose(bool disposing)\n    {\n        if (disposing)\n        {\n            CleanUp();\n            if (!SpinWait.SpinUntil(noPendingConnectionsEvent.Task.GetIsCompletedGetter(), GracefulShutdownTimeout))\n                logger.TcpGracefulShutdownFailed(GracefulShutdownTimeout);\n        }\n        base.Dispose(disposing);\n    }\n`\n\n\nAfter removing the dependency on TaskType from TcpServer.cs, the AOT compilation worked successfully.\n\n\n\n",
+        "url": "https://github.com/dotnet/dotNext/issues/254"
+    },
+    {
+        "id": 2584118540,
+        "number": 251,
+        "title": "ConcurrentCache is obsolete",
+        "state": "closed",
+        "created_at": "2024-10-13T17:05:59Z",
+        "updated_at": "2024-10-16T12:45:25Z",
+        "closed_at": "2024-10-16T12:13:31Z",
+        "author": "adambajguz",
+        "comments": 3,
+        "labels": [
+            "question"
+        ],
+        "assignees": [
+            "sakno"
+        ],
+        "locked": false,
+        "body": "Hi, the `ConcurrentCache` is currently marked as obsolete as `RandomAccessCache` was created. However, the `ConcurrentCache` has one big adventage - all methods ale synchornous which is very useful for e.g. value objects caching.\n\nDo you plan to add a LRU synchronous cache or remove the obsolete attribute?",
+        "url": "https://github.com/dotnet/dotNext/issues/251"
+    },
+    {
+        "id": 2577958491,
+        "number": 250,
+        "title": "Misleading Example for unsing SemaphoreSlim with Lock and AsyncLock",
+        "state": "closed",
+        "created_at": "2024-10-10T07:46:16Z",
+        "updated_at": "2024-10-13T10:34:11Z",
+        "closed_at": "2024-10-13T10:34:10Z",
+        "author": "thomas-rudlof-bl",
+        "comments": 0,
+        "labels": [
+            "documentation"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "The threading top level documentation page shows really very helpful example code for using SemphoreSlim\n\n```C#\nusing DotNext.Threading;\nusing System.Threading;\n\nvar semaphore = new SemaphoreSlim(0, 1);\nvar syncLock = Lock.Semaphore(semaphore);\nvar asyncLock = AsyncLock.Semaphore(semaphore);\n\n//thread #1\nusing (syncLock.Acquire())\n{\n\n}\n\n//thread #2\nusing (await asyncLock.AcquireAsync(CancellationToken.None))\n{\n\n}\n```\n\nBut should it not be\n```C#\n...\nvar semaphore = new SemaphoreSlim(1, 1);\n...\n```\n\ninstead?\n\nInitializing the semaphore with (0,1) creates an already \"locked\" semaphore.\n",
+        "url": "https://github.com/dotnet/dotNext/issues/250"
+    },
+    {
+        "id": 2484466052,
+        "number": 249,
+        "title": "Support for enumeration in TypeMap",
+        "state": "closed",
+        "created_at": "2024-08-24T10:09:25Z",
+        "updated_at": "2024-09-01T12:57:42Z",
+        "closed_at": "2024-08-30T19:51:38Z",
+        "author": "adambajguz",
+        "comments": 3,
+        "labels": [],
+        "assignees": [
+            "sakno"
+        ],
+        "locked": false,
+        "body": "The `TypeMap` doesn't support enumeration.\r\n\r\nIt would be nice if you could add support for `IEnumerable<KeyValuePair<Type, object>>` or `IEnumerable<object>` or `IReadOnlyDictionary<Type, object>` in `TypeMap`.",
+        "url": "https://github.com/dotnet/dotNext/issues/249"
+    },
+    {
+        "id": 2437252310,
+        "number": 248,
+        "title": "Suggestions about UserDataStorage.CopyTo() and UserDataStorage.Clear()",
+        "state": "closed",
+        "created_at": "2024-07-30T08:38:21Z",
+        "updated_at": "2024-08-21T12:36:56Z",
+        "closed_at": "2024-08-01T09:19:30Z",
+        "author": "sakno",
+        "comments": 2,
+        "labels": [],
+        "assignees": [
+            "sakno"
+        ],
+        "locked": false,
+        "body": "### Discussed in https://github.com/dotnet/dotNext/discussions/245\r\n\r\n<div type='discussions-op-text'>\r\n\r\n<sup>Originally posted by **ReneeGA2020** July  7, 2024</sup>\r\nSuggestion 1:\r\nIt looks like UserDataStorage.CopyTo only works when the orgin UserDataStorage has anything stored, otherwise the target object's storage will not be changed. This probably worth to be mentioned in the document, or change its behavior to clear up all the UserData in the target object.\r\n\r\nAlternately, provide a Method to check if the storage has any UserData.\r\n\r\nSuggestion 2:\r\nI think UserDataStorage.Clear() would be useful.</div>",
+        "url": "https://github.com/dotnet/dotNext/issues/248"
+    },
+    {
+        "id": 2405648127,
+        "number": 247,
+        "title": "Did you remove \"IEnumerable<T>.FirstOrNone\"?",
+        "state": "closed",
+        "created_at": "2024-07-12T13:42:46Z",
+        "updated_at": "2024-07-25T14:08:39Z",
+        "closed_at": "2024-07-15T19:29:59Z",
+        "author": "CodingMadness",
+        "comments": 11,
+        "labels": [],
+        "assignees": [
+            "sakno"
+        ],
+        "locked": false,
+        "body": "Title.\r\n\r\nIt was very very useful and I had like 4 use cases in my tiny projects for it which was very convenient , sadly I do not find it anymore when I upgraded to \"DotNext 5.7.0\" :/",
+        "url": "https://github.com/dotnet/dotNext/issues/247"
+    },
+    {
+        "id": 2394691286,
+        "number": 246,
+        "title": "If ColdStarted node is down, new leader is not elected",
+        "state": "closed",
+        "created_at": "2024-07-08T05:47:07Z",
+        "updated_at": "2024-07-10T11:12:28Z",
+        "closed_at": "2024-07-10T11:12:28Z",
+        "author": "Pramodnm",
+        "comments": 1,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "Steps:\r\nStart 1st node in coldstart mode (no knowledge of other members) - this will become a Leader node\r\nStart a 2nd node which sends request to 1st node to join cluster. 1st Node executes AddMembersAsync - this works, node joins cluster. membership count=2\r\nStart 3rd node, 4th, 5th nodes using step 2. membership count = 5\r\nLeader is 1st Node\r\nKill 1st Node - expecting other nodes to take over as Leader\r\nWhat I see if Leader is still shown as 1st Node (after 1st node is already offline) - no election takes place\r\n\r\nIt\\s better to create a new issue.\r\n\r\n_Originally posted by @sakno in https://github.com/dotnet/dotNext/discussions/62#discussioncomment-4290857_",
+        "url": "https://github.com/dotnet/dotNext/issues/246"
+    },
+    {
+        "id": 2372164814,
+        "number": 244,
+        "title": "DotNext.Net.Cluster: System.ArgumentOutOfRangeException: Non-negative number required. (Parameter 'length')",
+        "state": "closed",
+        "created_at": "2024-06-25T09:24:56Z",
+        "updated_at": "2024-07-10T07:13:58Z",
+        "closed_at": "2024-07-10T07:13:58Z",
+        "author": "sakno",
+        "comments": 44,
+        "labels": [],
+        "assignees": [
+            "sakno"
+        ],
+        "locked": false,
+        "body": "### Discussed in https://github.com/dotnet/dotNext/discussions/243\r\n\r\n<div type='discussions-op-text'>\r\n\r\n<sup>Originally posted by **LarsWithCA** June 25, 2024</sup>\r\nHi @sakno,\r\n\r\nOnce in a while we get a series of this exception during startup (possibly after restart/power-cycle) hindering the cluster from getting fully up and running:\r\n\r\n```\r\n2024-06-24 11:36:24.9866|ERROR|DotNext.Net.Cluster.Consensus.Raft.Tcp.TcpServer|Failed to process request from 192.168.100.154:52480|System.ArgumentOutOfRangeException: Non-negative number required. (Parameter 'length')\r\nat System.IO.RandomAccess.SetLength(SafeFileHandle handle, Int64 length)\r\nat DotNext.Net.Cluster.Consensus.Raft.PersistentState.Table.UnsealIfNeededAsync(Int64 truncatePosition, CancellationToken token) in /_/src/cluster/DotNext.Net.Cluster/Net/Cluster/Consensus/Raft/PersistentState.Partition.cs:line 647\r\n--- End of stack trace from previous location --- \r\nat DotNext.Net.Cluster.Consensus.Raft.PersistentState.Table.WriteThroughAsync(CachedLogEntry entry, Int32 index, CancellationToken token) in /_/src/cluster/DotNext.Net.Cluster/Net/Cluster/Consensus/Raft/PersistentState.Partition.cs:line 605\r\nat System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource.GetResult(Int16 token)\r\nat DotNext.Net.Cluster.Consensus.Raft.PersistentState.AppendUncachedAsync[TEntry](ILogEntryProducer`1 supplier, Int64 startIndex, Boolean skipCommitted, CancellationToken token) in /_/src/cluster/DotNext.Net.Cluster/Net/Cluster/Consensus/Raft/PersistentState.cs:line 481\r\nat DotNext.Net.Cluster.Consensus.Raft.PersistentState.AppendAsync[TEntry](ILogEntryProducer`1 entries, Int64 startIndex, Boolean skipCommitted, CancellationToken token) in /_/src/cluster/DotNext.Net.Cluster/Net/Cluster/Consensus/Raft/PersistentState.cs:line 520\r\nat DotNext.Net.Cluster.Consensus.Raft.PersistentState.AppendAndCommitSlowAsync[TEntry](ILogEntryProducer`1 entries, Int64 startIndex, Boolean skipCommitted, Int64 commitIndex, CancellationToken token) in /_/src/cluster/DotNext.Net.Cluster/Net/Cluster/Consensus/Raft/PersistentState.cs:line 550\r\nat System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource<TResult>.GetResult(Int16 token)\r\nat DotNext.Net.Cluster.Consensus.Raft.RaftCluster`1.AppendEntriesAsync[TEntry](ClusterMemberId sender, Int64 senderTerm, ILogEntryProducer`1 entries, Int64 prevLogIndex, Int64 prevLogTerm, Int64 commitIndex, IClusterConfiguration config, Boolean applyConfig, CancellationToken token) in /_/src/cluster/DotNext.Net.Cluster/Net/Cluster/Consensus/Raft/RaftCluster.cs:line 620\r\nat System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource<TResult>.GetResult(Int16 token)\r\nat DotNext.Net.Cluster.Consensus.Raft.TransportServices.ConnectionOriented.Server.AppendEntriesAsync(ProtocolStream protocol, CancellationToken token) in /_/src/cluster/DotNext.Net.Cluster/Net/Cluster/Consensus/Raft/TransportServices/ConnectionOriented/Server.cs:line 142\r\nat System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource.GetResult(Int16 token)\r\nat DotNext.Net.Cluster.Consensus.Raft.Tcp.TcpServer.HandleConnection(Socket remoteClient) in /_/src/cluster/DotNext.Net.Cluster/Net/Cluster/Consensus/Raft/Tcp/TcpServer.cs:line 134\r\n```\r\n\r\nOur setup:\r\n\r\n- Linux ARM 32bit (little endian)\r\n- .NET8 + DotNext.Net.Cluster 5.7.0\r\n- Cluster with 6 nodes\r\n- 10Hz communication frequency\r\n- MemoryBasedStateMachine.Options:\r\n    - recordsPerPartition = 50\r\n    - BufferSize = 8192 * 64 * 10\r\n    - InitialPartitionSize = 50 * 8192 * 10\r\n    - CompactionMode = CompactionMode.Sequential\r\n    - WriteMode = WriteMode.AutoFlush\r\n    - CacheEvictionPolicy = LogEntryCacheEvictionPolicy.OnSnapshot\r\n\r\nHere are the values of various arguments/variables/fields inside `PersistentState.Table.WriteThroughAsync` when the exception happens:\r\n\r\n- index=1 \r\n- fileOffset=512 \r\n- FirstIndex=150 \r\n- LastIndex=199 \r\n- PartitionNumber=3\r\n- footer.Length=2000 \r\n- entry.Length=1425 \r\n- GetMetadataBuffer(index - 1).Length=40\r\n- **writeAddress**=LogEntryMetadata.GetEndOfLogEntry(GetMetadataBuffer(index - 1).Span)=**-7426796073504137408** \r\n\r\nAre there any other values I should try and capture that might help you investigate/solve this?\r\n\r\nIn the previous version we were running (5.5.0), apart from this exception we also saw \"System.ArgumentOutOfRangeException: Specified file length was too large for the file system.\" in the same area of the code - we *might* not be seeing that in the newest version.</div>",
+        "url": "https://github.com/dotnet/dotNext/issues/244"
+    }
+]

@@ -1,0 +1,242 @@
+[
+    {
+        "sha": "63aaefd0db8b44da58486e9c72e61c7dfd6368fd",
+        "author": "Phan An",
+        "email": "me@phanan.net",
+        "date": "2026-03-21T18:59:19Z",
+        "message": "Add `juxt` for applying multiple functions to the same arguments (#263)",
+        "url": "https://github.com/lstrojny/functional-php/commit/63aaefd0db8b44da58486e9c72e61c7dfd6368fd"
+    },
+    {
+        "sha": "c9d87fbd759613618edde12822d8576ba04c7b33",
+        "author": "Phan An",
+        "email": "me@phanan.net",
+        "date": "2026-03-21T18:47:14Z",
+        "message": "Add `frequencies` function (#262)\n\nCo-authored-by: Claude Opus 4.6 (1M context) <noreply@anthropic.com>",
+        "url": "https://github.com/lstrojny/functional-php/commit/c9d87fbd759613618edde12822d8576ba04c7b33"
+    },
+    {
+        "sha": "b6e6726636c29cd6db1297ffc0fb94525edbec20",
+        "author": "Phan An",
+        "email": "me@phanan.net",
+        "date": "2026-03-21T13:47:54Z",
+        "message": "Remove doctoc-generated table of contents (#261)\n\nGitHub has natively supported auto-generated TOC for Markdown files\nsince 2021, making the manually maintained doctoc TOC redundant.",
+        "url": "https://github.com/lstrojny/functional-php/commit/b6e6726636c29cd6db1297ffc0fb94525edbec20"
+    },
+    {
+        "sha": "3db3c5e6cea06cb39ca13764e455ffa6e842f36e",
+        "author": "Phan An",
+        "email": "me@phanan.net",
+        "date": "2026-03-21T11:35:37Z",
+        "message": "Fix CI: update runner from ubuntu-22.04 to ubuntu-24.04 (#260)",
+        "url": "https://github.com/lstrojny/functional-php/commit/3db3c5e6cea06cb39ca13764e455ffa6e842f36e"
+    },
+    {
+        "sha": "c1667dc86f8bc3122aa52b4d11b24d9f5d6ca09a",
+        "author": "Mattia Basone",
+        "email": "mattia.basone@gmail.com",
+        "date": "2026-03-21T09:05:40Z",
+        "message": "PHP 8.4 migration (#257)\n\n* Explicitly mark all nullable parameters\n\nThis removes the deprecations introduced in PHP 8.4\n\n* Make iterator return types match Iterator\n\nPHP 8.4 makes not doing so a deprecation.\n\n* Skip tesetErrorIsThrownAsException for PHP >= 8.4\n\nPHP 8.4 deprecates the use of E_USER_ERROR. This can mangle the exception thrown. So, skip the test\nin PHP 8.4. It may be possible to fix up what's being thrown, but I haven't found anything.\n\nSince using trigger_error for user errors is now deprecated, error_to_exception() should probably be\ndeprecated as well. But that's a greater decision than making sure tests work correctly.\n\n* Fix message matching in RepeatTest::testNegativeRepeatedtimes\n\nPHP 8.4 has changed the format of __FUNCTION__ for closures, at least.\n\n* Force doubles to ints in group()\n\nPHP 8.4 deprecates the implicit conversion from doubles to ints when doing so would lose precision.\nHowever, disallowing doubles as array keys in Functional would be a BC break.\n\n* update CI matrix and actions\n\n* use E_USER_DEPRECATED instead of E_USER_ERROR in test\n\n* cs fixes\n\n* update workflows\n\n* add test for float keys\n\n* update test workflow\n\n* use the right method for phpunit < 9\n\n* cs-fixer ignore env\n\n* use the right method for phpunit < 9\n\n* run pcov step only for php version 7.1 which uses older version of phpunit\n\n---------\n\nCo-authored-by: Michael D Johnson <mjohnson@pitsco.com>",
+        "url": "https://github.com/lstrojny/functional-php/commit/c1667dc86f8bc3122aa52b4d11b24d9f5d6ca09a"
+    },
+    {
+        "sha": "5f5ddb6e7e005bd7413060f842d45f782ee240bb",
+        "author": "Hugo Sales",
+        "email": "hugo@hsal.es",
+        "date": "2021-11-29T15:47:51Z",
+        "message": "Add `entries` and `from_entries`, inspired by JavaScript's `Object.entries` (and Python's `enumerate`) and `Object.from_entries`, respectively (#243)",
+        "url": "https://github.com/lstrojny/functional-php/commit/5f5ddb6e7e005bd7413060f842d45f782ee240bb"
+    },
+    {
+        "sha": "6012d7b3b25d0e480b6115048142545e26a782fc",
+        "author": "Lars Strojny",
+        "email": "lars.strojny@internations.org",
+        "date": "2021-11-05T10:00:55Z",
+        "message": "Convert deprecations to exceptions",
+        "url": "https://github.com/lstrojny/functional-php/commit/6012d7b3b25d0e480b6115048142545e26a782fc"
+    },
+    {
+        "sha": "ce4119bab1072ccc9215a6bffaedb00a321249f0",
+        "author": "Chun-Sheng, Li",
+        "email": "peter279k@gmail.com",
+        "date": "2021-03-08T06:52:17Z",
+        "message": "Reopen PR #228 (#241)",
+        "url": "https://github.com/lstrojny/functional-php/commit/ce4119bab1072ccc9215a6bffaedb00a321249f0"
+    },
+    {
+        "sha": "e459d5cb307bc6e10e9e992c4e96bb71a0262506",
+        "author": "Lars Strojny",
+        "email": "lars@strojny.net",
+        "date": "2021-03-07T00:25:34Z",
+        "message": "Adding FUNDING file",
+        "url": "https://github.com/lstrojny/functional-php/commit/e459d5cb307bc6e10e9e992c4e96bb71a0262506"
+    },
+    {
+        "sha": "300fac0605333f2042236ecd5994fd5ef66fcfc8",
+        "author": "Lars Strojny",
+        "email": "lars@strojny.net",
+        "date": "2021-03-07T00:24:52Z",
+        "message": "Fixes #217: use array_key_exists() in pick() for arrays (#239)",
+        "url": "https://github.com/lstrojny/functional-php/commit/300fac0605333f2042236ecd5994fd5ef66fcfc8"
+    },
+    {
+        "sha": "df44e36adabc80a759f6f7324299ce2f56f07ad9",
+        "author": "Lars Strojny",
+        "email": "lars@strojny.net",
+        "date": "2021-03-07T00:08:08Z",
+        "message": "Support PHP 8 (#238)\n\nMost of the work was done by @phanan, thank you!",
+        "url": "https://github.com/lstrojny/functional-php/commit/df44e36adabc80a759f6f7324299ce2f56f07ad9"
+    },
+    {
+        "sha": "64241f37ee96b9d703ff0b2b1cbfcf5ab4a8b942",
+        "author": "Lars Strojny",
+        "email": "lars.strojny@internations.org",
+        "date": "2021-03-05T19:31:56Z",
+        "message": "Goodbye Travis and thank you @phanan",
+        "url": "https://github.com/lstrojny/functional-php/commit/64241f37ee96b9d703ff0b2b1cbfcf5ab4a8b942"
+    },
+    {
+        "sha": "23864ed8af16e30bf630670876e7ad9a28a9b171",
+        "author": "Lars Strojny",
+        "email": "lars@strojny.net",
+        "date": "2021-03-05T19:24:01Z",
+        "message": "Switch to GitHub actions (#237)",
+        "url": "https://github.com/lstrojny/functional-php/commit/23864ed8af16e30bf630670876e7ad9a28a9b171"
+    },
+    {
+        "sha": "dabe126a435e26c51c9b87e4d4fb65f9483c3d64",
+        "author": "Lars Strojny",
+        "email": "lars.strojny@internations.org",
+        "date": "2021-03-05T15:44:49Z",
+        "message": "Fix retry sequence issue\n\nInstead of using the number of retries as a limit, it was used as an\noffset, cutting off the first n elements of the sequence instead of\nlimiting the sequence to n (where \"n\" is the number of retries).",
+        "url": "https://github.com/lstrojny/functional-php/commit/dabe126a435e26c51c9b87e4d4fb65f9483c3d64"
+    },
+    {
+        "sha": "07940820f52820292c83419937d5c331a4ec2fb3",
+        "author": "Phan An",
+        "email": "me@phanan.net",
+        "date": "2020-12-22T07:53:25Z",
+        "message": "Merge pull request #235 from phanan-forks/fix-typo\n\nfix: typo in match() deprecation message",
+        "url": "https://github.com/lstrojny/functional-php/commit/07940820f52820292c83419937d5c331a4ec2fb3"
+    },
+    {
+        "sha": "c541a9d9c3f60a4c1f15aa618977d902b86a499c",
+        "author": "Phan An",
+        "email": "me@phanan.net",
+        "date": "2020-12-22T07:48:23Z",
+        "message": "fix: typo in match() deprecation message",
+        "url": "https://github.com/lstrojny/functional-php/commit/c541a9d9c3f60a4c1f15aa618977d902b86a499c"
+    },
+    {
+        "sha": "5b7813201c51b6d89ba666fb98ac0c31d1593c10",
+        "author": "Phan An",
+        "email": "me@phanan.net",
+        "date": "2020-12-16T10:16:31Z",
+        "message": "feat: doc improvements (#231)",
+        "url": "https://github.com/lstrojny/functional-php/commit/5b7813201c51b6d89ba666fb98ac0c31d1593c10"
+    },
+    {
+        "sha": "163ff46167221a4314905a10bb68b7b0c19bbbcd",
+        "author": "Phan An",
+        "email": "me@phanan.net",
+        "date": "2020-12-15T18:09:33Z",
+        "message": "build(deps): add PHP8 support (#230)",
+        "url": "https://github.com/lstrojny/functional-php/commit/163ff46167221a4314905a10bb68b7b0c19bbbcd"
+    },
+    {
+        "sha": "a993c2a5a0bedf9d8190768fb10306aae1278137",
+        "author": "Chun-Sheng, Li",
+        "email": "peter279k@gmail.com",
+        "date": "2020-11-13T11:56:19Z",
+        "message": "Fix coding style via PHP_CS and PHP-CS-Fixer (#227)",
+        "url": "https://github.com/lstrojny/functional-php/commit/a993c2a5a0bedf9d8190768fb10306aae1278137"
+    },
+    {
+        "sha": "9e8363e3cb9db924327f51b5804f4dfba03605aa",
+        "author": "Lars Strojny",
+        "email": "lars.strojny@internations.org",
+        "date": "2020-10-12T09:48:50Z",
+        "message": "Avoid double declaration of Functional\\match (e.g. for preloading)",
+        "url": "https://github.com/lstrojny/functional-php/commit/9e8363e3cb9db924327f51b5804f4dfba03605aa"
+    },
+    {
+        "sha": "4924870cecd16c8fe6536ff25f4deb1f18e53f39",
+        "author": "Lars Strojny",
+        "email": "lars@strojny.net",
+        "date": "2020-08-24T14:15:56Z",
+        "message": "Prevent hash collisions for object hashing (#225)",
+        "url": "https://github.com/lstrojny/functional-php/commit/4924870cecd16c8fe6536ff25f4deb1f18e53f39"
+    },
+    {
+        "sha": "52fc803322cc4797af4020471a9872bb564315cb",
+        "author": "Lars Strojny",
+        "email": "lars@strojny.net",
+        "date": "2020-08-06T10:55:34Z",
+        "message": "Functional\\match() to Functional\\matching() (#224)",
+        "url": "https://github.com/lstrojny/functional-php/commit/52fc803322cc4797af4020471a9872bb564315cb"
+    },
+    {
+        "sha": "1a775c7ebcba22b5e66886cbff735bf484fd67c1",
+        "author": "Lars Strojny",
+        "email": "lars.strojny@internations.org",
+        "date": "2020-06-17T11:39:49Z",
+        "message": "Fix image URL",
+        "url": "https://github.com/lstrojny/functional-php/commit/1a775c7ebcba22b5e66886cbff735bf484fd67c1"
+    },
+    {
+        "sha": "0ec81367978e61ac2bc77fa240ea4c103ca3b8a3",
+        "author": "Lars Strojny",
+        "email": "lars.strojny@internations.org",
+        "date": "2020-06-17T11:37:34Z",
+        "message": "Update Travis CI URL",
+        "url": "https://github.com/lstrojny/functional-php/commit/0ec81367978e61ac2bc77fa240ea4c103ca3b8a3"
+    },
+    {
+        "sha": "5d3adf69c5487c8a0667ab0b5be82210df5a9517",
+        "author": "Lars Strojny",
+        "email": "lars.strojny@internations.org",
+        "date": "2020-06-16T09:21:09Z",
+        "message": "Update build badges",
+        "url": "https://github.com/lstrojny/functional-php/commit/5d3adf69c5487c8a0667ab0b5be82210df5a9517"
+    },
+    {
+        "sha": "11610f50323519dd38bd7b527d6730e524e5eb58",
+        "author": "Lars Strojny",
+        "email": "lars@strojny.net",
+        "date": "2020-06-16T09:17:22Z",
+        "message": "Update build matrix (#219)\n\n* Update build matrix\r\n\r\n* Fix CS",
+        "url": "https://github.com/lstrojny/functional-php/commit/11610f50323519dd38bd7b527d6730e524e5eb58"
+    },
+    {
+        "sha": "f9659458c46807892c498d2a5abee4612e50306b",
+        "author": "Hugo Sales",
+        "email": "hugo@fc.up.pt",
+        "date": "2020-06-09T14:16:59Z",
+        "message": "Add `ary` function which ignores arguments over the supplied number (#215)\n\n* Add `ary`, a function which ignores arguments over the supplied number\r\n\r\nAdded function which defines a function of an arbitry number of arguments and\r\ncalls the provided callable with only the given number of arguments\r\n\r\nAs suggested by @lstrojny, using the name `ary`, like in https://lodash.com/docs/4.17.15#ary\r\n\r\n* Added test for `ary` function\r\n\r\n* Fixed errors spit by vendor/bin/phpcs\r\n\r\n* Fix implementation and tests",
+        "url": "https://github.com/lstrojny/functional-php/commit/f9659458c46807892c498d2a5abee4612e50306b"
+    },
+    {
+        "sha": "08e136ad7da521f2697c78171826ac9bbe13be43",
+        "author": "Hugo Sales",
+        "email": "someonewithpc@gmail.com",
+        "date": "2020-05-25T13:09:10Z",
+        "message": "Fix tests (#218)",
+        "url": "https://github.com/lstrojny/functional-php/commit/08e136ad7da521f2697c78171826ac9bbe13be43"
+    },
+    {
+        "sha": "e495a97e90d04e44da32b147ec223970370a567a",
+        "author": "Jason",
+        "email": "jasonmm@users.noreply.github.com",
+        "date": "2020-03-29T10:31:20Z",
+        "message": "Make default callback the identity function. (#214)\n\n* Make default callback the identity function.\n\nThis commit changes the `select`, `reject`, `some`, `none`, and `every`\nfunctions so that the default callback argument is the `id` function.\n\n* Provide more clarity in docs when $callback is id().",
+        "url": "https://github.com/lstrojny/functional-php/commit/e495a97e90d04e44da32b147ec223970370a567a"
+    },
+    {
+        "sha": "a736d2573d217dbfb80773faf324f418cd5f5cb6",
+        "author": "mducharm",
+        "email": "9277274+mducharm@users.noreply.github.com",
+        "date": "2020-01-02T09:04:42Z",
+        "message": "Added examples for `invoke` functions. (#211)\n\nAdded examples for invoke(), invoke_first(), invoke_last(), & invoker() functions. \r\n\r\n(Since this is my first real PR on GitHub, please let me know if I missed anything or if any changes are needed!)",
+        "url": "https://github.com/lstrojny/functional-php/commit/a736d2573d217dbfb80773faf324f418cd5f5cb6"
+    }
+]

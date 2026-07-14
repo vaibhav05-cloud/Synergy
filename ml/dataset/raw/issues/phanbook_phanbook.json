@@ -1,0 +1,378 @@
+[
+    {
+        "id": 516479357,
+        "number": 264,
+        "title": "Problem of Google OAuth",
+        "state": "open",
+        "created_at": "2019-11-02T05:11:34Z",
+        "updated_at": "2019-11-10T16:12:40Z",
+        "closed_at": null,
+        "author": "mzch",
+        "comments": 4,
+        "labels": [],
+        "assignees": [
+            "duythien"
+        ],
+        "locked": false,
+        "body": "Hi,\r\n\r\nI set up Google OAuth and Analytics API, but PhanBook failed to login/sign up using Google OAuth.\r\nCould you tell me how to fix this issue?\r\n\r\n- Log\r\n```\r\n[Fri Nov 01 22:08:29.166115 2019] [proxy_fcgi:error] [pid 29764:tid 139764724483840] [client 203.141.134.112:58156] AH01071: Got error 'PHP message: PHP Notice:  Undefined property: Phalcon\\\\Config::$google in /srv/phanbook/core/modules/oauth/controllers/LoginController.php on line 72PHP message: PHP Fatal error:  Uncaught TypeError: Argument 1 passed to Phanbook\\\\Google\\\\Auth::__construct() must be an instance of Phalcon\\\\Config, null given, called in /srv/phanbook/core/modules/oauth/controllers/LoginController.php on line 72 and defined in /srv/phanbook/core/common/library/Google/Auth.php:39\\nStack trace:\\n#0 /srv/phanbook/core/modules/oauth/controllers/LoginController.php(72): Phanbook\\\\Google\\\\Auth->__construct(NULL)\\n#1 [internal function]: Phanbook\\\\Oauth\\\\Controllers\\\\LoginController->googleAction()\\n#2 [internal function]: Phalcon\\\\Dispatcher->callActionMethod(Object(Phanbook\\\\Oauth\\\\Controllers\\\\LoginController), 'googleAction', Array)\\n#3 [internal function]: Phalcon\\\\Dispatcher->dispatch()\\n#4 /srv/phanbook/core/common/Application.php(158): Phalcon\\\\Mvc\\\\Application->handle()\\n#5 /srv/phanbook/core/common/Application.php(108): Phanbook\\\\Common\\\\Application->getOutput()\\n#6 /srv/phanbook/public/index.php(23): Phanbook\\\\Common\\\\Application->run()\\n#7 {main}\\n  thrown in /srv/phanbook/core/common/...', referer: https://stack.uixis.org/users/signin\r\n```",
+        "url": "https://github.com/phanbook/phanbook/issues/264"
+    },
+    {
+        "id": 497431950,
+        "number": 262,
+        "title": "does Blog Theme have down link?",
+        "state": "closed",
+        "created_at": "2019-09-24T03:22:02Z",
+        "updated_at": "2019-11-10T14:15:18Z",
+        "closed_at": "2019-11-10T14:15:18Z",
+        "author": "godeye",
+        "comments": 1,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "as the phanbook.com is closed, does Blog Theme have down link?",
+        "url": "https://github.com/phanbook/phanbook/issues/262"
+    },
+    {
+        "id": 490762943,
+        "number": 261,
+        "title": "The Missing Phalcon Admin",
+        "state": "open",
+        "created_at": "2019-09-08T14:44:57Z",
+        "updated_at": "2019-09-08T14:44:57Z",
+        "closed_at": null,
+        "author": "duythien",
+        "comments": 0,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "As a developer, I want a skeleton admin page for project phalcon. I would like the phanbook have function like this https://voyager.devdojo.com/",
+        "url": "https://github.com/phanbook/phanbook/issues/261"
+    },
+    {
+        "id": 293251610,
+        "number": 257,
+        "title": "Problem installation white screen after install on my vps with plesk onyx",
+        "state": "closed",
+        "created_at": "2018-01-31T17:47:21Z",
+        "updated_at": "2018-08-04T04:57:17Z",
+        "closed_at": "2018-08-04T04:57:17Z",
+        "author": "ghost",
+        "comments": 1,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "Hi!, I find this software and I follow the steps for manual installation. All is right till I go to see the web only show a white screen, please I need help!, or if anyone can help to install I can give access.",
+        "url": "https://github.com/phanbook/phanbook/issues/257"
+    },
+    {
+        "id": 284408223,
+        "number": 256,
+        "title": "Should move assets core to public directory",
+        "state": "open",
+        "created_at": "2017-12-25T06:05:27Z",
+        "updated_at": "2017-12-25T07:43:07Z",
+        "closed_at": null,
+        "author": "duythien",
+        "comments": 5,
+        "labels": [
+            "discussion"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "Hello\r\n\r\nAs you know when we put css and js into core and modules it will be help clean code but when we want to deploy to CDN maybe it is hard\r\n\r\nAny idea for that?",
+        "url": "https://github.com/phanbook/phanbook/issues/256"
+    },
+    {
+        "id": 282619237,
+        "number": 254,
+        "title": "config/options/options.php because No such file or directory",
+        "state": "closed",
+        "created_at": "2017-12-16T12:02:14Z",
+        "updated_at": "2019-09-07T17:16:13Z",
+        "closed_at": "2019-09-07T17:16:13Z",
+        "author": "godeye",
+        "comments": 1,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "[Sat Dec 16 07:00:29 2017] [error] [client 171.113.82.181] PHP Warning:  touch(): Unable to create file /srv/www/com/core/config/options/options.php because No such file or directory in /srv/www/com/core/common/tools/ZFunction.php on line 88, referer: http://www.com.com/backend/settings/general\r\n[Sat Dec 16 07:00:29 2017] [error] [client 171.113.82.181] PHP Fatal error:  Uncaught exception 'Exception' with message '<p>You need to set permission for it, just add chmod\\n                or chown in directory config, Also you can create file /srv/www/com/core/config/options/options.php for that</p><code> chown -R nginx:nginx -R common/config</code>or#<code> chown -R apache:apache -R common/config</code>' in /srv/www/com/core/common/tools/ZFunction.php:94\\nStack trace:\\n#0 /srv/www/com/core/common/library/Utils/Phanbook.php(109): Phanbook\\\\Tools\\\\ZFunction::makeFile('/srv/www/c...')\\n#1 /srv/www/com/core/modules/backend/controllers/SettingsController.php(193): Phanbook\\\\Utils\\\\Phanbook->saveConfig(Array)\\n#2 [internal function]: Phanbook\\\\Backend\\\\Controllers\\\\SettingsController->saveGeneralAction()\\n#3 [internal function]: Phalcon\\\\Dispatcher->callActionMethod(Object(Phanbook\\\\Backend\\\\Controllers\\\\SettingsController), 'saveGeneralActi...', Array)\\n#4 [internal function]: Phalcon\\\\Dispatcher->_dispatch()\\n#5 [internal function]: Phalcon\\\\Dispatcher->dispatch()\\n#6 /srv/www/bug in /srv/www/com/core/common/tools/ZFunction.php on line 94, referer: http://www.com.com/backend/settings/general\r\n",
+        "url": "https://github.com/phanbook/phanbook/issues/254"
+    },
+    {
+        "id": 272617339,
+        "number": 251,
+        "title": "Security concern: volt files should not be accessible via web",
+        "state": "open",
+        "created_at": "2017-11-09T16:02:10Z",
+        "updated_at": "2017-12-11T09:05:33Z",
+        "closed_at": null,
+        "author": "Ultimater",
+        "comments": 4,
+        "labels": [
+            "bug: medium",
+            "area: common"
+        ],
+        "assignees": [
+            "Ultimater"
+        ],
+        "locked": false,
+        "body": "e.g. http://meta.phanbook.com/content/themes/default/page.volt",
+        "url": "https://github.com/phanbook/phanbook/issues/251"
+    },
+    {
+        "id": 251135382,
+        "number": 250,
+        "title": "Top menu lacks an indicator that you're logged in.",
+        "state": "open",
+        "created_at": "2017-08-18T04:18:47Z",
+        "updated_at": "2017-08-18T20:27:54Z",
+        "closed_at": null,
+        "author": "Ultimater",
+        "comments": 0,
+        "labels": [
+            "area: web",
+            "bug: low",
+            "priority: medium"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "There should be an indicator that you're logged in, along with your username and/or name along the top so you know that you're logged in, rather than having to click \"+Settings\" to see if the \"logout\" link is present.  As we're using stackoverflow as the rolemodel of what phanbook is supposed to be, let's see what they use to indicate logged in vs not logged in:  \r\n\r\nNot logged in:  \r\n---   \r\n\r\n![not-logged-in](https://user-images.githubusercontent.com/1922199/29443332-3898b74c-838c-11e7-893b-ed3effef39c2.png)\r\n\r\nLogged in:  \r\n---   \r\n![logged-in](https://user-images.githubusercontent.com/1922199/29443345-4e7e6df4-838c-11e7-9e92-74a7f0253cd3.png)\r\n\r\nAs you can see, they do waaaaaaay more than just change the top menu. They even show you a different landing page, and configure it based on your settings and preferences. Currently phanbook shows you the same page whether or not you're logged in.\r\n\r\nWe're using a hack in https://github.com/phanbook/phanbook/blob/667d07f9082bb871b73ba6265c66c12d370c9c10/content/themes/default/partials/breadcrumb.volt#L23\r\nto decide if we're viewing the initial `/` page. Then we're displaying content which users see whether logged in or not, with a sign up link. This sort of logic seems wrong. There should be two different types of header pages I believe. One should be content we welcome users to sign up. The other should be content the user would be interested in like their badge progress, their current reputation, and a history of their activity and a way to view their starred questions etc.  \r\n  \r\nWe should be aiming for a page closer in the direction of:  \r\n\r\n![instead-they-should-see](https://user-images.githubusercontent.com/1922199/29443779-3a9c747c-838f-11e7-8791-6912925abe54.png)\r\n\r\nIt's not that hard to check if the user is logged in. Just have to do something like:  \r\n\r\n        $this->view->setVar('loggedIn', $this->auth->isAuthorizedVisitor());\r\n\r\nThen from volt you can do something like:  \r\n\r\n```\r\n{% if loggedIn %}\r\n    {{ partial('partials/logged-in') }}\r\n{% else %}\r\n    {{ partial('partials/not-logged-in') }}\r\n{% endif %}\r\n```\r\n\r\nAnd why is this sort of logic currently in breadcrumb.volt? It should be in its own partials page so it's in a place people actually would think to look for it.  \r\n  \r\nNot sure when I'll be able to get around to this. Just jotting out ideas for now until a solution begins to take form.",
+        "url": "https://github.com/phanbook/phanbook/issues/250"
+    },
+    {
+        "id": 251128537,
+        "number": 248,
+        "title": "backend/media images not displaying",
+        "state": "closed",
+        "created_at": "2017-08-18T03:16:07Z",
+        "updated_at": "2017-08-18T20:23:09Z",
+        "closed_at": "2017-08-18T17:27:16Z",
+        "author": "Ultimater",
+        "comments": 3,
+        "labels": [
+            "bug: medium",
+            "area: common",
+            "fixed in develop"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "![backend-media-not-displaying](https://user-images.githubusercontent.com/1922199/29442791-b2969bb2-8388-11e7-9610-e840af16f9f3.png)\r\n\r\nMy fix is:  `RewriteRule ^(content/uploads)($|/) - [NC,L]`\r\n\r\n![backend-media-not-display-after](https://user-images.githubusercontent.com/1922199/29442802-cca60a60-8388-11e7-8fc4-470f4bf54318.png)\r\n",
+        "url": "https://github.com/phanbook/phanbook/issues/248"
+    },
+    {
+        "id": 251044761,
+        "number": 246,
+        "title": "DatabaseSeeder task broken",
+        "state": "open",
+        "created_at": "2017-08-17T19:18:27Z",
+        "updated_at": "2017-08-18T20:27:23Z",
+        "closed_at": null,
+        "author": "Ultimater",
+        "comments": 1,
+        "labels": [
+            "bug: medium",
+            "area: cli",
+            "discussion",
+            "priority: medium"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "See error in screenshot below:  \r\n\r\n![broken-task](https://user-images.githubusercontent.com/1922199/29427099-982d5aea-833d-11e7-9bec-22a9ce2f0959.png)\r\n\r\nThe backtrace in the screenshot mentions line 35:\r\nhttps://github.com/phanbook/phanbook/blob/667d07f9082bb871b73ba6265c66c12d370c9c10/core/modules/cli/tasks/DatabaseSeederTask.php#L35\r\n\r\nThis is caused by the following four pointing nowhere:\r\n\r\n    use Phanbook\\Databases\\UsersSeeder;\r\n    use Phanbook\\Databases\\PostsSeeder;\r\n    use Phanbook\\Databases\\TagsSeeder;\r\n    use Phanbook\\Databases\\PostsTagsSeeder;\r\n\r\nAlmost exactly 2 years ago, you find the last instance of them in the repo:  \r\nCommit: [01226ab](https://github.com/phanbook/phanbook/tree/5d4927797946f5e4b0f5aa8595f166a7974dc9e9/databases)\r\n\r\nThey were removed 3 days later:  \r\nCommit: [c71a76a](https://github.com/phanbook/phanbook/commit/c71a76a83a9efe57e6dd5bfcecacb617f148822e)\r\n\r\nRight now the task simply fails due to the error. We could reinstate the seeding files so the task has something to do. and/or revise the task. We could also aim at a different directory structure altogether even.  I like the idea of going in the Laravel direction and have a \"database\" directory to toss in our migrations. I think the `schema` approach makes it hard to track database changes. What do you guys think?\r\n1) Remove `/schema` and reinstate `/databases`?  \r\n2) Add `/databases` so we have both `/databases` and `/schema`?  \r\n3) Or leave the directory structure alone and remove the task?\r\n\r\nThe schema right now is a complete mess. You can't even run the two SQL files back-to-back without encountering SQL errors related to the primary key already being used with multiple tables. Once it fails, you try to run it again, and the tables already exists because it's not a transaction. Anyone have any reasons to keep `/schema`  or any reasons against reinstating [`/databases`](https://github.com/phanbook/phanbook/tree/5d4927797946f5e4b0f5aa8595f166a7974dc9e9/databases)? I think consistency is a better choice. Also if we're going to head in the Laravel direction, I think we should call it `/database` rather than `/databases` in the plural.\r\n\r\n## **TL;DR**  \r\n\r\nI want to drop `/schema`, reinstate `/databases` then drop the \"s\", renaming it to `/database`.\r\n\r\n",
+        "url": "https://github.com/phanbook/phanbook/issues/246"
+    },
+    {
+        "id": 251011648,
+        "number": 245,
+        "title": "/backend/store produces 404",
+        "state": "closed",
+        "created_at": "2017-08-17T17:10:32Z",
+        "updated_at": "2019-09-08T14:42:05Z",
+        "closed_at": "2019-09-08T14:42:04Z",
+        "author": "Ultimater",
+        "comments": 2,
+        "labels": [
+            "question",
+            "area: common",
+            "bug: low",
+            "discussion",
+            "priority: low"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "Navigate to `/backend/dashboard` and you'll notice a link to \"store\" in the navigation:  \r\n\r\n![dashboard-link](https://user-images.githubusercontent.com/1922199/29422618-a2a694ce-832d-11e7-8266-e73666f9ac4e.png)\r\n\r\nUpon clicking it, you get a 404 page:\r\n\r\n![backend-store-404](https://user-images.githubusercontent.com/1922199/29422645-b87b9d08-832d-11e7-8153-23765d9fcc0f.png)\r\n\r\nJudging by the navigation link, it seems like there's supposed to be a StoreController:\r\n\r\nhttps://github.com/phanbook/phanbook/blob/51cc4d7ff6671f66d7b49dfb94b2e8ec2cc6f6b4/core/modules/backend/views/partials/left-side.volt#L51-L55\r\n\r\nThere's no such controller in the repo, and I can't find one in the history either.  \r\nAny input?",
+        "url": "https://github.com/phanbook/phanbook/issues/245"
+    },
+    {
+        "id": 250977372,
+        "number": 243,
+        "title": "/backend/users produces a 500 error",
+        "state": "closed",
+        "created_at": "2017-08-17T15:11:03Z",
+        "updated_at": "2017-08-18T21:19:20Z",
+        "closed_at": "2017-08-17T18:30:13Z",
+        "author": "Ultimater",
+        "comments": 2,
+        "labels": [
+            "bug: low",
+            "fixed in develop"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "Steps to reproduce:  \r\nLogin as the admin user: admin:phanbook  \r\nClick the \"settings\" link on the to of the page.  \r\nClick the DashBoard link.  \r\nOnce you're in the Dashboard **double click** \"Users\".  \r\nYou should now be looking at the `/backend/dashboard` page.  \r\nIt produces a 500 error and writes a log to `content/logs`:  \r\n```  \r\n[Thu, 17 Aug 17 14:52:57 +0000][ERROR] backend [0]: Column 'admin' doesn't belong to the model or alias 'a', when executing: SELECT a.id, CONCAT(a.firstname, ' ', a.lastname) as name, a.username, a.gender, a.email, a.status, a.admin, a.moderator, a.karma FROM [Phanbook\\Models\\Users] AS [a] GROUP BY a.id\r\n```\r\nYou can run the above directly on the database:\r\n\r\n>SELECT a.id, CONCAT(a.firstname, ' ', a.lastname) as name, a.username, a.gender, a.email, a.status, a.admin, a.moderator, a.karma FROM users AS a GROUP BY a.id\r\n\r\nTrying that yields `#1054 - Unknown column 'a.admin' in 'field list'`. Removing it from the query and trying again yields `#1054 - Unknown column 'a.moderator' in 'field list'`. After removing that as well, the query executes fine.\r\n\r\nThus, this issue is caused by the `` `users` `` table having no `admin` or `moderator` column. I'm not sure exactly when the schema changed, but I clicked to a year back in the commits and found previous schemas were using: https://github.com/phanbook/phanbook/blob/f0b8b1cf4b554f9d1553d869e22505c2d1946abc/schema/phanbook.sql#L596-L597\r\nThus it would appear the columns were supposed to represent boolean data consisting of `N`/`Y`.\r\nTo determine if a user is an admin, it would seem now that you need to consult three tables:  \r\n`users`, `roles_users`, and `roles`. I see we're currently using:\r\n\r\n![roles-table](https://user-images.githubusercontent.com/1922199/29418778-270d6f32-8322-11e7-9230-335b0aed6ed5.png)\r\nJudging by that table, the only column that looks reliable to me would be `type`. If it's set to admin or moderator, then it would seem to me they are a user of that role. Thus it seems we now have a replacement for the missing admin and moderator columns.\r\n\r\n\r\nI wrote up a join query that looks like this:  \r\n```\r\nSELECT a.id, CONCAT(a.firstname, ' ', a.lastname) as name, a.username, a.gender, a.email, a.status, IF(SUM(c.type = 'admin'),'Y','N') AS admin, IF(SUM(c.type = 'moderator'),'Y','N') AS moderator, a.karma  FROM `users` a LEFT JOIN `roles_users` b ON a.id=b.users_id LEFT JOIN `roles` c ON c.id=b.roles_id GROUP BY a.id\r\n```\r\nThus it would seem a fix would be to add some joins to our query. Since we're grouping by `a.id`, there won't be an issue of duplicates. Then we can make use of SUM or COUNT. I'm pretty sure SUM makes more sense in this context.\r\n\r\nPR is coming shortly.",
+        "url": "https://github.com/phanbook/phanbook/issues/243"
+    },
+    {
+        "id": 250832037,
+        "number": 240,
+        "title": "oauth: passwd is required",
+        "state": "closed",
+        "created_at": "2017-08-17T05:19:26Z",
+        "updated_at": "2017-08-18T21:19:43Z",
+        "closed_at": "2017-08-17T14:35:34Z",
+        "author": "Ultimater",
+        "comments": 1,
+        "labels": [
+            "bug: medium",
+            "fixed in develop"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "\r\n![passwd-is-required](https://user-images.githubusercontent.com/1922199/29396933-e81ab8e0-82cf-11e7-979b-64232922dc3e.png)\r\n\r\nSteps to reproduce:  \r\nhttp://phanbook.dev/users/signin -> Click **Sign in using Github**  \r\nAuthorize, and when you get forwarded back, then you see the above error.\r\n\r\nCause:  \r\nThis is caused by the MySQL table definition for `users` not allowing `NULL` for the \"passwd\" column.  \r\nThus user creation via github fails due to the way the model is being used. This I believe also affects the other oauth methods as well.\r\n\r\nFix:  \r\nI believe the best fix is to modify the column and allow it to be `NULL` like so:\r\n\r\n    ALTER TABLE `users` CHANGE `passwd` `passwd` VARCHAR(60) CHARACTER SET utf8\r\n    COLLATE utf8_general_ci NULL;\r\n",
+        "url": "https://github.com/phanbook/phanbook/issues/240"
+    },
+    {
+        "id": 214312732,
+        "number": 234,
+        "title": "change the license  ?",
+        "state": "closed",
+        "created_at": "2017-03-15T08:09:10Z",
+        "updated_at": "2017-03-15T09:57:58Z",
+        "closed_at": "2017-03-15T09:57:58Z",
+        "author": "kideny",
+        "comments": 6,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "i saw phanbook's license is GPLv2，the license can be changed to MIT or BSD license ? \r\n\r\n@duythien ",
+        "url": "https://github.com/phanbook/phanbook/issues/234"
+    },
+    {
+        "id": 204472976,
+        "number": 225,
+        "title": "Refector media in backend",
+        "state": "open",
+        "created_at": "2017-02-01T01:16:58Z",
+        "updated_at": "2017-08-18T18:40:42Z",
+        "closed_at": null,
+        "author": "duythien",
+        "comments": 2,
+        "labels": [
+            "enhancement",
+            "area: common"
+        ],
+        "assignees": [
+            "duythien"
+        ],
+        "locked": false,
+        "body": "",
+        "url": "https://github.com/phanbook/phanbook/issues/225"
+    },
+    {
+        "id": 200027279,
+        "number": 219,
+        "title": "is there a way to achieve categories/sub-categories?",
+        "state": "closed",
+        "created_at": "2017-01-11T08:07:20Z",
+        "updated_at": "2017-08-18T18:41:29Z",
+        "closed_at": "2017-08-18T18:41:29Z",
+        "author": "rnvijay",
+        "comments": 2,
+        "labels": [
+            "duplicate",
+            "question"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "I like things organized in drill down fashion -- is there a way i can achieve this?\r\n\r\nthanks\r\n\r\n",
+        "url": "https://github.com/phanbook/phanbook/issues/219"
+    },
+    {
+        "id": 199435199,
+        "number": 218,
+        "title": "PHP Error",
+        "state": "closed",
+        "created_at": "2017-01-08T17:47:48Z",
+        "updated_at": "2017-04-21T21:08:41Z",
+        "closed_at": "2017-04-21T21:08:13Z",
+        "author": "brainfoolong",
+        "comments": 10,
+        "labels": [
+            "bug: invalid",
+            "question",
+            "area: common"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "I've installed phanbook via this instructions\r\nhttp://phanbook.com/docs/manual\r\n\r\nNow i'm getting always this error when i try to access the mainpage. I can't get it working.\r\nComposer installation was successfull without errors. `composer version 1.3.1`\r\n\r\n\tcomposer install --no-ansi --no-dev --no-interaction --no-progress --no-scripts --optimize-autoloader\r\n\tLoading composer repositories with package information\r\n\tInstalling dependencies from lock file\r\n\tPackage operations: 15 installs, 0 updates, 0 removals\r\n\t  - Installing symfony/polyfill-mbstring (v1.3.0) Loading from cache\r\n\t  - Installing danielstjules/stringy (2.3.2) Loading from cache\r\n\t  - Installing psr/log (1.0.2) Loading from cache\r\n\t  - Installing pimple/pimple (v3.0.2) Loading from cache\r\n\t  - Installing monolog/monolog (1.21.0) Loading from cache\r\n\t  - Installing symfony/event-dispatcher (v2.8.13) Loading from cache\r\n\t  - Installing guzzle/guzzle (v3.9.3) Loading from cache\r\n\t  - Installing elasticsearch/elasticsearch (v1.4.1) Loading from cache\r\n\t  - Installing erusev/parsedown (1.6.1) Loading from cache\r\n\t  - Installing google/apiclient (v1.1.8) Loading from cache\r\n\t  - Installing league/flysystem (1.0.32) Loading from cache\r\n\t  - Installing league/fractal (0.9.1) Loading from cache\r\n\t  - Installing league/oauth2-client (0.10.1) Loading from cache\r\n\t  - Installing swiftmailer/swiftmailer (v5.4.3) Loading from cache\r\n\t  - Installing vlucas/phpdotenv (v2.4.0) Loading from cache\r\n\tPackage guzzle/guzzle is abandoned, you should avoid using it. Use guzzlehttp/guzzle instead.\r\n\tGenerating optimized autoload files\r\n\r\n\r\nPHP 7.1 on ubuntu.\r\n\r\n\tPHP message: PHP Fatal error:  Uncaught Error: Class 'Phalcon\\Loader' not found in /srv/www/f/bootstrap/autoloader.php:20\r\n\tStack trace:\r\n\t#0 /srv/www/f/public/index.php(17): require()\r\n\t#1 {main}\r\n\t  thrown in /srv/www/f/bootstrap/autoloader.php on line 20",
+        "url": "https://github.com/phanbook/phanbook/issues/218"
+    },
+    {
+        "id": 197524455,
+        "number": 215,
+        "title": "Invalid parameter number: number of bound variables does not match number of tokens",
+        "state": "closed",
+        "created_at": "2016-12-26T02:16:21Z",
+        "updated_at": "2017-04-21T21:10:00Z",
+        "closed_at": "2017-04-21T21:10:00Z",
+        "author": "arnoldbird",
+        "comments": 10,
+        "labels": [
+            "bug: invalid",
+            "question"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "I am getting a white screen.  In the error I log I see...\r\n\r\n```\r\n[Sun Dec 25 21:03:59.604668 2016] [:error] [pid 3177] [client 127.0.0.1:50798] PHP Fatal error:  Uncaught exception 'PDOException' with message 'SQLSTATE[HY093]: Invalid parameter number: number of bound variables does not match number of tokens' in /var/www/tembo/core/common/library/Auth/Auth.php:186\r\n\r\nStack trace:\r\n#0 [internal function]: PDOStatement->execute()\r\n#1 [internal function]: Phalcon\\\\Db\\\\Adapter\\\\Pdo->executePrepared(Object(PDOStatement), Array, Array)\r\n#2 [internal function]: Phalcon\\\\Db\\\\Adapter\\\\Pdo->query('SELECT `remembe...', Array, Array)\r\n#3 [internal function]: Phalcon\\\\Mvc\\\\Model\\\\Query->_executeSelect(Array, Array, Array)\r\n#4 [internal function]: Phalcon\\\\Mvc\\\\Model\\\\Query->execute()\r\n#5 /var/www/tembo/core/common/library/Auth/Auth.php(186): Phalcon\\\\Mvc\\\\Model::findFirst(Array)\r\n#6 /var/www/tembo/core/modules/frontend/controllers/ControllerBase.php(68): Phanbook\\\\Auth\\\\Auth->loginWithRememberMe()\r\n#7 [internal function]: Phanbook\\\\Frontend\\\\Controllers\\\\ControllerBase->beforeExecuteRoute(Object(Phanbook\\\\Common\\\\Library\\\\Mvc\\\\Dispatcher))\r\n#8 [internal function]: Phalcon\\\\Dispatcher->_dispatch()\r\n#9 [internal funct in /var/www/tembo/core/common/library/Auth/Auth.php on line 186\r\n```",
+        "url": "https://github.com/phanbook/phanbook/issues/215"
+    },
+    {
+        "id": 197507271,
+        "number": 213,
+        "title": "Questions do not save",
+        "state": "closed",
+        "created_at": "2016-12-25T16:22:24Z",
+        "updated_at": "2016-12-26T06:01:37Z",
+        "closed_at": "2016-12-26T06:01:37Z",
+        "author": "arnoldbird",
+        "comments": 4,
+        "labels": [
+            "area: web",
+            "bug: low"
+        ],
+        "assignees": [
+            "duythien"
+        ],
+        "locked": false,
+        "body": "When I try to save a question on the **frontend**, it doesn't save.  This page loads:  posts/save\r\n  \r\nIn the error log I see...\r\n\r\n[Sun Dec 25 11:16:41.010392 2016] [:error] [pid 4381] [client 127.0.0.1:51962] PHP Warning:  Invalid argument supplied for foreach() in /var/www/yo/phanbook/content/cache/volt/_var_www_tembo_phanbook_content_themes_default_partials_right-side.volt.php on line 76, referer: http://yo.mysite.com/posts/save\r\n\r\nIn the backend, I can save posts.",
+        "url": "https://github.com/phanbook/phanbook/issues/213"
+    },
+    {
+        "id": 197476428,
+        "number": 212,
+        "title": "responsive css path was wrong",
+        "state": "closed",
+        "created_at": "2016-12-24T20:26:42Z",
+        "updated_at": "2017-08-18T06:28:41Z",
+        "closed_at": "2017-08-18T06:28:41Z",
+        "author": "arnoldbird",
+        "comments": 1,
+        "labels": [
+            "area: web"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "I'm installing phanbook on LAMP.\r\n\r\nI was having a problem with the default theme, where the path to the theme.css was correct but the path to responsive.css was wrong...\r\n\r\n```\r\n<!-- Main Style -->\r\n    <link rel=\"stylesheet\" type=\"text/css\" href=\"/css/theme.css?v=1\" />\r\n\r\n    <!-- Responsive Style -->\r\n    <link rel=\"stylesheet\" href=\"/core/assets/css/responsive.css\">\r\n```\r\nThis was after installing on LAMP with the manual instructions:  http://phanbook.com/docs/manual\r\n\r\nTo fix it, I made a symbolic link in public to core...\r\n\r\n`me@here:/var/www/phanbook/public$ sudo ln -s ../core core`\r\n\r\nBut is that a normal part of the install?  When I ran the composer command, should it have put the core directory inside the public directory?\r\n",
+        "url": "https://github.com/phanbook/phanbook/issues/212"
+    }
+]

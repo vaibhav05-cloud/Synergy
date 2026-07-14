@@ -1,0 +1,242 @@
+[
+    {
+        "sha": "eed2d820791057fcc18d9b144f7f16859b414e6b",
+        "author": "PangChong",
+        "email": "pangchongcyc@gmail.com",
+        "date": "2026-07-13T10:00:30Z",
+        "message": "fix: 直播流 EOF 无感续播,恢复阶梯优先重取播放参数\n\n- 恢复阶梯首档由 switchCDN 改为 reloadPlayArgs:短时效签名 URL 同源重连几乎必失败,先重取参数命中率更高\n- 已起播后的 finished(nil)/.ended 不再当终局,交协调器判定恢复(直播 isLive=false 常把 CDN 会话结束报成点播终局)\n- endOfStream 与 playedToTheEnd 成对到达只烧一档,尾随事件在 recovering 中忽略\n- 无字节采样内核(HLS):恢复后靠「持续在播 N 秒」清熔断预算,否则反复 EOF 会逐档烧满阶梯永久 failed\n- 取参刷新静默化:恢复中不全屏 loading/错误页抢 UI,保持当前线路/清晰度,弹幕仅首次进房拉\n- 新增 RoomPlaybackResolver.clampedSelection 夹取偏好索引\n\n⚠️ 未验证:尚未真机回归直播断流续播/反复 EOF 场景,理论实现完成待实测\n\nCo-Authored-By: Claude <noreply@anthropic.com>",
+        "url": "https://github.com/pcccccc/AngelLive/commit/eed2d820791057fcc18d9b144f7f16859b414e6b"
+    },
+    {
+        "sha": "859fb9e9a60e1b5472c55b0d6cb784b23b68e5a9",
+        "author": "LaoPC",
+        "email": "pangchongcyc@gmail.com",
+        "date": "2026-07-12T11:10:16Z",
+        "message": "fix(danmu): 插件弹幕定时器改 DispatchSourceTimer 并收口投递线程\n\n在 7cd2b1d(主线程闸修 timer 崩溃)基础上取并集,补齐两条仍在后台线程的路径:\n\n- heartbeatTimer 由 Timer 换成 DispatchSourceTimer(主队列),从根上去掉 RunLoop\n  依赖:既保证心跳/轮询稳定触发,也消除跨 RunLoop invalidate 的崩溃面\n- applyDriverResult 入口切主线程,让帧/tick 路径上的 deliverMessages(回调 UI)、\n  sendWrites(socket.write) 及 timer 操作统一在主线程,顺带消除 heartbeatTimer\n  属性的跨线程读写竞争\n- 保留 handleConnectionFailure / handleFatalDriverError 的主线程闸(socket 回调路径)\n- reconnectTimer 保持 Timer(仅在已保证主线程的 scheduleReconnect 中调度)\n\nCo-Authored-By: Claude Opus 4.8 (1M context) <noreply@anthropic.com>",
+        "url": "https://github.com/pcccccc/AngelLive/commit/859fb9e9a60e1b5472c55b0d6cb784b23b68e5a9"
+    },
+    {
+        "sha": "aca53dfcf7ae5d31468e352016cf70b23336a462",
+        "author": "PangChong",
+        "email": "pangchongcyc@gmail.com",
+        "date": "2026-07-10T08:27:18Z",
+        "message": "Add favorite core tests",
+        "url": "https://github.com/pcccccc/AngelLive/commit/aca53dfcf7ae5d31468e352016cf70b23336a462"
+    },
+    {
+        "sha": "72eb9f06aa06c0fadfbee66297b596da45214760",
+        "author": "PangChong",
+        "email": "pangchongcyc@gmail.com",
+        "date": "2026-07-10T03:08:12Z",
+        "message": "fix: 收藏状态刷新与房间状态查询加重试\n\n冷启动全量并发刷新收藏状态时,插件 JS runtime/内部签名缓存尚未 warm,个别房间\n(如小红书 userId 查询)首拍会间歇性抛 NOT_FOUND 等假阴性,但下拉刷新(整体重跑)\n又能成功。给两条查询路径加有限重试,退避后 runtime 已 warm,成功率与下拉刷新一致:\n\n- fetchLastestLiveInfo: withRetry(maxRetries: 3, delay: 500ms),对齐 fetchRoomList\n- getCurrentRoomLiveState: withRetry(maxRetries: 2, delay: 400ms),用户点击场景\n  轻量重试,避免冷启动后立即点历史卡片误判下播\n\nCancellationError 透传不重试,与既有 withRetry 行为一致。\n\nCo-Authored-By: Claude <noreply@anthropic.com>",
+        "url": "https://github.com/pcccccc/AngelLive/commit/72eb9f06aa06c0fadfbee66297b596da45214760"
+    },
+    {
+        "sha": "69e4baf29ea0eec3ea4497dc8d3ebc74d91da5a2",
+        "author": "PangChong",
+        "email": "pangchongcyc@gmail.com",
+        "date": "2026-07-10T03:08:01Z",
+        "message": "chore: 升级播放器内核到 3.6.0\n\n- 依赖从 branch: lgpl 改为 exact: 3.6.0(3.6.0 在 lgpl 线上,版本点比 lgpl\n  HEAD 更稳);FFmpegKit 仍走 lgpl 分支,8.0.3 在该线上满足 3.6.0 的 from: 8.0.3 下限\n- 适配 API 变更:KSOptions.decodeType 改名为 videoDecodeType(类型 KSDecodeType ->\n  VideoDecodeType,同为 String 原始值,.rawValue 不变),更新三端播放信息面板调用点\n- 补提交 Dependencies 包的 Package.resolved,与其它端 resolved 跟踪策略一致\n\nCo-Authored-By: Claude <noreply@anthropic.com>",
+        "url": "https://github.com/pcccccc/AngelLive/commit/69e4baf29ea0eec3ea4497dc8d3ebc74d91da5a2"
+    },
+    {
+        "sha": "7cd2b1d950b946c4b10a2980f7b4a9fef05ef0f6",
+        "author": "PangChong",
+        "email": "pangchongcyc@gmail.com",
+        "date": "2026-07-10T03:07:40Z",
+        "message": "fix: 修复三处线上崩溃\n\n- 弹幕心跳定时器跨 RunLoop invalidate 崩溃:updateTimer/handleConnectionFailure/\n  handleFatalDriverError 补主线程 guard,与 reconnectTimer 路径一致,避免后台线程\n  调 CFRunLoopTimerInvalidate 触发 EXC_BREAKPOINT/EXC_BAD_ACCESS\n- 插件源管理器字典并发访问损坏:写状态的 async/sync 方法标 @MainActor,\n  fetchIndexWithTimeout 标 nonisolated 让网络 I/O 留主线程外,消除 SwiftUI 渲染\n  主线程读 sourceHealth 与后台写并发的 EXC_BAD_ACCESS\n- TabView(.sidebarAdaptable) selection 指向失效平台 tab:onChange(platformInfo)\n  按稳定身份 pluginId 钳制,失效回退 .favorite,避免 resize/snapshot 时\n  \"Tried to update with invalid selection value\" fatal error\n\nCo-Authored-By: Claude <noreply@anthropic.com>",
+        "url": "https://github.com/pcccccc/AngelLive/commit/7cd2b1d950b946c4b10a2980f7b4a9fef05ef0f6"
+    },
+    {
+        "sha": "1569a6a818c1d7a63057cc98698e08f9ce74845a",
+        "author": "PangChong",
+        "email": "pangchongcyc@gmail.com",
+        "date": "2026-07-09T04:25:32Z",
+        "message": "refactor: 拆分 AppFavoriteModel,身份/控制台文案抽到独立扩展文件\n\nAppFavoriteModel 主文件 587→447 行。纯搬迁零行为变更,调用点不变:\n- AppFavoriteModel+Identity.swift:身份/去重 SSOT(validIdentity/isSameStreamer/\n  favoriteUniqueKey/deduplicated/favoriteIdentityChanged)\n- AppFavoriteModel+Console.swift:开发者控制台文案(consoleRequestBody/\n  consoleSuccessSummary/consoleErrorMessage,private static → static 以便跨文件可见)\n\nCo-Authored-By: Claude Opus 4.8 (1M context) <noreply@anthropic.com>",
+        "url": "https://github.com/pcccccc/AngelLive/commit/1569a6a818c1d7a63057cc98698e08f9ce74845a"
+    },
+    {
+        "sha": "45b4d41c50cc959db21dc4b1956b8dee70950bfd",
+        "author": "PangChong",
+        "email": "pangchongcyc@gmail.com",
+        "date": "2026-07-09T04:25:32Z",
+        "message": "fix: 书签服务改用逐方法 @MainActor,修复 tvOS 构建回归\n\n上一提交给 StreamBookmarkService 加类级 @MainActor,使其 init 变主线程隔离,\n而 tvOS AppState(普通 @Observable 聚合类)在非隔离上下文用存储属性默认值构造它 →\n编译失败。改为与 AppFavoriteModel 一致:类不加 @MainActor(保持可任意上下文构造),\n只在会改 @Observable 状态的方法(add/remove/update/updateLastPlayed/syncFromCloud)\n上标 @MainActor;CloudKit I/O 恢复普通 async。仍确保状态变更在主线程,修掉主队列断言崩溃。\n\nCo-Authored-By: Claude Opus 4.8 (1M context) <noreply@anthropic.com>",
+        "url": "https://github.com/pcccccc/AngelLive/commit/45b4d41c50cc959db21dc4b1956b8dee70950bfd"
+    },
+    {
+        "sha": "7ee0b6c27a07135caef3b9019d94652dfe7f3262",
+        "author": "PangChong",
+        "email": "pangchongcyc@gmail.com",
+        "date": "2026-07-09T03:51:17Z",
+        "message": "fix: 修复收藏/书签模块三处线上崩溃\n\n- App Hang:收藏同步引擎预热(建 CKContainer + start)从主线程挪到后台并 await,\n  消除冷启动争 CloudKit 内部锁导致的主线程卡死;startCloudSyncIfNeeded 改异步,\n  用缓存 Task 保证所有调用方返回时 engine 已就绪\n- 主线程断言崩溃:书签服务改类级 @MainActor,@Observable 状态变更全回主线程,\n  CloudKit I/O 标 nonisolated 留在主线程外;补齐 refreshView/persistLocal 隔离\n- diffable 重复标识崩溃:房间列表 identity 改用 LiveModel.id(全局唯一)替代 roomId\n  (roomId 仅平台内唯一,聚合列表跨来源会撞车)\n\nCo-Authored-By: Claude Opus 4.8 (1M context) <noreply@anthropic.com>",
+        "url": "https://github.com/pcccccc/AngelLive/commit/7ee0b6c27a07135caef3b9019d94652dfe7f3262"
+    },
+    {
+        "sha": "5960a6f9ec5abbdc3192c83793328696b8716bc9",
+        "author": "PangChong",
+        "email": "pangchongcyc@gmail.com",
+        "date": "2026-07-08T07:37:14Z",
+        "message": "Merge branch 'feature/sync-metaball-liquid-color'",
+        "url": "https://github.com/pcccccc/AngelLive/commit/5960a6f9ec5abbdc3192c83793328696b8716bc9"
+    },
+    {
+        "sha": "a5ef76991995f7d900182d33a5f33c15e8190c47",
+        "author": "PangChong",
+        "email": "pangchongcyc@gmail.com",
+        "date": "2026-07-08T07:20:59Z",
+        "message": "fix(favorite): 灵动岛同步动画整体液态化,融球拉丝全程带色\n\n融球剪影从「纯黑阴影层 + 上盖纯色胶囊」改为「渐变 .mask 裁剪」:脖子拉丝、\n有丝分裂、落地压扁全程都吃真实深色渐变,不再是黑脖子上淡入的胶囊。渐变按纵向\n空间分档且提亮点随下落逐帧上移——贴岛那截收黑与灵动岛无缝融合,拉丝段自然由黑\n转亮。移除不再需要的 headOpacity。非灵动岛降级胶囊不变。\n\nCo-Authored-By: Claude Opus 4.8 (1M context) <noreply@anthropic.com>",
+        "url": "https://github.com/pcccccc/AngelLive/commit/a5ef76991995f7d900182d33a5f33c15e8190c47"
+    },
+    {
+        "sha": "f682411307bfed09a68fccd1e7411555a0e3f419",
+        "author": "PangChong",
+        "email": "pangchongcyc@gmail.com",
+        "date": "2026-07-07T06:14:47Z",
+        "message": "Merge branch 'feature/favorite-loading-adaptive'",
+        "url": "https://github.com/pcccccc/AngelLive/commit/f682411307bfed09a68fccd1e7411555a0e3f419"
+    },
+    {
+        "sha": "0fdbc51fbe9bd8fcd54dff64cfb6fdd340434dfd",
+        "author": "PangChong",
+        "email": "pangchongcyc@gmail.com",
+        "date": "2026-07-07T05:57:01Z",
+        "message": "fix(favorite): 收藏同步 loading 按机型/内容自适应\n\n- 同步横幅按顶部安全区分流:灵动岛保留金属球液态动画,刘海/Home 键/iPad\n  改用普通胶囊从安全区下滑,不再套用写死的灵动岛坐标而错位。\n- 收藏 tab 图标无内容时不再空转:完整 UI 看 roomList、壳 UI 看 bookmarks;\n  修掉壳模式下 syncStatus 默认 .syncing 且永不落地导致图标一直转的根因。\n  错误/未登录状态照常透出,便于判断为何为空。\n\nCo-Authored-By: Claude Opus 4.8 (1M context) <noreply@anthropic.com>",
+        "url": "https://github.com/pcccccc/AngelLive/commit/0fdbc51fbe9bd8fcd54dff64cfb6fdd340434dfd"
+    },
+    {
+        "sha": "b26eb39adbb46964729977c13c07a27f125456c4",
+        "author": "LaoPC",
+        "email": "pangchongcyc@gmail.com",
+        "date": "2026-07-06T14:58:31Z",
+        "message": "Merge branch 'feature/plugin-source-health'",
+        "url": "https://github.com/pcccccc/AngelLive/commit/b26eb39adbb46964729977c13c07a27f125456c4"
+    },
+    {
+        "sha": "0650d605505f034589bf4a052cf6bcf158b9eaec",
+        "author": "LaoPC",
+        "email": "pangchongcyc@gmail.com",
+        "date": "2026-07-06T14:58:20Z",
+        "message": "Merge branch 'feature/danmaku-redesign'",
+        "url": "https://github.com/pcccccc/AngelLive/commit/0650d605505f034589bf4a052cf6bcf158b9eaec"
+    },
+    {
+        "sha": "0f26a429e5c72da5923eccce550d43e12c5b532b",
+        "author": "LaoPC",
+        "email": "pangchongcyc@gmail.com",
+        "date": "2026-07-05T15:33:50Z",
+        "message": "fix(player): 修复 iPadOS 接鼠标时播放器控制层闪烁\n\nKSVideoPlayerView 的 .onHover 原为 macOS 写的双向逻辑(移入显示/移出隐藏),\n且无平台判断,iPad 接鼠标后照跑。指针在视频层与控制子层之间穿梭时,控制层的\n插入/移除会扰动 hover 命中测试,反复触发 enter/leave → isMaskShow 快速翻转\n→ 控制层闪烁,并与 coordinator delayHide、VideoControllerView 自动隐藏定时器\n互相打架。\n\n改为:iPad 上 hover 只负责唤出控制层(仅在 hovering 时置 isMaskShow=true),\n隐藏统一交给自动隐藏定时器,切断 leave→强制 false 这一振荡关键环;isMaskShow\n的 didSet 有 oldValue 判等,已显示时再置 true 不会重复触发。macOS 双向行为用\n#if os(macOS) 原样保留。\n\nCo-Authored-By: Claude Opus 4.8 (1M context) <noreply@anthropic.com>",
+        "url": "https://github.com/pcccccc/AngelLive/commit/0f26a429e5c72da5923eccce550d43e12c5b532b"
+    },
+    {
+        "sha": "2255dab928a61c9f5cade14f5b2960cfa57a8b83",
+        "author": "LaoPC",
+        "email": "pangchongcyc@gmail.com",
+        "date": "2026-07-04T15:20:01Z",
+        "message": "refactor(player): 媒体中心去重复注册 + 封面缓存与换台串图防护\n\n#1 远程控制去重复:KSPlayer registerRemoteControll 默认已注册 play/pause/toggle\n等命令,DetailPlayerView 不再重复注册。移除 setup/teardownRemoteCommandCenter,\n消除双触发,并去掉 removeTarget(nil) 在 onDisappear 误删 KSPlayer handler 的隐患\n(PiP 后台续播时锁屏控制不再被清)。顺带删除不再使用的 import MediaPlayer。\n\n#2 NowPlayingManager:标 @MainActor(所有调用点本就在主线程,MPNowPlayingInfoCenter\n写入归主线程,静态缓存在 Swift 6 严格并发下安全)。用 NSCache(上限 20)按 URL 缓存封面,\n弱网反复 readyToPlay 重连不再重复下载;异步封面回调落地前校验房间未切换,避免快速切台\n把上一个房间封面盖到新房间。\n\nCo-Authored-By: Claude Opus 4.8 (1M context) <noreply@anthropic.com>",
+        "url": "https://github.com/pcccccc/AngelLive/commit/2255dab928a61c9f5cade14f5b2960cfa57a8b83"
+    },
+    {
+        "sha": "bad03f4478b005e857b8cce922ffae1968577a7b",
+        "author": "LaoPC",
+        "email": "pangchongcyc@gmail.com",
+        "date": "2026-07-03T15:11:15Z",
+        "message": "fix(player): 修复 iOS 媒体中心信息有概率为空\n\nNowPlayingManager.update 是媒体中心内容的唯一来源,而 KSComplexPlayerLayer\n会在 set(resource)/.initialized 时把全局 nowPlayingInfo 置 nil。二者与\nDetailPlayerView.onAppear 的同步写入抢同一字典,清空多发生在异步起播链路之后,\n会抹掉 onAppear 写的信息 → 媒体中心有概率变空/掉封面。\n\n在 readyToPlay(所有清空动作之后的稳定时点)补写一次 NowPlayingManager.update,\n确保我们的信息最后落地;恢复协调器每次重建重新走到 readyToPlay 也会自动补回。\n\nCo-Authored-By: Claude Opus 4.8 (1M context) <noreply@anthropic.com>",
+        "url": "https://github.com/pcccccc/AngelLive/commit/bad03f4478b005e857b8cce922ffae1968577a7b"
+    },
+    {
+        "sha": "11fa578d2fc5213b46b93aa1e6116182e9802270",
+        "author": "LaoPC",
+        "email": "pangchongcyc@gmail.com",
+        "date": "2026-06-23T17:20:23Z",
+        "message": "feat(player): Bug2 A 类渲染卡死自动恢复(play-pause-play 踢活)\n\n真机日志确诊 Bug2 = 候选 A:快速连续进出后台打乱 KSPlayer 前后台/display link\n的暂停-恢复时序,回前台后 Metal display link 不再回调 renderFrame → fps 恒 0、\n画面定格,而音频/解码照跑(playhead 每秒 +1、buffered 满)。reload 复用同一 player\n实例救不回(F7/F8),只能退房间。\n\n在 FG-watch 采样循环内做自动恢复(第一档,轻量):\n- 早检:连续 2 拍 fps≈0 且 playhead 仍推进(≈+2s 确认)→ 判定渲染层 wedge\n- 轻踢:pause()→0.12s→play(),翻转 isPaused 让 displayLink.isPaused 走一次\n  true→false,强制 CADisplayLink 重新触发渲染\n- 一个回前台周期最多踢一次;仅动渲染层,不碰网络/解码\n- verdict 末尾带 kicked=,便于判断踢活是否生效\n\n若踢后 fps 仍 0(卡在 drawable/render source 更深层),后续再上第二档 hardReload 重建。\n\nCo-Authored-By: Claude Opus 4.8 (1M context) <noreply@anthropic.com>",
+        "url": "https://github.com/pcccccc/AngelLive/commit/11fa578d2fc5213b46b93aa1e6116182e9802270"
+    },
+    {
+        "sha": "cdbbcefce4f9c1743740f40a27847c76e24638ff",
+        "author": "PangChong",
+        "email": "pangchongcyc@gmail.com",
+        "date": "2026-07-01T10:40:59Z",
+        "message": "feat(favorite): 收藏云同步状态提示 + macOS 收藏/分类页 UI 优化\n\n同步状态提示(三端):\n- Core: AppFavoriteModel 增加 isCloudSyncing;CloudSyncStatus 加 Equatable\n- iOS: 收藏页灵动岛液态同步动画(金属球下落/缩回);新增 DeviceTopSensor 判断岛/刘海(装饰胶囊后续再做,暂隐藏)\n- tvOS/macOS: 收藏页顶部「正在同步收藏」提示条,非阻塞、本地列表照常可交互\n\nmacOS UI 优化:\n- 分类筛选面板改为左右两栏,修复鼠标滚轮无法滚动与点击卡顿(先关闭再后台加载、去重复请求)\n- 统一弹窗关闭按钮为 PanelCloseButton(分类/弹幕设置/播放器信息统计)\n- 房间列表/收藏/搜索骨架屏改为与真实列表一致的自适应网格\n- 清理编译警告:移除冗余 Hashable 声明、补全 session 状态 switch、去掉弃用的 showsBaselineSeparator\n\nCo-Authored-By: Claude Opus 4.8 (1M context) <noreply@anthropic.com>",
+        "url": "https://github.com/pcccccc/AngelLive/commit/cdbbcefce4f9c1743740f40a27847c76e24638ff"
+    },
+    {
+        "sha": "7b2bffd9b671cdf8a43608d2b5f4ef1ffefcce37",
+        "author": "PangChong",
+        "email": "pangchongcyc@gmail.com",
+        "date": "2026-07-01T02:50:22Z",
+        "message": "chore(xcode): 消除 var→let 警告并同步 Xcode 升级后的 scheme 版本\n\n- LiveParseError 增强详情里未变更的 result 由 var 改 let\n- 各端 xcscheme 的 LastUpgradeVersion 同步到当前 Xcode 版本\n\nCo-Authored-By: Claude Opus 4.8 (1M context) <noreply@anthropic.com>",
+        "url": "https://github.com/pcccccc/AngelLive/commit/7b2bffd9b671cdf8a43608d2b5f4ef1ffefcce37"
+    },
+    {
+        "sha": "a5481d54121b3f5881a13a22d990909bcf4e293b",
+        "author": "PangChong",
+        "email": "pangchongcyc@gmail.com",
+        "date": "2026-07-01T02:49:11Z",
+        "message": "fix(warnings): 清理并发/弃用 API/不安全指针等编译警告并对齐扩展版本号\n\n- 播放控制卡片 onChange 内的 Task 改用 .task(id:),结构化并发 + 自动取消\n- 房间信息定时器 Task 增加 do/catch,不再吞掉抛出的错误\n- 列表 ViewModel 的 newRooms 由 var 改 let,消除 Swift 6 并发捕获错误\n- 两处字符串 MD5 由已弃用的 CC_MD5 迁移到 CryptoKit.Insecure.MD5(算法不变)\n- 弹幕异步层的哨兵计数由已弃用的 OSAtomicIncrement32 改为 OSAllocatedUnfairLock,\n  并修正旧实现只自增临时指针、从未写回导致取消检测失效的问题\n- Data 解压去除悬垂指针的手写 zlib,改用现成 Gzip\n- 4 处 CloudKit save 未使用返回值显式丢弃;移除一处不可达 return 与冗余 ?? 兜底\n- 内嵌扩展 CFBundleShortVersionString 对齐父 App(两条产品线分别 3.0.0 / 2.0.0)\n\nCo-Authored-By: Claude Opus 4.8 (1M context) <noreply@anthropic.com>",
+        "url": "https://github.com/pcccccc/AngelLive/commit/a5481d54121b3f5881a13a22d990909bcf4e293b"
+    },
+    {
+        "sha": "140afc27dcb19b56d4684ede1cf1f03b0511f59f",
+        "author": "PangChong",
+        "email": "pangchongcyc@gmail.com",
+        "date": "2026-06-30T03:53:53Z",
+        "message": "chore(xcode): 补全 scheme/entitlements 与各端 Xcode Cloud manifest\n\n- 新增 scheme 与对应 entitlements\n- 补齐 iOS/macOS 缺失的 xcodecloud manifest,与 TV 端保持一致\n- .gitignore 忽略 .swiftpm/(含个人 xcuserdata,不共享)\n\nCo-Authored-By: Claude <noreply@anthropic.com>",
+        "url": "https://github.com/pcccccc/AngelLive/commit/140afc27dcb19b56d4684ede1cf1f03b0511f59f"
+    },
+    {
+        "sha": "246324aca3bba33bc749fa75d3e40cb7602b8cc8",
+        "author": "LaoPC",
+        "email": "pangchongcyc@gmail.com",
+        "date": "2026-06-28T15:27:32Z",
+        "message": "feat(plugin): 订阅源失效可秒删 + 乐观添加 + 每源健康状态\n\n修复 tvOS(及 iOS/macOS 共享层)配置源加载两处问题:\n\n- 删不掉: removeSourceAndAssociatedPlugins 在缓存为空时会先对死链做\n  30s 索引拉取超时,源虽最终能删但要干等。改为先同步摘除 URL(UI 立即\n  更新),再用本地缓存 + 孤儿兜底卸载插件,全程不发网络请求。\n- 添加不了: 临时不可达/失效的源校验失败被直接拒绝、存不下来。改为\n  乐观添加 —— 确定是订阅意图(.json/兑换码)就先持久化,拉取失败标记\n  为 .failed,用户可重试或删除;普通视频链接的书签兜底判定保持不变。\n\n新增 PluginSourceHealth(unknown/checking/healthy/failed) + sourceHealth\n字典 + health(for:)/refreshSource(_:);fetchAllSourceIndexes 与\nrefreshAvailableUpdates 改为按源写健康状态,单源失败只标该行,不再用\n全局红色异常卡罩住整页。三端源行展示健康状态并支持重试。\n\nCo-Authored-By: Claude Opus 4.8 (1M context) <noreply@anthropic.com>",
+        "url": "https://github.com/pcccccc/AngelLive/commit/246324aca3bba33bc749fa75d3e40cb7602b8cc8"
+    },
+    {
+        "sha": "2802a97c386c086b4e4b370637bd6b41d9e6782a",
+        "author": "LaoPC",
+        "email": "pangchongcyc@gmail.com",
+        "date": "2026-06-26T15:50:19Z",
+        "message": "feat(danmaku): §6.1 切字号不扰动在飞弹幕 + §6.2 错落感(三端)\n\n§6.1-A 引擎重排(shared + tvOS Third 两份):缩轨道只移除空轨道、不再\nstop 在飞弹幕;positionY 仅对空轨道且在新可视范围内赋值 → 在飞弹幕保持\n原尺寸飞完,只有新弹幕用新字号几何。\n§6.1-B 三端 wrapper:去掉每次刷新无条件 recalculateTracks(),改为仅\nframe 真变化时重算(trackHeight/padding/displayArea 各自 didSet 已保证\n字号/边距变化时重算),无关刷新不再抖动。\n§6.2-C findSuitableTrack floating 改「最少弹幕+随机平局」,打散竖墙(两份)。\n§6.2-D 新增 AngelLiveCore/DanmakuShootScheduler(@MainActor,令牌桶把\n批量弹幕摊到 window 秒带 ±jitter 逐条发);三端 RoomInfoViewModel 接入,\n切房/断流 reset。\n§6.2-E 三端 coordinator 建模型时 displayTime ±15% 微抖动。\n\n验证状态:AngelLiveCore 包已编译通过;iOS/macOS/tvOS app target 尚未\n本机编译验证(待补)。\n\nCo-Authored-By: Claude Opus 4.8 (1M context) <noreply@anthropic.com>",
+        "url": "https://github.com/pcccccc/AngelLive/commit/2802a97c386c086b4e4b370637bd6b41d9e6782a"
+    },
+    {
+        "sha": "141a810e3f691132537ba508fc727b75de3a16d0",
+        "author": "LaoPC",
+        "email": "pangchongcyc@gmail.com",
+        "date": "2026-06-25T15:46:35Z",
+        "message": "docs(danmaku): §6.1 切字号过渡 + §6.2 错落感实施方案(待实施)\n\n沉淀已评审通过的 App-only 三端方案:在飞弹幕保持原尺寸飞完(空轨道才\n重排)、轨道随机化、去突发调度器(AngelLiveCore 共用)、速度 ±15% 微抖动。\n含探索核实的关键事实:tvOS 自带独立 DanmakuKit 副本(引擎改动需改两份)、\ntvOS 已可 import AngelLiveCore、回调未包 @MainActor。\n\nCo-Authored-By: Claude Opus 4.8 (1M context) <noreply@anthropic.com>",
+        "url": "https://github.com/pcccccc/AngelLive/commit/141a810e3f691132537ba508fc727b75de3a16d0"
+    },
+    {
+        "sha": "7d8501a557c6eb1036d336d40405f2fcb745b9f9",
+        "author": "LaoPC",
+        "email": "pangchongcyc@gmail.com",
+        "date": "2026-06-25T15:15:03Z",
+        "message": "Merge remote-tracking branch 'origin/main' into feature/danmaku-redesign",
+        "url": "https://github.com/pcccccc/AngelLive/commit/7d8501a557c6eb1036d336d40405f2fcb745b9f9"
+    },
+    {
+        "sha": "6532526bbec89913c91df242d9df2e8b7ef0c446",
+        "author": "PangChong",
+        "email": "pangchongcyc@gmail.com",
+        "date": "2026-06-24T02:52:11Z",
+        "message": "docs(danmaku): 弹幕引擎评估与改造路线图(Metal 选型 + 三项改造清单)\n\n- 评估外部 Metal 直渲弹幕引擎提案:现引擎已是 GPU 合成,直播负载下不上 Metal\n- 定位三痛点根因(带 file:line):错落感=调度、切字号=过渡重算 bug、SC=链路三层丢金额\n- §6 三块带验收点实施清单:切字号过渡修复 / 错落感调度 / SC 付费置顶改版(跨仓库三步)\n- SC 边界:是否 SC 由插件判定,App 只认 superChat 标记渲染,不碰来源语义、不处理礼物\n\nCo-Authored-By: Claude Opus 4.8 (1M context) <noreply@anthropic.com>",
+        "url": "https://github.com/pcccccc/AngelLive/commit/6532526bbec89913c91df242d9df2e8b7ef0c446"
+    },
+    {
+        "sha": "213e0ccd8c8776533bc2f6c829437a48dade0b4d",
+        "author": "LaoPC",
+        "email": "pangchongcyc@gmail.com",
+        "date": "2026-06-23T17:20:23Z",
+        "message": "feat(player): Bug2 A 类渲染卡死自动恢复(play-pause-play 踢活)\n\n真机日志确诊 Bug2 = 候选 A:快速连续进出后台打乱 KSPlayer 前后台/display link\n的暂停-恢复时序,回前台后 Metal display link 不再回调 renderFrame → fps 恒 0、\n画面定格,而音频/解码照跑(playhead 每秒 +1、buffered 满)。reload 复用同一 player\n实例救不回(F7/F8),只能退房间。\n\n在 FG-watch 采样循环内做自动恢复(第一档,轻量):\n- 早检:连续 2 拍 fps≈0 且 playhead 仍推进(≈+2s 确认)→ 判定渲染层 wedge\n- 轻踢:pause()→0.12s→play(),翻转 isPaused 让 displayLink.isPaused 走一次\n  true→false,强制 CADisplayLink 重新触发渲染\n- 一个回前台周期最多踢一次;仅动渲染层,不碰网络/解码\n- verdict 末尾带 kicked=,便于判断踢活是否生效\n\n若踢后 fps 仍 0(卡在 drawable/render source 更深层),后续再上第二档 hardReload 重建。\n\nCo-Authored-By: Claude Opus 4.8 (1M context) <noreply@anthropic.com>",
+        "url": "https://github.com/pcccccc/AngelLive/commit/213e0ccd8c8776533bc2f6c829437a48dade0b4d"
+    },
+    {
+        "sha": "8cb2ff28dddb197118f22c0bb212e1f472ce85cb",
+        "author": "LaoPC",
+        "email": "pangchongcyc@gmail.com",
+        "date": "2026-06-23T17:14:43Z",
+        "message": "fix(player): 自动画中画开关当下武装 PiP 控制器,消除「进出后台两次才生效」\n\nKSComplexPlayerLayer 只在 readyToPlay 且当时 option 已 true 时预建 pipController。\n播放中(readyToPlay 已过)才打开开关时 pipController 仍为 nil → 首次进后台\npipStart() 走 else 分支:新建控制器后延迟 0.3s 再 start,而此刻 App 已进后台、\nstart 失败;控制器虽建好,要等第二次进后台才走即时 start 分支 →「推出进来推出\n进来才生效」。\n\n新增 RoomInfoViewModel.setAutoPiPArmed(_:),在开关切换当下:\n- 开:configPIP() + setValue(layer, forKey:\"delegate\") 预建并武装(与 readyToPlay\n  完全一致;configPIP 不设系统自动启动标志,前台不会误触发 PiP),首次进后台即即时 start\n- 关:若 PiP ���在进行则拆掉控制器,避免残留武装态\nonAutoPiPChanged 同步调用。\n\nCo-Authored-By: Claude Opus 4.8 (1M context) <noreply@anthropic.com>",
+        "url": "https://github.com/pcccccc/AngelLive/commit/8cb2ff28dddb197118f22c0bb212e1f472ce85cb"
+    }
+]

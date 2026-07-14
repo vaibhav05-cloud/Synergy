@@ -1,0 +1,242 @@
+[
+    {
+        "sha": "deaf5a1ece3293e57c250b75e302b6a058ea7bbe",
+        "author": "Michael Grosser",
+        "email": "michael@grosser.it",
+        "date": "2026-07-11T02:58:48Z",
+        "message": "v3.0.0",
+        "url": "https://github.com/premailer/css_parser/commit/deaf5a1ece3293e57c250b75e302b6a058ea7bbe"
+    },
+    {
+        "sha": "f02be347d3a49d56ef706f5bf68621f20e3a7d40",
+        "author": "Michael Grosser",
+        "email": "michael@grosser.it",
+        "date": "2026-06-01T23:41:08Z",
+        "message": "v2.3.0",
+        "url": "https://github.com/premailer/css_parser/commit/f02be347d3a49d56ef706f5bf68621f20e3a7d40"
+    },
+    {
+        "sha": "87f14867530bffb06a57cf25b2cc5630bb36a09d",
+        "author": "Michael Grosser",
+        "email": "michael@grosser.it",
+        "date": "2026-06-01T23:39:55Z",
+        "message": "Merge commit from fork\n\nFix SSRF / file:// LFI via ssrf_filter + opt-in flags (GHSA-9pmc-p236-855h)",
+        "url": "https://github.com/premailer/css_parser/commit/87f14867530bffb06a57cf25b2cc5630bb36a09d"
+    },
+    {
+        "sha": "e0a151458b2a801ae265ba420862ef8b1127b3ae",
+        "author": "Jonathan Leitschuh",
+        "email": "Jonathan.Leitschuh@braze.com",
+        "date": "2026-05-28T19:05:12Z",
+        "message": "refactor: Add BUG guards to internal SSRF/LFI helpers (GHSA-9pmc-p236-855h)\n\n`read_local_file` and `fetch_via_net_http` are protected helpers\nreachable only from the opt-in branches of `load_uri!` and\n`read_remote_file` respectively. A future change that re-routes\neither call could silently bypass the LFI / SSRF gate. Add\n`raise \"BUG: ...\"` invariants at the top of each method so any such\nregression fails loudly instead of opening the original sinks. The\nguards use Ruby's standard \"BUG:\"-prefixed RuntimeError convention\nto signal a programmer-error invariant, not a user-facing condition.",
+        "url": "https://github.com/premailer/css_parser/commit/e0a151458b2a801ae265ba420862ef8b1127b3ae"
+    },
+    {
+        "sha": "7d2ddf0189cd54b54f378f59daefa10cb036e476",
+        "author": "Jonathan Leitschuh",
+        "email": "Jonathan.Leitschuh@braze.com",
+        "date": "2026-05-28T18:30:43Z",
+        "message": "vuln-fix: Route remote fetches via ssrf_filter; gate file:// (GHSA-9pmc-p236-855h)\n\nCssParser::Parser#read_remote_file accepted any host / port / scheme\nwith no IP filtering and no per-redirect scheme re-validation, so an\nHTTP 3xx Location: file://... turned SSRF into arbitrary local file\nread. load_uri!('file://...') was a separate local-file-read\nprimitive under attacker-controllable URIs. Default fetches now\nroute through SsrfFilter.get; two new off-by-default opt-in flags\n(allow_local_network, allow_file_uris) restore each behaviour\nindependently; file:// is no longer reachable from the remote-fetch\npath so the cross-scheme redirect sink is structurally closed.\n\nWeakness: CWE-918 (Server-Side Request Forgery)\nSeverity: High\nCVSS: 7.5\nDetection: Manual\nReport: https://github.com/premailer/css_parser/security/advisories/GHSA-9pmc-p236-855h\nIntroduced-in: 4215785aab21c9404b88c0bb6e5d68e7b1a99c8c\n\nWeakness: CWE-73 (External Control of File Name or Path)\nSeverity: High\nCVSS: 7.5\nDetection: Manual\nReport: https://github.com/premailer/css_parser/security/advisories/GHSA-9pmc-p236-855h\nIntroduced-in: 4215785aab21c9404b88c0bb6e5d68e7b1a99c8c\n\nReported-by: Jonathan Leitschuh <jonathan.leitschuh@braze.com>\nSigned-off-by: Jonathan Leitschuh <jonathan.leitschuh@braze.com>\nCo-Authored-By: Claude Opus 4.7 (1M context) <noreply@anthropic.com>",
+        "url": "https://github.com/premailer/css_parser/commit/7d2ddf0189cd54b54f378f59daefa10cb036e476"
+    },
+    {
+        "sha": "ba74c3ce3f4281302dc635afe5fd684b74c7a797",
+        "author": "Jonathan Leitschuh",
+        "email": "Jonathan.Leitschuh@braze.com",
+        "date": "2026-05-28T18:29:58Z",
+        "message": "test: Add failing tests for SSRF and file-URI LFI (GHSA-9pmc-p236-855h)\n\nCssParser::Parser#load_uri! and #read_remote_file accept any host /\nscheme / file:// URI with no IP filtering, no per-redirect scheme\nre-validation, and no gate on file:// via load_uri!. The new tests\npin the desired post-fix behaviour: two independent off-by-default\nopt-in flags (allow_local_network, allow_file_uris) gate the SSRF\nand LFI paths respectively, and a pair of cross-tests asserts that\nenabling one does not enable the other. Assertions are made at the\nsocket layer (TCPSocket / Socket.tcp) and at File.read so they\nsurvive future HTTP-library swaps. All assertions fail against\nunfixed code.\n\nWeakness: CWE-918 (Server-Side Request Forgery)\nSeverity: High\nWeakness: CWE-73 (External Control of File Name or Path)\nSeverity: High\nDetection: Manual\nReport: https://github.com/premailer/css_parser/security/advisories/GHSA-9pmc-p236-855h\n\nReported-by: Jonathan Leitschuh <jonathan.leitschuh@braze.com>\nSigned-off-by: Jonathan Leitschuh <jonathan.leitschuh@braze.com>\nCo-Authored-By: Claude Opus 4.7 (1M context) <noreply@anthropic.com>",
+        "url": "https://github.com/premailer/css_parser/commit/ba74c3ce3f4281302dc635afe5fd684b74c7a797"
+    },
+    {
+        "sha": "cee10f16b11dd175f17b0e5f6aefa488378e964b",
+        "author": "Michael Grosser",
+        "email": "michael@grosser.it",
+        "date": "2026-05-07T18:43:24Z",
+        "message": "v2.2.0",
+        "url": "https://github.com/premailer/css_parser/commit/cee10f16b11dd175f17b0e5f6aefa488378e964b"
+    },
+    {
+        "sha": "920a01b1c1841194bd164c011bd2430d283fa467",
+        "author": "Michael Grosser",
+        "email": "michael@grosser.it",
+        "date": "2026-05-07T18:43:07Z",
+        "message": "Merge pull request #187 from fukayatsu/fix-rgba-leading-dot-alpha\n\nAccept CSS numbers without a leading zero in rgb/rgba/hsl/hsla",
+        "url": "https://github.com/premailer/css_parser/commit/920a01b1c1841194bd164c011bd2430d283fa467"
+    },
+    {
+        "sha": "9fc40c64d9b9d28f3d8dd857889e2a14b1b0b39d",
+        "author": "fukayatsu",
+        "email": "fukayatsu@gmail.com",
+        "date": "2026-05-07T04:41:59Z",
+        "message": "Accept CSS numbers without a leading zero in rgb/rgba/hsl/hsla\n\nThe numeric colour regexps used `\\d+(\\.\\d+)?` which requires at least\none digit before the decimal point, so values like `rgba(0,0,0,.1)`\nwere not recognised as colours. Per CSS Values & Units, `<number>`\npermits the integer part to be omitted (`[0-9]* '.' [0-9]+`).\n\nThe practical impact is that shorthand expansion silently dropped the\ncolour:\n\n  border: 1px solid rgba(0,0,0,.1)\n    -> border-top-width / -style are kept, border-top-color is gone.\n\n  background: url(x.png) rgba(0,0,0,.1)\n    -> background-image is kept, background-color is gone.\n\nThis bites users of Dart Sass + Premailer because Dart Sass's\n`compressed` output strips leading zeros, so `.1` is what the\ninliner actually receives.\n\nSwitching the integer-and-optional-fraction pattern to\n`(?:\\d*\\.)?\\d+` accepts `1`, `1.5`, and `.5` while still\nrejecting a bare `1.` (also invalid per spec).\n\nTests cover both the regex itself (positive cases for `.1`-style\nvalues) and the shorthand-expansion regression for `border:` and\n`background:`.",
+        "url": "https://github.com/premailer/css_parser/commit/9fc40c64d9b9d28f3d8dd857889e2a14b1b0b39d"
+    },
+    {
+        "sha": "300f130705f3b358039b8e848f659f971045b88b",
+        "author": "Michael Grosser",
+        "email": "michael@grosser.it",
+        "date": "2026-04-28T00:10:37Z",
+        "message": "v2.1.0",
+        "url": "https://github.com/premailer/css_parser/commit/300f130705f3b358039b8e848f659f971045b88b"
+    },
+    {
+        "sha": "35e689c904225add78e0c488cf04bad052666449",
+        "author": "Michael Grosser",
+        "email": "michael@grosser.it",
+        "date": "2026-04-28T00:10:14Z",
+        "message": "Merge pull request #186 from premailer/grosser/https\n\nverify ssl when loading files over https",
+        "url": "https://github.com/premailer/css_parser/commit/35e689c904225add78e0c488cf04bad052666449"
+    },
+    {
+        "sha": "a9f2947a040ec9be1c65d07bbfc19f68a72a4fba",
+        "author": "Michael Grosser",
+        "email": "michael@grosser.it",
+        "date": "2026-04-28T00:07:28Z",
+        "message": "verify ssl when loading files over https",
+        "url": "https://github.com/premailer/css_parser/commit/a9f2947a040ec9be1c65d07bbfc19f68a72a4fba"
+    },
+    {
+        "sha": "3f91e8db7547fac50ab50cb7f9920f785f722740",
+        "author": "Michael Grosser",
+        "email": "michael@grosser.it",
+        "date": "2026-02-23T22:01:20Z",
+        "message": "changelog",
+        "url": "https://github.com/premailer/css_parser/commit/3f91e8db7547fac50ab50cb7f9920f785f722740"
+    },
+    {
+        "sha": "6fac0255b37ac468f8dde5b0da56d1b60e528310",
+        "author": "Michael Grosser",
+        "email": "michael@grosser.it",
+        "date": "2026-02-23T22:00:13Z",
+        "message": "v2.0.0",
+        "url": "https://github.com/premailer/css_parser/commit/6fac0255b37ac468f8dde5b0da56d1b60e528310"
+    },
+    {
+        "sha": "3d707aa7d0861ea98ec0660ab0103081ce1e21c5",
+        "author": "Michael Grosser",
+        "email": "michael@grosser.it",
+        "date": "2026-02-23T21:59:09Z",
+        "message": "Merge pull request #183 from premailer/grosser/4\n\nruby 4",
+        "url": "https://github.com/premailer/css_parser/commit/3d707aa7d0861ea98ec0660ab0103081ce1e21c5"
+    },
+    {
+        "sha": "3327ccd602b8a27efe76681201c074e0c1f3c22f",
+        "author": "Michael Grosser",
+        "email": "michael@grosser.it",
+        "date": "2026-02-23T21:51:54Z",
+        "message": "ruby 4",
+        "url": "https://github.com/premailer/css_parser/commit/3327ccd602b8a27efe76681201c074e0c1f3c22f"
+    },
+    {
+        "sha": "6a6b8c0aa8932fbc8668709555e9379fa26533a2",
+        "author": "Michael Grosser",
+        "email": "michael@grosser.it",
+        "date": "2026-02-23T21:50:09Z",
+        "message": "Merge pull request #180 from sokolikp/fix/folded-declaration-cache-memory-leak\n\nFix process-global memory leak in folded_declaration_cache",
+        "url": "https://github.com/premailer/css_parser/commit/6a6b8c0aa8932fbc8668709555e9379fa26533a2"
+    },
+    {
+        "sha": "5ce2dba1249562a8be980c48b4cfbf9e316d1b30",
+        "author": "Michael Grosser",
+        "email": "michael@grosser.it",
+        "date": "2026-02-23T21:01:24Z",
+        "message": "Merge pull request #182 from premailer/grosser/eol\n\nremove eol rubies",
+        "url": "https://github.com/premailer/css_parser/commit/5ce2dba1249562a8be980c48b4cfbf9e316d1b30"
+    },
+    {
+        "sha": "f60752a22aff4d524364988c73ada41719839bf7",
+        "author": "Michael Grosser",
+        "email": "michael@grosser.it",
+        "date": "2026-02-23T19:56:23Z",
+        "message": "remove eol rubies",
+        "url": "https://github.com/premailer/css_parser/commit/f60752a22aff4d524364988c73ada41719839bf7"
+    },
+    {
+        "sha": "69408221cb4be34e99e27bee9d26f64949a71468",
+        "author": "Paul Sokolik",
+        "email": "sokolik@squareup.com",
+        "date": "2026-02-23T19:38:53Z",
+        "message": "Remove tests for deleted class-level cache\n\nThe tests were asserting the absence of removed code — unnecessary.\n\nAmp-Thread-ID: https://ampcode.com/threads/T-019c8b1f-829d-70cd-83c5-3409a635e616\nCo-authored-by: Amp <amp@ampcode.com>",
+        "url": "https://github.com/premailer/css_parser/commit/69408221cb4be34e99e27bee9d26f64949a71468"
+    },
+    {
+        "sha": "4346ab0149c9094c24e0bb925398cd72bb0e2516",
+        "author": "Paul Sokolik",
+        "email": "sokolik@squareup.com",
+        "date": "2026-02-23T15:56:41Z",
+        "message": "Fix process-global memory leak in folded_declaration_cache\n\nIn long-lived processes (e.g., Sidekiq workers rendering emails via\nPremailer), the process-global `@folded_declaration_cache` on\n`CssParser::Parser` accumulates entries from every CSS parse operation\nand is never cleared, causing unbounded memory growth.\n\nThe class-level `@folded_declaration_cache` (and its `attr_reader`) on\n`CssParser::Parser` was defined as a class instance variable that\npersists for the lifetime of the process. While `reset!` (called in\n`initialize`) creates a per-instance `@folded_declaration_cache`, the\nclass-level variable and accessor remained, leaking the global\nreference.\n\nSimilarly, `CssParser.merge` set a module-level\n`@folded_declaration_cache = {}` on every call, which also persisted\nat the module level.\n\nThis commit:\n- Removes the class-level `@folded_declaration_cache` and its\n  `class << self; attr_reader` from `CssParser::Parser`\n- Removes the module-level `@folded_declaration_cache` assignment\n  in `CssParser.merge`\n- The per-instance cache (set in `reset!`) is already properly scoped\n  and gets garbage collected with the `Parser` instance\n- Adds tests verifying the cache is per-instance and not class-level\n\nAmp-Thread-ID: https://ampcode.com/threads/T-019c8b1f-829d-70cd-83c5-3409a635e616\nCo-authored-by: Amp <amp@ampcode.com>",
+        "url": "https://github.com/premailer/css_parser/commit/4346ab0149c9094c24e0bb925398cd72bb0e2516"
+    },
+    {
+        "sha": "2ef7dcaaf9ceaba6652d67a875e4df5e76d8950f",
+        "author": "Michael Grosser",
+        "email": "michael@grosser.it",
+        "date": "2025-04-17T17:27:02Z",
+        "message": "Merge pull request #176 from tagliala/chore/test-against-ruby-34\n\nTest against Ruby 3.4 and JRuby stable",
+        "url": "https://github.com/premailer/css_parser/commit/2ef7dcaaf9ceaba6652d67a875e4df5e76d8950f"
+    },
+    {
+        "sha": "a61552c3ea5d8f16b2e4a1d4934a11b41b427839",
+        "author": "Geremia Taglialatela",
+        "email": "tagliala.dev@gmail.com",
+        "date": "2025-04-17T07:30:26Z",
+        "message": "Test against Ruby 3.4 and JRuby stable",
+        "url": "https://github.com/premailer/css_parser/commit/a61552c3ea5d8f16b2e4a1d4934a11b41b427839"
+    },
+    {
+        "sha": "89c81113fa040dc3aa97d1423b85234d00a9f68a",
+        "author": "Michael Grosser",
+        "email": "michael@grosser.it",
+        "date": "2025-03-09T20:28:50Z",
+        "message": "v1.21.1",
+        "url": "https://github.com/premailer/css_parser/commit/89c81113fa040dc3aa97d1423b85234d00a9f68a"
+    },
+    {
+        "sha": "9471b2a83abbded7ba14ba62d1b55c73ca3932c3",
+        "author": "Michael Grosser",
+        "email": "michael@grosser.it",
+        "date": "2025-03-09T20:28:12Z",
+        "message": "Merge pull request #175 from mogest/master\n\nPrefer !important rules over non-!important rules in the same ruleset",
+        "url": "https://github.com/premailer/css_parser/commit/9471b2a83abbded7ba14ba62d1b55c73ca3932c3"
+    },
+    {
+        "sha": "3dba6e3757aaf7df9ec8d462cd8dc7f3354f38c9",
+        "author": "Mog Nesbitt",
+        "email": "mog@seriousorange.com",
+        "date": "2025-03-08T00:19:51Z",
+        "message": "Prefer !important rules over non-!important rules in the same ruleset\n\nPreviously, the css rule \"color: black !important; color: red;\" would be\ncollapsed to \"color: red;\" as the processor did not take whether the\n!important flag was set inside the same rule.\n\nThis commit makes the Declaration Value initializer take notice of the\n!important flag and correctly handle it.",
+        "url": "https://github.com/premailer/css_parser/commit/3dba6e3757aaf7df9ec8d462cd8dc7f3354f38c9"
+    },
+    {
+        "sha": "54b8ea5d542297efd0690bd22e390cf7640ee7d3",
+        "author": "Michael Grosser",
+        "email": "michael@grosser.it",
+        "date": "2024-12-14T04:42:06Z",
+        "message": "Merge pull request #174 from tagliala/chore/fix-match-missed\n\nFix `match?` that were not detected by RuboCop",
+        "url": "https://github.com/premailer/css_parser/commit/54b8ea5d542297efd0690bd22e390cf7640ee7d3"
+    },
+    {
+        "sha": "f6addfbd4e7c585d7048eb467df5b158df703647",
+        "author": "Geremia Taglialatela",
+        "email": "tagliala.dev@gmail.com",
+        "date": "2024-12-13T18:33:17Z",
+        "message": "Fix `match?` that were not detected by RuboCop\n\nMaybe because of some false negatives affecting conditionals\n\nRef: rubocop/rubocop-performance#152",
+        "url": "https://github.com/premailer/css_parser/commit/f6addfbd4e7c585d7048eb467df5b158df703647"
+    },
+    {
+        "sha": "cff1ddba66a9aca22a15ebdaaf6cbd35c2652381",
+        "author": "Michael Grosser",
+        "email": "michael@grosser.it",
+        "date": "2024-12-13T16:46:19Z",
+        "message": "v1.21.0",
+        "url": "https://github.com/premailer/css_parser/commit/cff1ddba66a9aca22a15ebdaaf6cbd35c2652381"
+    },
+    {
+        "sha": "39dab047e61b41efe8c2c479ad07fdf5e9ed2afa",
+        "author": "Michael Grosser",
+        "email": "michael@grosser.it",
+        "date": "2024-12-13T16:46:03Z",
+        "message": "Merge pull request #173 from premailer/grosser/perf\n\nfix perf copps",
+        "url": "https://github.com/premailer/css_parser/commit/39dab047e61b41efe8c2c479ad07fdf5e9ed2afa"
+    }
+]

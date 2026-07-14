@@ -1,0 +1,242 @@
+[
+    {
+        "sha": "34dac209ffb6ef85cc78c5d217bbb7ad001d68fd",
+        "author": "greymoth",
+        "email": "m.hirakawa07@icloud.com",
+        "date": "2026-06-26T16:48:16Z",
+        "message": "docs: fix `BindXML` comment referencing nonexistent `binding.BindXML` (#4717)\n\nThe doc comment on line 790 read:\n  \"BindXML is a shortcut for c.MustBindWith(obj, binding.BindXML).\"\n\n`binding.BindXML` does not exist. The correct symbol is `binding.XML`\n(defined in binding/binding.go), which is also what the implementation\nuses. All sibling methods (BindJSON, BindYAML, BindTOML, etc.) already\nreference the correct symbol in their comments.",
+        "url": "https://github.com/gin-gonic/gin/commit/34dac209ffb6ef85cc78c5d217bbb7ad001d68fd"
+    },
+    {
+        "sha": "03f3e420a3c370659359fb4deb99a474229b215a",
+        "author": "Hershel1995",
+        "email": "sottile-carmelo@virgilio.it",
+        "date": "2026-06-23T12:08:30Z",
+        "message": "update validator library to version 10.30.3 (#4707)\n\nCo-authored-by: Carmelo Sottile <carmelo.sottile@ericsson.com>",
+        "url": "https://github.com/gin-gonic/gin/commit/03f3e420a3c370659359fb4deb99a474229b215a"
+    },
+    {
+        "sha": "d9307dbcbbe796a64d9e0ef23452da888dd7f904",
+        "author": "Muhammad Ardy Junata",
+        "email": "ardyjunata53@gmail.com",
+        "date": "2026-06-22T15:34:41Z",
+        "message": "fix(context): skip chmod on pre-existing dirs in SaveUploadedFile (#4702)\n\n* fix: skip chmod on pre-existing dirs in SaveUploadedFile\n\nFixes #4622\n\nPrior to this change, SaveUploadedFile unconditionally called\nos.Chmod(dir, mode) after os.MkdirAll, even when the target\ndirectory already existed. This caused 'operation not permitted'\nerrors when saving files into system-owned directories like /tmp\nthat the current process does not own.\n\nThe fix uses os.Stat before MkdirAll to detect whether the\ndirectory already exists, and only calls os.Chmod when the\ndirectory was freshly created by MkdirAll.\n\nThis restores the behaviour from v1.10.1 where only os.MkdirAll\nwas used (which correctly skips permission changes on existing dirs)\nwhile preserving the custom permission feature added in v1.12.0.\n\nRegression test added: TestSaveUploadedFileToExistingDir saves\na file into os.TempDir() (a pre-existing system directory) and\nasserts no error is returned.\n\n* test: make SaveUploadedFile #4622 regression test platform-independent\n\nThe regression test relied on os.Chmod failing on a pre-existing directory,\nwhich only happens for a non-owner, non-root process. When tests run as root\n(common in containers/CI) or with a user-owned $TMPDIR, the buggy chmod\nsucceeds, so the test passed even against the unfixed code.\n\nAssert the actual contract instead: a pre-existing directory's permissions\nare left unchanged. This catches the regression deterministically on every\nplatform.\n\nAlso tighten the SaveUploadedFile doc/comments: the requested perm is enforced\nonly on the newly created destination directory, not on every directory in the\npath.\n\nCo-Authored-By: Claude Opus 4.8 (1M context) <noreply@anthropic.com>\n\n---------\n\nCo-authored-by: Bo-Yi Wu <appleboy.tw@gmail.com>\nCo-authored-by: Claude Opus 4.8 (1M context) <noreply@anthropic.com>",
+        "url": "https://github.com/gin-gonic/gin/commit/d9307dbcbbe796a64d9e0ef23452da888dd7f904"
+    },
+    {
+        "sha": "da1e108614ecbbadfa5736b1b297b16121d23b9b",
+        "author": "Pierre F.",
+        "email": "pierre.fortes@gmail.com",
+        "date": "2026-06-22T14:43:44Z",
+        "message": "test(context): use t.TempDir() for SaveUploadedFile permission test on WSL (#4709)\n\n* fix: change file creation to use c.Temp instead to work on wsl\n\n* test(context): use t.TempDir() in SaveUploadedFile failure test for WSL\n\nMirror the WSL-portability fix applied to TestSaveUploadedFileWithPermission:\nwrite under t.TempDir() instead of a relative path so the test does not depend\non the working directory's filesystem (drvfs reports 0o777 on WSL) and is\ncleaned up automatically.\n\nCo-Authored-By: Claude Opus 4.8 (1M context) <noreply@anthropic.com>\n\n---------\n\nCo-authored-by: Bo-Yi Wu <appleboy.tw@gmail.com>\nCo-authored-by: Claude Opus 4.8 (1M context) <noreply@anthropic.com>",
+        "url": "https://github.com/gin-gonic/gin/commit/da1e108614ecbbadfa5736b1b297b16121d23b9b"
+    },
+    {
+        "sha": "074b669a95fd834701359acc55371e6b377618f6",
+        "author": "MuaazTasawar",
+        "email": "muaaztasawar6@gmail.com",
+        "date": "2026-06-22T13:18:24Z",
+        "message": "test(response_writer): add tests for Flush() with and without http.Flusher (#4699)\n\n* test(response_writer): add tests for Flush() with and without http.Flusher\n\n* test(response_writer): drop stray comment and clarify Flush regression note\n\n- Remove orphaned doc comment left at the end of the file\n- Reword the issue #4460 reference to reflect the no-panic guard\n\n---------\n\nCo-authored-by: Bo-Yi Wu <appleboy.tw@gmail.com>",
+        "url": "https://github.com/gin-gonic/gin/commit/074b669a95fd834701359acc55371e6b377618f6"
+    },
+    {
+        "sha": "4a3eb31fb15b2a2d78b4bdbe0c31a2c564b1977a",
+        "author": "DadaVinqi",
+        "email": "llp507187@gmail.com",
+        "date": "2026-06-22T12:56:28Z",
+        "message": "fix(recovery): record recovered panics in c.Errors (#4698)\n\n* fix: record recovered panic errors\n\n* chore(deps): bump quic-go to v0.59.1\n\n* refactor(recovery): simplify panic error recording\n\n- Collapse the if/else into a single c.Error call in defaultHandleRecovery\n- Assert the recorded panic error is ErrorTypePrivate in the test\n\nCo-Authored-By: Claude Opus 4.8 (1M context) <noreply@anthropic.com>\n\n---------\n\nCo-authored-by: m0_66095053 <2876430886@qq.com>\nCo-authored-by: Bo-Yi Wu <appleboy.tw@gmail.com>\nCo-authored-by: Claude Opus 4.8 (1M context) <noreply@anthropic.com>",
+        "url": "https://github.com/gin-gonic/gin/commit/4a3eb31fb15b2a2d78b4bdbe0c31a2c564b1977a"
+    },
+    {
+        "sha": "293ad7edebb3ae30369288bd6416ca0d78474727",
+        "author": "Amirhf",
+        "email": "amirhacking85@gmail.com",
+        "date": "2026-06-22T11:09:26Z",
+        "message": "fix(context): Copy() copies Errors and Accepted fields (#4695)\n\n* Previously, Copy() only copied Keys and Params, leaving Errors and\nAccepted as nil even when set on the original context. Goroutines\nreceiving a copied context could not observe errors attached before\nthe copy, and content-negotiation state set by middleware was silently\nlost.\n\n* Replace assert.Equal(t, len(c.Errors), len(cp.Errors)) with assert.Len(t, cp.Errors, 2) to satisfy the testifylint linter rule\n\n---------\n\nCo-authored-by: Bo-Yi Wu <appleboy.tw@gmail.com>",
+        "url": "https://github.com/gin-gonic/gin/commit/293ad7edebb3ae30369288bd6416ca0d78474727"
+    },
+    {
+        "sha": "2e4d4f38962a6f15ae496d59b294f307eef95429",
+        "author": "Bo-Yi Wu",
+        "email": "appleboy.tw@gmail.com",
+        "date": "2026-06-22T11:00:06Z",
+        "message": "chore(deps): bump github.com/quic-go/quic-go to v0.60.0 (#4713)\n\n- Upgrade quic-go from v0.59.0 to v0.60.0",
+        "url": "https://github.com/gin-gonic/gin/commit/2e4d4f38962a6f15ae496d59b294f307eef95429"
+    },
+    {
+        "sha": "d75fcd4c9ab260e5225de590f1f0f8c0e0e12d11",
+        "author": "Sai Asish Y",
+        "email": "say.apm35@gmail.com",
+        "date": "2026-06-02T14:02:14Z",
+        "message": "fix(response): panic on Hijack/CloseNotify when wrapper unsupported (#4645)\n\n* response_writer: don't panic on Hijack/CloseNotify when wrapper unsupported\n\nCloses #4638. http.TimeoutHandler's writer doesn't implement http.Hijacker/CloseNotifier; mirror Flush's graceful degradation.\n\n* response_writer: keep Written() false when Hijack is unsupported\n\nSigned-off-by: Sai Asish Y <say.apm35@gmail.com>\n\n---------\n\nSigned-off-by: Sai Asish Y <say.apm35@gmail.com>\nCo-authored-by: Bo-Yi Wu <appleboy.tw@gmail.com>",
+        "url": "https://github.com/gin-gonic/gin/commit/d75fcd4c9ab260e5225de590f1f0f8c0e0e12d11"
+    },
+    {
+        "sha": "8d0468f72897652485933b845253386f9147a8bf",
+        "author": "Tero Saarni",
+        "email": "tero.saarni@est.tech",
+        "date": "2026-06-02T13:50:57Z",
+        "message": "chore(deps): bump golang.org/x/net to v0.55.0 (#4678)\n\nSigned-off-by: Tero Saarni <tero.saarni@est.tech>",
+        "url": "https://github.com/gin-gonic/gin/commit/8d0468f72897652485933b845253386f9147a8bf"
+    },
+    {
+        "sha": "88c42635384d52ccc28bbcc2750cc040e07e2e82",
+        "author": "Leehainuo",
+        "email": "lihainuo0502@gmail.com",
+        "date": "2026-06-02T13:49:36Z",
+        "message": "docs(context): align inline comments in GetPostForm example (#4675)\n\nStandardize comment alignment in GetPostForm documentation example\nto improve readability and maintain consistency with code formatting\nconventions.",
+        "url": "https://github.com/gin-gonic/gin/commit/88c42635384d52ccc28bbcc2750cc040e07e2e82"
+    },
+    {
+        "sha": "96ece6a14123923d00081320486042f568adef32",
+        "author": "Raju Ahmed",
+        "email": "73926176+raju-mechatronics@users.noreply.github.com",
+        "date": "2026-06-02T13:48:53Z",
+        "message": "feat(context): add Scheme() with proper reverse proxy support (#4655)\n\n* feat(context): add Scheme method to determine HTTP scheme from request\n\n* test(context): add tests for Scheme method",
+        "url": "https://github.com/gin-gonic/gin/commit/96ece6a14123923d00081320486042f568adef32"
+    },
+    {
+        "sha": "c79f5d466ee780c329663d5b599d40639b33cd93",
+        "author": "wanghaolong613",
+        "email": "wanghaolong613@163.com",
+        "date": "2026-06-02T13:45:58Z",
+        "message": "refactor: optimize error message concatenation in default_validator (#4685)",
+        "url": "https://github.com/gin-gonic/gin/commit/c79f5d466ee780c329663d5b599d40639b33cd93"
+    },
+    {
+        "sha": "5f4f9643258dc2a65e684b63f12c8d543c936c67",
+        "author": "dependabot[bot]",
+        "email": "49699333+dependabot[bot]@users.noreply.github.com",
+        "date": "2026-05-09T02:20:32Z",
+        "message": "chore(deps): bump the actions group across 1 directory with 2 updates (#4640)\n\nBumps the actions group with 2 updates in the / directory: [codecov/codecov-action](https://github.com/codecov/codecov-action) and [aquasecurity/trivy-action](https://github.com/aquasecurity/trivy-action).\n\n\nUpdates `codecov/codecov-action` from 5 to 6\n- [Release notes](https://github.com/codecov/codecov-action/releases)\n- [Changelog](https://github.com/codecov/codecov-action/blob/main/CHANGELOG.md)\n- [Commits](https://github.com/codecov/codecov-action/compare/v5...v6)\n\nUpdates `aquasecurity/trivy-action` from 0.35.0 to 0.36.0\n- [Release notes](https://github.com/aquasecurity/trivy-action/releases)\n- [Commits](https://github.com/aquasecurity/trivy-action/compare/0.35.0...v0.36.0)\n\n---\nupdated-dependencies:\n- dependency-name: codecov/codecov-action\n  dependency-version: '6'\n  dependency-type: direct:production\n  update-type: version-update:semver-major\n  dependency-group: actions\n- dependency-name: aquasecurity/trivy-action\n  dependency-version: 0.36.0\n  dependency-type: direct:production\n  update-type: version-update:semver-minor\n  dependency-group: actions\n...\n\nSigned-off-by: dependabot[bot] <support@github.com>\nCo-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>",
+        "url": "https://github.com/gin-gonic/gin/commit/5f4f9643258dc2a65e684b63f12c8d543c936c67"
+    },
+    {
+        "sha": "d3ffc9985281dcf4d3bef604cce4e662b1a327a6",
+        "author": "Abhiyan Khanal",
+        "email": "51784021+abhiyankhanal@users.noreply.github.com",
+        "date": "2026-03-16T12:49:59Z",
+        "message": "test(engine): add regression tests for HandleContext with NoRoute (#4571)\n\nAdd two regression tests for GitHub issue #1848 to verify that\nContext.handlers are properly isolated in HandleContext when used\nfrom a NoRoute handler with group and engine middleware.\n\nCo-authored-by: Claude Opus 4.6 <noreply@anthropic.com>\nCo-authored-by: Bo-Yi Wu <appleboy.tw@gmail.com>",
+        "url": "https://github.com/gin-gonic/gin/commit/d3ffc9985281dcf4d3bef604cce4e662b1a327a6"
+    },
+    {
+        "sha": "ecd26c8835574b47acdc9cb6a5dddcc6fe922140",
+        "author": "Bo-Yi Wu",
+        "email": "appleboy.tw@gmail.com",
+        "date": "2026-03-15T09:16:42Z",
+        "message": "docs(readme): update benchmark results with latest data (#4583)\n\n- Remove 20 deprecated frameworks from benchmark report\n- Add BunRouter and Fiber as newly benchmarked routers\n- Add ranked summary table based on GitHub API throughput\n- Add memory consumption tables sorted by bytes ascending\n- Include all micro and API benchmark results with rankings\n\nCo-authored-by: Claude Opus 4.6 (1M context) <noreply@anthropic.com>",
+        "url": "https://github.com/gin-gonic/gin/commit/ecd26c8835574b47acdc9cb6a5dddcc6fe922140"
+    },
+    {
+        "sha": "a749e4d33c2db35835581c60604720614e570cd6",
+        "author": "Bo-Yi Wu",
+        "email": "appleboy.tw@gmail.com",
+        "date": "2026-03-15T06:34:58Z",
+        "message": "docs: replace AUTHORS.md with link to GitHub contributors page (#4582)\n\nAUTHORS.md was a manually maintained list of 400+ contributors that\nhad no automation to keep it current. Replace it with a link to\nGitHub s built-in contributors page which is always up-to-date.\n\nCo-authored-by: Claude Opus 4.6 (1M context) <noreply@anthropic.com>",
+        "url": "https://github.com/gin-gonic/gin/commit/a749e4d33c2db35835581c60604720614e570cd6"
+    },
+    {
+        "sha": "65d1c470ec1d2377623dff5f65241beeed2dfb79",
+        "author": "Bo-Yi Wu",
+        "email": "appleboy.tw@gmail.com",
+        "date": "2026-03-15T06:17:04Z",
+        "message": "docs(benchmarks): update benchmark report with Gin v1.12.0 results (#4581)\n\n- Update test environment to Apple M4 Pro, Go 1.25.8, macOS\n- Add table of contents for easier navigation\n- Add ranked summary tables for each API benchmark\n- Reorganize full results by API section with clear headings\n- Refresh all memory consumption and benchmark data\n\nCo-authored-by: Claude Opus 4.6 (1M context) <noreply@anthropic.com>",
+        "url": "https://github.com/gin-gonic/gin/commit/65d1c470ec1d2377623dff5f65241beeed2dfb79"
+    },
+    {
+        "sha": "6d880724cc553ccc902a88f7f871fd7ea0b44790",
+        "author": "tsinglua",
+        "email": "tsinglua@outlook.com",
+        "date": "2026-03-13T14:42:00Z",
+        "message": "refactor(test): use the built-in max/min to simplify the code (#4576)\n\nSigned-off-by: tsinglua <tsinglua@outlook.com>\nCo-authored-by: Bo-Yi Wu <appleboy.tw@gmail.com>",
+        "url": "https://github.com/gin-gonic/gin/commit/6d880724cc553ccc902a88f7f871fd7ea0b44790"
+    },
+    {
+        "sha": "48667a2dd1172f94c43811c2545209abc59c43f4",
+        "author": "Bo-Yi Wu",
+        "email": "appleboy.tw@gmail.com",
+        "date": "2026-03-13T14:40:18Z",
+        "message": "chore(deps): upgrade Go dependencies and CI action versions (#4580)\n\n- Bump golangci-lint from v2.9 to v2.11\n- Bump aquasecurity/trivy-action from 0.34.2 to 0.35.0\n- Upgrade golang.org/x packages (net, crypto, sys, text, arch)\n- Upgrade go-json, mimetype, and protobuf to latest patch versions\n\nCo-authored-by: Claude Opus 4.6 <noreply@anthropic.com>",
+        "url": "https://github.com/gin-gonic/gin/commit/48667a2dd1172f94c43811c2545209abc59c43f4"
+    },
+    {
+        "sha": "d4672219fc38bd88f32da194994af8e8d718f0d8",
+        "author": "Bo-Yi Wu",
+        "email": "appleboy.tw@gmail.com",
+        "date": "2026-03-13T14:30:54Z",
+        "message": "docs: reorganize doc.md TOC into thematic groups (#4579)\n\nThe flat TOC under a single \"API Examples\" heading made it hard to scan\nand find relevant content. Reorganize 40+ sections into 7 logical groups\n(Routing, Middleware, Logging, Request Binding & Validation, Response\nRendering, Server Configuration, Testing) with description lines for\neach group. Move scattered sections into their correct groups and fix\nthe \"avoid-loging-query-strings\" anchor typo.\n\nCo-authored-by: Claude Opus 4.6 <noreply@anthropic.com>",
+        "url": "https://github.com/gin-gonic/gin/commit/d4672219fc38bd88f32da194994af8e8d718f0d8"
+    },
+    {
+        "sha": "3e44fdc4d1636a2b1599c6688a76e13216a413dd",
+        "author": "dependabot[bot]",
+        "email": "49699333+dependabot[bot]@users.noreply.github.com",
+        "date": "2026-03-04T06:10:36Z",
+        "message": "chore(deps): bump aquasecurity/trivy-action in the actions group (#4557)\n\nBumps the actions group with 1 update: [aquasecurity/trivy-action](https://github.com/aquasecurity/trivy-action).\n\n\nUpdates `aquasecurity/trivy-action` from 0.34.1 to 0.34.2\n- [Release notes](https://github.com/aquasecurity/trivy-action/releases)\n- [Commits](https://github.com/aquasecurity/trivy-action/compare/0.34.1...0.34.2)\n\n---\nupdated-dependencies:\n- dependency-name: aquasecurity/trivy-action\n  dependency-version: 0.34.2\n  dependency-type: direct:production\n  update-type: version-update:semver-patch\n  dependency-group: actions\n...\n\nSigned-off-by: dependabot[bot] <support@github.com>\nCo-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>",
+        "url": "https://github.com/gin-gonic/gin/commit/3e44fdc4d1636a2b1599c6688a76e13216a413dd"
+    },
+    {
+        "sha": "cb2b764cc8a8613b84c44c45b8b2b1ba9da6244d",
+        "author": "HolynnChen",
+        "email": "854560673@qq.com",
+        "date": "2026-02-28T13:55:28Z",
+        "message": "test(make): modify test folder and test command in Makefile (#4465)\n\nCo-authored-by: Bo-Yi Wu <appleboy.tw@gmail.com>",
+        "url": "https://github.com/gin-gonic/gin/commit/cb2b764cc8a8613b84c44c45b8b2b1ba9da6244d"
+    },
+    {
+        "sha": "a39670fb7b2d18ffabe41d59bd58935a387d817a",
+        "author": "Max Katz",
+        "email": "maxktz@icloud.com",
+        "date": "2026-02-28T13:46:37Z",
+        "message": "docs(license): update license period (#4130)\n\nCo-authored-by: Bo-Yi Wu <appleboy.tw@gmail.com>",
+        "url": "https://github.com/gin-gonic/gin/commit/a39670fb7b2d18ffabe41d59bd58935a387d817a"
+    },
+    {
+        "sha": "052d1a79aafe3f04078a2716f8e77d4340308383",
+        "author": "Aum Patel",
+        "email": "150163017+Aum-Patel1234@users.noreply.github.com",
+        "date": "2026-02-28T13:04:54Z",
+        "message": "feat(render): add PDF renderer and tests (#4491)\n\n* render: add PDF renderer and tests\n\n* render: update PDF renderer copyright header\n\n* test: add PDF rendering tests including 204 No Content in context_test.go",
+        "url": "https://github.com/gin-gonic/gin/commit/052d1a79aafe3f04078a2716f8e77d4340308383"
+    },
+    {
+        "sha": "ff00c01e674259bff6ccaab02564362cd419096b",
+        "author": "Bo-Yi Wu",
+        "email": "appleboy.tw@gmail.com",
+        "date": "2026-02-28T12:38:49Z",
+        "message": "docs: revise and expand Gin 1.12.0 release announcement (#4554)\n\n- Update release announcement section to introduce Gin 1.12.0\n- Provide a more detailed description of new features and improvements in version 1.12.0\n\nSigned-off-by: appleboy <appleboy.tw@gmail.com>",
+        "url": "https://github.com/gin-gonic/gin/commit/ff00c01e674259bff6ccaab02564362cd419096b"
+    },
+    {
+        "sha": "73726dc606796a025971fe451f0aa6f1b9b847f6",
+        "author": "Bo-Yi Wu",
+        "email": "appleboy.tw@gmail.com",
+        "date": "2026-02-28T10:10:09Z",
+        "message": "docs: update documentation to reflect Go version changes (#4552)\n\n- Remove the changelog entry about bumping minimum Go version to 1.24 and updating workflows\n\nSigned-off-by: appleboy <appleboy.tw@gmail.com>",
+        "url": "https://github.com/gin-gonic/gin/commit/73726dc606796a025971fe451f0aa6f1b9b847f6"
+    },
+    {
+        "sha": "e292e5caa777bce70b66fe08c94cbe9cef3e2ec9",
+        "author": "Bo-Yi Wu",
+        "email": "appleboy.tw@gmail.com",
+        "date": "2026-02-28T10:07:46Z",
+        "message": "docs: document and finalize Gin v1.12.0 release (#4551)\n\n* docs: document and finalize Gin v1.12.0 release\n\n- Add changelog entries for the Gin v1.12.0 release, covering new features, enhancements, bug fixes, build updates, and dependency upgrades\n- Update all historical changelog entries to consistently use the same bullet style\n- Bump Gin version constant to v1.12.0\n- Update README to announce Gin 1.12.0 instead of 1.11.0\n\nSigned-off-by: appleboy <appleboy.tw@gmail.com>\n\n* Update CHANGELOG.md\n\nCo-authored-by: Copilot <175728472+Copilot@users.noreply.github.com>\n\n---------\n\nSigned-off-by: appleboy <appleboy.tw@gmail.com>\nCo-authored-by: Copilot <175728472+Copilot@users.noreply.github.com>",
+        "url": "https://github.com/gin-gonic/gin/commit/e292e5caa777bce70b66fe08c94cbe9cef3e2ec9"
+    },
+    {
+        "sha": "ae3f524974fc4f55d18c9e7fae4614503c015226",
+        "author": "Bo-Yi Wu",
+        "email": "appleboy.tw@gmail.com",
+        "date": "2026-02-28T09:37:02Z",
+        "message": "ci: update Go version support to 1.25+ across CI and docs (#4550)\n\n* ci: update Go version support to 1.25+ across CI and docs\n\n- Remove Go 1.24 from CI test matrix to only support 1.25 and 1.26\n- Update documentation to require Go version 1.25 or above\n\nSigned-off-by: appleboy <appleboy.tw@gmail.com>\n\n* chore: increase required Go version for Gin to 1.25\n\n- Update minimum required Go version for Gin from 1.24 to 1.25\n- Revise related warning message and test expectations to match new version requirement\n\nSigned-off-by: appleboy <appleboy.tw@gmail.com>\n\n---------\n\nSigned-off-by: appleboy <appleboy.tw@gmail.com>",
+        "url": "https://github.com/gin-gonic/gin/commit/ae3f524974fc4f55d18c9e7fae4614503c015226"
+    },
+    {
+        "sha": "38534e2bf98a06e1f62d6b24384e90b5f78699bf",
+        "author": "dependabot[bot]",
+        "email": "49699333+dependabot[bot]@users.noreply.github.com",
+        "date": "2026-02-28T08:18:12Z",
+        "message": "chore(deps): bump golang.org/x/net from 0.50.0 to 0.51.0 (#4548)\n\nBumps [golang.org/x/net](https://github.com/golang/net) from 0.50.0 to 0.51.0.\n- [Commits](https://github.com/golang/net/commits)\n\n---\nupdated-dependencies:\n- dependency-name: golang.org/x/net\n  dependency-version: 0.51.0\n  dependency-type: direct:production\n  update-type: version-update:semver-minor\n...\n\nSigned-off-by: dependabot[bot] <support@github.com>\nCo-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>\nCo-authored-by: Bo-Yi Wu <appleboy.tw@gmail.com>",
+        "url": "https://github.com/gin-gonic/gin/commit/38534e2bf98a06e1f62d6b24384e90b5f78699bf"
+    }
+]

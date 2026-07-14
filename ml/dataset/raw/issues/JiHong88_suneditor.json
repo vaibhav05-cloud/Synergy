@@ -1,0 +1,364 @@
+[
+    {
+        "id": 4851540190,
+        "number": 1671,
+        "title": "Backpace or delete don't work after creating a new line",
+        "state": "closed",
+        "created_at": "2026-07-10T02:43:18Z",
+        "updated_at": "2026-07-12T18:26:37Z",
+        "closed_at": "2026-07-12T18:14:14Z",
+        "author": "Lanayx",
+        "comments": 2,
+        "labels": [
+            "bug",
+            "fix-ready"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "**Describe the bug**\nBackspace or delete keys don't work after creating new lines with Enter key.\n\n**To Reproduce**\n\n1. Go to https://suneditor.com/playground?ts=93\n2. Choose editor (the one that says Hello SunEditor!)\n3. In the edit field hit Enter key several times\n4. Hit Backspace keys several times\n\n\n**Expected behavior**\nNew lines should start disappearing\n\n**Actual behavior**\nNothing happens, cursor doesn't move\n\n**Screenshots**\n\n<img width=\"977\" height=\"447\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/d74fa772-855a-4a28-8267-b373efa31eae\" />\n\n**Desktop (please complete the following information):**\n\n- OS: Windows\n- Browser: Firefox\n- Version: 152.0.5\n\n**Additional context**\nInitially reproduced in the app, suneditor library version 3.1.4\n",
+        "url": "https://github.com/JiHong88/suneditor/issues/1671"
+    },
+    {
+        "id": 4837633949,
+        "number": 1670,
+        "title": "Feature Request: Add an easier way to remove the Page Break component",
+        "state": "closed",
+        "created_at": "2026-07-08T12:55:32Z",
+        "updated_at": "2026-07-12T18:14:15Z",
+        "closed_at": "2026-07-12T18:14:15Z",
+        "author": "kosuke1208",
+        "comments": 2,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "**Is your feature request related to a problem? Please describe.**\nAfter inserting a **Page Break**, it is not very intuitive to remove the created/displayed component. Unlike tables, there is no obvious UI for deleting a Page Break, so users may have trouble figuring out how to remove it.\n\n<img width=\"1246\" height=\"285\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/87015747-2fdf-4477-aa4c-19a9e434d87f\" />\n\n**Describe the solution you'd like**\nI would like the **Page Break** component to have a deletion UI similar to tables. For example, when the cursor is placed on the **Page Break**, a trash/delete icon could appear, allowing users to remove it easily.\n\n<img width=\"553\" height=\"329\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/0132084a-0b26-406c-8b4e-202170791f1a\" />\n\n**Describe alternatives you've considered**\nThe **Page Break** can currently be removed by editing the HTML directly, **Undo** or using other workarounds, but these methods are not intuitive for most users.\n\n**Additional context**\nI think having a consistent deletion experience across components (such as tables and Page Breaks) would improve the overall editing experience and usability.\n",
+        "url": "https://github.com/JiHong88/suneditor/issues/1670"
+    },
+    {
+        "id": 4742027813,
+        "number": 1668,
+        "title": "TABLE로 생성된 곳에 복붙 미작동 현상",
+        "state": "closed",
+        "created_at": "2026-06-25T08:20:09Z",
+        "updated_at": "2026-07-12T18:14:16Z",
+        "closed_at": "2026-07-12T18:14:16Z",
+        "author": "cheolsoon-park1",
+        "comments": 2,
+        "labels": [
+            "bug",
+            "fix-ready"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "**버그 설명**\n버튼 리스트 중 TABLE 로 에디터 내에 table을 생성하여 내부에 외부 텍스트(다른 브라우저의 글이나 GPT의 글)를 붙여놓기 했을 시  자바스크립트 오류 발생으로 미작동\n\n**재현 방법**\n1. 버튼 리스트 중 TABLE을 클릭하여 에디터에 테이블을 생성합니다.\n2. GPT 혹은 다른 외부 사이트에서 아무 글자나 복사합니다.\n3. 다시 에디터로 돌아와 테이블에 글자를 붙여놓습니다.\n4. 개발자도구 콘솔창에 플러그인 네임 변수에 대한 오류가 발생한 것을 확인합니다.\n\n**기대한 동작**\n테이블 안에 복사한 글자가 스타일도 유지된 채 붙여놓기 된 상태\n\n**스크린샷**\n요청 시 영상으로 제작하겠습니다.\n\n**데스크톱 환경 (please complete the following information):**\n\n- OS: Windows 11, macOS\n- Browser [chrome]\n- Version [149.0.7827.196]\n",
+        "url": "https://github.com/JiHong88/suneditor/issues/1668"
+    },
+    {
+        "id": 4741900065,
+        "number": 1667,
+        "title": "underline으로 생성한 밑줄만 있는 경우 밑줄이 사라지는 현상",
+        "state": "closed",
+        "created_at": "2026-06-25T07:59:41Z",
+        "updated_at": "2026-07-12T18:14:18Z",
+        "closed_at": "2026-07-12T18:14:18Z",
+        "author": "cheolsoon-park1",
+        "comments": 1,
+        "labels": [
+            "bug",
+            "fix-ready"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "**버그 설명**\nhtml entity 중 공백을 표시해주는 &nbsp;만 존재할 때 &nbsp;가 사라지는 현상\n예시) \\<p>\\<u>\\&nbsp; \\&nbsp; \\&nbsp; \\&nbsp;\\</u>\\</p> => \\<p>\\<u>\\</u>\\</p>\n\n**재현 방법**\n에디터 버튼 리스트 중 underline으로 공백 밑줄을 생성 후 저장 또는 codeview 한 후 다시 원본으로 봤을 때 상태\n\n**기대한 동작**\n____의 형태로 유지 되어야 합니다.\n\n**스크린샷**\n<img width=\"1446\" height=\"372\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/d5a61666-08d2-4ec5-bdba-dda497fba457\" />\n<img width=\"1436\" height=\"373\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/0535d97c-4190-43e7-a897-97d545ae88e8\" />\n<img width=\"1443\" height=\"375\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/b50f367e-d897-4199-bb60-65b57b2656b9\" />\n<img width=\"1436\" height=\"375\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/9816beb0-486b-4321-b208-3f47fbbf013d\" />\n\n**데스크톱 환경  (please complete the following information):**\n\n- OS: Windows 11, macOS\n- Browser chrome]\n- Version [149.0.7827.196]\n\n**추가 정보**\n",
+        "url": "https://github.com/JiHong88/suneditor/issues/1667"
+    },
+    {
+        "id": 4679930702,
+        "number": 1662,
+        "title": "Blank screen problem",
+        "state": "closed",
+        "created_at": "2026-06-17T04:01:37Z",
+        "updated_at": "2026-06-17T04:56:45Z",
+        "closed_at": "2026-06-17T04:56:45Z",
+        "author": "bangladeshisoftwarecao",
+        "comments": 0,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "I see the latest version is not working, first time toggle screen then it's switch to blank screen in my react project.\n\nIs this console error:\nUncaught TypeError: label.replace is not a function\n    at _createButton (constructor.js:1203:1)\n    at CreateToolBar (constructor.js:1396:1)\n    at Constructor (constructor.js:114:1)\n    at new Editor (editor.js:26:1)\n    at Object.create (suneditor.js:117:1)\n    at SunEditorWrapper.js:109:1\n    at Object.react_stack_bottom_frame (react-dom-client.development.js:25989:1)\n    at runWithFiberInDEV (react-dom-client.development.js:870:1)\n    at commitHookEffectListMount (react-dom-client.development.js:13244:1)\n    at commitHookPassiveMountEffects (react-dom-client.development.js:13334:1)\ninstallHook.js:1 An error occurred in the <SunEditorWrapper> component.\n\nConsider adding an error boundary to your tree to customize error handling behavior.\nVisit https://react.dev/link/error-boundaries to learn more about error boundaries.\n\noverrideMethod @ installHook.js:1\nconstructor.js:1203 Uncaught TypeError: label.replace is not a function\n    at _createButton (constructor.js:1203:1)\n    at CreateToolBar (constructor.js:1396:1)\n    at Constructor (constructor.js:114:1)\n    at new Editor (editor.js:26:1)\n    at Object.create (suneditor.js:117:1)\n    at SunEditorWrapper.js:109:1\n    at Object.react_stack_bottom_frame (react-dom-client.development.js:25989:1)\n    at runWithFiberInDEV (react-dom-client.development.js:870:1)\n    at commitHookEffectListMount (react-dom-client.development.js:13244:1)\n    at commitHookPassiveMountEffects (react-dom-client.development.js:13334:1)\ninstallHook.js:1 An error occurred in the <SunEditorWrapper> component.\n\nConsider adding an error boundary to your tree to customize error handling behavior.\nVisit https://react.dev/link/error-boundaries to learn more about error boundaries.\n\noverrideMethod @ installHook.js:1\ncontent-script.js:22 Document already loaded, running initialization immediately\ncontent-script.js:4 Attempting to initialize AdUnit\ncontent-script.js:6 AdUnit initialized successfully",
+        "url": "https://github.com/JiHong88/suneditor/issues/1662"
+    },
+    {
+        "id": 4644106332,
+        "number": 1661,
+        "title": "Create fails with \"Cannot read properties of parent node\"",
+        "state": "open",
+        "created_at": "2026-06-11T20:49:28Z",
+        "updated_at": "2026-06-14T15:20:46Z",
+        "closed_at": null,
+        "author": "BJBigler",
+        "comments": 1,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "The bug report:\n\n[SUNEDITOR:E_CREATE_FAIL] Failed to create editor instance. TypeError: Cannot read properties of null (reading 'replaceChild')\n    at Mi.retainFigureFormat (suneditor.min.js:1:306846)\n    at #Bh (suneditor.min.js:1:687670)\n    at Object.method (suneditor.min.js:1:678964)\n    at suneditor.min.js:1:335667\n    at Map.forEach (<anonymous>)\n    at Di.applyRetainFormat (suneditor.min.js:1:335564)\n    at ni.clean (suneditor.min.js:1:239650)\n    at #Gl (suneditor.min.js:1:488285)\n    at suneditor.min.js:1:487226\n    at Map.forEach (<anonymous>)\n\nSteps to create:\n\n1) My editing interface is located inside a hidden <div> (\"display:none\"), which in turn  is located in a <dialog> element.\n2) I activate the interface by using JS to open the dialog and create the SunEditor interface.\n\n    sunEditor = SUNEDITOR.create(element,{\n        plugins: SUNEDITOR.plugins,\n        buttonList: [\n            ['font', 'fontSize'],\n            ['bold', 'underline', 'italic','fontColor'],\n            ['table', 'link', 'math'],\n            ['outdent', 'indent', 'align', 'list'],\n            ['fullScreen', 'showBlocks', 'codeView'],\n            ['removeFormat'],\n        ],\n    });\n\n3) The erroring line above is called once without failure, with the variable \"l\" having the class \"figure.se-flex-component.se-input-component.se-scroll-figure-x\".  On the second call, there's a failure, with the variable having class \"figure.se-flex-component.se-input-compon...\" and the parentNode is null.\n\nI'm not sure what to do from here.\n",
+        "url": "https://github.com/JiHong88/suneditor/issues/1661"
+    },
+    {
+        "id": 4619592895,
+        "number": 1658,
+        "title": "[Bug][v.2.47.0] 아이패드 환경에서 문장 제일 앞에서 엔터를 쳤을 경우 줄바꿈이 되면서 커서가 사라지는 현상",
+        "state": "open",
+        "created_at": "2026-06-09T06:51:01Z",
+        "updated_at": "2026-06-10T16:03:45Z",
+        "closed_at": null,
+        "author": "kimjeonghyun2",
+        "comments": 1,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "# [Bug][v2.47.0] 아이패드 환경에서 문장 제일 앞에서 Enter 입력 시 커서가 사라지는 현상\n\n## 버그 설명\n\n아이패드 Chrome 브라우저 환경에서 SunEditor 사용 중, 문장의 제일 앞에 커서를 위치시킨 뒤 Enter 키를 입력하면 줄바꿈은 되지만 커서가 화면에서 사라지는 현상이 발생합니다.\n\n## 재현 방법\n\n1. 아이패드에서 Chrome 브라우저를 실행합니다.\n2. SunEditor가 적용된 화면 또는 playground에 접속합니다.\n3. 에디터에 문장을 입력합니다.\n4. 입력한 문장의 제일 앞에 커서를 위치시킵니다.\n5. Enter 키를 입력합니다.\n6. 줄바꿈은 되지만 커서가 사라지는 현상을 확인합니다.\n\n## 기대 동작\n\n문장의 제일 앞에서 Enter 키를 입력했을 때 정상적으로 줄바꿈이 되어야 하며, 커서가 사라지지 않고 새로 생성된 줄 또는 정상 위치에 유지되어야 합니다.\n\n## 실제 동작\n\n문장의 제일 앞에서 Enter 키를 입력하면 줄바꿈은 처리되지만, 이후 커서가 화면에서 보이지 않거나 포커스가 비정상적으로 동작합니다.\n\n## 스크린샷\n\n필요 시 재현 화면 또는 동작 영상을 첨부할 예정입니다.\n\n## 데스크톱 환경\n\n* OS: 해당 없음\n* Browser: 해당 없음\n* Version: SunEditor v2.47.0\n\n## 태블릿 환경\n\n* Device: iPad\n* OS: iPadOS\n* Browser: Chrome\n* Version: SunEditor v2.47.0\n\n## 추가 설명\n\n아이패드 Chrome 환경에서만 재현되는 것으로 보이며, 문장 중간이나 끝이 아닌 문장 제일 앞에서 Enter 키를 입력했을 때 커서가 사라지는 문제가 발생합니다.\n",
+        "url": "https://github.com/JiHong88/suneditor/issues/1658"
+    },
+    {
+        "id": 4609885002,
+        "number": 1657,
+        "title": "[Bug][v3.1.3] Empty editor duplicates wysiwyg container on Enter key press",
+        "state": "closed",
+        "created_at": "2026-06-08T03:56:35Z",
+        "updated_at": "2026-07-12T18:14:19Z",
+        "closed_at": "2026-07-12T18:14:19Z",
+        "author": "meansc101",
+        "comments": 1,
+        "labels": [
+            "bug",
+            "fix-ready"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "## Bug Report\n\n**SunEditor Version:** 3.1.3  \n**Mode:** `classic`, `balloon`  \n**Browser:** Chrome 149.0.7827.53 (arm64) / Safari on iPadOS 18.x, 26.x  \n**OS:** macOS (Chrome), iPadOS 18.x / 26.x  \n\n---\n\n### Description\n\nWhen the editor is **completely empty** and the user presses `Enter`,\nthe wysiwyg container element is **duplicated** inside `.se-wrapper`\ninstead of creating a new paragraph. Each subsequent `Enter` press\nadds another duplicate, resulting in multiple `contenteditable` regions.\n\nThis is consistently reproducible on **iPadOS (Safari/WebKit)** and\nintermittently on **PC Chrome**.\n\n---\n\n### Steps to Reproduce\n\n1. Initialize SunEditor in `classic` or `balloon` mode\n2. Leave the editor **completely empty** (no content)\n3. Click into the editor to focus\n4. Press `Enter`\n\n---\n\n### Expected Behavior\n\nA new paragraph `<p><br></p>` is created inside the existing wysiwyg\ncontainer:\n\n```html\n<div class=\"se-wrapper-inner se-wrapper-wysiwyg sun-editor-editable\">\n  <p><br></p>\n  <p><br></p>   ← new paragraph created here\n</div>\n```\n\n---\n\n### Actual Behavior\n\nA new `div` element — with the same attributes as the wysiwyg container\n(`class`, `style`, `contenteditable`) — is inserted as a **sibling** to\nthe original wysiwyg inside `.se-wrapper`.\nEach `Enter` press adds another duplicate:\n\n```html\n<div class=\"se-wrapper\">\n  <!-- original wysiwyg -->\n  <div class=\"se-wrapper-inner se-wrapper-wysiwyg sun-editor-editable\"\n       contenteditable=\"true\" style=\"height: auto;\"></div>\n\n  <!-- duplicated on 1st Enter -->\n  <div style=\"height: auto;\" class=\"se-wrapper-inner se-wrapper-wysiwyg sun-editor-editable\"\n       contenteditable=\"true\" spellcheck=\"false\"><br><div><br></div></div>\n\n  <!-- duplicated on 2nd Enter -->\n  <div style=\"height: auto;\" class=\"se-wrapper-inner se-wrapper-wysiwyg sun-editor-editable\"\n       contenteditable=\"true\" spellcheck=\"false\"><br><div><br></div></div>\n</div>\n```\n\n---\n\n### Root Cause Analysis\n\nThree issues appear to be compounding:\n\n**1. `async/await` in `OnKeyDown_wysiwyg` drops `e.preventDefault()` timing**\n\n`OnKeyDown_wysiwyg` is an `async` function and calls\n`await this.$.eventManager.triggerEvent('onKeyDown', ...)` before\n`e.preventDefault()` is reached for the Enter key handling.\nThe `await` yields execution back to the browser, which then processes\n`beforeinput(insertParagraph)` natively before the handler resumes.\n\n**2. `OnBeforeInput_wysiwyg` does not handle `insertParagraph`**\n\nThe `beforeinput` handler only checks character count and read-only state.\nThere is no guard for `e.inputType === 'insertParagraph'`, so the\nbrowser's native paragraph insertion proceeds unchecked.\n\n**3. `enterFormatBreakAtEdge` receives the wysiwyg container as `formatEl`**\n\nWhen the editor is empty, `selectionNode` resolves to the wysiwyg\ncontainer itself (not a `<p>` inside it).\n`enterFormatBreakAtEdge` then calls `dom.utils.copyTagAttributes(newFormat, wysiwyg)`,\nwhich copies **all** attributes of the wysiwyg element\n(`se-wrapper-wysiwyg`, `sun-editor-editable`, `contenteditable=\"true\"`, etc.)\nonto a new element and inserts it as a sibling inside `.se-wrapper`.\n\n**Why iPadOS reproduces more reliably:**\n\nOn iPadOS WebKit, the soft keyboard may dispatch `keydown` with\n`isComposing: true` even without active IME composition.\nThis causes `OnKeyDown_wysiwyg` to `return` early (before any\n`preventDefault` logic), so the entire handler is bypassed and the\nbrowser processes `beforeinput(insertParagraph)` unconditionally.\n\n---\n\n### Video\n\nhttps://github.com/user-attachments/assets/3bd5f436-727d-4c73-9bf0-f420fa86f7ca\n\n---\n\n### Additional Notes\n\n- The bug only triggers when the editor is **completely empty**.\n  Editors with existing content are not affected (cursor resolves\n  to a text node inside `<p>`, not the wysiwyg container).\n- No custom `onKeyDown` handler is registered in our usage.\n\n---\n\n### 한국어 요약\n\n빈 에디터(`classic` / `balloon` 모드)에서 `Enter` 키를 누르면,\n새 단락이 wysiwyg 컨테이너 내부에 생성되지 않고\n`.se-wrapper` 안에 wysiwyg 컨테이너 자체가 복제되는 버그입니다.\n\nEnter를 누를 때마다 복제가 반복되며, PC Chrome에서도 자주 발생하지만,\n**iPadOS WebKit 환경에서 재현율이 현저히 높습니다.**\n\n근본 원인은 세 가지가 복합적으로 작용합니다.\n1. `OnKeyDown_wysiwyg`의 `async/await` 구조로 인해 `e.preventDefault()` 호출 전에 브라우저가 `beforeinput(insertParagraph)`을 처리함\n2. `OnBeforeInput_wysiwyg`에 `insertParagraph` 차단 로직 없음\n3. 에디터가 비어있을 때 `selectionNode`가 wysiwyg 컨테이너 자체를 가리켜, `enterFormatBreakAtEdge`가 wysiwyg의 모든 속성을 복사한 새 요소를 `.se-wrapper`에 형제로 삽입함\n\n---\n\n## Additional Scenario (same root cause)\n\nThe same issue also occurs when pressing `Enter` on an **empty paragraph\n(`<p><br></p>`) within existing content** — not just in a fully empty editor.\n\n### Steps to Reproduce\n\n1. Initialize SunEditor in `classic` or `balloon` mode\n2. Enter content with a blank line in the middle:\n   ```\n   Hello\n   (blank line — cursor here)\n   World\n   ```\n3. Place the cursor on the blank line\n4. Press `Enter`\n\n### Expected Behavior\n\nOne new blank paragraph is inserted, cursor moves down:\n```\nHello\n(blank)\n(blank) ← cursor moves here\nWorld\n```\n\n### Actual Behavior\n\nTwo extra blank paragraphs are inserted instead of one,\nand the cursor does not move:\n```\nHello\n(blank) ← cursor stays here\n(blank)\n(blank) ← unexpected extra line\nWorld\n```\n\nThis is reproducible on the official demo at https://suneditor.com/ko as well.\n\n### Root Cause (same as above)\n\nThe same async timing gap in `OnKeyDown_wysiwyg` causes both:\n1. The browser's native `insertParagraph` fires before `e.preventDefault()`\n2. SunEditor's own Enter handling **also** runs after the microtask resumes\n→ Two paragraph insertions instead of one, cursor left at original position\n\n\n### Additional Video\n**Note on the attached video:**\n\n- **1st Enter** (on the empty `<p><br></p>`): bug occurs —\n  extra blank line inserted and cursor does not advance.\n- **2nd Enter** (cursor is now inside a content paragraph): works as expected —\n  one blank line inserted and cursor moves down correctly.\n\nThis suggests the bug only triggers when `selectionNode` resolves to\nthe wysiwyg container itself (which happens on an empty `<p><br></p>`),\nand not when the cursor is already anchored inside a text node.\n\nhttps://github.com/user-attachments/assets/d909e7e4-cc58-4ecd-ad2f-3f2db92293db\n\n---\n\n",
+        "url": "https://github.com/JiHong88/suneditor/issues/1657"
+    },
+    {
+        "id": 4552920174,
+        "number": 1654,
+        "title": "[Bug][v3.1.3][iOS] Korean IME Enter key causes consonant leak to next line  (Regression from #1289 fixed in v2.46.0)",
+        "state": "closed",
+        "created_at": "2026-05-30T02:38:16Z",
+        "updated_at": "2026-07-13T15:05:39Z",
+        "closed_at": "2026-07-13T15:05:39Z",
+        "author": "meansc101",
+        "comments": 1,
+        "labels": [
+            "bug",
+            "enhancement"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "## Environment\n\n| Item | Value |\n|---|---|\n| SunEditor version | 3.1.3 |\n| Mode | balloon |\n| Device | iPad (iPadOS 18.x or 26.x, physical keyboard attached) |\n| Browser | Safari (WebKit) - Reproducible on: official demo https://suneditor.com/ko (v3.1.3) |\n| Affected v2 version | Not reproducible (fixed in v2.46.0) |\n\n---\n\n## Bug Description\n\nWhen typing Korean text ending with an **open syllable (no final consonant / 받침 없는 음절)**  \nsuch as `안녕하세요` and pressing **Enter**, the vowel character leaks to the beginning  \nof the new line.\n\nThis is a **regression** — the same bug was reported and fixed in v2 (see #1289, milestone v2.46.0),  \nbut the fix was not carried over to v3.\n\n---\n\n## Steps to Reproduce\n\n**Reproducible on the official demo:** This bug reproduces directly on the official demo site https://suneditor.com/ko (currently running v3.1.3) — no custom configuration required.\n\n1. Open SunEditor v3 in **balloon mode** on **iOS Safari** (iPad with physical keyboard)\n2. Type `안녕하세요` (Korean text ending with an open syllable — no 받침)\n3. Press **Enter**\n4. Observe the new line\n\n---\n\n## Expected Behavior\n\nLine 1: 안녕하세요\nLine 2: (empty, cursor here)\n\n## Actual Behavior\n\nLine 1: 안녕하세\nLine 2: 요|  ← '요' leaked from line 1\n\n---\n\n## Root Cause (investigated)\n\niOS WebKit Korean IME does **not** fire `compositionstart` / `compositionend` events  \nfor Korean input. Instead, it uses `deleteContentBackward` + `insertText` patterns  \nand keeps the last syllable in an internal IME buffer.\n\nWhen Enter is pressed on a syllable **without a final consonant** (열린 음절),  \niOS IME is still treating it as \"in composition\" and moves the character  \nto the next line instead of committing it.\n\nThis does NOT happen with syllables that **have a final consonant** (닫힌 음절,  \ne.g. `닭`, `녕`) because iOS naturally finalizes those before processing Enter.\n\n**Note:** Calling `element.blur()` does commit the DOM visually but does NOT  \nclear iOS's internal IME buffer — subsequent Backspace still exhibits the ghost buffer behavior.\n\n---\n\n## Related\n\n- Fixes in v2: #1289 (closed, milestone v2.46.0)  \n  → The v3 rewrite appears to have reintroduced this issue.\n\n---\n\n## Video\n\nhttps://github.com/user-attachments/assets/91846262-4035-4ec3-8ba0-2927b9deec4a\n\n---\n\n## 한국어 요약\n\nv2에서 이슈 #1289로 해결되었으나 v3에서 해당 이슈가 재발하고 있습니다.\n이에 해결 요청드립니다.",
+        "url": "https://github.com/JiHong88/suneditor/issues/1654"
+    },
+    {
+        "id": 4492646658,
+        "number": 1652,
+        "title": "Allow certain styles on the tags",
+        "state": "closed",
+        "created_at": "2026-05-21T07:32:38Z",
+        "updated_at": "2026-06-01T16:35:09Z",
+        "closed_at": "2026-06-01T16:35:09Z",
+        "author": "richardbrinkman",
+        "comments": 1,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "I would like filter out most style tags, but allow some more than the default. For example, I would like to be able to set the color of a div.\n\nI first tried\n```javascript\nconst editor = SUNEDITOR.create(\"#suneditor\", {\n    allUsedStyles: \"color\"\n});\n```\nBut if I type the following in the code View and than switch to normal view and back, the style attribute dissappears:\n```html\n<div style=\"color: red\">This text should be red, but stays black</div>\n```\n\nI looked in the source code and although `allUsedStyles` appears in options.js and constructor.js, it looks like only exportPDF.js actually uses it. At least the word allUsedStyles is not found in html.js.\n\nMy second try was:\n```javascript\nconst editor = SUNEDITOR.create(\"#suneditor\", {\n    tagStyles: {\n       div: \"color\"\n    }\n});\n```\n\nBut entering the same HTML removes the style tag of the div again.\n\nIs there a way to allow the color style on a div other than setting strictMode.styleFilter to false?\n\n## Version\nhttps://cdn.jsdelivr.net/npm/suneditor@latest/dist/suneditor.min.js",
+        "url": "https://github.com/JiHong88/suneditor/issues/1652"
+    },
+    {
+        "id": 4489775070,
+        "number": 1651,
+        "title": "[V3] ImageGallery : server-side image searches",
+        "state": "closed",
+        "created_at": "2026-05-20T20:42:47Z",
+        "updated_at": "2026-06-01T16:35:11Z",
+        "closed_at": "2026-06-01T16:35:11Z",
+        "author": "jeanmatthieud",
+        "comments": 2,
+        "labels": [
+            "enhancement"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "I want to perform server-side image searches in `ImageGallery` instead of client-side searches.\n\nI realized that `Browser` already has the mechanism in place, but `ImageGallery` options (`ImageGalleryPluginOptions`) lack the corresponding parameters (`searchUrl` and `searchUrlHeader`). Note: IMO `searchUrlHeader` should be renamed to `searchUrlHeaders` for consistency.\n\nI did a small test and it works by overriding the ImageGallery plugin:\n\n```ts\nimport Browser from \"suneditor/src/modules/contract/Browser.js\";\nimport ImageGallery, { ImageGalleryPluginOptions } from \"suneditor/src/plugins/browser/imageGallery.js\";\n\nclass ImageGalleryPdgV3 extends ImageGallery {\n\tstatic key = 'imageGallery';\n\tstatic className = '';\n    \n\tconstructor(kernel: SunEditor.Kernel, pluginOptions: ImageGalleryPluginOptions) {\n\t\tsuper(kernel, pluginOptions);\n        \n\t\tthis.browser = new Browser(this, this.$, {\n\t\t\ttitle: this.$.lang.imageGallery,\n\t\t\tdata: pluginOptions.data,\n\t\t\turl: pluginOptions.url,\n\t\t\theaders: pluginOptions.headers,\n                        // Sadly this method is private so I had to copy it\n\t\t\tselectorHandler: this.#SetItem.bind(this) as (taget: Node) => void,\n\t\t\tcolumnSize: 4,\n\t\t\tclassName: 'se-image-gallery',\n\t\t\t// I'm using the same parameters as the image listing, \n\t\t\t// but dedicated options should be added in ImageGalleryPluginOptions\n\t\t\tsearchUrl: pluginOptions.url,\n\t\t\tsearchUrlHeader: pluginOptions.headers,\n\t\t});\n\t}\n    \n\t/**\n\t * @description Set browser item\n\t * @param {HTMLImageElement} target - Target element\n\t */\n\t#SetItem(target: HTMLImageElement) {\n\t\tif (this.onSelectfunction) {\n\t\t\tthis.onSelectfunction(target);\n\t\t} else {\n\t\t\tconst file = { name: target.getAttribute('data-name'), size: 0 };\n\t\t\tthis.$.plugins.image.modalInit();\n\t\t\tthis.$.plugins.image.create(target.getAttribute('data-command'), null, this.width, this.height, 'none', file, target.alt, true);\n\t\t}\n\t}\n}\n\nexport default ImageGalleryV3;\n```\n\nAnd to use it:\n```ts\nimport ImageGalleryV3 from \"@/editor/imageGalleryV3\";\nimport suneditor, { plugins } from \"suneditor\";\n\nonMounted(() => {\n  suneditor.create(editorEl.value!, {\n    // ...\n    plugins: {\n      ...plugins,\n      imageGallery: ImageGalleryV3\n    },\n    imageGallery: {\n      url: `https://[snip]/medias`,\n      headers: { Authorization: `Bearer ${token}`, 'X-Sun-Editor': 'true' }\n    },\n  });\n});\n```",
+        "url": "https://github.com/JiHong88/suneditor/issues/1651"
+    },
+    {
+        "id": 4452452465,
+        "number": 1649,
+        "title": "[Security][v3.1.3] Critical XSS vulnerability - sanitizer bypass",
+        "state": "closed",
+        "created_at": "2026-05-15T08:28:01Z",
+        "updated_at": "2026-06-01T16:35:12Z",
+        "closed_at": "2026-06-01T16:35:12Z",
+        "author": "Adyej999",
+        "comments": 2,
+        "labels": [
+            "enhancement"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "Describe the bug\nI have discovered a critical security vulnerability in SunEditor: a bypass of the content sanitizer/filter that allows stored/reflected XSS.\n\nImpact: Full JavaScript execution is possible in the editor output.\n\nTo Reproduce\n(Do not include full PoC here for responsible disclosure)\n\nAffected versions: v3.1.3\n\nAdditional context\nDue to responsible disclosure, I am intentionally not posting the full proof-of-concept payload publicly at this time.\n\nPlease let me know:\n\nYour preferred private contact method (email, temporary private gist, or any other way)\nI will immediately send the complete PoC + reproduction steps once you confirm.\nI am happy to work with you on the fix and give you time to patch before public disclosure (standard 90-day timeline or shorter if you prefer).\n\nThank you for maintaining SunEditor!",
+        "url": "https://github.com/JiHong88/suneditor/issues/1649"
+    },
+    {
+        "id": 4436104655,
+        "number": 1647,
+        "title": "[v3.1.3] Cannot replace existing image inside <a> link — Modal[image] container is null, then silent deletion after workaround",
+        "state": "closed",
+        "created_at": "2026-05-13T08:12:57Z",
+        "updated_at": "2026-06-01T16:35:14Z",
+        "closed_at": "2026-06-01T16:35:14Z",
+        "author": "ncoevoet",
+        "comments": 1,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "## Environment\n\n- **SunEditor version:** 3.1.3 (also reproduces on 3.0.6+)\n- **Browsers tested:** Firefox 140, Chrome 138 (both reproduce)\n- **Init style:** ESM dynamic import (`await import('suneditor')`)\n- **Use case:** Loading saved transactional-email HTML via `value:` so users can edit it. Content contains image logos served as `data:` URIs inside `<a>` anchors.\n\n## Bug\n\nEditing an existing inline `<img>` wrapped in `<a>` (loaded as the editor's initial `value`, not inserted via the image plugin) fails in two ways:\n\n### Case 1 — image not wrapped in any `.se-component`\n\nClick on the rendered image → click the \"edit\" button in the resizing controller → modal opens but URL field is **empty** (current `src` not populated) → fill URL → Submit throws:\n\n```\n[SUNEDITOR.Modal[image].warn] Cannot read properties of null (reading 'contains')\n```\n\nOrigin: `src/plugins/modal/image/index.js` line 779, `container.contains(anchor)`. `container` is null because `Figure.GetContainer` walks up looking for `.se-component` ancestor and finds none (the image is plain HTML, not a managed component).\n\n### Case 2 — image manually wrapped in `<span class=\"se-component se-inline-component se-image-container\">` before passing to `value:`\n\nNo crash, but Submit **silently deletes** the original image without inserting the new one. URL field remains empty when modal opens (existing `src` is not read into the form).\n\n## Reproduction\n\nMinimal HTML loaded via `value:`:\n\n```html\n<a href=\"https://example.com\"><img alt=\"Logo\" src=\"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAHElEQVQI12P4//8/w38GIAXDIBKE0DHxgljNBAAO9TXL0Y4OHwAAAABJRU5ErkJggg==\" /></a>\n```\n\nReproduction code:\n\n```js\nconst editor = suneditor.create(document.getElementById('editor'), {\n  value: '<a href=\"https://example.com\"><img alt=\"Logo\" src=\"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAHElEQVQI12P4//8/w38GIAXDIBKE0DHxgljNBAAO9TXL0Y4OHwAAAABJRU5ErkJggg==\" /></a>',\n  plugins: { image: plugins.image },\n  buttonList: [['image']],\n});\n```\n\nSteps:\n\n1. Render the editor with the above `value`.\n2. Click on the visible image.\n3. Click the \"edit\" button in the resizing controller that appears.\n4. Type any new URL into the \"Image URL\" field.\n5. Click Submit.\n\n→ Crash (Case 1) or silent delete (Case 2 with manual wrap).\n\n## Expected\n\nThe image plugin's edit flow should detect and gracefully handle `<img>` tags loaded via `value:` without the plugin's own `<figure class=\"se-component\">` / `<span class=\"se-component se-inline-component\">` wrapper — either by:\n\n- creating the wrapper on demand and proceeding, or\n- showing a clear error without silent data loss.\n\nThe current URL should also be read into the modal's URL field so users can see what they're replacing.\n\n## Related closed issues that touched the same path but didn't cover this case\n\n- #1636 (closed 2026-04-28, shipped in 3.1.3) — fixed several image+link edit bugs (`undefined` URL/Alt, `insertBefore` error, link loss). The `Figure.GetContainer` returning null on legacy `<img>` (loaded via `value:`, no `.se-component` wrapping) is still unfixed.\n- #1571 — `_cover is null` on external img without style.\n- #1567 — `container null` in `_setComponentLineBreaker`.\n- #1445 — `notCleaningData` HTML insertion mangling.\n\n## Workaround attempted (partial — does NOT restore functionality)\n\nPre-wrap each `<img>` (or its `<a>` parent) in `<span class=\"se-component se-inline-component se-image-container\">` on the initial value, strip these spans on save. Eliminates the crash but the modal still cannot read the existing `src`, and Submit deletes the image. Effectively unusable for \"replace existing image\" workflows.\n\n## Impact on our project\n\nWe're upgrading from `3.0.0-beta.34` to `3.1.3` to pick up the 3.0 GA features (Popover API for CDK Overlay z-index, mobile virtual keyboard fixes, bundled TypeScript types, etc.). All other functionality works, but the image edit-replace path is unusable for our content shape. Given the regression, we plan to revert to `2.47.10` until this is addressed.\n",
+        "url": "https://github.com/JiHong88/suneditor/issues/1647"
+    },
+    {
+        "id": 4432311996,
+        "number": 1646,
+        "title": "[Security][v2.47.10] Critical XSS vulnerability - sanitizer bypass",
+        "state": "open",
+        "created_at": "2026-05-12T20:12:38Z",
+        "updated_at": "2026-07-14T02:41:33Z",
+        "closed_at": null,
+        "author": "Adyej999",
+        "comments": 1,
+        "labels": [
+            "enhancement"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "I have discovered a security vulnerability in SUNEDITOR that appears to allow a bypass of the HTML sanitization, resulting in possible stored/reflected XSS.\n\nImpact: Arbitrary JavaScript execution may be possible in rendered editor content through crafted HTML input.\n\nThe issue was observed in:\n\nSUNEDITOR v2.47.10\n\n\nTo Reproduce\n\n(Full PoC intentionally omitted for responsible disclosure)\n\nI can provide:\n\ncomplete proof-of-concept payload,\nreproduction steps,\naffected configuration details,\nand technical root-cause analysis privately.\nAdditional context\n\nDue to responsible disclosure, I am intentionally not posting the full proof-of-concept payload publicly at this time.\n\nPlease let me know your preferred private disclosure/contact method (email, private GitHub advisory, temporary private gist, etc.).\n\nOnce confirmed, I will immediately provide:\n\nFull PoC\nDetailed reproduction steps\nTechnical analysis\nSuggested remediation ideas\n\nI am happy to coordinate disclosure and give sufficient time for a fix before any public disclosure ( standard 90-day timeline or shorter if you `prefer).`\n\nThank you for maintaining SUNEDITOR.",
+        "url": "https://github.com/JiHong88/suneditor/issues/1646"
+    },
+    {
+        "id": 4419626493,
+        "number": 1644,
+        "title": "Which event is triggered when changing image alignment?",
+        "state": "closed",
+        "created_at": "2026-05-11T09:26:05Z",
+        "updated_at": "2026-06-01T16:35:16Z",
+        "closed_at": "2026-06-01T16:35:16Z",
+        "author": "syhue",
+        "comments": 3,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "Hi, I would like to ask which editor event is expected to be triggered when changing image alignment (left/center/right) in SunEditor.\n\nCurrently I noticed that the image HTML/classes/styles are updated correctly, but events such as `onChange`, `onInput`, and `onImageAction` do not seem to fire consistently for image alignment changes.\n\n## Version\n3.1.3\n\n## Additional context\n\n<img width=\"1920\" height=\"945\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/4ab6c09e-8794-405f-a51d-bf522057df88\" />\n\nhttps://stackblitz.com/edit/gsltmdmx-wpysja2p?file=index.js\n\n",
+        "url": "https://github.com/JiHong88/suneditor/issues/1644"
+    },
+    {
+        "id": 4355333452,
+        "number": 1639,
+        "title": "SunEditor popovers rendered behind Angular CDK overlay (popover / top-layer)",
+        "state": "closed",
+        "created_at": "2026-04-30T04:36:16Z",
+        "updated_at": "2026-05-03T15:59:21Z",
+        "closed_at": "2026-05-03T15:59:21Z",
+        "author": "syhue",
+        "comments": 1,
+        "labels": [
+            "enhancement"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "**Describe the bug**\n\nWhen using SunEditor inside an application that uses Angular CDK Overlay (v17+ / v21), UI elements such as:\n- .se-list-layer (dropdowns)\n- .se-dialog (dialogs)\nare rendered behind the CDK overlay (e.g., modal/dialog).\n\nThis occurs even when:\n- Increasing z-index\n- Applying position: fixed\n- Ensuring no conflicting stacking contexts\n\nAs a result:\n- SunEditor dropdowns are not visible\n- Editor becomes partially unusable inside modals\n\n**To Reproduce**\n\nI’ve attached the ZIP file, as the playground on the website is still using Angular 17.\n[angular_test.zip](https://github.com/user-attachments/files/27229987/angular_test.zip)\n\nSteps to reproduce the behavior:\n\n1. Click on the image icon in the toolbar.\n2. The image dialog appeared behind the CDK. \n<img width=\"1734\" height=\"769\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/eaa6000f-ce10-4668-bb4c-6a4dfce4b7fa\" />\n\n\n**Expected behavior**\nSunEditor floating UI (dropdowns, dialogs, popovers) should:\n- Always render above parent UI containers\n- Be visible and usable even when the editor is used inside modal/dialog systems (e.g., Angular CDK, Material, etc.)\n\n\n**Screenshots**\n\n<img width=\"1920\" height=\"945\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/41e8ae04-c4a4-473a-b465-afd20bd46d70\" />\n\n\n**Desktop (please complete the following information):**\n\n- OS: Window\n- Browser: Chrome\n\n\n**Root Cause**\n\nAngular CDK Overlay (in newer versions) uses the native HTML [popover attribute](https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Global_attributes/popover), which promotes the overlay into the browser’s top layer.\n\nThis means:\n- CDK overlays are rendered outside normal DOM stacking context\n- They ignore z-index rules from regular DOM elements\n\nSunEditor, however:\n- Does not use a portal/top-layer mechanism\n\n👉 Result:\nSunEditor UI remains in the normal DOM layer and gets visually blocked by CDK overlays.\n\n**Additional context**\n\nAfter upgrading from SunEditor v2 to v3, SunEditor floating UI elements such as .se-list-layer and .se-dialog appear to be rendered outside the Angular CDK overlay context.\n\nIn our application, the CDK overlay is promoted into the browser’s top layer because it uses the native popover behavior. Elements in the top layer are rendered above normal DOM elements and are not affected by regular z-index ordering.\n\nIn SunEditor v2, the floating UI elements were rendered within the CDK dialog/overlay context, so they appeared correctly above the modal content.\n\nIn SunEditor v3, these floating UI elements appear to be rendered outside that CDK overlay context, placing them back in the normal document layer. Because the CDK modal is in the browser’s top layer, SunEditor’s dropdowns/dialogs remain visually behind it, even when increasing z-index or using position: fixed.\n\nTherefore, the issue is not only a CSS stacking problem. It is caused by a rendering-layer mismatch: CDK overlay is in the browser top layer, while SunEditor’s floating UI is rendered in the normal DOM layer.\n",
+        "url": "https://github.com/JiHong88/suneditor/issues/1639"
+    },
+    {
+        "id": 4343164573,
+        "number": 1638,
+        "title": "Tag \"contenteditable\" removes on content set via editor.$.html.set(htmlString)",
+        "state": "closed",
+        "created_at": "2026-04-28T12:35:04Z",
+        "updated_at": "2026-06-29T00:35:37Z",
+        "closed_at": "2026-06-29T00:35:37Z",
+        "author": "QlaVs",
+        "comments": 5,
+        "labels": [
+            "question",
+            "stale"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "Hello! I have a custom div block, example:\n```\n<div class=\"object\" data-type=\"object\" data-id=\"4\" contenteditable=\"false\">Custom Tag Example</div>\n```\n\nMy editor settings:\n```\nattributeWhitelist: {\n all: 'contenteditable|class|data-*'\n},\nstrictMode: {\n attrFilter: false,\n classFilter: false,\n formatFilter: false,\n styleFilter: false,\n tagFilter: false,\n textStyleTagFilter: false,\n},\n```\nI use insert/set methods with string logic. When my `<div>` block is insetred via `editor.$.html.insert(htmlString)` everything works perfectly and tag `contenteditable` is on its place. But when I try to insert this block via `editor.$.html.set(htmlString)` tag `contenteditable` is being removed from source and `div` block inserts without it.\n\nI have tried with and without `attributeWhitelist` param, also tried changing strictMode settings one by one, but it eventually does not do any changes\n\n- OS: Windows\n- Browser: Firefox: 150.0\n- Suneditor version: 3.1.2\n",
+        "url": "https://github.com/JiHong88/suneditor/issues/1638"
+    },
+    {
+        "id": 4342077406,
+        "number": 1637,
+        "title": "Any reason v2.47.10 limited to node version <13?",
+        "state": "closed",
+        "created_at": "2026-04-28T09:37:00Z",
+        "updated_at": "2026-07-13T01:59:14Z",
+        "closed_at": "2026-07-13T01:59:14Z",
+        "author": "kibbonz",
+        "comments": 5,
+        "labels": [
+            "question",
+            "stale"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "Hey,\n\nTrying to update to latest version of 2.x get security fix, however the new version 2.47.10 specifies <13 node engine in the package.json, version 2.47.8 didn't have this limitation - any particular reason for this?\n\nThanks!",
+        "url": "https://github.com/JiHong88/suneditor/issues/1637"
+    },
+    {
+        "id": 4299750444,
+        "number": 1635,
+        "title": "안녕하세요! options 관련 질문입니다!",
+        "state": "closed",
+        "created_at": "2026-04-21T01:45:47Z",
+        "updated_at": "2026-06-29T00:35:39Z",
+        "closed_at": "2026-06-29T00:35:39Z",
+        "author": "pcs1231",
+        "comments": 6,
+        "labels": [
+            "question",
+            "stale"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "안녕하세요! 좋은 에디터 사용할 수 있게 해주셔서 감사합니다!\n\n현재 cdn방식으로 에디터를 사용하고 있습니다! 사용 중 options들 중 궁금한 게 있어 질문합니다!\n\n1. 기본 줄 태그를 p태그로 잡게 되면 스타일 상 margin-bottom : 10px로 잡혀서 이걸 없애려고 lineStyles라는 옵션을 사용해야하는 건가요? \n\n2. 특정 태그에게 클래스명을 주고 싶은데 이때 사용할 수 있는 옵션이 어떤 것이 될까요? (따로 공통 css가 있어서 에디터에 사용되는 태그에만 css다르게 주기 위함)\n\n추가로 작성해야하는 방식 설명해주실 수 있을까요?\n\n감사합니다!",
+        "url": "https://github.com/JiHong88/suneditor/issues/1635"
+    },
+    {
+        "id": 4279780142,
+        "number": 1632,
+        "title": "Export PDF toolbar icon doesn't work",
+        "state": "closed",
+        "created_at": "2026-04-17T02:41:56Z",
+        "updated_at": "2026-04-22T19:33:25Z",
+        "closed_at": "2026-04-22T19:33:25Z",
+        "author": "electricmessiah",
+        "comments": 2,
+        "labels": [
+            "question"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "I've tried the Export PDF button on the demo, in my own editor, etc. and it doesn't do anything. Is it bugged? I ran it through AI and it said this, so what's going on with it?\n\n> The plugin requires an apiUrl option pointing to a server endpoint that generates the PDF from HTML. Without it, the constructor warns and the action() bails immediately — nothing happens.\n>This is a server-side PDF generation feature — SunEditor POSTs the HTML to apiUrl, expects a blob response with Content-Disposition: attachment; filename=\"...\". There's no client-side fallback built in.\n>Options:\n>Remove the button — simplest. exportPDF requires infrastructure you don't have.\n>Client-side print-to-PDF — replace the button with a window.print() call using a print stylesheet, same as how browsers natively print-to-PDF. No server needed.\n>Wire up a server endpoint — add a route that accepts { fileName, htmlContent }, runs headless Chromium/Puppeteer or a library like puppeteer/playwright, returns a PDF blob.\n>The print button is already in the toolbar and uses window.print() via viewer.print() — it's essentially the same UX. Do you want to just remove exportPDF from the button list, or implement a client-side fallback?",
+        "url": "https://github.com/JiHong88/suneditor/issues/1632"
+    }
+]

@@ -1,0 +1,242 @@
+[
+    {
+        "sha": "d0bf5c36d092da8067b15a1d1d00884a8c399e8e",
+        "author": "yin_bo_",
+        "email": "yinbo1054@gmail.com",
+        "date": "2026-07-14T02:34:04Z",
+        "message": "Fix mesh route match list semantics (#16377)",
+        "url": "https://github.com/apache/dubbo/commit/d0bf5c36d092da8067b15a1d1d00884a8c399e8e"
+    },
+    {
+        "sha": "c91027de3de04090f60af2cc77e962f2a98d78cb",
+        "author": "uuuyuqi",
+        "email": "qihuai.wyq@alibaba-inc.com",
+        "date": "2026-07-10T09:59:27Z",
+        "message": "fix: support plaintext PU when AuthPolicy is NONE (#16374)\n\nChange-Id: Ic201a42623151d99369a2692b8e8206a2b281007",
+        "url": "https://github.com/apache/dubbo/commit/c91027de3de04090f60af2cc77e962f2a98d78cb"
+    },
+    {
+        "sha": "c587ff67c0aaccb7c459851e65ac19cbc8a1d3f4",
+        "author": "uuuyuqi",
+        "email": "uuuyuqi@gmail.com",
+        "date": "2026-07-09T02:45:44Z",
+        "message": "Close channel on TLS exception to prevent half-open connections (#16202)\n\n* fix: close channel on TLS exception to prevent half-open connections\n\nSslServerTlsHandler.exceptionCaught() only logged the error without\nclosing the channel or propagating the exception. This caused channels\nto remain TCP-active but application-dead when exceptions like\nNoClassDefFoundError occurred during Netty read loops.\n\nSimilarly, SslClientTlsHandler did not close the channel on TLS\nhandshake failure, only firing exceptionCaught to downstream handlers.\n\nThis fix ensures both handlers close the channel on failure, allowing\nDubbo's existing health-check mechanism (isAvailable/addInvalidateInvoker)\nto properly detect and remove broken invokers.\n\nChange-Id: Ia466bc4db9e59b1f5c1f01a3062c619aabbbb4e1\nCo-developed-by: Cursor <noreply@cursor.com>\n\n* style: apply spotless formatting to test file\n\nChange-Id: Ie3ac6e2e6d1ce5e8f6bd2ad4fe2a5c9286d66fbf\nCo-developed-by: Cursor <noreply@cursor.com>\n\n* Address Copilot review: preserve exception propagation, fix client log message, clean up test\n\n- Restore ctx.fireExceptionCaught() before ctx.close() in SslClientTlsHandler\n  so downstream handlers can observe the TLS handshake failure cause\n- Fix misleading \"accept new connection\" log message to \"connecting to remote server\"\n- Remove unused ChannelPipeline mock and when() stub in test\n\n🤖 Generated with [Qoder][https://qoder.com]\n\nChange-Id: Ic8d46b8ab340d5d9b40a5e48caf1df7aaccad532\nCo-developed-by: Qoder CLI <noreply@qoder.com>\n\n---------\n\nCo-authored-by: Ken Liu <ken.lj.hz@gmail.com>",
+        "url": "https://github.com/apache/dubbo/commit/c587ff67c0aaccb7c459851e65ac19cbc8a1d3f4"
+    },
+    {
+        "sha": "316df8e57677cc8c1ed6d92bd40ca0daba27393f",
+        "author": "Aurélien Pupier",
+        "email": "apupier@ibm.com",
+        "date": "2026-07-06T06:11:53Z",
+        "message": "Restrict trigger push branch for GitHub Workflow (#16367)\n\nFeature branches rarely need their own CI runs: the code is already\ntested when a pull request is opened against a release branch. If the\npush trigger has no branch restriction and pull_request is also\nconfigured, every push to a branch with an open PR runs the workflow\ntwice: once for the push and once for the PR synchronisation.\n\nAlways give the push trigger an explicit list of branches: this stops\nbranches created from a release branch from inheriting its workflow\nruns.\n\nsee https://cwiki.apache.org/confluence/pages/viewpage.action?pageId=430408443#GitHubActionsRecommendedPractices-Restrictthepushtriggertospecificbranches\n\nSigned-off-by: Aurélien Pupier <apupier@ibm.com>",
+        "url": "https://github.com/apache/dubbo/commit/316df8e57677cc8c1ed6d92bd40ca0daba27393f"
+    },
+    {
+        "sha": "ed0e11e1cca847b632b32a3e5f61ff8f072ada84",
+        "author": "shinyruo",
+        "email": "1654388696@qq.com",
+        "date": "2026-06-29T08:17:32Z",
+        "message": "Fix Triple method resolution for overloaded wrapper methods (#16325)\n\n* Fix Triple method resolution for overloaded wrapper methods\n\nFixes #14939\n\nSigned-off-by: bubu <1654388696@qq.com>\n\n* Address response type comparison review\n\n* Handle ambiguous Triple reflection resolution\n\n---------\n\nSigned-off-by: bubu <1654388696@qq.com>\nCo-authored-by: zrlw <zrlw@sina.com>",
+        "url": "https://github.com/apache/dubbo/commit/ed0e11e1cca847b632b32a3e5f61ff8f072ada84"
+    },
+    {
+        "sha": "2626e28c16193a099b9cf89e133cd9d55b7d9add",
+        "author": "代码不加冰",
+        "email": "3196766829@qq.com",
+        "date": "2026-06-24T09:06:10Z",
+        "message": "Fix misleading NPE when request parameter is not Serializable (#16299)\n\n* Fix misleading NPE when request parameter is not Serializable\n\nWhen a Dubbo service is called with non-serializable parameters, the\ninvocation deserialization fails silently and `path` becomes null. This\nnull path is then passed to GroupServiceKeyCache which uses a\nConcurrentHashMap that does not accept null keys, resulting in a\nconfusing NullPointerException.\n\nAdded a null check for `path` in DubboProtocol.getInvoker() to throw\na clear RemotingException with a meaningful message pointing users to\nthe actual cause (non-serializable parameters).\n\nFixes #16293\n\nCo-Authored-By: Claude Opus 4.7 <noreply@anthropic.com>\n\n* Make null path error message generic to avoid misleading diagnosis\n\n---------\n\nCo-authored-by: Claude Opus 4.7 <noreply@anthropic.com>",
+        "url": "https://github.com/apache/dubbo/commit/2626e28c16193a099b9cf89e133cd9d55b7d9add"
+    },
+    {
+        "sha": "b16c837be7203b9d1c320799a1857ec530c8a29b",
+        "author": "Jason",
+        "email": "31175216+wsyjh8@users.noreply.github.com",
+        "date": "2026-06-24T09:03:38Z",
+        "message": "Fix UnsupportedOperationException in DubboDefaultPropertiesEnvironmentPostProcessor on immutable defaultProperties (#16268) (#16313)",
+        "url": "https://github.com/apache/dubbo/commit/b16c837be7203b9d1c320799a1857ec530c8a29b"
+    },
+    {
+        "sha": "eb2eb29536f240f08e14b4cf7185d4b2f0ce9317",
+        "author": "yang",
+        "email": "397827222@qq.com",
+        "date": "2026-06-24T03:19:55Z",
+        "message": "Fix StringUtils.substringAfter to return empty string when separator is absent (#16350)\n\nCo-authored-by: zrlw <zrlw@sina.com>",
+        "url": "https://github.com/apache/dubbo/commit/eb2eb29536f240f08e14b4cf7185d4b2f0ce9317"
+    },
+    {
+        "sha": "b75adde95997f6fdd195e8dd8ed5986ceefcd7de",
+        "author": "RohithV",
+        "email": "15104448+rohithvegesna@users.noreply.github.com",
+        "date": "2026-06-23T09:29:24Z",
+        "message": "Fix StringUtils.toBoolean to return false for \"off\" (#16348)\n\nStringUtils.toBoolean(\"off\") returned Boolean.TRUE, copy-pasted from the\nadjacent \"yes\" branch, even though the Javadoc lists 'on'/'off' as a\nboolean pair and every other falsy token (\"no\", \"false\", \"0\", \"n\")\nreturns false.\n\nThis affects Triple REST argument binding (GeneralTypeConverter) and\nREST/OpenAPI config parsing (ConfigFactory, Helper), where \"off\" was\ninterpreted as true.\n\nAlso add unit coverage for toBoolean, which previously had none.\n\nFixes #16347",
+        "url": "https://github.com/apache/dubbo/commit/b75adde95997f6fdd195e8dd8ed5986ceefcd7de"
+    },
+    {
+        "sha": "866860d01395870ce010606f14326c963e040f56",
+        "author": "Aurélien Pupier",
+        "email": "apupier@ibm.com",
+        "date": "2026-06-15T07:02:36Z",
+        "message": "Configure GitHub workflows to use concurrency cancel-in-progress for pull requests (#16323)\n\n* Configure GitHub workflows to use concurrency cancel-in-progress for\npull requests\n\nsee recommended best practices at Apache\nhttps://cwiki.apache.org/confluence/pages/viewpage.action?spaceKey=INFRA&title=GitHub+Actions+Recommended+Practices\n\nSigned-off-by: Aurélien Pupier <apupier@ibm.com>\n\n* Enhance build-and-test workflow with concurrency\n\nAdd concurrency settings for pull request workflows.\n\n---------\n\nSigned-off-by: Aurélien Pupier <apupier@ibm.com>\nCo-authored-by: zrlw <zrlw@sina.com>",
+        "url": "https://github.com/apache/dubbo/commit/866860d01395870ce010606f14326c963e040f56"
+    },
+    {
+        "sha": "3c9264241c43fec153411a201c7cdaf387bc2775",
+        "author": "dependabot[bot]",
+        "email": "49699333+dependabot[bot]@users.noreply.github.com",
+        "date": "2026-06-15T06:58:48Z",
+        "message": "build(deps): bump prometheus_metrics.version from 1.6.1 to 1.7.0 (#16316)\n\nBumps `prometheus_metrics.version` from 1.6.1 to 1.7.0.\n\nUpdates `io.prometheus:prometheus-metrics-bom` from 1.6.1 to 1.7.0\n- [Release notes](https://github.com/prometheus/client_java/releases)\n- [Changelog](https://github.com/prometheus/client_java/blob/main/CHANGELOG.md)\n- [Commits](https://github.com/prometheus/client_java/compare/v1.6.1...v1.7.0)\n\nUpdates `io.prometheus:prometheus-metrics-exporter-pushgateway` from 1.6.1 to 1.7.0\n\n---\nupdated-dependencies:\n- dependency-name: io.prometheus:prometheus-metrics-bom\n  dependency-version: 1.7.0\n  dependency-type: direct:production\n  update-type: version-update:semver-minor\n- dependency-name: io.prometheus:prometheus-metrics-exporter-pushgateway\n  dependency-version: 1.7.0\n  dependency-type: direct:production\n  update-type: version-update:semver-minor\n...\n\nSigned-off-by: dependabot[bot] <support@github.com>\nCo-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>",
+        "url": "https://github.com/apache/dubbo/commit/3c9264241c43fec153411a201c7cdaf387bc2775"
+    },
+    {
+        "sha": "be6dabc8c68dc81448bc23f02f1d2cfb25e21379",
+        "author": "dependabot[bot]",
+        "email": "49699333+dependabot[bot]@users.noreply.github.com",
+        "date": "2026-06-15T06:58:42Z",
+        "message": "build(deps-dev): bump org.jacoco:jacoco-maven-plugin (#16317)\n\nBumps [org.jacoco:jacoco-maven-plugin](https://github.com/jacoco/jacoco) from 0.8.14 to 0.8.15.\n- [Release notes](https://github.com/jacoco/jacoco/releases)\n- [Commits](https://github.com/jacoco/jacoco/compare/v0.8.14...v0.8.15)\n\n---\nupdated-dependencies:\n- dependency-name: org.jacoco:jacoco-maven-plugin\n  dependency-version: 0.8.15\n  dependency-type: direct:development\n  update-type: version-update:semver-patch\n...\n\nSigned-off-by: dependabot[bot] <support@github.com>\nCo-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>",
+        "url": "https://github.com/apache/dubbo/commit/be6dabc8c68dc81448bc23f02f1d2cfb25e21379"
+    },
+    {
+        "sha": "da751953742d31d4ade13cf8fcf2caccc3fcb7e5",
+        "author": "dependabot[bot]",
+        "email": "49699333+dependabot[bot]@users.noreply.github.com",
+        "date": "2026-06-15T06:58:37Z",
+        "message": "build(deps): bump byte-buddy_version from 1.18.8 to 1.18.10 (#16318)\n\nBumps `byte-buddy_version` from 1.18.8 to 1.18.10.\n\nUpdates `net.bytebuddy:byte-buddy` from 1.18.8 to 1.18.10\n- [Release notes](https://github.com/raphw/byte-buddy/releases)\n- [Changelog](https://github.com/raphw/byte-buddy/blob/master/release-notes.md)\n- [Commits](https://github.com/raphw/byte-buddy/compare/byte-buddy-1.18.8...byte-buddy-1.18.10)\n\nUpdates `net.bytebuddy:byte-buddy-agent` from 1.18.8 to 1.18.10\n- [Release notes](https://github.com/raphw/byte-buddy/releases)\n- [Changelog](https://github.com/raphw/byte-buddy/blob/master/release-notes.md)\n- [Commits](https://github.com/raphw/byte-buddy/compare/byte-buddy-1.18.8...byte-buddy-1.18.10)\n\n---\nupdated-dependencies:\n- dependency-name: net.bytebuddy:byte-buddy\n  dependency-version: 1.18.10\n  dependency-type: direct:production\n  update-type: version-update:semver-patch\n- dependency-name: net.bytebuddy:byte-buddy-agent\n  dependency-version: 1.18.10\n  dependency-type: direct:production\n  update-type: version-update:semver-patch\n...\n\nSigned-off-by: dependabot[bot] <support@github.com>\nCo-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>",
+        "url": "https://github.com/apache/dubbo/commit/da751953742d31d4ade13cf8fcf2caccc3fcb7e5"
+    },
+    {
+        "sha": "8ca0d22810ce6518ea1b1335374b92faf33fecfb",
+        "author": "dependabot[bot]",
+        "email": "49699333+dependabot[bot]@users.noreply.github.com",
+        "date": "2026-06-15T06:58:31Z",
+        "message": "build(deps): bump netty4_version from 4.2.14.Final to 4.2.15.Final (#16319)\n\nBumps `netty4_version` from 4.2.14.Final to 4.2.15.Final.\n\nUpdates `io.netty:netty-all` from 4.2.14.Final to 4.2.15.Final\n- [Release notes](https://github.com/netty/netty/releases)\n- [Commits](https://github.com/netty/netty/compare/netty-4.2.14.Final...netty-4.2.15.Final)\n\nUpdates `io.netty:netty-bom` from 4.2.14.Final to 4.2.15.Final\n- [Release notes](https://github.com/netty/netty/releases)\n- [Commits](https://github.com/netty/netty/compare/netty-4.2.14.Final...netty-4.2.15.Final)\n\n---\nupdated-dependencies:\n- dependency-name: io.netty:netty-all\n  dependency-version: 4.2.15.Final\n  dependency-type: direct:development\n  update-type: version-update:semver-patch\n- dependency-name: io.netty:netty-bom\n  dependency-version: 4.2.15.Final\n  dependency-type: direct:production\n  update-type: version-update:semver-patch\n...\n\nSigned-off-by: dependabot[bot] <support@github.com>\nCo-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>",
+        "url": "https://github.com/apache/dubbo/commit/8ca0d22810ce6518ea1b1335374b92faf33fecfb"
+    },
+    {
+        "sha": "4135d13988d03d673e135773f04a64673c8ac74a",
+        "author": "dependabot[bot]",
+        "email": "49699333+dependabot[bot]@users.noreply.github.com",
+        "date": "2026-06-15T06:58:22Z",
+        "message": "build(deps): bump io.micrometer:micrometer-core from 1.16.5 to 1.16.6 (#16321)\n\nBumps [io.micrometer:micrometer-core](https://github.com/micrometer-metrics/micrometer) from 1.16.5 to 1.16.6.\n- [Release notes](https://github.com/micrometer-metrics/micrometer/releases)\n- [Commits](https://github.com/micrometer-metrics/micrometer/compare/v1.16.5...v1.16.6)\n\n---\nupdated-dependencies:\n- dependency-name: io.micrometer:micrometer-core\n  dependency-version: 1.16.6\n  dependency-type: direct:production\n  update-type: version-update:semver-patch\n...\n\nSigned-off-by: dependabot[bot] <support@github.com>\nCo-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>",
+        "url": "https://github.com/apache/dubbo/commit/4135d13988d03d673e135773f04a64673c8ac74a"
+    },
+    {
+        "sha": "9b6e0d19a97906b84a3bb23fa06d8e5b9b98b034",
+        "author": "dependabot[bot]",
+        "email": "49699333+dependabot[bot]@users.noreply.github.com",
+        "date": "2026-06-15T06:58:17Z",
+        "message": "build(deps): bump io.micrometer:micrometer-bom from 1.16.5 to 1.16.6 (#16322)\n\nBumps [io.micrometer:micrometer-bom](https://github.com/micrometer-metrics/micrometer) from 1.16.5 to 1.16.6.\n- [Release notes](https://github.com/micrometer-metrics/micrometer/releases)\n- [Commits](https://github.com/micrometer-metrics/micrometer/compare/v1.16.5...v1.16.6)\n\n---\nupdated-dependencies:\n- dependency-name: io.micrometer:micrometer-bom\n  dependency-version: 1.16.6\n  dependency-type: direct:production\n  update-type: version-update:semver-patch\n...\n\nSigned-off-by: dependabot[bot] <support@github.com>\nCo-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>",
+        "url": "https://github.com/apache/dubbo/commit/9b6e0d19a97906b84a3bb23fa06d8e5b9b98b034"
+    },
+    {
+        "sha": "c3ceb276ffc0c0f8e8ffca2282a990440150aa73",
+        "author": "dependabot[bot]",
+        "email": "49699333+dependabot[bot]@users.noreply.github.com",
+        "date": "2026-06-08T10:43:48Z",
+        "message": "build(deps): bump com.fasterxml.jackson:jackson-bom (#16302)\n\nBumps [com.fasterxml.jackson:jackson-bom](https://github.com/FasterXML/jackson-bom) from 2.21.3 to 2.22.0.\n- [Commits](https://github.com/FasterXML/jackson-bom/compare/jackson-bom-2.21.3...jackson-bom-2.22.0)\n\n---\nupdated-dependencies:\n- dependency-name: com.fasterxml.jackson:jackson-bom\n  dependency-version: 2.22.0\n  dependency-type: direct:production\n  update-type: version-update:semver-minor\n...\n\nSigned-off-by: dependabot[bot] <support@github.com>\nCo-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>",
+        "url": "https://github.com/apache/dubbo/commit/c3ceb276ffc0c0f8e8ffca2282a990440150aa73"
+    },
+    {
+        "sha": "8c24ee71ae31b7d76e8d82188cd78f1dc979629d",
+        "author": "dependabot[bot]",
+        "email": "49699333+dependabot[bot]@users.noreply.github.com",
+        "date": "2026-06-08T10:43:43Z",
+        "message": "build(deps): bump org.apache.maven.plugins:maven-surefire-plugin (#16303)\n\nBumps [org.apache.maven.plugins:maven-surefire-plugin](https://github.com/apache/maven-surefire) from 3.5.5 to 3.5.6.\n- [Release notes](https://github.com/apache/maven-surefire/releases)\n- [Commits](https://github.com/apache/maven-surefire/compare/surefire-3.5.5...surefire-3.5.6)\n\n---\nupdated-dependencies:\n- dependency-name: org.apache.maven.plugins:maven-surefire-plugin\n  dependency-version: 3.5.6\n  dependency-type: direct:production\n  update-type: version-update:semver-patch\n...\n\nSigned-off-by: dependabot[bot] <support@github.com>\nCo-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>",
+        "url": "https://github.com/apache/dubbo/commit/8c24ee71ae31b7d76e8d82188cd78f1dc979629d"
+    },
+    {
+        "sha": "a310aa39091c07087b25b03d53a9e4a9d329022a",
+        "author": "dependabot[bot]",
+        "email": "49699333+dependabot[bot]@users.noreply.github.com",
+        "date": "2026-06-08T10:43:37Z",
+        "message": "build(deps): bump org.webjars:swagger-ui from 5.32.4 to 5.32.6 (#16304)\n\nBumps [org.webjars:swagger-ui](https://github.com/swagger-api/swagger-ui) from 5.32.4 to 5.32.6.\n- [Release notes](https://github.com/swagger-api/swagger-ui/releases)\n- [Commits](https://github.com/swagger-api/swagger-ui/compare/v5.32.4...v5.32.6)\n\n---\nupdated-dependencies:\n- dependency-name: org.webjars:swagger-ui\n  dependency-version: 5.32.6\n  dependency-type: direct:production\n  update-type: version-update:semver-patch\n...\n\nSigned-off-by: dependabot[bot] <support@github.com>\nCo-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>",
+        "url": "https://github.com/apache/dubbo/commit/a310aa39091c07087b25b03d53a9e4a9d329022a"
+    },
+    {
+        "sha": "d535eacf480e37ac3b6bee1ff309a932bd7b783c",
+        "author": "Yukina",
+        "email": "rainyu@apache.org",
+        "date": "2026-06-08T02:08:40Z",
+        "message": "Add threat model, AGENTS.md and SECURITY.md pointer (#16312)\n\n- docs/threat-model.md: comprehensive threat model covering trust\n  boundaries, adversary model, serialization negotiation, QoS,\n  authentication, and triage dispositions\n- AGENTS.md: discoverability entry point pointing to threat model\n  with triage guidance for reporters and automated tools\n- SECURITY.md: add threat model section with pointer to\n  docs/threat-model.md",
+        "url": "https://github.com/apache/dubbo/commit/d535eacf480e37ac3b6bee1ff309a932bd7b783c"
+    },
+    {
+        "sha": "8cce1548e69583fdc2df7361918ed714ecad23ac",
+        "author": "shinyruo",
+        "email": "1654388696@qq.com",
+        "date": "2026-06-08T01:51:08Z",
+        "message": "Improve type safety of CollectionUtils.toTreeSet (#16306)\n\n* Improve type safety of CollectionUtils.toTreeSet\n\nFixes #16297\n\n* Add null coverage for toTreeSet comparator overload",
+        "url": "https://github.com/apache/dubbo/commit/8cce1548e69583fdc2df7361918ed714ecad23ac"
+    },
+    {
+        "sha": "990c5131a1fc62a687d57723d816ff94b3b4235e",
+        "author": "yin_bo_",
+        "email": "3557545112@qq.com",
+        "date": "2026-06-06T09:37:09Z",
+        "message": "Migrate mesh address matching to host and port API (#16309)\n\nDeprecate the two-argument NetUtils.matchIpExpression method and migrate mesh address matching to the existing three-argument overload so IPv4 host:port inputs are matched with a separated port.\n\nFixes #16308",
+        "url": "https://github.com/apache/dubbo/commit/990c5131a1fc62a687d57723d816ff94b3b4235e"
+    },
+    {
+        "sha": "ee9c1906315c7644ff250cd152dd0e7715d7746e",
+        "author": "yzy",
+        "email": "80751592+yuzhiyang1@users.noreply.github.com",
+        "date": "2026-06-03T02:25:40Z",
+        "message": "Fix order-sensitive thread pool status test (#16300)\n\nFixes #16152",
+        "url": "https://github.com/apache/dubbo/commit/ee9c1906315c7644ff250cd152dd0e7715d7746e"
+    },
+    {
+        "sha": "a6df7a9b48f5c71f257fa7a01ce93d2e9b314606",
+        "author": "shinyruo",
+        "email": "1654388696@qq.com",
+        "date": "2026-06-03T02:24:33Z",
+        "message": "Fix CompositeInputStream close handling (#16305)\n\nFixes #16117",
+        "url": "https://github.com/apache/dubbo/commit/a6df7a9b48f5c71f257fa7a01ce93d2e9b314606"
+    },
+    {
+        "sha": "b65573e5ca2ed81383fd2973e32cb3ed185a90a4",
+        "author": "dependabot[bot]",
+        "email": "49699333+dependabot[bot]@users.noreply.github.com",
+        "date": "2026-06-01T02:50:50Z",
+        "message": "build(deps): bump org.apache.maven:maven-plugin-api (#16278)\n\nBumps [org.apache.maven:maven-plugin-api](https://github.com/apache/maven) from 3.9.15 to 3.9.16.\n- [Release notes](https://github.com/apache/maven/releases)\n- [Commits](https://github.com/apache/maven/compare/maven-3.9.15...maven-3.9.16)\n\n---\nupdated-dependencies:\n- dependency-name: org.apache.maven:maven-plugin-api\n  dependency-version: 3.9.16\n  dependency-type: direct:production\n  update-type: version-update:semver-patch\n...\n\nSigned-off-by: dependabot[bot] <support@github.com>\nCo-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>",
+        "url": "https://github.com/apache/dubbo/commit/b65573e5ca2ed81383fd2973e32cb3ed185a90a4"
+    },
+    {
+        "sha": "6538e34e44d0c4d68841d35493961d8457d934fe",
+        "author": "dependabot[bot]",
+        "email": "49699333+dependabot[bot]@users.noreply.github.com",
+        "date": "2026-06-01T02:50:46Z",
+        "message": "build(deps): bump org.asynchttpclient:async-http-client (#16279)\n\nBumps [org.asynchttpclient:async-http-client](https://github.com/AsyncHttpClient/async-http-client) from 2.14.5 to 2.15.0.\n- [Release notes](https://github.com/AsyncHttpClient/async-http-client/releases)\n- [Commits](https://github.com/AsyncHttpClient/async-http-client/compare/async-http-client-project-2.14.5...async-http-client-project-2.15.0)\n\n---\nupdated-dependencies:\n- dependency-name: org.asynchttpclient:async-http-client\n  dependency-version: 2.15.0\n  dependency-type: direct:production\n  update-type: version-update:semver-minor\n...\n\nSigned-off-by: dependabot[bot] <support@github.com>\nCo-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>",
+        "url": "https://github.com/apache/dubbo/commit/6538e34e44d0c4d68841d35493961d8457d934fe"
+    },
+    {
+        "sha": "3f2823e5ae93889eb34abf70fb9ad0ea8bcac722",
+        "author": "dependabot[bot]",
+        "email": "49699333+dependabot[bot]@users.noreply.github.com",
+        "date": "2026-06-01T02:50:43Z",
+        "message": "build(deps): bump tomcat.version from 9.0.117 to 10.1.55 (#16280)\n\nBumps `tomcat.version` from 9.0.117 to 10.1.55.\n\nUpdates `org.apache.tomcat.embed:tomcat-embed-core` from 9.0.117 to 10.1.55\n\nUpdates `org.apache.tomcat.embed:tomcat-embed-el` from 10.1.52 to 10.1.55\n\nUpdates `org.apache.tomcat.embed:tomcat-embed-websocket` from 10.1.52 to 10.1.55\n\n---\nupdated-dependencies:\n- dependency-name: org.apache.tomcat.embed:tomcat-embed-core\n  dependency-version: 10.1.55\n  dependency-type: direct:development\n  update-type: version-update:semver-major\n- dependency-name: org.apache.tomcat.embed:tomcat-embed-el\n  dependency-version: 10.1.55\n  dependency-type: direct:production\n  update-type: version-update:semver-patch\n- dependency-name: org.apache.tomcat.embed:tomcat-embed-websocket\n  dependency-version: 10.1.55\n  dependency-type: direct:production\n  update-type: version-update:semver-patch\n...\n\nSigned-off-by: dependabot[bot] <support@github.com>\nCo-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>",
+        "url": "https://github.com/apache/dubbo/commit/3f2823e5ae93889eb34abf70fb9ad0ea8bcac722"
+    },
+    {
+        "sha": "ae274f6224bbc97087486932fc27c443e500729d",
+        "author": "dependabot[bot]",
+        "email": "49699333+dependabot[bot]@users.noreply.github.com",
+        "date": "2026-06-01T02:50:39Z",
+        "message": "build(deps): bump org.apache.tomcat.embed:tomcat-embed-core (#16284)\n\nBumps org.apache.tomcat.embed:tomcat-embed-core from 9.0.117 to 9.0.118.\n\n---\nupdated-dependencies:\n- dependency-name: org.apache.tomcat.embed:tomcat-embed-core\n  dependency-version: 9.0.118\n  dependency-type: direct:production\n...\n\nSigned-off-by: dependabot[bot] <support@github.com>\nCo-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>",
+        "url": "https://github.com/apache/dubbo/commit/ae274f6224bbc97087486932fc27c443e500729d"
+    },
+    {
+        "sha": "6fb8ec87673be4f65099c5791b6be863495c14cd",
+        "author": "dependabot[bot]",
+        "email": "49699333+dependabot[bot]@users.noreply.github.com",
+        "date": "2026-06-01T02:49:01Z",
+        "message": "build(deps): bump org.apache.maven:maven-core from 3.9.15 to 3.9.16 (#16277)\n\nBumps org.apache.maven:maven-core from 3.9.15 to 3.9.16.\n\n---\nupdated-dependencies:\n- dependency-name: org.apache.maven:maven-core\n  dependency-version: 3.9.16\n  dependency-type: direct:production\n  update-type: version-update:semver-patch\n...\n\nSigned-off-by: dependabot[bot] <support@github.com>\nCo-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>",
+        "url": "https://github.com/apache/dubbo/commit/6fb8ec87673be4f65099c5791b6be863495c14cd"
+    },
+    {
+        "sha": "8a78785a6142d7f8b2b7a1bcf02ffa699abc8924",
+        "author": "dependabot[bot]",
+        "email": "49699333+dependabot[bot]@users.noreply.github.com",
+        "date": "2026-06-01T02:47:31Z",
+        "message": "build(deps): bump sentinel.version from 1.8.9 to 1.8.10 (#16290)\n\nBumps `sentinel.version` from 1.8.9 to 1.8.10.\n\nUpdates `com.alibaba.csp:sentinel-apache-dubbo3-adapter` from 1.8.9 to 1.8.10\n\nUpdates `com.alibaba.csp:sentinel-transport-simple-http` from 1.8.9 to 1.8.10\n\n---\nupdated-dependencies:\n- dependency-name: com.alibaba.csp:sentinel-apache-dubbo3-adapter\n  dependency-version: 1.8.10\n  dependency-type: direct:production\n  update-type: version-update:semver-patch\n- dependency-name: com.alibaba.csp:sentinel-transport-simple-http\n  dependency-version: 1.8.10\n  dependency-type: direct:production\n  update-type: version-update:semver-patch\n...\n\nSigned-off-by: dependabot[bot] <support@github.com>\nCo-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>",
+        "url": "https://github.com/apache/dubbo/commit/8a78785a6142d7f8b2b7a1bcf02ffa699abc8924"
+    }
+]

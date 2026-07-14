@@ -1,0 +1,242 @@
+[
+    {
+        "sha": "f2d849ff483b36add9bc2d18c6d7bbc9ce38f4ad",
+        "author": "Ayush Vikram",
+        "email": "54920638+avikram2@users.noreply.github.com",
+        "date": "2024-03-06T00:01:14Z",
+        "message": "Merge pull request #71 from avikram2/master\n\nFixed Buffer Size for reading MSMPI_ACCEPT_HOST env variable for long Quad-dotted IPv4 Addresses",
+        "url": "https://github.com/microsoft/Microsoft-MPI/commit/f2d849ff483b36add9bc2d18c6d7bbc9ce38f4ad"
+    },
+    {
+        "sha": "eed4ec2fd9c38d7d64e5cf56a5bf59579e555199",
+        "author": "Ayush Vikram",
+        "email": "54920638+avikram2@users.noreply.github.com",
+        "date": "2024-03-05T23:49:37Z",
+        "message": "Update DynProcServer.cpp",
+        "url": "https://github.com/microsoft/Microsoft-MPI/commit/eed4ec2fd9c38d7d64e5cf56a5bf59579e555199"
+    },
+    {
+        "sha": "7ff6bdcdb1d5dc7b791e47457ee2686cd6b3d355",
+        "author": "Jithin Jose",
+        "email": "jijos@microsoft.com",
+        "date": "2020-05-13T21:48:38Z",
+        "message": "Merge pull request #32 from stepas-toliautas/gcc510-compat\n\nUpdate mspms.h to be compatible with MinGW GCC <= 5.1.0",
+        "url": "https://github.com/microsoft/Microsoft-MPI/commit/7ff6bdcdb1d5dc7b791e47457ee2686cd6b3d355"
+    },
+    {
+        "sha": "12244d3b5942dee5e6ffe31431d8b9aee194f45a",
+        "author": "Stepas T",
+        "email": "stepas.toliautas@ff.vu.lt",
+        "date": "2019-12-29T10:24:39Z",
+        "message": "Update mspms.h to be compatible with MinGW GCC <= 5.1.0\n\nOn MinGW (TDM) build of 32-bit GCC 5.1.0, which is currently bundled with\nCode::Blocks 17.12 IDE, ws2ipdef.h header is missing, therefore ADDRESS_FAMILY\nand _SOCKADDR_INET types end up not defined in msmps.h. This also affects\nearlier 32-bit GCC versions (tested on TDM 4.9.2). Provided patch introduces\nmissing typedefs when required.\nAdditionally, the following SAL annotations are needed for MinGW GCC <= 5.1.0:\n_Outptr_opt_ (always), _Out_opt_, _In_opt_ (if including mspms.h before mpi.h).\nNOTE: this is backward-compatibility patch, it is not required for newer\nMinGW GCC builds (tested on MinGW-w64 8.1.0, both 32- and 64-bit).",
+        "url": "https://github.com/microsoft/Microsoft-MPI/commit/12244d3b5942dee5e6ffe31431d8b9aee194f45a"
+    },
+    {
+        "sha": "1dbbaee6373245d0458a8d775b2618b54df2a1eb",
+        "author": "Jithin Jose",
+        "email": "jijos@microsoft.com",
+        "date": "2019-11-15T18:16:34Z",
+        "message": "Merge pull request #29 from microsoft/ReadmeUpdate\n\nUpdate README.md",
+        "url": "https://github.com/microsoft/Microsoft-MPI/commit/1dbbaee6373245d0458a8d775b2618b54df2a1eb"
+    },
+    {
+        "sha": "e71bcc4afa84e2e5879a7dbf37107f5a13948e2c",
+        "author": "Anna Daly",
+        "email": "anna.labutina@gmail.com",
+        "date": "2019-11-15T18:14:36Z",
+        "message": "Update README.md",
+        "url": "https://github.com/microsoft/Microsoft-MPI/commit/e71bcc4afa84e2e5879a7dbf37107f5a13948e2c"
+    },
+    {
+        "sha": "c8daf40f1b526b1521b191e82938776902cc5404",
+        "author": "Jithin Jose",
+        "email": "jijos@microsoft.com",
+        "date": "2019-09-25T22:26:21Z",
+        "message": "Merge pull request #20 from hpourreza/master\n\nAn example and a readme file",
+        "url": "https://github.com/microsoft/Microsoft-MPI/commit/c8daf40f1b526b1521b191e82938776902cc5404"
+    },
+    {
+        "sha": "f0af52a2d845d8dadca23170a828dbfd6a41ce28",
+        "author": "Hossein Pourreza",
+        "email": "pourreza@yahoo.com",
+        "date": "2019-09-25T22:24:35Z",
+        "message": "prj file cleanup",
+        "url": "https://github.com/microsoft/Microsoft-MPI/commit/f0af52a2d845d8dadca23170a828dbfd6a41ce28"
+    },
+    {
+        "sha": "c38ad8340f750fa26a3c4418fbd520408a78eb42",
+        "author": "Anna Daly",
+        "email": "anna.labutina@gmail.com",
+        "date": "2019-09-25T22:17:04Z",
+        "message": "Merge pull request #27 from jithinjosepkl/dev\n\nUpdate version number",
+        "url": "https://github.com/microsoft/Microsoft-MPI/commit/c38ad8340f750fa26a3c4418fbd520408a78eb42"
+    },
+    {
+        "sha": "62c8baa67f84b4ac2270cad2b617792b12fb1499",
+        "author": "Jithin Jose",
+        "email": "jijos@microsoft.com",
+        "date": "2019-09-25T22:08:14Z",
+        "message": "Update version number",
+        "url": "https://github.com/microsoft/Microsoft-MPI/commit/62c8baa67f84b4ac2270cad2b617792b12fb1499"
+    },
+    {
+        "sha": "49eacd36054ab4756f8db726a848e564b3d8fcb4",
+        "author": "Jithin Jose",
+        "email": "jijos@microsoft.com",
+        "date": "2019-09-25T21:40:18Z",
+        "message": "Merge pull request #26 from microsoft/MSVC1600\n\nPort the change to support _MSC_VER older than 1600",
+        "url": "https://github.com/microsoft/Microsoft-MPI/commit/49eacd36054ab4756f8db726a848e564b3d8fcb4"
+    },
+    {
+        "sha": "c6f827fd049855fff268027c764955ba582ff535",
+        "author": "Anna Daly",
+        "email": "annalabu@microsoft.com",
+        "date": "2019-08-22T21:27:15Z",
+        "message": "Port the change to support _MSC_VER older than 1600",
+        "url": "https://github.com/microsoft/Microsoft-MPI/commit/c6f827fd049855fff268027c764955ba582ff535"
+    },
+    {
+        "sha": "eee24ab2c4e05ec33401b9039be173173b592035",
+        "author": "Hossein Pourreza",
+        "email": "pourreza@yahoo.com",
+        "date": "2019-09-23T17:39:59Z",
+        "message": "rename the folder",
+        "url": "https://github.com/microsoft/Microsoft-MPI/commit/eee24ab2c4e05ec33401b9039be173173b592035"
+    },
+    {
+        "sha": "12706bf77c6e616cd3f21534d2388319f1c686d9",
+        "author": "Hossein Pourreza",
+        "email": "pourreza@yahoo.com",
+        "date": "2019-09-23T17:36:41Z",
+        "message": "Update RunningMSMPI.md",
+        "url": "https://github.com/microsoft/Microsoft-MPI/commit/12706bf77c6e616cd3f21534d2388319f1c686d9"
+    },
+    {
+        "sha": "1fc25d2982e54cd0ada3c01a4815ee1d5466c7a3",
+        "author": "Hossein Pourreza",
+        "email": "pourreza@yahoo.com",
+        "date": "2019-09-23T17:21:53Z",
+        "message": "added the mpiexec commandline",
+        "url": "https://github.com/microsoft/Microsoft-MPI/commit/1fc25d2982e54cd0ada3c01a4815ee1d5466c7a3"
+    },
+    {
+        "sha": "00fdfee0fb22d6abf31036813df2a27be787682b",
+        "author": "Anna Daly",
+        "email": "anna.labutina@gmail.com",
+        "date": "2019-09-19T23:23:56Z",
+        "message": "Merge pull request #25 from microsoft/FortranInts\n\nFix non-conformant integer representation in mpif.h",
+        "url": "https://github.com/microsoft/Microsoft-MPI/commit/00fdfee0fb22d6abf31036813df2a27be787682b"
+    },
+    {
+        "sha": "158db1ce7613f7b79c630df545a155a37197c1ec",
+        "author": "Jithin Jose",
+        "email": "jijos@microsoft.com",
+        "date": "2019-09-17T22:03:56Z",
+        "message": "Fix non-conformant integer representation in mpif.h\n\nSigned-off-by: Jithin Jose <jijos@microsoft.com>",
+        "url": "https://github.com/microsoft/Microsoft-MPI/commit/158db1ce7613f7b79c630df545a155a37197c1ec"
+    },
+    {
+        "sha": "1fa3987de70739e402f8666946a0fea385b6361d",
+        "author": "Hossein Pourreza",
+        "email": "pourreza@yahoo.com",
+        "date": "2019-09-19T22:30:49Z",
+        "message": "updated the service name",
+        "url": "https://github.com/microsoft/Microsoft-MPI/commit/1fa3987de70739e402f8666946a0fea385b6361d"
+    },
+    {
+        "sha": "6240bdb844fbc018e64324be659e177e54f0e97a",
+        "author": "Hossein Pourreza",
+        "email": "pourreza@yahoo.com",
+        "date": "2019-09-19T22:28:30Z",
+        "message": "first draft",
+        "url": "https://github.com/microsoft/Microsoft-MPI/commit/6240bdb844fbc018e64324be659e177e54f0e97a"
+    },
+    {
+        "sha": "9c5682377c5f263c0971b76448208078683437c7",
+        "author": "Hossein Pourreza",
+        "email": "pourreza@yahoo.com",
+        "date": "2019-09-19T21:45:08Z",
+        "message": "reorg the code",
+        "url": "https://github.com/microsoft/Microsoft-MPI/commit/9c5682377c5f263c0971b76448208078683437c7"
+    },
+    {
+        "sha": "6b10a3034df5e8609dcc61a6b3958731505036ae",
+        "author": "Hossein Pourreza",
+        "email": "pourreza@yahoo.com",
+        "date": "2019-09-19T21:40:27Z",
+        "message": "Update Run_MPIHelloWorld.md",
+        "url": "https://github.com/microsoft/Microsoft-MPI/commit/6b10a3034df5e8609dcc61a6b3958731505036ae"
+    },
+    {
+        "sha": "bb1b0432d287beba00ae006442de28cf3e843fb3",
+        "author": "Anna Daly",
+        "email": "anna.labutina@gmail.com",
+        "date": "2019-09-18T17:44:26Z",
+        "message": "Merge pull request #24 from microsoft/FixSAL\n\nFix SAL annotations so that users can build with MSMPI_NO_SAL",
+        "url": "https://github.com/microsoft/Microsoft-MPI/commit/bb1b0432d287beba00ae006442de28cf3e843fb3"
+    },
+    {
+        "sha": "2487dcd12f8b42c121a2e7f422a9c37fe23065c5",
+        "author": "Anna Daly",
+        "email": "annalabu@microsoft.com",
+        "date": "2019-09-17T23:11:56Z",
+        "message": "Fix SAL annotations so that users can build with MSMPI_NO_SAL",
+        "url": "https://github.com/microsoft/Microsoft-MPI/commit/2487dcd12f8b42c121a2e7f422a9c37fe23065c5"
+    },
+    {
+        "sha": "1c3d875f4eecc11e125912427a1558bec54dc641",
+        "author": "Anna Daly",
+        "email": "anna.labutina@gmail.com",
+        "date": "2019-09-18T17:32:40Z",
+        "message": "Merge pull request #23 from microsoft/SignalProgress\n\nSignal the progress when request gets cancelled from the parallel thread",
+        "url": "https://github.com/microsoft/Microsoft-MPI/commit/1c3d875f4eecc11e125912427a1558bec54dc641"
+    },
+    {
+        "sha": "f63cdfcb4c1a2cbec0cdfa528468a1f1b7254f25",
+        "author": "Anna Daly",
+        "email": "annalabu@microsoft.com",
+        "date": "2019-08-22T18:47:05Z",
+        "message": "Signal the progress when request gets cancelled from the parallel thread",
+        "url": "https://github.com/microsoft/Microsoft-MPI/commit/f63cdfcb4c1a2cbec0cdfa528468a1f1b7254f25"
+    },
+    {
+        "sha": "ae08569e8b040e5b642353a1a076855eb64971c3",
+        "author": "Anna Daly",
+        "email": "anna.labutina@gmail.com",
+        "date": "2019-09-17T21:55:06Z",
+        "message": "Merge pull request #21 from microsoft/SyncFromInternal\n\nFix a bug in MSMPILaunchSVC - respect arguments passed in to 'sc create'",
+        "url": "https://github.com/microsoft/Microsoft-MPI/commit/ae08569e8b040e5b642353a1a076855eb64971c3"
+    },
+    {
+        "sha": "ab61b78ef0effcd7b23316b4939e73ae7c1f82a3",
+        "author": "Jithin Jose",
+        "email": "jijos@microsoft.com",
+        "date": "2019-05-22T18:20:00Z",
+        "message": "Fix a bug in MSMPILaunchSVC - respect arguments passed in to 'sc create'",
+        "url": "https://github.com/microsoft/Microsoft-MPI/commit/ab61b78ef0effcd7b23316b4939e73ae7c1f82a3"
+    },
+    {
+        "sha": "14f7aff9315f67e2cc0c34c69fd873c0ab703da9",
+        "author": "Hossein Pourreza",
+        "email": "pourreza@yahoo.com",
+        "date": "2019-09-11T17:59:51Z",
+        "message": "add VS project",
+        "url": "https://github.com/microsoft/Microsoft-MPI/commit/14f7aff9315f67e2cc0c34c69fd873c0ab703da9"
+    },
+    {
+        "sha": "025240f1ce3a1a6721561c38a6480b0479d5ed75",
+        "author": "Hossein Pourreza",
+        "email": "pourreza@yahoo.com",
+        "date": "2019-09-11T17:58:37Z",
+        "message": "added the open project option",
+        "url": "https://github.com/microsoft/Microsoft-MPI/commit/025240f1ce3a1a6721561c38a6480b0479d5ed75"
+    },
+    {
+        "sha": "ab87c25c2829a2e495840fb6daadb137687ce85b",
+        "author": "Hossein Pourreza",
+        "email": "pourreza@yahoo.com",
+        "date": "2019-09-10T21:44:44Z",
+        "message": "minor update",
+        "url": "https://github.com/microsoft/Microsoft-MPI/commit/ab87c25c2829a2e495840fb6daadb137687ce85b"
+    }
+]

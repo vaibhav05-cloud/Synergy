@@ -1,0 +1,361 @@
+[
+    {
+        "id": 4812487346,
+        "number": 313,
+        "title": "Hard GPU Reset on quit in minecraft 26.2 with VulkanAPI",
+        "state": "closed",
+        "created_at": "2026-07-05T10:37:30Z",
+        "updated_at": "2026-07-05T11:49:19Z",
+        "closed_at": "2026-07-05T11:14:37Z",
+        "author": "LazySeldi",
+        "comments": 9,
+        "labels": [
+            "support"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "This mod causes crashes when using minecraft's native Vulkan API on 26.2\nAt least for me.\nMy setups is:\nArch Linux\nPrism Launcher(unmodified modpack straight from modrinth)\nHyprland\nAMD Mesa Drivers\n\nThis is not just any crash, this for me at least is a hard crash, like whole GPU VRAM resets.\nThe GPU stalls for some time and then the GPU reset is initiated by the kernel.\nWhen using the OpenGL API it doesn't crash when quitting.\nNo error logs are shown at all. This happens when you quit that's it.\n",
+        "url": "https://github.com/juliand665/Dynamic-FPS/issues/313"
+    },
+    {
+        "id": 4762289279,
+        "number": 312,
+        "title": "Sword mc",
+        "state": "closed",
+        "created_at": "2026-06-28T12:55:36Z",
+        "updated_at": "2026-06-28T12:57:49Z",
+        "closed_at": "2026-06-28T12:57:49Z",
+        "author": "bishnubiswasas12321-cell",
+        "comments": 0,
+        "labels": [
+            "invalid"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": null,
+        "url": "https://github.com/juliand665/Dynamic-FPS/issues/312"
+    },
+    {
+        "id": 4752360985,
+        "number": 311,
+        "title": "What is this in spark i found?",
+        "state": "closed",
+        "created_at": "2026-06-26T13:28:25Z",
+        "updated_at": "2026-06-26T13:57:23Z",
+        "closed_at": "2026-06-26T13:57:04Z",
+        "author": "ImmortalityORDeath",
+        "comments": 5,
+        "labels": [
+            "support"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "Hello dev :) Minecraft 26.2 Fabric. Last version of the mod. \n\n<img width=\"1052\" height=\"433\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/c394749a-9c15-43f4-8502-2d08c1bff26d\" />\n\nhttps://spark.lucko.me/MRQT5DUfiM\n\nSpark help me find this, do you have any idea you need fix this or its conflict idk to be honest why this huge % red line...",
+        "url": "https://github.com/juliand665/Dynamic-FPS/issues/311"
+    },
+    {
+        "id": 4693413028,
+        "number": 310,
+        "title": "Async Crash",
+        "state": "closed",
+        "created_at": "2026-06-18T14:42:22Z",
+        "updated_at": "2026-06-23T08:30:20Z",
+        "closed_at": "2026-06-22T23:54:32Z",
+        "author": "Mediumx",
+        "comments": 2,
+        "labels": [
+            "bug",
+            "external"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "i have another mod that uses Async and it causes the game to crash together with dynamic Fps",
+        "url": "https://github.com/juliand665/Dynamic-FPS/issues/310"
+    },
+    {
+        "id": 4667962009,
+        "number": 309,
+        "title": "this lowk made my fps worse",
+        "state": "closed",
+        "created_at": "2026-06-15T18:51:16Z",
+        "updated_at": "2026-06-27T15:25:42Z",
+        "closed_at": "2026-06-27T15:25:42Z",
+        "author": "sddagoatto2-bot",
+        "comments": 2,
+        "labels": [
+            "invalid"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "after downloading i avery 40 frames now and lag\n",
+        "url": "https://github.com/juliand665/Dynamic-FPS/issues/309"
+    },
+    {
+        "id": 4653965437,
+        "number": 308,
+        "title": "Heial",
+        "state": "closed",
+        "created_at": "2026-06-13T02:20:37Z",
+        "updated_at": "2026-06-13T08:15:39Z",
+        "closed_at": "2026-06-13T02:20:48Z",
+        "author": "mh3995196-wq",
+        "comments": 0,
+        "labels": [
+            "invalid"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "Cart pvp player",
+        "url": "https://github.com/juliand665/Dynamic-FPS/issues/308"
+    },
+    {
+        "id": 4651045978,
+        "number": 307,
+        "title": "[All] [Forge] Improperly formatted mods.toml",
+        "state": "open",
+        "created_at": "2026-06-12T16:50:00Z",
+        "updated_at": "2026-06-12T18:14:37Z",
+        "closed_at": null,
+        "author": "Fealtous",
+        "comments": 3,
+        "labels": [
+            "enhancement"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "`[[mixins]]` and `[[accessTransformers]]` are not valid toml headers on forge. We do offer the field `accessTransformers` to allow for (multiple) toml defined transformers in 47.4.20 or newer, though it hasn't been backported further than 1.20.1 as of now. All relevant versions of forge already inspects the path `META-INF/accesstransformer.cfg` so you don't technically need to define it in your toml at all if you're not using a custom name or location.\n\n`[[mixins]]` is not a valid header or field in any version, however. As far as I am aware it is neo exclusive.\n\nThis issue appears to affect all listed versions. The `[[accessTransformers]]` header would have caused a crash, but it is such a common mistake that versions 1.21.11 and under include a failsafe.\n\nI can write up a series of PRs to fix all of them if you wish.",
+        "url": "https://github.com/juliand665/Dynamic-FPS/issues/307"
+    },
+    {
+        "id": 4650944201,
+        "number": 306,
+        "title": "[1.21.2-1.21.4] [Forge] Invalid mods.toml due to typo",
+        "state": "closed",
+        "created_at": "2026-06-12T16:33:16Z",
+        "updated_at": "2026-06-16T13:50:23Z",
+        "closed_at": "2026-06-16T13:50:23Z",
+        "author": "Fealtous",
+        "comments": 1,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "https://github.com/juliand665/Dynamic-FPS/blob/20c87892a9a29585181215c3d04e1e8c42fd099a/platforms/forge/src/main/resources/META-INF/mods.toml#L95\nDue to a dot turned comma this fails to parse and crashes the game.",
+        "url": "https://github.com/juliand665/Dynamic-FPS/issues/306"
+    },
+    {
+        "id": 4646315750,
+        "number": 305,
+        "title": "Wayland + NVIDIA PRIME render offload: window permanently stuck in \"unfocused\" state, FPS capped at 30",
+        "state": "closed",
+        "created_at": "2026-06-12T04:33:45Z",
+        "updated_at": "2026-06-12T17:57:26Z",
+        "closed_at": "2026-06-12T17:57:26Z",
+        "author": "Mooling0602",
+        "comments": 2,
+        "labels": [
+            "bug",
+            "external"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Describe the bug\n\nWhen running Minecraft on Linux with Wayland and NVIDIA PRIME render offload (integrated Intel GPU for display, discrete NVIDIA GPU for rendering), the mod incorrectly detects the window as \"unfocused\" and permanently caps the frame rate at 30 FPS, even when the window is focused and actively being used.\n\nThe FPS returns to normal (~175 FPS) immediately after disabling the mod.\n\n### Steps to reproduce\n\n1. Linux with Wayland compositor (tested on niri 26.04, wlroots-based)\n2. Intel iGPU (display) + NVIDIA dGPU (PRIME render offload), e.g. `__NV_PRIME_RENDER_OFFLOAD=1`\n3. Minecraft 26.1.2 with Fabric loader\n4. Install only `dynamic-fps` (3.11.7), or a modpack that includes it (tested with Fabulously Optimized 13.2.2)\n5. Default config: `unfocused.frame_rate_target = 30`\n6. Launch the game with discrete GPU\n7. Observe FPS is locked at 30 regardless of window focus\n\n### Expected behavior\n\nWhen the Minecraft window is focused and actively being played, FPS should not be limited by the \"unfocused\" power state.\n\n### Root cause analysis\n\n> The analyzation haven't verified yet, it's from LLM's output. But links are avaliable.\n\nThis appears to be a circular dependency between GLFW/Wayland and the mod's focus detection:\n\n1. **Wayland compositors require the client to render at least one frame** before granting keyboard focus to the window. This is by design — the compositor needs a committed buffer to associate input events with.\n2. **Dynamic-FPS checks the window focus state** and, when the window is \"unfocused\", applies `frame_rate_target = 30` and skips full-rate rendering.\n3. With **NVIDIA PRIME render offload**, the cross-GPU DMA-BUF transfer adds additional latency to the first frame submission, making it even harder to break out of this cycle.\n\nThe result: the window never gets properly \"focused\" from the mod's perspective → stuck at 30 FPS forever. This does **not** happen when rendering directly on the Intel iGPU (without PRIME offload), because the first frame can be submitted quickly enough to satisfy the compositor's focus requirement.\n\nSee also: [Arseny Kapoulkine's analysis of the GLFW Wayland focus deadlock](https://mastodon.gamedev.place/@zeux/116105923982053448), [NVIDIA egl-wayland PRIME offload issues](https://github.com/NVIDIA/egl-wayland/issues/101).\n\n### Workaround\n\nDisable the mod, or set `unfocused.frame_rate_target` to `-1` (disabled) in `dynamic_fps.json`:\n\n```json\n{\n  \"states\": {\n    \"unfocused\": {\n      \"frame_rate_target\": -1,\n      \"run_garbage_collector\": true\n    }\n  }\n}\n```\n\n### Environment\n\n- **OS**: NixOS (unstable, Linux 7.0.11)\n- **Compositor**: niri 26.04 (wlroots-based Wayland compositor)\n- **GPU**: Intel Alder Lake iGPU (PCI:0:2:0) + NVIDIA GeForce RTX 3050 Laptop (PCI:1:0:0)\n- **NVIDIA driver**: 610.43.02 (open kernel module), PRIME render offload with `nvidia-drm.modeset=1`\n- **Minecraft**: 26.1.2, Fabric loader\n- **Dynamic FPS version**: 3.11.7\n\n### Additional context\n\n- This issue was drafted with the assistance of a large language model (DeepSeek V4 Pro, via Claude Code CLI) and has been reviewed and confirmed by a human user. AI assistance was used because the reporter is not a native English speaker.\n\n- Using [BlazeSDL](https://modrinth.com/mod/blazesdl) to replace GLFW with SDL3, and set `SDL_VIDEODRIVER=wayland` to run it in Wayland mode.",
+        "url": "https://github.com/juliand665/Dynamic-FPS/issues/305"
+    },
+    {
+        "id": 4608592602,
+        "number": 304,
+        "title": "Memory Leak with the Wynncraft Plus modpack + Distant Horizons",
+        "state": "open",
+        "created_at": "2026-06-07T20:16:45Z",
+        "updated_at": "2026-06-29T16:15:44Z",
+        "closed_at": null,
+        "author": "PlayfulPiano",
+        "comments": 2,
+        "labels": [
+            "question"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "Minecraft 1.21.11\nDFPS version 3.11.6\nWynncraft Plus v2.2.2 Modpack (Replaced Voxy with DH 2.4.5-b)\n\nWas noticing huge memory leaks leading to a maxed out RAM usage on my PC (32GB total), ending up with minecraft crashing out of nowhere. When tabbing back into minecraft, the memory usage dropped substantially and stabilized. If I tabbed out, after a few moments it started to climb again (albeit not always consistently). This was me using Java 25 w/COH but only 5GB allocated, so it even reaching 10GB+ is abnormal.\n\nMy PC specs are a 7800x3d CPU and an R7 9070 GPU, using Linux Mint Cinnamon 22.3.",
+        "url": "https://github.com/juliand665/Dynamic-FPS/issues/304"
+    },
+    {
+        "id": 4607853549,
+        "number": 303,
+        "title": "Afk mode",
+        "state": "closed",
+        "created_at": "2026-06-07T15:48:18Z",
+        "updated_at": "2026-06-07T17:52:52Z",
+        "closed_at": "2026-06-07T17:52:52Z",
+        "author": "maartix1",
+        "comments": 1,
+        "labels": [
+            "support"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "If a player is afk for 10 or 15 minutes it reduces fps, this can be useful for people who are afk at night.",
+        "url": "https://github.com/juliand665/Dynamic-FPS/issues/303"
+    },
+    {
+        "id": 4532663247,
+        "number": 302,
+        "title": "Dynamic FPS with Unlimited FPS crashes Intel graphics driver when Minecraft is minimized",
+        "state": "closed",
+        "created_at": "2026-05-27T13:24:36Z",
+        "updated_at": "2026-05-28T12:54:44Z",
+        "closed_at": "2026-05-28T10:45:25Z",
+        "author": "ghostwycloud",
+        "comments": 13,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Bug Report\n\nIn version 26.1.2, using Dynamic FPS with Unlimited FPS causes the Intel graphics driver to crash.\n\nThis happens on Intel driver version 8801 and newer.\n\n### Steps to Reproduce\n\n1. Enable Dynamic FPS\n2. Launch Minecraft\n3. Set FPS to Unlimited\n4. Minimize Minecraft or leave it running in the background\n5. Intel graphics driver crashes\n\n### Expected Behavior\n\nMinecraft should keep running normally in the background.\n\n### Actual Behavior\n\nThe Intel graphics driver crashes when Minecraft is minimized with Dynamic FPS enabled and FPS set to Unlimited.\n\n### Additional Information\n\n* Affected Intel driver versions: 8801 and newer\n* Tested version: 26.1.2\n\n\nhttps://streamable.com/povlw0",
+        "url": "https://github.com/juliand665/Dynamic-FPS/issues/302"
+    },
+    {
+        "id": 4364473311,
+        "number": 301,
+        "title": "Crashing on newest version 26.1.X",
+        "state": "closed",
+        "created_at": "2026-05-01T12:59:33Z",
+        "updated_at": "2026-05-01T13:20:07Z",
+        "closed_at": "2026-05-01T13:20:07Z",
+        "author": "Yoon0117",
+        "comments": 2,
+        "labels": [
+            "support"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "<img width=\"800\" height=\"480\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/b05238d4-8ff6-4c9d-97cb-e8b12613553b\" />\nVersion: Lastest version on Modrinth\nPlatform: Mac\nGetting this error when I launch with DFPS, works fine without.",
+        "url": "https://github.com/juliand665/Dynamic-FPS/issues/301"
+    },
+    {
+        "id": 4325952005,
+        "number": 300,
+        "title": "i cant open menu",
+        "state": "closed",
+        "created_at": "2026-04-24T22:32:57Z",
+        "updated_at": "2026-04-25T22:47:54Z",
+        "closed_at": "2026-04-25T22:47:54Z",
+        "author": "qwyzad",
+        "comments": 5,
+        "labels": [
+            "support"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "i downloaded mod menu and cloth config theres no opening thing \n\n<img width=\"976\" height=\"456\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/1e537d44-d117-4b58-ae6c-996d16a9e1c9\" />",
+        "url": "https://github.com/juliand665/Dynamic-FPS/issues/300"
+    },
+    {
+        "id": 4250268818,
+        "number": 299,
+        "title": "What",
+        "state": "closed",
+        "created_at": "2026-04-12T23:16:38Z",
+        "updated_at": "2026-04-13T10:10:05Z",
+        "closed_at": "2026-04-13T10:09:59Z",
+        "author": "pratamagilangnanda93-cpu",
+        "comments": 0,
+        "labels": [
+            "invalid"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": null,
+        "url": "https://github.com/juliand665/Dynamic-FPS/issues/299"
+    },
+    {
+        "id": 4207014521,
+        "number": 298,
+        "title": "No build available that fixes Issue #288 for the effected 1.21.x versions",
+        "state": "closed",
+        "created_at": "2026-04-05T08:59:07Z",
+        "updated_at": "2026-04-05T17:54:46Z",
+        "closed_at": "2026-04-05T17:54:46Z",
+        "author": "Plasma-O",
+        "comments": 2,
+        "labels": [
+            "meta"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "Im just curious, if and when we get a build for those versions",
+        "url": "https://github.com/juliand665/Dynamic-FPS/issues/298"
+    },
+    {
+        "id": 4124412406,
+        "number": 297,
+        "title": "dhdjtdjutdjd",
+        "state": "closed",
+        "created_at": "2026-03-24T00:08:19Z",
+        "updated_at": "2026-03-24T13:49:02Z",
+        "closed_at": "2026-03-24T13:49:01Z",
+        "author": "katoonjojo15-code",
+        "comments": 1,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "https://github.com/FlashyReese/sodium-extra-fabric/issues",
+        "url": "https://github.com/juliand665/Dynamic-FPS/issues/297"
+    },
+    {
+        "id": 4116706368,
+        "number": 296,
+        "title": "preparing for 26.1",
+        "state": "closed",
+        "created_at": "2026-03-22T18:17:54Z",
+        "updated_at": "2026-03-22T18:58:20Z",
+        "closed_at": "2026-03-22T18:58:19Z",
+        "author": "nick9509",
+        "comments": 1,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "any plans/eta?",
+        "url": "https://github.com/juliand665/Dynamic-FPS/issues/296"
+    },
+    {
+        "id": 4052534020,
+        "number": 292,
+        "title": "After disabling pause on lost focus (the same function as F3+P), the game cannot regain focus after being unfocused for a period of time.",
+        "state": "closed",
+        "created_at": "2026-03-10T15:24:03Z",
+        "updated_at": "2026-03-10T19:02:37Z",
+        "closed_at": "2026-03-10T17:09:11Z",
+        "author": "CunZG",
+        "comments": 2,
+        "labels": [
+            "bug",
+            "external"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "<img width=\"1920\" height=\"327\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/39d56acc-17c8-4227-b456-7a0f695246f6\" />\n\n<img width=\"1920\" height=\"1080\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/db551c34-50c1-466a-877a-79e3cb2ec13f\" />\nWhen I click the game window to try to regain focus, it thinks the game has frozen. In reality, the game hasn’t frozen—it is still running at the configured unfocused frame rate.",
+        "url": "https://github.com/juliand665/Dynamic-FPS/issues/292"
+    },
+    {
+        "id": 4047110103,
+        "number": 291,
+        "title": "Dynamic",
+        "state": "closed",
+        "created_at": "2026-03-09T18:07:59Z",
+        "updated_at": "2026-03-09T18:20:33Z",
+        "closed_at": "2026-03-09T18:20:33Z",
+        "author": "kolayqurty1994-ai",
+        "comments": 1,
+        "labels": [
+            "invalid"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "Pls",
+        "url": "https://github.com/juliand665/Dynamic-FPS/issues/291"
+    }
+]

@@ -1,0 +1,386 @@
+[
+    {
+        "id": 4880025877,
+        "number": 2222,
+        "title": "Support Protobuf payloads for AsyncAPI Kafka and NATS mocking and contract testing",
+        "state": "open",
+        "created_at": "2026-07-14T05:07:41Z",
+        "updated_at": "2026-07-14T05:07:41Z",
+        "closed_at": null,
+        "author": "Basuchi",
+        "comments": 0,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "### Reason/Context\n\nMicrocks successfully publishes a NATS mock from an AsyncAPI example, but the example is JSON while our consumer expects a protobuf-encoded MultiPayload envelope. The message reaches NATS, but the consumer cannot decode it, so the end-to-end flow is not triggered.\n\nWe want to replace an upstream event producer with Microcks while testing a NATS consumer:\n\nMicrocks mock -> NATS input subject -> microservice -> NATS output event\nThe microservice subscribes to an input subject family such as\n`catalog.product.input.*`\n\nAfter correcting the Microcks mock to publish to that subject family, the consumer still does not react because the wire formats differ.\n\n**Expected behavior**\nMicrocks should provide a supported way for a NATS mock to publish non-JSON wire payloads, for example one of:\n\n- Serialize an AsyncAPI example with a referenced protobuf schema and message type.\n- Publish an explicitly supplied raw binary/Base64 example without converting it to text.\n- Apply a user-provided payload encoder/plugin before publishing to NATS.\n- Support a protobuf envelope such as MultiPayload, including the embedded payload type and bytes.\n\nExample of a possible raw-binary fallback:\n\n`contentType: application/x-protobuf\nx-microcks-payload-encoding: base64\nexamples:\n   - name: productUpdatedMultiPayload\n    payload: \"<base64-encoded MultiPayload bytes>\"`\n\n\n\n### Description\n\nAdd first-class Protocol Buffers payload support to Microcks asynchronous mocking and contract testing for Kafka and NATS.\n\nMicrocks currently supports protobuf descriptors and dynamic messages for gRPC. The async minion can transport raw bytes, but its schema-aware paths validate JSON or Avro. It does not currently load a protobuf descriptor, serialize an AsyncAPI example into protobuf wire bytes, or decode and validate a consumed protobuf event.\n\nOur event-driven application uses both Kafka and NATS. Events are described in AsyncAPI and encoded as Protocol Buffers. The same logical event contract may be published to a Kafka topic or a NATS subject.\n\n**Acceptance criteria**\n\n- A NATS mock can publish the exact binary bytes supplied or generated for an example, without UTF-8/JSON conversion.\n- Preferably, Microcks can build protobuf bytes from a .proto descriptor, fully qualified message type, and readable JSON example.\n- The approach works with an outer MultiPayload protobuf envelope and an embedded protobuf payload.\n- Existing JSON NATS mocks remain unchanged.\n- If this is intentionally unsupported, the documentation identifies the recommended encoder extension point or bridge-based workaround.\n\n\n### Implementation ideas\n\n**Keep payload encoding separate from the NATS transport**\n\npublic interface AsyncPayloadEncoder {\n   boolean supports(String contentType, Map<String, String> metadata);\n\n   byte[] encode(String example, Map<String, String> metadata);\n}\n\nThe NATS producer would publish the resulting bytes directly:\n\nbyte[] wirePayload = payloadEncoder.encode(exampleContent, metadata);\nnatsConnection.publish(subject, wirePayload);\n\nA protobuf implementation could use a descriptor and DynamicMessage; an application-specific implementation could additionally wrap those bytes in MultiPayload. This would keep NATS publishing transport-neutral and preserve the current JSON encoder as the default.",
+        "url": "https://github.com/microcks/microcks/issues/2222"
+    },
+    {
+        "id": 4840921507,
+        "number": 2210,
+        "title": "Enhancement (TODO): Support External References in OpenAPI MCP Tool Converter",
+        "state": "open",
+        "created_at": "2026-07-08T20:38:29Z",
+        "updated_at": "2026-07-09T14:45:17Z",
+        "closed_at": null,
+        "author": "dolliecoder",
+        "comments": 8,
+        "labels": [
+            "component/mocks",
+            "kind/enhancement"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Reason/Context\n\n**Why we need this improvement:**\nCurrently, when Microcks generates an MCP tool schema from an OpenAPI specification, it only supports internal references (i.e., those starting with `#/`). If an enterprise uses a modular, multi-file OpenAPI specification that relies on external `$ref`s (e.g. `$ref: './paths/problemDetail.yaml'`), the `OpenAPIMcpToolConverter.java` method `getNodeForRef()` fails to resolve it and returns `null` because of an open TODO: `// TODO: handle external references reusing imported resources?`\n\n**How will this change help:**\nIt ensures that MCP tools generated from multi-file OpenAPI specs include all required parameters and properties, preventing AI agents from failing due to incomplete schema definitions.\n\n**What is the motivation:**\nMCP (Model Context Protocol) is rapidly becoming the standard for AI tool integrations. Supporting robust, enterprise-grade OpenAPI definitions that rely on external references is essential for a seamless AI agent experience in Microcks.\n\n\n### Description\n\nDuring the initial OpenAPI import, `AbstractJsonRepositoryImporter.resolveExternalReferences` successfully fetches these external schemas, normalizes their names, and stores them in the database as secondary `Resource` objects (linked to the same `Service`). \n\nHowever, `OpenAPIMcpToolConverter` currently does not have access to these resources. This enhancement will provide the converter access to the repository so it can retrieve these already-imported resources to complete the schema resolution. \n\nThis will not introduce any breaking changes.\n\n\n### Implementation ideas\n\nI have been researching the codebase and have a clear implementation plan for how to solve this:\n\n1. Modify `OpenAPIMcpToolConverter.java` and its constructor to accept `ResourceRepository`.\n2. Update the `buildMcpToolConverter` factory method in `McpController.java` to pass its already-injected `ResourceRepository` down to the converter.\n3. Inside `getNodeForRef()` in `OpenAPIMcpToolConverter`, implement the TODO for external references by querying `resourceRepository.findByServiceIdAndType(service.getId(), ResourceType.OPEN_API_SPEC)`.\n4. Match the path of the external reference against the returned resources' `path` or encoded `name`.\n5. Once matched, parse the resource content into a `JsonNode` (caching it in a `HashMap` to prevent re-parsing during the same request) and return the specific json pointer within that file.\n6. Add comprehensive unit tests in `OpenAPIMcpToolConverterTest.java` with a mocked `ResourceRepository` to verify the external resolution.\n\nI would love to be assigned to this issue and submit a PR for it if you agree with this approach!\n",
+        "url": "https://github.com/microcks/microcks/issues/2210"
+    },
+    {
+        "id": 4788538404,
+        "number": 2202,
+        "title": "Proposal: Adopt `AGENTS.md` Standard for AI Coding Assistants",
+        "state": "open",
+        "created_at": "2026-07-01T19:15:52Z",
+        "updated_at": "2026-07-09T14:42:33Z",
+        "closed_at": null,
+        "author": "Vaishnav88sk",
+        "comments": 13,
+        "labels": [
+            "kind/enhancement",
+            "component/build"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Background\nAs AI coding assistants (Copilot, Cursor, etc.) and autonomous agents become more prevalent, open-source maintainers are increasingly burdened by low-effort or poorly understood AI-generated pull requests. \n\nTo address this, major open-source ecosystems (like Kubernetes) have recently introduced formal [AI Guidance](https://www.kubernetes.dev/docs/guide/pull-requests/#ai-guidance). Additionally, the industry has rapidly adopted the **`AGENTS.md`** standard, a community convention now stewarded by the Linux Foundation's Agentic AI Foundation - used by tens of thousands of repositories to guide AI agents. \n\nAn `AGENTS.md` file acts as a \"README for AI,\" providing operational guidance and rules directly to AI tools to ensure they follow project-specific conventions and prevent hallucinated bugs.\n\n### Proposal\nI propose that Microcks adopts a similar stance to protect maintainer time and ensure code quality, while still welcoming AI-assisted contributions. \n\nSpecifically, we should:\n\n1. **Update `CONTRIBUTING.md` / PR Templates:**\n   * Require contributors to explicitly disclose AI usage in their PR descriptions.\n   * Clarify that large, entirely AI-generated PRs or AI-generated commit messages are discouraged.\n   * Establish a rule that contributors must understand their code. If a reviewer asks a question about an implementation and the contributor cannot explain why the AI wrote it that way, the PR may be closed.\n   * Prohibit the use of AI tools to auto-reply to maintainer review comments.\n\n2. **Introduce an `AGENTS.md` file:**\n   * Create an `AGENTS.md` file in the root of the repository.\n   * This file will instruct AI agents on Microcks-specific coding conventions, point them to our documentation, and explicitly state our AI Contribution Policy so the agent is aware of the rules *before* it generates a PR on behalf of a user.\n\n### Why this matters for Microcks\nMicrocks has a rapidly growing community. Establishing these boundaries now will ensure that as AI tools get more popular, the quality of contributions remains high and the maintainer review burden is kept manageable. It also makes onboarding easier for contributors who do use AI responsibly by giving their tools explicit instructions.\n",
+        "url": "https://github.com/microcks/microcks/issues/2202"
+    },
+    {
+        "id": 4784485229,
+        "number": 2201,
+        "title": "Support nested fragment spreads selection in GraphQL",
+        "state": "closed",
+        "created_at": "2026-07-01T10:01:03Z",
+        "updated_at": "2026-07-01T13:58:56Z",
+        "closed_at": "2026-07-01T13:58:56Z",
+        "author": "lbroudoux",
+        "comments": 1,
+        "labels": [
+            "component/mocks",
+            "kind/enhancement"
+        ],
+        "assignees": [
+            "lbroudoux"
+        ],
+        "locked": false,
+        "body": "### Reason/Context\n\nAs of today, Microcks does not support nested fragment spread selection in GraphQL queries. This is a very common pattern that arises quickly when schemas get more complex. \n\n### Description\n\nConsider the following query:\n```graphql\nquery film($id: String) {\n  film(id: \"ZmlsbXM6MQ==\") {\n    ...FilmCoreFields\n  }\n}\nfragment FilmCoreFields on Film {\n  ...FilmIdentityFields\n  episodeID\n}\nfragment FilmIdentityFields on Film {\n  id\n  title\n}\n```\nToday's return is \n```json\n{\n   \"data\": {\n     \"film\": {}\n   }\n }\n```\nwhere it is expected to be:\n```json\n{\n   \"data\": {\n     \"film\": {\n       \"id\": \"ZmlsbXM6MQ==\",\n       \"title\": \"A New Hope\",\n       \"episodeID\": 4\n     }\n   }\n }\n```\n\n### Implementation ideas\n\nWe've got this result because - even if we implemented recursion correctly - the nested `...FilmIdentityFields` fragment operates at the same level as `episodeID`. Because we're applying the fragment filter first, only the `id` and `title` are retained in the response. Later on, we try to retain `episodeID` but this one is absent and thus it empties the result.\n\nWe must then change this and operate with collecting and flatening all field selections (simple and fragment-based ones) of the same level before applying the retain on result.",
+        "url": "https://github.com/microcks/microcks/issues/2201"
+    },
+    {
+        "id": 4776155756,
+        "number": 2199,
+        "title": "GraphQL: named fragment spreads cause HTTP 500; inlining them exposes a second bug where Microcks synthesises null for unrecorded fields",
+        "state": "closed",
+        "created_at": "2026-06-30T11:05:20Z",
+        "updated_at": "2026-07-02T12:29:33Z",
+        "closed_at": "2026-07-02T12:22:09Z",
+        "author": "DKey96",
+        "comments": 12,
+        "labels": [
+            "kind/bug",
+            "component/mocks"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "## Summary\n\nTwo related bugs surface when a GraphQL client sends a query that uses **named fragment spreads** (`...FragmentName`) to a Microcks mock endpoint:\n\n1. **Bug 1 — HTTP 500 on named fragment spreads.** Microcks returns a 500 Internal Server Error for any query that contains a `FragmentSpread` node. Replacing the spread with a semantically equivalent `InlineFragment` (`... on TypeName { ... }`) works correctly.\n\n2. **Bug 2 — Null synthesis for fields not present in the recorded example.** When you work around Bug 1 by rewriting spreads to inline fragments, the query now requests **more fields** than were recorded in the example. Microcks responds with `null` for each of those extra fields instead of omitting them or returning an error. For real-world components that dereference nested objects without optional chaining, this causes frontend crashes that are hard to trace back to the mock layer.\n\n---\n\n## Environment\n\n| Item | Version |\n|------|---------|\n| Microcks | 1.14.0 (observed; likely affects earlier versions too) |\n| GraphQL transport | HTTP POST, `application/json` |\n\n---\n\n## Bug 1 — Named fragment spreads return HTTP 500\n\n### Minimal reproduction\n\n**This query fails with HTTP 500:**\n\n```graphql\nquery GetExample($id: ID!) {\n  example(id: $id) {\n    ...ExampleCoreFields\n    someSource {\n      ...SomeSourceFields\n    }\n  }\n}\n\nfragment ExampleCoreFields on Example {\n  id\n  name\n  status\n}\n\nfragment SomeSourceFields on someSource {\n  product\n}\n```\n\n**This semantically identical query succeeds:**\n\n```graphql\nquery GetExample($id: ID!) {\n  example(id: $id) {\n    ... on Example {\n      id\n      name\n      status\n    }\n    someSource {\n      ... on SomeSourceFields {\n        product\n      }\n    }\n  }\n}\n```\n\nThe only difference is `...FragmentName` (named spread + separate fragment definition) vs `... on TypeName { ... }` (inline fragment). Both are valid GraphQL per the spec and must produce the same result.\n\n### Why this matters\n\nAlmost every production GraphQL client (Apollo Client, urql, Relay) generates queries with named fragment spreads. This means any real-world application that uses code-generated queries will hit this bug immediately when pointed at Microcks. The workaround of rewriting spreads to inline fragments requires intercepting and AST-transforming every outgoing query on the client side — a significant burden.\n\n### Client-side workaround (what we had to implement - Not what we want to have)\n\n```typescript\nimport { Kind, parse, print } from 'graphql';\nimport type { DocumentNode, FragmentDefinitionNode, SelectionSetNode } from 'graphql';\n\n/**\n * Recursively replaces every FragmentSpread with an InlineFragment,\n * then removes the now-redundant FragmentDefinition nodes.\n * Applied to every query before forwarding to Microcks.\n */\nfunction inlineFragments(queryStr: string): string {\n  let doc: DocumentNode;\n  try { doc = parse(queryStr); } catch { return queryStr; }\n\n  const fragmentMap: Record<string, FragmentDefinitionNode> = {};\n  for (const def of doc.definitions) {\n    if (def.kind === Kind.FRAGMENT_DEFINITION) fragmentMap[def.name.value] = def;\n  }\n  if (Object.keys(fragmentMap).length === 0) return queryStr;\n\n  function inlineSelectionSet(ss: SelectionSetNode, visited = new Set<string>()): SelectionSetNode {\n    const selections: SelectionSetNode['selections'][number][] = [];\n    for (const sel of ss.selections) {\n      if (sel.kind === Kind.FRAGMENT_SPREAD) {\n        const frag = fragmentMap[sel.name.value];\n        if (!frag || visited.has(sel.name.value)) {\n          selections.push(sel);\n        } else {\n          selections.push({\n            kind: Kind.INLINE_FRAGMENT,\n            typeCondition: frag.typeCondition,\n            directives: sel.directives ?? [],\n            selectionSet: inlineSelectionSet(frag.selectionSet, new Set([...visited, sel.name.value])),\n          });\n        }\n      } else if ('selectionSet' in sel && sel.selectionSet) {\n        selections.push({ ...sel, selectionSet: inlineSelectionSet(sel.selectionSet, visited) } as typeof sel);\n      } else {\n        selections.push(sel);\n      }\n    }\n    return { ...ss, selections };\n  }\n\n  return print({\n    ...doc,\n    definitions: doc.definitions\n      .filter((d) => d.kind !== Kind.FRAGMENT_DEFINITION)\n      .map((d) =>\n        d.kind === Kind.OPERATION_DEFINITION\n          ? { ...d, selectionSet: inlineSelectionSet(d.selectionSet) }\n          : d,\n      ),\n  });\n}\n```\n\nThis runs in Node.js (Playwright test runner) and rewrites every query before it reaches Microcks. No changes on the Microcks side.\n\n---\n\n## Bug 2 — Null synthesis for fields not present in the recorded example\n\nThis bug is a consequence of working around Bug 1. Once fragment spreads are inlined, the forwarded query may request **fields that were not present in the original recording**. For example:\n\n- The recorded example was captured with a minimal integration-test query requesting 10 fields.\n- The real application query (after inlining its 5 fragments) requests 40 fields.\n- Microcks returns a response with the 10 recorded fields populated, and **synthesises `null`** for the remaining 30.\n\n### Why this is problematic\n\nReturning `null` for fields that were not requested in the original recording is incorrect. The correct behaviours would be either:\n- **Omit** the fields (since they were not in the recorded request), or\n- **Return an error** indicating no example matches the requested shape, so the caller knows to provide a more complete recording.\n\nSilently returning `null` is especially harmful for nested objects. A component that does `example.realTime.id` will throw `TypeError: Cannot read properties of null` rather than getting a \"no match\" signal from the mock layer. This is very hard to debug because the failure manifests in the UI, not in the network layer.\n\n### Secondary workaround required\n\nBecause of Bug 2, large queries that contain fragments which expose many new fields after inlining cannot be fixed by inlining alone. We had to additionally:\n\n1. Send a **hand-crafted minimal query** (only the fields present in the recording) to Microcks instead of the real application query.\n2. **Backfill the missing fields** on the response before returning it to the browser.\n\n```typescript\n// Because of Bug 1 + Bug 2, we cannot forward the real GetExample query.\n// Instead we send a minimal query that exactly matches the recorded fields,\n// then patch the response with safe defaults for fields the FE needs.\nconst MINIMAL_GET_EXAMPLE_QUERY = `\n  query GetExample($id: ID!, $skipSelfLink: Boolean! = false) {\n    example(id: $id) {\n      id name status createdAt detectedAt description\n      selfLink @skip(if: $skipSelfLink)\n    }\n  }\n`;\n```\n\nThis is a significant maintenance burden: every time the recording is updated with new fields, the minimal query and the backfill logic must also be updated manually.\n\n---\n\n## Expected behaviour\n\n1. Microcks should accept queries that use named fragment spreads and match them against recorded examples using the **resolved field set** (i.e., after expanding fragments), not the raw query string.\n2. When a query requests fields that are not present in a recorded example, Microcks should either omit those fields or return an appropriate \"no match\" / \"unknown field\" signal — it should **not** synthesise `null`.\n\n---\n\n## Impact\n\nBoth bugs together make it impractical to use Microcks for mocking against real production GraphQL clients, since those clients almost universally use named fragments (often generated by tools like GraphQL Code Generator). The current behaviour forces consumers to maintain a non-trivial client-side query transformer and response patcher — work that should not be necessary.",
+        "url": "https://github.com/microcks/microcks/issues/2199"
+    },
+    {
+        "id": 4745720537,
+        "number": 2188,
+        "title": "OpenAPI import: break should be continue in `getNoContentRequestResponsePair()` causing valid examples to be silently skipped",
+        "state": "closed",
+        "created_at": "2026-06-25T16:39:29Z",
+        "updated_at": "2026-06-26T10:09:18Z",
+        "closed_at": "2026-06-26T10:09:18Z",
+        "author": "Harishrs2006",
+        "comments": 1,
+        "labels": [
+            "kind/bug",
+            "component/importer"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": " Describe the bug\n\nIn OpenAPIImporter.java, the method getNoContentRequestResponsePair() uses a `break` statement where `continue` is needed. When iterating over x-microcks-refs examples, if one example is missing path parameters for a URI_PARTS or URI_ELEMENTS dispatcher, the entire loop exits  all remaining examples after that one are never processed.\n\n Expected behavior\n\nOnly the example missing path parameters should be skipped. All other valid request/response pairs in the iterator should still be registered.\n\n Actual behavior\n\nThe `break` exits the full requestRefsIterator loop. Any examples after the first incomplete one are silently dropped no error is thrown, no warning is logged, the mocks simply do not exist after import.\n\nHow to Reproduce?\n\n1. Create an OpenAPI spec using URI_PARTS or URI_ELEMENTS dispatcher with x-microcks-refs\n2. Add multiple examples where example #2 (not the last) is missing path parameters\n3. Import the spec into Microcks\n4. Observe that examples #3 onwards are not imported no error reported\n\n Microcks version or git rev\n\nmaster branch (OpenAPIImporter.java ~line 781)\n\nInstall method (`docker-compose`, `helm chart`, `operator`, `docker-desktop extension`,...)\n\nN/A  source code bug\n\n Additional information\n\nFile: webapp/src/main/java/io/github/microcks/util/openapi/OpenAPIImporter.java\nMethod: getNoContentRequestResponsePair()\n\nCurrent code:\n   // We must have at least one path parameters but none!\n   // Do not register this request / response pair.\n   break;\n\nFix: change `break` to `continue`\n\nThe comment itself says \"do not register this pair\"  confirming the intent \nis to skip only the current example, not abort the entire loop.",
+        "url": "https://github.com/microcks/microcks/issues/2188"
+    },
+    {
+        "id": 4744177095,
+        "number": 2186,
+        "title": "Bump Angular to `21.2.17`",
+        "state": "closed",
+        "created_at": "2026-06-25T13:21:54Z",
+        "updated_at": "2026-06-25T13:31:03Z",
+        "closed_at": "2026-06-25T13:31:02Z",
+        "author": "lbroudoux",
+        "comments": 1,
+        "labels": [
+            "component/ux",
+            "dependencies"
+        ],
+        "assignees": [
+            "lbroudoux"
+        ],
+        "locked": false,
+        "body": "Several pull requests have been raised by dependabot security alerts on diffrent Angular modules (see #2170, #2172 and #2173). However, applying them one by one breaks the build and the depedencies resolution. We should group the updates to have something consistent.",
+        "url": "https://github.com/microcks/microcks/issues/2186"
+    },
+    {
+        "id": 4692222316,
+        "number": 2176,
+        "title": "GraphQL mock returns HTTP 500 \"Exception while filtering response JSON\" for error responses (data: null); no support for the GraphQL errors array",
+        "state": "closed",
+        "created_at": "2026-06-18T12:11:45Z",
+        "updated_at": "2026-06-30T11:35:00Z",
+        "closed_at": "2026-06-30T11:35:00Z",
+        "author": "DKey96",
+        "comments": 4,
+        "labels": [
+            "kind/bug",
+            "component/mocks"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Describe the bug\n\nMicrocks' GraphQL mocking only models the `data` field of a response (it projects `data` onto the consumer's selection set). It has no support for the GraphQL `errors` array, and when a stored response has `data: null` (the standard shape for a GraphQL error response), serving it fails with **HTTP 500 `Exception while filtering response JSON`** instead of returning the stored payload.\n\nThis is effectively two issues:\n\n1. **Bug:** the field-filtering code throws when the `data` node is `null` (or absent), rather than degrading gracefully.\n2. **Missing feature:** even when the response *can* be served (e.g. `data: { alert: null }`), the top-level `errors` array is dropped, so a faithful GraphQL error response cannot be mocked.\n\n### How to Reproduce\n\n1. Import a GraphQL schema, e.g.:\n   ```graphql\n   type Query { alert(id: String): Alert }\n   type Alert { id: String }\n   ```\n2. Import an `APIExamples` artifact with an error example whose response body is a standard GraphQL error:\n   ```json\n   { \"data\": null, \"errors\": [ { \"message\": \"Access Denied\", \"path\": [\"alert\"], \"extensions\": { \"classification\": \"DataFetchingException\" } } ] }\n   ```\n3. Make the mock serve that example (e.g. a `SCRIPT` dispatcher returning its name, or query args that match it).\n4. Query the mock: `{ alert(id: \"x\") { id } }`.\n\n### Expected behavior\n\nThe mock returns the stored GraphQL error response (HTTP 200 with `data: null` and the `errors` array), as a real GraphQL server would.\n\n### Actual behavior\n\n- `{\"data\": null, \"errors\": [...]}` → **HTTP 500 `Exception while filtering response JSON`**.\n- `{\"errors\": [...]}` (no `data` key) → HTTP 500.\n- `{\"data\": {\"alert\": null}, \"errors\": [...]}` → HTTP 200, but returns only `{\"data\":{\"alert\":null}}` — the `errors` array is silently dropped.\n\n### Microcks version\n\n1.14.0\n\n### Additional context\n\nThe [GraphQL conventions docs](https://microcks.io/documentation/references/artifacts/graphql-conventions/) only cover successful data responses; error responses aren't mentioned. Supporting the `errors` array in mock responses (and handling `data: null` without throwing) would let teams mock error scenarios for contract testing.\n",
+        "url": "https://github.com/microcks/microcks/issues/2176"
+    },
+    {
+        "id": 4655900774,
+        "number": 2168,
+        "title": "bug: OpenAPIImporter registers endpoints even when required path parameters are missing in examples",
+        "state": "open",
+        "created_at": "2026-06-13T14:57:46Z",
+        "updated_at": "2026-06-25T14:18:15Z",
+        "closed_at": null,
+        "author": "alokkumardalei-wq",
+        "comments": 7,
+        "labels": [
+            "kind/bug",
+            "component/mocks",
+            "component/importer"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Describe the bug\n\nWhile reviewing the OpenAPI Importer logic and its corresponding tests, I noticed a bug where mocked endpoints are being fully registered even if the provided example data is missing required path parameters.\nIn OpenAPIImporterTest.java\n\nCurrently, when 'DispatchCriteriaHelper.java' attempts to build the dispatch criteria from the provided parts map, it does not strictly validate whether all the variables required by the URI template or dispatcher rules are actually present. Because of this, OpenAPIImporter.java proceeds to register the RequestResponsePair with incomplete/invalid dispatch criteria instead of discarding it.\n\n\n\n### How to Reproduce?\n\n**Reproducer:** The issue can be reproduced directly by running the existing unit tests in the codebase.\n\n**Resources to reproduce the behavior:**\n\n1. Open the file [OpenAPIImporterTest.java](https://github.com/microcks/microcks/blob/master/webapp/src/test/java/io/github/microcks/util/openapi/OpenAPIImporterTest.java#L812) and locate the test method testUncompleteParamsOpenAPIImportYAML().\n2. This test loads the specification file [cars-openapi-uncomplete-params.yaml](https://github.com/microcks/microcks/blob/master/webapp/src/test/resources/io/github/microcks/util/openapi/cars-openapi-uncomplete-params.yaml).\n3. In that YAML file, look at the example for the endpoint GET /owner/{owner}/car/{car}/passenger. The example provided intentionally omits the {car} path parameter data.\n4. Run the test locally \n```bash\nmvn test -pl webapp -Dtest=OpenAPIImporterTest#testUncompleteParamsOpenAPIImportYAML\n```\nOutput:\n```bash\n[INFO] \n[INFO] -------------------------------------------------------\n[INFO]  T E S T S\n[INFO] -------------------------------------------------------\n[INFO] Running io.github.microcks.util.openapi.OpenAPIImporterTest\n[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.181 s -- in io.github.microcks.util.openapi.OpenAPIImporterTest\n[INFO] \n[INFO] Results:\n[INFO] \n[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0\n[INFO] \n[INFO] ------------------------------------------------------------------------\n[INFO] BUILD SUCCESS\n[INFO] ------------------------------------------------------------------------\n[INFO] Total time:  9.126 s\n[INFO] Finished at: 2026-06-16T14:58:18+05:30\n[INFO] ------------------------------------------------------------------------\n```\nBecause the validation is currently incomplete, importer.getMessageDefinitions(service, operation) successfully creates 1 exchange message despite the missing required path parameter and should have created 0 messages.\n\n**The Proposed Solution:**\n\n1. Update DispatchCriteriaHelper.java: Modify the methods buildFromPartsMap(...) and/or buildFromParamsMap(...). Before returning the built string, these methods should check if the provided params map actually contains all the variables required by the dispatcherRules or the uriPattern. If any required variable (like car) is missing, the method should return null instead of building an incomplete string.\n \n2. Update OpenAPIImporter.java: Inside the completeDispatchCriteriaAndResourcePaths(...) method, it calls DispatchCriteriaHelper.buildFromPartsMap(...). We need to add a simple null-check here. If the helper returns null, it means the example is missing required parameters, so the Importer should skip adding that specific RequestResponsePair to the results list.\n\n3. Enable the Unit Test in OpenAPIImporterTest.java: Uncomment the assertion: assertEquals(0, exchanges.size()); With the two logic fixes above, this test will now pass perfectly!\n\n\n",
+        "url": "https://github.com/microcks/microcks/issues/2168"
+    },
+    {
+        "id": 4641534714,
+        "number": 2165,
+        "title": "Update base container image to UBI `9.8-1780378819`",
+        "state": "closed",
+        "created_at": "2026-06-11T14:42:38Z",
+        "updated_at": "2026-06-11T21:31:55Z",
+        "closed_at": "2026-06-11T21:31:55Z",
+        "author": "lbroudoux",
+        "comments": 0,
+        "labels": [
+            "kind/task",
+            "component/build"
+        ],
+        "assignees": [
+            "lbroudoux"
+        ],
+        "locked": false,
+        "body": "Bump UBI 9 base container image to remove some vulnerabilities",
+        "url": "https://github.com/microcks/microcks/issues/2165"
+    },
+    {
+        "id": 4641438878,
+        "number": 2164,
+        "title": "Update to Spring Boot 4.0.7",
+        "state": "closed",
+        "created_at": "2026-06-11T14:31:30Z",
+        "updated_at": "2026-06-11T21:32:37Z",
+        "closed_at": "2026-06-11T21:32:36Z",
+        "author": "lbroudoux",
+        "comments": 1,
+        "labels": [
+            "kind/task",
+            "dependencies"
+        ],
+        "assignees": [
+            "lbroudoux"
+        ],
+        "locked": false,
+        "body": "Spring Boot has been updated with fixes to important CVEs like:\n\n* CVE-2026-43512 (Critical) – Tomcat Embedded Core 11.0.21 (fixed in 11.0.22)\n* CVE-2026-41293 (Critical) – Tomcat Embedded Core 11.0.21 (fixed in 11.0.22)\n* CVE-2026-43515 (Critical) – Tomcat Embedded Core 11.0.21 (fixed in 11.0.22)\n* CVE-2026-43513 (High) – Tomcat Embedded Core 11.0.21 (fixed in 11.0.22)\n* CVE-2026-41851 (High) – Spring Core / Spring Web 7.0.7 (fixed in 7.0.8)\n* CVE-2026-41284 (High) – Tomcat Embedded Core 11.0.21 (fixed in 11.0.22)\n* CVE-2026-42498 (High) – Tomcat Embedded Core 11.0.21 (fixed in 11.0.22)\n\nWe must update it before the 1.15.0 release.",
+        "url": "https://github.com/microcks/microcks/issues/2164"
+    },
+    {
+        "id": 4639536772,
+        "number": 2162,
+        "title": "bug: NullPointerException silently swallowed in ResourceController when GenericResource payload is null",
+        "state": "closed",
+        "created_at": "2026-06-11T10:27:33Z",
+        "updated_at": "2026-06-20T16:16:20Z",
+        "closed_at": "2026-06-20T16:16:20Z",
+        "author": "Harishrs2006",
+        "comments": 2,
+        "labels": [
+            "kind/bug",
+            "component/mocks",
+            "component/api"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Describe the bug\n\nIn ResourceController.java line 123-124, getPayload() is called on a GenericResource \nwithout a null check. If getPayload() returns null, calling reference.append() \nthrows a NullPointerException.\n\nThe exception is caught by a broad catch(Exception e) block that only logs \na warning, silently swallowing the error. The API returns an incomplete \nresponse with no schema instead of a proper error, making this very hard \nto debug.\n\nFile: webapp/src/main/java/io/github/microcks/web/ResourceController.java\nLines: 123-128\n\n### Expected behavior\n\nIf getPayload() returns null, the code should explicitly handle it with \na null check and either skip schema building or return a meaningful error \nresponse   not silently fail.\n\n### Actual behavior\n\nNullPointerException is thrown at reference.append() and caught silently \nby a generic catch(Exception e) block. Only a warn log is emitted. \nThe referenceSchema stays null and the response is incomplete \nwith no indication of failure to the caller.\n\n### How to Reproduce?\n\n1. Create a GenericResource with a null payload in the database\n2. Call GET /api/resources/{serviceId}/{resourceType} for that service\n3. Observe only a WARN log   no error returned to client\n\nCode reference:\nwebapp/src/main/java/io/github/microcks/web/ResourceController.java lines 123-128\n\nDocument reference = genericResources.get(0).getPayload(); // can be null\nreference.append(ID_FIELD, genericResources.get(0).getId()); // NPE here\n\n### Microcks version or git rev\n\n1.15.0-SNAPSHOT (master branch)\n\n### Install method (`docker-compose`, `helm chart`, `operator`, `docker-desktop extension`,...)\n\ndocker-compose\n\n### Additional information\n\nSuggested fix  : add a null check before calling .append():\n\n   Document reference = genericResources.get(0).getPayload();\n   if (reference != null) {\n      reference.append(ID_FIELD, genericResources.get(0).getId());\n      referenceSchema = OpenAPISchemaBuilder.buildTypeSchemaFromJson(reference.toJson());\n   } else {\n      log.warn(\"Reference payload is null for serviceId: {}\", serviceId);\n   }",
+        "url": "https://github.com/microcks/microcks/issues/2162"
+    },
+    {
+        "id": 4623535848,
+        "number": 2159,
+        "title": "Initialize `release-1.15` branch and release version `1.15.0-rc1`",
+        "state": "closed",
+        "created_at": "2026-06-09T15:56:36Z",
+        "updated_at": "2026-06-22T12:28:57Z",
+        "closed_at": "2026-06-22T12:28:56Z",
+        "author": "lbroudoux",
+        "comments": 1,
+        "labels": [
+            "kind/task"
+        ],
+        "assignees": [
+            "lbroudoux"
+        ],
+        "locked": false,
+        "body": "As explained in https://github.com/microcks/microcks/issues/1954 we now create a release branch from `master` and create a first release candidate from it.",
+        "url": "https://github.com/microcks/microcks/issues/2159"
+    },
+    {
+        "id": 4622154730,
+        "number": 2157,
+        "title": "bug: HARImporter crashes with StringIndexOutOfBoundsException on URLs with no file extension",
+        "state": "closed",
+        "created_at": "2026-06-09T12:59:43Z",
+        "updated_at": "2026-06-09T15:23:40Z",
+        "closed_at": "2026-06-09T15:23:40Z",
+        "author": "Harishrs2006",
+        "comments": 1,
+        "labels": [
+            "kind/bug",
+            "component/importer"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Describe the bug\n\nWhen importing a HAR file that contains REST API requests with URLs that have \nno file extension (e.g. /api/users or /api/v1/products), the HARImporter \ncrashes with a StringIndexOutOfBoundsException.\n\nFile: webapp/src/main/java/io/github/microcks/util/har/HARImporter.java\nMethod: filterValidEntries()     line 387\n\nString extension = url.substring(url.lastIndexOf(\".\"));\n\nIf the URL contains no \".\" character, lastIndexOf(\".\") returns -1, \nand substring(-1) throws StringIndexOutOfBoundsException, causing \nthe entire HAR import to fail.\n\n### Expected behavior\n\nURLs with no file extension (e.g. /api/users, /api/v1/orders) should be \ntreated as valid API entries and pass through the filter without crashing. \nOnly known static resource extensions like .ico .html .css .js .png \nshould be filtered out.\n\n### Actual behavior\n\nStringIndexOutOfBoundsException is thrown when any HAR entry contains \na URL with no \".\" character. The full import fails and no services are created.\n\n### How to Reproduce?\n\n1. Capture or create a HAR file with a request to a clean REST endpoint:\n   GET http://localhost:8080/api/users\n\n2. Import the HAR file into Microcks via Upload\n\n3. Observe the crash  - StringIndexOutOfBoundsException in filterValidEntries()\n\n### Microcks version or git rev\n\n 1.15.0-SNAPSHOT (master branch)\n\n### Install method (`docker-compose`, `helm chart`, `operator`, `docker-desktop extension`,...)\n\ndocker-compose\n\n### Additional information\n\nSuggested fix in filterValidEntries():\n\n  int dotIndex = url.lastIndexOf(\".\");\n  if (dotIndex == -1) return true;\n  String extension = url.substring(dotIndex);\n  return !INVALID_ENTRY_EXTENSIONS.contains(extension);\n\nThis ensures extension-less API URLs are always treated as valid \nentries instead of crashing the importer.",
+        "url": "https://github.com/microcks/microcks/issues/2157"
+    },
+    {
+        "id": 4614939146,
+        "number": 2155,
+        "title": "JobController.deleteJob throws NPE when deleting a non-existent job",
+        "state": "closed",
+        "created_at": "2026-06-08T17:04:35Z",
+        "updated_at": "2026-06-09T14:19:41Z",
+        "closed_at": "2026-06-09T14:19:40Z",
+        "author": "gyanranjanpanda",
+        "comments": 1,
+        "labels": [
+            "kind/bug",
+            "component/api",
+            "component/importer"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Describe the bug\n\nCalling `DELETE /api/jobs/{id}` with an ID that does not exist returns a `500 Internal Server Error` instead of `404 Not Found`.\n\nIn `JobController.deleteJob`, the repository lookup can return `null`, but the result is passed directly to `authorizationChecker.hasRoleForImportJob(...)`. For a manager user, this eventually calls `job.getMetadata()` and throws a `NullPointerException`.\n\nThis does not happen for admin users because the admin role check short-circuits before `hasRoleForImportJob(...)` is called.\n\nThe related `activateJob` endpoint has a similar inconsistency: it avoids the NPE, but returns `403 Forbidden` when the job does not exist. `startJob` and `stopJob` already return `404 Not Found` in this case.\n\n### Steps to reproduce\n\n1. Enable Keycloak authentication with repository tenancy.\n2. Authenticate as a manager user without the admin role.\n3. Send `DELETE /api/jobs/nonexistent-id`.\n4. Observe a `500 Internal Server Error` and an NPE in `AuthorizationChecker.hasRoleForImportJob`.\n\n### Expected behavior\n\nBoth `deleteJob` and `activateJob` should return `404 Not Found` when the requested job does not exist, consistently with `startJob` and `stopJob`. Authorization should only be checked after confirming that the job was found.\n\n### Environment\n\nMicrocks `master` at `e6b5a0d7`.\n\n### Relevant code\n\n- [`JobController.deleteJob`](https://github.com/microcks/microcks/blob/e6b5a0d7/webapp/src/main/java/io/github/microcks/web/JobController.java#L207-L217)\n- [`AuthorizationChecker.hasRoleForImportJob`](https://github.com/microcks/microcks/blob/e6b5a0d7/webapp/src/main/java/io/github/microcks/security/AuthorizationChecker.java#L95-L96)",
+        "url": "https://github.com/microcks/microcks/issues/2155"
+    },
+    {
+        "id": 4604895234,
+        "number": 2149,
+        "title": "Enhancement (TODO): Propagate Correlation ID Header in Kafka Request-Reply Handler",
+        "state": "open",
+        "created_at": "2026-06-06T19:42:34Z",
+        "updated_at": "2026-06-06T19:42:34Z",
+        "closed_at": null,
+        "author": "Vaishnav88sk",
+        "comments": 0,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "### Reason/Context\n\nIn `KafkaRequestReplyHandler.java`, the `buildReplyHeaders()` method contains an open `TODO`:\n```\n// TODO: Add correlation ID header when we parse correlation object from AsyncAPI spec\n```\nCurrently, reply messages are sent without any correlation ID, making it impossible for consumers to match a reply back to its originating request, a fundamental requirement of async request-reply messaging.\n\n### Description\n\nWhen an incoming Kafka request carries a `correlationId` header (per the AsyncAPI correlation ID object), that value should be forwarded on the outgoing reply. If no `correlationId` header is present, a UUID should be auto-generated to ensure every exchange is traceable.\n\n**File:** `minions/async/src/main/java/io/github/microcks/minion/async/handler/KafkaRequestReplyHandler.java`\n\n### Implementation ideas\n\n- Read `correlationId` from incoming request headers in `handleRequest()`.\n- If absent, auto-generate a `UUID`.\n- Pass it to `buildReplyHeaders()` and add it as a `RecordHeader` on the reply.\n- Define a constant `CORRELATION_ID_HEADER = \"correlationId\"` for the header name.",
+        "url": "https://github.com/microcks/microcks/issues/2149"
+    },
+    {
+        "id": 4604806547,
+        "number": 2148,
+        "title": "Enhancement (TODO): Optimize Angular Change Detection in Keycloak and Importer Components",
+        "state": "closed",
+        "created_at": "2026-06-06T19:12:51Z",
+        "updated_at": "2026-06-08T12:19:32Z",
+        "closed_at": "2026-06-08T12:19:32Z",
+        "author": "Vaishnav88sk",
+        "comments": 3,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "### Reason/Context\n\nWhile reviewing the codebase, I noticed explicit `TODO` comments in the Angular frontend codebase suggesting the use of `zone.runOutsideAngular()`. \n\nCurrently, asynchronous timers (`setInterval` in the Keycloak service and `setTimeout` in the Importers page) are running inside the default Angular `NgZone`. Because of how `zone.js` patches async APIs, these timers are triggering global Angular change detection cycles across the entire component tree every time they tick, even when the UI doesn't require an update (e.g., during background token refreshes).\n\n**But I am doubtful about its need!!**\n\n\n### Description\n\nTo improve the performance and responsiveness of the web application, we should move these specific timers outside of the Angular zone.\n\n**Locations to fix:**\n1. `webapp/src/main/webapp/src/app/services/auth-keycloak.service.ts` (Line ~57)\n2. `webapp/src/main/webapp/src/app/pages/importers/importers.page.ts` (Line ~363)\n\n### Implementation ideas\n\n1. **Inject `NgZone`:** We need to inject `NgZone` via the constructor in both `auth-keycloak.service.ts` and `importers.page.ts`.\n2. **Keycloak Service (`setInterval`):** Wrap the interval entirely outside the zone since token updating operates in the background and doesn't immediately reflect in the view:\n   ```typescript\n   this.ngZone.runOutsideAngular(() => {\n     setInterval(() => {\n       this.keycloak.updateToken(30);\n     }, 30000);\n   });\n   ```\n3. **Importers Page (setTimeout):** Run the timeout outside the zone to prevent Angular from tracking the delay, but re-enter the zone to perform the actual HTTP request so that the UI updates when the jobs are fetched:\n   ```typescript\n   this.ngZone.runOutsideAngular(() => {\n     setTimeout(() => {\n       this.ngZone.run(() => {\n         this.getImportJobs();\n       });\n     }, 2000);\n   });\n   ```",
+        "url": "https://github.com/microcks/microcks/issues/2148"
+    },
+    {
+        "id": 4600254070,
+        "number": 2146,
+        "title": "GET /api/secrets/search returns unredacted credentials to non-admin users",
+        "state": "closed",
+        "created_at": "2026-06-05T21:29:57Z",
+        "updated_at": "2026-06-08T13:24:49Z",
+        "closed_at": "2026-06-08T13:24:49Z",
+        "author": "gyanranjanpanda",
+        "comments": 2,
+        "labels": [
+            "kind/bug",
+            "component/api"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Describe the bug\n\n`GET /api/secrets/search` returns full `Secret` objects without applying the sensitive-data redaction used by the other secret read endpoints.\n\nFor non-admin users, `GET /api/secrets` and `GET /api/secrets/{id}` clear sensitive fields before returning secrets. The search endpoint currently skips that authorization check and returns the repository result directly, which can expose fields such as `username`, `password`, `token`, and `caCertPem` to any authenticated user allowed to call the endpoint.\n\n### Expected behavior\n\n`searchSecrets()` should behave consistently with `listSecrets()` and `getSecret()`:\n\n- admins can receive the complete secret data\n- non-admin users should receive secrets with sensitive fields redacted\n\n### Current behavior\n\nIn `SecretController.java`, `listSecrets()` applies `filterSensitiveData()` when the caller is not an admin:\n\n```java\nif (!authorizationChecker.hasRole(userInfo, AuthorizationChecker.ROLE_ADMIN)) {\n   return secretRepository.findAll(...)\n         .stream().map(this::filterSensitiveData).toList();\n}\n```\n\n`getSecret()` follows the same pattern.\n\nHowever, `searchSecrets()` does not accept `UserInfo`, does not check the caller role, and returns raw repository results:\n\n```java\n@GetMapping(value = \"/secrets/search\")\npublic List<Secret> searchSecrets(@RequestParam(value = \"name\") String name) {\n   log.debug(\"Searching secrets corresponding to {}\", name);\n   return secretRepository.findByNameLike(name);\n}\n```\n\n### How to reproduce\n\n1. Deploy Microcks with authentication enabled.\n2. Create a secret containing credential data.\n3. Authenticate as a user with the `user` role, but without the `admin` role.\n4. Call:\n\n   ```text\n   GET /api/secrets/search?name=<secret-name-or-pattern>\n   ```\n\n5. Observe that the response includes sensitive values from the matching `Secret`.\n6. Compare with:\n\n   ```text\n   GET /api/secrets?page=0&size=20\n   ```\n\n   The list endpoint correctly returns the same secret with sensitive fields redacted for the same non-admin caller.\n\n### Suggested fix\n\nAdd `UserInfo` to `searchSecrets()` and apply the same redaction logic used by the other read endpoints:\n\n```java\n@GetMapping(value = \"/secrets/search\")\npublic List<Secret> searchSecrets(@RequestParam(value = \"name\") String name, UserInfo userInfo) {\n   log.debug(\"Searching secrets corresponding to {}\", name);\n   List<Secret> secrets = secretRepository.findByNameLike(name);\n   if (!authorizationChecker.hasRole(userInfo, AuthorizationChecker.ROLE_ADMIN)) {\n      return secrets.stream().map(this::filterSensitiveData).toList();\n   }\n   return secrets;\n}\n```\n\n### Additional context\n\n`SecurityConfiguration` already gates `GET /api/secrets/*` behind authenticated roles, so this is not unauthenticated access. The issue is that users who are allowed to discover secret names can also receive credential values through the search endpoint.\n\nVerified against the current `master` / `1.15.0-SNAPSHOT` code path.\n",
+        "url": "https://github.com/microcks/microcks/issues/2146"
+    },
+    {
+        "id": 4588173784,
+        "number": 2144,
+        "title": "SBOMs don't contain third party licence information",
+        "state": "open",
+        "created_at": "2026-06-04T11:07:41Z",
+        "updated_at": "2026-06-08T12:22:53Z",
+        "closed_at": null,
+        "author": "anthonyharrison",
+        "comments": 6,
+        "labels": [
+            "kind/question",
+            "kind/enhancement"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Describe the bug\n\nThe generated SBOM for the microcks app  doesn't currently include the licences of the third party components. \n\nTo verify that the components are being used in accordance with their licences, this information should be included for each third party component.\n\n### Attach any resources that can help us understand the issue.\n\n_No response_",
+        "url": "https://github.com/microcks/microcks/issues/2144"
+    },
+    {
+        "id": 4532853643,
+        "number": 2138,
+        "title": "Windows compatibility issues?",
+        "state": "closed",
+        "created_at": "2026-05-27T13:51:03Z",
+        "updated_at": "2026-05-28T12:35:10Z",
+        "closed_at": "2026-05-28T12:35:10Z",
+        "author": "vleon1a",
+        "comments": 1,
+        "labels": [
+            "kind/bug",
+            "component/importer",
+            "component/build"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Describe the bug\n\nWhen building Microcks on my Windows 11 machine, I am facing some unit tests failures In the `webapp` module:\n\n```text\n[ERROR] Failures: \n[ERROR]   ServiceServiceTest.testImportServiceDefinitionMainGrpcAndSecondaryExamples:717 No MockRepositoryImportException should have be thrown\n[ERROR]   ServiceServiceTest.testImportServiceDefinitionMainGrpcAndSecondaryPostman:641 No MockRepositoryImportException should have be thrown\n[ERROR]   MockRepositoryImporterFactoryTest.testGetMockRepositoryImporter:155 Getting importer for Protobuf should not fail!\n[ERROR]   GraphQLMcpToolConverterTest.testGetToolDescription:137 expected: <Adds enterprise members to an organization within the enterprise.> but was: <\n>dds enterprise members to an organization within the enterprise.                                                                                                                                                                  \n[ERROR]   ProtobufImporterTest.testProtobufWithComplexRemoteDependenciesImport:280 Exception should not be thrown\n[ERROR]   ProtobufImporterTest.testProtobufWithComplexRemoteDependenciesImport2:317 Exception should not be thrown\n[ERROR]   ProtobufImporterTest.testProtobufWithDependenciesImport:107 Exception should not be thrown\n[ERROR]   ProtobufImporterTest.testProtobufWithEnumDependenciesImport:174 Exception should not be thrown\n[ERROR]   ProtobufImporterTest.testProtobufWithOptionsImport:205 Exception should not be thrown\n[ERROR]   ProtobufImporterTest.testSimpleProtobufImport:48 Exception should not be thrown\n[ERROR] Errors: \n[ERROR]   GrpcMcpToolConverterTest.setUp:73 » MockRepositoryImport Protobuf schema file parsing error on target\\test-classes\\io\\github\\microcks\\util\\grpc\\61586c7d-ec18-4e6f-9cc7-edf59fb28db2\\org\\acme\\petstore\\v1\\petstore-v1.proto: C:\\dev\\git\\oss\\microcks\\webapp\\target\\test-classes\\io\\github\\microcks\\util\\grpc\\61586c7d-ec18-4e6f-9cc7-edf59fb28db2\\org\\acme\\petstore\\v1\\petstore-v1.proto.pbb (The system cannot find the file specified)                    \n[INFO] \n[ERROR] Tests run: 414, Failures: 10, Errors: 1, Skipped: 0\n[INFO] \n[ERROR] There are test failures.\n```\n\n### Expected behavior\n\nA `mvn clean verify` on a fresh clone should complete successfully.\n\n### Actual behavior\n\nA `mvn clean verify` on a fresh clone fails.\n\n### How to Reproduce?\n\n1. Use a Windows OS\n2. Clone the repository\n3. Trigger a `mvn clean verify`\n\n### Microcks version or git rev\n\nmaster\n\n### Install method (`docker-compose`, `helm chart`, `operator`, `docker-desktop extension`,...)\n\nN/A\n\n### Additional information\n\n_No response_",
+        "url": "https://github.com/microcks/microcks/issues/2138"
+    }
+]

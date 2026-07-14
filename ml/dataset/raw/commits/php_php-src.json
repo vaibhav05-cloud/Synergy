@@ -1,0 +1,242 @@
+[
+    {
+        "sha": "2c7c630e2873cbe4abc70d538c47521611cbd83f",
+        "author": "Ilia Alshanetsky",
+        "email": "ilia@ilia.ws",
+        "date": "2026-07-13T22:10:25Z",
+        "message": "Merge branch 'PHP-8.5'\n\n* PHP-8.5:\n  Install the SQLite ODBC driver in CI",
+        "url": "https://github.com/php/php-src/commit/2c7c630e2873cbe4abc70d538c47521611cbd83f"
+    },
+    {
+        "sha": "6eb21e30ad04359fe4c3cc2682e83e02b89395f6",
+        "author": "Ilia Alshanetsky",
+        "email": "ilia@ilia.ws",
+        "date": "2026-07-13T22:10:16Z",
+        "message": "Merge branch 'PHP-8.4' into PHP-8.5\n\n* PHP-8.4:\n  Install the SQLite ODBC driver in CI",
+        "url": "https://github.com/php/php-src/commit/6eb21e30ad04359fe4c3cc2682e83e02b89395f6"
+    },
+    {
+        "sha": "c3236b922d1c37a1ad0c512db41ae859b197248a",
+        "author": "Ilia Alshanetsky",
+        "email": "ilia@ilia.ws",
+        "date": "2026-07-10T19:45:53Z",
+        "message": "Install the SQLite ODBC driver in CI\n\nThe ext/odbc and pdo_odbc regression tests connect through a real ODBC\ndriver (Driver=SQLite3), which was never installed, so they skipped on\nevery lane. libsqliteodbc registers the SQLite3 driver and supports\nDatabase=:memory:, so the tests run without a database server. Alpine\nhas no such package, so those lanes keep skipping.\n\nCloses GH-22686",
+        "url": "https://github.com/php/php-src/commit/c3236b922d1c37a1ad0c512db41ae859b197248a"
+    },
+    {
+        "sha": "fc30d3138acfdb3268bcf9f86c56978304ddf398",
+        "author": "Daniel Scherzer",
+        "email": "daniel.e.scherzer@gmail.com",
+        "date": "2026-07-13T21:24:08Z",
+        "message": "Merge branch 'PHP-8.5'\n\n* PHP-8.5:\n  NEWS\n  GH-22681: avoid truncation on null bytes in `Reflection*::__toString()`\n  Add regression tests for `Reflection*::__toString()` with null bytes",
+        "url": "https://github.com/php/php-src/commit/fc30d3138acfdb3268bcf9f86c56978304ddf398"
+    },
+    {
+        "sha": "fd7e1e21613dc3e6b49a1098b471d8a4f8f0d56b",
+        "author": "Daniel Scherzer",
+        "email": "daniel.e.scherzer@gmail.com",
+        "date": "2026-07-13T21:19:59Z",
+        "message": "Merge branch 'PHP-8.4' into PHP-8.5\n\n* PHP-8.4:\n  NEWS\n  GH-22681: avoid truncation on null bytes in `Reflection*::__toString()`\n  Add regression tests for `Reflection*::__toString()` with null bytes",
+        "url": "https://github.com/php/php-src/commit/fd7e1e21613dc3e6b49a1098b471d8a4f8f0d56b"
+    },
+    {
+        "sha": "4804d17a135ad6da22a8bd68c899cb5f188293d2",
+        "author": "Daniel Scherzer",
+        "email": "daniel.e.scherzer@gmail.com",
+        "date": "2026-07-13T21:12:32Z",
+        "message": "NEWS",
+        "url": "https://github.com/php/php-src/commit/4804d17a135ad6da22a8bd68c899cb5f188293d2"
+    },
+    {
+        "sha": "8706cd43f6fa9fae1058cedaf4caf46afcea0d63",
+        "author": "Daniel Scherzer",
+        "email": "daniel.e.scherzer@gmail.com",
+        "date": "2026-07-10T20:14:49Z",
+        "message": "GH-22681: avoid truncation on null bytes in `Reflection*::__toString()`\n\nGiven that there is not an unchecked version of `smart_str_append_printf()`, to\navoid compiler warnings from using `%S` to format `zend_string` pointers (which\nthe smart string printing machinery supports, but printf does not support) in a\nfew places the format specifier is declared in a variable rather than being\nspecified directly in the `smart_str_append_printf()` call.",
+        "url": "https://github.com/php/php-src/commit/8706cd43f6fa9fae1058cedaf4caf46afcea0d63"
+    },
+    {
+        "sha": "1db6c840500192ecd26979a199068a23610cbc93",
+        "author": "Daniel Scherzer",
+        "email": "daniel.e.scherzer@gmail.com",
+        "date": "2026-07-10T19:52:05Z",
+        "message": "Add regression tests for `Reflection*::__toString()` with null bytes\n\nSo that when the outputs are fixed the changes can be confirmed in tests",
+        "url": "https://github.com/php/php-src/commit/1db6c840500192ecd26979a199068a23610cbc93"
+    },
+    {
+        "sha": "4fa10e251364cb0497efdef3ab6a642b6c784805",
+        "author": "Weilin Du",
+        "email": "weilindu@php.net",
+        "date": "2026-07-13T20:27:52Z",
+        "message": "ext/soap: Improve SOAP scalar decoding error messages (#22706)\n\nSOAP encoding errors now report the affected type or failing operation in\nthe error message instead of the generic \"Encoding: Violation of encoding\nrules\" message. Code that compares the exact message may need to be\nupdated.",
+        "url": "https://github.com/php/php-src/commit/4fa10e251364cb0497efdef3ab6a642b6c784805"
+    },
+    {
+        "sha": "3129b3baab5ab5052a3aa7f7c5cf3d5151983b4f",
+        "author": "Gina Peter Banyard",
+        "email": "girgias@php.net",
+        "date": "2026-07-13T16:26:52Z",
+        "message": "bz2: refactor filter creation to do parameter validation (#22307)",
+        "url": "https://github.com/php/php-src/commit/3129b3baab5ab5052a3aa7f7c5cf3d5151983b4f"
+    },
+    {
+        "sha": "aaa141aa6620f74b264c0309ca0cad792e968fa7",
+        "author": "Daniel Scherzer",
+        "email": "daniel.e.scherzer@gmail.com",
+        "date": "2026-07-13T14:26:22Z",
+        "message": "Merge branch 'PHP-8.5'\n\n* PHP-8.5:\n  Fix GH-22683: Reflection(Class)Constant::__toString() should not warn on NAN conversions (#22694)",
+        "url": "https://github.com/php/php-src/commit/aaa141aa6620f74b264c0309ca0cad792e968fa7"
+    },
+    {
+        "sha": "c559d6f24c4aeeeeac5547daa9296da594dda223",
+        "author": "Khaled Alam",
+        "email": "khaledalam.net@gmail.com",
+        "date": "2026-07-13T14:21:32Z",
+        "message": "Fix GH-22683: Reflection(Class)Constant::__toString() should not warn on NAN conversions (#22694)",
+        "url": "https://github.com/php/php-src/commit/c559d6f24c4aeeeeac5547daa9296da594dda223"
+    },
+    {
+        "sha": "7cc47ff2ad801c79d7ff1c884367b51122aa02e6",
+        "author": "Arnaud Le Blanc",
+        "email": "arnaud.lb@gmail.com",
+        "date": "2026-07-13T13:22:35Z",
+        "message": "Merge branch 'PHP-8.5'\n\n* PHP-8.5:\n  Alpine CI: don't install gnu-libiconv-dev",
+        "url": "https://github.com/php/php-src/commit/7cc47ff2ad801c79d7ff1c884367b51122aa02e6"
+    },
+    {
+        "sha": "f71c28d8f68a925723b3476f507e31528456ffee",
+        "author": "Arnaud Le Blanc",
+        "email": "arnaud.lb@gmail.com",
+        "date": "2026-07-13T13:22:21Z",
+        "message": "Merge branch 'PHP-8.4' into PHP-8.5\n\n* PHP-8.4:\n  Alpine CI: don't install gnu-libiconv-dev",
+        "url": "https://github.com/php/php-src/commit/f71c28d8f68a925723b3476f507e31528456ffee"
+    },
+    {
+        "sha": "a095c57f03293109d8391c08aeaac24ab04abe6c",
+        "author": "Michael Orlitzky",
+        "email": "michael@orlitzky.com",
+        "date": "2026-07-08T17:50:15Z",
+        "message": "Alpine CI: don't install gnu-libiconv-dev\n\nIf we do not install GNU libiconv, the musl libc iconv()\nimplementation should take over, allowing it to be tested\non the CI.\n\nCloses GH-22645",
+        "url": "https://github.com/php/php-src/commit/a095c57f03293109d8391c08aeaac24ab04abe6c"
+    },
+    {
+        "sha": "0b0284eb16dba22bcb6a56d8da9604b8ec4228cc",
+        "author": "henderkes",
+        "email": "m@pyc.ac",
+        "date": "2026-07-04T14:25:52Z",
+        "message": "perf: move AG and SCNG into native __thread storage\n\nReplay of GH-22231\n\nCloses GH-22595",
+        "url": "https://github.com/php/php-src/commit/0b0284eb16dba22bcb6a56d8da9604b8ec4228cc"
+    },
+    {
+        "sha": "13169cd2fec73f9ea0ecac3c555618c3c32fb8aa",
+        "author": "Marc",
+        "email": "m@pyc.ac",
+        "date": "2026-07-13T10:59:42Z",
+        "message": "json: Stop tracking columns in the success path (#22487)\n\nInstead of tracking columns during lexing, which costs performance for\nsomething that will only be required in the unexpected failure path, we now\nonly track the line numbers and calculate the column on demand when an error\noccurs.\n\nAs part of this we also fix GH-22487 by adjusting the logic to report the\ncolumn based on the (UTF-8) column in the source, instead of treating\n`\\uXXXX` escapes as a single column, which users will need to count manually\ninstead of being able to rely on their editor or `mb_substr()` or similar.\n\n[tim: (re)written the commit message]\n\nCo-authored-by: Tim Düsterhus <tim@bastelstu.be>",
+        "url": "https://github.com/php/php-src/commit/13169cd2fec73f9ea0ecac3c555618c3c32fb8aa"
+    },
+    {
+        "sha": "cf3c803b506709c2af84c2be84e7746a97868a3e",
+        "author": "Florian Engelhardt",
+        "email": "flo@dotbox.org",
+        "date": "2026-07-08T10:21:58Z",
+        "message": "`abort()` in OOM case\n\nCloses GH-22637",
+        "url": "https://github.com/php/php-src/commit/cf3c803b506709c2af84c2be84e7746a97868a3e"
+    },
+    {
+        "sha": "428847914bf782512fe3fe6c04ed2eae2cbc2bcc",
+        "author": "Tim Düsterhus",
+        "email": "tim@tideways-gmbh.com",
+        "date": "2026-07-13T07:10:50Z",
+        "message": "Merge branch 'PHP-8.5'\n\n* PHP-8.5:\n  CI: Revert timeout fix for Symfony community build (#22682)",
+        "url": "https://github.com/php/php-src/commit/428847914bf782512fe3fe6c04ed2eae2cbc2bcc"
+    },
+    {
+        "sha": "da0b12bca69d1ce5787633fe56d0d46e920db925",
+        "author": "Tim Düsterhus",
+        "email": "tim@tideways-gmbh.com",
+        "date": "2026-07-13T07:10:31Z",
+        "message": "Merge branch 'PHP-8.4' into PHP-8.5\n\n* PHP-8.4:\n  CI: Revert timeout fix for Symfony community build (#22682)",
+        "url": "https://github.com/php/php-src/commit/da0b12bca69d1ce5787633fe56d0d46e920db925"
+    },
+    {
+        "sha": "841b5bfcf20daa97cdd682949df1b980d9359442",
+        "author": "Jorg Adam Sowa",
+        "email": "jorg.sowa@gmail.com",
+        "date": "2026-07-13T07:10:23Z",
+        "message": "CI: Revert timeout fix for Symfony community build (#22682)\n\nThis reverts the FileInputHelperTest skip added in 1182b14b7f1.",
+        "url": "https://github.com/php/php-src/commit/841b5bfcf20daa97cdd682949df1b980d9359442"
+    },
+    {
+        "sha": "f96f0c289aa1b79a253100692379d2615106727c",
+        "author": "Tim Düsterhus",
+        "email": "tim@tideways-gmbh.com",
+        "date": "2026-07-13T06:52:48Z",
+        "message": "Merge branch 'PHP-8.5'\n\n* PHP-8.5:\n  zend_objects: Readonly properties must be re-locked after clone-with (#22654)",
+        "url": "https://github.com/php/php-src/commit/f96f0c289aa1b79a253100692379d2615106727c"
+    },
+    {
+        "sha": "e2c5b3c684fddb7c22a47f6e518435176ec715fb",
+        "author": "NickSdot",
+        "email": "32384907+NickSdot@users.noreply.github.com",
+        "date": "2026-07-13T06:52:27Z",
+        "message": "zend_objects: Readonly properties must be re-locked after clone-with (#22654)",
+        "url": "https://github.com/php/php-src/commit/e2c5b3c684fddb7c22a47f6e518435176ec715fb"
+    },
+    {
+        "sha": "1d82cbde00998709f0197ef6d87c30d638ba1ab6",
+        "author": "Côme Chilliet",
+        "email": "mcmic@php.net",
+        "date": "2026-07-13T06:41:25Z",
+        "message": "Merge branch 'PHP-8.5'\n\n* PHP-8.5:\n  ext/ldap: fix ldap_explode_dn result ordering",
+        "url": "https://github.com/php/php-src/commit/1d82cbde00998709f0197ef6d87c30d638ba1ab6"
+    },
+    {
+        "sha": "7809f94b1f5f29031eb12551438da5c5db432a55",
+        "author": "arshidkv12",
+        "email": "arshidkv12@gmail.com",
+        "date": "2026-07-02T12:16:05Z",
+        "message": "ext/ldap: fix ldap_explode_dn result ordering\n\nCloses GH-22550",
+        "url": "https://github.com/php/php-src/commit/7809f94b1f5f29031eb12551438da5c5db432a55"
+    },
+    {
+        "sha": "f0c603ba0d0811303c27f1ae99d6e1f19d183053",
+        "author": "David Carlier",
+        "email": "devnexen@gmail.com",
+        "date": "2026-07-13T04:11:28Z",
+        "message": "Merge branch 'PHP-8.5'\n\n* PHP-8.5:\n  ext/gd/tests/gh19{666,739}.phpt: skip for external libgd",
+        "url": "https://github.com/php/php-src/commit/f0c603ba0d0811303c27f1ae99d6e1f19d183053"
+    },
+    {
+        "sha": "35452fb43beceeeb7c996c4764989c92656b4a78",
+        "author": "David Carlier",
+        "email": "devnexen@gmail.com",
+        "date": "2026-07-13T04:11:20Z",
+        "message": "Merge branch 'PHP-8.4' into PHP-8.5\n\n* PHP-8.4:\n  ext/gd/tests/gh19{666,739}.phpt: skip for external libgd",
+        "url": "https://github.com/php/php-src/commit/35452fb43beceeeb7c996c4764989c92656b4a78"
+    },
+    {
+        "sha": "b51f575ba1a15f426c1356b104a9a8b1084029d6",
+        "author": "Michael Orlitzky",
+        "email": "michael@orlitzky.com",
+        "date": "2026-07-12T23:21:54Z",
+        "message": "ext/gd/tests/gh19{666,739}.phpt: skip for external libgd\n\nThese two are regression tests for the bundled libgd, we have to skip\nthem if an external libgd is used.\n\nclose GH-22711",
+        "url": "https://github.com/php/php-src/commit/b51f575ba1a15f426c1356b104a9a8b1084029d6"
+    },
+    {
+        "sha": "95a47246dddf7d44647aedaeadbd3c9ccd88db00",
+        "author": "Ilia Alshanetsky",
+        "email": "ilia@ilia.ws",
+        "date": "2026-07-13T01:10:28Z",
+        "message": "Merge branch 'PHP-8.5'\n\n* PHP-8.5:\n  Fix use-after-free on re-entrant ftp_close() during a transfer",
+        "url": "https://github.com/php/php-src/commit/95a47246dddf7d44647aedaeadbd3c9ccd88db00"
+    },
+    {
+        "sha": "765fe90b594b2b9fcbf55957b81a6565480c2e25",
+        "author": "Ilia Alshanetsky",
+        "email": "ilia@ilia.ws",
+        "date": "2026-07-13T01:07:01Z",
+        "message": "Merge branch 'PHP-8.4' into PHP-8.5\n\n* PHP-8.4:\n  Fix use-after-free on re-entrant ftp_close() during a transfer",
+        "url": "https://github.com/php/php-src/commit/765fe90b594b2b9fcbf55957b81a6565480c2e25"
+    }
+]

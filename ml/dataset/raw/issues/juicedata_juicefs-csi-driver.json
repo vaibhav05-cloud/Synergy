@@ -1,0 +1,377 @@
+[
+    {
+        "id": 4869866242,
+        "number": 1617,
+        "title": "[BUG] NodeGetVolumeStats may exhaust OS threads on an unhealthy FUSE mount",
+        "state": "open",
+        "created_at": "2026-07-13T02:31:54Z",
+        "updated_at": "2026-07-13T02:31:54Z",
+        "closed_at": null,
+        "author": "zxh326",
+        "comments": 0,
+        "labels": [
+            "kind/bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "<!--\nPlease use this template while reporting a bug and provide as much info as possible. Not doing so may result in your bug not being addressed in a timely manner. Thanks!\n-->\n\n**What happened**:\n\nWhen a JuiceFS/FUSE mount becomes unresponsive, os.Stat called by mount.PathExists may block indefinitely. DoWithTimeout returns a timeout, but the underlying goroutine and syscall continue running.\n\nRepeated NodeGetVolumeStats calls then accumulate blocked OS threads until the process crashes:\n\n```\nruntime: program exceeds 10000-thread limit\nfatal error: thread exhaustion\n\nruntime stack:\nruntime.throw({0x22319f5?, 0xc0248fbeb8?})\n\t/usr/local/go/src/runtime/panic.go:1073 +0x48 fp=0xc0248fbe78 sp=0xc0248fbe48 pc=0x474808\nruntime.checkmcount()\n\t/usr/local/go/src/runtime/proc.go:903 +0x8e fp=0xc0248fbea0 sp=0xc0248fbe78 pc=0x43fa0e\nruntime.mReserveID()\n\t/usr/local/go/src/runtime/proc.go:919 +0x2f fp=0xc0248fbec8 sp=0xc0248fbea0 pc=0x43fa4f\nruntime.startm(0xc00009f408?, 0x1, 0x0)\n\t/usr/local/go/src/runtime/proc.go:3006 +0x112 fp=0xc0248fbf18 sp=0xc0248fbec8 pc=0x443212\nruntime.wakep()\n\t/usr/local/go/src/runtime/proc.go:3161 +0xec fp=0xc0248fbf48 sp=0xc0248fbf18 pc=0x474acc\nruntime.resetspinning()\n\t/usr/local/go/src/runtime/proc.go:3913 +0x3e fp=0xc0248fbf68 sp=0xc0248fbf48 pc=0x44575e\nruntime.schedule()\n\t/usr/local/go/src/runtime/proc.go:4071 +0x10a fp=0xc0248fbfa0 sp=0xc0248fbf68 pc=0x445bea\nruntime.mstart1()\n\t/usr/local/go/src/runtime/proc.go:1873 +0xcd fp=0xc0248fbfc8 sp=0xc0248fbfa0 pc=0x4418ad\nruntime.mstart0()\n\t/usr/local/go/src/runtime/proc.go:1823 +0x76 fp=0xc0248fbff8 sp=0xc0248fbfc8 pc=0x4417b6\nruntime.mstart()\n\t/usr/local/go/src/runtime/asm_amd64.s:395 +0x5 fp=0xc0248fc000 sp=0xc0248fbff8 pc=0x47adc5\n\n```\n**What you expected to happen**:\n\n**How to reproduce it (as minimally and precisely as possible)**:\n\n**Anything else we need to know?**\n\n**Environment**:\n- JuiceFS CSI Driver version (which image tag did your CSI Driver use):\n- Kubernetes version (e.g. `kubectl version`):\n- Object storage (cloud provider and region):\n- Metadata engine info (version, cloud provider managed or self maintained):\n- Network connectivity (JuiceFS to metadata engine, JuiceFS to object storage):\n- Others:\n",
+        "url": "https://github.com/juicedata/juicefs-csi-driver/issues/1617"
+    },
+    {
+        "id": 4809402546,
+        "number": 1610,
+        "title": "[FEATURE] need a way to customize mount pod's image pull policy",
+        "state": "closed",
+        "created_at": "2026-07-04T14:47:12Z",
+        "updated_at": "2026-07-06T03:24:15Z",
+        "closed_at": "2026-07-06T03:24:15Z",
+        "author": "timfeirg",
+        "comments": 0,
+        "labels": [
+            "kind/feature"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "**What feature you'd like to add:** need a way to customize mount pod's image pull policy\n\n**Why is this feature needed:** an arm64 docker image is pushed into private repository, but the cluster worker nodes are all amd64 platform, meaning that all images have to be pull again in order for the update to take effect. for now, we can customize all CSI Driver components, however, there's no place to change mount pod's pull policy, making it harder to update mount pod image platform\n",
+        "url": "https://github.com/juicedata/juicefs-csi-driver/issues/1610"
+    },
+    {
+        "id": 4777037285,
+        "number": 1605,
+        "title": "[BUG] STORAGE_CLASS_SHARE_MOUNT: shared per-StorageClass secret is patched on every NodePublishVolume (per-volume jfsSettings) → \"function timeout\" under concurrency",
+        "state": "open",
+        "created_at": "2026-06-30T13:08:16Z",
+        "updated_at": "2026-07-07T09:38:06Z",
+        "closed_at": null,
+        "author": "yaseenisolated",
+        "comments": 0,
+        "labels": [],
+        "assignees": [
+            "zxh326"
+        ],
+        "locked": false,
+        "body": "**What happened**:\n\nIn `STORAGE_CLASS_SHARE_MOUNT` mode, the per-StorageClass secret (`juicefs-<storageClassName>-secret`) is JSON-patched on **every** `NodePublishVolume`, cluster-wide, because the secret's `jfsSettings` field contains **per-volume** data that differs for every PV/tenant. Under concurrent mounts (scale-from-zero bursts) this serializes many writers on a single hot Secret object and the CSI driver's 10s patch deadline is exceeded, producing mount failures:\n\n```\nMountVolume.SetUp failed for volume \"pvc-...\" : rpc error: code = Internal desc = Could not mount juicefs: function timeout\nMountVolume.SetUp failed ... : Could not mount juicefs: Patch \"https://10.x.x.1:443/api/v1/namespaces/juicefs/secrets/juicefs-<sc>-secret?timeout=10s\": context deadline exceeded (Client.Timeout exceeded while awaiting headers)\nMountVolume.SetUp failed ... : the server was unable to return a response in the time allotted, but may still be processing the request (patch secrets juicefs-<sc>-secret)\n```\n\nThis is the **same problem class** as #1553 / #1554 (\"updating secrets too frequently\" → conflicts under concurrency), but #1554 only fixed the **serverless/sidecar** path (`pkg/webhook/handler/mutate/sidecar.go`). The **mount-pod / `STORAGE_CLASS_SHARE_MOUNT`** path is unaffected and still exhibits it.\n\n**Root cause**:\n\n1. In share-mount mode, `getUniqueId` sets `uniqueId = storageClassName` (`pkg/juicefs/juicefs.go`), so the secret name resolves to a **single shared object per StorageClass** (`GetSecretNameByUniqueId` → `juicefs-<sc>-secret`), shared by every PV/tenant on every node.\n\n2. `BaseBuilder.NewSecret()` (`pkg/juicefs/mount/builder/secret.go`) writes the **full** setting into the shared secret:\n   ```go\n   data[\"jfsSettings\"] = r.jfsSetting.String()   // json.Marshal of the whole JfsSetting\n   ```\n   `JfsSetting.String()` includes per-volume fields — `VolumeId`, `SubPath`, `MountPath` (and `Options`) — which differ for every mounting PV. Example live value from one such shared secret:\n   ```\n   jfsSettings.VolumeId  = pvc-71065b73-...\n   jfsSettings.SubPath   = tenant-...-<per-tenant>\n   jfsSettings.MountPath = /jfs/<sc>-<random-suffix>\n   jfsSettings.UniqueId  = <sc>\n   ```\n\n3. `CreateOrUpdateSecret` (`pkg/util/resource/secret.go`), called from `PodMount.JMount` (`pkg/juicefs/mount/pod_mount.go`, both the create-new and \"pod exist, add refs\" branches), correctly gates the patch on `shouldUpdate` (data changed) — but because `jfsSettings` carries per-volume data into a shared object, `shouldUpdate` is **true on essentially every mount by a different PV/tenant**, so the shared secret is patched on every `NodePublishVolume`.\n\n**Why the per-volume data is unnecessary here**:\n\nThe setting-hash that drives mount-pod identity / upgrade-diff already treats these fields as irrelevant. `GenHashOfSetting` (`pkg/config/setting.go`) explicitly zeroes them before hashing:\n```go\nsetting.TargetPath = \"\"\nsetting.VolumeId   = \"\"\nsetting.SubPath    = \"\"\nsetting.InitConfig = \"\"\nsetting.MountPath  = filepath.Join(PodMountBase, setting.UniqueId)\n```\n(this is the intent behind #413, \"ignore pathPattern and volumeId when summing setting hash\"). And the only consumer of the secret's `jfsSettings` is `RevertSetting` (drift detection / mount-pod recovery), which in share-mount mode is supposed to describe the *shared* mount pod — so the per-volume values are not just unnecessary but misleading (last-writer-wins). The actual mount process consumes only the credential keys (`metaurl`/`token`/`secretkey`/`initconfig`), not `jfsSettings`.\n\nSo writing the **full** per-volume `jfsSettings` into a shared per-SC secret is inconsistent with the rest of the code and is the sole driver of the write hotspot.\n\n**What you expected to happen**:\n\nIn `STORAGE_CLASS_SHARE_MOUNT` (and `FS_SHARE_MOUNT`) mode, the shared secret's content should be **stable per StorageClass**, so it is created once and not re-patched on every mount. Mounts of different PVs through the same SC should not contend on a single Secret object.\n\n**How to reproduce it**:\n\n1. Deploy the CSI driver with `STORAGE_CLASS_SHARE_MOUNT=true`.\n2. Use one dynamic StorageClass (non-templated secret) with many PVCs across many namespaces/tenants.\n3. Trigger a burst of pod creations (e.g. many scale-from-zero pods landing on fresh nodes) so many `NodePublishVolume` calls hit the same SC concurrently.\n4. Observe `FailedMount` events with `Could not mount juicefs: function timeout` / `Patch \".../secrets/juicefs-<sc>-secret?timeout=10s\": context deadline exceeded`, and on `juicefs-<sc>-secret` a high rate of patches / resourceVersion churn.\n\n**Proposed fix**:\n\nWhen `uniqueId` is shared (StorageClass- or FS-share-mount), write a **normalized, volume-agnostic** `jfsSettings` into the shared secret — i.e. apply the same normalization `GenHashOfSetting` uses (zero `VolumeId`/`SubPath`/`TargetPath`/`InitConfig`, normalize `MountPath` to `PodMountBase/UniqueId`; `JfsSetting.Safe()` already covers most of these). The content then becomes identical for every PV on the SC, `CreateOrUpdateSecret`'s existing `shouldUpdate` check short-circuits, and the secret is written once instead of on every mount — with no change to mount topology and no impact on the drift-hash (which already ignores those fields) or the mount process.\n\n**Environment**:\n- JuiceFS CSI Driver version: observed on **v0.31.1**; code is **identical on `master`** (`pkg/juicefs/mount/builder/secret.go` still `data[\"jfsSettings\"] = r.jfsSetting.String()`; `pkg/util/resource/secret.go` `CreateOrUpdateSecret` unchanged) and the latest v0.31.x releases.\n- Mode: mount pod, `STORAGE_CLASS_SHARE_MOUNT=true`, `FS_SHARE_MOUNT=true`, dynamic provisioning, single shared filesystem.\n- Kubernetes: 1.34.\n\n**Related**: #1553 / #1554 (same root issue, fixed only for serverless/sidecar mode), #413 (setting-hash already ignores `volumeId`/`pathPattern`).\n",
+        "url": "https://github.com/juicedata/juicefs-csi-driver/issues/1605"
+    },
+    {
+        "id": 4750546458,
+        "number": 1602,
+        "title": "[BUG] sidecar模式kill 1 挂载点父进程后应用mountpod无法正常删除",
+        "state": "open",
+        "created_at": "2026-06-26T08:31:26Z",
+        "updated_at": "2026-07-07T09:38:19Z",
+        "closed_at": null,
+        "author": "YunhuiChen",
+        "comments": 3,
+        "labels": [
+            "kind/bug",
+            "status/wontfix"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "<!--\nPlease use this template while reporting a bug and provide as much info as possible. Not doing so may result in your bug not being addressed in a timely manner. Thanks!\n-->\n\n**What happened**:\n1、使用sidecar 模式启动应用pod\n2、kubectl exec -it dynamic-ee-585f6497bb-w6n4k -c jfs-mount -- /bin/bash -c \"kill 1\"\n3、delete -f app.yaml 后应用pod无法正常删除\n4、\n```\nEvents:\n  Type     Reason   Age                From     Message\n  ----     ------   ----               ----     -------\n  Normal   Created  54m                kubelet  Created container: jfs-mount\n  Normal   Started  53m                kubelet  Started container jfs-mount\n  Normal   Pulled   52m                kubelet  Container image \"juicedata/mount:ee-5.2.0\" already present on machine\n  Normal   Created  52m                kubelet  Created container: jfs-mount-1\n  Normal   Started  52m                kubelet  Started container jfs-mount-1\n  Normal   Pulled   52m                kubelet  Container image \"ubuntu:22.04\" already present on machine\n  Normal   Created  52m                kubelet  Created container: tools\n  Normal   Started  52m                kubelet  Started container tools\n  Normal   Pulled   50m (x2 over 54m)  kubelet  Container image \"juicedata/mount:ee-5.2.0\" already present on machine\n  Warning  Failed   50m                kubelet  Error: failed to generate container \"f28cadaca649e22152ef3f526b3eb7a8018ee48eebab09748db3571abdb1975c\" spec: failed to generate spec: failed to stat \"/var/lib/kubelet/pods/1c401ce4-e6d0-4051-944d-253f31f5e65a/volumes/kubernetes.io~empty-dir/data1\": stat /var/lib/kubelet/pods/1c401ce4-e6d0-4051-944d-253f31f5e65a/volumes/kubernetes.io~empty-dir/data1: transport endpoint is not connected\n  Normal   Killing  50m                kubelet  Stopping container jfs-mount-1\n  Normal   Killing  50m                kubelet  Stopping container tools\n```\n需要使用--force删除pod\n**What you expected to happen**:\n\n**How to reproduce it (as minimally and precisely as possible)**:\n\n**Anything else we need to know?**\n\n**Environment**:\n- JuiceFS CSI Driver version (which image tag did your CSI Driver use):\n- Kubernetes version (e.g. `kubectl version`):\n- Object storage (cloud provider and region):\n- Metadata engine info (version, cloud provider managed or self maintained):\n- Network connectivity (JuiceFS to metadata engine, JuiceFS to object storage):\n- Others:\n",
+        "url": "https://github.com/juicedata/juicefs-csi-driver/issues/1602"
+    },
+    {
+        "id": 4714384390,
+        "number": 1598,
+        "title": "[FEATURE] Can not smoothly upgrade mount pod if FUSE options enabled",
+        "state": "open",
+        "created_at": "2026-06-22T07:20:54Z",
+        "updated_at": "2026-07-07T09:38:37Z",
+        "closed_at": null,
+        "author": "zwwhdls",
+        "comments": 0,
+        "labels": [
+            "kind/feature"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "**What feature you'd like to add:**\n\n**Why is this feature needed:**\n",
+        "url": "https://github.com/juicedata/juicefs-csi-driver/issues/1598"
+    },
+    {
+        "id": 4688606323,
+        "number": 1597,
+        "title": "[FEATURE] Support an optional scheduler webhook/extender",
+        "state": "open",
+        "created_at": "2026-06-18T02:27:01Z",
+        "updated_at": "2026-07-10T20:13:45Z",
+        "closed_at": null,
+        "author": "zxh326",
+        "comments": 3,
+        "labels": [
+            "kind/feature"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "**What feature you'd like to add:**\n\nJuiceFS currently creates the mount pod after the business Pod has already been scheduled. If the selected node does not have enough remaining resources for the mount pod, volume publish may fail later.\n\nWe want to let existing schedulers call JuiceFS CSI Controller through a webhook/extender during scheduling, so JuiceFS can filter nodes by considering both:\n\n- business Pod resource requests\n- required JuiceFS mount pod resource requests\n\nThis avoids implementing a custom scheduler from scratch and avoids requiring users to replace their existing scheduler.\n\n**Why is this feature needed:**\n\nWhen enabled, the scheduler calls the JuiceFS webhook/extender before choosing a node. JuiceFS filters out nodes that cannot fit the business Pod plus the required mount pod.\n\n\nref: \n- https://github.com/kubernetes/enhancements/tree/master/keps/sig-scheduling/1819-scheduler-extender\n- https://github.com/juicedata/juicefs-csi-driver/issues/1594\n- https://github.com/juicedata/juicefs-csi-driver/issues/607",
+        "url": "https://github.com/juicedata/juicefs-csi-driver/issues/1597"
+    },
+    {
+        "id": 4618315705,
+        "number": 1595,
+        "title": "Mount Pod fails to start due to leaked cgroup mounts on node",
+        "state": "open",
+        "created_at": "2026-06-09T02:46:50Z",
+        "updated_at": "2026-06-09T02:46:50Z",
+        "closed_at": null,
+        "author": "zxh326",
+        "comments": 0,
+        "labels": [
+            "kind/bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "<!--\nPlease use this template while reporting a bug and provide as much info as possible. Not doing so may result in your bug not being addressed in a timely manner. Thanks!\n-->\n\nThis is not a JuiceFS CSI bug report. This issue is used to record a node/runtime problem we encountered, so future troubleshooting can find the context.\n\n\n**What happened**:\nA Mount Pod stayed in `RunContainerError`\n\nError from `kubectl describe pod`:\n\n```\nspec.containers{jfs-mount}: Error: failed to create containerd task:\nfailed to create shim task: OCI runtime create failed: runc create failed:\nunable to start container process: error during container init:\nerror mounting \"cgroup\" to rootfs at \"/sys/fs/cgroup\":\nstat /run/containerd/io.containerd.runtime.v2.task/k8s.io/<container-id>/rootfs/sys/fs/kubepods-burstable-pod...slice/cri-containerd-jfs-mount.scope:\nno such file or directory\n```\n### Root cause\n\nThis matches the upstream runc cgroup/mount leak issue:\n\n- https://github.com/opencontainers/runc/issues/2404\n- https://github.com/kubernetes/kubernetes/issues/91023\n- Fixed by https://github.com/opencontainers/runc/pull/4417\n\nThe fix is included in **runc 1.1.15**\n\n### Workaround\n\nrestart  containerd",
+        "url": "https://github.com/juicedata/juicefs-csi-driver/issues/1595"
+    },
+    {
+        "id": 4611781152,
+        "number": 1594,
+        "title": "[FEATURE] 调度器调度时无法提前感知mountpod资源,导致mountpod高于其他pod优先级时,会kill其他pod",
+        "state": "closed",
+        "created_at": "2026-06-08T09:48:14Z",
+        "updated_at": "2026-07-07T09:55:54Z",
+        "closed_at": "2026-07-07T09:55:54Z",
+        "author": "YaAYadeer",
+        "comments": 4,
+        "labels": [
+            "kind/feature"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "\n1. 作业pod申请的资源比较少,此时调度器是感知作业pod申请的资源,不感知作业pod+mountpod资源\n2. 作业pod被调度上去之后,csi尝试拉起mount pod,但此时机器资源不够,mountpod是高优先级,并且是抢占策略,会kill其他pod,导致业务pod受影响\n3. 如果mountpod优先级调整的过低,会导致mountpod一直处于pending状态,作业无法正常启动,无法执行",
+        "url": "https://github.com/juicedata/juicefs-csi-driver/issues/1594"
+    },
+    {
+        "id": 4549046053,
+        "number": 1590,
+        "title": "[FEATURE] Expose pod and PVC identity as juicefs_volume_info metric",
+        "state": "open",
+        "created_at": "2026-05-29T14:02:28Z",
+        "updated_at": "2026-07-07T09:39:07Z",
+        "closed_at": null,
+        "author": "Looka149",
+        "comments": 0,
+        "labels": [
+            "kind/feature"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "**What feature you'd like to add:**\n\nExpose the namespace, pod name and PVC name of each mount as a new metric `juicefs_volume_info`.\n\n**Why is this feature needed:**\n\n`juicefs_volume_path_health` only has `volume_id`, `volume_path` and `pod_uid` labels. When a mount is unhealthy, an operator cannot tell which namespace / pod / PVC it belongs to without an extra lookup. Joining with `kube_pod_info` / `kube_persistentvolumeclaim_info` is the usual way, but that requires kube-state-metrics, which is not always available.\n\n---\n\n**Proposed metric**\n\n```\njuicefs_volume_info{volume_id, pod_uid, pod_namespace, pod_name, pvc_name} 1\n```\n\nThe value is always `1`; the identity is in the labels, as in `kube_pod_info`. `pod_namespace` is used instead of `namespace` to avoid colliding with the scrape target's own `namespace` label.\n\nJoin with the health metric on the shared `(volume_id, pod_uid)`:\n\n```promql\njuicefs_volume_path_health\n  * on(volume_id, pod_uid) group_left(pod_namespace, pod_name, pvc_name)\n    juicefs_volume_info\n```\n\n**How it works**\n\n- `NodePublishVolume` sets the series. The PV is already fetched there, so no extra API call.\n- `NodeUnpublishVolume` removes the series.\n- On csi-node restart, kubelet does not re-publish already-mounted volumes, so a one-time bootstrap on node start repopulates the metric for them.\n\n**API cost**\n\n- Normal mount / unmount: no extra API call.\n- No periodic calls.\n- Only on csi-node restart: one node-scoped pod LIST, plus a PVC GET and PV GET per PVC referenced by pods on that node (not only JuiceFS ones).\n\n**Known limitation**\n\nIf bootstrap fails at startup (e.g. the API server is unreachable), existing mounts have no `volume_info` series until the next csi-node restart or until the workload pod is recreated. The health metric is not affected.\n",
+        "url": "https://github.com/juicedata/juicefs-csi-driver/issues/1590"
+    },
+    {
+        "id": 4531046255,
+        "number": 1586,
+        "title": "[BUG] Smoothly upgrade not work when HostPid is enabled",
+        "state": "closed",
+        "created_at": "2026-05-27T09:04:51Z",
+        "updated_at": "2026-06-24T03:46:33Z",
+        "closed_at": "2026-06-24T03:46:33Z",
+        "author": "zwwhdls",
+        "comments": 0,
+        "labels": [
+            "kind/bug"
+        ],
+        "assignees": [
+            "zwwhdls"
+        ],
+        "locked": false,
+        "body": "<!--\nPlease use this template while reporting a bug and provide as much info as possible. Not doing so may result in your bug not being addressed in a timely manner. Thanks!\n-->\n\n**What happened**:\n\n**What you expected to happen**:\n\n**How to reproduce it (as minimally and precisely as possible)**:\n\n**Anything else we need to know?**\n\n**Environment**:\n- JuiceFS CSI Driver version (which image tag did your CSI Driver use):\n- Kubernetes version (e.g. `kubectl version`):\n- Object storage (cloud provider and region):\n- Metadata engine info (version, cloud provider managed or self maintained):\n- Network connectivity (JuiceFS to metadata engine, JuiceFS to object storage):\n- Others:\n",
+        "url": "https://github.com/juicedata/juicefs-csi-driver/issues/1586"
+    },
+    {
+        "id": 4354721276,
+        "number": 1576,
+        "title": "[BUG] Mount pod is terminated while app pod is still executing preStop",
+        "state": "closed",
+        "created_at": "2026-04-30T01:30:23Z",
+        "updated_at": "2026-06-08T08:31:18Z",
+        "closed_at": "2026-06-08T08:31:18Z",
+        "author": "sw-cho",
+        "comments": 1,
+        "labels": [
+            "kind/bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "<!--\nPlease use this template while reporting a bug and provide as much info as possible. Not doing so may result in your bug not being addressed in a timely manner. Thanks!\n-->\n\n**What happened**:\n\nWhen using writeback mode with the preStop and `terminationGracePeriodSeconds`, the mount pod is killed almost immediately after the application pod is deleted. `rawstaging/` blocks are not uploaded to object storage.      \n\n**What you expected to happen**:\n\nThe mount pod should stay alive until preStop finishes uploading staged block. The container should only exit after preStop completes (or after `terminationGracePeriodSeconds` actually elapses).\n\n\n**How to reproduce it (as minimally and precisely as possible)**:\n\nUse the same configuration from [docs](https://juicefs.com/docs/csi/administration/going-production/#client-write-cache), accumulate some upload-pending blocks in `rawstaging/`, then delete the application pod.\n\n\n**Anything else we need to know?**\n\n**Environment**:\n- JuiceFS CSI Driver version (which image tag did your CSI Driver use): v0.30.1\n- Kubernetes version (e.g. `kubectl version`):  1.23.5\n- Object storage (cloud provider and region): s3\n- Metadata engine info (version, cloud provider managed or self maintained): redis\n- Network connectivity (JuiceFS to metadata engine, JuiceFS to object storage): all conneceted\n- Others: -\n",
+        "url": "https://github.com/juicedata/juicefs-csi-driver/issues/1576"
+    },
+    {
+        "id": 4300751819,
+        "number": 1568,
+        "title": "Controller fails to start when no CSI node Pod exists in mount pod mode",
+        "state": "closed",
+        "created_at": "2026-04-21T06:33:22Z",
+        "updated_at": "2026-04-21T07:51:29Z",
+        "closed_at": "2026-04-21T07:51:29Z",
+        "author": "zxh326",
+        "comments": 0,
+        "labels": [
+            "kind/bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "> FYI @showjason @zwwhdls This change is now blocking scaling nodes to 0. Since now the controller can't start if it can't find any running pod for the CSI node. But scaling to 0 a nodepool is a classic pattern.\n> Any chance we can revert this or at least make this configurable to support both?\n> \n> you should be able to install the controller without requiring any CSI Node to be running. \n\n _Originally posted by @jpbelangerupgrade in [#1194](https://github.com/juicedata/juicefs-csi-driver/issues/1194#issuecomment-4282557556)_\n\nIn mount pod mode without webhook enabled, the controller currently requires at least one CSI node Pod to exist during startup.\n\nAfter #1348, the controller gets the CSI node spec by listing Pods with `app=juicefs-csi-node`. If the list is empty, the controller exits immediately. This breaks nodepool scale-to-zero scenarios, where the DaemonSet may exist but no CSI node Pod is running yet.",
+        "url": "https://github.com/juicedata/juicefs-csi-driver/issues/1568"
+    },
+    {
+        "id": 4294333113,
+        "number": 1566,
+        "title": "[QUESTION] 关于 aliyun OSS 的加速传输是否能够启用？",
+        "state": "closed",
+        "created_at": "2026-04-20T08:43:57Z",
+        "updated_at": "2026-04-24T08:17:17Z",
+        "closed_at": "2026-04-24T08:17:17Z",
+        "author": "EITSxiaozhai",
+        "comments": 3,
+        "labels": [
+            "kind/question"
+        ],
+        "assignees": [
+            "zhijian-pro"
+        ],
+        "locked": false,
+        "body": "问题：\n本人有一个 2个日本节点和一台中国节点组成的K8s集群。为了照顾境外的节点。将OSS的地址选择到了日本。但是有时候会提示链接速度过慢或者断开链接的情况。然后我看了阿里云oss是支持传输加速的。所以在juice-fs的配置里面写的是加速域名,即使我在配置正确的情况下任然会出现报错，在切换元数据库并进行第一次格式化的时候也会提示下面的报错日志。\n\n\njuicefs-secret\n```\napiVersion: v1\ndata:\n  access-key: xxxxx\n  bucket: https://桶名称.oss-accelerate.aliyuncs.com\n  endpoint: https://oss-accelerate.aliyuncs.com\n  metaurl: xxxxx\n  name: juicefs-oss\n  region: ap-northeast-1  此处也询问过阿里云的工单客服说改成 oss-ap-northeast-1 或者 ap-northeast-1\n  secret-key: xxxxx\n  storage: oss\nkind: Secret\nmetadata:\n  annotations:\n    juicefs.com/secret-name: juicefs-oss\n  creationTimestamp: 2025-09-01T09:10:18Z\n  labels:\n    juicefs.com/validate-secret: \"true\"\n  name: juicefs-secret\n  namespace: default\n  resourceVersion: \"71621582\"\n  uid: 9369b1da-8f85-4163-9321-dae72f3a0330\ntype: Opaque\n\n```\n\n我也查看了对应的request_id 的 报错日志。也是提示 region: 的问题\n\n## 日志信息\n```\n\n[Apr 20 2026 16:18:20 GMT+0800] juicefs-k8s-cn-pvc-5abd89bd-71c8-489c-8d0e-f21e8fbec22e-fsehia: 2026/04/20 08:18:20.034464 juicefs[7] <INFO>: Data use oss://桶名称/juicefs-oss/ [format@format.go:527]\n[Apr 20 2026 16:18:26 GMT+0800] juicefs-k8s-cn-pvc-5abd89bd-71c8-489c-8d0e-f21e8fbec22e-fsehia: 2026/04/20 08:18:26.379739 juicefs[7] <WARNING>: Test storage oss://桶名称/juicefs-oss/ failed: Failed to create bucket oss://桶名称/juicefs-oss/: operation error PutBucket: Error returned by Service.\n[Apr 20 2026 16:18:26 GMT+0800] juicefs-k8s-cn-pvc-5abd89bd-71c8-489c-8d0e-f21e8fbec22e-fsehia: Http Status Code: 400.\n[Apr 20 2026 16:18:26 GMT+0800] juicefs-k8s-cn-pvc-5abd89bd-71c8-489c-8d0e-f21e8fbec22e-fsehia: Error Code: InvalidArgument.\n[Apr 20 2026 16:18:26 GMT+0800] juicefs-k8s-cn-pvc-5abd89bd-71c8-489c-8d0e-f21e8fbec22e-fsehia: Request Id: 69E5E15440E6AE568E0D6763.\n[Apr 20 2026 16:18:26 GMT+0800] juicefs-k8s-cn-pvc-5abd89bd-71c8-489c-8d0e-f21e8fbec22e-fsehia: Message: Invalid signing region in Authorization header..\n[Apr 20 2026 16:18:26 GMT+0800] juicefs-k8s-cn-pvc-5abd89bd-71c8-489c-8d0e-f21e8fbec22e-fsehia: EC: 0002-00000226.\n[Apr 20 2026 16:18:26 GMT+0800] juicefs-k8s-cn-pvc-5abd89bd-71c8-489c-8d0e-f21e8fbec22e-fsehia: Timestamp: 2026-04-20 08:18:28 +0000 UTC.\n[Apr 20 2026 16:18:26 GMT+0800] juicefs-k8s-cn-pvc-5abd89bd-71c8-489c-8d0e-f21e8fbec22e-fsehia: Request Endpoint: PUT https://桶名称.oss-accelerate.aliyuncs.com/., previous error: operation error PutObject: Error returned by Service.\n[Apr 20 2026 16:18:26 GMT+0800] juicefs-k8s-cn-pvc-5abd89bd-71c8-489c-8d0e-f21e8fbec22e-fsehia: Http Status Code: 400.\n[Apr 20 2026 16:18:26 GMT+0800] juicefs-k8s-cn-pvc-5abd89bd-71c8-489c-8d0e-f21e8fbec22e-fsehia: Error Code: InvalidArgument.\n[Apr 20 2026 16:18:26 GMT+0800] juicefs-k8s-cn-pvc-5abd89bd-71c8-489c-8d0e-f21e8fbec22e-fsehia: Request Id: 69E5E15440E6AE568E0D6755.\n[Apr 20 2026 16:18:26 GMT+0800] juicefs-k8s-cn-pvc-5abd89bd-71c8-489c-8d0e-f21e8fbec22e-fsehia: Message: Invalid signing region in Authorization header..\n[Apr 20 2026 16:18:26 GMT+0800] juicefs-k8s-cn-pvc-5abd89bd-71c8-489c-8d0e-f21e8fbec22e-fsehia: EC: 0002-00000226.\n[Apr 20 2026 16:18:26 GMT+0800] juicefs-k8s-cn-pvc-5abd89bd-71c8-489c-8d0e-f21e8fbec22e-fsehia: Timestamp: 2026-04-20 08:18:28 +0000 UTC.\n[Apr 20 2026 16:18:26 GMT+0800] juicefs-k8s-cn-pvc-5abd89bd-71c8-489c-8d0e-f21e8fbec22e-fsehia: Request Endpoint: PUT https://桶名称.oss-accelerate.aliyuncs.com/juicefs-oss/testing/R1QYCG3w4h., tries: #1 [test@format.go:374]\n[Apr 20 2026 16:18:28 GMT+0800] juicefs-k8s-cn-pvc-5abd89bd-71c8-489c-8d0e-f21e8fbec22e-fsehia: 2026/04/20 08:18:28.487799 juicefs[7] <WARNING>: Test storage oss://桶名称/juicefs-oss/ failed: Failed to create bucket oss://桶名称/juicefs-oss/: operation error PutBucket: Error returned by Service.\n[Apr 20 2026 16:18:28 GMT+0800] juicefs-k8s-cn-pvc-5abd89bd-71c8-489c-8d0e-f21e8fbec22e-fsehia: Http Status Code: 400.\n[Apr 20 2026 16:18:28 GMT+0800] juicefs-k8s-cn-pvc-5abd89bd-71c8-489c-8d0e-f21e8fbec22e-fsehia: Error Code: InvalidArgument.\n[Apr 20 2026 16:18:28 GMT+0800] juicefs-k8s-cn-pvc-5abd89bd-71c8-489c-8d0e-f21e8fbec22e-fsehia: Request Id: 69E5E15540E6AE568E0D6824.\n[Apr 20 2026 16:18:28 GMT+0800] juicefs-k8s-cn-pvc-5abd89bd-71c8-489c-8d0e-f21e8fbec22e-fsehia: Message: Invalid signing region in Authorization header..\n[Apr 20 2026 16:18:28 GMT+0800] juicefs-k8s-cn-pvc-5abd89bd-71c8-489c-8d0e-f21e8fbec22e-fsehia: EC: 0002-00000226.\n[Apr 20 2026 16:18:28 GMT+0800] juicefs-k8s-cn-pvc-5abd89bd-71c8-489c-8d0e-f21e8fbec22e-fsehia: Timestamp: 2026-04-20 08:18:29 +0000 UTC.\n[Apr 20 2026 16:18:28 GMT+0800] juicefs-k8s-cn-pvc-5abd89bd-71c8-489c-8d0e-f21e8fbec22e-fsehia: Request Endpoint: PUT https://桶名称.oss-accelerate.aliyuncs.com/., previous error: operation error PutObject: Error returned by Service.\n[Apr 20 2026 16:18:28 GMT+0800] juicefs-k8s-cn-pvc-5abd89bd-71c8-489c-8d0e-f21e8fbec22e-fsehia: Http Status Code: 400.\n[Apr 20 2026 16:18:28 GMT+0800] juicefs-k8s-cn-pvc-5abd89bd-71c8-489c-8d0e-f21e8fbec22e-fsehia: Error Code: InvalidArgument.\n[Apr 20 2026 16:18:28 GMT+0800] juicefs-k8s-cn-pvc-5abd89bd-71c8-489c-8d0e-f21e8fbec22e-fsehia: Request Id: 69E5E15540E6AE568E0D6813.\n[Apr 20 2026 16:18:28 GMT+0800] juicefs-k8s-cn-pvc-5abd89bd-71c8-489c-8d0e-f21e8fbec22e-fsehia: Message: Invalid signing region in Authorization header..\n[Apr 20 2026 16:18:28 GMT+0800] juicefs-k8s-cn-pvc-5abd89bd-71c8-489c-8d0e-f21e8fbec22e-fsehia: EC: 0002-00000226.\n[Apr 20 2026 16:18:28 GMT+0800] juicefs-k8s-cn-pvc-5abd89bd-71c8-489c-8d0e-f21e8fbec22e-fsehia: Timestamp: 2026-04-20 08:18:29 +0000 UTC.\n[Apr 20 2026 16:18:28 GMT+0800] juicefs-k8s-cn-pvc-5abd89bd-71c8-489c-8d0e-f21e8fbec22e-fsehia: Request Endpoint: PUT https://桶名称.oss-accelerate.aliyuncs.com/juicefs-oss/testing/R1QYCG3w4h., tries: #2 [test@format.go:374]\n[Apr 20 2026 16:18:32 GMT+0800] juicefs-k8s-cn-pvc-5abd89bd-71c8-489c-8d0e-f21e8fbec22e-fsehia: 2026/04/20 08:18:32.607473 juicefs[7] <WARNING>: Test storage oss://桶名称/juicefs-oss/ failed: Failed to create bucket oss://桶名称/juicefs-oss/: operation error PutBucket: Error returned by Service.\n[Apr 20 2026 16:18:32 GMT+0800] juicefs-k8s-cn-pvc-5abd89bd-71c8-489c-8d0e-f21e8fbec22e-fsehia: Http Status Code: 400.\n[Apr 20 2026 16:18:32 GMT+0800] juicefs-k8s-cn-pvc-5abd89bd-71c8-489c-8d0e-f21e8fbec22e-fsehia: Error Code: InvalidArgument.\n[Apr 20 2026 16:18:32 GMT+0800] juicefs-k8s-cn-pvc-5abd89bd-71c8-489c-8d0e-f21e8fbec22e-fsehia: Request Id: 69E5E15A40E6AE568E0D6B41.\n[Apr 20 2026 16:18:32 GMT+0800] juicefs-k8s-cn-pvc-5abd89bd-71c8-489c-8d0e-f21e8fbec22e-fsehia: Message: Invalid signing region in Authorization header..\n[Apr 20 2026 16:18:32 GMT+0800] juicefs-k8s-cn-pvc-5abd89bd-71c8-489c-8d0e-f21e8fbec22e-fsehia: EC: 0002-00000226.\n[Apr 20 2026 16:18:32 GMT+0800] juicefs-k8s-cn-pvc-5abd89bd-71c8-489c-8d0e-f21e8fbec22e-fsehia: Timestamp: 2026-04-20 08:18:34 +0000 UTC.\n[Apr 20 2026 16:18:32 GMT+0800] juicefs-k8s-cn-pvc-5abd89bd-71c8-489c-8d0e-f21e8fbec22e-fsehia: Request Endpoint: PUT https://桶名称.oss-accelerate.aliyuncs.com/., previous error: operation error PutObject: Error returned by Service.\n[Apr 20 2026 16:18:32 GMT+0800] juicefs-k8s-cn-pvc-5abd89bd-71c8-489c-8d0e-f21e8fbec22e-fsehia: Http Status Code: 400.\n[Apr 20 2026 16:18:32 GMT+0800] juicefs-k8s-cn-pvc-5abd89bd-71c8-489c-8d0e-f21e8fbec22e-fsehia: Error Code: InvalidArgument.\n[Apr 20 2026 16:18:32 GMT+0800] juicefs-k8s-cn-pvc-5abd89bd-71c8-489c-8d0e-f21e8fbec22e-fsehia: Request Id: 69E5E15A40E6AE568E0D6B3C.\n[Apr 20 2026 16:18:32 GMT+0800] juicefs-k8s-cn-pvc-5abd89bd-71c8-489c-8d0e-f21e8fbec22e-fsehia: Message: Invalid signing region in Authorization header..\n[Apr 20 2026 16:18:32 GMT+0800] juicefs-k8s-cn-pvc-5abd89bd-71c8-489c-8d0e-f21e8fbec22e-fsehia: EC: 0002-00000226.\n[Apr 20 2026 16:18:32 GMT+0800] juicefs-k8s-cn-pvc-5abd89bd-71c8-489c-8d0e-f21e8fbec22e-fsehia: Timestamp: 2026-04-20 08:18:34 +0000 UTC.\n[Apr 20 2026 16:18:32 GMT+0800] juicefs-k8s-cn-pvc-5abd89bd-71c8-489c-8d0e-f21e8fbec22e-fsehia: Request Endpoint: PUT https://桶名称.oss-accelerate.aliyuncs.com/juicefs-oss/testing/R1QYCG3w4h., tries: #3 [test@format.go:374]\n[Apr 20 2026 16:18:39 GMT+0800] juicefs-k8s-cn-pvc-5abd89bd-71c8-489c-8d0e-f21e8fbec22e-fsehia: 2026/04/20 08:18:39.608337 juicefs[7] <FATAL>: Storage oss://桶名称/juicefs-oss/ is not configured correctly: Failed to create bucket oss://桶名称/juicefs-oss/: operation error PutBucket: Error returned by Service.\n[Apr 20 2026 16:18:39 GMT+0800] juicefs-k8s-cn-pvc-5abd89bd-71c8-489c-8d0e-f21e8fbec22e-fsehia: Http Status Code: 400.\n[Apr 20 2026 16:18:39 GMT+0800] juicefs-k8s-cn-pvc-5abd89bd-71c8-489c-8d0e-f21e8fbec22e-fsehia: Error Code: InvalidArgument.\n[Apr 20 2026 16:18:39 GMT+0800] juicefs-k8s-cn-pvc-5abd89bd-71c8-489c-8d0e-f21e8fbec22e-fsehia: Request Id: 69E5E15A40E6AE568E0D6B41.\n[Apr 20 2026 16:18:39 GMT+0800] juicefs-k8s-cn-pvc-5abd89bd-71c8-489c-8d0e-f21e8fbec22e-fsehia: Message: Invalid signing region in Authorization header..\n[Apr 20 2026 16:18:39 GMT+0800] juicefs-k8s-cn-pvc-5abd89bd-71c8-489c-8d0e-f21e8fbec22e-fsehia: EC: 0002-00000226.\n[Apr 20 2026 16:18:39 GMT+0800] juicefs-k8s-cn-pvc-5abd89bd-71c8-489c-8d0e-f21e8fbec22e-fsehia: Timestamp: 2026-04-20 08:18:34 +0000 UTC.\n[Apr 20 2026 16:18:39 GMT+0800] juicefs-k8s-cn-pvc-5abd89bd-71c8-489c-8d0e-f21e8fbec22e-fsehia: Request Endpoint: PUT https://桶名称.oss-accelerate.aliyuncs.com/., previous error: operation error PutObject: Error returned by Service.\n[Apr 20 2026 16:18:39 GMT+0800] juicefs-k8s-cn-pvc-5abd89bd-71c8-489c-8d0e-f21e8fbec22e-fsehia: Http Status Code: 400.\n[Apr 20 2026 16:18:39 GMT+0800] juicefs-k8s-cn-pvc-5abd89bd-71c8-489c-8d0e-f21e8fbec22e-fsehia: Error Code: InvalidArgument.\n[Apr 20 2026 16:18:39 GMT+0800] juicefs-k8s-cn-pvc-5abd89bd-71c8-489c-8d0e-f21e8fbec22e-fsehia: Request Id: 69E5E15A40E6AE568E0D6B3C.\n[Apr 20 2026 16:18:39 GMT+0800] juicefs-k8s-cn-pvc-5abd89bd-71c8-489c-8d0e-f21e8fbec22e-fsehia: Message: Invalid signing region in Authorization header..\n[Apr 20 2026 16:18:39 GMT+0800] juicefs-k8s-cn-pvc-5abd89bd-71c8-489c-8d0e-f21e8fbec22e-fsehia: EC: 0002-00000226.\n[Apr 20 2026 16:18:39 GMT+0800] juicefs-k8s-cn-pvc-5abd89bd-71c8-489c-8d0e-f21e8fbec22e-fsehia: Timestamp: 2026-04-20 08:18:34 +0000 UTC.\n[Apr 20 2026 16:18:39 GMT+0800] juicefs-k8s-cn-pvc-5abd89bd-71c8-489c-8d0e-f21e8fbec22e-fsehia: Request Endpoint: PUT https://桶名称.oss-accelerate.aliyuncs.com/juicefs-oss/testing/R1QYCG3w4h. [format@format.go:530]\n\n```\n\n\n## 配置信息\n\n\n```\nroot@juicefs-csi-controller-0:/app# juicefs version\njuicefs version 1.3.0+2025-07-03.30190ca1\nroot@juicefs-csi-controller-0:/app# \n```\n---\n\n```\nk8s version: v1.33.2\n```\n\n元数据库采用阿里云的云redis\n\n## Q:\n\njuice-fs 支持设置传输加速吗？该如何设置。",
+        "url": "https://github.com/juicedata/juicefs-csi-driver/issues/1566"
+    },
+    {
+        "id": 4280977783,
+        "number": 1564,
+        "title": "[FEATURE] support configure DNSPolicy and DNSConfig using configMap",
+        "state": "closed",
+        "created_at": "2026-04-17T07:39:46Z",
+        "updated_at": "2026-04-20T07:35:05Z",
+        "closed_at": "2026-04-20T07:35:05Z",
+        "author": "zxh326",
+        "comments": 0,
+        "labels": [
+            "kind/feature"
+        ],
+        "assignees": [
+            "zxh326",
+            "Copilot"
+        ],
+        "locked": false,
+        "body": "**What feature you'd like to add:**\n\n**Why is this feature needed:**",
+        "url": "https://github.com/juicedata/juicefs-csi-driver/issues/1564"
+    },
+    {
+        "id": 4230730787,
+        "number": 1561,
+        "title": "[QUESTION] Does JuiceFS CSI Driver work with Gateway API?",
+        "state": "closed",
+        "created_at": "2026-04-09T08:33:09Z",
+        "updated_at": "2026-06-18T02:23:59Z",
+        "closed_at": "2026-06-18T02:23:59Z",
+        "author": "skenchjyg",
+        "comments": 1,
+        "labels": [
+            "kind/question"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "Hello, I'm starting to install the JuiceFS CSI Driver for working with external NFS storage. As you know, ingress nginx is dead, and I've already configured my environment to work with gateway api. I have all the CRDs and CNI Cilium installed. When installing JuiceFS CSI, the attribute is set for ingress, but not for gateway api. Perhaps it's universal? Could you please help me with this information? Unfortunately, I couldn't find it in the documentation.\n\nEnvironment\n\nk8s 1.35.0\nCNI Cilium 1.19.1\nGateway API 1.4.1",
+        "url": "https://github.com/juicedata/juicefs-csi-driver/issues/1561"
+    },
+    {
+        "id": 4175542299,
+        "number": 1553,
+        "title": "[BUG] Admission webhook denied request with \"object has been modified\" error under high concurrency",
+        "state": "closed",
+        "created_at": "2026-03-31T03:55:29Z",
+        "updated_at": "2026-04-08T09:53:01Z",
+        "closed_at": "2026-04-08T09:53:01Z",
+        "author": "juchaosong",
+        "comments": 1,
+        "labels": [
+            "kind/bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "<!--\nPlease use this template while reporting a bug and provide as much info as possible. Not doing so may result in your bug not being addressed in a timely manner. Thanks!\n-->\n\n**What happened**:\nWe are experiencing high-frequency errors in a VKE (VolcEngine Kubernetes Engine) VCI cluster using JuiceFS CSI Driver in Serverless mode, specifically under high concurrency load.\n\nWhen creating pods at a rate of **200-300 pods per second**, the Admission Webhook frequently denies requests due to resource version conflicts.\n\n**Error Log:**\n`admission webhook \"sidecar.inject.serverless.juicefs.com\" denied the request: Operation cannot be fulfilled on secrets \"serverless-warehouse-jfs-secret\": the object has been modified; please apply your changes to the latest version and try again`\n\n**What you expected to happen**:\nThe JuiceFS CSI Driver should handle high-concurrency pod creation gracefully. The Webhook should be able to inject sidecars and update Secrets without encountering `409 Conflict` errors caused by simultaneous updates.\n\n**How to reproduce it (as minimally and precisely as possible)**:\n1. Deploy JuiceFS CSI Driver in Serverless mode on a VKE VCI cluster.\n2. Prepare a workload (e.g., a Job or Deployment) capable of triggering a burst of pod creations.\n3. **Stress Test:** Trigger the creation of pods at a high frequency (**approx. 200-300 pods per second**).\n4. Observe the `juicefs-csi-controller` logs or Pod events to see the `admission webhook ... denied the request` error.\n\n**Anything else we need to know?**\n\n**Environment**:\n- JuiceFS CSI Driver version (which image tag did your CSI Driver use): v0.31.4\n- Kubernetes version (e.g. `kubectl version`):v1.34.1-vke.3\n- Object storage (cloud provider and region):\n- Metadata engine info (version, cloud provider managed or self maintained):\n- Network connectivity (JuiceFS to metadata engine, JuiceFS to object storage):\n- Others:\n",
+        "url": "https://github.com/juicedata/juicefs-csi-driver/issues/1553"
+    },
+    {
+        "id": 4168757787,
+        "number": 1552,
+        "title": "VolumeSnapshot 缺少 -p 参数，juicefs clone 丢失了文件元信息",
+        "state": "closed",
+        "created_at": "2026-03-30T08:39:03Z",
+        "updated_at": "2026-04-07T02:34:06Z",
+        "closed_at": "2026-04-07T02:34:06Z",
+        "author": "jerrycaimin",
+        "comments": 0,
+        "labels": [],
+        "assignees": [
+            "zxh326"
+        ],
+        "locked": false,
+        "body": "## 问题概述\n\n当 PVC 从 VolumeSnapshot 恢复后，恢复出的文件所有权会从源目录的原有 UID/GID（如 1000:1000）变成 0:0，文件 mode 也会受执行者 umask 影响发生变化。这会导致非 root 用户无法读取原本属于自己的文件，典型报错：\n\n```\nfailed to open file `/path/to/pixi.toml`: Permission denied (os error 13)\n```\n\n## 复现路径\n\n```\n源 PVC（文件属主 1000:1000，权限 0600）\n        ↓\n创建 VolumeSnapshot\n        ↓\n从快照恢复 PVC\n        ↓\n恢复后文件变成 0:0，权限 0600\n        ↓\njovyan (1000:1000) 无法读取 → Permission denied\n```\n\n## 根因分析\n\n在 `pkg/juicefs/mount/builder/job.go` 中，`NewJobForSnapshot` 和 `NewJobForRestore` 两处调用 `juicefs clone` 时均**未携带 `-p`（--preserve）参数**。`juicefs clone` 的默认行为是使用执行者的 UID/GID，并按执行者的 umask 重新计算权限，导致原始文件的元数据被改写。\n\n只有 `juicefs clone -p` 才会保留原始的 UID/GID 和 mode。\n\n## 受影响代码\n\n**文件：** `pkg/juicefs/mount/builder/job.go`\n\n1. **NewJobForSnapshot**（约第 390 行）- snapshot 创建时：\n   ```go\n   juicefs clone /mnt/jfs%s /mnt/jfs/.snapshots/%s/%s\n   ```\n   应改为：\n   ```go\n   juicefs clone -p /mnt/jfs%s /mnt/jfs/.snapshots/%s/%s\n   ```\n\n2. **NewJobForRestore**（约第 445 行）- snapshot 恢复时：\n   ```go\n   juicefs clone /mnt/jfs/.snapshots/%s/%s /mnt/jfs/%s\n   ```\n   应改为：\n   ```go\n   juicefs clone -p /mnt/jfs/.snapshots/%s/%s /mnt/jfs/%s\n   ```\n\n注意：这两行命令是 JuiceFS CSI driver 在代码中自行拼写的，不是由 Kubernetes VolumeSnapshot API 层面控制的，因此不受 VolumeSnapshot 参数限制。\n\n## 修复方案\n\n在 `NewJobForSnapshot` 和 `NewJobForRestore` 的 clone 命令中均添加 `-p` 参数即可：\n\n```go\n// NewJobForSnapshot - 第 390 行附近\njuicefs clone -p /mnt/jfs%s /mnt/jfs/.snapshots/%s/%s\n\n// NewJobForRestore - 第 445 行附近\njuicefs clone -p /mnt/jfs/.snapshots/%s/%s /mnt/jfs/%s\n```\n\n## 参考资料\n\n- JuiceFS CSI Volume Snapshot 文档：https://juicefs.com/docs/csi/guide/snapshot/\n- JuiceFS 命令参考（`juicefs clone --preserve`）：https://juicefs.com/docs/community/command_reference/\n- JuiceFS CSI 权限文档：https://juicefs.com/docs/csi/security/permission/\n- 源码：`pkg/juicefs/mount/builder/job.go`\n",
+        "url": "https://github.com/juicedata/juicefs-csi-driver/issues/1552"
+    },
+    {
+        "id": 4166700502,
+        "number": 1551,
+        "title": "[BUG] ${} in configmap not parse to correct cache volume",
+        "state": "closed",
+        "created_at": "2026-03-30T02:53:34Z",
+        "updated_at": "2026-04-02T08:09:12Z",
+        "closed_at": "2026-04-02T08:09:11Z",
+        "author": "Awadabang",
+        "comments": 0,
+        "labels": [
+            "kind/bug"
+        ],
+        "assignees": [
+            "zxh326"
+        ],
+        "locked": false,
+        "body": "<!--\nPlease use this template while reporting a bug and provide as much info as possible. Not doing so may result in your bug not being addressed in a timely manner. Thanks!\n-->\n\n**What happened**:\n\nI have configmap like:\n```\nglobalConfig:\n   mountPodPatch:\n        - pvcSelector:\n              matchLabels:\n                   a: \"b\"\n          mountOptions:\n               - cache-dir=/var/jfsCache/${VOLUME_ID}\n```\nmount pod will use correct cache dir like: `/var/jfsCache/pvc-xxxxx`\n\n**What you expected to happen**:\n\ngenerated mount pod:\n\n```\nspec:\n  containers:\n  - command:\n    - sh\n    - -c\n    - |-\n      /usr/local/bin/juicefs format --storage=minio --bucket=xxx --access-key=xxx --secret-key=${secretkey} ${metaurl} demo\n      exec /bin/mount.juicefs ${metaurl} /jfs/pvc-93d98c03-34dd-4455-b364-7384df4d872a-htxzlm -o cache-dir=/var/jfsCache/pvc-93d98c03-34dd-4455-b364-7384df4d872a,cache-size=10240,free-space-ratio=0.01,prefix-internal,hide-internal,no-usage-report,backup-meta=0,no-bgjob,debug,subdir=pvc-93d98c03-34dd-4455-b364-7384df4d872a,metrics=0.0.0.0:9567\n    env:\n    - name: JFS_INSIDE_CONTAINER\n      value: \"1\"\n    - name: metaurl\n      valueFrom:\n        secretKeyRef:\n          key: metaurl\n          name: juicefs-pvc-93d98c03-34dd-4455-b364-7384df4d872a-secret\n    - name: secretkey\n      valueFrom:\n        secretKeyRef:\n          key: secretkey\n          name: juicefs-pvc-93d98c03-34dd-4455-b364-7384df4d872a-secret\n    - name: JFS_FOREGROUND\n      value: \"1\"\n    image: juicefs/juicefs-mount:v1.3.1\n    imagePullPolicy: IfNotPresent\n    lifecycle:\n      preStop:\n        exec:\n          command:\n          - sh\n          - -c\n          - +e\n          - umount /jfs/pvc-93d98c03-34dd-4455-b364-7384df4d872a-htxzlm -l; rmdir\n            /jfs/pvc-93d98c03-34dd-4455-b364-7384df4d872a-htxzlm; exit 0\n    name: jfs-mount\n    volumeMounts:\n    - mountPath: /jfs\n      mountPropagation: Bidirectional\n      name: jfs-dir\n    - mountPath: /tmp\n      name: jfs-fuse-fd\n    - mountPath: /etc/updatedb.conf\n      name: updatedb\n    - mountPath: /var/jfsCache/${VOLUME_ID}\n      name: cachedir-0\n    - mountPath: /var/run/secrets/kubernetes.io/serviceaccount\n      name: kube-api-access-qtqxt\n      readOnly: true\n  volumes:\n  - hostPath:\n      path: /var/lib/juicefs/volume\n      type: DirectoryOrCreate\n    name: jfs-dir\n  - hostPath:\n      path: /var/run/juicefs-csi/5db16fe5-4b23-406d-ab51-a6907923d503\n      type: DirectoryOrCreate\n    name: jfs-fuse-fd\n  - hostPath:\n      path: /etc/updatedb.conf\n      type: FileOrCreate\n    name: updatedb\n  - hostPath:\n      path: /var/jfsCache/${VOLUME_ID}\n      type: DirectoryOrCreate\n    name: cachedir-0\n```\n\ncommand is correct, but volumes and volumeMounts not parse correctly.\n\n**How to reproduce it (as minimally and precisely as possible)**:\n\n**Anything else we need to know?**\n\n**Environment**:\n- JuiceFS CSI Driver version (which image tag did your CSI Driver use): 0.31.4\n- Kubernetes version (e.g. `kubectl version`): 1.30.4\n- Object storage (cloud provider and region): \n- Metadata engine info (version, cloud provider managed or self maintained):\n- Network connectivity (JuiceFS to metadata engine, JuiceFS to object storage):\n- Others:\n",
+        "url": "https://github.com/juicedata/juicefs-csi-driver/issues/1551"
+    },
+    {
+        "id": 4133111828,
+        "number": 1541,
+        "title": "[FEATURE] SC Share supports enabling and disabling at the SC level.",
+        "state": "open",
+        "created_at": "2026-03-25T07:01:32Z",
+        "updated_at": "2026-07-07T09:39:20Z",
+        "closed_at": null,
+        "author": "zxh326",
+        "comments": 0,
+        "labels": [
+            "kind/feature"
+        ],
+        "assignees": [
+            "zxh326"
+        ],
+        "locked": false,
+        "body": "**What feature you'd like to add:**\n\nThe current “sc share” is enabled at the cluster level. Once it’s turned on, all SCs will have the ability to use SC Share. However, it would be desirable to have a more granular control over which SCs can utilize SC Share. This could be achieved through annotations or attributes.\n\n**Why is this feature needed:**\n",
+        "url": "https://github.com/juicedata/juicefs-csi-driver/issues/1541"
+    },
+    {
+        "id": 4133094605,
+        "number": 1540,
+        "title": "[BUG] not supported to set 0 resource for mountpod",
+        "state": "closed",
+        "created_at": "2026-03-25T06:58:15Z",
+        "updated_at": "2026-03-26T07:19:41Z",
+        "closed_at": "2026-03-26T07:19:41Z",
+        "author": "zxh326",
+        "comments": 0,
+        "labels": [
+            "kind/bug"
+        ],
+        "assignees": [
+            "zxh326",
+            "Copilot"
+        ],
+        "locked": false,
+        "body": "**What happened**:\n\nhttps://github.com/juicedata/juicefs-csi-driver/blob/1f2395c5756ca5e6ca8b516c94ab428535ae5522/pkg/config/setting.go#L1087-L1104\n\nIt’s not possible to do this using annotation/storageClass set `0 request` for mountpod resources. However, it’s possible to do this using configMap.\n\n**What you expected to happen**:\n\n**How to reproduce it (as minimally and precisely as possible)**:\n\n**Anything else we need to know?**\n\n**Environment**:\n- JuiceFS CSI Driver version (which image tag did your CSI Driver use):\n- Kubernetes version (e.g. `kubectl version`):\n- Object storage (cloud provider and region):\n- Metadata engine info (version, cloud provider managed or self maintained):\n- Network connectivity (JuiceFS to metadata engine, JuiceFS to object storage):\n- Others:\n",
+        "url": "https://github.com/juicedata/juicefs-csi-driver/issues/1540"
+    }
+]

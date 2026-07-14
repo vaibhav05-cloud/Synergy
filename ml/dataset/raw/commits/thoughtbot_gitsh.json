@@ -1,0 +1,242 @@
+[
+    {
+        "sha": "7b890ea6314cfc08a25f5a2c94322e5368a7ffa5",
+        "author": "George Brocklehurst",
+        "email": "george@georgebrock.com",
+        "date": "2019-12-16T13:26:11Z",
+        "message": "Fix logo link in README",
+        "url": "https://github.com/thoughtbot/gitsh/commit/7b890ea6314cfc08a25f5a2c94322e5368a7ffa5"
+    },
+    {
+        "sha": "813937485324f5169032ce3268fc532fb719b4b9",
+        "author": "Eebs Kobeissi",
+        "email": "ebrahim.kobeissi@gmail.com",
+        "date": "2019-05-03T13:56:44Z",
+        "message": "Add note about `man gitsh` to Readme.\n\nI wasn't entirely sure where to view all the documentation for `gitsh`\nwhen I first started using it. I soon found the man page, but wanted to\nmake it more obvious for anyone just starting out.",
+        "url": "https://github.com/thoughtbot/gitsh/commit/813937485324f5169032ce3268fc532fb719b4b9"
+    },
+    {
+        "sha": "b0046c80d25665e3d23db5533d5708239792a106",
+        "author": "Adam Sharp",
+        "email": "sharplet@users.noreply.github.com",
+        "date": "2019-04-23T17:25:50Z",
+        "message": "Revision argument to git-reset is optional\n\n`git reset` without specifying a revision defaults to using `HEAD`.\r\n\r\nI guessed at the syntax based on the examples nearby.",
+        "url": "https://github.com/thoughtbot/gitsh/commit/b0046c80d25665e3d23db5533d5708239792a106"
+    },
+    {
+        "sha": "a9bb2adf7341734d82c543ed20c4511d7933a253",
+        "author": "George Brocklehurst",
+        "email": "george@georgebrock.com",
+        "date": "2019-03-16T13:08:09Z",
+        "message": "Rubocop: consistent array indentation.\n\nThis commit updates the Rubocop configuration to match the code style for\narrays that's used in this project. The Rubocop default must have changed at\nsome point.",
+        "url": "https://github.com/thoughtbot/gitsh/commit/a9bb2adf7341734d82c543ed20c4511d7933a253"
+    },
+    {
+        "sha": "2630852d6dbaba5d8380c715ad9f12ff15174056",
+        "author": "George Brocklehurst",
+        "email": "george@georgebrock.com",
+        "date": "2019-03-15T04:06:35Z",
+        "message": "Argument zero ain't nothin' special.\n\nThis commit updates the Parser and LazyCommand to treat the name of any\ncommand like any other argument.\n\nPrior to this commit argument zero had to be a constant string. After this\ncommit it's possible to use a variable, subshell, or any other dynamic value\nwe might introduce as argument zero.\n\nTo give a concrete example, we can now do this:\n\n    :set command :set\n    $command greeting Hello\n    :echo \"$greeting, world\"\n\nThis is more in line with how general purpose Unix shells operate. It also\nhelps pave the way for supporting more types of dynamic arguments, like glob\npatterns.",
+        "url": "https://github.com/thoughtbot/gitsh/commit/2630852d6dbaba5d8380c715ad9f12ff15174056"
+    },
+    {
+        "sha": "ebe6a165c731bc46b68d0033f3dd0fc36b748a60",
+        "author": "George Brocklehurst",
+        "email": "george@georgebrock.com",
+        "date": "2019-03-15T04:03:28Z",
+        "message": "Make Parser spec a true unit spec.\n\nThis commit updates a few examples in the `Gitsh::Parser` unit spec so that\nall of the examples in that spec consistently use a stubbed\n`Gitsh::Commands::LazyCommand` instead of interacting with the real thing.\n\nPrior to this commit, internal changes in the `LazyCommand` class could\ncause `Parser` unit specs to fail, which isn't what we want.",
+        "url": "https://github.com/thoughtbot/gitsh/commit/ebe6a165c731bc46b68d0033f3dd0fc36b748a60"
+    },
+    {
+        "sha": "1bf6430f4b98196ed484efd7f65a3cd1e70f5a46",
+        "author": "George Brocklehurst",
+        "email": "george@georgebrock.com",
+        "date": "2019-03-15T03:44:24Z",
+        "message": "Refactor: Fetch argument values in LazyCommand.\n\nThis commit moves the call to `ArgumentList#values` from the various\nexecutable command classes (`Gitsh::Commands::GitCommand`,\n`Gitsh::Commands::InternalCommand::*` and `Gitsh::Commands::ShellCommand`)\nto `Gitsh::Commands::LazyCommand`.\n\nThe intention of this refactor is to pave the way for commands where the\nname of the command itself is defined at runtime, e.g. by a variable. Now\nthat we are expanding the arguments to their final values before\ninstantiating the final command class, this change will be much easier.\n\nThere's an added benefit of simplifying the various executable command\nclasses and their tests, because they can now all assume that they're just\nworking with an array of argument values.",
+        "url": "https://github.com/thoughtbot/gitsh/commit/1bf6430f4b98196ed484efd7f65a3cd1e70f5a46"
+    },
+    {
+        "sha": "e7ba71a874735ebd23cb72a4106fc9ec28da535f",
+        "author": "George Brocklehurst",
+        "email": "george@georgebrock.com",
+        "date": "2019-03-15T03:37:26Z",
+        "message": "Refactor: fold ErrorHandler into LazyCommand\n\nThis commit moves the behaviour previously defined in\n`Gitsh::Commands::ErrorHandler` into `Gitsh::Commands::LazyCommand`\n\nThe intention of this refactor is to prepare the way for the `LazyCommand`\ninstance to call `ArgumentList#values` before instantiating the final\ncommand class (`Gitsh::Commands::GitCommand`, etc.) so that we can support\ncommand names in variables, i.e. situations where we don't know what command\nclass to use until after the call to `ArgumentList#values`.\n\nA significant category of errors that `ErrorHandler` catches are caused by\ncalling `ArgumentList#values` and encountering bad arguments like unset\nvariables, therefore the error handling will need to wrap all of the\n`LazyCommand#execute` method.",
+        "url": "https://github.com/thoughtbot/gitsh/commit/e7ba71a874735ebd23cb72a4106fc9ec28da535f"
+    },
+    {
+        "sha": "8124cf8659f8c502825e09d0b1e24ddc9d350bfa",
+        "author": "George Brocklehurst",
+        "email": "george@georgebrock.com",
+        "date": "2019-03-15T03:04:45Z",
+        "message": "Refactor: Decide command class at execution time.\n\nThis commit replaces the `Gitsh::Commands::Factory` class with a\n`Gitsh::Commands::LazyCommand` class. The logic to construct a command is\nexactly the same, the difference is that the `LazyCommand` instance runs\nthat logic immediately before the command is executed, whereas the `Factory`\ninstance ran it at parse time.\n\nThe intention behind this refactor is to pave the way for commands that are\ndynamically built at execution time. Future commits will build on this to\nadd the ability to specify the name of a command in a variable, and\neventually these changes will make it easier to implement support for\nglobbing patterns.",
+        "url": "https://github.com/thoughtbot/gitsh/commit/8124cf8659f8c502825e09d0b1e24ddc9d350bfa"
+    },
+    {
+        "sha": "6400d159e2d5fd9f96e267ff85d2068ef1db6f65",
+        "author": "George Brocklehurst",
+        "email": "george@georgebrock.com",
+        "date": "2019-03-15T02:50:11Z",
+        "message": "Refactor: Select command class in factory.\n\nThis commit moves the responsibility of selecting which\n`Gitsh::Commands::*Command` class should be used for a command from the\n`Gitsh::Parser` to the `Gitsh::Commands::Factory`.\n\nThis is intended to be the first step towards lazily deciding which command\nclass to use at execution time, which would allow us to store the names of\ncommands in variables, and also pave the way towards custom globbing\nsupport.",
+        "url": "https://github.com/thoughtbot/gitsh/commit/6400d159e2d5fd9f96e267ff85d2068ef1db6f65"
+    },
+    {
+        "sha": "5d9484dac3511fcf1f8b1b8bcfba6f129de7ce02",
+        "author": "George Brocklehurst",
+        "email": "george@georgebrock.com",
+        "date": "2019-04-09T02:33:00Z",
+        "message": "Remove explicit PROGRAM_NAME.\n\nSince 182111e7b2 changed the way gitsh is built to embed Ruby in our binary,\ninstead of launching Ruby via fork-exec, we no longer need to tell Ruby the\nPROGRAM_NAME.",
+        "url": "https://github.com/thoughtbot/gitsh/commit/5d9484dac3511fcf1f8b1b8bcfba6f129de7ce02"
+    },
+    {
+        "sha": "04d8b9607710c7175089fc0fdb3c50fe1d5cc765",
+        "author": "George Brocklehurst",
+        "email": "george@georgebrock.com",
+        "date": "2019-04-06T14:48:09Z",
+        "message": "Fix tab completing paths with no prefix.\n\nWhen tab completing a path argument without entering the beginning of the\npath we expect the completion options to be the files in the current\ndirectory.\n\nPrior to this commit the only option would be `/`, until the user entered at\nleast the first letter of the path to be completed.",
+        "url": "https://github.com/thoughtbot/gitsh/commit/04d8b9607710c7175089fc0fdb3c50fe1d5cc765"
+    },
+    {
+        "sha": "92b06f143dc2668208ad7d4dd1db4b8dad628a04",
+        "author": "George Brocklehurst",
+        "email": "george@georgebrock.com",
+        "date": "2019-04-03T04:13:01Z",
+        "message": "Run the compiled binary on CI\n\nNow that we embed Ruby in the gitsh binary, it's worth running the built\nbinary on CI so that we can catch any regressions that occur if the C API\nchanges in future versions.\n\nSetting the LD_LIBRARY_PATH is needed because rvm rubies are installed to a\nnon-standard location, and either Travis or rvm itself doesn't handle\nsetting this for us.\n\nCo-authored-by: Mike Burns <mburns@thoughtbot.com>",
+        "url": "https://github.com/thoughtbot/gitsh/commit/92b06f143dc2668208ad7d4dd1db4b8dad628a04"
+    },
+    {
+        "sha": "182111e7b29d8e4ecdac3656607beaef34ea0084",
+        "author": "Adam Sharp",
+        "email": "adam@sharplet.me",
+        "date": "2019-01-22T13:37:08Z",
+        "message": "Change process name by embedding Ruby in C\n\nFixes #41.\n\nThis resolves the process name issue by running a Ruby interpreter\nin-process instead of via `ruby(1)`. The implementation is inspired by the\narticle [Running Ruby in C][1] and [Ruby's own `main` function][2].  Instead\nof invoking `ruby(1)` as a subprocess, we use `ruby.h` and `libruby` to\nperform the same function directly.\n\n[1]: https://silverhammermba.github.io/emberb/embed/\n[2]: https://github.com/ruby/ruby/blob/bdbc8a8f1214b601ca409f66f2fe00ac06f2e99a/main.c\n\nIn order to link against the correct version of Ruby, this commit also\nintroduces a `configure.rb` script which extracts information from\n`RbConfig::MAKEFILE_CONFIG` so that it can be used in `configure.ac`.\n\nCo-authored-by: Mike Burns <mburns@thoughtbot.com>\nCo-authored-by: George Brocklehurst <george@georgebrock.com>",
+        "url": "https://github.com/thoughtbot/gitsh/commit/182111e7b29d8e4ecdac3656607beaef34ea0084"
+    },
+    {
+        "sha": "f75fa633d4eaddec28bd4f4168d334017e47cc67",
+        "author": "George Brocklehurst",
+        "email": "george@georgebrock.com",
+        "date": "2019-04-03T04:04:02Z",
+        "message": "git-show(1) takes one or more revisions.\n\nThis commit updates the default tab completion configuration to handle\nthings like `git show mas<tab>`",
+        "url": "https://github.com/thoughtbot/gitsh/commit/f75fa633d4eaddec28bd4f4168d334017e47cc67"
+    },
+    {
+        "sha": "da091cfb51140b5a88540dd8cd4e8518f51343bb",
+        "author": "George Brocklehurst",
+        "email": "george@georgebrock.com",
+        "date": "2019-03-03T20:38:53Z",
+        "message": "Fix missing space after subshells.\n\nA subshell in an argument list would previously consume its trailing\nwhitespace and end up concatenated to the next argument, for example:\n\n    :echo 1 $(:echo 2) 3\n\nThis should output \"1 2 3\", but prior to this commit it would output \"1 23\".\n\nThis fix is a change to the lexer: the regular expression representing the\nRIGHT_PAREN and SUBSHELL_END tokens has been changed to not include any\ntrailing space. This allows the space to be captured as a separate SPACE\ntoken, which the parser will then correctly interpret as separating a\nsubshell from the next argument in the list.\n\nThe downside of this approach is that the parser now has to handle an\noptional SPACE token after any SUBSHELL_END or RIGHT_PAREN token. Previously\nthere was a cleaner separation of space being mostly handled in the lexer.",
+        "url": "https://github.com/thoughtbot/gitsh/commit/da091cfb51140b5a88540dd8cd4e8518f51343bb"
+    },
+    {
+        "sha": "8600786437e9b1806966dd9e85bfad2e39bc0bb7",
+        "author": "George Brocklehurst",
+        "email": "george@georgebrock.com",
+        "date": "2019-03-03T17:07:36Z",
+        "message": "Fix subshell internal command output.\n\nWhen using the `:echo` command in a subshell, e.g. `:echo foo $(:echo bar)`,\nthe expected output is `foo bar`, but prior to this commit the actual output\nwas `bar\\nfoo`.\n\nThis commit resolves this issue by adding `#puts` and `#print` methods to\nthe `Gitsh::CapturingEnvironment` class to make sure the output goes to the\nright place.",
+        "url": "https://github.com/thoughtbot/gitsh/commit/8600786437e9b1806966dd9e85bfad2e39bc0bb7"
+    },
+    {
+        "sha": "536b066d467a767172f7af6d74c3f7ba5df5f319",
+        "author": "George Brocklehurst",
+        "email": "george@georgebrock.com",
+        "date": "2019-03-22T18:23:29Z",
+        "message": "Arch package for version 0.14",
+        "url": "https://github.com/thoughtbot/gitsh/commit/536b066d467a767172f7af6d74c3f7ba5df5f319"
+    },
+    {
+        "sha": "a1bd2004de411e74bfced7fc261ab487df5e9944",
+        "author": "George Brocklehurst",
+        "email": "george@georgebrock.com",
+        "date": "2019-03-22T18:01:12Z",
+        "message": "Bump version: 0.14",
+        "url": "https://github.com/thoughtbot/gitsh/commit/a1bd2004de411e74bfced7fc261ab487df5e9944"
+    },
+    {
+        "sha": "1055384a56f630849c06df9fec7277f7a96e9e49",
+        "author": "George Brocklehurst",
+        "email": "george@georgebrock.com",
+        "date": "2019-03-03T00:07:08Z",
+        "message": "Useful error messages for bad completion vars.\n\nThe tab completion configuration language supports variables which represent\nmatchers for particular types of arguments, e.g. `$branch` or `$path`.\n\nThis commit introduces error handling when a tab completion configuration\nfile contains a variable that isn't supported by gitsh. The error message\nwill include the name of the variable, the path to the file where the error\noccurred, and the exact position in the file.",
+        "url": "https://github.com/thoughtbot/gitsh/commit/1055384a56f630849c06df9fec7277f7a96e9e49"
+    },
+    {
+        "sha": "6d1318dcf028f2ce73638aa215c014d36ec49591",
+        "author": "George Brocklehurst",
+        "email": "george@georgebrock.com",
+        "date": "2019-03-03T00:37:02Z",
+        "message": "Useful error messages for completion config errors.\n\nThis commit introduces useful error reporting when a tab completion\nconfiguration file fails to parse.\n\nThe error will report which token was unexpected, which file it was in, and\nexactly where in the file.",
+        "url": "https://github.com/thoughtbot/gitsh/commit/6d1318dcf028f2ce73638aa215c014d36ec49591"
+    },
+    {
+        "sha": "7a21a00c9a4416630b7311adc12ced90ddc1adad",
+        "author": "George Brocklehurst",
+        "email": "george@georgebrock.com",
+        "date": "2019-03-03T00:34:08Z",
+        "message": "Load tab completion config on start up.\n\nLoading the tab completion configuration files at start up, instead of\nlazily loading them on first use, allows us to report errors immediately\ninstead of crashing when the user first tries to use tab completion.",
+        "url": "https://github.com/thoughtbot/gitsh/commit/7a21a00c9a4416630b7311adc12ced90ddc1adad"
+    },
+    {
+        "sha": "7a7b23210f1e89481f33c4827567058a57c148e0",
+        "author": "George Brocklehurst",
+        "email": "george@georgebrock.com",
+        "date": "2019-03-03T16:33:45Z",
+        "message": "Prevent invalid option definitions.\n\nBefore this commit, the following tab completion rule was considered valid,\nbut would cause an infinite loop when used:\n\n    add $opt\n      --example $opt\n\nThis was also considered valid, but doesn't really make sense:\n\n    add $opt\n      --example --nested\n\nThis commit resolved the situation by modifying the parser to not accept the\n`$opt` token or another option token (e.g. `--nested`) in the definition of\nan option.\n\nUnfortunately this complicates the parser somewhat, because the tokens\npermitted in a rule and in an option definition have diverged.",
+        "url": "https://github.com/thoughtbot/gitsh/commit/7a7b23210f1e89481f33c4827567058a57c148e0"
+    },
+    {
+        "sha": "57121529d99a08c8205ae5e5ed285459490c1fdb",
+        "author": "George Brocklehurst",
+        "email": "george@georgebrock.com",
+        "date": "2019-03-03T15:58:15Z",
+        "message": "Support empty tab completion config files.\n\nIf the file is empty, or contains only comments, it should be interpreted as\n\"no rules\". Previously it caused a parse error and would crash.",
+        "url": "https://github.com/thoughtbot/gitsh/commit/57121529d99a08c8205ae5e5ed285459490c1fdb"
+    },
+    {
+        "sha": "bb08936e7dd1a71540c4212bf91ca42ffc90b4cb",
+        "author": "George Brocklehurst",
+        "email": "george@georgebrock.com",
+        "date": "2019-03-03T15:57:15Z",
+        "message": "Simplify tab completion rule parsing.",
+        "url": "https://github.com/thoughtbot/gitsh/commit/bb08936e7dd1a71540c4212bf91ca42ffc90b4cb"
+    },
+    {
+        "sha": "88b5f8fc12e8a9c3ad6564977c808a6cab8e829a",
+        "author": "George Brocklehurst",
+        "email": "george@georgebrock.com",
+        "date": "2019-03-02T18:49:19Z",
+        "message": "Introduce $tag matcher for tab completion.\n\nThe $tag matchers produces tag names, and can be used in places where\nthe $revision matcher is too permissive, e.g. `tag -d` only accepts a\ntag name, not a branch name etc.",
+        "url": "https://github.com/thoughtbot/gitsh/commit/88b5f8fc12e8a9c3ad6564977c808a6cab8e829a"
+    },
+    {
+        "sha": "08398ed39ee3bf98425ea292d8fe95e080ebe075",
+        "author": "George Brocklehurst",
+        "email": "george@georgebrock.com",
+        "date": "2019-03-04T20:09:06Z",
+        "message": "Fix flaky test.\n\nSetting `ENV['INPUTRC']` to `\"/dev/null\"` and back to `nil` in the\n`Gitsh::LineEditor` spec was causing the `.inputrc` integration spec to fail\nif it happened to run afterwards.\n\nThis commit avoids the problem by leaving the `INPUTRC` variable untouched.\nThe code to change it was inherited from the Ruby `Readline` tests, and it\nseems unlikely we'll end up with a contributor with a custom `INPUTRC` path\nthat we need to work around.",
+        "url": "https://github.com/thoughtbot/gitsh/commit/08398ed39ee3bf98425ea292d8fe95e080ebe075"
+    },
+    {
+        "sha": "137c18b7fab0f9a75a2696a2a54f499e1979ec03",
+        "author": "George Brocklehurst",
+        "email": "george@georgebrock.com",
+        "date": "2019-03-04T20:07:06Z",
+        "message": "Fix nested #with_a_temporary_home_directory calls.\n\nWhen nesting `#with_a_temporary_home_directory` blocks, the inner call(s)\nwould erroneously pass `\"TRUE\"` to the block instead of the path to the home\ndirectory.\n\nThis doesn't appear to have had any effect, since all current nested calls\nonly use the path in the outer block, but fixing the code will avoid nasty\nsurprises if we ever do need the path in an inner block.",
+        "url": "https://github.com/thoughtbot/gitsh/commit/137c18b7fab0f9a75a2696a2a54f499e1979ec03"
+    },
+    {
+        "sha": "80048109deeb338fb1a5af92a74b31fb5c86adb2",
+        "author": "George Brocklehurst",
+        "email": "george@georgebrock.com",
+        "date": "2019-03-04T20:05:08Z",
+        "message": "Escape control character .inputrc in test.\n\nPutting the control key sequence into the file appears to work the same as\nthe escape sequence, but the escape sequence seems to be a more realistic\ntest since that's what a user is more likely to use in their .inputrc.",
+        "url": "https://github.com/thoughtbot/gitsh/commit/80048109deeb338fb1a5af92a74b31fb5c86adb2"
+    },
+    {
+        "sha": "66667f7a7b6c66fe2160ed3b01d522411cc57d45",
+        "author": "George Brocklehurst",
+        "email": "george@georgebrock.com",
+        "date": "2019-02-17T16:12:14Z",
+        "message": "Tab completion fallback rules.\n\nThis commit adds fallback rules to the default tab completion configuration,\nwhich will only be used when no other rule applies. These provide sensible\ndefaults for things that aren't covered by a specific rule, e.g. non-Git\ncommands like `!rm`, or custom Git commands that have not been configured.\n\nTHE PROBLEM\n===========\n\nProviding generic fallbacks wasn't possible without adding some new features\nto the tab completion DSL.\n\nTo illustrate why the existing DSL was insufficient, consider the following\nrules:\n\n    add $path+\n\n    $command ($path|$revision|$remote)+\n\nA user trying to tab complete arguments to git-add(1) will match both rules:\nthe input will match the `add` rule, and the user will correctly be offered\npaths to complete, but it will also match the `$command` rule, and so they\nwill also be offered revisions and remotes.\n\nThe generic rule provides us with sensible tab completion defaults in\nsituations where we don't have a specific rule, but by matching widely it\nalso undermines the usefulness of a context-aware system.\n\nTHE SOLUTION\n============\n\nThis commit solves the problem by introducing a `fallback::` modifier which\nindicates a variable should only be used when there's no other applicable\nrule. In terms of the finite state automaton that's built from the DSL, a\nvariable with a `fallback::` modifier represents a state transition that\nwill be followed if and only if there's no other appropriate transition from\nthe current state.\n\nWe can use this modifier to fix the problems with the example above:\n\n    add $path+\n\n    fallback::$command ($path|$revision|$remote)+\n\nNow we get the best of both worlds: tab completing arguments for git-add(1)\nwill match the specific rule and only be offered paths, but any other\ncommand will use the fallback rule and be given a generic set of completions\nincluding paths, revisions, and remotes.",
+        "url": "https://github.com/thoughtbot/gitsh/commit/66667f7a7b6c66fe2160ed3b01d522411cc57d45"
+    }
+]

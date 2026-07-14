@@ -1,0 +1,242 @@
+[
+    {
+        "sha": "f638a8ec2882c7fd09160d871f36f880ccf70dff",
+        "author": "Alexandr Dubovikov",
+        "email": "alexandr.dubovikov@gmail.com",
+        "date": "2026-07-13T16:37:44Z",
+        "message": "Merge pull request #867 from sipcapture/fix/866-tiering-duplicate-cold\n\nfix(storage): prevent duplicate cold copies when hot tiering delete fails",
+        "url": "https://github.com/sipcapture/homer/commit/f638a8ec2882c7fd09160d871f36f880ccf70dff"
+    },
+    {
+        "sha": "a4780585b587c24637640ca7deeff81a45df802f",
+        "author": "Alexandr Dubovikov",
+        "email": "alexandr.dubovikov@gmail.com",
+        "date": "2026-07-13T16:37:04Z",
+        "message": "Merge branch 'homer11' into fix/866-tiering-duplicate-cold",
+        "url": "https://github.com/sipcapture/homer/commit/a4780585b587c24637640ca7deeff81a45df802f"
+    },
+    {
+        "sha": "cf55a2dd7393a1fb8306963c374091b0c67d92e6",
+        "author": "Alexandr Dubovikov",
+        "email": "heplabsgmbh@gmail.com",
+        "date": "2026-07-13T16:21:17Z",
+        "message": "fix(storage): prevent duplicate cold copies when hot tiering delete fails\n\nRetry hot-catalog DELETE with writer catalog lock coordination, skip\nre-insert when cold already holds the partition, and report partial moves\nhonestly. Fixes #866.\n\nAssisted-by: Auto",
+        "url": "https://github.com/sipcapture/homer/commit/cf55a2dd7393a1fb8306963c374091b0c67d92e6"
+    },
+    {
+        "sha": "862b6c71863e20822125340a9f97b5c73b27c5cf",
+        "author": "Alexandr Dubovikov",
+        "email": "alexandr.dubovikov@gmail.com",
+        "date": "2026-07-13T15:56:16Z",
+        "message": "Merge pull request #864 from sipcapture/chore/go-update-1.26.5\n\nchore: update Go to 1.26.5",
+        "url": "https://github.com/sipcapture/homer/commit/862b6c71863e20822125340a9f97b5c73b27c5cf"
+    },
+    {
+        "sha": "45db654c3c6702504320605d1748fffb3d9ebff4",
+        "author": "adubovikov",
+        "email": "4513061+adubovikov@users.noreply.github.com",
+        "date": "2026-07-13T09:25:42Z",
+        "message": "chore: update Go from 1.26.4 to 1.26.5",
+        "url": "https://github.com/sipcapture/homer/commit/45db654c3c6702504320605d1748fffb3d9ebff4"
+    },
+    {
+        "sha": "823b6a4a9fcbfc706c2cc0517267acc0b86f04ad",
+        "author": "Alexandr Dubovikov",
+        "email": "alexandr.dubovikov@gmail.com",
+        "date": "2026-07-10T21:55:07Z",
+        "message": "Merge pull request #863 from sipcapture/fix/862-pcap-uploader-auth-11.0.290\n\nfix(ui): PCAP uploader Authorization undefined (#862)",
+        "url": "https://github.com/sipcapture/homer/commit/823b6a4a9fcbfc706c2cc0517267acc0b86f04ad"
+    },
+    {
+        "sha": "42e33cefd09078965976bc9f965ca5154b324bf0",
+        "author": "Alexandr Dubovikov",
+        "email": "heplabsgmbh@gmail.com",
+        "date": "2026-07-10T21:05:24Z",
+        "message": "fix(ui): send cookie auth for PCAP uploader instead of Authorization: undefined\n\nThe PCAP Uploader read authHeader.Authorization directly, which becomes the\nliteral string \"undefined\" when the session uses HttpOnly cookies. Spread\nauthHeader, include credentials, and handle 401 like other dashboard widgets.\n\nFixes #862. Bump VERSION_APPLICATION to 11.0.290.",
+        "url": "https://github.com/sipcapture/homer/commit/42e33cefd09078965976bc9f965ca5154b324bf0"
+    },
+    {
+        "sha": "a3a559d75c9549418f221238d14c51625718a6f0",
+        "author": "Alexandr Dubovikov",
+        "email": "alexandr.dubovikov@gmail.com",
+        "date": "2026-07-09T09:48:54Z",
+        "message": "Update version.go",
+        "url": "https://github.com/sipcapture/homer/commit/a3a559d75c9549418f221238d14c51625718a6f0"
+    },
+    {
+        "sha": "ea9cba63bc1e50488ee4de2a712b889ffe821103",
+        "author": "Alexandr Dubovikov",
+        "email": "alexandr.dubovikov@gmail.com",
+        "date": "2026-07-09T09:37:27Z",
+        "message": "Merge pull request #860 from danieldonoghue/fix/data-extra-json-extract-string-timestamp\n\nfix: use json_extract_string() for data_extra comparisons (follow-up to #859)",
+        "url": "https://github.com/sipcapture/homer/commit/ea9cba63bc1e50488ee4de2a712b889ffe821103"
+    },
+    {
+        "sha": "a50bab96bdb8e5519024e6ff341546302b9f187a",
+        "author": "Daniel Donoghue",
+        "email": "oneofsomany@hotmail.com",
+        "date": "2026-07-09T08:34:15Z",
+        "message": "fix: use json_extract_string() for data_extra comparisons, not ->>\n\nPR #859 (v11.0.288) replaced json_extract() with the ->> operator for\ndata_extra string comparisons. But 'data_extra ->> $.path' combined with a\ntimestamp-range filter (which the search UI always sends) triggers a DuckDB\nplanner error and 500s the whole search endpoint:\n\n  Conversion Error: Failed to cast value to numerical: {...} when casting\n  from source column data_extra\n\nMinimal repro (DuckDB):\n  WHERE data_extra ->> '$.custom_headers.\"X-Foo\"' = 'v'                -- OK\n  WHERE timestamp >= .. AND timestamp <= ..                              -- OK\n  WHERE timestamp .. AND data_extra ->> '$...' = 'v'                     -- ERROR\n  WHERE timestamp .. AND json_extract_string(data_extra,'$...') = 'v'   -- OK\n\njson_extract_string() returns the same unquoted value but is not affected by\nthe planner issue. Applied to the value / absent / present clauses (virtual\nfields, from_host, to_host, user_agent, request_uri, capture_id), updated the\nSQL-shape tests, and added a regression test asserting json_extract_string is\nused (not ->>).",
+        "url": "https://github.com/sipcapture/homer/commit/a50bab96bdb8e5519024e6ff341546302b9f187a"
+    },
+    {
+        "sha": "15201e6c6b72ec12a2153b92c4a138c1132b6ed9",
+        "author": "Alexandr Dubovikov",
+        "email": "heplabsgmbh@gmail.com",
+        "date": "2026-07-08T22:31:30Z",
+        "message": "chore(release): bump version to 11.0.288\n\nRelease fix for data_extra JSON string comparison (closes #857).\n\n👹 Fixed by Goblin",
+        "url": "https://github.com/sipcapture/homer/commit/15201e6c6b72ec12a2153b92c4a138c1132b6ed9"
+    },
+    {
+        "sha": "3d4842f8c5581acdc4a638711f745dc8a4f514e1",
+        "author": "Alexandr Dubovikov",
+        "email": "alexandr.dubovikov@gmail.com",
+        "date": "2026-07-08T22:20:48Z",
+        "message": "Merge pull request #859 from sipcapture/fix/data-extra-json-extract-string\n\nfix: use ->> for data_extra string comparisons (closes #857)",
+        "url": "https://github.com/sipcapture/homer/commit/3d4842f8c5581acdc4a638711f745dc8a4f514e1"
+    },
+    {
+        "sha": "0428b62ca09f0fd33e68e71ba45c780d5537c4f7",
+        "author": "Alexandr Dubovikov",
+        "email": "alexandr.dubovikov@gmail.com",
+        "date": "2026-07-08T20:48:19Z",
+        "message": "Merge branch 'homer11' into fix/data-extra-json-extract-string",
+        "url": "https://github.com/sipcapture/homer/commit/0428b62ca09f0fd33e68e71ba45c780d5537c4f7"
+    },
+    {
+        "sha": "9642bf4c2cd0ec00e04c1d12ca538a9744e6a7c3",
+        "author": "Alexandr Dubovikov",
+        "email": "heplabsgmbh@gmail.com",
+        "date": "2026-07-08T19:29:55Z",
+        "message": "fix: use ->> instead of json_extract for data_extra string comparisons\n\nReplace CAST(json_extract(data_extra, '$.path') AS VARCHAR) with\ndata_extra ->> '$.path' for all data_extra JSON field comparisons.\n\nDuckDB's json_extract() returns JSON-quoted strings (e.g. \"value\"),\nmaking exact-match (=) comparisons fail silently. The ->> operator\nreturns the raw string value without quotes, enabling proper equality\nchecks for virtual fields with kind: data_extra_json and match: equals,\nas well as built-in filters (from_host, to_host, user_agent,\nrequest_uri, capture_id).\n\nFixes #857\n\n👹 Fixed by Goblin",
+        "url": "https://github.com/sipcapture/homer/commit/9642bf4c2cd0ec00e04c1d12ca538a9744e6a7c3"
+    },
+    {
+        "sha": "24d4d57716e8a286b6ec57d6824831b41c5c2896",
+        "author": "Alexandr Dubovikov",
+        "email": "alexandr.dubovikov@gmail.com",
+        "date": "2026-07-08T18:29:01Z",
+        "message": "Merge pull request #858 from sipcapture/dependabot/go_modules/src/go_modules-a3c8a40308\n\nchore(deps): bump golang.org/x/crypto from 0.51.0 to 0.52.0 in /src in the go_modules group across 1 directory",
+        "url": "https://github.com/sipcapture/homer/commit/24d4d57716e8a286b6ec57d6824831b41c5c2896"
+    },
+    {
+        "sha": "e44a89b605e928e33b170bd00e6341ed9a744a9d",
+        "author": "dependabot[bot]",
+        "email": "49699333+dependabot[bot]@users.noreply.github.com",
+        "date": "2026-07-08T18:27:45Z",
+        "message": "chore(deps): bump golang.org/x/crypto\n\nBumps the go_modules group with 1 update in the /src directory: [golang.org/x/crypto](https://github.com/golang/crypto).\n\n\nUpdates `golang.org/x/crypto` from 0.51.0 to 0.52.0\n- [Commits](https://github.com/golang/crypto/compare/v0.51.0...v0.52.0)\n\n---\nupdated-dependencies:\n- dependency-name: golang.org/x/crypto\n  dependency-version: 0.52.0\n  dependency-type: direct:production\n  dependency-group: go_modules\n...\n\nSigned-off-by: dependabot[bot] <support@github.com>",
+        "url": "https://github.com/sipcapture/homer/commit/e44a89b605e928e33b170bd00e6341ed9a744a9d"
+    },
+    {
+        "sha": "99b1e51ab504dc1a8756c539e1d8bad5c9149768",
+        "author": "Alexandr Dubovikov",
+        "email": "alexandr.dubovikov@gmail.com",
+        "date": "2026-07-08T18:25:26Z",
+        "message": "Merge pull request #855 from sipcapture/dependabot/go_modules/examples/otlp_synthetic/go_modules-1c6fc88cd1\n\nchore(deps): bump the go_modules group across 2 directories with 1 update",
+        "url": "https://github.com/sipcapture/homer/commit/99b1e51ab504dc1a8756c539e1d8bad5c9149768"
+    },
+    {
+        "sha": "967c5ab5f69f1b4246bcda915c22d0bc3c638b92",
+        "author": "dependabot[bot]",
+        "email": "49699333+dependabot[bot]@users.noreply.github.com",
+        "date": "2026-07-03T22:02:10Z",
+        "message": "chore(deps): bump the go_modules group across 2 directories with 1 update\n\nBumps the go_modules group with 1 update in the /examples/otlp_synthetic directory: [golang.org/x/net](https://github.com/golang/net).\nBumps the go_modules group with 1 update in the /src directory: [golang.org/x/net](https://github.com/golang/net).\n\n\nUpdates `golang.org/x/net` from 0.50.0 to 0.55.0\n- [Commits](https://github.com/golang/net/compare/v0.50.0...v0.55.0)\n\nUpdates `golang.org/x/net` from 0.50.0 to 0.55.0\n- [Commits](https://github.com/golang/net/compare/v0.50.0...v0.55.0)\n\n---\nupdated-dependencies:\n- dependency-name: golang.org/x/net\n  dependency-version: 0.55.0\n  dependency-type: indirect\n  dependency-group: go_modules\n- dependency-name: golang.org/x/net\n  dependency-version: 0.55.0\n  dependency-type: indirect\n  dependency-group: go_modules\n...\n\nSigned-off-by: dependabot[bot] <support@github.com>",
+        "url": "https://github.com/sipcapture/homer/commit/967c5ab5f69f1b4246bcda915c22d0bc3c638b92"
+    },
+    {
+        "sha": "8b0c8945a1886906810f229008681f609a5075af",
+        "author": "Alexandr Dubovikov",
+        "email": "alexandr.dubovikov@gmail.com",
+        "date": "2026-06-30T10:42:10Z",
+        "message": "Merge pull request #854 from sipcapture/feat/s3-url-style-11.0.287\n\nfeat: configurable S3 URL style for DuckLake (11.0.287)",
+        "url": "https://github.com/sipcapture/homer/commit/8b0c8945a1886906810f229008681f609a5075af"
+    },
+    {
+        "sha": "780ab44da1ca6e98258dbd81442f22ad42ac4d25",
+        "author": "Alexandr Dubovikov",
+        "email": "alexandr.dubovikov@gmail.com",
+        "date": "2026-06-30T10:36:24Z",
+        "message": "chore(release): bump version to 11.0.287\n\nRelease S3 URL style configuration for DuckLake (Aliyun OSS vhost support).",
+        "url": "https://github.com/sipcapture/homer/commit/780ab44da1ca6e98258dbd81442f22ad42ac4d25"
+    },
+    {
+        "sha": "545c52b6df6b00031bcbdd7ca821a946716937c0",
+        "author": "chenpeng",
+        "email": "ichenpeng@qq.com",
+        "date": "2026-06-30T08:25:08Z",
+        "message": "feat: support configurable S3 URL style for DuckLake\n\n## Summary\n\nAdd support for configuring DuckDB S3 URL style across DuckLake storage paths. This allows custom S3-compatible endpoints to use either the existing path-style behavior or virtual-hosted-style access when required by providers such as Aliyun OSS.\n\n## Changes\n\n- Added `s3_url_style` / `url_style` configuration fields for DuckLake S3 settings.\n- Propagated the S3 URL style through writer, node, CLI, tiered storage, compaction, and DuckLake manager setup.\n- Updated DuckDB S3 client settings and DuckLake S3 secret creation to use the configured URL style.\n- Preserved the existing default behavior by normalizing empty URL style values to `path`.\n- Added test coverage for custom `vhost` URL style handling.\n- Updated documentation for environment variables, node volume config, and storage policy volume config.\n\n## Validation\n\n- `go test ./storage/ducklake`",
+        "url": "https://github.com/sipcapture/homer/commit/545c52b6df6b00031bcbdd7ca821a946716937c0"
+    },
+    {
+        "sha": "8428172ae560977ef87c2b0e589fc08601eab86b",
+        "author": "Alexandr Dubovikov",
+        "email": "alexandr.dubovikov@gmail.com",
+        "date": "2026-06-29T21:05:40Z",
+        "message": "Merge pull request #852 from sipcapture/chore/duckdb-1.5.4-11.0.286\n\nchore: DuckDB 1.5.4 (11.0.286)",
+        "url": "https://github.com/sipcapture/homer/commit/8428172ae560977ef87c2b0e589fc08601eab86b"
+    },
+    {
+        "sha": "0d8d5aca42ff9e2df0b53d04043ea92ac70241b1",
+        "author": "Alexandr Dubovikov",
+        "email": "heplabsgmbh@gmail.com",
+        "date": "2026-06-29T21:02:15Z",
+        "message": "chore: bump DuckDB to 1.5.4 and version to 11.0.286\n\nUpgrade duckdb-go/v2 to v2.10504.0 and sync bundled extension downloads\nand CI packaging to v1.5.4.",
+        "url": "https://github.com/sipcapture/homer/commit/0d8d5aca42ff9e2df0b53d04043ea92ac70241b1"
+    },
+    {
+        "sha": "1da6248d789da9c3374e5b4e3d79a5561139b6fb",
+        "author": "Alexandr Dubovikov",
+        "email": "heplabsgmbh@gmail.com",
+        "date": "2026-06-29T15:38:50Z",
+        "message": "chore(release): bump version to 11.0.285",
+        "url": "https://github.com/sipcapture/homer/commit/1da6248d789da9c3374e5b4e3d79a5561139b6fb"
+    },
+    {
+        "sha": "bbbb795018cecdddddca97f6937a42113b3e4132",
+        "author": "Alexandr Dubovikov",
+        "email": "alexandr.dubovikov@gmail.com",
+        "date": "2026-06-29T15:38:05Z",
+        "message": "Merge pull request #851 from sipcapture/fix/850-refer-call-table\n\nfix(ingest): route REFER to hep_proto_1_call (#850)",
+        "url": "https://github.com/sipcapture/homer/commit/bbbb795018cecdddddca97f6937a42113b3e4132"
+    },
+    {
+        "sha": "024171d316d5564f2491de88653c42edcd99b4cd",
+        "author": "Alexandr Dubovikov",
+        "email": "alexandr.dubovikov@gmail.com",
+        "date": "2026-06-29T15:37:56Z",
+        "message": "Merge branch 'homer11' into fix/850-refer-call-table",
+        "url": "https://github.com/sipcapture/homer/commit/024171d316d5564f2491de88653c42edcd99b4cd"
+    },
+    {
+        "sha": "d8112f625ed9658f96bd26fbc627932df24e91bc",
+        "author": "Alexandr Dubovikov",
+        "email": "alexandr.dubovikov@gmail.com",
+        "date": "2026-06-29T15:37:39Z",
+        "message": "Merge pull request #849 from sipcapture/feat/search-exact-match-lazy-uuid-phase\n\nfeat(search): exact form filters and uuid-only lazy search phase",
+        "url": "https://github.com/sipcapture/homer/commit/d8112f625ed9658f96bd26fbc627932df24e91bc"
+    },
+    {
+        "sha": "c1f14347098320c2393cda4cc88759edc45ed610",
+        "author": "Alexandr Dubovikov",
+        "email": "heplabsgmbh@gmail.com",
+        "date": "2026-06-29T15:34:22Z",
+        "message": "fix(ingest): route REFER SIP messages to hep_proto_1_call\n\nHomer 7 and the HEP decoder profile already treat REFER as call traffic;\nGetSIPType incorrectly sent it to hep_proto_1_default, so the calls search\nand transaction view never showed REFER. Align storage routing with Homer 7.\n\nFixes #850",
+        "url": "https://github.com/sipcapture/homer/commit/c1f14347098320c2393cda4cc88759edc45ed610"
+    },
+    {
+        "sha": "ae36bfc43afdbc646bf7a95662128b018c86726d",
+        "author": "Alexandr Dubovikov",
+        "email": "heplabsgmbh@gmail.com",
+        "date": "2026-06-29T08:41:09Z",
+        "message": "feat(search): exact form filters and uuid-only lazy search phase\n\nUse equality for dashboard form string filters unless the value contains\na user-supplied % wildcard. Shrink lazy_payload phase 1 to SELECT uuid,\ntimestamp and hydrate full rows by uuid in phase 2.",
+        "url": "https://github.com/sipcapture/homer/commit/ae36bfc43afdbc646bf7a95662128b018c86726d"
+    },
+    {
+        "sha": "f0e87789330cbb9b1df1aba896eb78f12a0b9382",
+        "author": "Alexandr Dubovikov",
+        "email": "alexandr.dubovikov@gmail.com",
+        "date": "2026-06-28T19:40:49Z",
+        "message": "Merge pull request #848 from sipcapture/fix/846-from-displayname-brackets\n\nfix(sip): From display-name with angle brackets (#846)",
+        "url": "https://github.com/sipcapture/homer/commit/f0e87789330cbb9b1df1aba896eb78f12a0b9382"
+    }
+]

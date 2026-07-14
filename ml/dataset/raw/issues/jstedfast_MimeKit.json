@@ -1,0 +1,361 @@
+[
+    {
+        "id": 4640821393,
+        "number": 1247,
+        "title": "FilterHtml behaviour in 4.17.0 causes emails containing self closing link tag to be truncated",
+        "state": "closed",
+        "created_at": "2026-06-11T13:16:56Z",
+        "updated_at": "2026-06-12T13:42:06Z",
+        "closed_at": "2026-06-12T13:42:06Z",
+        "author": "ondravondra",
+        "comments": 0,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "MimeKit 4.17.0\n\n```csharp\nconst string body =\n                \"\"\"\n                <!DOCTYPE html PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" \"http://www.w3.org/TR/html4/loose.dtd\"><html><head>\n                <meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\"><title></title>\n\n                    <meta http-equiv=\"content-language\" content=\"cs\">\n                    <meta name=\"viewport\" content=\"width=device-width, initial scale=1.0\">\n\n                    <link href=\"https://fonts.googleapis.com/css?family=Open+Sans&amp;subset=latin,latin-ext\" rel=\"stylesheet\">\n                </head>\n                <body>SAMPLE TEXT</body></html>\n                \"\"\";\nvar htmlToHtml = new HtmlToHtml\n{\n    FilterHtml = true,\n    FilterComments = true\n};\nhtmlToHtml.Convert(body);\n```\n\nEverything after the link tag and the link tag is removed.\n\nIn HtmlToHtml.cs the link tag triggers:\n```\nif (FilterHtml && IsUnsafe (ctx.TagId)) {\n    ctx.SuppressInnerContent = true;\n    ...\n```\n\nand because the link tag is self closing the SuppressInnerContent flag stays in the stack each remaining tag is removed.",
+        "url": "https://github.com/jstedfast/MimeKit/issues/1247"
+    },
+    {
+        "id": 4444513318,
+        "number": 1239,
+        "title": "MimeKit.Encodings.Base64Encoder produces incorrect base64 with hardware-acceleration",
+        "state": "closed",
+        "created_at": "2026-05-14T08:45:26Z",
+        "updated_at": "2026-05-14T14:48:06Z",
+        "closed_at": "2026-05-14T14:48:01Z",
+        "author": "adrianbooth",
+        "comments": 6,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "**Describe the bug**\n\n`MimeKit.Encodings.Base64Encoder` (since 4.14.0) produces incorrect base64 output when `maxLineLength > 76`, the input is supplied in successive `Encode` calls, and the hardware accelerated path is used.\n\nThe encoder emits one additional base64 quartet. The extra is a duplicate of a byte at a chunk boundary, leaving the decoded output one byte longer than the input.\n\n**Platform:**\n\nOS: Windows 11 24H2 (also reproduced on Ubuntu via Docker)\n\n.NET Runtime: CoreCLR\n\n.NET Framework: .NET 8.0\n\nMimeKit Version: confirmed broken >= 4.14.0\n\n**To Reproduce**\n\nCreate a new .NET 8 console app adding a reference to MimeKit\n\nPaste the code snippet below into `Program.cs`.\n\n`dotnet run -c Release`.\n\nOn 4.14.0+ the program prints `FAIL`. On 4.13.0 it prints `PASS`.\n\n**Expected behavior**\n\nDecoding the base64 output of `Base64Encoder.Encode` should return the original input bytes, regardless of `maxLineLength` or hardware-acceleration setting.\n\n**Code Snippets**\n\n```csharp\n\nusing MimeKit.Encodings;\n\nusing System.Text;\n\nconst int PayloadSize   = 20649;\n\nconst int ChunkSize     = 4096;\n\nconst int MaxLineLength = 998;\n\nconst string Lorem = \"Lorem ipsum dolor sit amet, consectetur adipiscing elit. \" +\n\n                     \"Sed do eiusmod tempor incididunt ut labore et dolore magna \" +\n\n                     \"aliqua. Ut enim ad minim veniam, quis nostrud exercitation \" +\n\n                     \"ullamco laboris nisi ut aliquip ex ea commodo consequat. \";\n\n// 20,649 bytes of Lorem ipsum.\n\nvar lorem = new StringBuilder();\n\nwhile (lorem.Length < PayloadSize) lorem.Append(Lorem);\n\nvar payload = Encoding.ASCII.GetBytes(lorem.ToString().Substring(0, PayloadSize));\n\n// Pass Base64Encoder 4 KB chunks.\n\nvar encoder = new Base64Encoder(MaxLineLength);\n\nvar outBuf  = new byte[encoder.EstimateOutputLength(payload.Length) + 256];\n\nusing var base64Stream = new MemoryStream();\n\nint offset = 0;\n\nwhile (offset < payload.Length)\n\n{\n\n    int chunk   = Math.Min(ChunkSize, payload.Length - offset);\n\n    int written = encoder.Encode(payload, offset, chunk, outBuf);\n\n    base64Stream.Write(outBuf, 0, written);\n\n    offset += chunk;\n\n}\n\nint flushed = encoder.Flush(payload, offset, 0, outBuf);\n\nbase64Stream.Write(outBuf, 0, flushed);\n\n// Decode and compare.\n\nvar b64     = Encoding.ASCII.GetString(base64Stream.ToArray()).Replace(\"\\n\", \"\");\n\nvar decoded = Convert.FromBase64String(b64);\n\nConsole.WriteLine($\"MimeKit: {typeof(Base64Encoder).Assembly.GetName().Version}\");\n\nConsole.WriteLine($\"Input:   {payload.Length} bytes\");\n\nConsole.WriteLine($\"Output:  {decoded.Length} bytes\");\n\nConsole.WriteLine(payload.SequenceEqual(decoded)\n\n    ? \"PASS\"\n\n    : \"FAIL\");\n\n```\n\nOutput on MimeKit 4.16.0:\n\n```\n\nMimeKit: 4.16.0.0\n\nInput:   20649 bytes\n\nOutput:  20650 bytes\n\nFAIL\n\n```\n\nOutput on MimeKit 4.13.0:\n\n```\n\nMimeKit: 4.13.0.0\n\nInput:   20649 bytes\n\nOutput:  20649 bytes\n\nPASS\n\n```\n\n**Additional context**\n\nThis introduced by #1176 ([commit a6fa9c0](https://github.com/jstedfast/MimeKit/commit/a6fa9c0006a4791a5a8fbec2b1ec1924afd9fb69)) - *\"Optimized the Base64Encoder to use hardware acceleration when available\"*. That PR removed the `maxLineLength = Math.Min(maxLineLength, 76)` line from the `Base64Encoder` constructor.\n\nIn `HwAccelEncode`, each SIMD method's `maxOffset` is calcu;lated using `lineEnd` but doesn't account for the buffer end. When a line happens to terminate at the end of a chunk, the load reads past the buffer. The encoder emits that as an extra quartet. Setting `DOTNET_EnableAVX2=0` avoids this path and makes tests pass, for now this is how we're mitigating the issue as we needed to upgrade to latest for security vulnerabilities in older packages.\n\nI only tested AVX2, but AVX-512 VBMI, AdvSIMD, and Vector128 share the same `maxOffset` calculation so probably have the same problem.\n\n**Candidate fixes:**\n\nTwo options:\n\nThe simpler one is to put the `Math.Min(maxLineLength, 76)` line back. PR #1176's commit message notes line lengths > 76 are \"barely faster\" than 76 in benchmarks anyway. The downside is that callers asking for `maxLineLength=998` now silently get 76 instead. ([example against fork](https://github.com/adrianbooth/MimeKit/pull/2/changes))\n\nIf it's as simple as it seems and I'm not missing some other context it may be preferable to check each SIMD method's `maxOffset` against the input buffer end, not just `lineEnd`. I've done the AVX2 path and tested locally and it resolves the issue. AVX-512, SSSE3 and AdvSIMD share the same pattern so the same change may apply I've included them in the PR for completeness, though not tested these locally. ([example against fork](https://github.com/adrianbooth/MimeKit/pull/1/changes))",
+        "url": "https://github.com/jstedfast/MimeKit/issues/1239"
+    },
+    {
+        "id": 4353867672,
+        "number": 1236,
+        "title": "Version 4.15.0 Memory Leakage",
+        "state": "closed",
+        "created_at": "2026-04-29T21:47:13Z",
+        "updated_at": "2026-05-21T14:52:18Z",
+        "closed_at": "2026-05-21T14:52:18Z",
+        "author": "umarsaeedcheema",
+        "comments": 4,
+        "labels": [
+            "need-info"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "**Describe the bug**\nUpgrading Mimekit from `4.14.0` to `4.15.0` introduced high memory usage.\n\n**Platform (please complete the following information):**\n - OS: Linux\n - .NET Runtime: 9.0\n - .NET Framework: Net Core\n - MimeKit Version: 4.15.0\n\n**To Reproduce**\nUse version 4.15.0\n\n**Expected behavior**\nIncreased memory usage on service leading to OOM\n\n",
+        "url": "https://github.com/jstedfast/MimeKit/issues/1236"
+    },
+    {
+        "id": 4047433322,
+        "number": 1227,
+        "title": "IndexOutOfRangeException in ParseUtils.TryParseDomain when accessing MessageId with malformed Message-ID header",
+        "state": "closed",
+        "created_at": "2026-03-09T19:21:03Z",
+        "updated_at": "2026-03-14T14:48:32Z",
+        "closed_at": "2026-03-14T14:48:32Z",
+        "author": "pawlos",
+        "comments": 5,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "`MimeMessage.MessageId` throws an unhandled `IndexOutOfRangeException` when the message contains a malformed `Message-ID` header ending with `@` (e.g. `@0@`). The root cause is a missing bounds check in `ParseUtils.TryParseDomain`.\n\nAny application that loads untrusted email and accesses `MimeMessage.MessageId` can be crashed by a crafted 17-byte message. I considered reporting this as a security advisory since it's reachable via untrusted email input, but since it's a managed exception with no memory safety implications, I'm filing it as a regular bug.\n\n**Platform (please complete the following information):**\n - OS: Linux (WSL2, Ubuntu 22.04) - also reproducible on Windows\n - .NET Runtime: CoreCLR\n - .NET Framework: .NET 10.0 (SDK 10.0.103 / Runtime 10.0.3)\n - MimeKit Version: 4.15.1\n\n**To Reproduce**\n1. Load a message containing a malformed `Message-ID` header ending with `@`:\n   ```\n   0:\n   MessagE-ID:@0@\n   ```\n2. Access the `MessageId` property\n3. `IndexOutOfRangeException` is thrown\n\n**Expected behavior**\n`MimeMessage.MessageId` should gracefully handle malformed `Message-ID` headers - either return `null` or a best-effort parsed value, consistent with MimeKit's general tolerance of non-conformant input. The exception should not escape to the caller.\n\n```csharp\nusing MimeKit;\n\n// Minimal reproduction - 17 bytes\nvar bytes = new byte[] { 0x30, 0x3a, 0x0a, 0x4d, 0x65, 0x73, 0x73, 0x61,\n                         0x67, 0x45, 0x2d, 0x49, 0x44, 0x3a, 0x40, 0x30, 0x40 };\nusing var stream = new MemoryStream(bytes);\nvar message = MimeMessage.Load(stream);\nConsole.WriteLine(message.MessageId);  // throws IndexOutOfRangeException\n```\n\nStack trace:\n```\nSystem.IndexOutOfRangeException: Index was outside the bounds of the array.\n   at MimeKit.Utils.ParseUtils.TryParseDomain(Byte[] text, Int32& index, Int32 endIndex, ReadOnlySpan`1 sentinels, Boolean throwOnError, String& domain)\n   at MimeKit.Utils.ParseUtils.TryParseMsgId(Byte[] text, Int32& index, Int32 endIndex, Boolean requireAngleAddr, Boolean throwOnError, String& msgid)\n   at MimeKit.Utils.MimeUtils.ParseMessageId(Byte[] buffer, Int32 startIndex, Int32 length)\n   at MimeKit.MimeMessage.get_MessageId()\n```\n\n**Additional context**\n**Root cause:** In `TryParseMsgId`, the multi-domain `@` loop (for broken IDs like `<local@domain1@domain2>`) increments `index` past the final `@` and loops back to call `TryParseDomain` without re-checking bounds:\n\n```csharp\ndo {\n    if (!TryParseDomain (text, ref index, endIndex, GreaterThanOrAt, throwOnError, out string? domain))\n        return false;\n    // ...\n    if (index >= endIndex || text[index] != (byte) '@')\n        break;\n    token.Append ('@');\n    index++;            // ← advances index, may now be == endIndex\n} while (true);         // ← loops back and calls TryParseDomain again\n```\n\n`TryParseDomain` then accesses `text[index]` on its first line without checking bounds:\n\n```csharp\nif (text[index] == (byte) '[')   // IndexOutOfRangeException when index >= endIndex\n```\n\n**Suggested fix** - add a bounds check at the top of `TryParseDomain`:\n\n```csharp\nif (index >= endIndex) {\n    domain = null;\n    return false;\n}\n```\n\nThis is sufficient - `TryParseDomain` is only called from `TryParseMsgId`, which returns `false` immediately on failure. The delegated methods (`TryParseDomainLiteral`, `TryParseDotAtom`) both check bounds internally.\n\nFound via coverage-guided fuzzing with AFL++ and SharpFuzz. Original crash input (297 bytes) minimized to 17 bytes with `afl-tmin`.\n",
+        "url": "https://github.com/jstedfast/MimeKit/issues/1227"
+    },
+    {
+        "id": 3826173033,
+        "number": 1216,
+        "title": "Add a MimeAnalyzer",
+        "state": "open",
+        "created_at": "2026-01-18T01:53:44Z",
+        "updated_at": "2026-01-18T20:01:03Z",
+        "closed_at": null,
+        "author": "jstedfast",
+        "comments": 0,
+        "labels": [
+            "enhancement"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "I'm currently working on adding logic to MimeReader to detect MIME compliance violations (see `mime-compliance-violations` branch), but I'm not sure I'm happy with my current API (which is more-or-less an event on MimeReader and a boolean property to enable compliance detection).\n\nAlternatively, it occurred to me that I could write a separate class (`MimeAnalyzer`?) that is either a \"clone\" of MimeReader with the added compliance detection logic that I've already added in my `mime-compliance-violations` branch *or* I could make it subclass MimeReader. A third option would be to have a `MimeAnalyzer` class that analyzed a parsed `MimeMessage` and/or could use MimeReader/ExperimentalMimeParser to parse the message and then analyze the resulting message.\n\nHere's the API that Copilot suggested:\n\n```csharp\n// Core analyzer class\npublic class MimeAnalyzer\n{\n    public MimeAnalyzer(MimeAnalyzerOptions? options = null);\n    \n    // Analysis methods\n    public MimeAnalysisResult Analyze(Stream stream, MimeFormat format = MimeFormat.Default);\n    public MimeAnalysisResult Analyze(MimeMessage message);\n    public MimeAnalysisResult Analyze(MimeEntity entity);\n    public MimeAnalysisResult Analyze(string filePath, MimeFormat format = MimeFormat.Default);\n    \n    // Async variants\n    public Task<MimeAnalysisResult> AnalyzeAsync(Stream stream, MimeFormat format = MimeFormat.Default, CancellationToken cancellationToken = default);\n    public Task<MimeAnalysisResult> AnalyzeAsync(string filePath, MimeFormat format = MimeFormat.Default, CancellationToken cancellationToken = default);\n    \n    // Event-based for real-time feedback\n    public event EventHandler<MimeIssueDetectedEventArgs>? IssueDetected;\n}\n\n// Options/Configuration\npublic class MimeAnalyzerOptions\n{\n    // What to check\n    public MimeAnalysisLevel Level { get; set; } = MimeAnalysisLevel.Strict;\n    public MimeAnalysisCategories Categories { get; set; } = MimeAnalysisCategories.All;\n    \n    // Thresholds\n    public int MaxLineLength { get; set; } = 998; // RFC 5322\n    public int MaxHeaderCount { get; set; } = 1000;\n    public long MaxMessageSize { get; set; } = 100 * 1024 * 1024; // 100 MB\n    \n    // Custom rules\n    public IList<IMimeAnalysisRule> CustomRules { get; }\n    \n    // Output preferences\n    public bool IncludeRecommendations { get; set; } = true;\n    public bool IncludeContext { get; set; } = true; // Include snippets around issues\n}\n\n// Analysis levels\n[Flags]\npublic enum MimeAnalysisCategories\n{\n    None = 0,\n    Structure = 1 << 0,          // Missing boundaries, invalid nesting\n    Headers = 1 << 1,            // Invalid headers, encoding issues\n    Encoding = 1 << 2,           // Content-Transfer-Encoding violations\n    ContentType = 1 << 3,        // Content-Type issues\n    LineEndings = 1 << 4,        // Bare LF, CRLF consistency\n    Security = 1 << 5,           // Potential security issues\n    Performance = 1 << 6,        // Large attachments, inefficient encoding\n    Compatibility = 1 << 7,      // Issues that may cause problems with certain clients\n    All = ~0\n}\n\npublic enum MimeAnalysisLevel\n{\n    Permissive,  // Only critical errors\n    Standard,    // RFC compliance\n    Strict       // Strict interpretation + best practices\n}\n\n// Results\npublic class MimeAnalysisResult\n{\n    public bool IsValid { get; }\n    public MimeAnalysisSeverity HighestSeverity { get; }\n    public IReadOnlyList<MimeIssue> Issues { get; }\n    public MimeMessageStatistics Statistics { get; }\n    \n    // Filtering/querying\n    public IEnumerable<MimeIssue> GetIssues(MimeAnalysisSeverity severity);\n    public IEnumerable<MimeIssue> GetIssues(MimeAnalysisCategories category);\n    public IEnumerable<MimeIssue> GetIssuesByLocation(string entityPath); // e.g., \"body[0].body[1]\"\n    \n    // Reporting\n    public string ToText();\n    public string ToHtml();\n    public string ToJson();\n    public void WriteTo(TextWriter writer, MimeAnalysisReportFormat format = MimeAnalysisReportFormat.Text);\n}\n\n// Individual issues\npublic class MimeIssue\n{\n    public MimeAnalysisSeverity Severity { get; }\n    public MimeAnalysisCategories Category { get; }\n    public string Code { get; }          // e.g., \"MIME001\", \"RFC5322-003\"\n    public string Description { get; }\n    public MimeLocation Location { get; }\n    public string? Context { get; }      // Text snippet around the issue\n    public string? Recommendation { get; }\n    public Uri? ReferenceUrl { get; }    // Link to RFC or documentation\n}\n\npublic enum MimeAnalysisSeverity\n{\n    Info,\n    Warning,\n    Error,\n    Critical\n}\n\npublic class MimeLocation\n{\n    public long Offset { get; }\n    public int LineNumber { get; }\n    public int ColumnNumber { get; }\n    public string EntityPath { get; }    // e.g., \"message.body[0]\"\n    public string? HeaderName { get; }   // If issue is in a header\n}\n\npublic class MimeMessageStatistics\n{\n    public int TotalSize { get; }\n    public int HeaderCount { get; }\n    public int PartCount { get; }\n    public int AttachmentCount { get; }\n    public int MaxNestingDepth { get; }\n    public Dictionary<string, int> ContentTypes { get; }\n    public Dictionary<ContentEncoding, int> Encodings { get; }\n    public NewLineFormat? PredominantLineEnding { get; }\n}\n\n// Extensibility\npublic interface IMimeAnalysisRule\n{\n    string RuleId { get; }\n    string Description { get; }\n    MimeAnalysisSeverity Severity { get; }\n    MimeAnalysisCategories Category { get; }\n    \n    IEnumerable<MimeIssue> Analyze(MimeMessage message);\n}\n```\n\nUsage Examples:\n\n```csharp\n// Simple analysis\nvar analyzer = new MimeAnalyzer();\nvar result = analyzer.Analyze(stream);\n\nif (!result.IsValid)\n{\n    foreach (var issue in result.Issues.Where(i => i.Severity >= MimeAnalysisSeverity.Error))\n    {\n        Console.WriteLine($\"[{issue.Severity}] {issue.Description} at line {issue.Location.LineNumber}\");\n        if (issue.Recommendation != null)\n            Console.WriteLine($\"  Recommendation: {issue.Recommendation}\");\n    }\n}\n\n// Configured analysis\nvar options = new MimeAnalyzerOptions\n{\n    Level = MimeAnalysisLevel.Strict,\n    Categories = MimeAnalysisCategories.Headers | MimeAnalysisCategories.Security,\n    MaxLineLength = 1000\n};\n\nvar analyzer = new MimeAnalyzer(options);\nvar result = await analyzer.AnalyzeAsync(\"message.eml\");\n\n// Custom rule\noptions.CustomRules.Add(new MaxAttachmentSizeRule(10 * 1024 * 1024));\n\n// Real-time feedback\nanalyzer.IssueDetected += (sender, e) =>\n{\n    Console.WriteLine($\"Issue found: {e.Issue.Description}\");\n};\n\n// Report generation\nConsole.WriteLine(result.ToText());\nFile.WriteAllText(\"analysis.html\", result.ToHtml());\nFile.WriteAllText(\"analysis.json\", result.ToJson());\n\n// Statistics\nConsole.WriteLine($\"Message size: {result.Statistics.TotalSize:N0} bytes\");\nConsole.WriteLine($\"Parts: {result.Statistics.PartCount}\");\nConsole.WriteLine($\"Max nesting: {result.Statistics.MaxNestingDepth}\");\n```\n\nKey Design Benefits\n1.\tProgressive disclosure - Simple cases are simple, complex cases are possible\n2.\tFlexible input - Works with streams, files, or already-parsed messages\n3.\tExtensible - Custom rules via interface\n4.\tActionable - Provides recommendations and reference links\n5.\tMultiple output formats - Text, HTML, JSON for different use cases\n6.\tPerformance-conscious - Event-based option for streaming analysis\n7.\tRich metadata - Statistics provide overview of message characteristics",
+        "url": "https://github.com/jstedfast/MimeKit/issues/1216"
+    },
+    {
+        "id": 3817890234,
+        "number": 1215,
+        "title": "Hardware Acceleration Support",
+        "state": "closed",
+        "created_at": "2026-01-15T14:53:54Z",
+        "updated_at": "2026-02-17T08:22:01Z",
+        "closed_at": "2026-01-17T16:33:43Z",
+        "author": "tinohager",
+        "comments": 7,
+        "labels": [
+            "enhancement"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "As far as I can see, the new hardware acceleration support is not yet supported in the test routine. Fortunately, it is currently only used in `Base64Decoder.cs` and `Base64Encoder.cs`.\n\nAt present, there is no way to intervene in this behavior because it is hard-coded. I would like to be able to decide for myself whether I want to enable it.\n\n- https://github.com/jstedfast/MimeKit/pull/1214",
+        "url": "https://github.com/jstedfast/MimeKit/issues/1215"
+    },
+    {
+        "id": 3549500894,
+        "number": 1195,
+        "title": "parsing Email address that contains Unicode",
+        "state": "closed",
+        "created_at": "2025-10-21T05:57:19Z",
+        "updated_at": "2025-10-24T13:28:26Z",
+        "closed_at": "2025-10-24T13:28:26Z",
+        "author": "zijianhuang",
+        "comments": 3,
+        "labels": [
+            "question"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "**Describe the bug**\nFor example,\n```C#\nMailboxAddress.TryParse(\"pesƟe@hillsguardian.com.au\", out var parsed)\n```\nreturns true.\n\n**Platform (please complete the following information):**\n - OS: Windows\n - .NET Runtime: .NET 9\n - .NET Framework: .NET 9\n - MailKit Version: latest 4.14\n\n**Exception**\nUnexpected true\n\n**To Reproduce**\nSteps to reproduce the behavior:\nAs shown in the example.\n\n\n\n\n**Additional context**\nIf for some reasons some Email systems disallow Unicode in Email address, it will be good to have an option to enforce a single, ASCII-only email address. This is particularly good from data exporting and importing.\n\n",
+        "url": "https://github.com/jstedfast/MimeKit/issues/1195"
+    },
+    {
+        "id": 3458698040,
+        "number": 1189,
+        "title": "MimeParser Quits Enumerating Messages in Mbox Prematurely",
+        "state": "closed",
+        "created_at": "2025-09-26T18:30:56Z",
+        "updated_at": "2025-09-27T00:23:21Z",
+        "closed_at": "2025-09-27T00:23:21Z",
+        "author": "gungora",
+        "comments": 1,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "**Describe the bug**\nWhen one of the MIME messages in an Mbox file has a structural error, MimeParser quits at that message without throwing an exception. This gives the impression that the Mbox file was enumerated successfully and completely when there were items beyond the problematic message that were skipped.\n\nThe specific structural error where I observed this problem is when an attachment is Base64 encoded on a single line past 5k bytes, and there is no blank line between the headers of that MIME entity and the attachment contents (i.e., two issues).\n\n**Platform:**\n - OS: Windows\n - .NET Runtime: .Net 8\n - MimeKit Version: 4.13.0\n\n**To Reproduce**\n\n1. Enumerate the supplied Mbox file that contains 4 sample messages.\n2. The second message has a structural error.\n3. MimeParser only parses two messages without an exception and ignores messages 3 and 4.\n4. Parsed message 2 is incomplete and does not contain the ending MIME boundary delimiter. This is not unexpected since the message had a structural issue.\n\n**Expected behavior**\nMimeParser should throw a format exception at message 2 and proceed with parsing messages 3 and 4.\n\nIf it is possible to work around the error in message 2 and parse it completely despite the structural issue, that would be fantastic but I understand if that is not desirable from a performance standpoint.\n\n**Additional context**\nI have included a small sample Mbox file to illustrate the issue. Message 2 of 4 has the structural issue I described.\n\n[Test.mbox.txt](https://github.com/user-attachments/files/22566269/Test.mbox.txt)\n",
+        "url": "https://github.com/jstedfast/MimeKit/issues/1189"
+    },
+    {
+        "id": 3435024680,
+        "number": 1186,
+        "title": "MailAddress Validation Issue With Leading Whitespace",
+        "state": "closed",
+        "created_at": "2025-09-19T16:29:13Z",
+        "updated_at": "2025-09-20T23:06:17Z",
+        "closed_at": "2025-09-20T20:57:55Z",
+        "author": "sbwalker",
+        "comments": 6,
+        "labels": [
+            "question"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "**Describe the bug**\nWhen using MimeKit to construct a MailAddress object the common pattern would be to use MailboxAddress.TryParse() to validate the email address prior to calling the MailboxAddress() constructor. However the TryParse(0 method exhibits different behavior than than constructor which can lead to unhandled exceptions.\n\n**Platform (please complete the following information):**\n - OS: All\n - .NET Runtime: CoreCLR\n - .NET Framework: .Net Core\n - MimeKit Version: 4.13\n\n**To Reproduce**\nSteps to reproduce the behavior:\n\n```\n// email below contains a leading space character\nvar email = \" x@y.com\";\n// logic below will return true\nif (MailboxAddress.TryParse(email, out _))\n{\n   // logic below will throw exception \"Invalid local-part at offset 0\"\n    var address = new MailboxAddress(\"\", email);\n}\n```\n\n**Expected behavior**\nThe TryParse() method should exhibit the same behavior as the constructor - either TryParse() should return False in this scenario, or the constructor should remove the leading whitespace.\n\n**Code Snippets**\nSee above\n\n**Additional context**\nIssue discovered on production site using the Oqtane Framework (https://github.com/oqtane/oqtane.framework)\n",
+        "url": "https://github.com/jstedfast/MimeKit/issues/1186"
+    },
+    {
+        "id": 3395561404,
+        "number": 1184,
+        "title": "Preserve AS2 content line endings",
+        "state": "closed",
+        "created_at": "2025-09-08T20:12:32Z",
+        "updated_at": "2025-09-30T19:28:10Z",
+        "closed_at": "2025-09-27T14:27:13Z",
+        "author": "m0a0k0s",
+        "comments": 6,
+        "labels": [
+            "bug",
+            "compatibility"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "Hello. I'm migrating legacy code that handles AS2 messages to MimeKit.\nOld version respects the original line ending for content that passes as binary data.\nIn MimeKit, there's two places: encrypting ApplicationPkcs7Mime.EncryptAsync and signing MultipartSigned.CreateAsync that forces line ending transformation to DOS.\nIt references rfc2015 or rfc3156, section 5.1 here, but it's for plain text\nhttps://github.com/jstedfast/MimeKit/blob/7042714e0df9091aa7c73547f1c56da4ee9fd94b/MimeKit/Cryptography/MultipartSigned.cs#L146\nWhen creating the message as is, the mdn calculated on original content outside MimeKit does not match with the one calculated with the result message.\nI bypass it now by calling the underlying code directly without conversion part. \nThis is the same as https://github.com/jstedfast/MimeKit/issues/569, but another direction - creating a message.",
+        "url": "https://github.com/jstedfast/MimeKit/issues/1184"
+    },
+    {
+        "id": 3298102527,
+        "number": 1181,
+        "title": "Extra line breaks between status groups of a \"message/delivery-status\" mime part results in missing status group.",
+        "state": "closed",
+        "created_at": "2025-08-06T21:16:00Z",
+        "updated_at": "2025-08-08T00:32:53Z",
+        "closed_at": "2025-08-08T00:32:53Z",
+        "author": "daikoz",
+        "comments": 2,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "**Describe the bug**\nWhen parsing a \"message/delivery-status\" body part, having an extra line break after the first group results in the 2nd group not being parsed into the MessageDeliveryStatus.StatusGroups property.\n\n**Platform:**\n - OS: Windows & Linux\n - .NET Runtime: core 9\n - .NET Framework: .Net Core 9\n - MimeKit Version: 4.13.0\n\n**To Reproduce**\nSteps to reproduce the behavior:\n1. Run the code snippet (sample file attached). [test.zip](https://github.com/user-attachments/files/21637719/test.zip)\n2. StatusGroups should contain all header, but the group contain only Reporting-MTA.     \n\n**Expected behavior**\nStatusGroups should contain all header, but the group contain only Reporting-MTA.     \n\n**Code Snippets**\nsee test.zip. it contain the mail and the test code.\n\n",
+        "url": "https://github.com/jstedfast/MimeKit/issues/1181"
+    },
+    {
+        "id": 3297479420,
+        "number": 1180,
+        "title": "DMARC validation and reporting",
+        "state": "open",
+        "created_at": "2025-08-06T14:24:10Z",
+        "updated_at": "2025-10-06T19:54:22Z",
+        "closed_at": null,
+        "author": "borbelyr-mentorit",
+        "comments": 10,
+        "labels": [
+            "enhancement"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "**Dear MailKit Team,**\n\nWe are looking for a .Net implementation for validating DMARC and reporting it via email. We have already using MailKit in our application, so it would be very easy for us to use, once available.\n\nDo you have adding DMARC handling on your roadmap? If so, when?\n\nThank you,\nRoland Borbély",
+        "url": "https://github.com/jstedfast/MimeKit/issues/1180"
+    },
+    {
+        "id": 3292730601,
+        "number": 1179,
+        "title": "ArgumentException: 'non-empty set required' when using SignAndEncrypt with TemporarySecureMimeContext",
+        "state": "closed",
+        "created_at": "2025-08-05T11:29:33Z",
+        "updated_at": "2025-08-05T15:43:15Z",
+        "closed_at": "2025-08-05T15:42:37Z",
+        "author": "Xgleich8",
+        "comments": 1,
+        "labels": [
+            "question"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "MimeKit Version: 4.13.0\n.NET Version: .Net Framework 4.8.1\nPlatform: Windows 11 x64\n\nCalling MimeMessage.SignAndEncrypt(...) with a properly initialized TemporarySecureMimeContext results in an ArgumentException caused by an empty trust anchor set (tas), despite importing a trusted root certificate.\n\n``` Text\nSystem.ArgumentException: non-empty set required\nParameter name: tas\n   at Org.BouncyCastle.Pkix.PkixParameters.SetTrustAnchors(ISet`1 tas)\n   at Org.BouncyCastle.Pkix.PkixParameters..ctor(ISet`1 trustAnchors)\n   at Org.BouncyCastle.Pkix.PkixBuilderParameters..ctor(ISet`1 trustAnchors, ISelector`1 targetConstraintsCert, ISelector`1 targetConstraintsAttrCert)\n   at MimeKit.Cryptography.BouncyCastleSecureMimeContext.BuildCertificateChain(X509Certificate certificate)\n   at MimeKit.Cryptography.TemporarySecureMimeContext.GetCmsSigner(MailboxAddress mailbox, DigestAlgorithm digestAlgo)\n   at MimeKit.Cryptography.BouncyCastleSecureMimeContext.Sign(...)\n   ...\n```\n\n- `CanSign` and `CanEncrypt` return `true`.\n- Manually building the X509Chain works fine, indicating the certificates are valid and trusted.\n\n`ApplicationPkcs7Mime.Sign(ctx, secureSigner, DigestAlgorithm.Sha256, bodyText);` same exception.\n\n`ApplicationPkcs7Mime.Sign(ctx, new CmsSigner(senderCert) { DigestAlgorithm = DigestAlgorithm.Sha256 }, bodyText);` works.",
+        "url": "https://github.com/jstedfast/MimeKit/issues/1179"
+    },
+    {
+        "id": 3215948666,
+        "number": 1175,
+        "title": "InternetAddressList.TryParse unexpected behaviour",
+        "state": "closed",
+        "created_at": "2025-07-09T13:25:15Z",
+        "updated_at": "2025-07-09T14:14:41Z",
+        "closed_at": "2025-07-09T14:14:41Z",
+        "author": "Nowak-Kacper",
+        "comments": 1,
+        "labels": [
+            "wontfix"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "**Describe the bug**\nI have a unit test in which I discovered potential bug in InternetAddressList.TryParse(ParserOptions, String, InternetAddressList).\nFor input String:\n`\n@\"\n\t\t\t<test@example.com>,\n\t\t\ttest@example.com,\n\t\t\t\"\"Test Example\"\" <test@example.com>,\n\t\t\t\"\"Test Example (test@example.com)\"\" <test@example.com>,\n\t\t\t\"\"Trims Whitespaces   \"\" <trims@whitespaces.com >,\n\t\t\t\"\"Test Example\"\"\n\t\t\t\"\n`\nI'm getting 6 email addresses, but when I modify it to:\n\n`\n@\"\n\t\t\t\"\"Test Example\"\",\n\t\t\t<test@example.com>,\n\t\t\ttest@example.com,\n\t\t\t\"\"Test Example\"\" <test@example.com>,\n\t\t\t\"\"Test Example (test@example.com)\"\" <test@example.com>,\n\t\t\t\"\"Trims Whitespaces   \"\" <trims@whitespaces.com >\n\t\t\t\"\n`\nI'm getting 5 email addresses. First(\"\"Test Example\"\") and second(<test@example.com>) are merged into one.\n\n**Platform:**\n - OS: Windows 10\n - .NET Runtime: CoreCLR\n - .NET Framework:  .NET 9.0\n - MimeKit Version: 4.7.1\n\n**To Reproduce**\nSteps to reproduce the behavior:\n1. run InternetAddressList.TryParse(ParserOptions, String, InternetAddressList) with strings that I pasted above.\n2. compare results from both strings\n\n**Expected behavior**\nI expect to get same result which is different only in order.\n\n**Code Snippets**\n\n`ParserOptions options = ParserOptions.Default.Clone();\n\t\toptions.AddressParserComplianceMode = RfcComplianceMode.Looser;\n\t\toptions.ParameterComplianceMode = RfcComplianceMode.Looser;\n\t\toptions.Rfc2047ComplianceMode = RfcComplianceMode.Looser;\n\t\treturn options;`\n",
+        "url": "https://github.com/jstedfast/MimeKit/issues/1175"
+    },
+    {
+        "id": 3143087511,
+        "number": 1170,
+        "title": "National character sets not decoded properly",
+        "state": "closed",
+        "created_at": "2025-06-13T10:25:38Z",
+        "updated_at": "2025-06-14T19:41:00Z",
+        "closed_at": "2025-06-13T11:13:05Z",
+        "author": "klasyc",
+        "comments": 4,
+        "labels": [
+            "question"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "**Describe the bug**\nI am using MailKit to download messages from IMAP server. Until the messages are encoded in UTF-8, everything works fine. But when there is a message encoded with single-byte encoding, such as ISO-8859-2, both subject and message body display the national characters wrongly.\n\n**Platform (please complete the following information):**\n - OS: Windows 10\n - .NET Runtime: CoreCLR\n - .NET Framework: .NET 9\n - MimeKit Version: 4.11\n\n**To Reproduce**\nUse the code snippet below + attached example of email message. The attached file is a sample message created with Outlook 2019, which by default prefers national encodings to UTF-8. It displays properly in Thunderbird and Roundcube, but it's broken when loaded with MailKit.\n\n**Expected behavior**\nAs soon as the message has correct headers, MailKit should recognize encoding and return properly decoded strings.\n\n**Code Snippets**\n```csharp\nusing var fileStream = File.OpenRead(\"mail.txt\");\nvar msg = MimeMessage.Load(fileStream);\nConsole.WriteLine(\"Subject: \" + msg.Subject);\nConsole.WriteLine(\"Html: \" + msg.HtmlBody);\n```\n\n[mail.txt](https://github.com/user-attachments/files/20724721/mail.txt)",
+        "url": "https://github.com/jstedfast/MimeKit/issues/1170"
+    },
+    {
+        "id": 3116761587,
+        "number": 1168,
+        "title": "Attachments with UTF-8 characters in name are not displayed properly when FormatOption.International = true",
+        "state": "closed",
+        "created_at": "2025-06-04T07:12:43Z",
+        "updated_at": "2025-06-04T15:39:59Z",
+        "closed_at": "2025-06-04T15:39:59Z",
+        "author": "TheoLesieux",
+        "comments": 4,
+        "labels": [
+            "3rd-party-client-bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "When sending a mail with attachment names having special characters (here **Devólución** and **Devolución**), I noticed that they are not displayed properly \n\n![Image](https://github.com/user-attachments/assets/537a368d-a45c-41dc-b78c-a28441df7a81)\n\nAfter some research I found that this issue came after the version 4.7 where I think it is related to this commit https://github.com/jstedfast/MimeKit/commit/5bdb9f0c58044a4318ed79d907276ac875267507#diff-6a354989551d7087a1ef00719626fb9b6317e1877da620572c8cb45b37917e6a where UTF8 encryption is not enforced anymore. \n\nIn the eml extracted before the send async it is noted as ISO 8859-1 and the eml contains the things correctly encoded. As it should be with F3 (the first  \"ó\") **name*=iso-8859-1''Dev%F3luci%F3n.pdf**\nAfter the send in the mailbox the eml now encodes as UTF8 C3 B3 but with the encoding still stated as ISO 8859-1 leading to the wrong output **name=\"=?iso-8859-1?Q?Devoluci=C3=B3n.pdf?=\"**\n\nThis happens only for FormatOption.International = true\n\nDo you know how I could resolve this issue with the existing features of MimeKit, I couldn't find something to fix it",
+        "url": "https://github.com/jstedfast/MimeKit/issues/1168"
+    },
+    {
+        "id": 3097002609,
+        "number": 1167,
+        "title": "Strong-named assembly",
+        "state": "closed",
+        "created_at": "2025-05-28T11:22:42Z",
+        "updated_at": "2025-05-28T18:20:57Z",
+        "closed_at": "2025-05-28T18:20:56Z",
+        "author": "danielklecha",
+        "comments": 1,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "Hi!\n\nMy project is using strong-named assemblies.\nCould you modify the deployment to generate two versions of the package?\nFor example:\n- MimeKitLite and MimeKitLite.StrongName\n- MimeKit and MimeKit.StrongName\nDo you have plans to do that?\n\nIf you need to generate an SNK file, you can follow these steps:\n1. Open the Visual Studio Developer Command Prompt\n2. Run the following command: `sn -k MimeKit.snk`\n3. Store the generated file in a safe place.\n4. If you need to use it with GitHub Actions as a secret, you can generate a base64 version with the following PowerShell command: `[Convert]::ToBase64String([IO.File]::ReadAllBytes('MimeKit.snk'))`\n\nI use GitHub actions for my library, and steps similar to those below should work for your library.\n\n```yaml\n    - name: Create Strong Name Assembly Key File for MimeKit\n      run: |\n        echo \"${{ secrets.STRONG_NAME_KEY_MIMEKIT }}\" | base64 --decode > MimeKit.snk\n\n    - name: Create Strong Name Assembly Key File for MimeKitLite\n      run: |\n        echo \"${{ secrets.STRONG_NAME_KEY_MIMEKITLITE }}\" | base64 --decode > MimeKitLite.snk\n\n    - name: Build MimeKit (Strong-Named)\n      run: dotnet build MimeKit/MimeKit.csproj --configuration Release --no-restore /p:SignAssembly=true /p:AssemblyOriginatorKeyFile=$PWD/MimeKit.snk\n\n    - name: Pack MimeKit (Strong-Named)\n      run: dotnet pack MimeKit/MimeKit.csproj --configuration Release --no-build /p:PackageId=MimeKit.StrongName\n\n    - name: Build MimeKitLite (Strong-Named)\n      run: dotnet build MimeKit/MimeKitLite.csproj --configuration Release --no-restore /p:SignAssembly=true /p:AssemblyOriginatorKeyFile=$PWD/MimeKitLite.snk\n\n    - name: Pack MimeKitLite (Strong-Named)\n      run: dotnet pack MimeKit/MimeKitLite.csproj --configuration Release --no-build /p:PackageId=MimeKitLite.StrongName\n\n    - name: Publish to NuGet\n      run: dotnet nuget push **/*.nupkg --source https://api.nuget.org/v3/index.json --api-key ${{ secrets.NUGETAPIKEY }}\n```\n\nMy configuration of the build action is here:\nhttps://github.com/danielklecha/SharpIppNext/blob/master/.github/workflows/create-release.yml\n\nBest regards",
+        "url": "https://github.com/jstedfast/MimeKit/issues/1167"
+    },
+    {
+        "id": 3089118223,
+        "number": 1166,
+        "title": "Body encoding?",
+        "state": "closed",
+        "created_at": "2025-05-25T07:50:40Z",
+        "updated_at": "2025-05-25T11:53:31Z",
+        "closed_at": "2025-05-25T10:10:44Z",
+        "author": "DamijanD",
+        "comments": 2,
+        "labels": [
+            "question"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "If I use non ASCII characters I get problems with encoding. \nBody: ŠĐČĆŽSDCCZšđčćž\n\nAs you can see BodyPart has wrong encoding:\n\n![Image](https://github.com/user-attachments/assets/e85c8075-af37-4609-b6ee-17836b396a6c)\n\n\n\nAlso in the received/sent email there is no original characters:\n\n![Image](https://github.com/user-attachments/assets/82f1d97d-64a9-4183-900b-0edf57b20f78)\n\n\nIs this a bug or should I set some encoding somewhere?",
+        "url": "https://github.com/jstedfast/MimeKit/issues/1166"
+    },
+    {
+        "id": 3083650599,
+        "number": 1165,
+        "title": "TemporarySecureMimeContext requires \"keyEncipherment\" key usage, even though this is not required by the spec",
+        "state": "closed",
+        "created_at": "2025-05-22T14:49:10Z",
+        "updated_at": "2025-05-22T17:21:42Z",
+        "closed_at": "2025-05-22T17:21:38Z",
+        "author": "derekchoate",
+        "comments": 0,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "Initial Problem\n---\n\nI purchased a SMIME certificate from Sectigo to test S/MIME email sending in an Azure Function, however, it threw a \"CertificateNotFoundException\" exception.\n\nAfter some investigation, I discovered that the code required the \"KeyEncipherment\" key usage to be set, but my certificate didn't have this.\n\nhttps://github.com/jstedfast/MimeKit/blame/917533650212bd5df7b3f0c22f7de83e493e1d92/MimeKit/Cryptography/TemporarySecureMimeContext.cs#L274\n\n```\n274: if (keyUsage != 0 && (keyUsage & X509KeyUsageFlags.KeyEncipherment) == 0)\n275:   continue;\n```\n\nI then reviewed the standards and couldn't find any requirement that this be set, and it appears that Outllok, Gmail, iOS Mail don't require this to be set, so I propose to remove the check.\n\nStandards\n---\n\nhttps://cabforum.org/working-groups/smime/requirements/#7123-subscriber-certificates\n\nhttps://support.google.com/a/answer/7300887?hl=en#zippy=%2Cend-entity-certificate\n\nCode Example\n---\n\n```\nprivate static MimeMessage EncryptMessage(MimeMessage message, string certBase64)\n{\n\n    byte[] certBytes = Convert.FromBase64String(certBase64);\n    var cert = X509CertificateLoader.LoadCertificate(certBytes) as System.Security.Cryptography.X509Certificates.X509Certificate2;\n\n    var bouncyCert = Org.BouncyCastle.Security.DotNetUtilities.FromX509Certificate(cert);\n\n    using (var ctx = new TemporarySecureMimeContext())\n    {\n        ctx.Import(bouncyCert);\n        message.Body = ApplicationPkcs7Mime.Encrypt(ctx, message.To.Mailboxes, message.Body);\n    }\n\n    return message;\n}\n```\n\nCertificate Info\n---\n**Public Key Info**\n> Algorithm=Elliptic Curve Public Key ( 1.2.840.10045.2.1 )\n> Parameters=Elliptic Curve secp256r1 ( 1.2.840.10045.3.1.7 )\n> Public Key=65 bytes: 04 94 90 7F F4 CB B4 A1 ...\n> Key Size=256 bits\n> Key Usage=Encrypt, Verify, Wrap, Derive\n\n**Extension=Key Usage ( 2.5.29.15 )**\n> Critical=YES\n> Usage=Digital Signature, Key Agreement\n\n**Extension=Extended Key Usage ( 2.5.29.37 )**\n> Critical=NO\n> Purpose #1=Email Protection ( 1.3.6.1.5.5.7.3.4 )\n> Purpose #2=Client Authentication ( 1.3.6.1.5.5.7.3.2 )",
+        "url": "https://github.com/jstedfast/MimeKit/issues/1165"
+    },
+    {
+        "id": 3032770442,
+        "number": 1161,
+        "title": "ByteArrayBuilder is not disposed in some places",
+        "state": "closed",
+        "created_at": "2025-04-30T23:20:20Z",
+        "updated_at": "2025-05-01T14:46:57Z",
+        "closed_at": "2025-05-01T14:46:56Z",
+        "author": "daniel-lerch",
+        "comments": 1,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "`ByteArrayBuilder` is not disposed in `MimeAnonymizer.cs:449` and `MimeUtils.cs:575`. The internal buffer will therefore not be returned to the buffer pool in these cases. I believe these two cases are bugs.",
+        "url": "https://github.com/jstedfast/MimeKit/issues/1161"
+    }
+]

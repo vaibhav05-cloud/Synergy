@@ -1,0 +1,242 @@
+[
+    {
+        "sha": "10155669a0dfe1d97ec925131a344dd48bf7953e",
+        "author": "Raymond Zhao",
+        "email": "7199958+rzhao271@users.noreply.github.com",
+        "date": "2026-07-01T22:42:10Z",
+        "message": "chore: onboard to ADO feed (#936)\n\n* chore: onboard to ADO feed\n\n* Fix relative path",
+        "url": "https://github.com/microsoft/node-pty/commit/10155669a0dfe1d97ec925131a344dd48bf7953e"
+    },
+    {
+        "sha": "372d3124403cc8da5a6cc38fc947daded42ea44a",
+        "author": "Shelley Vohr",
+        "email": "shelley@anthropic.com",
+        "date": "2026-06-26T13:59:10Z",
+        "message": "fix: surface CreateProcessW failures as 'exit' instead of uncaughtException on Windows (#934)",
+        "url": "https://github.com/microsoft/node-pty/commit/372d3124403cc8da5a6cc38fc947daded42ea44a"
+    },
+    {
+        "sha": "25b9b0e4b98c346dc9141f3d966af000cde72297",
+        "author": "Shelley Vohr",
+        "email": "shelley@anthropic.com",
+        "date": "2026-06-26T06:47:34Z",
+        "message": "fix: close pipe handles and free attribute list when conpty spawn fails (#935)",
+        "url": "https://github.com/microsoft/node-pty/commit/25b9b0e4b98c346dc9141f3d966af000cde72297"
+    },
+    {
+        "sha": "6979515fce5835cb57664cf58c97598fe7d429ff",
+        "author": "dependabot[bot]",
+        "email": "49699333+dependabot[bot]@users.noreply.github.com",
+        "date": "2026-06-22T18:53:12Z",
+        "message": "chore(deps-dev): bump tar from 7.5.11 to 7.5.16 (#932)\n\nBumps [tar](https://github.com/isaacs/node-tar) from 7.5.11 to 7.5.16.\n- [Release notes](https://github.com/isaacs/node-tar/releases)\n- [Changelog](https://github.com/isaacs/node-tar/blob/main/CHANGELOG.md)\n- [Commits](https://github.com/isaacs/node-tar/compare/v7.5.11...v7.5.16)\n\n---\nupdated-dependencies:\n- dependency-name: tar\n  dependency-version: 7.5.16\n  dependency-type: indirect\n...\n\nSigned-off-by: dependabot[bot] <support@github.com>\nCo-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>",
+        "url": "https://github.com/microsoft/node-pty/commit/6979515fce5835cb57664cf58c97598fe7d429ff"
+    },
+    {
+        "sha": "adfd76b826403d0f14290ff701b55b0b8ca22e4d",
+        "author": "dependabot[bot]",
+        "email": "49699333+dependabot[bot]@users.noreply.github.com",
+        "date": "2026-06-22T18:52:07Z",
+        "message": "chore(deps-dev): bump js-yaml from 4.1.1 to 4.2.0 (#933)\n\nBumps [js-yaml](https://github.com/nodeca/js-yaml) from 4.1.1 to 4.2.0.\n- [Changelog](https://github.com/nodeca/js-yaml/blob/master/CHANGELOG.md)\n- [Commits](https://github.com/nodeca/js-yaml/compare/4.1.1...4.2.0)\n\n---\nupdated-dependencies:\n- dependency-name: js-yaml\n  dependency-version: 4.2.0\n  dependency-type: indirect\n...\n\nSigned-off-by: dependabot[bot] <support@github.com>\nCo-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>",
+        "url": "https://github.com/microsoft/node-pty/commit/adfd76b826403d0f14290ff701b55b0b8ca22e4d"
+    },
+    {
+        "sha": "a483cdeb0c0f3b115125ce607ea12a96105b5aa3",
+        "author": "dependabot[bot]",
+        "email": "49699333+dependabot[bot]@users.noreply.github.com",
+        "date": "2026-06-22T18:22:54Z",
+        "message": "chore(deps): bump undici from 7.27.0 to 7.28.0 in /examples/electron (#930)\n\nBumps [undici](https://github.com/nodejs/undici) from 7.27.0 to 7.28.0.\n- [Release notes](https://github.com/nodejs/undici/releases)\n- [Commits](https://github.com/nodejs/undici/compare/v7.27.0...v7.28.0)\n\n---\nupdated-dependencies:\n- dependency-name: undici\n  dependency-version: 7.28.0\n  dependency-type: indirect\n...\n\nSigned-off-by: dependabot[bot] <support@github.com>\nCo-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>",
+        "url": "https://github.com/microsoft/node-pty/commit/a483cdeb0c0f3b115125ce607ea12a96105b5aa3"
+    },
+    {
+        "sha": "f285d902748de7139edec76b4e04de66865be0a0",
+        "author": "Shelley Vohr",
+        "email": "shelley@anthropic.com",
+        "date": "2026-06-22T18:13:07Z",
+        "message": "fix: close kqueue fd in SetupExitCallback on macOS (#931)\n\nSetupExitCallback opens a kqueue() per spawned pty to wait on\nNOTE_EXIT, but never closes it before the watcher thread returns,\nleaking one kqueue fd per pty.spawn() for the host process lifetime.\n\nThe Chromium kill_mac.cc this is based on closes the kqueue via\nScopedFD; the equivalent here is an explicit close(kq) once the\nkevent wait completes.",
+        "url": "https://github.com/microsoft/node-pty/commit/f285d902748de7139edec76b4e04de66865be0a0"
+    },
+    {
+        "sha": "08b06aa1c53e8a10c25e2ca0c2ad5f0cfe125738",
+        "author": "Copilot",
+        "email": "198982749+Copilot@users.noreply.github.com",
+        "date": "2026-06-03T18:04:57Z",
+        "message": "Migrate linting to ESLint 10.4.0 (#927)\n\n* Initial plan\n\n* chore: bump eslint to 10.4.0\n\n* chore: declare globals for eslint config\n\n---------\n\nCo-authored-by: copilot-swe-agent[bot] <198982749+Copilot@users.noreply.github.com>",
+        "url": "https://github.com/microsoft/node-pty/commit/08b06aa1c53e8a10c25e2ca0c2ad5f0cfe125738"
+    },
+    {
+        "sha": "b2e501e2b5329c8b92eb28aa5f2e1b03e0a0fece",
+        "author": "Copilot",
+        "email": "198982749+Copilot@users.noreply.github.com",
+        "date": "2026-06-03T18:01:17Z",
+        "message": "Upgrade Electron example dependency to 42.2.0 (#928)\n\n* Initial plan\n\n* chore(examples/electron): update electron to 42.2.0\n\n---------\n\nCo-authored-by: copilot-swe-agent[bot] <198982749+Copilot@users.noreply.github.com>",
+        "url": "https://github.com/microsoft/node-pty/commit/b2e501e2b5329c8b92eb28aa5f2e1b03e0a0fece"
+    },
+    {
+        "sha": "e675ee8ddc82407ee04ea5addbf436de5a80a30e",
+        "author": "dependabot[bot]",
+        "email": "49699333+dependabot[bot]@users.noreply.github.com",
+        "date": "2026-05-18T20:32:25Z",
+        "message": "chore(deps-dev): bump brace-expansion from 5.0.5 to 5.0.6 (#925)\n\nBumps [brace-expansion](https://github.com/juliangruber/brace-expansion) from 5.0.5 to 5.0.6.\n- [Release notes](https://github.com/juliangruber/brace-expansion/releases)\n- [Commits](https://github.com/juliangruber/brace-expansion/compare/v5.0.5...v5.0.6)\n\n---\nupdated-dependencies:\n- dependency-name: brace-expansion\n  dependency-version: 5.0.6\n  dependency-type: indirect\n...\n\nSigned-off-by: dependabot[bot] <support@github.com>\nCo-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>",
+        "url": "https://github.com/microsoft/node-pty/commit/e675ee8ddc82407ee04ea5addbf436de5a80a30e"
+    },
+    {
+        "sha": "fa83ecfccb901db7c518a5b018d97943506ec94c",
+        "author": "Robo",
+        "email": "hop2deep@gmail.com",
+        "date": "2026-05-13T11:28:15Z",
+        "message": "fix(win): use-after-free from unsynchronized access to ptyhandles (#922)\n\nThe windows backend keeps a global vector of  `ptyHandles`.\nSince the cleanup of the baton was moved into the per-pty watcher thread\n(commit 17062cd):\n\n- The watcher thread called `remove_pty_baton` without\n  any lock, racing with other watchers and with JS-thread reads.\n- `emplace_back` in `startProcess` could reallocate the vector while\n  another thread was iterating it.",
+        "url": "https://github.com/microsoft/node-pty/commit/fa83ecfccb901db7c518a5b018d97943506ec94c"
+    },
+    {
+        "sha": "21b81aca1e25f21dc7b1f44f298f33433f221644",
+        "author": "dependabot[bot]",
+        "email": "49699333+dependabot[bot]@users.noreply.github.com",
+        "date": "2026-05-07T18:00:16Z",
+        "message": "chore(deps-dev): bump ip-address from 10.0.1 to 10.2.0 (#920)\n\nBumps [ip-address](https://github.com/beaugunderson/ip-address) from 10.0.1 to 10.2.0.\n- [Commits](https://github.com/beaugunderson/ip-address/commits)\n\n---\nupdated-dependencies:\n- dependency-name: ip-address\n  dependency-version: 10.2.0\n  dependency-type: indirect\n...\n\nSigned-off-by: dependabot[bot] <support@github.com>\nCo-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>",
+        "url": "https://github.com/microsoft/node-pty/commit/21b81aca1e25f21dc7b1f44f298f33433f221644"
+    },
+    {
+        "sha": "6d10f37e1315f0d519a04feab507cb2a77c8bf67",
+        "author": "dependabot[bot]",
+        "email": "49699333+dependabot[bot]@users.noreply.github.com",
+        "date": "2026-04-03T23:02:33Z",
+        "message": "chore(deps): bump electron from 39.8.4 to 39.8.5 in /examples/electron (#911)\n\nBumps [electron](https://github.com/electron/electron) from 39.8.4 to 39.8.5.\n- [Release notes](https://github.com/electron/electron/releases)\n- [Commits](https://github.com/electron/electron/compare/v39.8.4...v39.8.5)\n\n---\nupdated-dependencies:\n- dependency-name: electron\n  dependency-version: 39.8.5\n  dependency-type: direct:production\n...\n\nSigned-off-by: dependabot[bot] <support@github.com>\nCo-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>",
+        "url": "https://github.com/microsoft/node-pty/commit/6d10f37e1315f0d519a04feab507cb2a77c8bf67"
+    },
+    {
+        "sha": "52352fbb52f04da2011f614fd21479a4c26ac67a",
+        "author": "dependabot[bot]",
+        "email": "49699333+dependabot[bot]@users.noreply.github.com",
+        "date": "2026-04-03T15:26:12Z",
+        "message": "chore(deps): bump electron from 35.7.5 to 39.8.4 in /examples/electron (#910)\n\nBumps [electron](https://github.com/electron/electron) from 35.7.5 to 39.8.4.\n- [Release notes](https://github.com/electron/electron/releases)\n- [Commits](https://github.com/electron/electron/compare/v35.7.5...v39.8.4)\n\n---\nupdated-dependencies:\n- dependency-name: electron\n  dependency-version: 39.8.4\n  dependency-type: direct:production\n...\n\nSigned-off-by: dependabot[bot] <support@github.com>\nCo-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>",
+        "url": "https://github.com/microsoft/node-pty/commit/52352fbb52f04da2011f614fd21479a4c26ac67a"
+    },
+    {
+        "sha": "5e3dc59b14c964f937edb4e0332f806e61d70c13",
+        "author": "dependabot[bot]",
+        "email": "49699333+dependabot[bot]@users.noreply.github.com",
+        "date": "2026-04-01T21:28:34Z",
+        "message": "chore(deps-dev): bump diff from 5.2.0 to 5.2.2 (#909)\n\nBumps [diff](https://github.com/kpdecker/jsdiff) from 5.2.0 to 5.2.2.\n- [Changelog](https://github.com/kpdecker/jsdiff/blob/master/release-notes.md)\n- [Commits](https://github.com/kpdecker/jsdiff/compare/v5.2.0...v5.2.2)\n\n---\nupdated-dependencies:\n- dependency-name: diff\n  dependency-version: 5.2.2\n  dependency-type: indirect\n...\n\nSigned-off-by: dependabot[bot] <support@github.com>\nCo-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>",
+        "url": "https://github.com/microsoft/node-pty/commit/5e3dc59b14c964f937edb4e0332f806e61d70c13"
+    },
+    {
+        "sha": "11cc20ad147eb31aa6c7b2c3b55cf14719bc97ba",
+        "author": "dependabot[bot]",
+        "email": "49699333+dependabot[bot]@users.noreply.github.com",
+        "date": "2026-04-01T19:57:05Z",
+        "message": "chore(deps-dev): bump brace-expansion from 1.1.12 to 1.1.13 (#908)\n\nBumps [brace-expansion](https://github.com/juliangruber/brace-expansion) from 1.1.12 to 1.1.13.\n- [Release notes](https://github.com/juliangruber/brace-expansion/releases)\n- [Commits](https://github.com/juliangruber/brace-expansion/compare/v1.1.12...v1.1.13)\n\n---\nupdated-dependencies:\n- dependency-name: brace-expansion\n  dependency-version: 1.1.13\n  dependency-type: indirect\n...\n\nSigned-off-by: dependabot[bot] <support@github.com>\nCo-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>",
+        "url": "https://github.com/microsoft/node-pty/commit/11cc20ad147eb31aa6c7b2c3b55cf14719bc97ba"
+    },
+    {
+        "sha": "e91364e0a0f24311c4eaba9f02134f4893eb5660",
+        "author": "Copilot",
+        "email": "198982749+Copilot@users.noreply.github.com",
+        "date": "2026-03-30T19:49:31Z",
+        "message": "chore: bump flatted from 3.4.1 to 3.4.2 (#906)\n\nAgent-Logs-Url: https://github.com/microsoft/node-pty/sessions/8da1ccd3-6de6-45a5-a9e8-e84269e612d3\n\nCo-authored-by: copilot-swe-agent[bot] <198982749+Copilot@users.noreply.github.com>\nCo-authored-by: rzhao271 <7199958+rzhao271@users.noreply.github.com>",
+        "url": "https://github.com/microsoft/node-pty/commit/e91364e0a0f24311c4eaba9f02134f4893eb5660"
+    },
+    {
+        "sha": "7699aacb82780e27747aa116eb960c750f6adb93",
+        "author": "Copilot",
+        "email": "198982749+Copilot@users.noreply.github.com",
+        "date": "2026-03-26T22:05:09Z",
+        "message": "chore: migrate to ESLint 9 with flat config (#895)\n\n* Initial plan\n\n* chore: migrate to ESLint 9 with flat config and typescript-eslint v8\n\nCo-authored-by: rzhao271 <7199958+rzhao271@users.noreply.github.com>\n\n---------\n\nCo-authored-by: copilot-swe-agent[bot] <198982749+Copilot@users.noreply.github.com>\nCo-authored-by: rzhao271 <7199958+rzhao271@users.noreply.github.com>",
+        "url": "https://github.com/microsoft/node-pty/commit/7699aacb82780e27747aa116eb960c750f6adb93"
+    },
+    {
+        "sha": "4726bbe753513a01f0eada3a58632576dacfb2e3",
+        "author": "dependabot[bot]",
+        "email": "49699333+dependabot[bot]@users.noreply.github.com",
+        "date": "2026-03-26T22:03:42Z",
+        "message": "chore(deps): bump picomatch (#903)\n\nBumps  and [picomatch](https://github.com/micromatch/picomatch). These dependencies needed to be updated together.\n\nUpdates `picomatch` from 2.3.1 to 2.3.2\n- [Release notes](https://github.com/micromatch/picomatch/releases)\n- [Changelog](https://github.com/micromatch/picomatch/blob/master/CHANGELOG.md)\n- [Commits](https://github.com/micromatch/picomatch/compare/2.3.1...2.3.2)\n\nUpdates `picomatch` from 4.0.3 to 4.0.4\n- [Release notes](https://github.com/micromatch/picomatch/releases)\n- [Changelog](https://github.com/micromatch/picomatch/blob/master/CHANGELOG.md)\n- [Commits](https://github.com/micromatch/picomatch/compare/2.3.1...2.3.2)\n\n---\nupdated-dependencies:\n- dependency-name: picomatch\n  dependency-version: 2.3.2\n  dependency-type: indirect\n- dependency-name: picomatch\n  dependency-version: 4.0.4\n  dependency-type: indirect\n...\n\nSigned-off-by: dependabot[bot] <support@github.com>\nCo-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>",
+        "url": "https://github.com/microsoft/node-pty/commit/4726bbe753513a01f0eada3a58632576dacfb2e3"
+    },
+    {
+        "sha": "fc30d875fed963259e10e40e1c70b20251a0e786",
+        "author": "Anthony Kim",
+        "email": "62267334+anthonykim1@users.noreply.github.com",
+        "date": "2026-03-12T21:21:11Z",
+        "message": "Merge pull request #898 from microsoft/anthonykim1/updateConpty1.25\n\nUpdate conpty to 1.25.260303002",
+        "url": "https://github.com/microsoft/node-pty/commit/fc30d875fed963259e10e40e1c70b20251a0e786"
+    },
+    {
+        "sha": "0ca1a39b9e80e8c0ceb28f25d13e50acaab5db91",
+        "author": "Anthony Kim",
+        "email": "62267334+anthonykim1@users.noreply.github.com",
+        "date": "2026-03-12T20:10:33Z",
+        "message": "Merge branch 'main' into anthonykim1/updateConpty1.25",
+        "url": "https://github.com/microsoft/node-pty/commit/0ca1a39b9e80e8c0ceb28f25d13e50acaab5db91"
+    },
+    {
+        "sha": "31f77fcd2fef1eb97884c839c54135303921ebad",
+        "author": "Copilot",
+        "email": "198982749+Copilot@users.noreply.github.com",
+        "date": "2026-03-12T20:02:03Z",
+        "message": "Fix publishing pipeline to download prebuilds from current branch (#899)\n\n* Initial plan\n\n* Fix publishing pipeline to use current branch for prebuild artifact lookup\n\nCo-authored-by: rzhao271 <7199958+rzhao271@users.noreply.github.com>\n\n---------\n\nCo-authored-by: copilot-swe-agent[bot] <198982749+Copilot@users.noreply.github.com>\nCo-authored-by: rzhao271 <7199958+rzhao271@users.noreply.github.com>",
+        "url": "https://github.com/microsoft/node-pty/commit/31f77fcd2fef1eb97884c839c54135303921ebad"
+    },
+    {
+        "sha": "c11e72b7986df6062f938f43fc238591c47ed18b",
+        "author": "anthonykim1",
+        "email": "anthonykim@microsoft.com",
+        "date": "2026-03-12T17:43:59Z",
+        "message": "release conpty 1.25",
+        "url": "https://github.com/microsoft/node-pty/commit/c11e72b7986df6062f938f43fc238591c47ed18b"
+    },
+    {
+        "sha": "1b87bd03ce413be49890df3227c9b7d1dd5f792f",
+        "author": "Daniel Imms",
+        "email": "2193314+Tyriar@users.noreply.github.com",
+        "date": "2026-03-12T14:58:18Z",
+        "message": "Merge pull request #897 from ritschwumm/patch-1\n\nFix typo in documentation comment",
+        "url": "https://github.com/microsoft/node-pty/commit/1b87bd03ce413be49890df3227c9b7d1dd5f792f"
+    },
+    {
+        "sha": "11a5f42c38080cd6b7f4441848817eb13adff791",
+        "author": "ritschwumm",
+        "email": "ritschwumm@users.noreply.github.com",
+        "date": "2026-03-12T03:00:13Z",
+        "message": "Fix typo in documentation comment",
+        "url": "https://github.com/microsoft/node-pty/commit/11a5f42c38080cd6b7f4441848817eb13adff791"
+    },
+    {
+        "sha": "f10d4ce635491d24f4bf0efaed66f8633fa4a614",
+        "author": "dependabot[bot]",
+        "email": "49699333+dependabot[bot]@users.noreply.github.com",
+        "date": "2026-03-11T21:37:24Z",
+        "message": "chore(deps-dev): bump tar from 7.5.9 to 7.5.11 (#896)\n\nBumps [tar](https://github.com/isaacs/node-tar) from 7.5.9 to 7.5.11.\n- [Release notes](https://github.com/isaacs/node-tar/releases)\n- [Changelog](https://github.com/isaacs/node-tar/blob/main/CHANGELOG.md)\n- [Commits](https://github.com/isaacs/node-tar/compare/v7.5.9...v7.5.11)\n\n---\nupdated-dependencies:\n- dependency-name: tar\n  dependency-version: 7.5.11\n  dependency-type: indirect\n...\n\nSigned-off-by: dependabot[bot] <support@github.com>\nCo-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>",
+        "url": "https://github.com/microsoft/node-pty/commit/f10d4ce635491d24f4bf0efaed66f8633fa4a614"
+    },
+    {
+        "sha": "261b97e0411eb495e224b3f884e26dbdb6752c22",
+        "author": "dependabot[bot]",
+        "email": "49699333+dependabot[bot]@users.noreply.github.com",
+        "date": "2026-03-02T18:23:06Z",
+        "message": "chore(deps): bump minimatch (#889)\n\nBumps  and [minimatch](https://github.com/isaacs/minimatch). These dependencies needed to be updated together.\n\nUpdates `minimatch` from 3.1.2 to 3.1.5\n- [Changelog](https://github.com/isaacs/minimatch/blob/main/changelog.md)\n- [Commits](https://github.com/isaacs/minimatch/compare/v3.1.2...v3.1.5)\n\nUpdates `minimatch` from 5.1.6 to 5.1.9\n- [Changelog](https://github.com/isaacs/minimatch/blob/main/changelog.md)\n- [Commits](https://github.com/isaacs/minimatch/compare/v3.1.2...v3.1.5)\n\nUpdates `minimatch` from 9.0.5 to 9.0.9\n- [Changelog](https://github.com/isaacs/minimatch/blob/main/changelog.md)\n- [Commits](https://github.com/isaacs/minimatch/compare/v3.1.2...v3.1.5)\n\n---\nupdated-dependencies:\n- dependency-name: minimatch\n  dependency-version: 3.1.5\n  dependency-type: indirect\n- dependency-name: minimatch\n  dependency-version: 5.1.9\n  dependency-type: indirect\n- dependency-name: minimatch\n  dependency-version: 9.0.9\n  dependency-type: indirect\n...\n\nSigned-off-by: dependabot[bot] <support@github.com>\nCo-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>",
+        "url": "https://github.com/microsoft/node-pty/commit/261b97e0411eb495e224b3f884e26dbdb6752c22"
+    },
+    {
+        "sha": "addedb9c8558e1b57cac556fd53330cd18933f8d",
+        "author": "dependabot[bot]",
+        "email": "49699333+dependabot[bot]@users.noreply.github.com",
+        "date": "2026-02-19T22:38:11Z",
+        "message": "chore(deps-dev): bump tar from 7.5.7 to 7.5.9 (#888)\n\nBumps [tar](https://github.com/isaacs/node-tar) from 7.5.7 to 7.5.9.\n- [Release notes](https://github.com/isaacs/node-tar/releases)\n- [Changelog](https://github.com/isaacs/node-tar/blob/main/CHANGELOG.md)\n- [Commits](https://github.com/isaacs/node-tar/compare/v7.5.7...v7.5.9)\n\n---\nupdated-dependencies:\n- dependency-name: tar\n  dependency-version: 7.5.9\n  dependency-type: indirect\n...\n\nSigned-off-by: dependabot[bot] <support@github.com>\nCo-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>",
+        "url": "https://github.com/microsoft/node-pty/commit/addedb9c8558e1b57cac556fd53330cd18933f8d"
+    },
+    {
+        "sha": "9ef6b00d4b848e535297365154bb9d0dab6e40c6",
+        "author": "Daniel Imms",
+        "email": "2193314+Tyriar@users.noreply.github.com",
+        "date": "2026-02-03T14:54:57Z",
+        "message": "Merge pull request #884 from Amiya167/docs/update-readme\n\nAdd Logos to Applications list",
+        "url": "https://github.com/microsoft/node-pty/commit/9ef6b00d4b848e535297365154bb9d0dab6e40c6"
+    },
+    {
+        "sha": "59b25427fde0a2681a976dc2ec78c1367e8f97f2",
+        "author": "Daniel Imms",
+        "email": "2193314+Tyriar@users.noreply.github.com",
+        "date": "2026-02-03T14:54:52Z",
+        "message": "Merge pull request #885 from adityamandaleeka/fix-debugger-freeze-763\n\nDefer conptyNative.connect() to prevent event loop blocking",
+        "url": "https://github.com/microsoft/node-pty/commit/59b25427fde0a2681a976dc2ec78c1367e8f97f2"
+    }
+]

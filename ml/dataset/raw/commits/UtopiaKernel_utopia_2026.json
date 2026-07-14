@@ -1,0 +1,42 @@
+[
+    {
+        "sha": "5308a307b962033c6aa0751f1024cbc920d7ed21",
+        "author": "uxiaosu",
+        "email": "2287721338@qq.com",
+        "date": "2026-03-10T14:06:00Z",
+        "message": "Update LICENSE",
+        "url": "https://github.com/UtopiaKernel/utopia_2026/commit/5308a307b962033c6aa0751f1024cbc920d7ed21"
+    },
+    {
+        "sha": "d6e65f199fe0836c0ac5d4bbfb7612c58cf45c43",
+        "author": "uxiaosu",
+        "email": "2287721338@qq.com",
+        "date": "2026-03-09T18:08:56Z",
+        "message": "Add limine bootloader files and build scripts\n\nAdd Limine bootloader assets and build tooling: include limine.c and limine.h, multiple EFI and BIOS binary images (BOOTX64/IA32/AA64/LOONGARCH64/RISCV64, limine-bios-*.bin, limine-bios.sys), a generated limine-bios-hdd.h binary array, LICENSE (BSD-style), a Makefile, an install-sh script, and a .gitignore. These files provide the bootloader binaries and a simple build/install flow for packaging or installing Limine into /usr/local/share/limine.",
+        "url": "https://github.com/UtopiaKernel/utopia_2026/commit/d6e65f199fe0836c0ac5d4bbfb7612c58cf45c43"
+    },
+    {
+        "sha": "205238ade4c476ee82ebf85c23512efc2d6b51b9",
+        "author": "uxiaosu",
+        "email": "2287721338@qq.com",
+        "date": "2026-03-09T18:03:08Z",
+        "message": "Add bootloaders, limine, OVMF and build artifacts",
+        "url": "https://github.com/UtopiaKernel/utopia_2026/commit/205238ade4c476ee82ebf85c23512efc2d6b51b9"
+    },
+    {
+        "sha": "24ec40a52974736eb7033b71140e54a8ece7b1e5",
+        "author": "uxiaosu",
+        "email": "2287721338@qq.com",
+        "date": "2026-03-09T17:47:17Z",
+        "message": "Add bootloaders, limine, OVMF and build artifacts\n\nAdds prebuilt bootloader binaries and tooling (grub2-kernel.iso, limine tree with EFI binaries, limine source and build files, OVMF firmware) and a rust-bootloader-boot artifact set including disk.img and a full target/release build output with dependency fingerprints and compiled artifacts. This large import contains many compiled binaries and build outputs that will significantly increase repository size; consider moving these binaries to a release artifact or cleaning the target/ directory and updating .gitignore to avoid checking in build artifacts.",
+        "url": "https://github.com/UtopiaKernel/utopia_2026/commit/24ec40a52974736eb7033b71140e54a8ece7b1e5"
+    },
+    {
+        "sha": "de7914953e4e5a96914cf76c7b502176957a114a",
+        "author": "uxiaosu",
+        "email": "2287721338@qq.com",
+        "date": "2026-03-09T17:41:30Z",
+        "message": "Initial commit",
+        "url": "https://github.com/UtopiaKernel/utopia_2026/commit/de7914953e4e5a96914cf76c7b502176957a114a"
+    }
+]

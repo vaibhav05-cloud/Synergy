@@ -1,0 +1,242 @@
+[
+    {
+        "sha": "3827dd51c6b2c5c10fb88530d4267f93eec31462",
+        "author": "Steve Hall",
+        "email": "sh41@users.noreply.github.com",
+        "date": "2026-07-12T13:49:50Z",
+        "message": "Merge pull request #3868 from sh41/beam-decompiler-type-definitions\n\nDecompile @type, @typep and @opaque definitions from BEAM abstract code",
+        "url": "https://github.com/KronicDeth/intellij-elixir/commit/3827dd51c6b2c5c10fb88530d4267f93eec31462"
+    },
+    {
+        "sha": "3acab7d6b11165987095460df1eb2868c02095af",
+        "author": "Steve Hall",
+        "email": "sh41@users.noreply.github.com",
+        "date": "2026-07-12T11:05:22Z",
+        "message": "fix(beam): derive unquote-named definition arity from the parameter list\n\n`CallDefinitionHead.nameArityInterval` counted the atom inside an `unquote(:name)` head as an argument, so a bare `unquote(:name)` head resolved to arity 1 instead of 0. When the head name is supplied via `unquote`, the primary argument list holds the name rather than the parameters, so the arity must come solely from the secondary argument list (0 when there is none).\n\nThis surfaced when indexing decompiled BEAM type definitions whose Erlang name atoms contain a slash, such as `'exec_fun/1'()`. The stub derives arity 0 from the abstract-code parameter list, while the mirror rendered the head as `unquote(:\"exec_fun/1\")` and previously recovered arity 1, so the stub and mirror disagreed and setMirror reported a missing decompiled source type. Parametrized and empty-parameter unquote heads such as `unquote(:name)(arg)` and `unquote(:name)()` already provided their parameters through the secondary argument list and are unaffected.",
+        "url": "https://github.com/KronicDeth/intellij-elixir/commit/3acab7d6b11165987095460df1eb2868c02095af"
+    },
+    {
+        "sha": "7c88e5a71fd6f78e42205470a5d2b898c7565793",
+        "author": "Steve Hall",
+        "email": "sh41@users.noreply.github.com",
+        "date": "2026-07-12T09:52:14Z",
+        "message": "test(beam): add OTP 29 stdlib decompiler fixtures\n\nAdd embedded-docs fixtures decompiled from a real OTP 29 stdlib and pin them as goldens. These modules exercise the abstract-code type rendering end to end: parametrized types, `-opaque`, the `dynamic()` builtin, and map comprehension generators.\n\nSimplify assertDecompiledWithAppLayout to take just the module name since every fixture uses the stdlib app layout.",
+        "url": "https://github.com/KronicDeth/intellij-elixir/commit/7c88e5a71fd6f78e42205470a5d2b898c7565793"
+    },
+    {
+        "sha": "07ed9e157a00d246dcef873625e7d32163221a7e",
+        "author": "Steve Hall",
+        "email": "sh41@users.noreply.github.com",
+        "date": "2026-07-12T09:51:29Z",
+        "message": "refactor(beam): extract a shared Generator base for comprehension qualifiers\n\nThe `generate`, `b_generate` and `m_generate` qualifier objects each duplicated the same `{Tag, Anno, Pattern, Expression}` decoding and `pattern <- expression` scope threading in `toMacroStringDeclaredScope`.\n\nExtract an abstract `Generator(tag, expressionDescription)` base that owns the shared decoding and scope handling. Subtypes now supply only what differs: the pattern rendering and, where the surrounding syntax is not a plain `pattern <- expression` (bitstring), how pattern and expression are combined.",
+        "url": "https://github.com/KronicDeth/intellij-elixir/commit/07ed9e157a00d246dcef873625e7d32163221a7e"
+    },
+    {
+        "sha": "f055211178eaf56f9a18a83b5ea95a593361100b",
+        "author": "Steve Hall",
+        "email": "sh41@users.noreply.github.com",
+        "date": "2026-07-12T09:51:01Z",
+        "message": "fix(beam): render map comprehension generators as {key, value} patterns\n\nA map comprehension generator (`m_generate`, OTP 26+) carries its pattern as a `map_field_exact`/`map_field_assoc` tuple. Rendering that tuple directly produced an erased, un-parseable pattern.\n\nIterating a map in an Elixir comprehension yields `{key, value}` tuples, so unpack the key and value patterns and render them as a two-element tuple pattern, e.g. `{key, value} <- map`, consistent with list and bitstring generators.",
+        "url": "https://github.com/KronicDeth/intellij-elixir/commit/f055211178eaf56f9a18a83b5ea95a593361100b"
+    },
+    {
+        "sha": "6353a73cab53813d5cfc71e1de8e46cfc275abd8",
+        "author": "Steve Hall",
+        "email": "sh41@users.noreply.github.com",
+        "date": "2026-07-12T09:47:07Z",
+        "message": "feat(beam): index and render type definitions from BEAM abstract code\n\nRead @type, @typep and @opaque definitions from the debug_info abstract code so they are indexed and rendered with their type parameters and bodies instead of an erased term().\n\n- classify by visibility: exported -> @type, non-exported -> @typep, opaque attribute -> @opaque\n- render the type parameter list, e.g. queue(item) :: {[item], [item]}\n- add the dynamic built-in type\n- bump the BEAM stub version to reindex existing .beam files\n\nUpdate the stdlib decompiler goldens to the richer output.",
+        "url": "https://github.com/KronicDeth/intellij-elixir/commit/6353a73cab53813d5cfc71e1de8e46cfc275abd8"
+    },
+    {
+        "sha": "a002b20cca0491f9a5a98909682010e74c72c79d",
+        "author": "Steve Hall",
+        "email": "sh41@users.noreply.github.com",
+        "date": "2026-07-12T09:38:05Z",
+        "message": "refactor(beam): dissolve Decompiler companion into top-level declarations\n\nMove the decompiler() factory, the decompiler list and the defmoduleArgument() helper out of the Decompiler companion object into top-level declarations (new decompiler/Decompilers.kt), leaving the class body with only instance behaviour. Update call sites in Call, Function, Clause, Value and BeamFileImpl to the top-level functions, plus minor local cleanups (constant naming, unused imports).",
+        "url": "https://github.com/KronicDeth/intellij-elixir/commit/a002b20cca0491f9a5a98909682010e74c72c79d"
+    },
+    {
+        "sha": "3187fdb45b396e565fa9d3fd12889878a280d338",
+        "author": "Steve Hall",
+        "email": "sh41@users.noreply.github.com",
+        "date": "2026-07-12T09:18:25Z",
+        "message": "fix(sdk): run OTP mismatch detection inside a read action\n\ndetectOtpMismatch(sdk) is @RequiresReadLock (it reads sdkAdditionalData for the suppression flag and the paired Erlang SDK), but was invoked on background threads that hold no read lock, raising 'Read access is allowed from inside read-action only'.\n\n- RefreshAllElixirSdksAction: wrap the call in ReadAction.nonBlocking(Callable { ... }).executeSynchronously() inside the modal progress block.\n- ElixirEditorBasedSdkWidget: make collectNotificationScanIoData suspend and wrap the call in readAction { }; the single-arg overload is kept so the persisted suppression flag is still honoured. Also annotate detectModuleSdkIssues with @RequiresReadLock and drop a redundant type argument.",
+        "url": "https://github.com/KronicDeth/intellij-elixir/commit/3187fdb45b396e565fa9d3fd12889878a280d338"
+    },
+    {
+        "sha": "2512f8afa5fcbfe2d3683d28a32a3f4141cac116",
+        "author": "Steve Hall",
+        "email": "sh41@users.noreply.github.com",
+        "date": "2026-07-06T06:10:27Z",
+        "message": "Merge pull request #3863 from sh41/changelog-2.10\n\nadd(changelog): update changelog for v23.10.0",
+        "url": "https://github.com/KronicDeth/intellij-elixir/commit/2512f8afa5fcbfe2d3683d28a32a3f4141cac116"
+    },
+    {
+        "sha": "9cdb2ff9b75452336ade83dac23a434df66ce142",
+        "author": "Steve Hall",
+        "email": "sh41@users.noreply.github.com",
+        "date": "2026-07-03T12:13:41Z",
+        "message": "add(docs): minor corrections for changed behaviour",
+        "url": "https://github.com/KronicDeth/intellij-elixir/commit/9cdb2ff9b75452336ade83dac23a434df66ce142"
+    },
+    {
+        "sha": "1515cece52a021cb58f2a0dfc17e5693b4784a9c",
+        "author": "Steve Hall",
+        "email": "sh41@users.noreply.github.com",
+        "date": "2026-07-03T09:02:16Z",
+        "message": "add(changelog): update changelog for v23.10.0",
+        "url": "https://github.com/KronicDeth/intellij-elixir/commit/1515cece52a021cb58f2a0dfc17e5693b4784a9c"
+    },
+    {
+        "sha": "5128854af9a2a78bd82e5d8470334740ea782eb0",
+        "author": "Steve Hall",
+        "email": "sh41@users.noreply.github.com",
+        "date": "2026-07-03T09:10:04Z",
+        "message": "add(ci): don't double zip the plugin artifact\n\nUpdated the GitHub Actions workflow to extract the artifact name from the zip file and upload the unpacked contents, so that the artifact is a readily installable zip rather than a zip that contains a zip.",
+        "url": "https://github.com/KronicDeth/intellij-elixir/commit/5128854af9a2a78bd82e5d8470334740ea782eb0"
+    },
+    {
+        "sha": "aef8f8c5177709b66447872bf0c49c5678e8f13f",
+        "author": "Steve Hall",
+        "email": "sh41@users.noreply.github.com",
+        "date": "2026-07-03T06:30:50Z",
+        "message": "Merge pull request #3862 from sh41/chore/deps\n\nBump deps/gradle add dependencyUpdatesTask plugin",
+        "url": "https://github.com/KronicDeth/intellij-elixir/commit/aef8f8c5177709b66447872bf0c49c5678e8f13f"
+    },
+    {
+        "sha": "7f0178bfa7f0d70c1a924b277c5efde36bc11d21",
+        "author": "Steve Hall",
+        "email": "sh41@users.noreply.github.com",
+        "date": "2026-07-03T00:31:26Z",
+        "message": "chore(build): resolve all gradle 9.6 deprecations",
+        "url": "https://github.com/KronicDeth/intellij-elixir/commit/7f0178bfa7f0d70c1a924b277c5efde36bc11d21"
+    },
+    {
+        "sha": "677fb49442c57362156ea45397da60df4395b400",
+        "author": "Steve Hall",
+        "email": "sh41@users.noreply.github.com",
+        "date": "2026-07-02T23:58:11Z",
+        "message": "chore(deps): add dependencyUpdatesTask plugin",
+        "url": "https://github.com/KronicDeth/intellij-elixir/commit/677fb49442c57362156ea45397da60df4395b400"
+    },
+    {
+        "sha": "4d59853032af2cf2c5cd3784bffd88fcdd5b7667",
+        "author": "Steve Hall",
+        "email": "sh41@users.noreply.github.com",
+        "date": "2026-07-02T23:12:06Z",
+        "message": "chore(deps): bump gradle",
+        "url": "https://github.com/KronicDeth/intellij-elixir/commit/4d59853032af2cf2c5cd3784bffd88fcdd5b7667"
+    },
+    {
+        "sha": "f10ccc9974f4b75ad44b8caf6698c92d00139e97",
+        "author": "Steve Hall",
+        "email": "sh41@users.noreply.github.com",
+        "date": "2026-07-02T22:51:52Z",
+        "message": "chore(deps): update dependency versions (kodein, intellij-platform, commons-io, junit-jupiter, mockito-core)",
+        "url": "https://github.com/KronicDeth/intellij-elixir/commit/f10ccc9974f4b75ad44b8caf6698c92d00139e97"
+    },
+    {
+        "sha": "17a370d37f09c8942218b9148214741cd66ef6ad",
+        "author": "Steve Hall",
+        "email": "sh41@users.noreply.github.com",
+        "date": "2026-07-02T22:51:17Z",
+        "message": "chore(deps): bump actions",
+        "url": "https://github.com/KronicDeth/intellij-elixir/commit/17a370d37f09c8942218b9148214741cd66ef6ad"
+    },
+    {
+        "sha": "00013cd1c5670ca617618d053d8391df7e67ae95",
+        "author": "Steve Hall",
+        "email": "sh41@users.noreply.github.com",
+        "date": "2026-07-02T22:19:14Z",
+        "message": "Merge pull request #3856 from sh41/split/tool-manager-sdk-checker\n\nTool-manager abstraction and SDK checker integration",
+        "url": "https://github.com/KronicDeth/intellij-elixir/commit/00013cd1c5670ca617618d053d8391df7e67ae95"
+    },
+    {
+        "sha": "3fb08418e36412ef4f6c48ea59b366a83fb18446",
+        "author": "Steve Hall",
+        "email": "sh41@users.noreply.github.com",
+        "date": "2026-06-17T13:25:25Z",
+        "message": "test(tool-manager): add unit tests for tool_manager package\n\nAdds focused unit tests for the pure / branching logic in the new tool_manager package.\n\nNew test files:\n\n- ToolManagerSdkCheckerTest - covers the three pure phase-3 methods:\n  - detectMismatchIssues: Elixir/Erlang match + mismatch, both-mismatch combined, all-match (rows-without-table guard), null SDK / null tmVersion short-circuits, null contentRoot, Error / null result skip, toolManagerName propagation, multi-module independence.\n  - buildAssignments: installed=true included, installed=false excluded, null elixir/contentRoot/result skip, LinkedHashMap insertion-order preserved.\n  - collectErrors: empty, only-Success/null, mixed, distinctBy description.\n\n- MiseToolManagerVersionsTest - verbatim mapping of the three ToolEntry fields (version, installPath, installed), null propagation for elixir/erlang, no normalisation of unconventional version strings.\n\n- MiseRefreshTriggerTest - branch coverage of shouldTrigger: exact-path match for VFileContentChangeEvent and VFileDeleteEvent; create patterns ^mise\\.toml$, ^mise\\..+\\.toml$, ^\\.tool-versions$ inside content roots; trusted-configs dir create/change/delete (including empty-string sentinel for unavailable stateDir); negative cases (parent not a content root, leading/trailing chars violating regex anchors); unknown event subtype. Uses the Mockito 5 inline agent already configured in build.gradle.kts to mock the final VFile*Event classes.\n\nMiseTest extended with parseTrustError cases (documented two-line stderr, single matching line, unrelated stderr, empty string, path-with-spaces trim, pattern embedded in longer stderr) and parseDoctorStateDir cases (typical JSON, missing dirs, missing state, empty object, malformed JSON).",
+        "url": "https://github.com/KronicDeth/intellij-elixir/commit/3fb08418e36412ef4f6c48ea59b366a83fb18446"
+    },
+    {
+        "sha": "349efb617e64ee8c87ac9dfda4880d7d86912c84",
+        "author": "Steve Hall",
+        "email": "sh41@users.noreply.github.com",
+        "date": "2026-06-06T12:11:15Z",
+        "message": "feat(tool-manager): decouple scan/analyse/UI pipeline, add opt-in settings, and mise file watching\n\nIntroduces a three-layer architecture so the tool-manager scan, analysis, and UI notification are fully decoupled:\n\n  ToolManagerSdkCheckerService  (scan)\n    └─ publishes SCAN_TOPIC with raw Map<Path, ToolManagerResult?>\n  ToolManagerSdkAnalyser        (analysis)\n    └─ subscribes SCAN_TOPIC,\n       compares against module SDKs,\n       publishes ANALYSIS_TOPIC with a ToolManagerAnalysisResult snapshot\n       subscribeWithLatest() replays the latest snapshot to late subscribers so the widget always gets a result on first registration\n  ElixirEditorBasedSdkWidget    (UI)\n    └─ subscribes ANALYSIS_TOPIC via subscribeWithLatest();\n       no longer runs any mise CLI calls or SDK comparison logic itself\n\nSettings:\n- ToolManagerSettings: switched from opt-out (disabledManagers) to opt-in (enabledManagers); removed @Service to prevent auto-registration on small IDEs; adds SETTINGS_CHANGED_TOPIC + ToolManagerSettingsListener\n- ToolManagerConfigurable: new Settings → Elixir → Tool Managers page\n- All TM registrations moved to rich-platform-plugin.xml (rich IDEs only); removed duplicate registration from plugin.xml\n- ElixirSearchableOptionContributor: adds tool manager search aliases\n- ElixirEditorBasedSdkWidget subscribes to SETTINGS_CHANGED_TOPIC and resets lastNotifiedIssueKey so the next scan result is always emitted after a settings change (prevents notification deduplication from suppressing tool-manager error text when the SdkStatus category is unchanged)\n\nMise file watching:\n- ToolManagerRefreshTrigger: fun interface for change-detection strategies\n- ElixirToolManager.createRefreshTrigger(): default null, overridden by mise\n- Mise.configFiles(): invokes `mise config ls --json` to list the exact set of config files active for a directory, including user-global files outside the project\n- Mise.stateDir() / parseDoctorStateDir(): invokes `mise doctor --json` to resolve the mise state directory; WSL Linux paths are converted via wslCompat\n- MiseRefreshTrigger: registers LocalFileSystem watch roots for exact config files, content-root directories, and the global trusted-configs directory; fires a re-scan on VFileContentChangeEvent / VFileDeleteEvent for watched paths, pattern-matched VFileCreateEvent in content roots, and any create/change/delete in trusted-configs (so `mise trust` triggers a re-scan without modifying any config file)\n- ToolManagerSdkCheckerService reinstalls triggers after every scan cycle so dynamically discovered file lists stay current",
+        "url": "https://github.com/KronicDeth/intellij-elixir/commit/349efb617e64ee8c87ac9dfda4880d7d86912c84"
+    },
+    {
+        "sha": "515fa7192dc4de72bb7611c1a782e0c6242f94e8",
+        "author": "Steve Hall",
+        "email": "sh41@users.noreply.github.com",
+        "date": "2026-06-06T09:06:10Z",
+        "message": "feat(tool-manager): surface tool manager errors in SDK notifications instead of silently discarding them\n\nWhen a tool manager (e.g. mise) exits non-zero for a reason other than \"not applicable\" - such as a config file the user must explicitly trust - the failure was previously swallowed: resolveVersions() returned null, no \"Configure from <tool manager>\" button appeared, and the user had no indication why.\n\nChanges:\n- Mise.resolveVersions() now returns a sealed MiseResult? (Success | UntrustedConfig) instead of MiseVersions?.  A non-zero exit is inspected for the \"Config files in <path> are not trusted\" stderr pattern; when matched a MiseResult.UntrustedConfig is returned and a WARN is logged with the path and the fix command.\n- New sealed interface ToolManagerResult (Success | Error) at the tool-manager abstraction layer.  Error carries only toolManagerName and a pre-formatted description string; the abstract layer has no knowledge of what kind of error it is.  Mise-specific concepts (trust, config file paths, \"mise trust\" command) stay entirely inside MiseToolManager.\n- ElixirToolManager.resolveVersions() return type changed from ToolManagerVersions? to ToolManagerResult? (null = not applicable, Error = actionable failure, Success = versions resolved).\n- MiseToolManager maps MiseResult.UntrustedConfig → ToolManagerResult.Error with a human-readable description including the fix command.\n- ToolManagerSdkChecker.resolveVersions() returns Map<Path, ToolManagerResult?> instead of Map<Path, ToolManagerVersions?>.  New collectErrors() helper extracts Error entries.  detectMismatchIssues(), buildAssignments(), and collectElixirVersionByInstallPath() all unwrap ToolManagerResult.Success only.\n- ElixirEditorBasedSdkWidget collects tool manager errors in the IO phase and appends their descriptions to the active notification body, so the user sees what went wrong and what to do instead of just seeing no \"Configure from mise\" button.",
+        "url": "https://github.com/KronicDeth/intellij-elixir/commit/515fa7192dc4de72bb7611c1a782e0c6242f94e8"
+    },
+    {
+        "sha": "37db44a5a094d3860c7dc78f7333a841ad640b34",
+        "author": "Steve Hall",
+        "email": "sh41@users.noreply.github.com",
+        "date": "2026-06-05T23:13:46Z",
+        "message": "feat(tool-manager): extract ToolManager abstraction and wire SDK checker\n\nIntroduce a ToolManager abstraction layer so the SDK status widget\nand SDK checker are not coupled directly to mise.\nNew types:\n- ToolManagerRegistry   -- enumerates available tool managers\n- ElixirToolManager     -- interface: detect, read versions, configure\n- ToolManagerVersions   -- parsed versions from a tool manager\n- ToolManagerSettings   -- per-project tool-manager selection/enable\n- SdkVersionTable       -- maps install-path -> SDK for fast lookup\n- ModuleSdkIssue        -- sealed hierarchy of detectable SDK issues\n- ToolEntry             -- (tool-name, version) pair\n- MiseToolManager       -- mise implementation of ElixirToolManager\n- MiseToolManagerVersions\n- ToolManagerSdkChecker -- background SDK registration + module\n                           assignment driven by the chosen tool manager\nToolManagerSdkChecker.configureSdks flushes jdk.table.xml via\nApplication.saveSettings() on the IO dispatcher before the module-\nassignment write action. This prevents DelayedProjectSynchronizer\nAttempt 2 from reading an stale jdk.table.xml and removing the\nnewly registered SDK, which would undo the module assignment.\nElixirEditorBasedSdkWidget is refactored to:\n- query ToolManagerRegistry instead of hard-coding mise\n- use ModuleSdkIssue sealed class for issue categorisation\n- keep all VFS/model listeners as before; no new listener types added",
+        "url": "https://github.com/KronicDeth/intellij-elixir/commit/37db44a5a094d3860c7dc78f7333a841ad640b34"
+    },
+    {
+        "sha": "53e6665bd3b382d2993635d17df3ec4b6198b8b7",
+        "author": "Steve Hall",
+        "email": "sh41@users.noreply.github.com",
+        "date": "2026-06-05T22:21:15Z",
+        "message": "fix(widget): delay initial SDK notification scan until JPS model sync completes",
+        "url": "https://github.com/KronicDeth/intellij-elixir/commit/53e6665bd3b382d2993635d17df3ec4b6198b8b7"
+    },
+    {
+        "sha": "d5dca98b258074aac46b3270ae7a73d09ce71a69",
+        "author": "Steve Hall",
+        "email": "sh41@users.noreply.github.com",
+        "date": "2026-07-02T21:57:14Z",
+        "message": "Merge pull request #3848 from sh41/split/mix-inspection-reliability\n\nfix(mix/inspections): reliability improvements for sync, runs, and debugger access",
+        "url": "https://github.com/KronicDeth/intellij-elixir/commit/d5dca98b258074aac46b3270ae7a73d09ce71a69"
+    },
+    {
+        "sha": "9ed90e7a19ca6d21981705e78485b8298cc9d7b7",
+        "author": "Steve Hall",
+        "email": "sh41@users.noreply.github.com",
+        "date": "2026-06-03T23:30:30Z",
+        "message": "fix(debugger): put sdk path gathering inside readAction",
+        "url": "https://github.com/KronicDeth/intellij-elixir/commit/9ed90e7a19ca6d21981705e78485b8298cc9d7b7"
+    },
+    {
+        "sha": "a33144b19722febc5f322fe32d4c11649dabe8a5",
+        "author": "Steve Hall",
+        "email": "sh41@users.noreply.github.com",
+        "date": "2026-06-03T16:27:04Z",
+        "message": "fix(inspections): save documents before runs and tighten dialyzer/credo execution flow",
+        "url": "https://github.com/KronicDeth/intellij-elixir/commit/a33144b19722febc5f322fe32d4c11649dabe8a5"
+    },
+    {
+        "sha": "f912e56c6ceedda9b6096c1af7bb0dedab1929ac",
+        "author": "Steve Hall",
+        "email": "sh41@users.noreply.github.com",
+        "date": "2026-06-03T16:26:04Z",
+        "message": "fix(mix-sync): resolve umbrella sub-app path deps and classify module deps correctly",
+        "url": "https://github.com/KronicDeth/intellij-elixir/commit/f912e56c6ceedda9b6096c1af7bb0dedab1929ac"
+    },
+    {
+        "sha": "9f6fb555ef61ded9ca6956844ce9c463b436ee5d",
+        "author": "Steve Hall",
+        "email": "sh41@users.noreply.github.com",
+        "date": "2026-07-02T21:34:48Z",
+        "message": "Merge pull request #3846 from sh41/warn-mismatched-otp\n\nWarn on Elixir/Erlang OTP major version mismatch",
+        "url": "https://github.com/KronicDeth/intellij-elixir/commit/9f6fb555ef61ded9ca6956844ce9c463b436ee5d"
+    },
+    {
+        "sha": "92d45a93f0ee2ea7b8064f97c439aad972e86ad2",
+        "author": "Steve Hall",
+        "email": "sh41@users.noreply.github.com",
+        "date": "2026-05-28T01:42:11Z",
+        "message": "add(sdk): warn on Elixir/Erlang OTP major version mismatch\n\nWhen the OTP major version baked into the Elixir SDK (read from Elixir.System.beam) differs from the OTP major version of the paired Erlang SDK (read from releases/<N>/OTP_VERSION), the IDE now surfaces this in three places:\n\n- Project Structure → Elixir SDK → Additional Data: a warning label shows the differing OTP majors immediately when the user changes the Erlang SDK combo selection.  A \"Suppress OTP version mismatch warning\" checkbox lets the user acknowledge the mismatch per SDK.\n\n- Status bar widget (ElixirEditorBasedSdkWidget): a new SdkStatus.OtpMismatch state triggers a balloon notification that includes a \"Don't Warn for This SDK\" action which persists the suppress flag without requiring the user to open Project Structure.\n\n- Tools → Refresh All Elixir SDK Paths: after completing the refresh, a separate sdkRefreshWarning notification lists every SDK whose compiled-for OTP major does not match its paired Erlang SDK.\n\n- ElixirSdkMutation.applyDependencySelection() and setOtpMismatchWarningSuppressed() handle writing the suppress flag under the write lock, replacing the inline sdk.sdkModificator patterns previously in AdditionalDataConfigurable.apply() and the status widget action.\n\n- The mismatch check in AdditionalDataConfigurable uses runWithEdtGuard so the filesystem reads (BEAM file, OTP_VERSION) do not block the EDT.",
+        "url": "https://github.com/KronicDeth/intellij-elixir/commit/92d45a93f0ee2ea7b8064f97c439aad972e86ad2"
+    }
+]

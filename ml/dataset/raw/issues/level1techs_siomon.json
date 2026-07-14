@@ -1,0 +1,370 @@
+[
+    {
+        "id": 4857555292,
+        "number": 70,
+        "title": "Bug: Rapl greedily selects dram consumption for first numa node",
+        "state": "open",
+        "created_at": "2026-07-10T18:12:53Z",
+        "updated_at": "2026-07-10T18:12:53Z",
+        "closed_at": null,
+        "author": "weriomat",
+        "comments": 0,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "I am currently messing around with a 4 socket system. While looking at the output of sensors I noticed that RAPL reports the power consumption for each domain separately, but only one value for dram (and possibly other subdomains).\n\n```bash\n[root@cpl powercap]# ./target/release/sio sensors\n...\n── cpu/rapl ──\n  RAPL dram                                  4.1 W\n  RAPL package-0                            52.5 W\n  RAPL package-1                            57.7 W\n  RAPL package-2                            50.3 W\n  RAPL package-3                            51.7 W\n...\n```\n\nEach domain reports its own value for dram\n\n```bash\n[root@cpl powercap]# ls\nintel-rapl  intel-rapl:0  intel-rapl:0:0  intel-rapl:1  intel-rapl:1:0  intel-rapl:2  intel-rapl:2:0  intel-rapl:3  intel-rapl:3:0\n[root@cpl powercap]# cat /sys/class/powercap/intel-rapl:*:0/{name,energy_uj}\ndram\ndram\ndram\ndram\n37871987688\n16813759539\n31533870934\n23087939276\n```\n\nAs each `/sys/class/powercap/intel-rapl:*:0/name` is `dram`, the `SensorId` is only added once in the `src/sensors/rapl.rs`.\n\n",
+        "url": "https://github.com/level1techs/siomon/issues/70"
+    },
+    {
+        "id": 4461747069,
+        "number": 68,
+        "title": "Add compatibility with musl",
+        "state": "open",
+        "created_at": "2026-05-17T00:20:13Z",
+        "updated_at": "2026-05-31T06:22:08Z",
+        "closed_at": null,
+        "author": "Fremen2001",
+        "comments": 1,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "hello, can you please swap hardcoded libc u64 incompatibilities with nix provided safe (for musl) alternatives ?\nI know is a lot of work and I'm sorry to ask this without providing help, but if i try I will mess up your code badly.\nThnaks!",
+        "url": "https://github.com/level1techs/siomon/issues/68"
+    },
+    {
+        "id": 4418931375,
+        "number": 67,
+        "title": "Feature Request: add version number in release archives",
+        "state": "open",
+        "created_at": "2026-05-11T07:33:57Z",
+        "updated_at": "2026-05-15T13:59:27Z",
+        "closed_at": null,
+        "author": "suvayu",
+        "comments": 1,
+        "labels": [
+            "area: packaging"
+        ],
+        "assignees": [
+            "wendelltron"
+        ],
+        "locked": false,
+        "body": "Is it possible to encode the version number in the archive files that are included in a release?\n\nThe present generic name makes it difficult to tell which version I have downloaded.\n\n### Current\n`sio-linux-x86_64.tar.gz`\n\n### Expected\n`sio-linux-v0.2.3-x86_64.tar.gz`\n",
+        "url": "https://github.com/level1techs/siomon/issues/67"
+    },
+    {
+        "id": 4215148860,
+        "number": 63,
+        "title": "Last call for the 0.3.0 train",
+        "state": "open",
+        "created_at": "2026-04-07T03:00:37Z",
+        "updated_at": "2026-04-08T17:51:12Z",
+        "closed_at": null,
+        "author": "eous",
+        "comments": 3,
+        "labels": [
+            "help wanted",
+            "area: packaging"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "If anyone has any code they want to get merged in try to get it finalized and ready for review. Thinking we tag the release towards the end of the week unless something exciting happens.",
+        "url": "https://github.com/level1techs/siomon/issues/63"
+    },
+    {
+        "id": 4214315862,
+        "number": 62,
+        "title": "Feature Request: motherboard/AGESA sensor",
+        "state": "open",
+        "created_at": "2026-04-06T22:07:18Z",
+        "updated_at": "2026-04-06T22:11:07Z",
+        "closed_at": null,
+        "author": "emansom",
+        "comments": 0,
+        "labels": [
+            "enhancement",
+            "area: sensors"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "## Description\n\nIt'll soon? be possible to read the AGESA version from either dmesg (and maybe sysfs?), would be useful to expose this somehow and show in the dashboard.\n\n## Info\n\nhttps://www.phoronix.com/news/AMD-AGESA-Version-Linux-7.1\n\n```\nuntil now there hasn't been a convenient way of finding out your AGESA version under Linux unless rebooting into your \nsystem BIOS/UEFI screen or parsing the BIOS version and seeing if your motherboard vendor's release notes for BIOS \nupdates make mention of the AGESA version/update. AGESA updates can be useful for new performance optimizations, \nexpanding system memory compatibility, CPU security features, new CPU support, etc.\n\nFinally with Linux 7.1, the AGESA version when detected will be printed to the kernel log. Thus with the Linux kernel \nmoving forward on AMD Zen systems it can be a simple matter of grep'ing the kernel log, e.g. sudo dmesg | grep AGESA \nfor quickly and easily determining your AGESA version under Linux.\n```\n\n",
+        "url": "https://github.com/level1techs/siomon/issues/62"
+    },
+    {
+        "id": 4203375116,
+        "number": 56,
+        "title": "JFYI: opensuse packages available",
+        "state": "open",
+        "created_at": "2026-04-04T03:57:13Z",
+        "updated_at": "2026-06-20T18:44:22Z",
+        "closed_at": null,
+        "author": "darix",
+        "comments": 4,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "https://build.opensuse.org/package/show/hardware/siomon\n\nif you want you can also use the platform to build packages for more distributions. (e.g. fedora) also supports triggering builds on push.",
+        "url": "https://github.com/level1techs/siomon/issues/56"
+    },
+    {
+        "id": 4190505121,
+        "number": 55,
+        "title": "Research: analyze linux kernel tools for valueable sensor data",
+        "state": "open",
+        "created_at": "2026-04-01T23:31:16Z",
+        "updated_at": "2026-04-05T03:42:49Z",
+        "closed_at": null,
+        "author": "emansom",
+        "comments": 1,
+        "labels": [
+            "enhancement",
+            "research"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "## Description\n\nThe linux kernel git tree contains a few tools like `perf`, `turbostat` and `amd_pstate_tracer`. Those tools may contain implementation details that could extend the usefulness of our current sensors.\n\n## Resources\n\nhttps://github.com/torvalds/linux/tree/master/tools",
+        "url": "https://github.com/level1techs/siomon/issues/55"
+    },
+    {
+        "id": 4155996295,
+        "number": 40,
+        "title": "Time waste/sink/giant money hole: Easter eggs/Konami Code",
+        "state": "open",
+        "created_at": "2026-03-27T21:22:46Z",
+        "updated_at": "2026-03-29T15:43:45Z",
+        "closed_at": null,
+        "author": "emansom",
+        "comments": 3,
+        "labels": [
+            "help wanted",
+            "fun"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "## Description\nIt would be fun to have some small easter eggs embedded within `siomon`\n\n## Implementation idea(s)\n- When a controller is connected (detect with SDL/libsdl) and the [Konami Code](https://en.wikipedia.org/wiki/Konami_Code) is entered:\n  - The whole UI turns into a 2D ASCII art side scroller with [Bryan Heemskerk](https://www.youtube.com/watch?v=7GikBxcyLQI) pixel art throughout\n    utilizing libcaca or chafa for rendering\n    similar to how `mpv` can use it to render video to the terminal\n    implementing it that way allows for normal 2D render techniques\n    which then in turn get transformed by libcaca to terminal output\n    prior art:\n    - https://github.com/TermTrack/TermTrack\n    - https://github.com/ricott1/rebels-in-the-sky\n  - ??? profit? more ideas below\n\n## Possible hurdles\n- For the Konami Code game:\n  Running a game at 24 FPS or higher in a terminal, with proper frame/blanking pacing; requires GPU acceleration\n  afaict GNOME Console is [now](https://www.phoronix.com/news/GNOME-VTE-Go-Faster) GPU accelerated by default\n  not so sure about ~~Windows Terminal~~ and KDE Konsole\n  Might require some upstream patching there, to ensure everyone has a fluid experience\n\n## Disclaimer\nDo NOT waste Level1Techs resources/time/money on this, other than a potential review once finished. I'm convinced there are willing contributors in the community that will show up eventually.\n\nIn fact, unsubscribe from this thread if you are affiliated with Level1!",
+        "url": "https://github.com/level1techs/siomon/issues/40"
+    },
+    {
+        "id": 4153731480,
+        "number": 38,
+        "title": "Research: Explore how and when we need to package bump",
+        "state": "open",
+        "created_at": "2026-03-27T15:31:53Z",
+        "updated_at": "2026-03-28T05:40:03Z",
+        "closed_at": null,
+        "author": "emansom",
+        "comments": 0,
+        "labels": [
+            "enhancement",
+            "area: packaging",
+            "research"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "## Description\n\nRust has no stable ABI yet, and is a moving target. Both the Ubuntu and Arch packages probably need a package bump whenever the Rust tooling packages get updated in their repos.\n\nMight not apply if Canonical guarantees a version pinned Rust that only contains backports, unsure about that since Canonical has been moving fast and loose lately.\n\nAdditionally, Arch is rolling release and has no stable ABI guarantees at all, and thus needs to be bumped whenever any hard dependency (possibly soft too, if it relies on header files) gets updated.\n\nFor the best user experience, we should ensure our distro packages are always functional and do not crash due to ABI incompatibilities.\n\n## Proposed solution\n\n- Explore what dependencies could break our application. Probably just Rust + glibc.\n\n- Introduce staging packages that apply against testing repos for distros (testing repo for Arch, proposed repo for Ubuntu).\n\n- Setup a workflow that utilizes [rebuild-detector](https://github.com/maximbaz/rebuild-detector) (and/or [arch-rebuild-order](https://github.com/archlinux/arch-rebuild-order)?) to run every night in a GitHub Action, against the testing distro repos and our staging packages. To automatically bump the package, and trigger a rebuilt and package update if need be.\n\n- Setup another workflow that syncs staging packages to production packages, to be triggered whenever the distro specific testing repo packages that we depend upon are synced to the production distro repos. (needs some tooling? periodic cron -like checker against git/bzr distro repo sources?)",
+        "url": "https://github.com/level1techs/siomon/issues/38"
+    },
+    {
+        "id": 4150041948,
+        "number": 37,
+        "title": "Repo Management: maintain clean git history, utilize fast forward merge strategies",
+        "state": "open",
+        "created_at": "2026-03-27T07:00:16Z",
+        "updated_at": "2026-06-13T22:41:08Z",
+        "closed_at": null,
+        "author": "emansom",
+        "comments": 1,
+        "labels": [
+            "enhancement",
+            "area: ci"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "## Description\n\nCurrently the merge handling is handled by GitHub itself, this has some drawbacks:\n- Rewrites git history with useless pointers all over the place\n  See https://blog.esciencecenter.nl/fast-forward-merges-on-github-752f900f45e8\n- Creates useless `Merge pull request X from Y` commits when git histories diverge/do not align between source and target\n\n## Proposed solution\n\nAdopt fast forward merge strategies described in the link above and here:\nhttps://github.com/orgs/community/discussions/4618\nhttps://stackoverflow.com/questions/60597400/how-to-do-a-fast-forward-merge-on-github\n\nThis can be accomplished semi automated by e.g. utilizing the following workflow:\nhttps://github.com/marketplace/actions/fast-forward-merge\n\nThere is a potential supply chain risk there. Better to copy their code to our own GitHub workflows:\nhttps://github.com/sequoia-pgp/fast-forward/tree/main/.github/workflows\nhttps://github.com/sequoia-pgp/fast-forward/tree/main/src",
+        "url": "https://github.com/level1techs/siomon/issues/37"
+    },
+    {
+        "id": 4142647830,
+        "number": 33,
+        "title": "Only one temperature reading from jc42 when there are multiple DIMMs installed",
+        "state": "closed",
+        "created_at": "2026-03-26T10:40:30Z",
+        "updated_at": "2026-03-31T03:58:14Z",
+        "closed_at": "2026-03-31T03:58:14Z",
+        "author": "Valokki",
+        "comments": 4,
+        "labels": [
+            "bug",
+            "area: sensors"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "I'm reading my RAM temps with jc42 module and siomon shows only value from one module. sensors command, OCCT and Hardinfo2 reads temps from all DIMMs. Could the issue be that every DIMM has temp1 reading in jc42-i2c but at different address?\n\n### part of sensors readout\n```\n❯ sensors\nk10temp-pci-00c3\nAdapter: PCI adapter\nTctl:         +36.2°C  \nTccd1:        +40.0°C  \n\nzenergy-isa-0000\nAdapter: ISA adapter\nEcore000:     27.89 kJ\nEcore001:     28.50 kJ\nEcore002:     21.96 kJ\nEcore003:     19.23 kJ\nEcore004:     18.54 kJ\nEcore005:     15.39 kJ\nEcore006:     13.81 kJ\nEcore007:     16.80 kJ\nEsocket0:      1.68 MJ\n\njc42-i2c-9-19\nAdapter: SMBus PIIX4 adapter port 0 at 0b00\ntemp1:        +27.2°C  (low  =  +0.0°C)                  ALARM (HIGH, CRIT)\n                       (high =  +0.0°C, hyst =  +0.0°C)\n                       (crit =  +0.0°C, hyst =  +0.0°C)\n\nit8688-isa-0a40\nAdapter: ISA adapter\nCPU VCORE:       1.13 V  (min =  +0.00 V, max =  +3.06 V)\n+3.3V:           3.31 V  (min =  +0.00 V, max =  +5.05 V)\n+12V:           12.02 V  (min =  +0.00 V, max = +18.36 V)\n+5V:             5.01 V  (min =  +0.00 V, max =  +7.65 V)\nCPU VCORE SoC:   1.04 V  (min =  +0.00 V, max =  +3.06 V)\nCPU VDDP:      912.00 mV (min =  +0.00 V, max =  +3.06 V)\nDRAM CH(A/B):    1.48 V  (min =  +0.00 V, max =  +3.06 V)\n3VSB:            3.29 V  (min =  +0.00 V, max =  +6.12 V)\nVBAT:            3.10 V  \nCPU_FAN:        385 RPM  (min =    0 RPM)\nSYS_FAN1:       821 RPM  (min =    0 RPM)\nSYS_FAN2:       673 RPM  (min =    0 RPM)\nPCH_FAN:          0 RPM  (min =    0 RPM)\nCPU_OPT:       1599 RPM  (min =    0 RPM)\nSystem1:        +34.0°C  (low  = +127.0°C, high = +127.0°C)  sensor = thermistor\nCPU:            +36.0°C  (low  = +127.0°C, high = +127.0°C)  sensor = AMD AMDSI\nPCIEX16:        +39.0°C  (low  = +127.0°C, high = +127.0°C)  sensor = thermistor\nVRM MOS:        +37.0°C  (low  =  +0.0°C, high = -125.0°C)  sensor = thermistor\nPCH:            +44.0°C  (low  = -16.0°C, high = +90.0°C)  sensor = thermistor\npwm1:               59%  (freq = 23437 Hz)\npwm2:               81%  (freq = 23437 Hz)\npwm3:               64%  (freq = 23437 Hz)\npwm4:               21%  (freq = 23437 Hz)\npwm5:               52%  (freq = 23437 Hz)\n\namdgpu-pci-0d00\nAdapter: PCI adapter\nvddgfx:      113.00 mV \nfan1:           0 RPM  (min =    0 RPM, max = 3200 RPM)\nedge:         +28.0°C  (crit = +110.0°C, hyst = -273.1°C)\n                       (emerg = +115.0°C)\njunction:     +28.0°C  (crit = +110.0°C, hyst = -273.1°C)\n                       (emerg = +115.0°C)\nmem:          +26.0°C  (crit = +108.0°C, hyst = -273.1°C)\n                       (emerg = +113.0°C)\nPPT:           5.00 W  (cap = 343.00 W)\npwm1:              0%\nsclk:          12 MHz \nmclk:          96 MHz \n\nnvme-pci-0500\nAdapter: PCI adapter\nComposite:    +33.9°C  (low  =  -0.1°C, high = +82.8°C)\n                       (crit = +89.8°C)\n\nacpitz-acpi-0\nAdapter: ACPI interface\n\njc42-i2c-9-1b\nAdapter: SMBus PIIX4 adapter port 0 at 0b00\ntemp1:        +25.8°C  (low  =  +0.0°C)                  ALARM (HIGH, CRIT)\n                       (high =  +0.0°C, hyst =  +0.0°C)\n                       (crit =  +0.0°C, hyst =  +0.0°C)\n\njc42-i2c-9-1a\nAdapter: SMBus PIIX4 adapter port 0 at 0b00\ntemp1:        +26.8°C  (low  =  +0.0°C)                  ALARM (HIGH, CRIT)\n                       (high =  +0.0°C, hyst =  +0.0°C)\n                       (crit =  +0.0°C, hyst =  +0.0°C)\n\nit8792-isa-0a60\nAdapter: ISA adapter\nDDRVTT CH(A/B): 737.00 mV (min =  +0.00 V, max =  +2.81 V)\nChipset Core:   990.00 mV (min =  +0.00 V, max =  +2.81 V)\nCPU VDD 18:       1.80 V  (min =  +0.00 V, max =  +2.81 V)\nPM_CLDO12:        1.19 V  (min =  +0.00 V, max =  +2.81 V)\nSYS_FAN5_PUMP:  1104 RPM  (min =    0 RPM)\nSYS_FAN6_PUMP:   390 RPM  (min =    0 RPM)\nSYS_FAN4:          0 RPM  (min =    0 RPM)\nPCIEX8:          +34.0°C  (low  = +127.0°C, high = +127.0°C)  sensor = thermistor\nSystem2:         +30.0°C  (low  = +127.0°C, high = +127.0°C)  sensor = thermistor\npwm1:                44%  (freq = 23437 Hz)  MANUAL CONTROL\npwm2:                 0%  (freq = 23437 Hz)  MANUAL CONTROL\npwm3:                52%  (freq = 23437 Hz)  MANUAL CONTROL\n\njc42-i2c-9-18\nAdapter: SMBus PIIX4 adapter port 0 at 0b00\ntemp1:        +27.6°C  (low  =  +0.0°C)                  ALARM (HIGH, CRIT)\n                       (high =  +0.0°C, hyst =  +0.0°C)\n                       (crit =  +0.0°C, hyst =  +0.0°C)\n```\n\n\n### part of sio sensors readout\n```\n── hwmon/acpitz ──\n  temp1                                     16.8 °C\n  temp2                                     16.8 °C\n\n── hwmon/amdgpu ──\n  GPU fan1                                   0.0 RPM\n  GPU vddgfx                                 0.1 V\n  GPU PPT                                    6.0 W\n  GPU edge                                  28.0 °C\n  GPU junction                              28.0 °C\n  GPU mem                                   26.0 °C\n\n── hwmon/it8688 ──\n  fan1                                     384.0 RPM\n  fan2                                     821.0 RPM\n  fan3                                     674.0 RPM\n  fan4                                       0.0 RPM\n  fan5                                    1603.0 RPM\n  in0                                        1.1 V\n  in1                                        2.0 V\n  in2                                        2.0 V\n  in3                                        2.0 V\n  in4                                        1.0 V\n  in5                                        0.9 V\n  in6                                        1.5 V\n  3VSB                                       3.3 V\n  Vbat                                       3.1 V\n  temp1                                     33.0 °C\n  temp3                                     35.0 °C\n  temp4                                     39.0 °C\n  temp5                                     37.0 °C\n  temp6                                     44.0 °C\n\n── hwmon/it8792 ──\n  fan1                                    1101.0 RPM\n  fan2                                     389.0 RPM\n  fan3                                       0.0 RPM\n  in0                                        1.8 V\n  in1                                        0.7 V\n  in2                                        1.0 V\n  +3.3V                                      3.4 V\n  in4                                        1.8 V\n  in5                                        1.2 V\n  in6                                        2.8 V\n  3VSB                                       3.4 V\n  Vbat                                       3.2 V\n  temp1                                     34.0 °C\n  temp3                                     29.0 °C\n\n── hwmon/jc42 ──\n  temp1                                     25.6 °C\n\n── hwmon/k10temp ──\n  Tctl                                      35.2 °C\n  Tccd1                                     34.5 °C\n\n── hwmon/nvme ──\n  Composite                                 43.9 °C\n  Sensor 1                                  64.8 °C\n  Sensor 2                                  35.9 °C\n\n── mce/cpu ──\n\n```",
+        "url": "https://github.com/level1techs/siomon/issues/33"
+    },
+    {
+        "id": 4140804086,
+        "number": 31,
+        "title": "Feature Request: ACPI CPPC, AMD P-State and Intel P-State information",
+        "state": "open",
+        "created_at": "2026-03-26T05:36:55Z",
+        "updated_at": "2026-04-11T17:29:38Z",
+        "closed_at": null,
+        "author": "emansom",
+        "comments": 1,
+        "labels": [
+            "enhancement",
+            "area: sensors"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "## Description\n\nBoth the AMD and Intel specific pstate drivers expose some useful information via their `/sys` path interfaces\ne.g. like `hwp_dynamic_boost` in Intel P-State driver and `amd_pstate_prefcore_ranking` in the AMD P-State driver\n\nAdditionally exposing the ACPI CPPC table in human readable format could be useful, to show in a single glance which processor core is the most performant\n\n## Resources\n\nhttps://docs.kernel.org/admin-guide/pm/intel_pstate.html\nhttps://docs.kernel.org/admin-guide/pm/amd-pstate.html\nhttps://docs.kernel.org/admin-guide/acpi/cppc_sysfs.html\n\n## Proposed solution\n\nImplement new sensors for ACPI CPPC, Intel P-State and AMD P-State in `siomon`",
+        "url": "https://github.com/level1techs/siomon/issues/31"
+    },
+    {
+        "id": 4140713245,
+        "number": 30,
+        "title": "Feature Request: UPower integration",
+        "state": "open",
+        "created_at": "2026-03-26T05:19:20Z",
+        "updated_at": "2026-04-17T01:12:06Z",
+        "closed_at": null,
+        "author": "emansom",
+        "comments": 1,
+        "labels": [
+            "enhancement",
+            "area: sensors"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "## Description\n\nIt would be nice if `siomon` queried UPower over D-Bus, allowing for calibrated battery reporting and battery status for peripheral devices (e.g. MX Master 3 mouse)\n\n## Proposed solution\n\nRewrite the battery sensor to query UPower over D-Bus instead",
+        "url": "https://github.com/level1techs/siomon/issues/30"
+    },
+    {
+        "id": 4103524329,
+        "number": 22,
+        "title": "UX: Show more stuff in dashboard mode",
+        "state": "open",
+        "created_at": "2026-03-19T18:42:15Z",
+        "updated_at": "2026-03-28T05:39:57Z",
+        "closed_at": null,
+        "author": "emansom",
+        "comments": 15,
+        "labels": [
+            "enhancement",
+            "help wanted",
+            "area: tui"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "## Description\n\nCurrently on bigger displays, siomon shows a lot of unoccupied/empty space\n\n<img width=\"451\" height=\"577\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/dfcf274a-36c6-485e-b38e-3c61eaf76af9\" />\n\n## Proposed solution\n\nExpose more sensor data and/or have a split view showing both the tree and dashboard mode at the same time",
+        "url": "https://github.com/level1techs/siomon/issues/22"
+    },
+    {
+        "id": 4092997561,
+        "number": 18,
+        "title": "Can't see schtuff!",
+        "state": "closed",
+        "created_at": "2026-03-18T06:13:15Z",
+        "updated_at": "2026-03-18T17:02:59Z",
+        "closed_at": "2026-03-18T17:02:59Z",
+        "author": "ghost",
+        "comments": 0,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "I figured I'd give this a spin and to my dismay I can't see schtuff! heh. I tried --color never, always... no change.\n\nMy main term is rxvt (un knee corn) (urxvt) where most things like graphs and borders are all just black. xterm is the same but my xterm background is slightly lighter gray so I can see a titch better but it's still bad. Testing with Sakura the borders and graphs are a lighter gray and I can see but it's ooogleh...but I suppose data over beauty but the fact --color does nothing and it's illegible isn't ideal. Problem with my terms? Problem with sio? You be the George...or the Frank...I won't judge (ahh AHHH see what I did there?).\n\n<img width=\"2082\" height=\"495\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/ed4d49a9-5c4b-46f3-907c-61322d4a4b9c\" />\n\n",
+        "url": "https://github.com/level1techs/siomon/issues/18"
+    },
+    {
+        "id": 4088266217,
+        "number": 15,
+        "title": "Split into crates",
+        "state": "open",
+        "created_at": "2026-03-17T12:33:54Z",
+        "updated_at": "2026-03-18T00:57:34Z",
+        "closed_at": null,
+        "author": "AustinMReppert",
+        "comments": 1,
+        "labels": [
+            "enhancement"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "The library code should be in its own crate. This will allow for GUIs and other utilities to use the same underlying code.",
+        "url": "https://github.com/level1techs/siomon/issues/15"
+    },
+    {
+        "id": 4085088094,
+        "number": 13,
+        "title": "Storage includes virtual (ZFS ZVol) storage devices e.g. /dev/zd*",
+        "state": "closed",
+        "created_at": "2026-03-16T22:22:45Z",
+        "updated_at": "2026-03-18T00:45:46Z",
+        "closed_at": "2026-03-18T00:45:46Z",
+        "author": "bugfixin",
+        "comments": 0,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "It seems like it would be worthwhile to exclude /dev/zd* devices (zvols) and perhaps other virtual devices (do md devices show up there?) from dashboard storage listings as they are already accounted for by the underlying physical devices. ",
+        "url": "https://github.com/level1techs/siomon/issues/13"
+    },
+    {
+        "id": 4085060673,
+        "number": 12,
+        "title": "CPU cache shows per-core values rather than full values?",
+        "state": "open",
+        "created_at": "2026-03-16T22:15:27Z",
+        "updated_at": "2026-03-18T00:59:16Z",
+        "closed_at": null,
+        "author": "bugfixin",
+        "comments": 1,
+        "labels": [
+            "enhancement"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "Shows: \n```── CPU ─────────────────────────────────────────────────────────\n  Name:            AMD EPYC 7373X 16-Core Processor\n  Vendor:          Amd  Family: 0x19  Model: 0x1  Stepping: 2\n  Codename:        Zen 3 (Milan)\n  Microcode:       0xa001247\n  Topology:        1 packages, 16 cores, 32 threads\n  SMT:             Enabled (2 threads/core)\n  Frequency:       1500 — 3832 MHz\n  Scaling Driver:  acpi-cpufreq\n  L1d: 32.0 KiB (8-way, 64 B line)\n  L1i: 32.0 KiB (8-way, 64 B line)\n  L2: 512.0 KiB (8-way, 64 B line)\n  L3: 96.0 MiB (16-way, 64 B line)\n```\nExpected: \nL2: 8MB (512 per core x 16 cores)\nL3: 768MB (96MB per chiplet x 8 chiplets)\nI'm not sure if there's a reasonable way to multiply these out considering some are shared per core, some per ccx, etc, but it would be a Nice To Have",
+        "url": "https://github.com/level1techs/siomon/issues/12"
+    },
+    {
+        "id": 4078858433,
+        "number": 11,
+        "title": "UX: start in dashboard mode by default?",
+        "state": "closed",
+        "created_at": "2026-03-15T17:54:42Z",
+        "updated_at": "2026-03-18T00:37:10Z",
+        "closed_at": "2026-03-18T00:37:10Z",
+        "author": "emansom",
+        "comments": 1,
+        "labels": [
+            "enhancement"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "## Description\n\nCurrently the user experience for `sio` is not user oriented, more server admin oriented.\nA example of this is when invoking `sio` without any arguments it spams the console with a lot of data.\n\nDefinitely useful for a server admin, but not a regular user that just wants to see fancy charts like `btop`/`htop`\n\n## Proposal\n\nMake `sio` behave more like all other monitoring tools by default: fancy charts (dashboard mode) first\nWithout requiring `-m` + pressing `d` on the keyboard",
+        "url": "https://github.com/level1techs/siomon/issues/11"
+    },
+    {
+        "id": 4067715821,
+        "number": 9,
+        "title": "Bug: PPT shows GPU PPT instead of CPU PPT?",
+        "state": "closed",
+        "created_at": "2026-03-12T22:46:43Z",
+        "updated_at": "2026-03-18T00:21:04Z",
+        "closed_at": "2026-03-18T00:21:04Z",
+        "author": "emansom",
+        "comments": 5,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "## Description\n\nIn the new dashboard TUI mode, PPT equals GPU Power, while my expectation was it would show CPU PPT?\n\nWhat siomon shows:\n\n<img width=\"383\" height=\"81\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/1bbcbd90-258d-4596-8886-75194993b347\" />\n\nWhat btop shows (focus on the `30.7W` part):\n\n<img width=\"659\" height=\"201\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/5d553fe2-299e-4368-9036-be6b4f6dbf13\" />\n\n## Proposed solution\n\nMake it more clear to the user if it is showing GPU or CPU PPT\nSupport processor PPT similar to how btop [acomplishes](https://github.com/aristocratos/btop/blob/main/src/linux/btop_collect.cpp#L978-L1017) this and/or from [SMU](https://github.com/amkillam/ryzen_smu).",
+        "url": "https://github.com/level1techs/siomon/issues/9"
+    }
+]

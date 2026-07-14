@@ -1,0 +1,242 @@
+[
+    {
+        "sha": "3467749fd1c0ab6ca6ed424d053b1ea53c1bf67c",
+        "author": "Bram",
+        "email": "bram@cbbg.nl",
+        "date": "2026-03-26T19:06:59Z",
+        "message": "Bump version",
+        "url": "https://github.com/libharu/libharu/commit/3467749fd1c0ab6ca6ed424d053b1ea53c1bf67c"
+    },
+    {
+        "sha": "177592b97dcf5c4f54e1dd3e42f4f7eeca7e0f58",
+        "author": "SHRAVAN KUMAR SHERI",
+        "email": "52729173+Sheri98@users.noreply.github.com",
+        "date": "2026-03-26T08:20:26Z",
+        "message": "Security Fixes (#362)\n\n* Add error check for num_h_metric against num_glyphs\n\n* Fix error handling for font attributes and metrics",
+        "url": "https://github.com/libharu/libharu/commit/177592b97dcf5c4f54e1dd3e42f4f7eeca7e0f58"
+    },
+    {
+        "sha": "169b996dd9f028a1f66f655c2a622da5e9c302ea",
+        "author": "Michael Orlitzky",
+        "email": "michael@orlitzky.com",
+        "date": "2026-03-23T09:28:08Z",
+        "message": "CMakeLists.txt: install docs and bindings to DOCDIR (#359)\n\nWe are already using the GNUInstallDirs module,\n\n  https://cmake.org/cmake/help/latest/module/GNUInstallDirs.html\n\nthat provides access to the \"familiar\" GNU directories like BINDIR,\nLIBDIR, and DOCDIR. The documentation and bindings however are\ncurrently installed to DATAROOTDIR/libharu, which on a typical linux\nsystem will lead to paths like\n\n  /usr/share/libharu/README.md\n\nIn this case, it would clearly be preferable to install to DOCDIR,\nsince README.md is unambiguously documentation. We also get, for\nexample,\n\n  /usr/share/libharu/bindings/vb.net/hpdfvb.vb\n\nThe usage instructions for our bindings essentially tell you to copy &\npaste them into an appropriate location; they are not immediately\nusable when installed. For example, with the python bindings in mind,\n\n  /usr/share/libharu/bindings/python\n\nwould not be on one's PYTHONPATH. In that sense, these bindings also\nact more like documentation than as package data, and should therefore\nbe installed to DOCDIR.\n\nThis commit makes both of those changes, and afterwards drops the\nINSTALL file from the install rule: if libharu is installed, you don't\nneed the INSTALL file.",
+        "url": "https://github.com/libharu/libharu/commit/169b996dd9f028a1f66f655c2a622da5e9c302ea"
+    },
+    {
+        "sha": "71514e605b5527c81a27a8b5af2c67d8389e4502",
+        "author": "Bram",
+        "email": "bram@cbbg.nl",
+        "date": "2026-03-23T07:59:59Z",
+        "message": "Fix typo. Closes #356.",
+        "url": "https://github.com/libharu/libharu/commit/71514e605b5527c81a27a8b5af2c67d8389e4502"
+    },
+    {
+        "sha": "2b3e7073a4a88517e18f93ec50918511281484a4",
+        "author": "SHRAVAN KUMAR SHERI",
+        "email": "52729173+Sheri98@users.noreply.github.com",
+        "date": "2026-03-23T09:06:38Z",
+        "message": "Add error check for num_h_metric against num_glyphs (#361)",
+        "url": "https://github.com/libharu/libharu/commit/2b3e7073a4a88517e18f93ec50918511281484a4"
+    },
+    {
+        "sha": "4c87178a92097d59ecb9a3271341df4944b52225",
+        "author": "joelhecht",
+        "email": "joel.hecht@laposte.net",
+        "date": "2025-11-18T10:42:26Z",
+        "message": "fix Build error for Win32 (x86) due to modifier mismatch closes #350 (#351)",
+        "url": "https://github.com/libharu/libharu/commit/4c87178a92097d59ecb9a3271341df4944b52225"
+    },
+    {
+        "sha": "f27125cb3829fc8c634c2a9c920b53b4fbe0b81f",
+        "author": "luzpaz",
+        "email": "luzpaz@users.noreply.github.com",
+        "date": "2025-07-21T14:05:32Z",
+        "message": "Fix various typos (#347)\n\nFound via `codespell -q 3 -S \"*.pdf,./demo/pdf_a/factur-x.xml\" -L appearence,ba,coo,fith,fo,nam,opend,ro,siz,suppliment,te`",
+        "url": "https://github.com/libharu/libharu/commit/f27125cb3829fc8c634c2a9c920b53b4fbe0b81f"
+    },
+    {
+        "sha": "eaa0d8c54d00c4877f2d204d6b2317043893ee30",
+        "author": "Guillaume Gigaud",
+        "email": "guillaume@thegrizzlylabs.com",
+        "date": "2025-07-09T12:51:37Z",
+        "message": "Adapt CMake scripts for WebAssembly compilation (#344)\n\n* Remove useless haru.cmake\n\nThis script doesn't seem to be used as the MATH_LIB variable is never used elsewhere and there's another `find_library` call for the math library in the root `CMakeLists.txt`.\nPlus, this script incorrectly errors out in case of a compilation for WebAssembly.\n\n* Adapt CMake script for WebAssembly compilation\n\nDon't try to link the Math library when compiling with emscripten, as it's already provided by the system (Compiler throws warnings for missing linked libraries unless compiling to JS emscripten-core/emscripten#2600).\nAlso added some additional details to CMake summary related with this change.",
+        "url": "https://github.com/libharu/libharu/commit/eaa0d8c54d00c4877f2d204d6b2317043893ee30"
+    },
+    {
+        "sha": "1496c270a51834becb0e0cb7e96c58645878b0b5",
+        "author": "Bram",
+        "email": "bram@cbbg.nl",
+        "date": "2025-07-09T11:32:45Z",
+        "message": "Fix typo",
+        "url": "https://github.com/libharu/libharu/commit/1496c270a51834becb0e0cb7e96c58645878b0b5"
+    },
+    {
+        "sha": "1c864969f8f262fd7654a3a52c05a58ad063fd86",
+        "author": "Guillaume Gigaud",
+        "email": "guillaume@thegrizzlylabs.com",
+        "date": "2025-07-09T12:17:03Z",
+        "message": "Remove restriction on user password to be different from owner password (#346)\n\nFixes https://github.com/libharu/libharu/issues/345",
+        "url": "https://github.com/libharu/libharu/commit/1c864969f8f262fd7654a3a52c05a58ad063fd86"
+    },
+    {
+        "sha": "555d4c0acc65324223e75d764b77124d22fcd59e",
+        "author": "Bram",
+        "email": "bram@cbbg.nl",
+        "date": "2025-04-22T12:57:11Z",
+        "message": "Fix typo. Gryph->Glyph",
+        "url": "https://github.com/libharu/libharu/commit/555d4c0acc65324223e75d764b77124d22fcd59e"
+    },
+    {
+        "sha": "03c01c662a3b3a8fcec1007fe26129e95e9f1681",
+        "author": "Bram",
+        "email": "bram@cbbg.nl",
+        "date": "2025-04-05T07:15:35Z",
+        "message": "Use the HPDF_VER_DEFAULT macro",
+        "url": "https://github.com/libharu/libharu/commit/03c01c662a3b3a8fcec1007fe26129e95e9f1681"
+    },
+    {
+        "sha": "e6c89eae80274e3e8a18500f2ebd2c7f6fd07305",
+        "author": "Bram",
+        "email": "bram@cbbg.nl",
+        "date": "2025-04-04T08:56:18Z",
+        "message": "Merge remote-tracking branch 'refs/remotes/origin/master'",
+        "url": "https://github.com/libharu/libharu/commit/e6c89eae80274e3e8a18500f2ebd2c7f6fd07305"
+    },
+    {
+        "sha": "81e9e35e4ee7afc1a8e332089aab6542e0555db4",
+        "author": "Bram",
+        "email": "bram@cbbg.nl",
+        "date": "2025-04-04T08:54:02Z",
+        "message": "Update MingLiu font CID width map\n\nThe width map was not correct, causing character to overlap.\nThis commit also adresses #204.",
+        "url": "https://github.com/libharu/libharu/commit/81e9e35e4ee7afc1a8e332089aab6542e0555db4"
+    },
+    {
+        "sha": "326d97883aefd8b495aeefc0cfb93540382d0d63",
+        "author": "Yang",
+        "email": "lelandyang@users.noreply.github.com",
+        "date": "2025-03-29T07:44:33Z",
+        "message": "Update Delphi bindings (#280)\n\nReplace `PChar` with `PAnsiChar` to be compatible with higher versions of Delphi",
+        "url": "https://github.com/libharu/libharu/commit/326d97883aefd8b495aeefc0cfb93540382d0d63"
+    },
+    {
+        "sha": "d3ec750ed6faf48f31a5f0bf2db59a647367c6e2",
+        "author": "Bram",
+        "email": "bram@cbbg.nl",
+        "date": "2025-03-26T12:48:42Z",
+        "message": "Fix some compiler warnings. Remove some unused variables.\n\nAlso some input from #299 has been incorperated.\nFixes #278",
+        "url": "https://github.com/libharu/libharu/commit/d3ec750ed6faf48f31a5f0bf2db59a647367c6e2"
+    },
+    {
+        "sha": "5ef535ed046d9322f6cfdf86de132fa96f90804e",
+        "author": "Bram",
+        "email": "bram@cbbg.nl",
+        "date": "2025-03-22T09:44:27Z",
+        "message": "Add missing include file in hpdf_shading.c. Fixes #335",
+        "url": "https://github.com/libharu/libharu/commit/5ef535ed046d9322f6cfdf86de132fa96f90804e"
+    },
+    {
+        "sha": "7e3a9a4973732d0a5e2402a7efee0cad8e077794",
+        "author": "joelhecht",
+        "email": "joel.hecht@laposte.net",
+        "date": "2025-03-22T10:35:40Z",
+        "message": "HPDF_FAILD_TO_ALLOC_MEM missing, fixes #334",
+        "url": "https://github.com/libharu/libharu/commit/7e3a9a4973732d0a5e2402a7efee0cad8e077794"
+    },
+    {
+        "sha": "8fe5a738541a04642885fb7a75b2b5b9c5b416fa",
+        "author": "Bram",
+        "email": "bram@cbbg.nl",
+        "date": "2025-03-11T14:13:06Z",
+        "message": "Version bump",
+        "url": "https://github.com/libharu/libharu/commit/8fe5a738541a04642885fb7a75b2b5b9c5b416fa"
+    },
+    {
+        "sha": "4eb101ee8d8f24e2a1646a47b3dae4f0b9a9b762",
+        "author": "Bram",
+        "email": "bram@cbbg.nl",
+        "date": "2025-03-11T14:09:21Z",
+        "message": "Enable loading fonts from memory. Closes #296",
+        "url": "https://github.com/libharu/libharu/commit/4eb101ee8d8f24e2a1646a47b3dae4f0b9a9b762"
+    },
+    {
+        "sha": "5247f59e7e746ebc0f7394f68302e842acdb164e",
+        "author": "Bram",
+        "email": "bram@cbbg.nl",
+        "date": "2025-02-09T07:44:04Z",
+        "message": "Reasonable support for Mac TTC files. Fixes #303",
+        "url": "https://github.com/libharu/libharu/commit/5247f59e7e746ebc0f7394f68302e842acdb164e"
+    },
+    {
+        "sha": "16ea18bd76f15f90d2e0427283a7dc184a94e51a",
+        "author": "Bram",
+        "email": "bram@cbbg.nl",
+        "date": "2025-02-08T06:51:23Z",
+        "message": "Add support for loading fonts from memory",
+        "url": "https://github.com/libharu/libharu/commit/16ea18bd76f15f90d2e0427283a7dc184a94e51a"
+    },
+    {
+        "sha": "b4d92540dcee2d8b6108acfe27a7f10f5ac86c86",
+        "author": "Stefania Pedrazzi",
+        "email": "stefaniapedrazzi@users.noreply.github.com",
+        "date": "2025-01-30T14:01:50Z",
+        "message": "Fix compilation error removing nonexistent function (#330)",
+        "url": "https://github.com/libharu/libharu/commit/b4d92540dcee2d8b6108acfe27a7f10f5ac86c86"
+    },
+    {
+        "sha": "6deb5e36bd9bfd33ad10f4f034637c6652c3f3fe",
+        "author": "Bram",
+        "email": "bram@cbbg.nl",
+        "date": "2024-12-19T09:50:06Z",
+        "message": "Remove unused CMake variables. #321",
+        "url": "https://github.com/libharu/libharu/commit/6deb5e36bd9bfd33ad10f4f034637c6652c3f3fe"
+    },
+    {
+        "sha": "f49874a868fac4cc182570888cfacc4298bf6e96",
+        "author": "joelhecht",
+        "email": "joel.hecht@laposte.net",
+        "date": "2024-12-18T12:00:11Z",
+        "message": "Pdf a conformance (#316)\n\n* Improved PDF-A conformance.\n---------\n\nCo-authored-by: Joël Hecht <jhecht@cirilgroup.com>",
+        "url": "https://github.com/libharu/libharu/commit/f49874a868fac4cc182570888cfacc4298bf6e96"
+    },
+    {
+        "sha": "91cd1b98a43c2fb755868c97cb2d7510c2743c9f",
+        "author": "Bram",
+        "email": "bram@cbbg.nl",
+        "date": "2024-05-06T09:56:52Z",
+        "message": "Removed unused CMake variable LIBHPDF_STDC_HEADERS",
+        "url": "https://github.com/libharu/libharu/commit/91cd1b98a43c2fb755868c97cb2d7510c2743c9f"
+    },
+    {
+        "sha": "38b06c6e2759f7d4ccdf4e8bbf00b85c13706771",
+        "author": "Bram",
+        "email": "bram@cbbg.nl",
+        "date": "2024-04-10T11:19:23Z",
+        "message": "Updated line_demo.c with correct HPDF_PAGE_SetDash calls #314",
+        "url": "https://github.com/libharu/libharu/commit/38b06c6e2759f7d4ccdf4e8bbf00b85c13706771"
+    },
+    {
+        "sha": "2ead8e340d8cf61afc5a5d3c01e85e2ed9bbc314",
+        "author": "Bram",
+        "email": "bram@cbbg.nl",
+        "date": "2024-04-10T10:43:35Z",
+        "message": "Removed some unused CMake variables from the summary #318",
+        "url": "https://github.com/libharu/libharu/commit/2ead8e340d8cf61afc5a5d3c01e85e2ed9bbc314"
+    },
+    {
+        "sha": "4e971657622a2171d87586fbcfe741efddd5e968",
+        "author": "KITAITI Makoto",
+        "email": "KitaitiMakoto@gmail.com",
+        "date": "2024-01-19T14:52:28Z",
+        "message": "[Ruby] Fix Ruby bindings (#313)\n\n* Follow libharu type changes\r\n\r\n* Declare noreturn to suppress compiler warning\r\n\r\n* Call rb_undef_alloc_func() for classes according to Ruby extension guide\r\n\r\n*  Fix the number of argument for get_byte_type",
+        "url": "https://github.com/libharu/libharu/commit/4e971657622a2171d87586fbcfe741efddd5e968"
+    },
+    {
+        "sha": "01e4d82f0a2851eb3afef5bdba5110b54efab2a5",
+        "author": "Bram",
+        "email": "bram@cbbg.nl",
+        "date": "2024-01-19T14:49:34Z",
+        "message": "Merge pull request #311 from jschueller/unity\n\nFix build with UNITY_BUILD",
+        "url": "https://github.com/libharu/libharu/commit/01e4d82f0a2851eb3afef5bdba5110b54efab2a5"
+    }
+]

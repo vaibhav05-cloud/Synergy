@@ -1,0 +1,242 @@
+[
+    {
+        "sha": "9d19f45903f38609d714cc4d16d5838e5f7e3488",
+        "author": "Daniel Kao",
+        "email": "daniel.kao@gmail.com",
+        "date": "2026-07-13T16:35:42Z",
+        "message": "fix(reader): keep code blocks with hyperlinked identifiers in extraction\n\nReadability's _cleanConditionally strips div wrappers whose link density\nexceeds 0.2. On Quarto/downlit-rendered sites every function name inside\ncode links to its reference docs, so short code blocks were deleted from\nreader mode and EPUB export (27 of 39 blocks on the reported page).\nSkip conditional cleaning for any element containing a pre code block,\nmirroring the existing inside-a-code-tag guard.\n\nFixes #288\n\nCo-Authored-By: Claude Fable 5 <noreply@anthropic.com>",
+        "url": "https://github.com/plateaukao/einkbro/commit/9d19f45903f38609d714cc4d16d5838e5f7e3488"
+    },
+    {
+        "sha": "e1442e50a25c82a9baef7a9c12ed03f803a20fcc",
+        "author": "Daniel Kao",
+        "email": "daniel.kao@gmail.com",
+        "date": "2026-07-13T16:11:05Z",
+        "message": "fix: keyboard not opening in save-file and instapaper dialogs\n\nAlertController sets FLAG_ALT_FOCUSABLE_IM on the dialog window when\ncanTextInput() finds no text editor in the custom view. A ComposeView\nhas not composed yet at that point, so dialogs whose text fields live\nin Compose are wrongly excluded from IME targeting and the soft\nkeyboard can never appear (regression from the XML-to-Compose dialog\nrefactoring in e966166eb).\n\nClear the flag after show() so the IME targets the dialog window again.\n\nFixes #610\n\nCo-Authored-By: Claude Fable 5 <noreply@anthropic.com>",
+        "url": "https://github.com/plateaukao/einkbro/commit/e1442e50a25c82a9baef7a9c12ed03f803a20fcc"
+    },
+    {
+        "sha": "562d8c391542197b5efc8ce5ef39673ebd5f6ba6",
+        "author": "Daniel Kao",
+        "email": "daniel.kao@gmail.com",
+        "date": "2026-07-12T11:25:07Z",
+        "message": "feat(vertical-read): reliable toggle, line-snapped paging, CJK typography, reader settings\n\nEnhances the CJK vertical (tategaki) reading mode across correctness,\ntypography, layout, and code health.\n\nToggle & navigation\n- Fix vertical mode getting stuck on: exiting no longer relies on\n  webView.reload() (a no-op after reader mode replaces the body via\n  document.body.outerHTML). Tear down reader mode in place and, if the\n  user was reading horizontally, re-enter the horizontal reader.\n- Track how vertical was entered so exit returns to the right state\n  (normal page vs. horizontal reader); keep isVerticalRead in lockstep\n  with toggleReaderMode so the reader-settings re-entry preserves it.\n- Snap vertical page turns to line boundaries: measure the rendered line\n  advance (measure_line_advance.js) and page by an integer multiple of\n  it, anchored from the document's right edge, so a column is never\n  sliced at the screen edge. Fix jumpToBottom (was == jumpToTop).\n\nTypography (process_text_nodes.js)\n- Tate-chu-yoko via text-combine-upright: all instead of the brittle\n  rotate(-90deg) + hand-tuned-margin spans.\n- Zero glyph 025CB -> 03007 ideographic zero in kanji dates.\n- Full-width punctuation only in CJK context (Latin prose, numbers, URLs\n  keep half-width); add ; ( ) alongside , : ! ? % /.\n- 3-letter all-caps acronyms (USA, CPU) stack upright instead of\n  rotating sideways.\n\nReader layout settings in vertical mode\n- Page margin and line spacing now apply (line-height sets inter-line\n  spacing under writing-mode: vertical-rl); two-column stays horizontal\n  only. Re-measure line advance after a spacing change so paging stays\n  snapped.\n\nProgressive enhancement (vertical_layout.css)\n- text-spacing-trim, line-break: strict, and native vertical ruby (rt)\n  styling. Confirmed <ruby> furigana survives Readability.\n\nCode health\n- Extract inline VERTICAL_LAYOUT_CSS to an asset; drop the never-used\n  isVertical branch of injectMozReaderModeJs; remove dead\n  isAllCapitalLetter and leftover console.log.\n\nTest: test_server/vertical.html exercises dates, tate-chu-yoko, acronyms,\nordered lists, ruby, and CJK/Latin punctuation for regression checks.\n\nCo-Authored-By: Claude Fable 5 <noreply@anthropic.com>",
+        "url": "https://github.com/plateaukao/einkbro/commit/562d8c391542197b5efc8ce5ef39673ebd5f6ba6"
+    },
+    {
+        "sha": "9adfc0dfcac12a7801efc8138db241aed77e30be",
+        "author": "Daniel Kao",
+        "email": "daniel.kao@gmail.com",
+        "date": "2026-07-12T09:38:12Z",
+        "message": "feat(settings): consolidate reader mode options into the reader settings dialog\n\n- Settings > Appearance: the \"Padding for reader mode\" value field is\n  replaced by a \"Reader mode settings\" action item that opens the same\n  dialog as long-pressing the reader mode icon (changes there apply on\n  the next reader mode entry since settings has no live webview)\n- Settings > Misc: \"Reader Mode: Keep Extra Content\" removed; the option\n  now lives in the reader settings dialog as a switch. Toggling it while\n  reader mode is active re-enters reader mode so the page is re-parsed\n  with the new content scope immediately\n- keep_extra_content string derived per locale from the old setting\n  title (prefix stripped); the four now-unused settings strings removed\n  from all 31 locale files\n\nCo-Authored-By: Claude Fable 5 <noreply@anthropic.com>",
+        "url": "https://github.com/plateaukao/einkbro/commit/9adfc0dfcac12a7801efc8138db241aed77e30be"
+    },
+    {
+        "sha": "49bda444dd37fad7a553d659bdf737930d66c99b",
+        "author": "Daniel Kao",
+        "email": "daniel.kao@gmail.com",
+        "date": "2026-07-12T09:25:35Z",
+        "message": "feat(reader): reader layout settings dialog on long-press of reader mode icon\n\nLong-pressing the reader mode icon (toolbar or menu dialog) opens a new\nsettings dialog with live-applied page margin, line spacing, a two-column\nlandscape switch, and a shortcut to the reader font dialog.\n\n- New \"readerSettings\" CSS slot recomputed by updateReaderSettingsStyle();\n  selectors outrank readerview.css so slot order doesn't matter\n- Two-column landscape flows the reader body into viewport-height columns\n  (column-count:2, column-fill:auto); page turns jump one viewport-wide\n  spread via scrollTo page anchoring, and the viewport meta pins\n  initial/minimum scale so the wide column strip can't trigger zoom-out\n- body margin reset to 0 in two-column mode: the 8px UA default made\n  spreads tile 16px short and drift one clipped glyph per page\n- Replaces the setPadding JS call; slot + meta fully restored on exit\n- Strings localized in all 30 locales; test_server/article.html added\n  for reader-mode verification\n\nCo-Authored-By: Claude Fable 5 <noreply@anthropic.com>",
+        "url": "https://github.com/plateaukao/einkbro/commit/49bda444dd37fad7a553d659bdf737930d66c99b"
+    },
+    {
+        "sha": "6812d5b1ec8667e0398974cf2dd7f5d0956eea33",
+        "author": "Daniel Kao",
+        "email": "daniel.kao@gmail.com",
+        "date": "2026-07-12T08:40:59Z",
+        "message": "refactor(font): managed CSS slots — font/style changes apply without reload\n\nReplace append-only anonymous <style> injection with ID-addressed slot\nelements (update_css_slot.js): updating a slot replaces its CSS, empty\nCSS removes it, and unchanged CSS skips the DOM write (no e-ink repaint).\n\nFixes several \"font change does nothing\" cases:\n- switching away from CUSTOM font lost to the stale higher-specificity\n  rule left in <head> (append-only styles never removed)\n- Google-font @import rules were silently dropped whenever black-font\n  CSS preceded them in the blob; font CSS is now built first\n- reader font stuck after exiting reader mode; reader/vertical slots\n  are cleared on exit and the main slot is recomputed\n- background tabs kept their load-time font; styles re-apply on tab\n  switch in TabManager.showAlbum\n- readerCustomFontInfo setter checked fontType instead of readerFontType\n\nReverting (system default font, bold/black/white-background off) now\nclears the slot instead of reloading the page. Custom font URLs are\nversioned by a hash of the font file rather than a per-call counter, so\nrepeated updates hit the cache while a new font file forces a refetch.\nBoldness slider now routes through updateCssStyle() instead of its own\nnever-cleared style injection, and respects per-site boldness overrides.\n\nCo-Authored-By: Claude Fable 5 <noreply@anthropic.com>",
+        "url": "https://github.com/plateaukao/einkbro/commit/6812d5b1ec8667e0398974cf2dd7f5d0956eea33"
+    },
+    {
+        "sha": "19d2377b40c5182d0857c3c24e326c094e6f63f3",
+        "author": "Daniel Kao",
+        "email": "daniel.kao@gmail.com",
+        "date": "2026-07-11T05:55:33Z",
+        "message": "feat(eink-image): fast CSS-filter mode + pipeline fixes\n\nDeep/Fast mode selector in the E-ink Image Optimization dialog:\n- Deep (default): existing network-layer pipeline with dithering\n- Fast: injects img { filter: brightness/contrast/saturate } scaled by\n  strength via updateCssStyle — no decode/re-encode cost, also covers\n  data:/blob:/JS-generated images; preview uses an equivalent\n  ColorMatrix so the dialog stays faithful per mode\n- mode labels translated in all locales\n\nDeep pipeline fixes (from the algorithm investigation):\n- bake EXIF orientation into pixels (re-encode strips EXIF, so camera\n  photos rendered rotated)\n- pass image/gif through untouched (was frozen to first frame, served\n  as JPEG labeled image/gif)\n- cap decode size near the screen's long edge via inSampleSize: faster\n  decode/process/encode, no more 3x48MB peaks on 12MP photos\n- serve original bytes when processing is skipped (tiny images,\n  decode failure) instead of forcing a WebView re-fetch\n- decode inMutable (drops one full-bitmap copy), Q12 fixed-point\n  saturation, Semaphore(2) bounds concurrent processing\n\nCo-Authored-By: Claude Fable 5 <noreply@anthropic.com>",
+        "url": "https://github.com/plateaukao/einkbro/commit/19d2377b40c5182d0857c3c24e326c094e6f63f3"
+    },
+    {
+        "sha": "7621678154139fa35d323cc5f11b40e8913f7ba1",
+        "author": "Daniel Kao",
+        "email": "daniel.kao@gmail.com",
+        "date": "2026-07-11T05:06:41Z",
+        "message": "feat(settings): live preview dialog for E-ink image optimization\n\nThe E-ink Image Optimization setting now opens a dialog with a sample\nphoto processed live through EinkImageProcessor at the selected level,\nso users can see the effect of each strength before confirming with\nOK or discarding with Cancel.\n\n- new EinkImageSettingItem + EinkImageAdjustmentDialog (plain Dialog;\n  M2 AlertDialog title/text slots clamp tall content)\n- preview drawable in drawable-nodpi (360x360, 37KB)\n- user guide (en, zh-TW): expanded description + before/after\n  comparison gallery generated with the same pipeline\n\nCo-Authored-By: Claude Fable 5 <noreply@anthropic.com>",
+        "url": "https://github.com/plateaukao/einkbro/commit/7621678154139fa35d323cc5f11b40e8913f7ba1"
+    },
+    {
+        "sha": "c4b930af45799b7141851717762e79af72a01d2f",
+        "author": "Daniel Kao",
+        "email": "daniel.kao@gmail.com",
+        "date": "2026-07-11T03:56:17Z",
+        "message": "chore(fdroid): refresh fastlane metadata — descriptions, screenshots, zh-TW locale, 15.17.0 changelog",
+        "url": "https://github.com/plateaukao/einkbro/commit/c4b930af45799b7141851717762e79af72a01d2f"
+    },
+    {
+        "sha": "b5d10b139ff2fd93e749655e7de1d8c0ef54ce5b",
+        "author": "Daniel Kao",
+        "email": "daniel.kao@gmail.com",
+        "date": "2026-07-11T03:40:14Z",
+        "message": "docs: add volume double-click back gesture to 15.17.0 changelog",
+        "url": "https://github.com/plateaukao/einkbro/commit/b5d10b139ff2fd93e749655e7de1d8c0ef54ce5b"
+    },
+    {
+        "sha": "dab2eea1428094b04f5175fc1c9c3c7e76ef9f38",
+        "author": "Daniel Kao",
+        "email": "daniel.kao@gmail.com",
+        "date": "2026-07-11T03:39:24Z",
+        "message": "chore: bump version to 15.17.0",
+        "url": "https://github.com/plateaukao/einkbro/commit/dab2eea1428094b04f5175fc1c9c3c7e76ef9f38"
+    },
+    {
+        "sha": "1c8ed2677c11cb7bbbe7c8b9c92a47c0b2fc0aeb",
+        "author": "Daniel Kao",
+        "email": "daniel.kao@gmail.com",
+        "date": "2026-07-11T03:12:17Z",
+        "message": "Merge pull request #618 from mjhfunctionalashtanga/feature/volume-double-click-back\n\nAdd double-click volume key as Back (opt-in)",
+        "url": "https://github.com/plateaukao/einkbro/commit/1c8ed2677c11cb7bbbe7c8b9c92a47c0b2fc0aeb"
+    },
+    {
+        "sha": "16a05675b56fd717b5f1738796de641abd19d0d8",
+        "author": "Daniel Kao",
+        "email": "daniel.kao@gmail.com",
+        "date": "2026-07-11T03:07:54Z",
+        "message": "fix(gesture): detect volume double-click on key-up, translate new strings\n\nReview fixes for the double-click-for-back gesture:\n\n- Schedule the deferred page turn on key-up instead of key-down. The\n  long-press callback only fires at ~400-500ms, after the 250ms window,\n  so a turn deferred from key-down always fired mid-hold before the\n  long-press/repeat handlers could cancel it: every long-press volume\n  adjustment also flipped a page. With key-up scheduling a held key\n  never has a pending turn to begin with.\n- Track pending page turns per key code so alternating volume keys\n  within the window no longer orphans an uncancellable job.\n- Fold the duplicated direction logic and the two near-identical\n  volume-key handlers into performVolumePageTurn()/handleVolumeKey().\n- Mention the dependency on the volume page turn toggle in the setting\n  summary, and add the two new strings to all 30 locale files.\n\nCo-Authored-By: Claude Fable 5 <noreply@anthropic.com>",
+        "url": "https://github.com/plateaukao/einkbro/commit/16a05675b56fd717b5f1738796de641abd19d0d8"
+    },
+    {
+        "sha": "77490ea25f0d571cf03f8c11420d3b3328b2d3a8",
+        "author": "Daniel Kao",
+        "email": "daniel.kao@gmail.com",
+        "date": "2026-07-11T02:51:51Z",
+        "message": "Merge pull request #620 from plateaukao/fix/inplace-translate-duplicate-requests\n\nfix(translate): stop in-place translation from requesting each paragraph twice",
+        "url": "https://github.com/plateaukao/einkbro/commit/77490ea25f0d571cf03f8c11420d3b3328b2d3a8"
+    },
+    {
+        "sha": "92bdaf1e2bcb99b65a0e853760d6cdfe1b9031d4",
+        "author": "Daniel Kao",
+        "email": "daniel.kao@gmail.com",
+        "date": "2026-07-11T02:51:02Z",
+        "message": "fix(translate): stop in-place translation from requesting each paragraph twice\n\nEvery element visible when in-place translation started was sent to the\nLLM API twice: once by the bind-time visibility scan\n(maybeRequestTranslation), and ~80ms later by the IntersectionObserver's\ninitial delivery, whose only guard (data-original-html) isn't set until\na response is applied seconds later. On DOM-churning sites like\nnews.naver.com, rebinds and rootMargin crossings re-fired pending\nelements 3-5x. Both responses were then applied in place - a visible\nre-translation on e-ink - and the second apply overwrote the\ndata-original-html backup with already-translated text.\n\nInstrumented on news.naver.com (proxy around androidApp.getTranslation):\n75 calls for 47 elements before; 46/46 initial and 68/68 after five\npages of scrolling - zero duplicates - after the fix.\n\n- Route the IntersectionObserver's in-place branch through\n  maybeRequestTranslation so both paths share one guard set\n  (data-original-html + text cache + _translateRequested).\n- Guard the sibling-mode branch with _translateRequested too; its\n  empty-nextElementSibling check has the same in-flight race.\n- Reuse the IntersectionObserver across re-injections. Recreating it\n  orphaned nodes already in _translateObservedNodes (detached from the\n  old observer, skipped by the rebind loop), so off-screen content\n  could never translate after a second injection.\n- Skip _applyTranslationToElement when data-original-html already\n  exists, preserving the original-HTML backup against late duplicates.\n- Invoke the JS callback on failed translations (empty string) so the\n  in-flight flag clears and the element can be retried; previously a\n  failed request blocked its element forever.\n\nCo-Authored-By: Claude Fable 5 <noreply@anthropic.com>",
+        "url": "https://github.com/plateaukao/einkbro/commit/92bdaf1e2bcb99b65a0e853760d6cdfe1b9031d4"
+    },
+    {
+        "sha": "e9b4106522ffe5f18d03209c327a2079205e3b27",
+        "author": "Daniel Kao",
+        "email": "daniel.kao@gmail.com",
+        "date": "2026-07-11T02:41:36Z",
+        "message": "Merge pull request #619 from plateaukao/worktree-autoplay-block\n\nfix: make 'Allow video autoplay' setting actually block feed sites",
+        "url": "https://github.com/plateaukao/einkbro/commit/e9b4106522ffe5f18d03209c327a2079205e3b27"
+    },
+    {
+        "sha": "b6fbec282a197ae216567abb9f11cbc4c1a1c89b",
+        "author": "Daniel Kao",
+        "email": "daniel.kao@gmail.com",
+        "date": "2026-07-11T02:30:01Z",
+        "message": "fix: make 'Allow video autoplay' setting actually block feed sites\n\nThe setting only stripped the autoplay attribute and relied on\nmediaPlaybackRequiresUserGesture, but Instagram, Facebook, X, and\nThreads autoplay muted videos via JS play() from an\nIntersectionObserver: muted playback is exempt from the gesture\nrequirement, and the attribute is never used, so nothing was blocked.\n\nIntercept playback itself instead: patch HTMLMediaElement.prototype.play\nso it only succeeds within 1.5s of a trusted click/tap (scrolling never\nfires click), reject blocked calls with NotAllowedError exactly like\nChromium's autoplay policy so sites show their own tap-to-play UI, and\npause anything that starts without approval via a capture-phase play\nlistener. Inject the script with addDocumentStartJavaScript so it runs\nbefore any page script and in every frame, falling back to the old\nonPageStarted injection on WebViews without DOCUMENT_START_SCRIPT.\nToggling the setting now also re-applies and reloads the current tab.\n\nVerified on emulator via CDP: programmatic play() rejected, muted\nautoplay-attribute video paused, feed videos (shadow DOM included)\nnever start on load or scroll, and tap-to-play still works.\n\nCo-Authored-By: Claude Fable 5 <noreply@anthropic.com>",
+        "url": "https://github.com/plateaukao/einkbro/commit/b6fbec282a197ae216567abb9f11cbc4c1a1c89b"
+    },
+    {
+        "sha": "e6f832bbf3c72e491b2d82d78f806370459d2ace",
+        "author": "Michael Joel Hall",
+        "email": "michaeljoelhall@gmail.com",
+        "date": "2026-07-10T20:59:23Z",
+        "message": "Add double-click volume key as back button\n\nNew opt-in toggle (Settings > Gesture > \"Double-click for back\",\ndefault off). When enabled, a single volume-key tap still turns the\npage but is deferred by a 250ms window so a second tap of the same key\ncan be caught and mapped to Back instead. Long-press still adjusts\nsystem volume; holding cancels the deferred page turn.\n\nCo-Authored-By: Claude Opus 4.8 (1M context) <noreply@anthropic.com>\nClaude-Session: https://claude.ai/code/session_01QncYY8gj1nQ3EX5TcGPBTD",
+        "url": "https://github.com/plateaukao/einkbro/commit/e6f832bbf3c72e491b2d82d78f806370459d2ace"
+    },
+    {
+        "sha": "b39f32569213dfbfc98659e8e5cddf263fe442df",
+        "author": "Daniel Kao",
+        "email": "daniel.kao@gmail.com",
+        "date": "2026-07-10T17:29:18Z",
+        "message": "Merge pull request #617 from plateaukao/feat/agent-html-tools\n\nfeat(ai): real HTML source, JS eval, web search, and EPUB export for the LLM agent",
+        "url": "https://github.com/plateaukao/einkbro/commit/b39f32569213dfbfc98659e8e5cddf263fe442df"
+    },
+    {
+        "sha": "3dfd294850febf034194056cb010c6de7724194c",
+        "author": "Daniel Kao",
+        "email": "daniel.kao@gmail.com",
+        "date": "2026-07-10T17:27:09Z",
+        "message": "feat(ai): give the LLM agent real HTML source, JS eval, web search, and EPUB export\n\nExpand the free-form agent's tool surface so it can act on pages precisely\ninstead of guessing from truncated reader-mode text:\n\n- read_page_source: download the real served HTML (view-source equivalent)\n  via OkHttp with the WebView's cookies + user agent, cached per URL. This is\n  the ground truth for writing CSS/DOM selectors.\n- Windowed tool results (ToolTextWindow): replace blind 8k truncation with\n  offset paging and case-insensitive search-to-element, prefixed with a\n  \"[chars a..b of N]\" header. Applies to read_page_source, read_initial_html,\n  read_initial_page, read_current_page.\n- run_javascript: eval JS on the live originating tab (test a removal selector\n  before persisting it — the user sees it work) or the off-screen WebView\n  (extract structured data). 10s timeout, destroyed-tab guarded.\n- web_search: query the user's configured search engine off-screen and return\n  the result links.\n- save_epub: fetch chapter URLs off-screen, extract reader HTML, and write a\n  multi-chapter EPUB to Downloads (non-interactive EpubManager.saveEpubDirectly).\n\nSupporting changes: EBWebView.getRawReaderHtml/getRawText are now cancellable\nso reader extraction can be bounded by withTimeoutOrNull; EBWebView exposes\nisWebViewDestroyed; InitialPageSnapshot carries a WeakReference to the origin\ntab. Unit tests cover the windowing logic.\n\nCo-Authored-By: Claude Opus 4.8 <noreply@anthropic.com>",
+        "url": "https://github.com/plateaukao/einkbro/commit/3dfd294850febf034194056cb010c6de7724194c"
+    },
+    {
+        "sha": "bc7d5283fe9cb125f9e62823aebd5c2492846156",
+        "author": "Daniel Kao",
+        "email": "daniel.kao@gmail.com",
+        "date": "2026-07-08T11:06:15Z",
+        "message": "Merge pull request #616 from plateaukao/zh-rcn-strings-update\n\nUpdate Simplified Chinese (zh-rCN) translations",
+        "url": "https://github.com/plateaukao/einkbro/commit/bc7d5283fe9cb125f9e62823aebd5c2492846156"
+    },
+    {
+        "sha": "cb80a61db46c1a8538054a318bd5ccfb5cbd2d50",
+        "author": "Daniel Kao",
+        "email": "daniel.kao@gmail.com",
+        "date": "2026-07-08T07:58:32Z",
+        "message": "fix: remove duplicate site_force_viewport_width in zh-rCN strings\n\nCo-Authored-By: Claude Fable 5 <noreply@anthropic.com>",
+        "url": "https://github.com/plateaukao/einkbro/commit/cb80a61db46c1a8538054a318bd5ccfb5cbd2d50"
+    },
+    {
+        "sha": "b4c1c6aa6134df98433b82580547b47d0ae0ff47",
+        "author": "XuBaocai",
+        "email": "66826351+XuBaocai@users.noreply.github.com",
+        "date": "2026-07-07T20:35:49Z",
+        "message": "Update strings.xml\n\nModified_^_",
+        "url": "https://github.com/plateaukao/einkbro/commit/b4c1c6aa6134df98433b82580547b47d0ae0ff47"
+    },
+    {
+        "sha": "4fc62a69eb92b4fe2833938d18d24f1f425f1fc8",
+        "author": "Daniel Kao",
+        "email": "daniel.kao@gmail.com",
+        "date": "2026-07-08T05:25:24Z",
+        "message": "docs: move documentation links to top of README\n\nCo-Authored-By: Claude Fable 5 <noreply@anthropic.com>",
+        "url": "https://github.com/plateaukao/einkbro/commit/4fc62a69eb92b4fe2833938d18d24f1f425f1fc8"
+    },
+    {
+        "sha": "43f4344b91c2bb4efd8c1fccb197759e4716040d",
+        "author": "Daniel Kao",
+        "email": "daniel.kao@gmail.com",
+        "date": "2026-07-08T05:23:36Z",
+        "message": "docs: inline JetBrains logo and app icon in README credits\n\nCo-Authored-By: Claude Fable 5 <noreply@anthropic.com>",
+        "url": "https://github.com/plateaukao/einkbro/commit/43f4344b91c2bb4efd8c1fccb197759e4716040d"
+    },
+    {
+        "sha": "2a56ba3f283dad6f1be1910c60cc46e38be791b8",
+        "author": "Daniel Kao",
+        "email": "daniel.kao@gmail.com",
+        "date": "2026-07-08T05:11:44Z",
+        "message": "docs: trim README to badges and documentation links\n\nFeature sections, screenshots, and book promo moved to the docs site;\nREADME now links to Documentation (EN) and 中文說明手冊 (zh-TW).\n\nCo-Authored-By: Claude Fable 5 <noreply@anthropic.com>",
+        "url": "https://github.com/plateaukao/einkbro/commit/2a56ba3f283dad6f1be1910c60cc46e38be791b8"
+    },
+    {
+        "sha": "06bbeb001e71a1ea90cae01093b46ec992d1a42e",
+        "author": "Daniel Kao",
+        "email": "daniel.kao@gmail.com",
+        "date": "2026-07-07T12:29:07Z",
+        "message": "refactor: shared ListScaffold + locale-aware base for config activities\n\nTen config/list activities each re-implemented the same chrome — MyTheme\n+ Scaffold + TopAppBar with back arrow and actions — with three\ndifferent back-navigation styles and inconsistent icon tinting, and 7\nof the 11 Compose activities were missing the app-language\nattachBaseContext override, giving users with a non-system UI locale\nmixed-language screens.\n\n- LocaleAwareComponentActivity: base applying the locale override; all\n  ten activities now extend it (the three per-activity copies of the\n  override are deleted).\n- ListScaffold(title, onBack, actions, content): shared themed scaffold\n  with a standardized onPrimary back arrow; adopted by 7 activities.\n  ToolbarConfigActivity (no Scaffold; top bar composed into a custom\n  panel layout) and HighlightsActivity (dynamic nav-driven top bar)\n  keep their own chrome.\n- EmptyListPlaceholder: replaces three copies of the centered\n  empty-list box (UserScriptListActivity keeps its intentionally\n  different inline style).\n\nNet -209 lines.\n\nCo-Authored-By: Claude Fable 5 <noreply@anthropic.com>",
+        "url": "https://github.com/plateaukao/einkbro/commit/06bbeb001e71a1ea90cae01093b46ec992d1a42e"
+    },
+    {
+        "sha": "c0db29273ff5c26afc5388c552d2496989fafe30",
+        "author": "Daniel Kao",
+        "email": "daniel.kao@gmail.com",
+        "date": "2026-07-07T12:13:54Z",
+        "message": "fix: in-progress edits survive rotation in config screens\n\nNone of the Compose config activities declare configChanges, so\nrotation recreated them and plain remember state was lost: a user-typed\nuserscript, an unsaved toolbar/statusbar arrangement, and the settings\nsearch query all vanished.\n\n- SettingActivity: isSearching/searchQuery via rememberSaveable.\n- Toolbar/Statusbar config: unsaved arrangements saved as ordinal lists\n  with listSaver-based custom savers.\n- UserScriptListActivity: the editor dialog state (editing script,\n  open flag, source url) and the typed code/url are saveable, with a\n  100k-char guard so multi-MB fetched scripts can't overflow the 1MB\n  Binder transaction limit during onSaveInstanceState (those remain\n  re-fetchable via their sourceUrl). The install-url fetch effect also\n  moved from a remember{} side effect to LaunchedEffect and is skipped\n  on restore so it can't clobber restored editor state.\n\nVerified on emulator: an unsaved toolbar arrangement (Title added to\nthe preview) survives a portrait-landscape rotation.\n\nCo-Authored-By: Claude Fable 5 <noreply@anthropic.com>",
+        "url": "https://github.com/plateaukao/einkbro/commit/c0db29273ff5c26afc5388c552d2496989fafe30"
+    },
+    {
+        "sha": "fc43c4fb4b50ed47e360ee829b2cfa4811b6d069",
+        "author": "Daniel Kao",
+        "email": "daniel.kao@gmail.com",
+        "date": "2026-07-07T12:06:56Z",
+        "message": "fix: TwoPaneLayout keeps arrangement and split across orientation; no layout from onMeasure\n\n- initViews() re-derived panel1/panel2 from raw child order on every\n  orientation change, silently reverting a user's switchPanels()\n  arrangement (while config.translationPanelSwitched still said\n  switched) and resetting the dragged split position to 50%. The swap\n  is now remembered and re-applied, and the split position is kept\n  (defaults still apply on first layout; out-of-range values are\n  clamped as before). initDragHandle's cross-axis resets are gone for\n  the same reason.\n- onMeasure called updatePanels(), which assigns children's\n  layoutParams and thus requestLayout() mid-measure, forcing extra\n  full-tree layout passes (each one resizing WebViews); it now defers\n  via post{}.\n- initViews indexed userAddedViews[0]/[1] unguarded behind an empty\n  size check; it now returns early when fewer than two panes exist.\n\nVerified on emulator: split screen opens, handle drags to x~322, and\nthe position survives a horizontal-vertical-horizontal round-trip\n(previously reset to center).\n\nCo-Authored-By: Claude Fable 5 <noreply@anthropic.com>",
+        "url": "https://github.com/plateaukao/einkbro/commit/fc43c4fb4b50ed47e360ee829b2cfa4811b6d069"
+    },
+    {
+        "sha": "46454987c16a36ec7b94020bbe1f1d4ad2777ac9",
+        "author": "Daniel Kao",
+        "email": "daniel.kao@gmail.com",
+        "date": "2026-07-07T12:02:20Z",
+        "message": "fix: GptActionDialog no longer wipes typed fields on recomposition\n\nThe dialog seeded seven remember { mutableStateOf() } fields and then\nunconditionally assigned all of them from the action parameter in the\ncomposable body — a side effect that re-ran on every recomposition of\nthe outer scope, silently resetting anything the user had typed. The\nfields are now initialized once via remember(editActionIndex, action)\nand the assignment block is deleted. The window dim-removal hack in the\ntext slot (an unchecked cast running per recomposition) moved into a\nSideEffect with a safe cast.\n\nVerified on emulator: typed action name survives selecting a different\nservice type (which recomposes the dialog).\n\nCo-Authored-By: Claude Fable 5 <noreply@anthropic.com>",
+        "url": "https://github.com/plateaukao/einkbro/commit/46454987c16a36ec7b94020bbe1f1d4ad2777ac9"
+    }
+]

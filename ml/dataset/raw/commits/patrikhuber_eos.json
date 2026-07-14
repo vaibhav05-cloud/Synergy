@@ -1,0 +1,242 @@
+[
+    {
+        "sha": "ce984207a51c2edd2e7568a64fec9b98ef61aeed",
+        "author": "Patrik Huber",
+        "email": "patrikhuber@users.noreply.github.com",
+        "date": "2025-02-02T22:28:12Z",
+        "message": "Bump upload-artifact@v3 to v4 in cibuildwheel.yml and build_wheels.yml since v3 is deprecated",
+        "url": "https://github.com/patrikhuber/eos/commit/ce984207a51c2edd2e7568a64fec9b98ef61aeed"
+    },
+    {
+        "sha": "ef055420639b7af1ea4af0bb5de7d6fafb6b0ac1",
+        "author": "Patrik Huber",
+        "email": "patrikhuber@users.noreply.github.com",
+        "date": "2025-02-02T12:42:01Z",
+        "message": "Bump upload-artifact@v3 to v4 in msvc.yml since v3 is deprecated",
+        "url": "https://github.com/patrikhuber/eos/commit/ef055420639b7af1ea4af0bb5de7d6fafb6b0ac1"
+    },
+    {
+        "sha": "d48d903aa61a5a207df2a5d4b16419d83986e320",
+        "author": "Patrik Huber",
+        "email": "patrikhuber@users.noreply.github.com",
+        "date": "2024-12-09T20:08:13Z",
+        "message": "Bumped version to 1.5.0",
+        "url": "https://github.com/patrikhuber/eos/commit/d48d903aa61a5a207df2a5d4b16419d83986e320"
+    },
+    {
+        "sha": "17e83fde70519099c08c9e1a460d2df2354128e1",
+        "author": "Patrik Huber",
+        "email": "patrikhuber@users.noreply.github.com",
+        "date": "2024-12-10T22:49:21Z",
+        "message": "Updated macos, ubuntu & python versions in build_wheels.yml",
+        "url": "https://github.com/patrikhuber/eos/commit/17e83fde70519099c08c9e1a460d2df2354128e1"
+    },
+    {
+        "sha": "398e674a05d88c2ce0363d8e8cb83c7dd59fc803",
+        "author": "Patrik Huber",
+        "email": "patrikhuber@users.noreply.github.com",
+        "date": "2024-12-10T22:48:58Z",
+        "message": "Update cibuildwheel.yml from macos-11 to macos-13\n\nThe macos-11 image is no longer available, and 12 is deprecated.",
+        "url": "https://github.com/patrikhuber/eos/commit/398e674a05d88c2ce0363d8e8cb83c7dd59fc803"
+    },
+    {
+        "sha": "3ee807cfb363656cba6470fdfcb2dfc5e9bc5ba1",
+        "author": "Patrik Huber",
+        "email": "patrikhuber@users.noreply.github.com",
+        "date": "2024-12-10T22:26:33Z",
+        "message": "CI: Clone vcpkg on macOS & set VCPKG_ROOT conditionally\n\nRemoved macos-11 (I think those runners don't exist anymore) and added macos-13 instead (macos-latest is currently 14).\nAccording to various GitHub issues (using a ChatGPT web search), only macOS12 and 13 (Intel) still contain vcpkg pre-installed - the ARM64 versions and macOS 14 (Intel) do not contain vcpkg preinstalled anymore. So we manually clone it on macOS.\nNote: We should probably migrate to using https://github.com/marketplace/actions/run-vcpkg.\n\nAlso added ubuntu-24.04 to see if that builds.",
+        "url": "https://github.com/patrikhuber/eos/commit/3ee807cfb363656cba6470fdfcb2dfc5e9bc5ba1"
+    },
+    {
+        "sha": "839790923f39d109663b185ba5425aff58d3cfe8",
+        "author": "Patrik Huber",
+        "email": "patrikhuber@users.noreply.github.com",
+        "date": "2024-12-09T20:31:48Z",
+        "message": "Skip Python 3.6 in cibuildwheel.yml\n\npybind11 or CMake's FindPython require 3.7 as minimum. That's fine with us.",
+        "url": "https://github.com/patrikhuber/eos/commit/839790923f39d109663b185ba5425aff58d3cfe8"
+    },
+    {
+        "sha": "e7c60723c5825c12cd842e68dd3e465ed5f5cfd8",
+        "author": "Patrik Huber",
+        "email": "patrikhuber@users.noreply.github.com",
+        "date": "2024-12-09T20:20:19Z",
+        "message": "Updated toml11 to 3.8.1\n\nThere are newer toml11 releases (4.x), but this is the last release in the 3.x series.",
+        "url": "https://github.com/patrikhuber/eos/commit/e7c60723c5825c12cd842e68dd3e465ed5f5cfd8"
+    },
+    {
+        "sha": "526b4470454103e9c5d1850ed7626457c6a98b2b",
+        "author": "Patrik Huber",
+        "email": "patrikhuber@users.noreply.github.com",
+        "date": "2024-12-09T20:19:29Z",
+        "message": "Updated cereal submodule to latest master commit\n\nNot much has happened in the cereal repo.",
+        "url": "https://github.com/patrikhuber/eos/commit/526b4470454103e9c5d1850ed7626457c6a98b2b"
+    },
+    {
+        "sha": "75cc2a10e416aee4773b5d5d285c329825c9cd4b",
+        "author": "Patrik Huber",
+        "email": "patrikhuber@users.noreply.github.com",
+        "date": "2024-12-09T20:00:53Z",
+        "message": "Add vcpkg-configuration.json\n\nThis is needed to build eos locally. It will be ignored by consumers of the library (in which case their top-level vcpkg baseline is used).\nThe commit corresponds to the 2024.11.16 baseline.",
+        "url": "https://github.com/patrikhuber/eos/commit/75cc2a10e416aee4773b5d5d285c329825c9cd4b"
+    },
+    {
+        "sha": "23330b63dc87bde3a74f0f12cad8eb57a9ef683a",
+        "author": "Patrik Huber",
+        "email": "patrikhuber@users.noreply.github.com",
+        "date": "2024-12-09T19:36:43Z",
+        "message": "Add CMakePresets.json to .gitignore",
+        "url": "https://github.com/patrikhuber/eos/commit/23330b63dc87bde3a74f0f12cad8eb57a9ef683a"
+    },
+    {
+        "sha": "9898ad7800b29d3a622cb739959d08a3891b0cfe",
+        "author": "Patrik Huber",
+        "email": "patrikhuber@users.noreply.github.com",
+        "date": "2024-12-09T19:36:26Z",
+        "message": "Update pybind11 submodule to 2.13.6",
+        "url": "https://github.com/patrikhuber/eos/commit/9898ad7800b29d3a622cb739959d08a3891b0cfe"
+    },
+    {
+        "sha": "cda747494e1bf9e03b28b4919bfff23c73e77979",
+        "author": "Patrik Huber",
+        "email": "patrikhuber@users.noreply.github.com",
+        "date": "2024-12-09T19:36:00Z",
+        "message": "Add /bigobj on MSVC to examples that need it",
+        "url": "https://github.com/patrikhuber/eos/commit/cda747494e1bf9e03b28b4919bfff23c73e77979"
+    },
+    {
+        "sha": "647acaa155e604f721c7e263d2313412f1e8b52b",
+        "author": "Patrik Huber",
+        "email": "patrikhuber@users.noreply.github.com",
+        "date": "2024-12-09T19:06:27Z",
+        "message": "Fix v1.4.0 release date in CITATION.cff\n\nThis was actually 2023, not 2022, I forgot to update the year back then.",
+        "url": "https://github.com/patrikhuber/eos/commit/647acaa155e604f721c7e263d2313412f1e8b52b"
+    },
+    {
+        "sha": "546a0be2f57419a146c0feb7e7791d75334343a7",
+        "author": "Patrik Huber",
+        "email": "patrikhuber@users.noreply.github.com",
+        "date": "2024-12-08T12:06:10Z",
+        "message": "Include OpenCV imgcodecs instead of highgui in examples\r\n\r\nIt looks like cv::imwrite was in highgui in OpenCV2, thus we included that header. But for a while now, it's been in imgcodecs. Thus if OpenCV 3 or 4 is found, we were only looking for (and linking to) imgcodecs, but not highgui - but we were still including the highgui header, and this leads to a compiler error in most recent builds.",
+        "url": "https://github.com/patrikhuber/eos/commit/546a0be2f57419a146c0feb7e7791d75334343a7"
+    },
+    {
+        "sha": "165d17c00215113e8ea15c6210701d3692a5b950",
+        "author": "Patrik Huber",
+        "email": "patrikhuber@users.noreply.github.com",
+        "date": "2024-10-21T14:38:02Z",
+        "message": "Moved get_vertex_index() from fitting.hpp to LandmarkMapper.hpp",
+        "url": "https://github.com/patrikhuber/eos/commit/165d17c00215113e8ea15c6210701d3692a5b950"
+    },
+    {
+        "sha": "74fdfb6f55653b7abbbfbf89b0ef5ad0297d4f66",
+        "author": "Patrik Huber",
+        "email": "patrikhuber@users.noreply.github.com",
+        "date": "2024-10-14T13:01:51Z",
+        "message": "Added missing include to Landmark.hpp\n\nThe file/class uses `std::back_inserter`, which is in `<iterator>`, and is not included transitively by the existing include statements.",
+        "url": "https://github.com/patrikhuber/eos/commit/74fdfb6f55653b7abbbfbf89b0ef5ad0297d4f66"
+    },
+    {
+        "sha": "3445b1ccd2b8fc48b132c90c3fe8b8987d2a334a",
+        "author": "Patrik Huber",
+        "email": "patrikhuber@users.noreply.github.com",
+        "date": "2024-07-06T11:01:29Z",
+        "message": "Added get_shape_at_point() for (neutral) shape model only",
+        "url": "https://github.com/patrikhuber/eos/commit/3445b1ccd2b8fc48b132c90c3fe8b8987d2a334a"
+    },
+    {
+        "sha": "ecaa24a2d4ea2a637cfbc4159f9d66d157fdb467",
+        "author": "Omar Omar",
+        "email": "omarhatem5555@gmail.com",
+        "date": "2024-01-29T18:36:30Z",
+        "message": "Adding cibuildwheel workflow to build and publish wheels (#361)\n\nThis should build wheels for most platforms, and also run a simple `load_model()` test to check whether the compiled wheels actually work. It'll also upload wheels from published GitHub releases to PyPI, but I'll still need to set that up.",
+        "url": "https://github.com/patrikhuber/eos/commit/ecaa24a2d4ea2a637cfbc4159f9d66d157fdb467"
+    },
+    {
+        "sha": "32760194ddc21d5012a3488f5100a2cb6be87fa0",
+        "author": "Patrik Huber",
+        "email": "patrikhuber@users.noreply.github.com",
+        "date": "2024-01-29T18:22:05Z",
+        "message": "Added get_shape_at_point() for PCA expression models",
+        "url": "https://github.com/patrikhuber/eos/commit/32760194ddc21d5012a3488f5100a2cb6be87fa0"
+    },
+    {
+        "sha": "61ccbcb88a527b21f14f9303a84ed686b3830e0f",
+        "author": "Omar Omar",
+        "email": "omarhatem5555@gmail.com",
+        "date": "2023-09-09T15:14:02Z",
+        "message": "Modifying the landmark mapper loop to support hybrid mappings and move into get_vertex_index() function (#360)\n\nRemoved `get_corresponding_pointset(...)` (the function wasn't used anywhere), renamed it to `get_vertex_index(...)`, and modified/implemented the landmark mapper loop in there to support hybrid mappings, i.e. when a landmark mapping file maps some landmarks to landmark identifiers (eye.right...) and others to vertex indices. This is useful when some landmarks don't have a semantic meaning. This is used by the Blender addon (https://github.com/omar-h-omar/blender-3DMM-addon) in the Mediapipe mappings.\r\n\r\nAlso using the new `get_vertex_index(...)` in `fit_shape_and_pose(...)` now.",
+        "url": "https://github.com/patrikhuber/eos/commit/61ccbcb88a527b21f14f9303a84ed686b3830e0f"
+    },
+    {
+        "sha": "330a47308eb32f34798689c8376a7559194abe45",
+        "author": "Patrik Huber",
+        "email": "patrikhuber@users.noreply.github.com",
+        "date": "2023-08-28T12:46:14Z",
+        "message": "Updated pybind11 version to 2.11.1\n\nThis improves compatibility with CMake 3.27 and Python 3.12.",
+        "url": "https://github.com/patrikhuber/eos/commit/330a47308eb32f34798689c8376a7559194abe45"
+    },
+    {
+        "sha": "fbb07631934585005c9fd092e254cae6278a9973",
+        "author": "Omar Omar",
+        "email": "omarhatem5555@gmail.com",
+        "date": "2023-08-26T16:01:57Z",
+        "message": "Adding more fitting python bindings (#354)\n\n* Added a `fit_shape_and_pose()` overload that takes in a LandmarkCollection and LandmarkMapper. The new overloads map the landmarks, and then call the existing `fit_shape_and_pose()` function. The Blender plugin uses this functionality.\r\n* Added `MorphableModel::set_landmark_definitions()` and improved MorphableModel docs slightly\r\n\r\n---------\r\n\r\nCo-authored-by: Patrik Huber <patrikhuber@users.noreply.github.com>",
+        "url": "https://github.com/patrikhuber/eos/commit/fbb07631934585005c9fd092e254cae6278a9973"
+    },
+    {
+        "sha": "72aff97928fab03cc4a89afb04ab31feeab4c10f",
+        "author": "Patrik Huber",
+        "email": "patrikhuber@users.noreply.github.com",
+        "date": "2023-04-14T22:08:09Z",
+        "message": "Added missing includes and comment on assert in find_occluding_edge_correspondences()",
+        "url": "https://github.com/patrikhuber/eos/commit/72aff97928fab03cc4a89afb04ab31feeab4c10f"
+    },
+    {
+        "sha": "8196a74659ac0987259bbd54d2960e19bed28e49",
+        "author": "Patrik Huber",
+        "email": "patrikhuber@users.noreply.github.com",
+        "date": "2023-04-12T10:53:23Z",
+        "message": "Added on: workflow_dispatch to manually trigger build_wheels workflow",
+        "url": "https://github.com/patrikhuber/eos/commit/8196a74659ac0987259bbd54d2960e19bed28e49"
+    },
+    {
+        "sha": "646e81fdeca64c2fe89719d4b577d9efc98241fb",
+        "author": "Patrik Huber",
+        "email": "patrikhuber@users.noreply.github.com",
+        "date": "2023-04-11T23:09:15Z",
+        "message": "Merge branch 'master' of https://github.com/patrikhuber/eos",
+        "url": "https://github.com/patrikhuber/eos/commit/646e81fdeca64c2fe89719d4b577d9efc98241fb"
+    },
+    {
+        "sha": "0ba72243f69f9cd11a2a8c5955c8c89f7c637bbb",
+        "author": "Patrik Huber",
+        "email": "patrikhuber@users.noreply.github.com",
+        "date": "2023-04-11T23:09:00Z",
+        "message": "Add custom job name to cmake.yml\n\nThis will look nicer and use less space than \"C++ build / build (windows-latest)\".",
+        "url": "https://github.com/patrikhuber/eos/commit/0ba72243f69f9cd11a2a8c5955c8c89f7c637bbb"
+    },
+    {
+        "sha": "a17bea056a003b635826c25e90d703e8f2e12f09",
+        "author": "Patrik Huber",
+        "email": "patrikhuber@users.noreply.github.com",
+        "date": "2023-04-11T22:26:55Z",
+        "message": "Run MSVC Code Analysis on devel PRs too\n\nThere's really no reason not to.",
+        "url": "https://github.com/patrikhuber/eos/commit/a17bea056a003b635826c25e90d703e8f2e12f09"
+    },
+    {
+        "sha": "1fa5d90b79bfce226c8d2bf5381139377360b95e",
+        "author": "Patrik Huber",
+        "email": "patrikhuber@users.noreply.github.com",
+        "date": "2023-04-11T21:29:50Z",
+        "message": "Added GitHub Action that builds Python wheels on push with new tag\n\n* We only run this on a git push with a new tag. If we wanted this to run with every push (we easily could), it would be good to change the version to e.g. the commit sha, so that we're not building wheels with e.g. version 1.4.0 that are really not 1.4.0 anymore.\n* We build wheels for all platforms, but I am not sure how universally usable the ubuntu and macos wheels are. The Ubuntu wheels will work on other Ubuntu installations (it did on mine), but pip might try to install them on other Linux distributions that they're not compatible with. It would be safer to use a proper manylinux build here. For macOS, at least the Python3.11 wheels have \"universal\" in their name, but I don't know how universal they are. So to be safe, we should only ever upload the sdist and Windows wheels to pypi.",
+        "url": "https://github.com/patrikhuber/eos/commit/1fa5d90b79bfce226c8d2bf5381139377360b95e"
+    },
+    {
+        "sha": "450f17f359046718b6d713e98ea238a05a99a13e",
+        "author": "Patrik Huber",
+        "email": "patrikhuber@users.noreply.github.com",
+        "date": "2023-04-11T21:22:57Z",
+        "message": "Renamed cmake.yml workflow to 'C++ build'",
+        "url": "https://github.com/patrikhuber/eos/commit/450f17f359046718b6d713e98ea238a05a99a13e"
+    }
+]

@@ -1,0 +1,242 @@
+[
+    {
+        "sha": "632a864051ddf00fcd5714d2f6e615594636bd9e",
+        "author": "cpovirk",
+        "email": "cpovirk@google.com",
+        "date": "2026-07-14T00:56:53Z",
+        "message": "Add some more `@Nullable` annotations, mostly in null-unmarked code.\n\nCompare https://github.com/google/guava/commit/4c4b7547bc9f8da93a3e10d84417feb606d566cb and https://github.com/google/guava/commit/f42aa699a9e63c0e42045b738143bf9c470fe3ee.\n\nRELNOTES=n/a\nPiperOrigin-RevId: 947342855",
+        "url": "https://github.com/google/guava/commit/632a864051ddf00fcd5714d2f6e615594636bd9e"
+    },
+    {
+        "sha": "ae76e3c465bda53e3caadd8599eebb96ad502d00",
+        "author": "cpovirk",
+        "email": "cpovirk@google.com",
+        "date": "2026-07-13T20:12:14Z",
+        "message": "Restore `testNulls` methods to classes that we don't want `PackageSanityTest` to automatically test with `NullPointerTester`.\n\nThis lets `PackageSanityTest` see which classes are \"manually\" tested for nullness—and then disable its automated nullness testing for those.\n\nThat means that this CL can also allow `PackageSanityTest` run its non-nullness-related testes on those classes. However, those tests are for serialization and for `equals`, so they probably don't matter for the \"pure static\" classes at stake here. Still, I think that I might like this pattern better for packages where it _could_ matter, as in cl/939798064 for `common.hash`.\n\nThis CL undoes parts of https://github.com/google/guava/commit/ec9d2b510ba529ae5906cbedbcd749d3abf48cea.\n\nPiperOrigin-RevId: 947204160",
+        "url": "https://github.com/google/guava/commit/ae76e3c465bda53e3caadd8599eebb96ad502d00"
+    },
+    {
+        "sha": "a0d11fa66a3856212241855d11b07f225599785a",
+        "author": "cpovirk",
+        "email": "cpovirk@google.com",
+        "date": "2026-07-13T19:04:05Z",
+        "message": "Address more https://errorprone.info/bugpattern/NonAtomicVolatileUpdate warnings.\n\nCompare https://github.com/google/guava/commit/a7c9c4af96eef6bbf1ec996b92b2d12a22eb8585.\n\nRELNOTES=n/a\nPiperOrigin-RevId: 947169046",
+        "url": "https://github.com/google/guava/commit/a0d11fa66a3856212241855d11b07f225599785a"
+    },
+    {
+        "sha": "f42aa699a9e63c0e42045b738143bf9c470fe3ee",
+        "author": "cpovirk",
+        "email": "cpovirk@google.com",
+        "date": "2026-07-13T16:44:49Z",
+        "message": "Add some more `@Nullable` annotations in null-unmarked code.\n\nCompare https://github.com/google/guava/commit/4c4b7547bc9f8da93a3e10d84417feb606d566cb.\n\nRELNOTES=n/a\nPiperOrigin-RevId: 947091967",
+        "url": "https://github.com/google/guava/commit/f42aa699a9e63c0e42045b738143bf9c470fe3ee"
+    },
+    {
+        "sha": "486837d756e6d48864620e91b0761467e2abe744",
+        "author": "cpovirk",
+        "email": "cpovirk@google.com",
+        "date": "2026-07-11T02:41:48Z",
+        "message": "Improve Javadoc for `Functions.compose`.\n\nThis showed up on my radar because `@see <a href=\"...\">...</a>` appears to be [challenging to translate to Markdown](https://bugs.openjdk.org/browse/JDK-8381678). Then I noticed that we use the protocol-relative `//en.wikipedia.org` link, which works fine in rendered HTML on the Web but is broken in IDEs, Code Search, and rendered HTML on local disk. (That goes all the way back to the introduction of `compose` to 2005 (cl/1835978), so this \"bug\" is over two decades old!)\n\nRELNOTES=n/a\nPiperOrigin-RevId: 946008739",
+        "url": "https://github.com/google/guava/commit/486837d756e6d48864620e91b0761467e2abe744"
+    },
+    {
+        "sha": "a7c9c4af96eef6bbf1ec996b92b2d12a22eb8585",
+        "author": "cpovirk",
+        "email": "cpovirk@google.com",
+        "date": "2026-07-10T16:21:54Z",
+        "message": "Suppress some https://errorprone.info/bugpattern/NonAtomicVolatileUpdate warnings.\n\nRELNOTES=n/a\nPiperOrigin-RevId: 945746596",
+        "url": "https://github.com/google/guava/commit/a7c9c4af96eef6bbf1ec996b92b2d12a22eb8585"
+    },
+    {
+        "sha": "4c4b7547bc9f8da93a3e10d84417feb606d566cb",
+        "author": "cpovirk",
+        "email": "cpovirk@google.com",
+        "date": "2026-07-10T15:28:37Z",
+        "message": "Add some `@Nullable` annotations (and one `requireNonNull` call) to `LocalCache` and to `cache` tests.\n\nThese classes aren't `@NullMarked`, so we don't \"need\" the annotations at the moment. But it seems likely that we'll increasingly want proper nullness information here over time.\n\nRELNOTES=n/a\nPiperOrigin-RevId: 945724763",
+        "url": "https://github.com/google/guava/commit/4c4b7547bc9f8da93a3e10d84417feb606d566cb"
+    },
+    {
+        "sha": "496f323a1a51cb88b6ca70a76a2de4ad1030c11e",
+        "author": "cpovirk",
+        "email": "cpovirk@google.com",
+        "date": "2026-07-08T18:08:08Z",
+        "message": "Defer potentially expensive `ClosingFuture` string conversions during logging.\n\nThe string conversions can be expensive if the underlying `Future` has an expensive `toString()`, as many Guava `Future` implementations do when they contain, say, a large proto instance. (See cl/158789362 and cl/165925433.)\n\nThe conversion to `String` used to be lazy, but I unwittingly made it eager in https://github.com/google/guava/commit/aeef90988dec22f87430c822e27315d8f41a90d2. (I can't remember whether that crossed my mind at some point or not, but if it did, I forgot. Sorry.)\n\nRELNOTES=n/a\nPiperOrigin-RevId: 944596146",
+        "url": "https://github.com/google/guava/commit/496f323a1a51cb88b6ca70a76a2de4ad1030c11e"
+    },
+    {
+        "sha": "d0622ee178e36a802baa6f25b6a6d1570ada0cce",
+        "author": "cpovirk",
+        "email": "cpovirk@google.com",
+        "date": "2026-07-07T19:30:10Z",
+        "message": "Fix constructor links in Javadoc.\n\nThe current links probably shouldn't work at all. But somehow they do, albeit with output that contains type-use annotations:\n\n> Prefer ExecutionError(java.lang.@org.jspecify.annotations.Nullable Error) a constructor that accepts a cause:\n\nWhen I fix the links, the type-use annotation goes away. If I were motivated enough, I'd try to get this filed as a JDK bug.\n\nRELNOTES=n/a\nPiperOrigin-RevId: 944035030",
+        "url": "https://github.com/google/guava/commit/d0622ee178e36a802baa6f25b6a6d1570ada0cce"
+    },
+    {
+        "sha": "18daff8ae0705887529ef90af74a2a0347f9c90e",
+        "author": "cpovirk",
+        "email": "cpovirk@google.com",
+        "date": "2026-07-07T16:58:47Z",
+        "message": "Fix some minor Javadoc errors:\n\n- Fix Javadoc warnings from `@throws ... {@inheritDoc}` from JDK types. (This partially compensates for https://github.com/google/guava/issues/6790.)\n- Fix borked `@linkplain` links, especially in `ExecutionError` and `UncheckedExecutionException`.\n\nRELNOTES=n/a\nPiperOrigin-RevId: 943951811",
+        "url": "https://github.com/google/guava/commit/18daff8ae0705887529ef90af74a2a0347f9c90e"
+    },
+    {
+        "sha": "2566932545997c0275b1e02a108fa535d71670a0",
+        "author": "cpovirk",
+        "email": "cpovirk@google.com",
+        "date": "2026-07-06T22:38:21Z",
+        "message": "Tweak some whitespace.\n\nRELNOTES=n/a\nPiperOrigin-RevId: 943531053",
+        "url": "https://github.com/google/guava/commit/2566932545997c0275b1e02a108fa535d71670a0"
+    },
+    {
+        "sha": "61c5f6462c89f12d232d64259ea177d071fee850",
+        "author": "cpovirk",
+        "email": "cpovirk@google.com",
+        "date": "2026-07-06T21:25:19Z",
+        "message": "Use `cancel-in-progress` instead of `styfle/cancel-workflow-action`.\n\nAdvantages:\n- We don't need to grant write permissions to a third-party action (or even use it at all).\n  - Not that I have any reason to think it's likely to be a problem, but strange things happen sometimes.\n- One less action means one less thing for us to merge Dependabot updates for.\n- The new approach can easily allow CI for merged trunk commits to continue even after other trunk commits are merged, while still stopping PR CI when new changes are pushed.\n  - This is especially nice because cancellations (at least those from `styfle/cancel-workflow-action`, maybe in general) show up as _failures_. It's nice to be able to pick out _real_ failures (e.g., those fixed by https://github.com/google/guava/commit/8ee72dc2b4f14a0d10ba434a2453262899a1ca0b and https://github.com/google/guava/commit/74eccf28ffb753b3a83f0d47bde0f67abf012c3c) without sorting through cancellations.\n- All else being equal, it's nice to have smaller, simpler configuration.\n\nAssuming that this approach holds up, I'll replicate it to our other projects.\n\nRELNOTES=n/a\nPiperOrigin-RevId: 943495905",
+        "url": "https://github.com/google/guava/commit/61c5f6462c89f12d232d64259ea177d071fee850"
+    },
+    {
+        "sha": "337bb45445e037488794ac3fd2bb737e36cae858",
+        "author": "cpovirk",
+        "email": "cpovirk@google.com",
+        "date": "2026-07-06T19:01:38Z",
+        "message": "Change some `abstract`-class constructors from `public` to `protected`.\n\n(or, in the case of the package-private `AbstractMapsTransformValuesTest`, to package-private)\n\nThis has no effect on who can access them, but it follows the convention for `abstract` classes, emphasizing that the only way to call the constructor is from a subclass.\n\nRELNOTES=n/a\nPiperOrigin-RevId: 943420036",
+        "url": "https://github.com/google/guava/commit/337bb45445e037488794ac3fd2bb737e36cae858"
+    },
+    {
+        "sha": "74eccf28ffb753b3a83f0d47bde0f67abf012c3c",
+        "author": "cpovirk",
+        "email": "cpovirk@google.com",
+        "date": "2026-07-06T18:33:32Z",
+        "message": "Split Gradle integration tests into another action, and update them for Gradle 9.6.1.\n\nI [broke](https://github.com/google/guava/actions/runs/28799690208/job/85399383399?pr=8539) them with the Gradle upgrade of https://github.com/google/guava/commit/5312fedc7b82bb1a83111145ea192d06fd04aa27. The first error is:\n\n`Gradle requires JVM 17 or later to run. Your build is currently configured to use JVM 11.`\n\nThe separate Gradle action should be simpler than further conditional logic in the existing actions, and it gives us more chance for parallelism. It may also be progress toward https://github.com/google/guava/pull/7775.\n\n(I have added the new action to [our branch-protection rules](https://github.com/google/guava/settings/branch_protection_rules/35904722).)\n\nRELNOTES=n/a\nPiperOrigin-RevId: 943404496",
+        "url": "https://github.com/google/guava/commit/74eccf28ffb753b3a83f0d47bde0f67abf012c3c"
+    },
+    {
+        "sha": "5312fedc7b82bb1a83111145ea192d06fd04aa27",
+        "author": "cpovirk",
+        "email": "cpovirk@google.com",
+        "date": "2026-07-02T15:11:39Z",
+        "message": "Internal change\n\nPiperOrigin-RevId: 941707905",
+        "url": "https://github.com/google/guava/commit/5312fedc7b82bb1a83111145ea192d06fd04aa27"
+    },
+    {
+        "sha": "a97d860d6a93456a1484b8c860c0d56d1abeed0a",
+        "author": "dependabot[bot]",
+        "email": "49699333+dependabot[bot]@users.noreply.github.com",
+        "date": "2026-07-01T16:23:34Z",
+        "message": "Bump the github-actions group with 4 updates\n\nBumps the github-actions group with 4 updates: [actions/checkout](https://github.com/actions/checkout), [actions/setup-java](https://github.com/actions/setup-java), [gradle/actions/setup-gradle](https://github.com/gradle/actions) and [github/codeql-action/upload-sarif](https://github.com/github/codeql-action).\n\nUpdates `actions/checkout` from 6.0.3 to 7.0.0\n- [Release notes](https://github.com/actions/checkout/releases)\n- [Changelog](https://github.com/actions/checkout/blob/main/CHANGELOG.md)\n- [Commits](https://github.com/actions/checkout/compare/df4cb1c069e1874edd31b4311f1884172cec0e10...9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0)\n\nUpdates `actions/setup-java` from 5.2.0 to 5.4.0\n- [Release notes](https://github.com/actions/setup-java/releases)\n- [Commits](https://github.com/actions/setup-java/compare/be666c2fcd27ec809703dec50e508c2fdc7f6654...1bcf9fb12cf4aa7d266a90ae39939e61372fe520)\n\nUpdates `gradle/actions/setup-gradle` from 6.1.0 to 6.2.0\n- [Release notes](https://github.com/gradle/actions/releases)\n- [Commits](https://github.com/gradle/actions/compare/50e97c2cd7a37755bbfafc9c5b7cafaece252f6e...3f131e8634966bd73d06cc69884922b02e6faf92)\n\nUpdates `github/codeql-action/upload-sarif` from 4.36.1 to 4.36.2\n- [Release notes](https://github.com/github/codeql-action/releases)\n- [Changelog](https://github.com/github/codeql-action/blob/main/CHANGELOG.md)\n- [Commits](https://github.com/github/codeql-action/compare/87557b9c84dde89fdd9b10e88954ac2f4248e463...8aad20d150bbac5944a9f9d289da16a4b0d87c1e)\n\nFixes https://github.com/google/guava/pull/8536\n\nRELNOTES=n/a\nPiperOrigin-RevId: 941138054",
+        "url": "https://github.com/google/guava/commit/a97d860d6a93456a1484b8c860c0d56d1abeed0a"
+    },
+    {
+        "sha": "e844ae9b6936988b11dd3795d9e433e3cfd84339",
+        "author": "cpovirk",
+        "email": "cpovirk@google.com",
+        "date": "2026-06-30T23:12:56Z",
+        "message": "Document how to create instances of `ByteArrayDataInput` and `ByteArrayDataOutput`.\n\nRELNOTES=n/a\nPiperOrigin-RevId: 940712436",
+        "url": "https://github.com/google/guava/commit/e844ae9b6936988b11dd3795d9e433e3cfd84339"
+    },
+    {
+        "sha": "c527d59b2945dfb2bd0216d52127a3b036d4fad2",
+        "author": "cpovirk",
+        "email": "cpovirk@google.com",
+        "date": "2026-06-30T21:21:10Z",
+        "message": "Fill in Javadoc for some APIs that are missing it.\n\nAlso, annotate the parameter of `InvalidCacheLoadException` as `@Nullable`, as we normally do for exception parameters.\n\nRELNOTES=n/a\nPiperOrigin-RevId: 940656866",
+        "url": "https://github.com/google/guava/commit/c527d59b2945dfb2bd0216d52127a3b036d4fad2"
+    },
+    {
+        "sha": "84565623346ba2c6fe2c0c327f530ddadae1e0fa",
+        "author": "cpovirk",
+        "email": "cpovirk@google.com",
+        "date": "2026-06-30T16:25:26Z",
+        "message": "Improve dependency declarations, mostly in response to the output of `dependency:analyze-only`.\n\n- Add direct dependencies in places where we were relying on transitive dependencies.\n- Use `<scope>test</scope>` for test-only dependencies, including for _all_ dependencies in `guava-tests`.\n- Instead of a mix of `${project.groupId}` and `com.google.guava`, standardize on the latter.\n\nRELNOTES=n/a\nPiperOrigin-RevId: 940496000",
+        "url": "https://github.com/google/guava/commit/84565623346ba2c6fe2c0c327f530ddadae1e0fa"
+    },
+    {
+        "sha": "bd45d6d380e3fa7c338fc93708e41b60c7dc1690",
+        "author": "cpovirk",
+        "email": "cpovirk@google.com",
+        "date": "2026-06-30T15:24:38Z",
+        "message": "Update Public Suffix List data.\n\nRELNOTES=n/a\nPiperOrigin-RevId: 940467260",
+        "url": "https://github.com/google/guava/commit/bd45d6d380e3fa7c338fc93708e41b60c7dc1690"
+    },
+    {
+        "sha": "ce0dd56d5bf82447179007b88e29846a4d05b4b7",
+        "author": "cpovirk",
+        "email": "cpovirk@google.com",
+        "date": "2026-06-30T00:56:00Z",
+        "message": "Remove some redundant `isInstanceOf` assertions.\n\nReplace the assertion in `testConcatWithMoreGeneralType` (which acted as a non-null assertion) with an assertion that shows that `concat` uses the provided type and not the more specific type that the input arrays have. I had made that assertion worse back in https://github.com/google/guava/commit/156c24efe69ca0bf858cfd7dc450d3d30c60b875.\n\nBut don't run that assertion under J2KT / Kotlin/Native, where it would fail. To keep some level of testing under that platform, introduce a similar test that at least checks that the result is empty (and, again, implicitly checks that it's non-null).\n\nFinally, standardize on \"`array`\" as the name of the result of the call to the `ObjectArrays` method under test, rather than mixing \"`array`,\" \"`result`,\" and \"`empty`.\" (OK, the test class has some methods that are more complicated than that. But for most of the methods, a single variable is good enough, and \"`array`\" seems like a fine name. I'm not opposed to \"`result`\" if you prefer that.\n\nRELNOTES=n/a\nPiperOrigin-RevId: 940131612",
+        "url": "https://github.com/google/guava/commit/ce0dd56d5bf82447179007b88e29846a4d05b4b7"
+    },
+    {
+        "sha": "abd06a367974bacd4009e227b571a908e2df6ce5",
+        "author": "Google Java Core Libraries",
+        "email": "java-team-github-bot@google.com",
+        "date": "2026-06-29T17:07:03Z",
+        "message": "Add HttpHeaders constants for on-prefetch-activation.\n\nRELNOTES=`net`: Added `HttpHeaders` constants for `on-prefetch-activation`.\nPiperOrigin-RevId: 939893917",
+        "url": "https://github.com/google/guava/commit/abd06a367974bacd4009e227b571a908e2df6ce5"
+    },
+    {
+        "sha": "dcfb22eec27ed49639fa7a44fa425351cb76c42b",
+        "author": "cpovirk",
+        "email": "cpovirk@google.com",
+        "date": "2026-06-29T02:28:40Z",
+        "message": "Rename the remaining `PackageSanityTests` (plural) classes to \"`PackageSanityTest`\" (singular).\n\nCompare https://github.com/google/guava/commit/e44e9b35ef8b0079fea18b41c99fa28d381b4f16 and cl/938780832.\n\nRELNOTES=n/a\nPiperOrigin-RevId: 939567493",
+        "url": "https://github.com/google/guava/commit/dcfb22eec27ed49639fa7a44fa425351cb76c42b"
+    },
+    {
+        "sha": "ec9d2b510ba529ae5906cbedbcd749d3abf48cea",
+        "author": "Kurt Alfred Kluever",
+        "email": "kak@google.com",
+        "date": "2026-06-29T01:58:41Z",
+        "message": "Exclude some classes manually in `PackageSanityTest` instead of relying upon the existence of `FooTest.testNulls`, etc. Rename `PackageSanityTests` to `PackageSanityTest`.\n\nRELNOTES=n/a\nPiperOrigin-RevId: 939559061",
+        "url": "https://github.com/google/guava/commit/ec9d2b510ba529ae5906cbedbcd749d3abf48cea"
+    },
+    {
+        "sha": "ea57186acd66e9c9a21ab3e22548d720a97a337e",
+        "author": "cpovirk",
+        "email": "cpovirk@google.com",
+        "date": "2026-06-27T04:40:51Z",
+        "message": "Use Truth a little better, and use `assertThrows` in a place that I'd missed.\n\nRELNOTES=n/a\nPiperOrigin-RevId: 938918661",
+        "url": "https://github.com/google/guava/commit/ea57186acd66e9c9a21ab3e22548d720a97a337e"
+    },
+    {
+        "sha": "d160300458bf487f9e03c09c5de64af96cbc1f4e",
+        "author": "cpovirk",
+        "email": "cpovirk@google.com",
+        "date": "2026-06-26T22:52:18Z",
+        "message": "Use yet more `assertThrows` (and a tiny bit more Truth).\n\nAssertThrowsMinimizer might again not be happy (though, surprisingly enough, I haven't seen it yet). If so, that is a problem for another day.\n\nRELNOTES=n/a\nPiperOrigin-RevId: 938810532",
+        "url": "https://github.com/google/guava/commit/d160300458bf487f9e03c09c5de64af96cbc1f4e"
+    },
+    {
+        "sha": "942631f25fd525891b453551a0e4bc6214b2989d",
+        "author": "cpovirk",
+        "email": "cpovirk@google.com",
+        "date": "2026-06-26T19:23:37Z",
+        "message": "Continue tearing out parts of `JSR166TestCase`.\n\nThe immediate motivation is some [`throws` clauses for exceptions that aren't thrown](https://errorprone.info/bugpattern/CheckedExceptionNotThrown), this time detected by IntelliJ.\n\nRELNOTES=n/a\nPiperOrigin-RevId: 938715872",
+        "url": "https://github.com/google/guava/commit/942631f25fd525891b453551a0e4bc6214b2989d"
+    },
+    {
+        "sha": "82f7784af4519d26d82558816284b44e6da1a873",
+        "author": "cpovirk",
+        "email": "cpovirk@google.com",
+        "date": "2026-06-26T17:44:51Z",
+        "message": "Address some [JUnit3FloatingPointComparisonWithoutDelta](https://errorprone.info/bugpattern/JUnit3FloatingPointComparisonWithoutDelta) warnings.\n\nRELNOTES=n/a\nPiperOrigin-RevId: 938666726",
+        "url": "https://github.com/google/guava/commit/82f7784af4519d26d82558816284b44e6da1a873"
+    },
+    {
+        "sha": "4553badbda0bcb04c8ee40da47604a1c5c5e5559",
+        "author": "cpovirk",
+        "email": "cpovirk@google.com",
+        "date": "2026-06-26T16:52:14Z",
+        "message": "Remove unnecessary `throws` clauses in one last file.\n\nThese removals were presumably unlocked by previous rounds of removals. They might also have been something that IntelliJ was more eager to do than Error Prone, but I don't know. (I did continue to see IntelliJ be overactive in trying to remove `throws` clauses, even in places that hadn't come up in prior rounds.)\n\nPiperOrigin-RevId: 938641176",
+        "url": "https://github.com/google/guava/commit/4553badbda0bcb04c8ee40da47604a1c5c5e5559"
+    },
+    {
+        "sha": "3269656d3481bcc098abf0615b71f130bab78d61",
+        "author": "Éamonn McManus",
+        "email": "emcmanus@google.com",
+        "date": "2026-06-26T15:54:27Z",
+        "message": "Internal change.\n\nRELNOTES=n/a\nPiperOrigin-RevId: 938615376",
+        "url": "https://github.com/google/guava/commit/3269656d3481bcc098abf0615b71f130bab78d61"
+    }
+]

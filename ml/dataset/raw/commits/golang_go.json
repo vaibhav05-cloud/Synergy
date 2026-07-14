@@ -1,0 +1,242 @@
+[
+    {
+        "sha": "a1298407792546b9e93393c903c26be9e87e8e3b",
+        "author": "khr@golang.org",
+        "email": "khr@golang.org",
+        "date": "2026-07-07T16:51:36Z",
+        "message": "runtime: be sure to scan small frame introduced by (*sigctxt).pushCall\n\nOn arm64, the contents of R30 are saved in this 16-byte frame (when\ndoing async preemption). But we don't scan that little frame. So any\npointer that was in R30 will not get scanned. So the object it points\nto may get collected prematurely.\n\nFixes #80188\n\nThe test here is pretty quick (~1/3 sec) and fails ~50% of the time.\n\nChange-Id: I46a7a6a25fabeb4f15dca96ee6fdd5e99d4c6323\nReviewed-on: https://go-review.googlesource.com/c/go/+/797521\nReviewed-by: Cherry Mui <cherryyz@google.com>\nReviewed-by: Keith Randall <khr@google.com>\nLUCI-TryBot-Result: golang-scoped@luci-project-accounts.iam.gserviceaccount.com <golang-scoped@luci-project-accounts.iam.gserviceaccount.com>\nAuto-Submit: Keith Randall <khr@golang.org>",
+        "url": "https://github.com/golang/go/commit/a1298407792546b9e93393c903c26be9e87e8e3b"
+    },
+    {
+        "sha": "eb18b3bb9ec51d5e6052373b445ae1e7af2f1f93",
+        "author": "Julian Soreavis",
+        "email": "julian.soreavis@gmail.com",
+        "date": "2026-07-11T18:32:41Z",
+        "message": "html/template: document that Tree is updated after the first execution\n\nFixes #43064\n\nChange-Id: Ie693c05563e5694b8ba57eebd459d3c0a2d2a4d6\nGitHub-Last-Rev: 91709d7908533ee5441565b3f0c19a3d14087b1b\nGitHub-Pull-Request: golang/go#80336\nReviewed-on: https://go-review.googlesource.com/c/go/+/799061\nAuto-Submit: Sean Liao <sean@liao.dev>\nReviewed-by: Sean Liao <sean@liao.dev>\nReviewed-by: Michael Pratt <mpratt@google.com>\nReviewed-by: David Chase <drchase@google.com>\nLUCI-TryBot-Result: golang-scoped@luci-project-accounts.iam.gserviceaccount.com <golang-scoped@luci-project-accounts.iam.gserviceaccount.com>",
+        "url": "https://github.com/golang/go/commit/eb18b3bb9ec51d5e6052373b445ae1e7af2f1f93"
+    },
+    {
+        "sha": "92efe23bc0ac046b2678745bc74941ba68691ba7",
+        "author": "Julian Soreavis",
+        "email": "julian.soreavis@gmail.com",
+        "date": "2026-07-10T14:33:38Z",
+        "message": "text/template, html/template: document calling Funcs after parsing\n\nFuncs was documented only as \"It must be called before the template is\nparsed\", which suggests it cannot be called afterward. In fact a\nfunction used in the template must be registered before parsing, but\nFuncs may be called again later (including after Clone) to replace a\nfunction of the same name, and the replacement takes effect when the\ntemplate is executed.\n\nFixes #34680\n\nChange-Id: I819bc3bcb7452b2fd0bd08d2e97e737493944029\nGitHub-Last-Rev: a521e2c82a9e8f3ed09c3ec5bcbf98f33b0d1933\nGitHub-Pull-Request: golang/go#80356\nReviewed-on: https://go-review.googlesource.com/c/go/+/799340\nReviewed-by: Sean Liao <sean@liao.dev>\nReviewed-by: David Chase <drchase@google.com>\nAuto-Submit: Sean Liao <sean@liao.dev>\nLUCI-TryBot-Result: golang-scoped@luci-project-accounts.iam.gserviceaccount.com <golang-scoped@luci-project-accounts.iam.gserviceaccount.com>\nReviewed-by: Michael Pratt <mpratt@google.com>\nReviewed-by: Rob Pike <r@golang.org>",
+        "url": "https://github.com/golang/go/commit/92efe23bc0ac046b2678745bc74941ba68691ba7"
+    },
+    {
+        "sha": "ba26848a8e63dcac36f18a71fb673de7abc46d83",
+        "author": "Sean Rogers",
+        "email": "seanrogers2657@gmail.com",
+        "date": "2026-06-28T16:12:08Z",
+        "message": "os: document that ReadFile returns *PathError errors\n\nReadFile opens the file with Open and reads it with File.Read, both of\nwhich return errors of type *PathError. Document this on ReadFile, as is\nalready done for Open and other functions in the package, so callers know\nthey can inspect the error (for example with errors.As) without reading\nthe source.\n\nFixes #80111\n\nChange-Id: Ifb4b10127c2cf8daae661d136d5d9edbc4613e8a\nReviewed-on: https://go-review.googlesource.com/c/go/+/795160\nAuto-Submit: Sean Liao <sean@liao.dev>\nReviewed-by: David Chase <drchase@google.com>\nLUCI-TryBot-Result: golang-scoped@luci-project-accounts.iam.gserviceaccount.com <golang-scoped@luci-project-accounts.iam.gserviceaccount.com>\nReviewed-by: Michael Pratt <mpratt@google.com>\nReviewed-by: Maciej Szeptuch <mszeptuch@gmail.com>\nReviewed-by: Sean Liao <sean@liao.dev>",
+        "url": "https://github.com/golang/go/commit/ba26848a8e63dcac36f18a71fb673de7abc46d83"
+    },
+    {
+        "sha": "0b9d31758bbed0d2518e362fbb1c15175453a93e",
+        "author": "Julian Soreavis",
+        "email": "julian.soreavis@gmail.com",
+        "date": "2026-07-09T21:42:45Z",
+        "message": "os: document Process.Pid\n\nPid is an exported field but had no doc comment.\n\nFixes #36726\n\nChange-Id: I4eb213c004f7bcfcab758a56554b489ce6eb7305\nGitHub-Last-Rev: d00a4922260efce244b8d402b09e136833d19532\nGitHub-Pull-Request: golang/go#80337\nReviewed-on: https://go-review.googlesource.com/c/go/+/799062\nReviewed-by: Ian Lance Taylor <iant@golang.org>\nReviewed-by: Michael Pratt <mpratt@google.com>\nAuto-Submit: Michael Pratt <mpratt@google.com>\nReviewed-by: David Chase <drchase@google.com>\nLUCI-TryBot-Result: golang-scoped@luci-project-accounts.iam.gserviceaccount.com <golang-scoped@luci-project-accounts.iam.gserviceaccount.com>",
+        "url": "https://github.com/golang/go/commit/0b9d31758bbed0d2518e362fbb1c15175453a93e"
+    },
+    {
+        "sha": "25de5ebdcd710cd9dcb50ec6b03026fe3bc2a336",
+        "author": "Faizan Shaik",
+        "email": "fyzan.shaik@gmail.com",
+        "date": "2026-07-02T18:55:30Z",
+        "message": "internal/poll: document why zero-byte reads do not wait for readability\n\nThe TODO asked whether a zero-byte Read should wait for readability.\nCL 22031 proposed that behavior and was abandoned. Blocking would\nchange the behavior of existing callers, and the netpoller's\nedge-triggered notifications alone cannot detect data that is\nalready buffered. Replace the stale TODO with the outcome.\n\nUpdates #15735\n\nChange-Id: Iad2087b123db58e6bf531f81f8411f363a5b2a1a\nGitHub-Last-Rev: 0c3e22b1d972dbd31a6a9155c6483a8fdbb25b88\nGitHub-Pull-Request: golang/go#80244\nReviewed-on: https://go-review.googlesource.com/c/go/+/796620\nLUCI-TryBot-Result: golang-scoped@luci-project-accounts.iam.gserviceaccount.com <golang-scoped@luci-project-accounts.iam.gserviceaccount.com>\nReviewed-by: Michael Pratt <mpratt@google.com>\nAuto-Submit: Ian Lance Taylor <iant@golang.org>\nReviewed-by: Ian Lance Taylor <iant@golang.org>\nReviewed-by: David Chase <drchase@google.com>",
+        "url": "https://github.com/golang/go/commit/25de5ebdcd710cd9dcb50ec6b03026fe3bc2a336"
+    },
+    {
+        "sha": "94635846472f7c84adb90f42523dd5a780aac0e0",
+        "author": "cuishuang",
+        "email": "imcusg@gmail.com",
+        "date": "2026-07-01T10:44:21Z",
+        "message": "cmd/compile: remove no-op ABIConfig.Copy\n\nABIConfig.Copy became a no-op after the register cache was removed.\nIts only caller still treated the returned configuration as a fresh\ncopy, even though Copy simply returned its receiver.\n\nRemove Copy, use the shared ABI0 configuration directly, and update\nthe stale comments describing copied ABI configurations.\n\nChange-Id: I23e51c197811ec409473737b570232e459ec79b4\nReviewed-on: https://go-review.googlesource.com/c/go/+/796120\nAuto-Submit: Keith Randall <khr@golang.org>\nReviewed-by: Keith Randall <khr@golang.org>\nReviewed-by: Michael Pratt <mpratt@google.com>\nReviewed-by: Keith Randall <khr@google.com>\nLUCI-TryBot-Result: golang-scoped@luci-project-accounts.iam.gserviceaccount.com <golang-scoped@luci-project-accounts.iam.gserviceaccount.com>",
+        "url": "https://github.com/golang/go/commit/94635846472f7c84adb90f42523dd5a780aac0e0"
+    },
+    {
+        "sha": "96307fb52ff61e791cec8d0578237c450f5c4eea",
+        "author": "Julian Soreavis",
+        "email": "julian.soreavis@gmail.com",
+        "date": "2026-07-10T18:45:29Z",
+        "message": "math: document Nextafter and Nextafter32 special cases for signed zero\n\nNextafter and Nextafter32 have distinct behavior when the starting\nvalue is a signed zero, which the special-case lists did not mention:\ntowards the oppositely-signed zero the result keeps the starting sign,\nand towards any nonzero y the result is the smallest subnormal with the\nsign of y. Document these cases; the behavior is unchanged.\n\nFixes #42613\n\nChange-Id: I8c6f0f3fc821d285d6870e76edf72391b124d350\nGitHub-Last-Rev: 34eb6cc9b47720f3d330b1d385a16fd62adae107\nGitHub-Pull-Request: golang/go#80359\nReviewed-on: https://go-review.googlesource.com/c/go/+/799400\nReviewed-by: Keith Randall <khr@google.com>\nLUCI-TryBot-Result: golang-scoped@luci-project-accounts.iam.gserviceaccount.com <golang-scoped@luci-project-accounts.iam.gserviceaccount.com>\nReviewed-by: Michael Pratt <mpratt@google.com>\nAuto-Submit: Keith Randall <khr@golang.org>\nReviewed-by: Keith Randall <khr@golang.org>",
+        "url": "https://github.com/golang/go/commit/96307fb52ff61e791cec8d0578237c450f5c4eea"
+    },
+    {
+        "sha": "31525e9db068c01c9dd3805e20c2b8a73f2a8da9",
+        "author": "Keith Randall",
+        "email": "khr@golang.org",
+        "date": "2026-07-11T01:14:44Z",
+        "message": "cmd/compile: disable merge conditional branches pass\n\nIt's late in the cycle, let's just disable this new pass and\ntry again for 1.28.\n\nUpdate #80102\n\nChange-Id: Idcda2814e22f017999813a52b06013df3735bf18\nReviewed-on: https://go-review.googlesource.com/c/go/+/799700\nReviewed-by: Chencheng Jiang <dorbmons@gmail.com>\nLUCI-TryBot-Result: golang-scoped@luci-project-accounts.iam.gserviceaccount.com <golang-scoped@luci-project-accounts.iam.gserviceaccount.com>\nReviewed-by: Jorropo <jorropo.pgm@gmail.com>\nReviewed-by: David Chase <drchase@google.com>\nReviewed-by: Keith Randall <khr@google.com>\nReviewed-by: Daniel Morsing <daniel.morsing@gmail.com>",
+        "url": "https://github.com/golang/go/commit/31525e9db068c01c9dd3805e20c2b8a73f2a8da9"
+    },
+    {
+        "sha": "096975173330a8798f82d0c711ab1f1b6d82c619",
+        "author": "Cherry Mui",
+        "email": "cherryyz@google.com",
+        "date": "2026-06-08T20:54:09Z",
+        "message": "reflect: emphasize issue of function pointer comparison\n\nUsing reflect.Value.Pointer to compare function values for\nequality is problematic. For closures, the same code pointer does\nnot necessarily mean the functions have the same behavior, as the\ncaptured variables may have different values, which are not\nincluded in the comparison.\n\nChange-Id: Ib95912cce52d3863f8fe77d874ffa2f277dbd0b6\nReviewed-on: https://go-review.googlesource.com/c/go/+/788441\nReviewed-by: Austin Clements <austin@google.com>\nLUCI-TryBot-Result: golang-scoped@luci-project-accounts.iam.gserviceaccount.com <golang-scoped@luci-project-accounts.iam.gserviceaccount.com>",
+        "url": "https://github.com/golang/go/commit/096975173330a8798f82d0c711ab1f1b6d82c619"
+    },
+    {
+        "sha": "1e282a30981601d79d93478c7827aa3d71d8e4c3",
+        "author": "Dmitri Shuralyov",
+        "email": "dmitshur@golang.org",
+        "date": "2026-07-10T20:34:17Z",
+        "message": "cmd/vet: pull in CL 799441\n\nFixes #80360.\n\n[git-generate]\nupdatestd -goroot=$(pwd) -branch=internal-branch.go1.27-vendor\n\nChange-Id: I0c866cf97f621b8399c8982de4ca568be9043eed\nReviewed-on: https://go-review.googlesource.com/c/go/+/799620\nAuto-Submit: Dmitri Shuralyov <dmitshur@golang.org>\nReviewed-by: Dmitri Shuralyov <dmitshur@google.com>\nReviewed-by: Sean Liao <sean@liao.dev>\nReviewed-by: David Chase <drchase@google.com>\nLUCI-TryBot-Result: golang-scoped@luci-project-accounts.iam.gserviceaccount.com <golang-scoped@luci-project-accounts.iam.gserviceaccount.com>",
+        "url": "https://github.com/golang/go/commit/1e282a30981601d79d93478c7827aa3d71d8e4c3"
+    },
+    {
+        "sha": "03845e30f7b73d1703bd8c21017297f6eecb76d6",
+        "author": "Damien Neil",
+        "email": "dneil@google.com",
+        "date": "2026-07-09T22:10:30Z",
+        "message": "os: don't expect an error from Root.ReadFile from a directory on NetBSD\n\nread() on a directory file seems like it should produce an error,\njust like every other Unix, but #80322 indicates that it doesn't seem to.\n\nJust check that we're consistent with the non-Root case.\n\nFixes #80322\n\nChange-Id: I499f9b0e2bac8e87647c83c5098db9cf6a6a6964\nReviewed-on: https://go-review.googlesource.com/c/go/+/799080\nAuto-Submit: Damien Neil <dneil@google.com>\nReviewed-by: Benny Siegert <bsiegert@gmail.com>\nLUCI-TryBot-Result: golang-scoped@luci-project-accounts.iam.gserviceaccount.com <golang-scoped@luci-project-accounts.iam.gserviceaccount.com>",
+        "url": "https://github.com/golang/go/commit/03845e30f7b73d1703bd8c21017297f6eecb76d6"
+    },
+    {
+        "sha": "668ec589cee2f03f006d3000f11e59d16ffe5107",
+        "author": "Damien Neil",
+        "email": "dneil@google.com",
+        "date": "2026-07-08T18:11:48Z",
+        "message": "os: properly handle trailing / in Root.MkdirAll\n\nMkdirAll(\"dir/\") should create \"dir\", not return an error.\n\nFixes #80308\n\nChange-Id: I75458c30b6cb94be3a3d368f6024caef6a6a6964\nReviewed-on: https://go-review.googlesource.com/c/go/+/799064\nAuto-Submit: Damien Neil <dneil@google.com>\nLUCI-TryBot-Result: golang-scoped@luci-project-accounts.iam.gserviceaccount.com <golang-scoped@luci-project-accounts.iam.gserviceaccount.com>\nReviewed-by: Nicholas Husin <husin@google.com>\nReviewed-by: Nicholas Husin <nsh@golang.org>",
+        "url": "https://github.com/golang/go/commit/668ec589cee2f03f006d3000f11e59d16ffe5107"
+    },
+    {
+        "sha": "30719fe26f577f5aa75ccb7c85482e68d0f0e893",
+        "author": "harjoth",
+        "email": "harjoth.khara@gmail.com",
+        "date": "2026-06-25T19:56:02Z",
+        "message": "testing: record a test's failure for -failfast after cleanup runs\n\nThe -failfast flag stops a test binary from starting new tests after\nthe first failure.\n\nWhen a test had a parallel subtest, its failure was recorded before\nits cleanup functions ran. A failure inside a t.Cleanup was therefore\nnot counted, and -failfast kept starting new tests. Tests without a\nparallel subtest run their cleanup earlier and were unaffected.\n\nRecord the failure after cleanup has run, so a cleanup failure counts\nfor -failfast regardless of whether the test has a parallel subtest.\n\nFixes #61034\n\nChange-Id: Icea654cbaf3904936200566d7d7d72ca8ccc5958\nGitHub-Last-Rev: e46ad5ad314c5cee2a835be3627f4a6455b81c32\nGitHub-Pull-Request: golang/go#80165\nReviewed-on: https://go-review.googlesource.com/c/go/+/794541\nReviewed-by: Alan Donovan <adonovan@google.com>\nReviewed-by: Carlos Amedee <carlos@golang.org>\nLUCI-TryBot-Result: golang-scoped@luci-project-accounts.iam.gserviceaccount.com <golang-scoped@luci-project-accounts.iam.gserviceaccount.com>",
+        "url": "https://github.com/golang/go/commit/30719fe26f577f5aa75ccb7c85482e68d0f0e893"
+    },
+    {
+        "sha": "63d836396a47651fbdbb8cd1fa07749e29f8b844",
+        "author": "David du Colombier",
+        "email": "0intro@gmail.com",
+        "date": "2026-07-09T15:07:10Z",
+        "message": "os: strip trailing slashes in RemoveAll on Plan 9\n\nCL 797880 changed Root to handle trailing slashes in\npaths and added TestRootConsistencyRemoveAll.\n\nHowever, this test is failing on Plan 9 because the \"noat\"\nimplementation of RemoveAll disagrees with Root.RemoveAll\nwhen a path ends in a slash and its target is not a\ndirectory. Root.RemoveAll strips the trailing slash and\nremoves the file, while os.RemoveAll leaves the slash in\nplace. On Plan 9, Remove and Lstat then fail on the\nslash-terminated path, so os.RemoveAll returns an error\ninstead.\n\nThis change strips trailing slashes in the \"noat\"\nimplementation of RemoveAll, so RemoveAll(\"not_a_directory/\")\nremoves the file and returns nil, and remains consistent\nwith the \"at\" implementation and Root.RemoveAll.\n\nFixes #80319.\n\nChange-Id: I5c47ccd239c629da78772f39a831cccf8c9d1500\nReviewed-on: https://go-review.googlesource.com/c/go/+/798721\nReviewed-by: Dmitri Shuralyov <dmitshur@google.com>\nReviewed-by: Richard Miller <millerresearch@gmail.com>\nReviewed-by: Damien Neil <dneil@google.com>\nAuto-Submit: Damien Neil <dneil@google.com>\nLUCI-TryBot-Result: golang-scoped@luci-project-accounts.iam.gserviceaccount.com <golang-scoped@luci-project-accounts.iam.gserviceaccount.com>",
+        "url": "https://github.com/golang/go/commit/63d836396a47651fbdbb8cd1fa07749e29f8b844"
+    },
+    {
+        "sha": "ee05e88ea640b877de84f67279a8529401c03c3a",
+        "author": "Michael Pratt",
+        "email": "mpratt@google.com",
+        "date": "2026-07-09T19:49:25Z",
+        "message": "simd: remove simd/testdata/ip\n\nAs far as I can tell, this is dead code.\n\nChange-Id: Ibd1c30197a785ade97bb2c98a9cfdd5b6a6a6964\nReviewed-on: https://go-review.googlesource.com/c/go/+/799020\nLUCI-TryBot-Result: golang-scoped@luci-project-accounts.iam.gserviceaccount.com <golang-scoped@luci-project-accounts.iam.gserviceaccount.com>\nAuto-Submit: Michael Pratt <mpratt@google.com>\nReviewed-by: David Chase <drchase@google.com>",
+        "url": "https://github.com/golang/go/commit/ee05e88ea640b877de84f67279a8529401c03c3a"
+    },
+    {
+        "sha": "db97d07dbb97ddc130d8b2a51f9bc263f98d78f4",
+        "author": "Michael Pratt",
+        "email": "mpratt@google.com",
+        "date": "2026-07-08T20:12:09Z",
+        "message": "all: use path for go.mod module path\n\nWe have various small submodules in the repository, mostly used for code\ngeneration tools with external dependencies.\n\nCurrently naming is fairly ad-hoc. Some name the module based on the\npath of the directory, while others use a single name like _gen.\n\nIf a developer creates a go.work file creating a workspace containing\nthese submodules (go work use -r .) [1], then all module names must be\nunique.\n\nSince CL 772102, we have two modules named _gen, so any operation after\ncreating go.work immediately fails with a duplicate module error.\n\nResolve this by using module paths based on the path to the directory.\nThe load bearing changes here are modifying\ncmd/compile/internal/ssa/_gen/go.mod and/or simd/archsimd/_gen/go.mod so\nthey no longer conflict, but I've changed all module paths to use the\nsame naming scheme for consistency.\n\nNote that std and cmd get special treatment by cmd/go, so avoid those\nprefixes. e.g., the cmd/vet modules seem to ignore the Go language\nversion when using a cmd/ prefix.\n\n[1] I found this issue because the build process for cross-references on\nhttps://cs.opensource.google/go does this and is currently broken.\n\nChange-Id: I8b3a351c16bd6d52192fb7b45186c38f6a6a6964\nReviewed-on: https://go-review.googlesource.com/c/go/+/798560\nAuto-Submit: Michael Pratt <mpratt@google.com>\nReviewed-by: Dmitri Shuralyov <dmitshur@golang.org>\nLUCI-TryBot-Result: golang-scoped@luci-project-accounts.iam.gserviceaccount.com <golang-scoped@luci-project-accounts.iam.gserviceaccount.com>\nReviewed-by: David Chase <drchase@google.com>",
+        "url": "https://github.com/golang/go/commit/db97d07dbb97ddc130d8b2a51f9bc263f98d78f4"
+    },
+    {
+        "sha": "f20c97b756352d6529d286b97c489a3cb9afcffd",
+        "author": "Kyle Shannon",
+        "email": "kyle@pobox.com",
+        "date": "2026-07-08T19:02:18Z",
+        "message": "lib/time: update to 2026c/2026c\n\nCommit generated by update.bash.\n\nFor #22487.\n\nChange-Id: If8e3d4a0a2584897926b75bd0aa41756e4457c37\nReviewed-on: https://go-review.googlesource.com/c/go/+/798480\nReviewed-by: Dmitri Shuralyov <dmitshur@google.com>\nReviewed-by: Dmitri Shuralyov <dmitshur@golang.org>\nReviewed-by: David Chase <drchase@google.com>\nAuto-Submit: Dmitri Shuralyov <dmitshur@golang.org>\nReviewed-by: Tobias Klauser <tobias.klauser@gmail.com>\nLUCI-TryBot-Result: golang-scoped@luci-project-accounts.iam.gserviceaccount.com <golang-scoped@luci-project-accounts.iam.gserviceaccount.com>",
+        "url": "https://github.com/golang/go/commit/f20c97b756352d6529d286b97c489a3cb9afcffd"
+    },
+    {
+        "sha": "0a9b01c5e1e5dd78cc40e15b795e51a356d0879d",
+        "author": "Daniel McCarney",
+        "email": "daniel@binaryparadox.net",
+        "date": "2026-06-22T14:38:38Z",
+        "message": "crypto/mlkem: improved semi-expanded wycheproof tests\n\nTakes an upstream update to the Wycheproof test vectors. This includes\nan update to the ML-KEM semi-expanded form decapsulation test schema\nthat adds the expected K. We use that to tighten up\nTestMLKEMSemiExpandedDecapsWycheproof to take advantage.\n\nChange-Id: I67abcc9c1c6728ab154742f9a466e18be22eef89\nReviewed-on: https://go-review.googlesource.com/c/go/+/792940\nReviewed-by: David Chase <drchase@google.com>\nReviewed-by: Dmitri Shuralyov <dmitshur@google.com>\nReviewed-by: Filippo Valsorda <filippo@golang.org>\nAuto-Submit: Daniel McCarney <daniel@binaryparadox.net>\nLUCI-TryBot-Result: golang-scoped@luci-project-accounts.iam.gserviceaccount.com <golang-scoped@luci-project-accounts.iam.gserviceaccount.com>",
+        "url": "https://github.com/golang/go/commit/0a9b01c5e1e5dd78cc40e15b795e51a356d0879d"
+    },
+    {
+        "sha": "4d1000c44e2e0221477b91bbcc980b3659476dd0",
+        "author": "Michael Matloob",
+        "email": "matloob@golang.org",
+        "date": "2026-07-03T21:04:08Z",
+        "message": "cmd/go: split test_vet script test for improved parallelism\n\nFor #78152\n\nChange-Id: I0e0a0a4bcec2c3785619162bd837fbe76a6a6964\nReviewed-on: https://go-review.googlesource.com/c/go/+/798361\nLUCI-TryBot-Result: golang-scoped@luci-project-accounts.iam.gserviceaccount.com <golang-scoped@luci-project-accounts.iam.gserviceaccount.com>\nReviewed-by: Dmitri Shuralyov <dmitshur@golang.org>\nReviewed-by: Dmitri Shuralyov <dmitshur@google.com>\nReviewed-by: David Chase <drchase@google.com>",
+        "url": "https://github.com/golang/go/commit/4d1000c44e2e0221477b91bbcc980b3659476dd0"
+    },
+    {
+        "sha": "10f7480a0e3c2e95d86d76df6eddbff0372a233f",
+        "author": "Michael Matloob",
+        "email": "matloob@golang.org",
+        "date": "2026-07-03T21:04:08Z",
+        "message": "cmd/go: split build_overlay script test to improve parallelism\n\nFor #78152\n\nChange-Id: I910830b8439a63697ccc4f01dc19f2776a6a6964\nReviewed-on: https://go-review.googlesource.com/c/go/+/798320\nReviewed-by: David Chase <drchase@google.com>\nLUCI-TryBot-Result: golang-scoped@luci-project-accounts.iam.gserviceaccount.com <golang-scoped@luci-project-accounts.iam.gserviceaccount.com>\nReviewed-by: Dmitri Shuralyov <dmitshur@golang.org>\nReviewed-by: Dmitri Shuralyov <dmitshur@google.com>",
+        "url": "https://github.com/golang/go/commit/10f7480a0e3c2e95d86d76df6eddbff0372a233f"
+    },
+    {
+        "sha": "c1e0cd12965106310acafbb9bd50ad0830a7283a",
+        "author": "Dmitri Shuralyov",
+        "email": "dmitshur@golang.org",
+        "date": "2026-07-08T17:14:15Z",
+        "message": "cmd/fix: pull in CL 791660\n\nGenerated with updatestd, though it's equivalent to manually running:\n\ncd src/cmd\ngo get golang.org/x/tools@internal-branch.go1.27-vendor  # v0.45.1-0.20260708165844-7044391f8d9f\ngo mod tidy\ngo mod vendor\n\nFixes #78452.\n\n[git-generate]\nupdatestd -goroot=$(pwd) -branch=internal-branch.go1.27-vendor\n\nChange-Id: I633f029a6c2201b92c499a8a4e2534c6824946d9\nReviewed-on: https://go-review.googlesource.com/c/go/+/798501\nAuto-Submit: Dmitri Shuralyov <dmitshur@golang.org>\nReviewed-by: Dmitri Shuralyov <dmitshur@google.com>\nReviewed-by: Madeline Kalil <mkalil@google.com>\nLUCI-TryBot-Result: golang-scoped@luci-project-accounts.iam.gserviceaccount.com <golang-scoped@luci-project-accounts.iam.gserviceaccount.com>",
+        "url": "https://github.com/golang/go/commit/c1e0cd12965106310acafbb9bd50ad0830a7283a"
+    },
+    {
+        "sha": "999c71883bc06f8b28d4ee72b58eeebc7a83cb6f",
+        "author": "Mark Freeman",
+        "email": "mark@golang.org",
+        "date": "2026-07-08T19:21:03Z",
+        "message": "go/types, types2: copy test from issue48703 into its own file\n\nMonomorphization checks do not run in the presence of errors, which was\nsuppressing the error from this test and making it appear to pass. This\nis a bit misleading.\n\nFor #48703\nFor #80172\n\nChange-Id: I87f672275df189366b88cf3ffac8b3d21b7a1a83\nReviewed-on: https://go-review.googlesource.com/c/go/+/798500\nLUCI-TryBot-Result: golang-scoped@luci-project-accounts.iam.gserviceaccount.com <golang-scoped@luci-project-accounts.iam.gserviceaccount.com>\nReviewed-by: Alan Donovan <adonovan@google.com>",
+        "url": "https://github.com/golang/go/commit/999c71883bc06f8b28d4ee72b58eeebc7a83cb6f"
+    },
+    {
+        "sha": "0af88e584cd6e2837cb2d209955e5598fc7085d6",
+        "author": "Artem V. Navrotskiy",
+        "email": "bozaro@yandex.ru",
+        "date": "2026-06-24T20:24:11Z",
+        "message": "cmd/gofmt: correctly truncate symlinks instead of buggy mangling\n\nCurrenty `go fmt` does not truncate the symlinked file, as it compares\nthe size of the recorded data not with the real file size, but with\nthe symlink reference path length.\n\nFixes #79735\n\nChange-Id: I0cedccb061aa1a9844bce698c19cb0e96e2e3d14\nGitHub-Last-Rev: 6126f26df475ab0fe090299eff88a3429fd804df\nGitHub-Pull-Request: golang/go#79774\nReviewed-on: https://go-review.googlesource.com/c/go/+/785800\nReviewed-by: Emmanuel Odeke <emmanuel@orijtech.com>\nAuto-Submit: Alan Donovan <adonovan@google.com>\nReviewed-by: Alan Donovan <adonovan@google.com>\nReviewed-by: David Chase <drchase@google.com>\nLUCI-TryBot-Result: golang-scoped@luci-project-accounts.iam.gserviceaccount.com <golang-scoped@luci-project-accounts.iam.gserviceaccount.com>",
+        "url": "https://github.com/golang/go/commit/0af88e584cd6e2837cb2d209955e5598fc7085d6"
+    },
+    {
+        "sha": "1cee9dbe3fa7101b991c048e39129d6235864dc6",
+        "author": "Tobias Klauser",
+        "email": "tklauser@distanz.ch",
+        "date": "2026-07-03T09:22:08Z",
+        "message": "os: rewrite PathError.Path in dirFS.ReadLink to relative name\n\nAll other dirFS methods (Open, ReadFile, ReadDir, Stat, Lstat) rewrite\nPathError.Path to the relative name on error. Do the same in\ndirFS.ReadLink to be consistent and so callers of\nDirFS(\"/prefix\").ReadLink(\"file\") see PathError{Path: \"file\"} instead of\nPathError{Path: \"/prefix/file\"}.\n\nChange-Id: Id49cb43d79f459c855f94e5544e4c727fe68a7b4\nReviewed-on: https://go-review.googlesource.com/c/go/+/796540\nAuto-Submit: Tobias Klauser <tobias.klauser@gmail.com>\nReviewed-by: Emmanuel Odeke <emmanuel@orijtech.com>\nReviewed-by: David Chase <drchase@google.com>\nReviewed-by: Damien Neil <dneil@google.com>\nLUCI-TryBot-Result: golang-scoped@luci-project-accounts.iam.gserviceaccount.com <golang-scoped@luci-project-accounts.iam.gserviceaccount.com>",
+        "url": "https://github.com/golang/go/commit/1cee9dbe3fa7101b991c048e39129d6235864dc6"
+    },
+    {
+        "sha": "82215dc6c01ed6efb6f4f236cd5c87ceb6dc318a",
+        "author": "Damien Neil",
+        "email": "dneil@google.com",
+        "date": "2026-05-26T20:59:05Z",
+        "message": "os: properly handle trailing slashes in paths in Root\n\nThis change fixes a significant mechanism by which\noperations in a Root can escape the root.\n\nThe implementation of Root on platforms supporting the openat\nfamily of functions assumed that openat(parent, \"f/\", O_NOFOLLOW)\nwould not resolve symlinks in \"f\". This is not correct; the\ntrailing slash causes f to be resolved.\n\nThis permits Root operations to escape when the target filename\nends in a slash and the target is a symlink to a directory outside the\nroot. This does not permit directly accessing non-directory files\noutside a root, since the trailing slash adds a requirement that the\ntarget be a directory. However, under some circumstances an attacker\nmight exploit this flaw to access non-directory files outside\na root, for example by first renaming a directory outside the root\nto a location within it and then accessing files within that directory.\n\nThis change adjusts Root's handling of slash-terminated paths.\nTrailing slashes are removed from the path at the start of an\noperation, and the presence of slashes is tracked as a boolean.\nSlashes are never reattached to a path component.\n\nIn addition, the doInRoot helper function now automatically\nhandles trailing slashes in a POSIX-compatible fashion.\nWhen a path ends in one or more slashes:\n  - symlinks in the final component are resolved; and\n  - the final path component after symlink resolutions\n    must reference a directory.\n\nThis change also adds a new sets of tests to exercise Root's\nbehavior in a wider variety of circumstances. These tests\nrun through a matrix of file configurations, such as:\n  - path \"target\", a regular file\n  - path \"dir/../target\", a directory\n  - path \"target/\", a symlink to \"dir/../target/\", which does not exist\n  - etc.\n\nThese tests execute Root operations and the corresponding unrooted\noperation, validate specific expected results for some configurations,\nand verify that the rooted and unrooted versions of the operation\nproduce the same result.\n\nThanks to Mundur (https://github.com/M0nd0R) for reporting this issue.\n\nFixes #79005\nFixes CVE-2026-39822\n\nChange-Id: I34072ab63f2367baf236592f11143f4e6a6a6964\nReviewed-on: https://go-internal-review.googlesource.com/c/go/+/4740\nReviewed-by: Neal Patel <nealpatel@google.com>\nReviewed-by: Roland Shoemaker <bracewell@google.com>\nReviewed-on: https://go-review.googlesource.com/c/go/+/797880\nAuto-Submit: David Chase <drchase@google.com>\nReviewed-by: Dmitri Shuralyov <dmitshur@golang.org>\nReviewed-by: Dmitri Shuralyov <dmitshur@google.com>\nLUCI-TryBot-Result: golang-scoped@luci-project-accounts.iam.gserviceaccount.com <golang-scoped@luci-project-accounts.iam.gserviceaccount.com>",
+        "url": "https://github.com/golang/go/commit/82215dc6c01ed6efb6f4f236cd5c87ceb6dc318a"
+    },
+    {
+        "sha": "183e2012512cbb7bd7997f0481c134c658d845ed",
+        "author": "Mark Freeman",
+        "email": "mark@golang.org",
+        "date": "2026-07-07T18:46:08Z",
+        "message": "go/types, types2: set underlying for imported types\n\nImporting generic methods with recursive bounds can currently deadlock.\nThis is because SetConstraint, which is called from a delayed function,\nrequires the underlying type. We already have this information handy,\nso the fix is somewhat simple.\n\nCredit goes to Lauro Santana for reporting this issue and contributing\na test case (attached here).\n\nFixes #80258\n\nChange-Id: I06ec71edbbd113743273f7c4be15b142e2f6938c\nReviewed-on: https://go-review.googlesource.com/c/go/+/797640\nLUCI-TryBot-Result: golang-scoped@luci-project-accounts.iam.gserviceaccount.com <golang-scoped@luci-project-accounts.iam.gserviceaccount.com>\nReviewed-by: Alan Donovan <adonovan@google.com>",
+        "url": "https://github.com/golang/go/commit/183e2012512cbb7bd7997f0481c134c658d845ed"
+    },
+    {
+        "sha": "95a31dacc406226c00d820407c33a94fd21c9c3b",
+        "author": "Michael Matloob",
+        "email": "matloob@golang.org",
+        "date": "2026-07-01T21:06:03Z",
+        "message": "cmd/go: remove net script test condition from main go command suite\n\nThis effectively removes the ability to make external network connection\nfrom scripttest suites.\n\nFixes #80243\n\nChange-Id: Id90d0333176384ed69ada5bf774ac53d6a6a6964\nReviewed-on: https://go-review.googlesource.com/c/go/+/796380\nReviewed-by: Michael Matloob <matloob@golang.org>\nReviewed-by: Dmitri Shuralyov <dmitshur@golang.org>\nReviewed-by: Dmitri Shuralyov <dmitshur@google.com>\nLUCI-TryBot-Result: golang-scoped@luci-project-accounts.iam.gserviceaccount.com <golang-scoped@luci-project-accounts.iam.gserviceaccount.com>\nReviewed-by: Funda Secgin <fundasecgin73@gmail.com>\nReviewed-by: Michael Matloob <matloob@google.com>",
+        "url": "https://github.com/golang/go/commit/95a31dacc406226c00d820407c33a94fd21c9c3b"
+    },
+    {
+        "sha": "cc0242c5d1e7fd997ded589a9add95f2873a88e3",
+        "author": "Michael Matloob",
+        "email": "matloob@golang.org",
+        "date": "2026-06-30T23:37:46Z",
+        "message": "cmd/go: move mod_sumdb_golang network tests to verylongtest\n\nFor #80243\n\nChange-Id: I4a1652cc26869e5256449f998603898e6a6a6964\nReviewed-on: https://go-review.googlesource.com/c/go/+/796021\nReviewed-by: Michael Matloob <matloob@google.com>\nLUCI-TryBot-Result: golang-scoped@luci-project-accounts.iam.gserviceaccount.com <golang-scoped@luci-project-accounts.iam.gserviceaccount.com>\nReviewed-by: Dmitri Shuralyov <dmitshur@google.com>\nAuto-Submit: Michael Matloob <matloob@golang.org>\nReviewed-by: Dmitri Shuralyov <dmitshur@golang.org>",
+        "url": "https://github.com/golang/go/commit/cc0242c5d1e7fd997ded589a9add95f2873a88e3"
+    },
+    {
+        "sha": "d426cba592683dc7ced37e8fd7bbe7fbc9c90ebc",
+        "author": "Michael Matloob",
+        "email": "matloob@golang.org",
+        "date": "2026-06-30T23:37:18Z",
+        "message": "cmd/go: move part of gotoolchain_net to verylongtest\n\nThere is a case in gotoolchain_net that tries to download a real\nGOTOOLCHAIN from the network. Move it to verylongtest so that it doesn't\naffect the normal cmd/go test suite.\n\nAlso modify scripttest.RunTest to make files writable so that we can\nclean up modcaches with readonly files.\n\nFor #80243\n\nChange-Id: I3148fb07249358c7471dae7a7e1b97d76a6a6964\nReviewed-on: https://go-review.googlesource.com/c/go/+/796020\nReviewed-by: Dmitri Shuralyov <dmitshur@google.com>\nLUCI-TryBot-Result: golang-scoped@luci-project-accounts.iam.gserviceaccount.com <golang-scoped@luci-project-accounts.iam.gserviceaccount.com>\nReviewed-by: Michael Matloob <matloob@google.com>\nAuto-Submit: Michael Matloob <matloob@golang.org>\nReviewed-by: Dmitri Shuralyov <dmitshur@golang.org>",
+        "url": "https://github.com/golang/go/commit/d426cba592683dc7ced37e8fd7bbe7fbc9c90ebc"
+    }
+]

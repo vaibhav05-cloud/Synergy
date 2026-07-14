@@ -1,0 +1,242 @@
+[
+    {
+        "sha": "adfd381af8ef816bcccec12763bdfccee3c75634",
+        "author": "Holmes Futrell",
+        "email": "holmesfutrell@gmail.com",
+        "date": "2026-06-18T21:28:11Z",
+        "message": "Merge pull request #148 from hfutrell/0.16.5-release\n\nBezierKit 0.16.5: clipping-free intersection engine (~11× faster than master), accuracy on par, bug fixes",
+        "url": "https://github.com/hfutrell/BezierKit/commit/adfd381af8ef816bcccec12763bdfccee3c75634"
+    },
+    {
+        "sha": "99bc8ebbb569ebde33bb839fe847864aacf9bf2c",
+        "author": "Holmes Futrell",
+        "email": "holmes@gingerlabs.com",
+        "date": "2026-06-18T21:21:28Z",
+        "message": "Bump version to 0.16.5 in README and podspec\n\nCo-Authored-By: Claude Opus 4.8 (1M context) <noreply@anthropic.com>",
+        "url": "https://github.com/hfutrell/BezierKit/commit/99bc8ebbb569ebde33bb839fe847864aacf9bf2c"
+    },
+    {
+        "sha": "da6fd8f6fcce33e4a8ed7e759e78736b4e779812",
+        "author": "Holmes Futrell",
+        "email": "holmes@gingerlabs.com",
+        "date": "2026-06-16T01:05:40Z",
+        "message": "Find endpoint-grazing roots in the bezier clipping root finder\n\nA curve that touches a line at its own endpoint produces, after alignment, a\nBernstein polynomial whose leading (or trailing) coefficient sits at the noise\nfloor while the rest share a sign — no interior sign change. rootsCore counted\nsign changes with a relative threshold and then required an *exact* zero endpoint\ncoefficient, so the root grazing the endpoint fell into a dead zone and was\ndropped. In the Bernstein basis the first/last coefficients ARE the curve's value\nat t=0/t=1, so a coefficient at the noise floor there is unambiguously a real root.\n\nAt depth 0 (the genuine curve boundary) with no interior sign change, emit the\nendpoint root when its coefficient is within the sign threshold. Scoped to depth 0\nso interior split-artifact near-zero endpoints (no-sign-change interior roots the\nclip intentionally leaves to its sign search) are unaffected; gated on\nsignChanges == 0 so cases the clip already resolves aren't double-counted; and the\nthreshold is relative, so a uniformly-near-zero polynomial yields no spurious roots.\n\nReal-world impact: curve/line intersection (Utils.droots' clipping fallback) missed\na cubic endpoint lying on a line, which made Notability's pencil partial-erase drop\nwhole stroke segments. Adds regression tests for the root finder, the curve/line\nintersection, and the uniformly-zero guard. Full suite green (368 tests).\n\nCo-Authored-By: Claude Opus 4.8 (1M context) <noreply@anthropic.com>",
+        "url": "https://github.com/hfutrell/BezierKit/commit/da6fd8f6fcce33e4a8ed7e759e78736b4e779812"
+    },
+    {
+        "sha": "8f9be4913d39e2c96c805d0795040452d498529a",
+        "author": "Holmes Futrell",
+        "email": "holmes@gingerlabs.com",
+        "date": "2026-06-15T21:19:44Z",
+        "message": "Tighten curve/curve implicitization fallback root-finding to 1e-12 (match master)\n\nThe monotone-subdivision engine's implicitization fallback resolves tangencies\nas double roots, which the convex-hull clipping root finder narrows by repeated\nsubdivision. It was stopping at the hardcoded 1e-5 `clippingErrorThreshold` used\nby all root finding, leaving the bracket too wide and yielding a spurious\nnear-endpoint cluster instead of the single true touch point.\n\nMaster draws the same distinction: general root finding uses\n`RootFindingConfiguration.defaultErrorThreshold` (1e-5), but the curve/curve\nimplicitization path passes `minimumErrorThreshold` (1e-12) — see master's\nBezierCurve+Intersection.swift `equation.distinctRealRootsInUnitInterval(\nconfiguration: RootFindingConfiguration(errorThreshold: .minimumErrorThreshold))`.\n\nRestore that split here: rename the constant to `defaultClippingErrorThreshold`,\nadd `minimumClippingErrorThreshold = 1e-12`, and thread an `errorThreshold`\nparameter (defaulting to 1e-5, so every existing caller is unchanged) through\n`rootsCore`, `findDistinctRootsCallbackBezierClipping`, and\n`forEachRootOfComposition`. Only the implicitization fallback passes 1e-12.\n\nFull suite green (358 tests, 0 unexpected failures).\n\nCo-Authored-By: Claude Opus 4.8 (1M context) <noreply@anthropic.com>",
+        "url": "https://github.com/hfutrell/BezierKit/commit/8f9be4913d39e2c96c805d0795040452d498529a"
+    },
+    {
+        "sha": "c60dea1c9aec374669fca494f470ccead1032213",
+        "author": "Holmes Futrell",
+        "email": "holmes@gingerlabs.com",
+        "date": "2026-06-12T20:44:25Z",
+        "message": "Fix crossingsRemoved dropping stroked-circle outlines (missed shared-endpoint intersections)\n\nThe monotone subdivision leaf solver (Cramer's rule) discards near-tangent leaves to avoid a\nsingular system / NaN — which is also what keeps near-coincident parallel curves from producing\nspurious intersections. But two curves that touch only at a shared endpoint are tangent there, so\nat tight accuracy the touch was missed (subdivision still \"succeeds\" with no result, so the\nimplicitization fallback's endpoint handling never runs).\n\nFor a stroked-circle outline (outer + inner loops joined at a seam, a single closed component whose\nself-intersections sit exactly at shared element endpoints), crossingsRemoved at accuracy 1e-4 then\nfound no crossings and collapsed the whole component to the empty path. Downstream, an empty path\nis vacuously \"contained\" by any eraser, so partial-erasing such a circle deleted it entirely.\n\nDetect coincident endpoints explicitly in the curve/curve driver (the four corner pairs, with\npoint-proximity dedup against crossings subdivision already found) — matching master, whose\nline-segment leaf solver always catches a shared endpoint. This leaves the det guard (and the\nnear-coincident behavior it protects) untouched.\n\nCo-Authored-By: Claude Opus 4.8 (1M context) <noreply@anthropic.com>",
+        "url": "https://github.com/hfutrell/BezierKit/commit/c60dea1c9aec374669fca494f470ccead1032213"
+    },
+    {
+        "sha": "06216ee35686bc3c54d94489f615221ebf8aae1d",
+        "author": "Holmes Futrell",
+        "email": "holmes@gingerlabs.com",
+        "date": "2026-06-12T17:00:46Z",
+        "message": "WASM: replace `any BezierClippingPolynomial` with a plain-existential callback protocol\n\nThe carton/swiftwasm CI runs an older Swift that rejects `any BezierClippingPolynomial`\n(a protocol with Self/associated-type requirements cannot form a bare existential there).\nIntroduce ClippingRootsCallback — a protocol with no Self/associated-type, mirroring the\nexisting AnalyticalRootsCallback — that BernsteinPolynomial4…9 conform to, and dispatch\nfindDistinctRootsInUnitInterval through `as? ClippingRootsCallback`. No behavior change.\n\nCo-Authored-By: Claude Opus 4.8 (1M context) <noreply@anthropic.com>",
+        "url": "https://github.com/hfutrell/BezierKit/commit/06216ee35686bc3c54d94489f615221ebf8aae1d"
+    },
+    {
+        "sha": "7781c921a7997349375b017de78e67d6c4a4c84a",
+        "author": "Holmes Futrell",
+        "email": "holmes@gingerlabs.com",
+        "date": "2026-06-12T16:53:36Z",
+        "message": "Fix Linux and WASM CI failures\n\nWASM: replace the `as? any BezierClippingPolynomial` + generic-call pattern in\nfindDistinctRootsInUnitInterval (which relied on implicit existential opening,\nunsupported by the WASM SDK) with a no-`Self` protocol method,\nforEachDistinctRootInUnitInterval, that is callable directly on the existential.\n\nLinux: swift-corelibs-XCTest has no XCTExpectFailure. Add an expectKnownBug\ntest helper that uses XCTExpectFailure on Apple platforms and skips the block\non other platforms, and route all expected-failure tests through it.\n\nVerified: Mac (targeted) green; WASM build + wasmtime run green (191 tests).\n\nCo-Authored-By: Claude Opus 4.8 (1M context) <noreply@anthropic.com>",
+        "url": "https://github.com/hfutrell/BezierKit/commit/7781c921a7997349375b017de78e67d6c4a4c84a"
+    },
+    {
+        "sha": "7a338d4e525558d9214dd0c56c1b366b61ba3086",
+        "author": "Holmes Futrell",
+        "email": "holmes@gingerlabs.com",
+        "date": "2026-06-12T16:08:37Z",
+        "message": "Collapse ClippableBernsteinPolynomial into BezierClippingPolynomial\n\nClippableBernsteinPolynomial had no independent consumer: nothing constrained\non it alone and nothing conformed to it directly — every conformer and every\ncall site went through BezierClippingPolynomial. Fold its requirements\n(valueAndDerivative, split) and default-impl extension into\nBezierClippingPolynomial, removing the vestigial intermediate protocol. No\nbehavior change.\n\nCo-Authored-By: Claude Opus 4.8 (1M context) <noreply@anthropic.com>",
+        "url": "https://github.com/hfutrell/BezierKit/commit/7a338d4e525558d9214dd0c56c1b366b61ba3086"
+    },
+    {
+        "sha": "d0aa07bc6d26de9183bd821fc7581ff4f5baf991",
+        "author": "Holmes Futrell",
+        "email": "holmes@gingerlabs.com",
+        "date": "2026-06-12T15:58:29Z",
+        "message": "Match master's curve/curve intersection verification; reconcile adversarial tests\n\nThe implicitization fallback had accumulated bespoke verification logic\n(newtonRefineCurvePair, newtonIsGenuineRoot, addEndpointIntersections) that\nexisted in neither master nor monotone-crusher. Replace it with master's\nintersectionIfCloseEnough verbatim (project onto curve2, snap t2 via\nderivativeBounds tolerances, accept iff distance < accuracy, explicit endpoint\nhandling). The only intended departure from master is the fixed-degree root\nfinder in place of master's arbitrary-degree BernsteinPolynomialN.\n\nRestore the implicit-polynomial math unit tests dropped during the clipping\nera (testLineSegment/Quadratic/CubicImplicitization) by re-adding\nImplicitPolynomial.value(at:), giving direct coverage of the implicitization\ngetters and ImplicitLine/ImplicitLineProduct algebra.\n\nReconcile the sub-accuracy near-coincident adversarial tests (all new in\n0.16.5, none on master): the engine over-produces below the accuracy\nseparation, so the affected cases are marked XCTExpectFailure documenting the\nknown bug rather than deleted or changed to assert incorrect counts. The\nlarger-separation cases (>= accuracy) still assert the correct counts.\n\nCo-Authored-By: Claude Opus 4.8 (1M context) <noreply@anthropic.com>",
+        "url": "https://github.com/hfutrell/BezierKit/commit/d0aa07bc6d26de9183bd821fc7581ff4f5baf991"
+    },
+    {
+        "sha": "a2cd2d1d2d165dc0d385c6cd8b9a247949878c94",
+        "author": "Holmes Futrell",
+        "email": "holmes@gingerlabs.com",
+        "date": "2026-06-12T14:05:37Z",
+        "message": "Restore downgradedIfPossible: fix near-coincident multi-crossing regression (#1)\n\nDegree-deficient curves (a quadratic raised to cubic form, whose x- or y-coordinate is linear)\nmake the higher-order implicit polynomial degenerate to the zero polynomial, so the curve/curve\nfallback found zero intersections for near-coincident pairs of such curves — e.g. two near-parallel\n\"hill\" cubics that genuinely cross twice returned 0 (master returns 2). Genuine cubics were already\ncorrect; only degree-deficient ones regressed.\n\nFix mirrors master: demote curve2 to its true degree (downgradedIfPossible) before implicitizing.\n- Restore CubicCurve.downgradedToQuadratic/downgradedToLineSegment, QuadraticCurve.downgradedToLineSegment,\n  downgradedIfPossible, LineSegment: Implicitizeable, and ImplicitPolynomial.init(ImplicitLine).\n- helperIntersectsCurveCurveImpl now demotes curve2: a line → exact curve/line intersection; a\n  quadratic/cubic → the implicitization fallback (factored into implicitizationFallback). compose()\n  handles the resulting degree 2/3 (line) cases in addition to 4/6/9.\n- Newton genuine-root verification is retained, so parallel/single near-coincident S-curves stay\n  correct (0/1) — better than master, which over-produces there.\n\nAdds a degree-deficient multi-crossing regression test. macOS: 352 tests pass; WASM: 191 pass.\n\nCo-Authored-By: Claude Opus 4.8 (1M context) <noreply@anthropic.com>",
+        "url": "https://github.com/hfutrell/BezierKit/commit/a2cd2d1d2d165dc0d385c6cd8b9a247949878c94"
+    },
+    {
+        "sha": "cdc056fd463bc63865c86385a44fd7e0175b9fa0",
+        "author": "Holmes Futrell",
+        "email": "holmes@gingerlabs.com",
+        "date": "2026-06-12T04:59:39Z",
+        "message": "Make findDistinctRootsInUnitInterval handle all degrees (fix #6)\n\nfindDistinctRootsInUnitInterval downcast through an explicit BP4/BP5 cascade and silently\nreturned [] for the (public) BernsteinPolynomial6/7/8/9 — a public-API-gives-wrong-output gap.\nReplace the per-degree cascade with a single downcast to `any BezierClippingPolynomial` (every\nconcrete BP type conforms), routing degree ≥ 4 through the clipping root finder generically via\nimplicit existential opening. Behavior for degrees 0–5 is unchanged.\n\nAdd testDegree6…testDegree9 covering the new degrees through the public root finder.\n\nCo-Authored-By: Claude Opus 4.8 (1M context) <noreply@anthropic.com>",
+        "url": "https://github.com/hfutrell/BezierKit/commit/cdc056fd463bc63865c86385a44fd7e0175b9fa0"
+    },
+    {
+        "sha": "4d76c8bdf4acb0d11f17ad6d5d97bbfaf35717d0",
+        "author": "Holmes Futrell",
+        "email": "holmes@gingerlabs.com",
+        "date": "2026-06-12T04:06:24Z",
+        "message": "Review cleanups: dead code, stale comments, deprecated API use, typo\n\n- Remove dead findDistinctRootsInUnitIntervalBezierClipping (no callers).\n- Remove stale Bézier-clipping NOTE from testIntersectionsHighAmplitudeQuadQuad comment\n  (referenced the reverted bezierClipping/subdivideBezierClipping engine).\n- MacDemos: use the non-deprecated selfIntersection instead of selfIntersections.\n- Fix \"couldn't to find\" typo in Utils.droots fallback comment.\n\nCo-Authored-By: Claude Opus 4.8 (1M context) <noreply@anthropic.com>",
+        "url": "https://github.com/hfutrell/BezierKit/commit/4d76c8bdf4acb0d11f17ad6d5d97bbfaf35717d0"
+    },
+    {
+        "sha": "7a50af24bedda2b1a61100a35636c7c3b2edc004",
+        "author": "Holmes Futrell",
+        "email": "holmes@gingerlabs.com",
+        "date": "2026-06-12T03:26:42Z",
+        "message": "Fix WASM crash; add implicitization-fallback tests\n\n- monoPairiteration: relax the \"stack pair must overlap\" debug assert to a platform-precision-\n  scaled tolerance (inside #if DEBUG, so fully compiled out of release). On 32-bit CGFloat (WASM)\n  a midpoint evaluation at large coordinates can shift a child's bbox by a few ULPs, which is\n  harmless (the Cramer's-rule leaf test rejects non-overlap); the strict check was trapping in\n  debug WASM on testRealWorldPrecisionIssue.\n- Guard testRealWorldPrecisionIssue with #if !os(WASI): it asserts an exact endpoint t2 == 1,\n  which 32-bit resolves to 1 − 1 ULP (geometrically correct, fails exact comparison).\n- Add BezierCurve+ImplicitizationTests.swift covering the degree-4 (quad×quad) and degree-6\n  (quad×cubic) implicitization-fallback paths via the public intersection API; the degree-9\n  (cubic×cubic) path is already covered by CubicCurveTests. WASI-guarded (near-coincident,\n  64-bit-precision-sensitive).\n\nWASM: 187 tests, 0 failures. macOS: all tests pass.\n\nCo-Authored-By: Claude Opus 4.8 (1M context) <noreply@anthropic.com>",
+        "url": "https://github.com/hfutrell/BezierKit/commit/7a50af24bedda2b1a61100a35636c7c3b2edc004"
+    },
+    {
+        "sha": "fe2dc9b58d7788cfdea763823e218d8815693e83",
+        "author": "Holmes Futrell",
+        "email": "holmes@gingerlabs.com",
+        "date": "2026-06-12T00:53:52Z",
+        "message": "Revert Bézier clipping; adopt monotone subdivision + implicitization fallback\n\nReplaces the curve/curve Bézier-clipping intersection engine (skipped 0.16.4,\nwhich had real-world integration regressions) with the clipping-free monotone\nupfront-splitting + iterative-DFS subdivision from monotone-crusher, backed by an\nimplicitization fallback for near-coincident pairs that monotone subdivision\ncannot separate.\n\n- Remove BezierCurve+Clipping.swift (fat-line / convex-hull curve/curve driver).\n- Add BezierCurve+MonotoneIntersection.swift: Utils.preSplitIntersections splits\n  both curves at derivative roots and runs monoPairiteration (pure geometric\n  subdivision + Cramer's rule) on overlapping monotone segments. No heap in the\n  hot loop.\n- helperIntersectsCurveCurveImpl: monotone primary path → coincidenceCheck →\n  implicitization fallback. The fallback builds curve2's implicit polynomial,\n  composes it with curve1's parametric x/y, and finds roots with the existing\n  fixed-degree Bézier-clipping root finder; each candidate is refined with 2D\n  Newton and accepted only if it is a genuine root (rejects spurious near-misses\n  between near-coincident, non-crossing curves).\n- Add fixed-degree BernsteinPolynomial6/7/8/9 so the single fixed-degree root\n  finder covers the degree-4/6/9 implicit-composition polynomials (quad×quad,\n  cubic×quad, cubic×cubic). No second/dynamic root-finding stack is introduced.\n- Add BezierCurve+Implicitization.swift (implicit polynomial + scalar Bernstein\n  multiply/elevate composition emitting fixed-degree polynomials) and\n  Utils.binomialCoefficient.\n- Retain PR #140's engine-independent optimizations (BVH ARC elimination,\n  PathComponent.split, selfIntersection API) and its advanced root finder.\n- Pull in the Path(cgPath:) two-pass count+fill optimization (minus the\n  \"original\"-approach comparison tests); fix an order-undercount in the count\n  pass for point-only components.\n\nAll 344 tests pass.\n\nCo-Authored-By: Claude Opus 4.8 (1M context) <noreply@anthropic.com>",
+        "url": "https://github.com/hfutrell/BezierKit/commit/fe2dc9b58d7788cfdea763823e218d8815693e83"
+    },
+    {
+        "sha": "964efe2568397f77751343e0a1575581ebffb0be",
+        "author": "Holmes Futrell",
+        "email": "holmesfutrell@gmail.com",
+        "date": "2026-06-11T22:46:42Z",
+        "message": "Merge pull request #146 from hfutrell/worktree-optimize-path-component-split\n\nOptimize PathComponent.split(standardizedRange:): reserve capacity + concrete dispatch",
+        "url": "https://github.com/hfutrell/BezierKit/commit/964efe2568397f77751343e0a1575581ebffb0be"
+    },
+    {
+        "sha": "89fb6aeb6875a3e921ef352074fa60659aa3012f",
+        "author": "Holmes Futrell",
+        "email": "holmes@gingerlabs.com",
+        "date": "2026-05-28T22:46:10Z",
+        "message": "return self when split range covers the full component\n\nPathComponent is immutable, so when t=0 at start.elementIndex=0\nand t=1 at end.elementIndex=numberOfElements-1 the result is\nidentical to self. No copy needed.\n\nCo-Authored-By: Claude Sonnet 4.6 <noreply@anthropic.com>",
+        "url": "https://github.com/hfutrell/BezierKit/commit/89fb6aeb6875a3e921ef352074fa60659aa3012f"
+    },
+    {
+        "sha": "aa3c5cca5d6977f3bd04497bda24ae01983c3273",
+        "author": "Holmes Futrell",
+        "email": "holmes@gingerlabs.com",
+        "date": "2026-05-28T22:29:17Z",
+        "message": "remove speculative i-cache comment\n\nCo-Authored-By: Claude Sonnet 4.6 <noreply@anthropic.com>",
+        "url": "https://github.com/hfutrell/BezierKit/commit/aa3c5cca5d6977f3bd04497bda24ae01983c3273"
+    },
+    {
+        "sha": "ca73b95c6f8327e5489c565feda194b7e6a25763",
+        "author": "Holmes Futrell",
+        "email": "holmes@gingerlabs.com",
+        "date": "2026-05-28T22:21:32Z",
+        "message": "fix FullRange regression: early return before appendElement is defined\n\nFor split ranges where t=0 at the start index and t=1 at the end index,\nevery element is included whole and appendElement is never called. The\nprevious implementation still defined the concrete-dispatch appendElement\nclosure before the bulk-copy path, inflating the function's instruction-\ncache footprint even on the hot FullRange code path. This caused a ~20%\nregression relative to the original code for FullRange splits.\n\nFix: return early before appendElement is defined, copying the point and\norder slices directly via Array(slice). The FullRange path is now a tight\ntwo-allocation copy with no branch into the partial-element machinery.\n\nThe reserveCapacity calls are now unconditionally applied only in the\npartial-boundary path that follows the early return, which is correct:\nboth reserveCapacity and concrete-dispatch only benefit cases where\nappendElement will actually be called.\n\nUpdated performance test warmup counts so Long-path tests reach allocator\nsteady state before measurement begins (100 K warmup iterations vs 20 K).\n\nMeasured results -Os vs original on Apple Silicon (trimmed median, runs 2-9):\n\n  Scenario               Before     After   Speedup\n  ShortPath MidRange      433 ns    260 ns    1.66x\n  ShortPath FullRange     198 ns    164 ns    1.21x\n  ShortPath TwoElement    366 ns    246 ns    1.49x\n  MediumPath MidRange     479 ns    294 ns    1.63x\n  MediumPath FullRange    228 ns    191 ns    1.19x\n  MediumPath TwoElement   359 ns    247 ns    1.45x\n  LongPath MidRange      1270 ns   1090 ns    1.16x\n  LongPath FullRange      911 ns    820 ns    1.11x\n  LongPath TwoElement     356 ns    250 ns    1.42x\n\nCo-Authored-By: Claude Sonnet 4.6 <noreply@anthropic.com>",
+        "url": "https://github.com/hfutrell/BezierKit/commit/ca73b95c6f8327e5489c565feda194b7e6a25763"
+    },
+    {
+        "sha": "1673af60e7a1d9a9d5e713c93cda3c5f4e024e56",
+        "author": "Holmes Futrell",
+        "email": "holmes@gingerlabs.com",
+        "date": "2026-05-28T21:31:12Z",
+        "message": "optimize PathComponent.split(standardizedRange:): reserve capacity + concrete dispatch\n\nTwo changes to split(standardizedRange:):\n\n1. Reserve exact capacity upfront.\n   resultPoints and resultOrders are pre-sized using the stored offsets array\n   (offsets[end] + orders[end] - offsets[start] + 1 for points;\n   end.elementIndex - start.elementIndex + 1 for orders), eliminating the\n   O(log n) amortized-doubling reallocations that the original always paid.\n   Two debug asserts at the end verify the formula is correct.\n\n2. Concrete-type dispatch in appendElement.\n   The original called self.element(at:) which returns a BezierCurve existential,\n   then .split() through the protocol witness table, then .points which\n   heap-allocates a [CGPoint] array. The new code switches on self.orders[index]\n   and uses CubicCurve/QuadraticCurve/LineSegment directly, appending the named\n   fields (c.p0, c.p1, ...) individually. This removes two heap allocations and\n   all existential boxing for each partial boundary element.\n\nMeasured on Apple Silicon (-Os), comparing to the original implementation\nusing a rotating 4-way interleaved benchmark (equal thermal conditions):\n\n  Scenario           before    after   speedup\n  Short MidRange     451 ns   272 ns    1.66×\n  Short TwoElement   370 ns   249 ns    1.49×\n  Short FullRange    204 ns   248 ns    ~same (no appendElement called)\n  Medium MidRange    505 ns   300 ns    1.67×\n  Medium TwoElement  371 ns   256 ns    1.45×\n  Medium FullRange   235 ns   272 ns    ~same\n  Long MidRange     1270 ns  1070 ns    1.19×\n  Long TwoElement    382 ns   267 ns    1.43×\n  Long FullRange    1012 ns  1044 ns    ~same\n\nPaths use a repeating line/quadratic/cubic mix. MidRange splits cover the\nmiddle half of the path with partial t at both ends; TwoElement has two\nadjacent partial elements and no full elements; FullRange has t=0…1 on\nevery element (fast path only, appendElement never called).\n\nFullRange sees no meaningful change since neither optimization has anything\nto act on: there are no boundary elements and reserveCapacity is already\neffectively done by append(contentsOf:) in the bulk slice copy.\n\nCo-Authored-By: Claude Sonnet 4.6 <noreply@anthropic.com>",
+        "url": "https://github.com/hfutrell/BezierKit/commit/1673af60e7a1d9a9d5e713c93cda3c5f4e024e56"
+    },
+    {
+        "sha": "577d86490cbb7636931c84bd04f085996070def7",
+        "author": "Holmes Futrell",
+        "email": "holmes@gingerlabs.com",
+        "date": "2026-05-09T04:06:30Z",
+        "message": "Generalize same-geometry check in helperIntersectsCurveCurve; add selfIntersection unit test\n\nThe same-curve check in the generic `helperIntersectsCurveCurve` now handles\nsubcurves with non-full t-ranges: it computes the overlap [max(t1a,t1b), min(t2a,t2b)]\nand returns the two boundary intersections, matching the coincidenceCheck approach.\nAlso adds a dedicated unit test for the `selfIntersection: Intersection?` API.\n\nCo-Authored-By: Claude Sonnet 4.6 <noreply@anthropic.com>",
+        "url": "https://github.com/hfutrell/BezierKit/commit/577d86490cbb7636931c84bd04f085996070def7"
+    },
+    {
+        "sha": "d6a1c85da75e836753085f07e0dbd5e2d2edbb84",
+        "author": "Holmes Futrell",
+        "email": "holmes@gingerlabs.com",
+        "date": "2026-05-09T00:44:26Z",
+        "message": "Optimization: endpoint fast paths in clipInterval and split(from:to:)\n\nTwo small wins in the bezier-clipping hot path:\n\n1. clipInterval (CubicCurve and QuadraticCurve): when both curve endpoints\n   (d0 and d3/d2) lie inside the fat-line band, the convex hull trivially\n   spans [0, 1] — return early without computing the full hull.\n\n2. CubicCurve.split(from:to:): when t1=0 or t2=1, replace one\n   pointAndDerivative call with direct control-point arithmetic.\n\nCo-Authored-By: Claude Sonnet 4.6 <noreply@anthropic.com>",
+        "url": "https://github.com/hfutrell/BezierKit/commit/d6a1c85da75e836753085f07e0dbd5e2d2edbb84"
+    },
+    {
+        "sha": "076bc03d482b59bde44c7a02f495d91bbaf3a492",
+        "author": "Holmes Futrell",
+        "email": "holmes@gingerlabs.com",
+        "date": "2026-05-08T22:29:13Z",
+        "message": "Optimization: Bernstein early-exit in clipInterval eliminates hull computation (~11% speedup)\n\nTwo hot-path improvements to the bezier clipping engine:\n\n• clipInterval early-exit (main win): before the 639-instruction convex-hull\n  computation, check whether all Bernstein control distances lie entirely\n  outside the fat-line band on one side. When true, the cubic polynomial\n  provably cannot intersect the band (Bernstein polynomials lie in the convex\n  hull of their control values), so return nil immediately. For cubic curves\n  this skips 4 comparisons vs 639 instructions; fires frequently for\n  non-intersecting sub-curve pairs during recursive subdivision.\n\n• Remove @inline(never) from clipInterval: now that clipInterval contains an\n  early-exit (5 lines), the compiler can inline it directly into bezierClipping\n  via fatLineClip (@inline(__always)), eliminating the function-call overhead\n  on the fast path. Only two call sites exist (both in bezierClipping), so\n  there is no risk of unrelated call-site code-size bloat.\n\n• Refactor addEndpointIntersections: inline the 4-corner checks directly,\n  pre-computing startingPoint/endingPoint once to avoid redundant field\n  accesses. Removes processEndpointCorner helper (dead code after this change).\n  Performance-neutral; code-quality improvement.\n\ntestCubicIntersectionsPerformance: 0.159s (baseline) → 0.141s (~11% improvement)\n\nCo-Authored-By: Claude Sonnet 4.6 <noreply@anthropic.com>",
+        "url": "https://github.com/hfutrell/BezierKit/commit/076bc03d482b59bde44c7a02f495d91bbaf3a492"
+    },
+    {
+        "sha": "4ed2756464aaec026b4540bce2651bd02e926c4c",
+        "author": "Holmes Futrell",
+        "email": "holmes@gingerlabs.com",
+        "date": "2026-05-08T21:59:51Z",
+        "message": "Optimization: eliminate as? runtime casts and heap allocs in curve–curve intersection (~58% speedup)\n\n- Add concrete CubicCurve/QuadraticCurve intersections(with:) overloads that shadow the\n  protocol extension for statically-typed receivers; the identical-curve fast path now uses\n  synthesized struct == instead of as? casts, eliminating __swift_instantiateConcreteTypeFromMangledNameV2\n  from the hot path in the <CubicCurve,CubicCurve> specialization\n- Extract addEndpointIntersections corner logic to a file-level processEndpointCorner function;\n  replaces a heap-allocated [(CGFloat,CGFloat)] literal with 4 direct calls, eliminating a\n  malloc/free per intersection call; file-level placement lets WMO specialize+inline without\n  closure-capture exclusivity (swift_beginAccess) overhead\n- Extract helperIntersectsCurveCurveImpl as private; WMO inlines it more aggressively than\n  the prior internal function, allowing holistic optimization across the call boundary\n- Rewrite ClipBuffer.subscript to one case per line (switch_case_alignment); remove\n  superfluous function_body_length disable; fix for_where and comma_spacing violations\n\ntestCubicIntersectionsPerformance: 0.356s (baseline) → 0.154s (~57% improvement)\n\nCo-Authored-By: Claude Sonnet 4.6 <noreply@anthropic.com>",
+        "url": "https://github.com/hfutrell/BezierKit/commit/4ed2756464aaec026b4540bce2651bd02e926c4c"
+    },
+    {
+        "sha": "58c8551ac178dc135bffd306a67939bc70f7d7bd",
+        "author": "Holmes Futrell",
+        "email": "holmes@gingerlabs.com",
+        "date": "2026-05-08T10:51:15Z",
+        "message": "Optimization: eliminate ObjC ARC from BVH traversal hot path (~2.6x speedup on path subtraction)\n\nPathComponent.intersections(with:) and selfIntersections(accuracy:) previously passed a\nclosure capturing two ObjC PathComponent objects through every recursive BVH node visit,\ngenerating 8 objc_retain calls per node before the bounding-box overlap check. Replaced\nwith local traverse/traversePair/traverseSelf functions that capture Unmanaged<PathComponent>\nreferences (zero ARC), calling takeUnretainedValue() only at leaf nodes where actual\nintersection work is performed. Assembly confirms zero objc_retain in the traversal hot path.\n\nAlso: mark selfIntersections:[Intersection] deprecated in favor of selfIntersection:Intersection?,\nexpose BVH boundingBoxes/elementCount/lastRowIndex/isLeaf as internal, add warmup passes and\nincrease iteration counts in performance tests to reduce noise (200 iterations, 1000 warmup).\n\nBaseline (old code, 200 iterations): stable ~130μs/subtract\nOptimized (new code, 200 iterations): stable ~50μs/subtract (~2.6x improvement)\n\nCo-Authored-By: Claude Sonnet 4.6 <noreply@anthropic.com>",
+        "url": "https://github.com/hfutrell/BezierKit/commit/58c8551ac178dc135bffd306a67939bc70f7d7bd"
+    },
+    {
+        "sha": "b6d43fd40e5f7c6319991e04299a98359580005f",
+        "author": "Holmes Futrell",
+        "email": "holmes@gingerlabs.com",
+        "date": "2026-05-08T08:54:59Z",
+        "message": "Optimization: add selfIntersection: Intersection? to eliminate heap allocation (~75% speedup)\n\nCubicCurve.selfIntersection returns Intersection? instead of [Intersection],\neliminating the _swift_allocObject call on every self-intersecting curve.\nselfIntersections is kept for backward compatibility, derived from selfIntersection.\nThe protocol gains selfIntersection with a default nil implementation for\nnon-cubic types. Internal PathComponent caller and YesIntersect benchmark\nupdated to use selfIntersection directly.\n\nBenchmark (50× scale, 100k curves): 0.110s → 0.027s steady-state (~75% improvement).\n\nCo-Authored-By: Claude Sonnet 4.6 <noreply@anthropic.com>",
+        "url": "https://github.com/hfutrell/BezierKit/commit/b6d43fd40e5f7c6319991e04299a98359580005f"
+    },
+    {
+        "sha": "ea8eeb6dd42beb055eec67b975cc17af7598e14f",
+        "author": "Holmes Futrell",
+        "email": "holmes@gingerlabs.com",
+        "date": "2026-05-08T06:08:37Z",
+        "message": "Scale up self-intersection and path subtraction performance tests\n\nSelf-intersection tests now loop 50× (5M evaluations/iteration) and path\nsubtraction loops 30× (~150ms/iteration), giving XCTest enough samples for\nreliable signal and matching the 100ms-per-iteration guideline from CLAUDE.md.\n\nAlso removes stale debug-mode timing comments.\n\nCo-Authored-By: Claude Sonnet 4.6 <noreply@anthropic.com>",
+        "url": "https://github.com/hfutrell/BezierKit/commit/ea8eeb6dd42beb055eec67b975cc17af7598e14f"
+    },
+    {
+        "sha": "361bf482df461d5873df444740f14c3ea7ffe920",
+        "author": "Holmes Futrell",
+        "email": "holmes@gingerlabs.com",
+        "date": "2026-05-08T05:25:54Z",
+        "message": "Optimization: hull clipping refactor and early-subdivision fast path (~11% speedup)\n\nBundle of hot-path improvements to the bezier clipping engine that collectively\nreduce testCubicIntersectionsPerformance from 0.367s to ~0.327s (10.9% faster):\n\n• controlPolygonBounds: add as BezierClippingCurve protocol requirement with\n  concrete fmin/fmax overrides on CubicCurve and QuadraticCurve so WMO can\n  devirtualize the bounding-box overlap check in bezierClipping.\n\n• processHullCubic: extract from nested closure to file-level @inline(__always)\n  function so both the lower- and upper-hull calls get inlined into\n  convexHullClipIntervalCubic under WMO (nested @inline(__always) only inlines\n  one of two call sites).\n\n• hullEdgeClipInterval: drop the `if dDelta != 0` guard. IEEE-754 safe: when\n  da==db, recip=±inf; crossing tests (dLowA*dLowB<=0) collapse to a perfect\n  square (≥0), which fires only when dLow==da, yielding t = ta+0*±inf = NaN;\n  NaN comparisons return false — no spurious lo/hi update. Removing the branch\n  lets the CPU issue fdiv earlier, overlapping with independent subtractions.\n\n• bezierClipping: early-return to subdivision when c1Ratio > 0.8 and c1 still\n  spans non-trivial global range, skipping the second fat-line computation that\n  would provide almost no narrowing of c2 in this case.\n\n• Concrete intersections(with:) overloads for CubicCurve and QuadraticCurve on\n  NonlinearBezierCurve: avoids boxing 64-byte CubicCurve as a BezierCurve\n  existential (exceeds Swift's 24-byte inline buffer → heap allocation per call).\n\n• @inline(__always) on Subcurve.split(from:to:) and CubicCurve.split(from:to:)\n  to eliminate protocol-witness dispatch overhead on the hot split path.\n\nCo-Authored-By: Claude Sonnet 4.6 <noreply@anthropic.com>",
+        "url": "https://github.com/hfutrell/BezierKit/commit/361bf482df461d5873df444740f14c3ea7ffe920"
+    },
+    {
+        "sha": "4185117b6993cd7ae61f46c0a244cb6d51862b74",
+        "author": "Holmes Futrell",
+        "email": "holmes@gingerlabs.com",
+        "date": "2026-05-08T02:20:27Z",
+        "message": "Optimization: eliminate heap allocations and argument copies in intersection hot path\n\nThree changes benchmarked at ~10% Release speedup (0.409s → 0.367s) on cubic all-pairs:\n\n1. equatableCurvesMatch helper: identical-curve check previously dispatched to\n   the global `func == (BezierCurve, BezierCurve)` which allocates [CGPoint] arrays\n   via `.points`. The helper constrains C: Equatable, forcing synthesized struct ==\n   (8 direct float comparisons, zero allocation).\n\n2. clipIntersections.sort() in-place: eliminates the sorted() copy allocation\n   for every converged intersecting pair.\n\n3. @inline(__always) on fatLineClip: the caller (bezierClipping) was copying\n   128 bytes of curve data to set up each call's arguments (confirmed by assembly).\n   Inlining lets the compiler reference curve data directly from its stack location,\n   eliminating those copies. Assembly confirms fatLineClip no longer appears as a\n   call target in bezierClipping<CubicCurve,CubicCurve>.\n\nCo-Authored-By: Claude Sonnet 4.6 <noreply@anthropic.com>",
+        "url": "https://github.com/hfutrell/BezierKit/commit/4185117b6993cd7ae61f46c0a244cb6d51862b74"
+    },
+    {
+        "sha": "e6fbfe55084893b38eaaf060d4b1916740c86ab0",
+        "author": "Holmes Futrell",
+        "email": "holmes@gingerlabs.com",
+        "date": "2026-05-07T18:46:15Z",
+        "message": "Remove dead n>=5 path from convexHullClipInterval; branchless fat-line factor\n\nBezierKit only supports cubic (n=4) and quadratic (n=3) curves. The generic\nwithUnsafeTemporaryAllocation path for n>=5 was dead code. Replace it with\nassert(n == 3 || n == 4) so violations are caught in debug builds, and\nsimplify the else branch to directly call convexHullClipIntervalQuadratic.\n\nAlso restructure the cubic fat-line factor computation in fatLineClip to\ncompute lo=min(d1,d2) and hi=max(d1,d2) before the sign check. This lets the\ncompiler reuse the same values for both the condition (lo*hi>0) and the final\nmultiply, eliminating redundant comparisons. Assembly inspection confirms the\noriginal (d1*d2>0)?0.75:1.0 form generates 7 branches for random-sign inputs;\nthe restructured form compiles to 18 straight-line instructions. The overall\nintersection benchmark does not show a statistically significant improvement at\nthe test level (the fat-line factor is a small fraction of the full computation),\nbut the assembly is unambiguously better for random curve data.\n\nNo @inline(__always) is added — the removed speculative hints from the prior\ncommit are reverted. The only remaining @inline(__always) is on hullEdgeClipInterval,\nwhich has been there since the cubic specialization was introduced.\n\nCo-Authored-By: Claude Sonnet 4.6 <noreply@anthropic.com>",
+        "url": "https://github.com/hfutrell/BezierKit/commit/e6fbfe55084893b38eaaf060d4b1916740c86ab0"
+    },
+    {
+        "sha": "05979e545bc3c0a94a14867ed0d171dba9beeb39",
+        "author": "Holmes Futrell",
+        "email": "holmes@gingerlabs.com",
+        "date": "2026-05-07T17:53:07Z",
+        "message": "Optimization: fast-path identical full-range curve pairs in helperIntersectsCurveCurve\n\nPreviously, when two Subcurves held the same CubicCurve (or QuadraticCurve) value over\ntheir full [0,1] range, bezierClipping exhausted all 64 iterations (fat-line ratio stays\n1.0 → immediate subdivision every step), then fell through to the expensive coincidenceCheck\nwhich calls curve.project() four times (root-finding on a degree-5 polynomial).\n\nThe CLAUDE.md self-pair contract requires exactly [{t1:0,t2:0},{t1:1,t2:1}] for this case.\nWe detect value-equal full-range pairs with two cheap CubicCurve == / QuadraticCurve ==\ncomparisons (8 or 6 double comparisons respectively) and return immediately.\n\nBaseline SHA 30092d3: testCubicIntersectionsPerformance 0.764s\nAfter:                 testCubicIntersectionsPerformance 0.612s  (−19.9%)\n\nCo-Authored-By: Claude Sonnet 4.6 <noreply@anthropic.com>",
+        "url": "https://github.com/hfutrell/BezierKit/commit/05979e545bc3c0a94a14867ed0d171dba9beeb39"
+    }
+]

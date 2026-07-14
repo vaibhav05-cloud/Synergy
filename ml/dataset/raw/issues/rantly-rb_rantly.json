@@ -1,0 +1,355 @@
+[
+    {
+        "id": 3163103678,
+        "number": 87,
+        "title": "In Ruby 3.4, \"warning: literal string will be frozen in the future\" warnings",
+        "state": "closed",
+        "created_at": "2025-06-20T12:08:18Z",
+        "updated_at": "2025-06-22T18:34:18Z",
+        "closed_at": "2025-06-22T18:34:18Z",
+        "author": "eduardoj",
+        "comments": 0,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "In an application using this rubygem with Ruby 3.4, I see warnings like this one:\n\n```\nvendor/bundle/ruby/3.4.0/gems/rantly-3.0.0/lib/rantly/generator.rb:235:\nwarning: literal string will be frozen in the future (run with --debug-frozen-string-literal for more information)\n```\n\nIn order to upgrade to Ruby 3.5, those warnings should be fixed.\n\nSee:\n- https://docs.ruby-lang.org/en/3.4/String.html#class-String-label-Methods+for+a+Frozen-2FUnfrozen+String\n- https://gist.github.com/fxn/bf4eed2505c76f4fca03ab48c43adc72",
+        "url": "https://github.com/rantly-rb/rantly/issues/87"
+    },
+    {
+        "id": 2584364868,
+        "number": 85,
+        "title": "MiniTest is now Minitest",
+        "state": "closed",
+        "created_at": "2024-10-13T23:13:18Z",
+        "updated_at": "2025-06-22T18:34:18Z",
+        "closed_at": "2025-06-22T18:34:18Z",
+        "author": "zhon",
+        "comments": 0,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "In raptly/minitest_extensions MiniTest is used and needs to be changed to Minitest.",
+        "url": "https://github.com/rantly-rb/rantly/issues/85"
+    },
+    {
+        "id": 1388492615,
+        "number": 80,
+        "title": "Seed parameter to reproduce a failed test",
+        "state": "open",
+        "created_at": "2022-09-27T23:08:21Z",
+        "updated_at": "2023-04-13T19:39:17Z",
+        "closed_at": null,
+        "author": "lake-effect",
+        "comments": 3,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "Say you have a lot of data as your test input. When you get a failure message, rantly/rantly-rspec ends up telling you so much that you can't use it for reproducing regressions:\r\n\r\n```\r\n3 successful tests, failed on:\r\n       [#<ActiveRecord::Relation [#<SomeRecord id: nil, label: \"some_label\", value: 0.1241e4>, #<SomeRecord id: nil, label: \"some_other_label\", value: 0.2577e4>, #<SomeRecord id: nil, label: \"some_label\", value: 0.1233e4>, #<SomeRecord id: nil, label: \"some_other_label\", value: 0.1143e4>, #<SomeRecord id: nil, label: \"some_label\", value: 0.2001e4>, #<SomeRecord id: nil, label: \"some_other_label\", value: 0.596e3>, #<SomeRecord id: nil, label: \"some_label\", value: 0.1926e4>, #<SomeRecord id: nil, label: \"some_other_label\", value: 0.1309e4>, #<SomeRecord id: nil, label: \"some_label\", value: 0.2292e4>, #<SomeRecord id: nil, label: \"some_other_label\", value: 0.1136e4>, ...]>, \"day\"]\r\n\r\n...\r\n\r\nRandomized with seed 61833\r\n```\r\n\r\nIt turns out that running `rspec --seed 61833` doesn't reproduce this input set either.\r\n\r\nIs there a shorthand way to tell rspec + rantly to run this exact test again?",
+        "url": "https://github.com/rantly-rb/rantly/issues/80"
+    },
+    {
+        "id": 1251404167,
+        "number": 78,
+        "title": "Using rantly with rspec-rails",
+        "state": "closed",
+        "created_at": "2022-05-28T01:37:22Z",
+        "updated_at": "2022-09-30T01:51:35Z",
+        "closed_at": "2022-09-30T01:51:35Z",
+        "author": "diasbruno",
+        "comments": 3,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "Hi,\r\n\r\nI'm not sure if there is a problem with my project's setup (rails app), but when I try to use \r\nthis package I got an error like `cannot find -- rspec`.\r\n\r\nIt seems that `rspec-rails` is its own project (use the base package like rspec-core, \r\nrspec-expectations and so on...).\r\n\r\nBy changing the rspec package to the rspec-rails everything works (see [diasbruno/rantly#17111a38e8e98c97230ecf32454f0d666918ef77](https://github.com/diasbruno/rantly/commit/17111a38e8e98c97230ecf32454f0d666918ef77))\r\n\r\nSo, I don't know if this package should also provide an extension for this case: `rspec_rails_extensions.rb`.",
+        "url": "https://github.com/rantly-rb/rantly/issues/78"
+    },
+    {
+        "id": 860796608,
+        "number": 77,
+        "title": "Inconsistency in behaviour for `Rantly(number) { ... }`",
+        "state": "open",
+        "created_at": "2021-04-18T23:48:24Z",
+        "updated_at": "2022-09-29T02:57:52Z",
+        "closed_at": null,
+        "author": "linhpham",
+        "comments": 1,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "Hi Rantly team,\r\n\r\nI found an inconsistency in the behaviour or `Rantly(number) { ... }`. \r\n\r\nThe documentation said: \r\n> Rantly(5) { integer } # same as Rantly.map(5) { integer }\r\n> => [-1843396915550491870, -1683855015308353854, -2291347782549033959, -951461511269053584, 483265231542292652]\r\n\r\nSo I expect `Rantly(number) { ... }` to always return an array, however `Rantly(0) { ... }` and `Rantly(1) { ... }` will only return the element and not wrapped in an array.\r\n\r\nPlease refer to this console output:\r\n\r\n```\r\nirb(main):001:0> require 'rantly'\r\n=> true\r\nirb(main):002:0> Rantly(0) { string }\r\n=> \"e7j1\\\"6\"\r\nirb(main):003:0> Rantly(1) { string }\r\n=> \"6%H)H.\"\r\nirb(main):004:0> Rantly(2) { string }\r\n=> [\".3*m|m\", \"\\\\*'#w+\"] \r\nirb(main):005:0> Rantly.map(0) { string }\r\n=> []\r\nirb(main):006:0> Rantly.map(1) { string }\r\n=> [\"jmdPnP\"]\r\nirb(main):007:0> Rantly.map(2) { string }\r\n=> [\"dO?Ndy\", \"w !\\\\7j\"]\r\nirb(main):008:0>\r\n```\r\n\r\nI found that the `Rantly.map(number) { ... }` is more consistent.\r\n\r\nThanks.",
+        "url": "https://github.com/rantly-rb/rantly/issues/77"
+    },
+    {
+        "id": 570890595,
+        "number": 75,
+        "title": "Update documentation on shrinking",
+        "state": "open",
+        "created_at": "2020-02-25T22:48:00Z",
+        "updated_at": "2020-02-25T22:48:00Z",
+        "closed_at": null,
+        "author": "Lykos",
+        "comments": 0,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "It seems like the documentation on shrinking is outdated: `Array` isn't monkey patched any more and the `retry?` function now needs to be implemented.",
+        "url": "https://github.com/rantly-rb/rantly/issues/75"
+    },
+    {
+        "id": 395210881,
+        "number": 63,
+        "title": "float only returns number between 0 and 1",
+        "state": "open",
+        "created_at": "2019-01-02T10:52:39Z",
+        "updated_at": "2020-10-12T20:10:18Z",
+        "closed_at": null,
+        "author": "Ana06",
+        "comments": 7,
+        "labels": [
+            "bug :bug:"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "`Rantly { float } #=> a float between 0 and 1`\r\n\r\nI think this is not expected and it should return higher floats as well. :thinking: ",
+        "url": "https://github.com/rantly-rb/rantly/issues/63"
+    },
+    {
+        "id": 394490433,
+        "number": 60,
+        "title": "Range for floats?",
+        "state": "closed",
+        "created_at": "2018-12-27T21:21:02Z",
+        "updated_at": "2019-01-07T11:49:53Z",
+        "closed_at": "2019-01-07T11:49:53Z",
+        "author": "Stratus3D",
+        "comments": 2,
+        "labels": [
+            "bug :bug:"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "I've been using the `range` method to select integers within a specified range, and I see there is a `float` method that returns a random float, but I need a random float within a specified range. Something like:\r\n\r\n```\r\nrange_float(23.4, 56.7) \r\n# => 34.56\r\n```\r\n\r\nIs this something that exists in Rantly? And if not would a contribution to add this method be welcome? Or is there a better way of doing this outside of Rantly?",
+        "url": "https://github.com/rantly-rb/rantly/issues/60"
+    },
+    {
+        "id": 394457715,
+        "number": 58,
+        "title": "Unable to call method in property_of block",
+        "state": "open",
+        "created_at": "2018-12-27T18:13:41Z",
+        "updated_at": "2022-06-02T13:23:11Z",
+        "closed_at": null,
+        "author": "Stratus3D",
+        "comments": 2,
+        "labels": [
+            "question :question:"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "I have a `property_of` block that needs to contain some special logic I have for choosing a state and city. I need to make sure the city selected is within the chosen state. I want to do something like this:\r\n\r\n```\r\nproperties = property_of do\r\n    state = choose(*states)\r\n    city = choose(*cities_within_state(state))\r\n\r\n    [state, city]\r\nend\r\n```\r\n\r\nThis does not work because `cities_within_state` is a method defined in an included module, which doesn't seem to be available within the context of the `property_of` block (though it is available outside it). I need to invoke the method within the `property_of` block because that is the only scope in which the `state` variable exists.\r\n\r\nI was able to come up with a workaround to invoke the the method within the block:\r\n\r\n```\r\nproperties = property_of do\r\n    state = choose(*states)\r\n    cities = Class.new.extend(ModuleContainingMethod).cities_within_state(state)\r\n    city = choose(*cities)\r\n\r\n    [state, city]\r\nend\r\n```\r\n\r\nIs there a better way of doing this?",
+        "url": "https://github.com/rantly-rb/rantly/issues/58"
+    },
+    {
+        "id": 374653469,
+        "number": 56,
+        "title": "Logo",
+        "state": "closed",
+        "created_at": "2018-10-27T14:52:01Z",
+        "updated_at": "2018-11-22T03:26:18Z",
+        "closed_at": "2018-11-22T03:26:18Z",
+        "author": "Ana06",
+        "comments": 18,
+        "labels": [
+            "enhancement :sparkle:",
+            "help wanted :pray:"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "Rantly need a cool logo. :thinking:  We should add a license for the logo. \r\n\r\nAny designer willing to help? :smile: ",
+        "url": "https://github.com/rantly-rb/rantly/issues/56"
+    },
+    {
+        "id": 355243388,
+        "number": 50,
+        "title": "Review markdown in CHANGELOG",
+        "state": "open",
+        "created_at": "2018-08-29T16:39:42Z",
+        "updated_at": "2022-07-30T04:55:33Z",
+        "closed_at": null,
+        "author": "Ana06",
+        "comments": 2,
+        "labels": [
+            "enhancement :sparkle:"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "I think we should inline the urls to Github, as some of them are just used one and it is obfuscating was it is done. How the authors are referenced can also be improved, check for example how it is done in [Rubocop](https://raw.githubusercontent.com/rubocop-hq/rubocop/master/CHANGELOG.md).",
+        "url": "https://github.com/rantly-rb/rantly/issues/50"
+    },
+    {
+        "id": 349709169,
+        "number": 46,
+        "title": "Documentation for Gaussian distribution",
+        "state": "open",
+        "created_at": "2018-08-11T06:00:10Z",
+        "updated_at": "2022-07-30T04:55:46Z",
+        "closed_at": null,
+        "author": "Ana06",
+        "comments": 0,
+        "labels": [
+            "documentation :page_facing_up:"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "Add documentation for the code introduced in https://github.com/rantly-rb/rantly/pull/30",
+        "url": "https://github.com/rantly-rb/rantly/issues/46"
+    },
+    {
+        "id": 349372271,
+        "number": 42,
+        "title": "Only support JRuby 9.1.7.0 and 9.2.0.0",
+        "state": "closed",
+        "created_at": "2018-08-10T04:29:12Z",
+        "updated_at": "2018-09-04T07:58:34Z",
+        "closed_at": "2018-09-04T07:58:34Z",
+        "author": "Ana06",
+        "comments": 0,
+        "labels": [
+            "enhancement :sparkle:"
+        ],
+        "assignees": [
+            "Ana06"
+        ],
+        "locked": false,
+        "body": "In the same way as in https://github.com/rantly-rb/rantly/issues/37, we should stop supporting the old jruby-1.7.26. It is using Ruby 1.9.3! :scream: Instead, I would like to support 9.2.0.0, the first version which supports Ruby 2.5! :tada: ",
+        "url": "https://github.com/rantly-rb/rantly/issues/42"
+    },
+    {
+        "id": 343210277,
+        "number": 39,
+        "title": "NoMethodError: undefined method `retry?' for {\"N-<o`e\"=>\"\"}:Hash",
+        "state": "closed",
+        "created_at": "2018-07-20T18:44:25Z",
+        "updated_at": "2018-08-29T17:30:47Z",
+        "closed_at": "2018-08-15T01:59:54Z",
+        "author": "mauricioszabo",
+        "comments": 6,
+        "labels": [
+            "bug :bug:"
+        ],
+        "assignees": [
+            "Ana06"
+        ],
+        "locked": false,
+        "body": "Using Rantly `1.1.0`, and ruby `2.4.1p111`, I tried a simple test that would fail:\r\n\r\n```ruby\r\nrequire 'rantly/shrinks'\r\nrequire 'rantly/rspec_extensions'\r\n\r\ndescribe \"Test\" do\r\n  it \"fails\" do\r\n     property_of {\r\n       dict { [string, string] }\r\n     }.check { |i|\r\n       expect(i).to be_a(Integer)\r\n     }\r\n  end\r\nend\r\n```\r\n\r\nwill give me the output:\r\n\r\n```\r\n\r\nfailure: 0 tests, on:\r\n{\"?A11+I\"=>\"\\\\=>B{A\",\r\n \"6xpu|C\"=>\".\\\\T7^k\",\r\n \"!Jo/Ly\"=>\"G'j-Q`\",\r\n \"WuEo5C\"=>\"px p-c\",\r\n \".]uXT8\"=>\"X\\\"G~NZ\",\r\n \"rg\\\\K$h\"=>\"|n3!]W\"}\r\nShrinking at depth 0:\r\n{\"?A11+I\"=>\"\\\\=>B{A\",\r\n \"6xpu|C\"=>\".\\\\T7^k\",\r\n \"!Jo/Ly\"=>\"G'j-Q`\",\r\n \"WuEo5C\"=>\"px p-c\",\r\n \".]uXT8\"=>\"X\\\"G~NZ\",\r\n \"rg\\\\K$h\"=>\"|n3!]W\"}\r\nShrinking at depth 1:\r\n{\"?A11+I\"=>\"\\\\=B{A\",\r\n \"6xpu|C\"=>\".\\\\T7^k\",\r\n \"!Jo/Ly\"=>\"G'j-Q`\",\r\n \"WuEo5C\"=>\"px p-c\",\r\n \".]uXT8\"=>\"X\\\"G~NZ\",\r\n \"rg\\\\K$h\"=>\"|n3!]W\"}\r\nShrinking at depth 2:\r\n{\"?A11+I\"=>\"\\\\=B{\",\r\n \"6xpu|C\"=>\".\\\\T7^k\",\r\n \"!Jo/Ly\"=>\"G'j-Q`\",\r\n \"WuEo5C\"=>\"px p-c\",\r\n \".]uXT8\"=>\"X\\\"G~NZ\",\r\n \"rg\\\\K$h\"=>\"|n3!]W\"}\r\nShrinking at depth 3:\r\n{\"?A11+I\"=>\"\\\\={\",\r\n \"6xpu|C\"=>\".\\\\T7^k\",\r\n \"!Jo/Ly\"=>\"G'j-Q`\",\r\n \"WuEo5C\"=>\"px p-c\",\r\n \".]uXT8\"=>\"X\\\"G~NZ\",\r\n \"rg\\\\K$h\"=>\"|n3!]W\"}\r\nShrinking at depth 4:\r\n{\"?A11+I\"=>\"\\\\=\",\r\n \"6xpu|C\"=>\".\\\\T7^k\",\r\n \"!Jo/Ly\"=>\"G'j-Q`\",\r\n \"WuEo5C\"=>\"px p-c\",\r\n \".]uXT8\"=>\"X\\\"G~NZ\",\r\n \"rg\\\\K$h\"=>\"|n3!]W\"}\r\nShrinking at depth 5:\r\n{\"?A11+I\"=>\"\\\\\",\r\n \"6xpu|C\"=>\".\\\\T7^k\",\r\n \"!Jo/Ly\"=>\"G'j-Q`\",\r\n \"WuEo5C\"=>\"px p-c\",\r\n \".]uXT8\"=>\"X\\\"G~NZ\",\r\n \"rg\\\\K$h\"=>\"|n3!]W\"}\r\nShrinking at depth 6:\r\n{\"?A11+I\"=>\"\",\r\n \"6xpu|C\"=>\".\\\\T7^k\",\r\n \"!Jo/Ly\"=>\"G'j-Q`\",\r\n \"WuEo5C\"=>\"px p-c\",\r\n \".]uXT8\"=>\"X\\\"G~NZ\",\r\n \"rg\\\\K$h\"=>\"|n3!]W\"}\r\nShrinking at depth 7:\r\n{\"?A11+I\"=>\"\",\r\n \"6xpu|C\"=>\"\\\\T7^k\",\r\n \"!Jo/Ly\"=>\"G'j-Q`\",\r\n \"WuEo5C\"=>\"px p-c\",\r\n \".]uXT8\"=>\"X\\\"G~NZ\",\r\n \"rg\\\\K$h\"=>\"|n3!]W\"}\r\nShrinking at depth 8:\r\n{\"?A11+I\"=>\"\",\r\n \"6xpu|C\"=>\"\\\\T7k\",\r\n \"!Jo/Ly\"=>\"G'j-Q`\",\r\n \"WuEo5C\"=>\"px p-c\",\r\n \".]uXT8\"=>\"X\\\"G~NZ\",\r\n \"rg\\\\K$h\"=>\"|n3!]W\"}\r\nShrinking at depth 9:\r\n{\"?A11+I\"=>\"\",\r\n \"6xpu|C\"=>\"T7k\",\r\n \"!Jo/Ly\"=>\"G'j-Q`\",\r\n \"WuEo5C\"=>\"px p-c\",\r\n \".]uXT8\"=>\"X\\\"G~NZ\",\r\n \"rg\\\\K$h\"=>\"|n3!]W\"}\r\nShrinking at depth 10:\r\n{\"?A11+I\"=>\"\",\r\n \"6xpu|C\"=>\"Tk\",\r\n \"!Jo/Ly\"=>\"G'j-Q`\",\r\n \"WuEo5C\"=>\"px p-c\",\r\n \".]uXT8\"=>\"X\\\"G~NZ\",\r\n \"rg\\\\K$h\"=>\"|n3!]W\"}\r\nShrinking at depth 11:\r\n{\"?A11+I\"=>\"\",\r\n \"6xpu|C\"=>\"k\",\r\n \"!Jo/Ly\"=>\"G'j-Q`\",\r\n \"WuEo5C\"=>\"px p-c\",\r\n \".]uXT8\"=>\"X\\\"G~NZ\",\r\n \"rg\\\\K$h\"=>\"|n3!]W\"}\r\nShrinking at depth 12:\r\n{\"?A11+I\"=>\"\",\r\n \"6xpu|C\"=>\"\",\r\n \"!Jo/Ly\"=>\"G'j-Q`\",\r\n \"WuEo5C\"=>\"px p-c\",\r\n \".]uXT8\"=>\"X\\\"G~NZ\",\r\n \"rg\\\\K$h\"=>\"|n3!]W\"}\r\nShrinking at depth 13:\r\n{\"?A11+I\"=>\"\",\r\n \"6xpu|C\"=>\"\",\r\n \"!Jo/Ly\"=>\"G'-Q`\",\r\n \"WuEo5C\"=>\"px p-c\",\r\n \".]uXT8\"=>\"X\\\"G~NZ\",\r\n \"rg\\\\K$h\"=>\"|n3!]W\"}\r\nShrinking at depth 14:\r\n{\"?A11+I\"=>\"\",\r\n \"6xpu|C\"=>\"\",\r\n \"!Jo/Ly\"=>\"G'-Q\",\r\n \"WuEo5C\"=>\"px p-c\",\r\n \".]uXT8\"=>\"X\\\"G~NZ\",\r\n \"rg\\\\K$h\"=>\"|n3!]W\"}\r\nShrinking at depth 15:\r\n{\"?A11+I\"=>\"\",\r\n \"6xpu|C\"=>\"\",\r\n \"!Jo/Ly\"=>\"G'Q\",\r\n \"WuEo5C\"=>\"px p-c\",\r\n \".]uXT8\"=>\"X\\\"G~NZ\",\r\n \"rg\\\\K$h\"=>\"|n3!]W\"}\r\nShrinking at depth 16:\r\n{\"?A11+I\"=>\"\",\r\n \"6xpu|C\"=>\"\",\r\n \"!Jo/Ly\"=>\"'Q\",\r\n \"WuEo5C\"=>\"px p-c\",\r\n \".]uXT8\"=>\"X\\\"G~NZ\",\r\n \"rg\\\\K$h\"=>\"|n3!]W\"}\r\nShrinking at depth 17:\r\n{\"?A11+I\"=>\"\",\r\n \"6xpu|C\"=>\"\",\r\n \"!Jo/Ly\"=>\"'\",\r\n \"WuEo5C\"=>\"px p-c\",\r\n \".]uXT8\"=>\"X\\\"G~NZ\",\r\n \"rg\\\\K$h\"=>\"|n3!]W\"}\r\nShrinking at depth 18:\r\n{\"?A11+I\"=>\"\",\r\n \"6xpu|C\"=>\"\",\r\n \"!Jo/Ly\"=>\"\",\r\n \"WuEo5C\"=>\"px p-c\",\r\n \".]uXT8\"=>\"X\\\"G~NZ\",\r\n \"rg\\\\K$h\"=>\"|n3!]W\"}\r\nShrinking at depth 19:\r\n{\"?A11+I\"=>\"\",\r\n \"6xpu|C\"=>\"\",\r\n \"!Jo/Ly\"=>\"\",\r\n \"WuEo5C\"=>\"p p-c\",\r\n \".]uXT8\"=>\"X\\\"G~NZ\",\r\n \"rg\\\\K$h\"=>\"|n3!]W\"}\r\nShrinking at depth 20:\r\n{\"?A11+I\"=>\"\",\r\n \"6xpu|C\"=>\"\",\r\n \"!Jo/Ly\"=>\"\",\r\n \"WuEo5C\"=>\"pp-c\",\r\n \".]uXT8\"=>\"X\\\"G~NZ\",\r\n \"rg\\\\K$h\"=>\"|n3!]W\"}\r\nShrinking at depth 21:\r\n{\"?A11+I\"=>\"\",\r\n \"6xpu|C\"=>\"\",\r\n \"!Jo/Ly\"=>\"\",\r\n \"WuEo5C\"=>\"pp-\",\r\n \".]uXT8\"=>\"X\\\"G~NZ\",\r\n \"rg\\\\K$h\"=>\"|n3!]W\"}\r\nShrinking at depth 22:\r\n{\"?A11+I\"=>\"\",\r\n \"6xpu|C\"=>\"\",\r\n \"!Jo/Ly\"=>\"\",\r\n \"WuEo5C\"=>\"p-\",\r\n \".]uXT8\"=>\"X\\\"G~NZ\",\r\n \"rg\\\\K$h\"=>\"|n3!]W\"}\r\nShrinking at depth 23:\r\n{\"?A11+I\"=>\"\",\r\n \"6xpu|C\"=>\"\",\r\n \"!Jo/Ly\"=>\"\",\r\n \"WuEo5C\"=>\"-\",\r\n \".]uXT8\"=>\"X\\\"G~NZ\",\r\n \"rg\\\\K$h\"=>\"|n3!]W\"}\r\nShrinking at depth 24:\r\n{\"?A11+I\"=>\"\",\r\n \"6xpu|C\"=>\"\",\r\n \"!Jo/Ly\"=>\"\",\r\n \"WuEo5C\"=>\"\",\r\n \".]uXT8\"=>\"X\\\"G~NZ\",\r\n \"rg\\\\K$h\"=>\"|n3!]W\"}\r\nShrinking at depth 25:\r\n{\"?A11+I\"=>\"\",\r\n \"6xpu|C\"=>\"\",\r\n \"!Jo/Ly\"=>\"\",\r\n \"WuEo5C\"=>\"\",\r\n \".]uXT8\"=>\"X\\\"GNZ\",\r\n \"rg\\\\K$h\"=>\"|n3!]W\"}\r\nShrinking at depth 26:\r\n{\"?A11+I\"=>\"\",\r\n \"6xpu|C\"=>\"\",\r\n \"!Jo/Ly\"=>\"\",\r\n \"WuEo5C\"=>\"\",\r\n \".]uXT8\"=>\"\\\"GNZ\",\r\n \"rg\\\\K$h\"=>\"|n3!]W\"}\r\nShrinking at depth 27:\r\n{\"?A11+I\"=>\"\",\r\n \"6xpu|C\"=>\"\",\r\n \"!Jo/Ly\"=>\"\",\r\n \"WuEo5C\"=>\"\",\r\n \".]uXT8\"=>\"\\\"GZ\",\r\n \"rg\\\\K$h\"=>\"|n3!]W\"}\r\nShrinking at depth 28:\r\n{\"?A11+I\"=>\"\",\r\n \"6xpu|C\"=>\"\",\r\n \"!Jo/Ly\"=>\"\",\r\n \"WuEo5C\"=>\"\",\r\n \".]uXT8\"=>\"\\\"Z\",\r\n \"rg\\\\K$h\"=>\"|n3!]W\"}\r\nShrinking at depth 29:\r\n{\"?A11+I\"=>\"\",\r\n \"6xpu|C\"=>\"\",\r\n \"!Jo/Ly\"=>\"\",\r\n \"WuEo5C\"=>\"\",\r\n \".]uXT8\"=>\"\\\"\",\r\n \"rg\\\\K$h\"=>\"|n3!]W\"}\r\nShrinking at depth 30:\r\n{\"?A11+I\"=>\"\",\r\n \"6xpu|C\"=>\"\",\r\n \"!Jo/Ly\"=>\"\",\r\n \"WuEo5C\"=>\"\",\r\n \".]uXT8\"=>\"\",\r\n \"rg\\\\K$h\"=>\"|n3!]W\"}\r\nShrinking at depth 31:\r\n{\"?A11+I\"=>\"\",\r\n \"6xpu|C\"=>\"\",\r\n \"!Jo/Ly\"=>\"\",\r\n \"WuEo5C\"=>\"\",\r\n \".]uXT8\"=>\"\",\r\n \"rg\\\\K$h\"=>\"n3!]W\"}\r\nShrinking at depth 32:\r\n{\"?A11+I\"=>\"\",\r\n \"6xpu|C\"=>\"\",\r\n \"!Jo/Ly\"=>\"\",\r\n \"WuEo5C\"=>\"\",\r\n \".]uXT8\"=>\"\",\r\n \"rg\\\\K$h\"=>\"n!]W\"}\r\nShrinking at depth 33:\r\n{\"?A11+I\"=>\"\",\r\n \"6xpu|C\"=>\"\",\r\n \"!Jo/Ly\"=>\"\",\r\n \"WuEo5C\"=>\"\",\r\n \".]uXT8\"=>\"\",\r\n \"rg\\\\K$h\"=>\"n]W\"}\r\nShrinking at depth 34:\r\n{\"?A11+I\"=>\"\",\r\n \"6xpu|C\"=>\"\",\r\n \"!Jo/Ly\"=>\"\",\r\n \"WuEo5C\"=>\"\",\r\n \".]uXT8\"=>\"\",\r\n \"rg\\\\K$h\"=>\"nW\"}\r\nShrinking at depth 35:\r\n{\"?A11+I\"=>\"\",\r\n \"6xpu|C\"=>\"\",\r\n \"!Jo/Ly\"=>\"\",\r\n \"WuEo5C\"=>\"\",\r\n \".]uXT8\"=>\"\",\r\n \"rg\\\\K$h\"=>\"W\"}\r\nShrinking at depth 36:\r\n{\"?A11+I\"=>\"\",\r\n \"6xpu|C\"=>\"\",\r\n \"!Jo/Ly\"=>\"\",\r\n \"WuEo5C\"=>\"\",\r\n \".]uXT8\"=>\"\",\r\n \"rg\\\\K$h\"=>\"\"}\r\nShrinking at depth 37:\r\n{\"6xpu|C\"=>\"\", \"!Jo/Ly\"=>\"\", \"WuEo5C\"=>\"\", \".]uXT8\"=>\"\", \"rg\\\\K$h\"=>\"\"}\r\nShrinking at depth 38:\r\n{\"!Jo/Ly\"=>\"\", \"WuEo5C\"=>\"\", \".]uXT8\"=>\"\", \"rg\\\\K$h\"=>\"\"}\r\nShrinking at depth 39:\r\n{\"WuEo5C\"=>\"\", \".]uXT8\"=>\"\", \"rg\\\\K$h\"=>\"\"}\r\nShrinking at depth 40:\r\n{\".]uXT8\"=>\"\", \"rg\\\\K$h\"=>\"\"}\r\nShrinking at depth 41:\r\n{\"rg\\\\K$h\"=>\"\"}\r\nShrinking at depth 42:\r\n{}\r\nF\r\n\r\nFailures:\r\n\r\n  1) Reports that only have new_service events integer property only returns Integer type\r\n     Failure/Error:\r\n       property_of {\r\n         dict { [string, string] }\r\n       }.check { |i|\r\n         expect(i).to be_a(Integer)\r\n       }\r\n     \r\n     NoMethodError:\r\n       undefined method `retry?' for {\"rg\\\\K$h\"=>\"\"}:Hash\r\n     # /home/mauricio/.rvm/gems/ruby-2.4.1/gems/rantly-1.1.0/lib/rantly/property.rb:79:in `shrinkify'\r\n     # /home/mauricio/.rvm/gems/ruby-2.4.1/gems/rantly-1.1.0/lib/rantly/property.rb:73:in `rescue in shrinkify'\r\n     # /home/mauricio/.rvm/gems/ruby-2.4.1/gems/rantly-1.1.0/lib/rantly/property.rb:69:in `shrinkify'\r\n     # /home/mauricio/.rvm/gems/ruby-2.4.1/gems/rantly-1.1.0/lib/rantly/property.rb:73:in `rescue in shrinkify'\r\n     # /home/mauricio/.rvm/gems/ruby-2.4.1/gems/rantly-1.1.0/lib/rantly/property.rb:69:in `shrinkify'\r\n     # /home/mauricio/.rvm/gems/ruby-2.4.1/gems/rantly-1.1.0/lib/rantly/property.rb:73:in `rescue in shrinkify'\r\n     # /home/mauricio/.rvm/gems/ruby-2.4.1/gems/rantly-1.1.0/lib/rantly/property.rb:69:in `shrinkify'\r\n     # /home/mauricio/.rvm/gems/ruby-2.4.1/gems/rantly-1.1.0/lib/rantly/property.rb:73:in `rescue in shrinkify'\r\n     # /home/mauricio/.rvm/gems/ruby-2.4.1/gems/rantly-1.1.0/lib/rantly/property.rb:69:in `shrinkify'\r\n     # /home/mauricio/.rvm/gems/ruby-2.4.1/gems/rantly-1.1.0/lib/rantly/property.rb:73:in `rescue in shrinkify'\r\n     # /home/mauricio/.rvm/gems/ruby-2.4.1/gems/rantly-1.1.0/lib/rantly/property.rb:69:in `shrinkify'\r\n     # /home/mauricio/.rvm/gems/ruby-2.4.1/gems/rantly-1.1.0/lib/rantly/property.rb:73:in `rescue in shrinkify'\r\n     # /home/mauricio/.rvm/gems/ruby-2.4.1/gems/rantly-1.1.0/lib/rantly/property.rb:69:in `shrinkify'\r\n     # /home/mauricio/.rvm/gems/ruby-2.4.1/gems/rantly-1.1.0/lib/rantly/property.rb:73:in `rescue in shrinkify'\r\n     # /home/mauricio/.rvm/gems/ruby-2.4.1/gems/rantly-1.1.0/lib/rantly/property.rb:69:in `shrinkify'\r\n     # /home/mauricio/.rvm/gems/ruby-2.4.1/gems/rantly-1.1.0/lib/rantly/property.rb:73:in `rescue in shrinkify'\r\n     # /home/mauricio/.rvm/gems/ruby-2.4.1/gems/rantly-1.1.0/lib/rantly/property.rb:69:in `shrinkify'\r\n     # /home/mauricio/.rvm/gems/ruby-2.4.1/gems/rantly-1.1.0/lib/rantly/property.rb:73:in `rescue in shrinkify'\r\n     # /home/mauricio/.rvm/gems/ruby-2.4.1/gems/rantly-1.1.0/lib/rantly/property.rb:69:in `shrinkify'\r\n     # /home/mauricio/.rvm/gems/ruby-2.4.1/gems/rantly-1.1.0/lib/rantly/property.rb:73:in `rescue in shrinkify'\r\n     # /home/mauricio/.rvm/gems/ruby-2.4.1/gems/rantly-1.1.0/lib/rantly/property.rb:69:in `shrinkify'\r\n     # /home/mauricio/.rvm/gems/ruby-2.4.1/gems/rantly-1.1.0/lib/rantly/property.rb:73:in `rescue in shrinkify'\r\n     # /home/mauricio/.rvm/gems/ruby-2.4.1/gems/rantly-1.1.0/lib/rantly/property.rb:69:in `shrinkify'\r\n     # /home/mauricio/.rvm/gems/ruby-2.4.1/gems/rantly-1.1.0/lib/rantly/property.rb:73:in `rescue in shrinkify'\r\n     # /home/mauricio/.rvm/gems/ruby-2.4.1/gems/rantly-1.1.0/lib/rantly/property.rb:69:in `shrinkify'\r\n     # /home/mauricio/.rvm/gems/ruby-2.4.1/gems/rantly-1.1.0/lib/rantly/property.rb:73:in `rescue in shrinkify'\r\n     # /home/mauricio/.rvm/gems/ruby-2.4.1/gems/rantly-1.1.0/lib/rantly/property.rb:69:in `shrinkify'\r\n     # /home/mauricio/.rvm/gems/ruby-2.4.1/gems/rantly-1.1.0/lib/rantly/property.rb:73:in `rescue in shrinkify'\r\n     # /home/mauricio/.rvm/gems/ruby-2.4.1/gems/rantly-1.1.0/lib/rantly/property.rb:69:in `shrinkify'\r\n     # /home/mauricio/.rvm/gems/ruby-2.4.1/gems/rantly-1.1.0/lib/rantly/property.rb:73:in `rescue in shrinkify'\r\n     # /home/mauricio/.rvm/gems/ruby-2.4.1/gems/rantly-1.1.0/lib/rantly/property.rb:69:in `shrinkify'\r\n     # /home/mauricio/.rvm/gems/ruby-2.4.1/gems/rantly-1.1.0/lib/rantly/property.rb:73:in `rescue in shrinkify'\r\n     # /home/mauricio/.rvm/gems/ruby-2.4.1/gems/rantly-1.1.0/lib/rantly/property.rb:69:in `shrinkify'\r\n     # /home/mauricio/.rvm/gems/ruby-2.4.1/gems/rantly-1.1.0/lib/rantly/property.rb:73:in `rescue in shrinkify'\r\n     # /home/mauricio/.rvm/gems/ruby-2.4.1/gems/rantly-1.1.0/lib/rantly/property.rb:69:in `shrinkify'\r\n     # /home/mauricio/.rvm/gems/ruby-2.4.1/gems/rantly-1.1.0/lib/rantly/property.rb:73:in `rescue in shrinkify'\r\n     # /home/mauricio/.rvm/gems/ruby-2.4.1/gems/rantly-1.1.0/lib/rantly/property.rb:69:in `shrinkify'\r\n     # /home/mauricio/.rvm/gems/ruby-2.4.1/gems/rantly-1.1.0/lib/rantly/property.rb:73:in `rescue in shrinkify'\r\n     # /home/mauricio/.rvm/gems/ruby-2.4.1/gems/rantly-1.1.0/lib/rantly/property.rb:69:in `shrinkify'\r\n     # /home/mauricio/.rvm/gems/ruby-2.4.1/gems/rantly-1.1.0/lib/rantly/property.rb:73:in `rescue in shrinkify'\r\n     # /home/mauricio/.rvm/gems/ruby-2.4.1/gems/rantly-1.1.0/lib/rantly/property.rb:69:in `shrinkify'\r\n     # /home/mauricio/.rvm/gems/ruby-2.4.1/gems/rantly-1.1.0/lib/rantly/property.rb:73:in `rescue in shrinkify'\r\n     # /home/mauricio/.rvm/gems/ruby-2.4.1/gems/rantly-1.1.0/lib/rantly/property.rb:69:in `shrinkify'\r\n     # /home/mauricio/.rvm/gems/ruby-2.4.1/gems/rantly-1.1.0/lib/rantly/property.rb:73:in `rescue in shrinkify'\r\n     # /home/mauricio/.rvm/gems/ruby-2.4.1/gems/rantly-1.1.0/lib/rantly/property.rb:69:in `shrinkify'\r\n     # /home/mauricio/.rvm/gems/ruby-2.4.1/gems/rantly-1.1.0/lib/rantly/property.rb:73:in `rescue in shrinkify'\r\n     # /home/mauricio/.rvm/gems/ruby-2.4.1/gems/rantly-1.1.0/lib/rantly/property.rb:69:in `shrinkify'\r\n     # /home/mauricio/.rvm/gems/ruby-2.4.1/gems/rantly-1.1.0/lib/rantly/property.rb:73:in `rescue in shrinkify'\r\n     # /home/mauricio/.rvm/gems/ruby-2.4.1/gems/rantly-1.1.0/lib/rantly/property.rb:69:in `shrinkify'\r\n     # /home/mauricio/.rvm/gems/ruby-2.4.1/gems/rantly-1.1.0/lib/rantly/property.rb:73:in `rescue in shrinkify'\r\n     # /home/mauricio/.rvm/gems/ruby-2.4.1/gems/rantly-1.1.0/lib/rantly/property.rb:69:in `shrinkify'\r\n     # /home/mauricio/.rvm/gems/ruby-2.4.1/gems/rantly-1.1.0/lib/rantly/property.rb:73:in `rescue in shrinkify'\r\n     # /home/mauricio/.rvm/gems/ruby-2.4.1/gems/rantly-1.1.0/lib/rantly/property.rb:69:in `shrinkify'\r\n     # /home/mauricio/.rvm/gems/ruby-2.4.1/gems/rantly-1.1.0/lib/rantly/property.rb:73:in `rescue in shrinkify'\r\n     # /home/mauricio/.rvm/gems/ruby-2.4.1/gems/rantly-1.1.0/lib/rantly/property.rb:69:in `shrinkify'\r\n     # /home/mauricio/.rvm/gems/ruby-2.4.1/gems/rantly-1.1.0/lib/rantly/property.rb:73:in `rescue in shrinkify'\r\n     # /home/mauricio/.rvm/gems/ruby-2.4.1/gems/rantly-1.1.0/lib/rantly/property.rb:69:in `shrinkify'\r\n     # /home/mauricio/.rvm/gems/ruby-2.4.1/gems/rantly-1.1.0/lib/rantly/property.rb:73:in `rescue in shrinkify'\r\n     # /home/mauricio/.rvm/gems/ruby-2.4.1/gems/rantly-1.1.0/lib/rantly/property.rb:69:in `shrinkify'\r\n     # /home/mauricio/.rvm/gems/ruby-2.4.1/gems/rantly-1.1.0/lib/rantly/property.rb:73:in `rescue in shrinkify'\r\n     # /home/mauricio/.rvm/gems/ruby-2.4.1/gems/rantly-1.1.0/lib/rantly/property.rb:69:in `shrinkify'\r\n     # /home/mauricio/.rvm/gems/ruby-2.4.1/gems/rantly-1.1.0/lib/rantly/property.rb:73:in `rescue in shrinkify'\r\n     # /home/mauricio/.rvm/gems/ruby-2.4.1/gems/rantly-1.1.0/lib/rantly/property.rb:69:in `shrinkify'\r\n     # /home/mauricio/.rvm/gems/ruby-2.4.1/gems/rantly-1.1.0/lib/rantly/property.rb:73:in `rescue in shrinkify'\r\n     # /home/mauricio/.rvm/gems/ruby-2.4.1/gems/rantly-1.1.0/lib/rantly/property.rb:69:in `shrinkify'\r\n     # /home/mauricio/.rvm/gems/ruby-2.4.1/gems/rantly-1.1.0/lib/rantly/property.rb:73:in `rescue in shrinkify'\r\n     # /home/mauricio/.rvm/gems/ruby-2.4.1/gems/rantly-1.1.0/lib/rantly/property.rb:69:in `shrinkify'\r\n     # /home/mauricio/.rvm/gems/ruby-2.4.1/gems/rantly-1.1.0/lib/rantly/property.rb:73:in `rescue in shrinkify'\r\n     # /home/mauricio/.rvm/gems/ruby-2.4.1/gems/rantly-1.1.0/lib/rantly/property.rb:69:in `shrinkify'\r\n     # /home/mauricio/.rvm/gems/ruby-2.4.1/gems/rantly-1.1.0/lib/rantly/property.rb:73:in `rescue in shrinkify'\r\n     # /home/mauricio/.rvm/gems/ruby-2.4.1/gems/rantly-1.1.0/lib/rantly/property.rb:69:in `shrinkify'\r\n     # /home/mauricio/.rvm/gems/ruby-2.4.1/gems/rantly-1.1.0/lib/rantly/property.rb:73:in `rescue in shrinkify'\r\n     # /home/mauricio/.rvm/gems/ruby-2.4.1/gems/rantly-1.1.0/lib/rantly/property.rb:69:in `shrinkify'\r\n     # /home/mauricio/.rvm/gems/ruby-2.4.1/gems/rantly-1.1.0/lib/rantly/property.rb:73:in `rescue in shrinkify'\r\n     # /home/mauricio/.rvm/gems/ruby-2.4.1/gems/rantly-1.1.0/lib/rantly/property.rb:69:in `shrinkify'\r\n     # /home/mauricio/.rvm/gems/ruby-2.4.1/gems/rantly-1.1.0/lib/rantly/property.rb:73:in `rescue in shrinkify'\r\n     # /home/mauricio/.rvm/gems/ruby-2.4.1/gems/rantly-1.1.0/lib/rantly/property.rb:69:in `shrinkify'\r\n     # /home/mauricio/.rvm/gems/ruby-2.4.1/gems/rantly-1.1.0/lib/rantly/property.rb:73:in `rescue in shrinkify'\r\n     # /home/mauricio/.rvm/gems/ruby-2.4.1/gems/rantly-1.1.0/lib/rantly/property.rb:69:in `shrinkify'\r\n     # /home/mauricio/.rvm/gems/ruby-2.4.1/gems/rantly-1.1.0/lib/rantly/property.rb:73:in `rescue in shrinkify'\r\n     # /home/mauricio/.rvm/gems/ruby-2.4.1/gems/rantly-1.1.0/lib/rantly/property.rb:69:in `shrinkify'\r\n     # /home/mauricio/.rvm/gems/ruby-2.4.1/gems/rantly-1.1.0/lib/rantly/property.rb:73:in `rescue in shrinkify'\r\n     # /home/mauricio/.rvm/gems/ruby-2.4.1/gems/rantly-1.1.0/lib/rantly/property.rb:69:in `shrinkify'\r\n     # /home/mauricio/.rvm/gems/ruby-2.4.1/gems/rantly-1.1.0/lib/rantly/property.rb:50:in `rescue in check'\r\n     # /home/mauricio/.rvm/gems/ruby-2.4.1/gems/rantly-1.1.0/lib/rantly/property.rb:30:in `check'\r\n     # ./spec/properties/new_service_spec.rb:9:in `block (2 levels) in <top (required)>'\r\n     # ------------------\r\n     # --- Caused by: ---\r\n     #   expected {\"?A11+I\"=>\"\\\\=>B{A\", \"6xpu|C\"=>\".\\\\T7^k\", \"!Jo/Ly\"=>\"G'j-Q`\", \"WuEo5C\"=>\"px p-c\", \".]uXT8\"=>\"X\\\"G~NZ\", \"rg\\\\K$h\"=>\"|n3!]W\"} to be a kind of Integer\r\n     #   ./spec/properties/new_service_spec.rb:10:in `block (3 levels) in <top (required)>'\r\n\r\nFinished in 0.03759 seconds (files took 0.10705 seconds to load)\r\n1 example, 1 failure\r\n```",
+        "url": "https://github.com/rantly-rb/rantly/issues/39"
+    },
+    {
+        "id": 296103324,
+        "number": 38,
+        "title": "Remove rbx-2.5.8 and rbx-3.70",
+        "state": "closed",
+        "created_at": "2018-02-10T14:04:14Z",
+        "updated_at": "2018-08-15T02:00:19Z",
+        "closed_at": "2018-08-15T02:00:19Z",
+        "author": "Ana06",
+        "comments": 0,
+        "labels": [
+            "enhancement :sparkle:"
+        ],
+        "assignees": [
+            "Ana06"
+        ],
+        "locked": false,
+        "body": "Should we remove rbx-2.5.8  and rbx-3.70 from Travis? they are failing and we are ignoring them anyway. And they are making that the result from Travis takes longer to be reported. 🤓 ",
+        "url": "https://github.com/rantly-rb/rantly/issues/38"
+    },
+    {
+        "id": 296101443,
+        "number": 37,
+        "title": "only support Ruby 2.4 and 2.5",
+        "state": "closed",
+        "created_at": "2018-02-10T13:37:34Z",
+        "updated_at": "2018-09-01T13:06:01Z",
+        "closed_at": "2018-09-01T13:06:01Z",
+        "author": "Ana06",
+        "comments": 3,
+        "labels": [
+            "enhancement :sparkle:"
+        ],
+        "assignees": [
+            "Ana06"
+        ],
+        "locked": false,
+        "body": "It is really a pain not being able to use new Ruby methods because of supporting old Ruby versions. Our code is getting outdated because of that. I would suggest that we get rid or Ruby 2.0-2.3, keep supporting Ruby 2.4 and start supporting Ruby 2.5.",
+        "url": "https://github.com/rantly-rb/rantly/issues/37"
+    },
+    {
+        "id": 284453295,
+        "number": 31,
+        "title": "Add Rubocop",
+        "state": "closed",
+        "created_at": "2017-12-25T14:59:33Z",
+        "updated_at": "2020-03-23T23:44:48Z",
+        "closed_at": "2020-03-23T23:44:18Z",
+        "author": "Ana06",
+        "comments": 3,
+        "labels": [
+            "enhancement :sparkle:"
+        ],
+        "assignees": [
+            "Ana06"
+        ],
+        "locked": false,
+        "body": "It would be nice to follow some style rules and that they are defined somewhere. I would suggest to use Rubocop with the default configuration. 😉 ",
+        "url": "https://github.com/rantly-rb/rantly/issues/31"
+    },
+    {
+        "id": 283585071,
+        "number": 29,
+        "title": "Generate number with different distributions - Normal/Gaussian",
+        "state": "closed",
+        "created_at": "2017-12-20T14:43:34Z",
+        "updated_at": "2018-02-14T23:45:20Z",
+        "closed_at": "2018-02-14T23:45:20Z",
+        "author": "Ana06",
+        "comments": 0,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "Currently Rantly only allow to generate numbers with a uniform distribution. It is not possible to use any other distribution. And I would say this is not possible in Rantly, but also not in the [Random Ruby class](https://ruby-doc.org/core-2.4.0/Random.html) which seems to be really limited.\r\n\r\nI would suggest starting with a [normal distribution](https://en.wikipedia.org/wiki/Normal_distribution), also called Gaussian distribution. This distribution could be really useful for property testing, for example for generating random numbers that are closer to a limit case:\r\n\r\nFor example, if `17` is our limit case, the distribution would look like:\r\n\r\n![image](https://user-images.githubusercontent.com/16052290/34212419-857f87a8-e59c-11e7-83f8-c45fcdf410d5.png)\r\n\r\n",
+        "url": "https://github.com/rantly-rb/rantly/issues/29"
+    },
+    {
+        "id": 254894574,
+        "number": 28,
+        "title": "Rantly makes Rubocop sad",
+        "state": "closed",
+        "created_at": "2017-09-03T19:14:23Z",
+        "updated_at": "2017-11-02T14:16:19Z",
+        "closed_at": "2017-11-02T14:16:19Z",
+        "author": "Ana06",
+        "comments": 2,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "Using Rubocop default configuration, which I understand is the default one and the one more people use, when using the syntax documented in Rantly for rspec there are offenses in two cops: `Style/BlockDelimiters` and `Style/MultilineBlockChain`.\r\n\r\nSo, when using Rubocop together with Rantly for writing rspec tests, there are two options. Using the Rubocop suggested syntax. I don't like this option because someone else working on the project may read the code and in case of doubt he will come to Rantly documentation and using different syntax make it more difficult to understand. The second option is to disable the cops for the Rantly code or for the whole spec folder, which is also not nice.\r\n\r\nI would suggest **changing the documentation in Rantly to use Rubocop defaults**. :wink: ",
+        "url": "https://github.com/rantly-rb/rantly/issues/28"
+    },
+    {
+        "id": 222583387,
+        "number": 26,
+        "title": "Moved repository to rantly-rb organization.",
+        "state": "closed",
+        "created_at": "2017-04-19T00:33:30Z",
+        "updated_at": "2017-12-22T21:00:02Z",
+        "closed_at": "2017-12-22T21:00:02Z",
+        "author": "abargnesi",
+        "comments": 5,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "Hey everybody. Due to the group of contributors so far it is time to create a rantly github organization. The [abargnesi/rantly](https://github.com/abargnesi/rantly) repository now redirects to [rantly-rb/rantly](https://github.com/rantly-rb/rantly). Valuable work shouldn't be held up by one person when there is an active group of contributors.\r\n\r\nWould anyone like to be added to the organization as a contributor?",
+        "url": "https://github.com/rantly-rb/rantly/issues/26"
+    }
+]

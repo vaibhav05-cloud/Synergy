@@ -1,0 +1,348 @@
+[
+    {
+        "id": 4073266061,
+        "number": 176,
+        "title": "/usr/bin/make -j8 V=1 perf fails with \"aes/aes_perf: Algorithm required. Use --algo option to specify an algorithm.\" on 2.26",
+        "state": "closed",
+        "created_at": "2026-03-13T20:28:30Z",
+        "updated_at": "2026-05-22T14:34:41Z",
+        "closed_at": "2026-05-22T14:34:41Z",
+        "author": "linuxhw",
+        "comments": 0,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "Hello!\n\nNo such issue with 2.25 on the same system (RHEL-like, OpenSSL11).\n\n```\nCompleted run: aes/gcm_ossl_perf\naes/aes_perf\nAlgorithm required. Use --algo option to specify an algorithm.\nUsage: aes_perf [options]\n  -h, --help          Show this help message\n  -s, --size SIZE     Set buffer size for tests\n                      Size values can include K (KB) or M (MB) suffix\n                      Examples: --size 8K, --size 1M, --size 16384\n                      Range format: --size start:end[:step]\n                      Examples: --size 1K:8K (doubles each step)\n                                --size 1K:8K:1K (1K increments)\n                      If no size option is provided, default size (8192) is used\n  --with-openssl      Enable OpenSSL benchmarks for comparison\n  --op OPERATION      Set operation mode (encrypt/decrypt)\n                      Available operations: encrypt (enc), decrypt (dec)\n                      Default: encrypt\n  --csv               Output results in CSV format\n                      Format: algorithm,operation,buffer_size,library,throughput_MBps\n  --in-place          Use in-place operations (input and output buffers are the same)\n                      Default: out-of-place operations\n  -i, --iterations N  Set number of iterations for performance tests\n                      Default values: CBC=400000, GCM=400000, XTS=3000000\n  --alignment N       Set buffer alignment in bytes (must be power of 2 or 0)\n                      Default: 64 bytes\n                      Use 0 for default system alignment (malloc)\n                      Examples: --alignment 16, --alignment 128, --alignment 0\n  --aad-length N      Set AAD length for GCM operations (0-256 bytes)\n                      Default: 20 bytes\n  --cold              Enable cold cache testing (randomize buffer offsets)\n                      Uses large memory buffer to simulate cold cache conditions\nAlgorithm Options:\n  --algo ALGORITHM    Run specific algorithm test\n                      Available algorithms:\n                        aes-cbc-128, aes-cbc-192, aes-cbc-256\n                        aes-gcm-128, aes-gcm-256\n                        aes-xts-128, aes-xts-256\nmake: *** [aes/aes_perf.run] Error 1\nmake: *** Waiting for unfinished jobs....\n```",
+        "url": "https://github.com/intel/isa-l_crypto/issues/176"
+    },
+    {
+        "id": 3997213383,
+        "number": 175,
+        "title": "multi buffer: determine runtime parallelism",
+        "state": "open",
+        "created_at": "2026-02-26T18:53:50Z",
+        "updated_at": "2026-02-26T18:53:50Z",
+        "closed_at": null,
+        "author": "pobrn",
+        "comments": 0,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "It seems to me that the various `ISAL_*_MAX_LANES` macros specify a static upper bound for the number of parallel buffers. I am wondering if there is an easy way to query the actual runtime parallelism?\n\nSubmitting 1 byte buffers and seeing when the first one is returned seems to be working. I'm just wondering if that is indeed expected to yield the correct result in all cases, and if maybe there is a better way (e.g. a dedicated function)?",
+        "url": "https://github.com/intel/isa-l_crypto/issues/175"
+    },
+    {
+        "id": 3997200428,
+        "number": 174,
+        "title": "multi buffer: completed job return guarantees",
+        "state": "open",
+        "created_at": "2026-02-26T18:50:36Z",
+        "updated_at": "2026-02-27T17:43:21Z",
+        "closed_at": null,
+        "author": "pobrn",
+        "comments": 2,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "Given a multi buffer manager with a runtime parallelism of `n` (i.e. it can work on `n` buffers in parallel), is it guaranteed that submitting `n` jobs will return at least one? Or does one need to submit at least `n+1` jobs in the worst case (empty manager)?\n\nIt seems to me that submitting `n` jobs is enough to get a completed job back even if the manager is empty; but I would like to get confirmation that this is indeed guaranteed.",
+        "url": "https://github.com/intel/isa-l_crypto/issues/174"
+    },
+    {
+        "id": 3780190749,
+        "number": 171,
+        "title": "[CMake] Improve FetchContent compatibility: include path consistency and option naming",
+        "state": "closed",
+        "created_at": "2026-01-05T05:10:48Z",
+        "updated_at": "2026-01-08T15:23:40Z",
+        "closed_at": "2026-01-08T15:23:40Z",
+        "author": "hn-sl",
+        "comments": 4,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "## Summary\n\nI'd like to propose two improvements to make isa-l_crypto more friendly for modern CMake consumption patterns (FetchContent, add_subdirectory, package managers like Conan/vcpkg).\n\n---\n\n## Issue 1: Include Path Inconsistency\n\n**Current Behavior:**\n\n| Usage | Include Path | Usage |\n|-------|-------------|-------|\n| After `make install` | `include/isa-l_crypto/*.h` | `#include <isa-l_crypto/md5_mb.h>` |\n| Via FetchContent | `include/*.h` | `#include <md5_mb.h>` |\n\nThis inconsistency makes it difficult to write portable code that works with both consumption methods.\n\n**Proposed Solution:**\n\nRename `include/` directory to `isa-l_crypto/` and adjust CMake paths:\n\n```cmake\ntarget_include_directories(isal_crypto PUBLIC\n    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>\n    $<INSTALL_INTERFACE:include>)\n```\n\nThis is a minimal change (directory rename only, no file content changes) that enables consistent usage:\n```c\n#include <isa-l_crypto/md5_mb.h>  // Works for all consumption methods\n```\n\n---\n\n## Issue 2: Generic Option Names\n\n**Current:**\n```cmake\noption(BUILD_TESTS \"Build test applications\" ON)\noption(BUILD_PERF \"Build performance applications\" ON)\n```\n\n**Problem:** These generic names can conflict with parent project options when used via FetchContent/add_subdirectory.\n\n**Proposed:**\n```cmake\noption(ISAL_CRYPTO_BUILD_TESTS \"Build test applications\" ON)\noption(ISAL_CRYPTO_BUILD_PERF \"Build performance applications\" ON)\n```\n\n---\n\n## Offer\n\nIf these proposals are acceptable, I'm happy to submit PRs for both changes.\n\nRelated PR: #170 (CMAKE_SOURCE_DIR fix for FetchContent compatibility)",
+        "url": "https://github.com/intel/isa-l_crypto/issues/171"
+    },
+    {
+        "id": 3674161268,
+        "number": 167,
+        "title": "[Announcement] Upcoming release v2.26",
+        "state": "open",
+        "created_at": "2025-11-28T09:10:30Z",
+        "updated_at": "2025-12-15T17:49:04Z",
+        "closed_at": null,
+        "author": "pablodelara",
+        "comments": 1,
+        "labels": [
+            "announcement"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "We are working towards releasing the next version of the library (v2.26) by January next year.\nIf you have any further issues or you want to make some final contribution, consider doing it over the next few weeks.",
+        "url": "https://github.com/intel/isa-l_crypto/issues/167"
+    },
+    {
+        "id": 3663376051,
+        "number": 165,
+        "title": "gcc `-flto=auto` causes `mh_sha256/mh_sha256_test` to fail",
+        "state": "closed",
+        "created_at": "2025-11-25T14:47:22Z",
+        "updated_at": "2026-01-08T14:25:32Z",
+        "closed_at": "2025-12-15T17:44:52Z",
+        "author": "pobrn",
+        "comments": 7,
+        "labels": [
+            "sighting"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "Setting `-flto=auto` when compiling with gcc 15 causes `mh_sha256/mh_sha256_test` to fail:\n\n<details>\n\n<summary>test-suite.log</summary>\n\n```\n=============================================\n   libisal_crypto 2.25.0: ./test-suite.log\n=============================================\n\n# TOTAL: 37\n# PASS:  36\n# SKIP:  0\n# XFAIL: 0\n# FAIL:  1\n# XPASS: 0\n# ERROR: 0\n\nSystem information (uname -a): Linux 6.17.9-1-MANJARO #1 SMP PREEMPT_DYNAMIC Mon, 24 Nov 2025 13:47:26 +0000 x86_64\nDistribution information (/etc/os-release):\nNAME=\"Manjaro Linux\"\nPRETTY_NAME=\"Manjaro Linux\"\nID=manjaro\nID_LIKE=arch\nBUILD_ID=rolling\nANSI_COLOR=\"32;1;24;144;200\"\nHOME_URL=\"https://manjaro.org/\"\nDOCUMENTATION_URL=\"https://wiki.manjaro.org/\"\n\n.. contents:: :depth: 2\n\nFAIL: mh_sha256/mh_sha256_test\n==============================\n\nisal_mh_sha256_update_test:\nmh_sha256 fail test\nref:  88 f5 d1 50 4c 95 2e f8 ba  e 68 fa c7 86 fd 71 d5 8b 83 d9 a4 4c 8a 10 b9 c9 44  8 cd e0 c3 c4\ntest:   e  2 f2 30 df 10 2a 99 24  5 5d 80 b7 a5 35 77 8e 60  5 51 9d 9b b8 94 50 79 ec  f 86  1 18 2d\nfail rand1 test\nisal_mh_sha256_update_test: Fail\nFAIL mh_sha256/mh_sha256_test (exit status: 8)\n\n```\n\n</details>\n\nSteps to reproduce:\n\n1. clone master branch (5fd4cdae154755f3d93ada75ab3a8eddff5ce76e)\n2. `./autogen.sh`\n3. `CFLAGS=\"-flto=auto -O2 -g\" ./configure`\n4. `make check`\n\n<details>\n\n<summary>output</summary>\n\n```\n[...]\n$ CFLAGS=\"-flto=auto -O2 -g\" ./configure\n[...]\n\n        isa-l_crypto 2.25.0\n        =====\n\n        prefix:                 /usr\n        sysconfdir:             ${prefix}/etc\n        libdir:                 ${exec_prefix}/lib\n        includedir:             ${prefix}/include\n\n        compiler:               gcc\n        cflags:                 -flto=auto -O2 -g\n        ldflags:                -Wl,-z,noexecstack -Wl,-z,relro -Wl,-z,now \n\n        debug:                  no\n        safe_data:              yes\n        safe_param:             yes\n        FIPS mode:              no\n\n[...]\n$ make check\n[...]\nmake --no-print-directory check-TESTS\nPASS: sha1_mb/sha1_mb_test\nPASS: sha1_mb/sha1_mb_rand_test\nPASS: sha1_mb/sha1_mb_rand_update_test\nPASS: sha1_mb/sha1_mb_flush_test\nPASS: sha1_mb/sha1_mb_param_test\nPASS: mh_sha1/mh_sha1_test\nPASS: mh_sha1/mh_sha1_param_test\nPASS: md5_mb/md5_mb_test\nPASS: md5_mb/md5_mb_rand_test\nPASS: md5_mb/md5_mb_rand_update_test\nPASS: md5_mb/md5_mb_param_test\nPASS: sha256_mb/sha256_mb_test\nPASS: sha256_mb/sha256_mb_rand_test\nPASS: sha256_mb/sha256_mb_rand_update_test\nPASS: sha256_mb/sha256_mb_flush_test\nPASS: sha256_mb/sha256_mb_param_test\nPASS: sha512_mb/sha512_mb_test\nPASS: sha512_mb/sha512_mb_rand_test\nPASS: sha512_mb/sha512_mb_rand_update_test\nPASS: sha512_mb/sha512_mb_param_test\nPASS: mh_sha1_murmur3_x64_128/mh_sha1_murmur3_x64_128_param_test\nFAIL: mh_sha256/mh_sha256_test\nPASS: mh_sha256/mh_sha256_param_test\nPASS: rolling_hash/rolling_hash2_test\nPASS: rolling_hash/rolling_hash2_param_test\nPASS: sm3_mb/sm3_ref_test\nPASS: sm3_mb/sm3_mb_param_test\nPASS: misc/version_test\nPASS: aes/cbc_std_vectors_test\nPASS: aes/gcm_std_vectors_test\nPASS: aes/gcm_nt_std_vectors_test\nPASS: aes/xts_128_test\nPASS: aes/xts_256_test\nPASS: aes/xts_128_expanded_key_test\nPASS: aes/xts_256_expanded_key_test\nPASS: aes/aes_param_test\nPASS: fips/self_tests_test\n============================================================================\nTestsuite summary for libisal_crypto 2.25.0\n============================================================================\n# TOTAL: 37\n# PASS:  36\n# SKIP:  0\n# XFAIL: 0\n# FAIL:  1\n# XPASS: 0\n# ERROR: 0\n============================================================================\nSee ./test-suite.log for debugging.\nSome test(s) failed.  Please report this to https://github.com/intel/isa-l_crypto/issues,\ntogether with the test-suite.log file (gzipped) and your system\ninformation.  Thanks.\n============================================================================\n```\n\n</details>\n\n\n<details>\n<summary>lscpu</summary>\n\n```\n$ lscpu\nArchitecture:                x86_64\n  CPU op-mode(s):            32-bit, 64-bit\n  Address sizes:             39 bits physical, 48 bits virtual\n  Byte Order:                Little Endian\nCPU(s):                      12\n  On-line CPU(s) list:       0-11\nVendor ID:                   GenuineIntel\n  Model name:                Intel(R) Core(TM) i7-9750H CPU @ 2.60GHz\n    CPU family:              6\n    Model:                   158\n    Thread(s) per core:      2\n    Core(s) per socket:      6\n    Socket(s):               1\n    Stepping:                10\n    CPU(s) scaling MHz:      29%\n    CPU max MHz:             4500,0000\n    CPU min MHz:             800,0000\n    BogoMIPS:                5199,98\n    Flags:                   fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pg\n                             e mca cmov pat pse36 clflush dts acpi mmx fxsr sse \n                             sse2 ss ht tm pbe syscall nx pdpe1gb rdtscp lm cons\n                             tant_tsc art arch_perfmon pebs bts rep_good nopl xt\n                             opology nonstop_tsc cpuid aperfmperf pni pclmulqdq \n                             dtes64 monitor ds_cpl vmx est tm2 ssse3 sdbg fma cx\n                             16 xtpr pdcm pcid sse4_1 sse4_2 x2apic movbe popcnt\n                              tsc_deadline_timer aes xsave avx f16c rdrand lahf_\n                             lm abm 3dnowprefetch cpuid_fault epb pti ssbd ibrs \n                             ibpb stibp tpr_shadow flexpriority ept vpid ept_ad \n                             fsgsbase tsc_adjust bmi1 avx2 smep bmi2 erms invpci\n                             d mpx rdseed adx smap clflushopt intel_pt xsaveopt \n                             xsavec xgetbv1 xsaves dtherm ida arat pln pts hwp h\n                             wp_notify hwp_act_window hwp_epp vnmi md_clear flus\n                             h_l1d arch_capabilities\nVirtualization features:     \n  Virtualization:            VT-x\nCaches (sum of all):         \n  L1d:                       192 KiB (6 instances)\n  L1i:                       192 KiB (6 instances)\n  L2:                        1,5 MiB (6 instances)\n  L3:                        12 MiB (1 instance)\nNUMA:                        \n  NUMA node(s):              1\n  NUMA node0 CPU(s):         0-11\nVulnerabilities:             \n  Gather data sampling:      Mitigation; Microcode\n  Ghostwrite:                Not affected\n  Indirect target selection: Not affected\n  Itlb multihit:             KVM: Mitigation: VMX disabled\n  L1tf:                      Mitigation; PTE Inversion; VMX conditional cache fl\n                             ushes, SMT vulnerable\n  Mds:                       Mitigation; Clear CPU buffers; SMT vulnerable\n  Meltdown:                  Mitigation; PTI\n  Mmio stale data:           Mitigation; Clear CPU buffers; SMT vulnerable\n  Old microcode:             Not affected\n  Reg file data sampling:    Not affected\n  Retbleed:                  Mitigation; IBRS\n  Spec rstack overflow:      Not affected\n  Spec store bypass:         Mitigation; Speculative Store Bypass disabled via p\n                             rctl\n  Spectre v1:                Mitigation; usercopy/swapgs barriers and __user poi\n                             nter sanitization\n  Spectre v2:                Mitigation; IBRS; IBPB conditional; STIBP condition\n                             al; RSB filling; PBRSB-eIBRS Not affected; BHI Not \n                             affected\n  Srbds:                     Mitigation; Microcode\n  Tsa:                       Not affected\n  Tsx async abort:           Not affected\n  Vmscape:                   Mitigation; IBPB before exit to userspace\n```\n\n</detail>",
+        "url": "https://github.com/intel/isa-l_crypto/issues/165"
+    },
+    {
+        "id": 3580593111,
+        "number": 164,
+        "title": "SHA1_MB - Selection of instructions (SSE42/AVX2/AVX512) based on the number of buffers.",
+        "state": "open",
+        "created_at": "2025-11-03T05:17:41Z",
+        "updated_at": "2025-11-28T10:12:44Z",
+        "closed_at": null,
+        "author": "smrgist",
+        "comments": 1,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "I am getting very good performance when using this library for SHA1 with 16 streams, but I am not very clear on whether using this library is the best choice when dealing with a smaller number of buffers. If possible, I want to use SSE4.2/AVX2 for some low priority computations that don't need the full 16 stream width, and leave the AVX512 hardware available for higher priority workloads.\n\nThe code in [multibinary.asm](https://github.com/intel/isa-l_crypto/blob/master/include/multibinary.asm) seems to be selecting the instruction set based on the CPU capabilities. \n\nIs using AVX512 for 4 buffers an overkill/wasteful? \n\nI am thinking of running my own benchmarks for different widths and implementing my own selection logic, but the API in [sha1_mb.h](https://github.com/intel/isa-l_crypto/blob/master/include/sha1_mb.h) doesn't expose the power to choose the instruction set. What is the best approach to move forward? ",
+        "url": "https://github.com/intel/isa-l_crypto/issues/164"
+    },
+    {
+        "id": 3549673452,
+        "number": 163,
+        "title": "New 2.26 tag/release?",
+        "state": "closed",
+        "created_at": "2025-10-24T14:05:18Z",
+        "updated_at": "2026-01-23T14:45:46Z",
+        "closed_at": "2026-01-23T14:45:46Z",
+        "author": "jimharris",
+        "comments": 3,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "Hi,\n\nIs there a plan to do a v2.26 tag? Currently in SPDK we point our isa-l-crypto submodule directly to an upstream tag, to avoid maintaining our own fork. There's a fix for AVX512 support checking (0850c01cc) from January this year but it's not included in any tags yet.\n\nThanks,\n\nJim Harris\n",
+        "url": "https://github.com/intel/isa-l_crypto/issues/163"
+    },
+    {
+        "id": 3529577571,
+        "number": 162,
+        "title": "mh_sha256/mh_sha256_test fails on latest release v2.25.0 (9b7a2b842c9f4e54b8dc1c82899e5a5520c53301) on AMD Ryzen 9 5950X 16-Core Processor",
+        "state": "closed",
+        "created_at": "2025-10-19T06:45:48Z",
+        "updated_at": "2025-12-15T17:47:20Z",
+        "closed_at": "2025-12-15T17:47:20Z",
+        "author": "recanman",
+        "comments": 2,
+        "labels": [
+            "sighting"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "## Issue\n\nWhen running `make check` [on the latest release v2.25.0](https://github.com/intel/isa-l_crypto/releases/tag/v2.25.0), tests fail:\n<img width=\"725\" height=\"873\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/2f37f638-2b6e-4135-a7e2-72da4f71aa11\" />\n\n## Logs/System Info\n\n`test-suite.log`:\n```\n=============================================\n   libisal_crypto 2.25.0: ./test-suite.log\n=============================================\n\n# TOTAL: 37\n# PASS:  36\n# SKIP:  0\n# XFAIL: 0\n# FAIL:  1\n# XPASS: 0\n# ERROR: 0\n\nSystem information (uname -a): Linux 6.15.3-arch1-1 #1 SMP PREEMPT_DYNAMIC Thu, 19 Jun 2025 14:41:19 +0000 x86_64\nDistribution information (/etc/os-release):\nNAME=\"Arch Linux\"\nPRETTY_NAME=\"Arch Linux\"\nID=arch\nBUILD_ID=rolling\nANSI_COLOR=\"38;2;23;147;209\"\nHOME_URL=\"https://archlinux.org/\"\nDOCUMENTATION_URL=\"https://wiki.archlinux.org/\"\nSUPPORT_URL=\"https://bbs.archlinux.org/\"\n\n.. contents:: :depth: 2\n\nFAIL: mh_sha256/mh_sha256_test\n==============================\n\nisal_mh_sha256_update_test:\nmh_sha256 fail test\nref:  88 f5 d1 50 4c 95 2e f8 ba  e 68 fa c7 86 fd 71 d5 8b 83 d9 a4 4c 8a 10 b9 c9 44  8 cd e0 c3 c4\ntest:   e  2 f2 30 df 10 2a 99 24  5 5d 80 b7 a5 35 77 8e 60  5 51 9d 9b b8 94 50 79 ec  f 86  1 18 2d\nfail rand1 test\nisal_mh_sha256_update_test: Fail\nFAIL mh_sha256/mh_sha256_test (exit status: 8)\n```\n\n`lscpu` output:\n```\nArchitecture:                x86_64\n  CPU op-mode(s):            32-bit, 64-bit\n  Address sizes:             48 bits physical, 48 bits virtual\n  Byte Order:                Little Endian\nCPU(s):                      32\n  On-line CPU(s) list:       0-31\nVendor ID:                   AuthenticAMD\n  Model name:                AMD Ryzen 9 5950X 16-Core Processor\n    CPU family:              25\n    Model:                   33\n    Thread(s) per core:      2\n    Core(s) per socket:      16\n    Socket(s):               1\n    Stepping:                0\n    Frequency boost:         enabled\n    CPU(s) scaling MHz:      45%\n    CPU max MHz:             5086.1812\n    CPU min MHz:             582.1540\n    BogoMIPS:                6800.24\n    Flags:                   fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush mmx fxsr sse sse2 ht syscall nx \n                             mmxext fxsr_opt pdpe1gb rdtscp lm constant_tsc rep_good nopl xtopology nonstop_tsc cpuid extd_apicid aperfmperf \n                             rapl pni pclmulqdq monitor ssse3 fma cx16 sse4_1 sse4_2 movbe popcnt aes xsave avx f16c rdrand lahf_lm cmp_legac\n                             y svm extapic cr8_legacy abm sse4a misalignsse 3dnowprefetch osvw ibs skinit wdt tce topoext perfctr_core perfct\n                             r_nb bpext perfctr_llc mwaitx cpb cat_l3 cdp_l3 hw_pstate ssbd mba ibrs ibpb stibp vmmcall fsgsbase bmi1 avx2 sm\n                             ep bmi2 erms invpcid cqm rdt_a rdseed adx smap clflushopt clwb sha_ni xsaveopt xsavec xgetbv1 xsaves cqm_llc cqm\n                             _occup_llc cqm_mbm_total cqm_mbm_local user_shstk clzero irperf xsaveerptr rdpru wbnoinvd arat npt lbrv svm_lock\n                              nrip_save tsc_scale vmcb_clean flushbyasid decodeassists pausefilter pfthreshold avic v_vmsave_vmload vgif v_sp\n                             ec_ctrl umip pku ospke vaes vpclmulqdq rdpid overflow_recov succor smca fsrm debug_swap\nVirtualization features:     \n  Virtualization:            AMD-V\nCaches (sum of all):         \n  L1d:                       512 KiB (16 instances)\n  L1i:                       512 KiB (16 instances)\n  L2:                        8 MiB (16 instances)\n  L3:                        64 MiB (2 instances)\nNUMA:                        \n  NUMA node(s):              1\n  NUMA node0 CPU(s):         0-31\nVulnerabilities:             \n  Gather data sampling:      Not affected\n  Ghostwrite:                Not affected\n  Indirect target selection: Not affected\n  Itlb multihit:             Not affected\n  L1tf:                      Not affected\n  Mds:                       Not affected\n  Meltdown:                  Not affected\n  Mmio stale data:           Not affected\n  Reg file data sampling:    Not affected\n  Retbleed:                  Not affected\n  Spec rstack overflow:      Mitigation; Safe RET\n  Spec store bypass:         Mitigation; Speculative Store Bypass disabled via prctl\n  Spectre v1:                Mitigation; usercopy/swapgs barriers and __user pointer sanitization\n  Spectre v2:                Mitigation; Retpolines; IBPB conditional; IBRS_FW; STIBP always-on; RSB filling; PBRSB-eIBRS Not affected; BHI N\n                             ot affected\n  Srbds:                     Not affected\n  Tsx async abort:           Not affected\n```\n\nGCC version: `gcc (GCC) 15.1.1 20250425`\n\n## Workaround\nBuild from `master` branch (currently at [41ba5e1](https://github.com/intel/isa-l_crypto/commit/41ba5e1f8e027816bac0f6d3ba281a4b37cddc2b)).",
+        "url": "https://github.com/intel/isa-l_crypto/issues/162"
+    },
+    {
+        "id": 2821647404,
+        "number": 156,
+        "title": "Possible incorrect sha256 values for 64 bytes buffers",
+        "state": "closed",
+        "created_at": "2025-01-30T19:29:22Z",
+        "updated_at": "2025-02-03T19:37:22Z",
+        "closed_at": "2025-02-03T19:37:22Z",
+        "author": "wlou",
+        "comments": 3,
+        "labels": [
+            "sighting"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "Hi,\n\nThere seem to be a bug that leads to incorrect sha256 values for 64 bytes buffers. \n\nThe broken sequence: `submit(64 bytes, ISAL_HASH_FIRST) ` -> `submit(0 bytes, ISAL_HASH_LAST)` -> `flush()` -> `Wrong Hash`\nThe working one:  `submit(0 bytes, ISAL_HASH_FIRST)` -> `submit(64 bytes, ISAL_HASH_LAST)` -> `flush()` -> `Correct Hash`\nI'd expect the value to be the same and correct regardless of the permutation. \n\nEnvironment:\n```sh\n➜  isa-l_crypto git:(master) ✗ uname -a\nLinux DESKTOP-6315RI1 5.15.167.4-microsoft-standard-WSL2 #1 SMP Tue Nov 5 00:21:55 UTC 2024 x86_64 x86_64 x86_64 GNU/Linux\n➜  isa-l_crypto git:(master) ✗ gcc -v\nTarget: x86_64-linux-gnu\ngcc version 13.3.0 (Ubuntu 13.3.0-6ubuntu2~24.04) \n```\nMinimal reproducible example:\n- _main.c_\n    ```c\n    void\n    correct(void *buffer, uint32_t size)\n    {\n            ISAL_SHA256_HASH_CTX_MGR manager;\n            isal_sha256_ctx_mgr_init(&manager);\n    \n            ISAL_SHA256_HASH_CTX in, *out = NULL;\n            isal_hash_ctx_init(&in);\n    \n            isal_sha256_ctx_mgr_submit(&manager, &in, &out, NULL, 0, ISAL_HASH_FIRST);\n            isal_sha256_ctx_mgr_submit(&manager, &in, &out, buffer, size, ISAL_HASH_LAST);\n            isal_sha256_ctx_mgr_flush(&manager, &out);\n    \n            printf(\"Correct: \");\n            for (int i = 0; i < SHA256_DIGEST_NWORDS; i++) {\n                    printf(\"%08x\", in.job.result_digest[i]);\n            }\n            printf(\"\\n\");\n    }\n    \n    void\n    wrong(void *buffer, uint32_t size)\n    {\n            ISAL_SHA256_HASH_CTX_MGR manager;\n            isal_sha256_ctx_mgr_init(&manager);\n    \n            ISAL_SHA256_HASH_CTX in, *out = NULL;\n            isal_hash_ctx_init(&in);\n    \n            isal_sha256_ctx_mgr_submit(&manager, &in, &out, buffer, size, ISAL_HASH_FIRST);\n            isal_sha256_ctx_mgr_submit(&manager, &in, &out, NULL, 0, ISAL_HASH_LAST); // <----- seems here the padded block is not considered\n            isal_sha256_ctx_mgr_flush(&manager, &out);\n    \n            printf(\"Wrong:   \");\n            for (int i = 0; i < SHA256_DIGEST_NWORDS; i++) {\n                    printf(\"%08x\", in.job.result_digest[i]);\n            }\n            printf(\"\\n\");\n    }\n    \n    int\n    main()\n    {\n            uint8_t buffer[64];\n            memset(buffer, 'a', sizeof(buffer));\n            printf(\"Buffer:  \");\n            for (int i = 0; i < sizeof(buffer); i++) {\n                    printf(\"%c\", buffer[i]);\n            }\n            printf(\"\\n\");\n    \n            correct(buffer, sizeof(buffer));\n            wrong(buffer, sizeof(buffer));\n    }\n    ```\n- _output_\n    ```sh\n    ➜  isa-l_crypto git:(master) ✗ gcc -I$(pwd)/include -L$(pwd)/lib -o demo main.c -lisal_crypto\n    ➜  isa-l_crypto git:(master) ✗ LD_LIBRARY_PATH=$(pwd)/lib ./demo                  \n    Buffer:  aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\n    Correct: ffe054fe7ae0cb6dc65c3af9b61d5209f439851db43d0ba5997337df154668eb\n    Wrong:   df5bb81ce81e0626fb45a8944fd40f31b25e6816d6d499c1ab90492900635e66\n    ```",
+        "url": "https://github.com/intel/isa-l_crypto/issues/156"
+    },
+    {
+        "id": 2814560634,
+        "number": 154,
+        "title": "Possible mistake in the instruction syntax",
+        "state": "closed",
+        "created_at": "2025-01-28T03:51:36Z",
+        "updated_at": "2025-06-19T08:30:44Z",
+        "closed_at": "2025-06-19T08:30:44Z",
+        "author": "mtahernia",
+        "comments": 1,
+        "labels": [
+            "sighting"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "# Problem\nDespite having the modern `nasm`, autotools build fails when `AS` environment variable is set. Build using plane `make` works fine.\nI figured out that\nhttps://github.com/intel/isa-l_crypto/blob/aea7beafa75f1ceb1d2e2547f924b2c86662a044/configure.ac#L220\nis not a valid format. \n\nThe correct one is at \nhttps://github.com/intel/isa-l_crypto/blob/aea7beafa75f1ceb1d2e2547f924b2c86662a044/configure.ac#L173",
+        "url": "https://github.com/intel/isa-l_crypto/issues/154"
+    },
+    {
+        "id": 2619716994,
+        "number": 152,
+        "title": "relocation overflow in R_AARCH64_ADR_PREL_LO21",
+        "state": "closed",
+        "created_at": "2024-10-28T22:44:30Z",
+        "updated_at": "2025-11-10T10:05:36Z",
+        "closed_at": "2025-11-10T10:05:36Z",
+        "author": "tkekan",
+        "comments": 11,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "Hello All, \r\n\r\nI'm getting errors like below whenever the linking happens with isal-crypto via the spdk lib. isal-crypto is built via spdk sources \r\nAny clue / pointers on what is happening here ?\r\n\r\n```\r\nsha1_mb/aarch64/sha1_mb_x1_ce.S:103: error: relocation overflow in R_AARCH64_ADR_PREL_LO21\r\nsha1_mb/aarch64/sha1_mb_x2_ce.S:118: error: relocation overflow in R_AARCH64_ADR_PREL_LO21\r\nsha1_mb/aarch64/sha1_aarch64_x1.S:248: error: relocation overflow in R_AARCH64_ADR_PREL_LO21\r\nsha1_mb/aarch64/sha1_aarch64_x1.S:253: error: relocation overflow in R_AARCH64_ADR_PREL_LO21\r\nsha1_mb/aarch64/sha1_aarch64_x1.S:258: error: relocation overflow in R_AARCH64_ADR_PREL_LO21\r\nsha1_mb/aarch64/sha1_aarch64_x1.S:263: error: relocation overflow in R_AARCH64_ADR_PREL_LO21\r\nsha1_mb/aarch64/sha1_mb_asimd_x4.S:145: error: relocation overflow in R_AARCH64_ADR_PREL_LO21\r\nsha1_mb/aarch64/sha1_mb_asimd_x4.S:145: error: relocation overflow in R_AARCH64_ADR_PREL_LO21\r\nsha1_mb/aarch64/sha1_mb_asimd_x4.S:145: error: relocation overflow in R_AARCH64_ADR_PREL_LO21\r\nsha1_mb/aarch64/sha1_mb_asimd_x4.S:145: error: relocation overflow in R_AARCH64_ADR_PREL_LO21\r\nmh_sha1/aarch64/mh_sha1_block_asimd.S:82: error: relocation overflow in R_AARCH64_ADR_PREL_LO21\r\nmh_sha1/aarch64/mh_sha1_block_asimd.S:82: error: relocation overflow in R_AARCH64_ADR_PREL_LO21\r\nmh_sha1/aarch64/mh_sha1_block_asimd.S:82: error: relocation overflow in R_AARCH64_ADR_PREL_LO21\r\nmh_sha1/aarch64/mh_sha1_block_asimd.S:82: error: relocation overflow in R_AARCH64_ADR_PREL_LO21\r\nmh_sha1/aarch64/mh_sha1_block_ce.S:163: error: relocation overflow in R_AARCH64_ADR_PREL_LO21\r\nmh_sha1/aarch64/mh_sha1_block_ce.S:255: error: relocation overflow in R_AARCH64_ADR_PREL_LO21\r\nmh_sha1/aarch64/mh_sha1_block_ce.S:263: error: relocation overflow in R_AARCH64_ADR_PREL_LO21\r\nmh_sha1/aarch64/mh_sha1_block_ce.S:271: error: relocation overflow in R_AARCH64_ADR_PREL_LO21\r\nsha256_mb/aarch64/sha256_mb_x1_ce.S:115: error: relocation overflow in R_AARCH64_ADR_PREL_LO21\r\nsha256_mb/aarch64/sha256_mb_x2_ce.S:144: error: relocation overflow in R_AARCH64_ADR_PREL_LO21\r\nsha256_mb/aarch64/sha256_mb_x3_ce.S:166: error: relocation overflow in R_AARCH64_ADR_PREL_LO21\r\nsha256_mb/aarch64/sha256_mb_x4_ce.S:195: error: relocation overflow in R_AARCH64_ADR_PREL_LO21\r\nsha512_mb/aarch64/sha512_mb_x1_ce.S:140: error: relocation overflow in R_AARCH64_ADR_PREL_LO21\r\nsha512_mb/aarch64/sha512_mb_x2_ce.S:230: error: relocation overflow in R_AARCH64_ADR_PREL_LO21\r\nmh_sha1_murmur3_x64_128/aarch64/mh_sha1_murmur3_block_ce.S:219: error: relocation overflow in R_AARCH64_ADR_PREL_LO21\r\nmh_sha1_murmur3_x64_128/aarch64/mh_sha1_murmur3_block_ce.S:221: error: relocation overflow in R_AARCH64_ADR_PREL_LO21\r\nmh_sha1_murmur3_x64_128/aarch64/mh_sha1_murmur3_block_ce.S:223: error: relocation overflow in R_AARCH64_ADR_PREL_LO21\r\nmh_sha1_murmur3_x64_128/aarch64/mh_sha1_murmur3_block_ce.S:225: error: relocation overflow in R_AARCH64_ADR_PREL_LO21\r\nmh_sha1_murmur3_x64_128/aarch64/mh_sha1_murmur3_block_ce.S:237: error: relocation overflow in R_AARCH64_ADR_PREL_LO21\r\nmh_sha1_murmur3_x64_128/aarch64/mh_sha1_murmur3_block_ce.S:329: error: relocation overflow in R_AARCH64_ADR_PREL_LO21\r\nmh_sha1_murmur3_x64_128/aarch64/mh_sha1_murmur3_block_ce.S:337: error: relocation overflow in R_AARCH64_ADR_PREL_LO21\r\nmh_sha1_murmur3_x64_128/aarch64/mh_sha1_murmur3_block_ce.S:345: error: relocation overflow in R_AARCH64_ADR_PREL_LO21\r\n\r\n```",
+        "url": "https://github.com/intel/isa-l_crypto/issues/152"
+    },
+    {
+        "id": 2541228831,
+        "number": 151,
+        "title": "Visual C++ runtime type is not specified in Makefile.nmake, resulting in the error-prone defaults used",
+        "state": "closed",
+        "created_at": "2024-09-22T19:42:04Z",
+        "updated_at": "2025-06-19T08:31:39Z",
+        "closed_at": "2025-06-19T08:31:39Z",
+        "author": "gh-andre",
+        "comments": 3,
+        "labels": [
+            "enhancement"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "If the Visual C++ compiler is invoked without explicit `/MD` (release) or `/MDd` (debug), it will default to `/MT` and `/MTd`, respectively.  This, in turn, tells the compiler to use a static runtime (CRT), which will be duplicated in all DLLs used by the application that includes `isa_l-crpyto`. This configuration is typically selected for very specific projects that need to ship without any additional DLLs and is rarely used. What makes this configuration dangerous is that the linker will issue a warning like this:\r\n\r\n> LINK : warning LNK4098: defaultlib 'MSVCRT' conflicts with use of other libs; use /NODEFAULTLIB:library\r\n\r\n, which can be easily missed in a large project. However, the resulting code will crash whenever memory is allocated in one module and deallocated in another module. There are other problems in this configuration because each module contains its own version of the CRT.\r\n\r\nThe CRT options need to be explicitly specified to avoid this, like so (the `/MDd` and `/MD` options):\r\n```\r\n--- a/Makefile.nmake\t2024-05-28 11:28:37.000000000 -0400\r\n+++ b/Makefile.nmake\t2024-09-22 14:21:44.082055800 -0400\r\n@@ -267,8 +267,8 @@\r\n INCLUDES  = -I./ -Isha1_mb/ -Isha256_mb/ -Isha512_mb/ -Imd5_mb/ -Imh_sha1/ -Imh_sha1_murmur3_x64_128/ -Imh_sha256/ -Irolling_hash/ -Ism3_mb/ -Iaes/ -Iinclude/ -Iintel-ipsec-mb/lib\r\n # Modern asm feature level, consider upgrading nasm before decreasing feature_level\r\n FEAT_FLAGS = -DAS_FEATURE_LEVEL=10\r\n-CFLAGS_REL = -O2 -DNDEBUG /Z7 /Gy /ZH:SHA_256 /guard:cf\r\n-CFLAGS_DBG = -Od -DDEBUG /Z7\r\n+CFLAGS_REL = -O2 -DNDEBUG /Z7 /MD /Gy /ZH:SHA_256 /guard:cf\r\n+CFLAGS_DBG = -Od -DDEBUG /Z7 /MDd\r\n \r\n !if \"$(CONFIG)\" == \"DEBUG\"\r\n CFLAGS=$(CFLAGS_DBG)\r\n```",
+        "url": "https://github.com/intel/isa-l_crypto/issues/151"
+    },
+    {
+        "id": 2312754747,
+        "number": 146,
+        "title": "Assembler support announcement for x86",
+        "state": "open",
+        "created_at": "2024-05-23T12:08:51Z",
+        "updated_at": "2024-05-23T12:08:51Z",
+        "closed_at": null,
+        "author": "pablodelara",
+        "comments": 0,
+        "labels": [
+            "announcement"
+        ],
+        "assignees": [
+            "pablodelara"
+        ],
+        "locked": false,
+        "body": "The library currently supports NASM and YASM assemblers for x86. Given that YASM has not been updated in 5 years, we have decided to drop the support for it.\r\nAlso, the minimum NASM version supported will be 2.14.01, which has all the instruction set needed in the library. This version was released at the end of 2018, and versions equal or higher than 2.14.01 are available in most Linux distributions.\r\n\r\nSo in a nutshell, only NASM >= 2.14.01 assembler will be supported from the upcoming v2.25 of the library.\r\n",
+        "url": "https://github.com/intel/isa-l_crypto/issues/146"
+    },
+    {
+        "id": 2269039083,
+        "number": 144,
+        "title": "New API and deprecation notice",
+        "state": "open",
+        "created_at": "2024-04-29T13:21:56Z",
+        "updated_at": "2024-04-29T13:22:28Z",
+        "closed_at": null,
+        "author": "pablodelara",
+        "comments": 0,
+        "labels": [
+            "announcement"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "New API has been added, with parameter checking, to eventually replace the existing API.\r\nThis new API always start with \"isal_\" and returns either 0 in case of success, or an \"ISAL_CRYPTO_ERROR\" code.\r\n\r\nThe full list is shown in the following Wiki page: https://github.com/intel/isa-l_crypto/wiki/New-API-introduced-from-v2.25\r\nThe existing \"old\" API will be marked as deprecated from the next version v2.25.",
+        "url": "https://github.com/intel/isa-l_crypto/issues/144"
+    },
+    {
+        "id": 2263591016,
+        "number": 143,
+        "title": "AES-CBC in-place decryption might not generate the right plaintext",
+        "state": "closed",
+        "created_at": "2024-04-25T13:27:46Z",
+        "updated_at": "2024-04-27T06:57:16Z",
+        "closed_at": "2024-04-27T06:57:16Z",
+        "author": "pablodelara",
+        "comments": 0,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "On Intel platforms, when performing AES-CBC decryption on in-place buffers, the plaintext generated might not be correct, due to a the wrong ciphertext used to be XOR'ed with the decrypted blocks. A fix will be submitted in the next few days.",
+        "url": "https://github.com/intel/isa-l_crypto/issues/143"
+    },
+    {
+        "id": 2254964543,
+        "number": 142,
+        "title": "Upcoming release v2.25",
+        "state": "closed",
+        "created_at": "2024-04-21T08:25:53Z",
+        "updated_at": "2024-06-24T16:39:38Z",
+        "closed_at": "2024-06-24T16:39:38Z",
+        "author": "pablodelara",
+        "comments": 0,
+        "labels": [
+            "announcement"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "We are working towards the next release of ISA-L Crypto (v2.31), trending mid May 2024.\r\nWe would appreciate if ARM developers/users can test the current code, to make sure the library is bug free for such architecture.\r\nMany thanks!",
+        "url": "https://github.com/intel/isa-l_crypto/issues/142"
+    },
+    {
+        "id": 2240562835,
+        "number": 140,
+        "title": "Compilation error after pulling the latest update on previously cloned repo",
+        "state": "closed",
+        "created_at": "2024-04-12T17:09:15Z",
+        "updated_at": "2024-04-16T09:08:34Z",
+        "closed_at": "2024-04-16T09:08:34Z",
+        "author": "tkanteck",
+        "comments": 2,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "`intel-ipsec-mb` git submodule has been just added to isa-l_crypto to provide optimized AES-GCM implementation. Compilation will fail without this submodule on x86 architectures.\r\n\r\nFor new repo clone the submodule it will be updated automatically.\r\n\r\nFor already cloned repo manual action is required:\r\n- Please run ` git submodule update --init --recursive` after pulling the latest changes.",
+        "url": "https://github.com/intel/isa-l_crypto/issues/140"
+    },
+    {
+        "id": 2210920022,
+        "number": 137,
+        "title": "failure on make test ",
+        "state": "closed",
+        "created_at": "2024-03-27T14:13:01Z",
+        "updated_at": "2024-03-27T15:40:23Z",
+        "closed_at": "2024-03-27T15:40:22Z",
+        "author": "hzhuang1",
+        "comments": 3,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "aes/xts_128_rand\r\naes_xts_128 enc/dec rand test, 10 sets of 1048576 max: ...........fail rand 0, size 308598\r\nmake: *** [Makefile:6751: aes/xts_128_rand.run] Error 255",
+        "url": "https://github.com/intel/isa-l_crypto/issues/137"
+    },
+    {
+        "id": 2175756888,
+        "number": 130,
+        "title": "Failure on XTS 128 rand test, for ARM arch",
+        "state": "closed",
+        "created_at": "2024-03-08T10:40:19Z",
+        "updated_at": "2024-03-27T07:44:22Z",
+        "closed_at": "2024-03-27T07:44:22Z",
+        "author": "pablodelara",
+        "comments": 10,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "Compiling the library with the extra tests (make test), results in a failure, on ARM architecture, on AES-XTS-128\r\n\r\n./aes/xts_128_rand\r\naes_xts_128 enc/dec rand test, 10 sets of 1048576 max: ...........fail rand 0, size 308598\r\n\r\nCan anyone check?",
+        "url": "https://github.com/intel/isa-l_crypto/issues/130"
+    }
+]

@@ -1,0 +1,365 @@
+[
+    {
+        "id": 4819755356,
+        "number": 817,
+        "title": "[BUG]: Required property 'pattern_day_trader' not found in JSON",
+        "state": "closed",
+        "created_at": "2026-07-06T13:47:34Z",
+        "updated_at": "2026-07-09T12:37:02Z",
+        "closed_at": "2026-07-09T12:37:02Z",
+        "author": "brianberns",
+        "comments": 5,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "### Is there an existing issue for this?\n\n- [x] I have searched the existing issues\n\n### Current Behavior\n\nAlpaca has removed `pattern_day_trader` from the Account JSON, but `GetAccountAsync` still considers it a required property, so the call fails. See https://docs.alpaca.markets/us/changelog/2026-06-03-pdt-f3c04da for the official announcement.\n\n### Expected Behavior\n\n`GetAccountAsync` should not require properties that Alpaca has removed from the JSON.\n\n### Steps To Reproduce\n\n```markdown\nlet! account = api.TradingClient.GetAccountAsync()\n```\n\n### Environment\n\n```markdown\n- SDK Version: 7.2.0\n- OS (version, bitness): Windows 11 x64\n- .NET SDK (version): 10\n- target process .NET version/bitness: 10 x64\n```\n\n### Anything else?\n\n_No response_",
+        "url": "https://github.com/alpacahq/alpaca-trade-api-csharp/issues/817"
+    },
+    {
+        "id": 4795815441,
+        "number": 815,
+        "title": "[QUESTION]: 8.0.0 release date?",
+        "state": "open",
+        "created_at": "2026-07-02T15:18:50Z",
+        "updated_at": "2026-07-02T15:18:50Z",
+        "closed_at": null,
+        "author": "motuzko",
+        "comments": 0,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "### Is there an existing issue for this?\n\n- [x] I have searched the existing issues\n\n### What is your question?\n\nAny idea about the 8.0.0 release date? Looking for the multi-leg option API...\n\n### Anything else?\n\n_No response_",
+        "url": "https://github.com/alpacahq/alpaca-trade-api-csharp/issues/815"
+    },
+    {
+        "id": 4087169206,
+        "number": 811,
+        "title": "[QUESTION]: Close All Positions - Order Information Missing",
+        "state": "open",
+        "created_at": "2026-03-17T09:08:01Z",
+        "updated_at": "2026-03-17T09:14:09Z",
+        "closed_at": null,
+        "author": "fischja",
+        "comments": 0,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "The close all positions method `DeleteAllPositionsAsync` returns the `Symbol` and `IsSuccess` properties for each order, but does not include in the actual order body information as specified in the [API docs](https://docs.alpaca.markets/reference/deleteallopenpositions-1). Could this please be added to the return type? Thanks!",
+        "url": "https://github.com/alpacahq/alpaca-trade-api-csharp/issues/811"
+    },
+    {
+        "id": 4005378192,
+        "number": 810,
+        "title": "[QUESTION]: How can I calculate PnL for closed options positions",
+        "state": "open",
+        "created_at": "2026-02-28T20:52:54Z",
+        "updated_at": "2026-02-28T20:52:54Z",
+        "closed_at": null,
+        "author": "samballa07",
+        "comments": 0,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "### Is there an existing issue for this?\n\n- [x] I have searched the existing issues\n\n### What is your question?\n\nFor context, I am speaking from the standpoint of selling options. There doesnt seem to be an api to retrieve PnL for closed covered call positions. Answers online say we must do a calculation based on the Activities API but there is no standardized answer. It feels a bit awkward to calculate this ourselves so I was wondering if the team has explored providing this for free. My question is two-fold:\n1. Is there a standardized way we can achieve this that reliably accounts for expirations, fees, etc.. after the position is closed. \n2. Is this something we can add to the SDK API as some kind of helper utility?\n\n### Anything else?\n\n_No response_",
+        "url": "https://github.com/alpacahq/alpaca-trade-api-csharp/issues/810"
+    },
+    {
+        "id": 3764815847,
+        "number": 809,
+        "title": "[BUG]: Exception is thrown on Alpaca.Client.ListOrdersAsync(request)",
+        "state": "open",
+        "created_at": "2025-12-27T14:33:25Z",
+        "updated_at": "2026-06-01T19:34:11Z",
+        "closed_at": null,
+        "author": "KongKuchUng",
+        "comments": 1,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "### Is there an existing issue for this?\n\n- [ ] I have searched the existing issues\n\n### Current Behavior\n\nWhen I make a call to ListordersAsync(request), I get a deserialization issue on the GUID when Id is an empty string.  \n\nNewtonsoft.Json.JsonSerializationException: Error converting value \"\" to type 'System.Guid'. Path '[42].asset_id', line 1, position 37387.\n ---> System.ArgumentException: Could not cast or convert from System.String to System.Guid.\n   at Newtonsoft.Json.Utilities.ConvertUtils.EnsureTypeAssignable(Object value, Type initialType, Type targetType)\n   at Newtonsoft.Json.Utilities.ConvertUtils.ConvertOrCast(Object initialValue, CultureInfo culture, Type targetType)\n   at Newtonsoft.Json.Serialization.JsonSerializerInternalReader.EnsureType(JsonReader reader, Object value, CultureInfo culture, JsonContract contract, Type targetType)\n   --- End of inner exception stack trace ---\n   at Newtonsoft.Json.Serialization.JsonSerializerInternalReader.EnsureType(JsonReader reader, Object value, CultureInfo culture, JsonContract contract, Type targetType)\n   at Newtonsoft.Json.Serialization.JsonSerializerInternalReader.PopulateObject(Object newObject, JsonReader reader, JsonObjectContract contract, JsonProperty member, String id)\n   at Newtonsoft.Json.Serialization.JsonSerializerInternalReader.CreateObject(JsonReader reader, Type objectType, JsonContract contract, JsonProperty member, JsonContainerContract containerContract, JsonProperty containerMember, Object existingValue)\n   at Newtonsoft.Json.Serialization.JsonSerializerInternalReader.PopulateList(IList list, JsonReader reader, JsonArrayContract contract, JsonProperty containerProperty, String id)\n   at Newtonsoft.Json.Serialization.JsonSerializerInternalReader.CreateList(JsonReader reader, Type objectType, JsonContract contract, JsonProperty member, Object existingValue, String id)\n   at Newtonsoft.Json.Serialization.JsonSerializerInternalReader.Deserialize(JsonReader reader, Type objectType, Boolean checkAdditionalContent)\n   at Alpaca.Markets.HttpResponseMethodExtensions.DeserializeAsync[TApi,TJson](HttpResponseMessage response)\n   at Alpaca.Markets.HttpResponseMethodExtensions.DeserializeAsync[TApi,TJson](HttpResponseMessage response)\n   at Alpaca.Markets.HttpClientExtensions.callAndDeserializeAsync[TApi,TJson](HttpClient httpClient, HttpRequestMessage request, RateLimitHandler rateLimitHandler, CancellationToken cancellationToken)\n   at Alpaca.Markets.HttpClientExtensions.callAndDeserializeAsync[TApi,TJson](HttpClient httpClient, HttpMethod method, Uri endpointUri, RateLimitHandler rateLimitHandler, CancellationToken cancellationToken)\n   at Alpaca.Markets.AlpacaTradingClient.ListOrdersAsync(ListOrdersRequest request, CancellationToken cancellationToken)\n   at EspritTrade.Alpaca.AlpacaOrderSync.GetFilledOrdersAsync(HashSet`1 symbols, Int32 lookbackDays) \n\n### Expected Behavior\n\n_No response_\n\n### Steps To Reproduce\n\n```markdown\nYou can reproduce the issue by using the the paper trading account PA3Q4Q6CCU47 and calling the following function \n\nvar request = new ListOrdersRequest { OrderStatusFilter = OrderStatusFilter.Closed, LimitOrderNumber = 500, OrderListSorting = SortDirection.Descending };\n\nListordersAsync(request)\n```\n\n### Environment\n\n```markdown\nSDK Version: Alpaca 7.2.0\nOS: Windows 11 x64\n.NET SDK: .Net Core 10\nBuild Target: x64\n```\n\n### Anything else?\n\n_No response_",
+        "url": "https://github.com/alpacahq/alpaca-trade-api-csharp/issues/809"
+    },
+    {
+        "id": 3630347904,
+        "number": 808,
+        "title": "[FEATURE]: Add spin-off adjustment, Add possibility to include multiple adjustments.",
+        "state": "open",
+        "created_at": "2025-11-16T10:32:07Z",
+        "updated_at": "2026-01-21T11:50:09Z",
+        "closed_at": null,
+        "author": "superichmann",
+        "comments": 2,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "### Is there an existing issue for this?\n\n- [x] I have searched the existing issues\n\n### Is your feature request related to a problem? Please describe.\n\nThe historical bars endpoint has these options:\n\n- raw: no adjustments\n- split: adjust price and volume for forward and reverse stock splits\n- dividend: adjust price for cash dividends\n- **spin-off: adjust price for spin-offs**\n- all: apply all above adjustments\n\nin the .NET sdk only these options are possible: raw,split,dividend,all. \n\nAs well, the selection is represented by ENUM, which makes it possible to only select ONE adjustment. so, for example, if I want only `split` and `spin-off` adjustments it is currently impossible.\n\n\n### Describe the solution you'd like\n\nplease add also spin-off.\nWould be nice to add multiple `adjustment` strings into one api request through .NET client, as enabled by the api endpoint.",
+        "url": "https://github.com/alpacahq/alpaca-trade-api-csharp/issues/808"
+    },
+    {
+        "id": 3505228241,
+        "number": 805,
+        "title": "[BUG]: CUSIPs missing",
+        "state": "open",
+        "created_at": "2025-10-11T05:28:44Z",
+        "updated_at": "2025-10-11T23:58:05Z",
+        "closed_at": null,
+        "author": "fischja",
+        "comments": 0,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "### Is there an existing issue for this?\n\n- [x] I have searched the existing issues\n\nAs per https://docs.alpaca.markets/changelog/cusip, the API now returns asset CUSIPs in addition to symbols. These fields are currently missing, notably in the Corporate Actions and Assets API response classes. Would it be possible to add these? Cheers!",
+        "url": "https://github.com/alpacahq/alpaca-trade-api-csharp/issues/805"
+    },
+    {
+        "id": 3473333703,
+        "number": 804,
+        "title": "[BUG]: Exception on TradeUpdate",
+        "state": "open",
+        "created_at": "2025-10-01T12:20:59Z",
+        "updated_at": "2025-10-01T12:20:59Z",
+        "closed_at": null,
+        "author": "GeorgeDonald",
+        "comments": 0,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "### Is there an existing issue for this?\n\n- [x] I have searched the existing issues\n\n### Current Behavior\n\nI always get the following exception in StreamingClient OnError event when Alpaca automatically closes some of ITM options spread positions at 3:45PM and in the TradeUpdate event, it is a 2-Let order, so the AssetClass of the root order of the legs is empty and serializer throws the exception.\nIt seems like it is an exception from the SDK package. Please take a look at it.\n\nNewtonsoft.Json.JsonSerializationException: Error converting value \"\" to type 'Alpaca.Markets.AssetClass'. Path 'data.order.asset_class', line 1, position 677.\n ---> System.ArgumentException: Must specify valid information for parsing in the string.\n   at Newtonsoft.Json.Utilities.EnumUtils.ParseEnum(Type enumType, NamingStrategy namingStrategy, String value, Boolean disallowNumber)\n   at Newtonsoft.Json.Converters.StringEnumConverter.ReadJson(JsonReader reader, Type objectType, Object existingValue, JsonSerializer serializer)\n   --- End of inner exception stack trace ---\n   at Newtonsoft.Json.Converters.StringEnumConverter.ReadJson(JsonReader reader, Type objectType, Object existingValue, JsonSerializer serializer)\n   at Newtonsoft.Json.Serialization.JsonSerializerInternalReader.DeserializeConvertable(JsonConverter converter, JsonReader reader, Type objectType, Object existingValue)\n   at Newtonsoft.Json.Serialization.JsonSerializerInternalReader.PopulateObject(Object newObject, JsonReader reader, JsonObjectContract contract, JsonProperty member, String id)\n   at Newtonsoft.Json.Serialization.JsonSerializerInternalReader.CreateObject(JsonReader reader, Type objectType, JsonContract contract, JsonProperty member, JsonContainerContract containerContract, JsonProperty containerMember, Object existingValue)\n   at Newtonsoft.Json.Serialization.JsonSerializerInternalReader.CreateValueInternal(JsonReader reader, Type objectType, JsonContract contract, JsonProperty member, JsonContainerContract containerContract, JsonProperty containerMember, Object existingValue)\n   at Newtonsoft.Json.Serialization.JsonSerializerInternalReader.PopulateObject(Object newObject, JsonReader reader, JsonObjectContract contract, JsonProperty member, String id)\n   at Newtonsoft.Json.Serialization.JsonSerializerInternalReader.CreateObject(JsonReader reader, Type objectType, JsonContract contract, JsonProperty member, JsonContainerContract containerContract, JsonProperty containerMember, Object existingValue)\n   at Newtonsoft.Json.Serialization.JsonSerializerInternalReader.CreateValueInternal(JsonReader reader, Type objectType, JsonContract contract, JsonProperty member, JsonContainerContract containerContract, JsonProperty containerMember, Object existingValue)\n   at Newtonsoft.Json.Serialization.JsonSerializerInternalReader.Deserialize(JsonReader reader, Type objectType, Boolean checkAdditionalContent)\n   at Newtonsoft.Json.JsonSerializer.DeserializeInternal(JsonReader reader, Type objectType)\n   at Newtonsoft.Json.Linq.JToken.ToObject(Type objectType, JsonSerializer jsonSerializer)\n   at Newtonsoft.Json.Linq.JToken.ToObject(Type objectType)\n   at Newtonsoft.Json.Linq.JToken.ToObject[T]()\n   at Alpaca.Markets.ActionExtensions.DeserializeAndInvoke[TApi,TJson](Action`1 eventHandler, JToken eventArg)\n   at Alpaca.Markets.AlpacaStreamingClient.handleTradeUpdate(JToken token)\n   at Alpaca.Markets.StreamingClientBase`1.<>c__DisplayClass28_0`1.<HandleMessage>b__0()\n   at Alpaca.Markets.SynchronizationQueue.processingTask()\n\n\n### Expected Behavior\n\nAssetClass should not be empty or can be deserialized with empty value.\n\n### Steps To Reproduce\n\n```markdown\n1. Add StreamingClient OnError and TradeUpdate events\n2. Place options spread orders and wait for being filled\n3. Wait for options positions to be in the money and 3:45PM so system automatically close these positions with 2-Leg order\n4. OnError event will be triggered with the exception\n```\n\n### Environment\n\n```markdown\n- SDK Version: 7.2.0\n- OS (version, bitness): Windows 11\n- .NET SDK (version): 8.0\n- target process .NET version/bitness: 8.0\n```\n\n### Anything else?\n\n_No response_",
+        "url": "https://github.com/alpacahq/alpaca-trade-api-csharp/issues/804"
+    },
+    {
+        "id": 3460381273,
+        "number": 803,
+        "title": "[QUESTION]: msgpack in websockets",
+        "state": "open",
+        "created_at": "2025-09-27T14:20:40Z",
+        "updated_at": "2025-09-28T21:08:32Z",
+        "closed_at": null,
+        "author": "jordi-z80",
+        "comments": 0,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "### Is there an existing issue for this?\n\n- [x] I have searched the existing issues\n\n### What is your question?\n\nHi, according to this message:\n\nhttps://github.com/alpacahq/alpaca-trade-api-csharp/blob/ad8225f3a8e64ce7de43004d6b62b4a2f499acd5/Alpaca.Markets/Parameters/StreamingClientConfiguration.cs#L36\n\nthe current WS implementation you're using (which if I'm not wrong it's default .NET ClientWebSocket) doesn't allow to set the Content-Type. I'm trying to use msgpack myself in a websocket accessing alpaca (not through this library though), but it's been impossible.\n\nAs writing a full WS implementation for just one parameter is overkill, and asking for a ClientWebSocket fix may literally take years, have you considered requesting an alternative way to switch msgpack on? \n\nThanks.\n\n### Anything else?\n\n_No response_",
+        "url": "https://github.com/alpacahq/alpaca-trade-api-csharp/issues/803"
+    },
+    {
+        "id": 3389932766,
+        "number": 796,
+        "title": "Fix JSON deserialization issues",
+        "state": "closed",
+        "created_at": "2025-09-06T10:56:54Z",
+        "updated_at": "2025-09-08T13:35:50Z",
+        "closed_at": "2025-09-08T13:35:50Z",
+        "author": "OlegRa",
+        "comments": 0,
+        "labels": [
+            "bug",
+            "enhancement"
+        ],
+        "assignees": [
+            "OlegRa"
+        ],
+        "locked": false,
+        "body": "The underlying REST API added some new enum values in different cases, and the current JSON deserialization logic does not handle these cases:\n\n- [x] The new `margin_requirement_long` and `margin_requirement_short` fields have been added to the asset object. Go [#339](https://github.com/alpacahq/alpaca-trade-api-go/pull/339)\n- [x] The new `boats` and `overnight` values for the stock data feed enumeration. Python [#609](https://github.com/alpacahq/alpaca-py/pull/609), Go [#346](https://github.com/alpacahq/alpaca-trade-api-go/pull/346)\n- [x] The old `maintanence_margin_requirement` field of the asset object is deprecated. Go [#339](https://github.com/alpacahq/alpaca-trade-api-go/pull/339)\n- [x] The new `crypto_perp` value for the asset class enumeration. Python [#625](https://github.com/alpacahq/alpaca-py/pull/625)\n- [x] The new `ASCX` value for the asset exchange enumeration. Python [#625](https://github.com/alpacahq/alpaca-py/pull/625)\n- [x] The `base_value` of the portfolio history item can be null. Python [#597](https://github.com/alpacahq/alpaca-py/pull/597)\n",
+        "url": "https://github.com/alpacahq/alpaca-trade-api-csharp/issues/796"
+    },
+    {
+        "id": 3386844247,
+        "number": 795,
+        "title": "Update DocFX tool version",
+        "state": "closed",
+        "created_at": "2025-09-05T09:11:31Z",
+        "updated_at": "2025-09-08T13:24:46Z",
+        "closed_at": "2025-09-08T13:24:46Z",
+        "author": "OlegRa",
+        "comments": 0,
+        "labels": [],
+        "assignees": [
+            "OlegRa"
+        ],
+        "locked": false,
+        "body": "The documentation generation tool DocFX package name/version has been changed. We should update project files and the related GitHub actions.",
+        "url": "https://github.com/alpacahq/alpaca-trade-api-csharp/issues/795"
+    },
+    {
+        "id": 3386821860,
+        "number": 794,
+        "title": "Update .NET public API analyzer",
+        "state": "closed",
+        "created_at": "2025-09-05T09:03:41Z",
+        "updated_at": "2025-09-05T22:13:34Z",
+        "closed_at": "2025-09-05T22:13:34Z",
+        "author": "OlegRa",
+        "comments": 0,
+        "labels": [
+            "dependencies",
+            ".NET"
+        ],
+        "assignees": [
+            "OlegRa"
+        ],
+        "locked": false,
+        "body": "The new major version of the `Microsoft.CodeAnalysis.PublicApiAnalyzers` package is more restrictive and generates a lot of new warnings. It would be better to update it in the scope of a separate task/branch.",
+        "url": "https://github.com/alpacahq/alpaca-trade-api-csharp/issues/794"
+    },
+    {
+        "id": 3312048025,
+        "number": 793,
+        "title": "[QUESTION]: How to use the PatchAccountConfigurationAsync API",
+        "state": "closed",
+        "created_at": "2025-08-12T00:30:27Z",
+        "updated_at": "2025-09-08T14:40:57Z",
+        "closed_at": "2025-09-08T14:40:57Z",
+        "author": "Chacoon3",
+        "comments": 2,
+        "labels": [
+            "question"
+        ],
+        "assignees": [
+            "OlegRa"
+        ],
+        "locked": false,
+        "body": "### Is there an existing issue for this?\n\n- [x] I have searched the existing issues\n\n### What is your question?\n\nI saw the method signature receives a C sharp interface but do not know how to create one. Should I create a custom class that implements this interface?\n\nAlso the corresponding REST endpoint allows config of fields like dtbp_check, fractional_trading, max_margin_multiplier, etc. Could you confirm if the C# API also supports them?\n\n### Anything else?\n\n_No response_",
+        "url": "https://github.com/alpacahq/alpaca-trade-api-csharp/issues/793"
+    },
+    {
+        "id": 3011243507,
+        "number": 791,
+        "title": "[BUG]: `GetPortfolioHistoryAsync` returns wrong date for yesterday",
+        "state": "closed",
+        "created_at": "2025-04-22T14:19:06Z",
+        "updated_at": "2025-09-08T14:32:03Z",
+        "closed_at": "2025-09-08T14:32:03Z",
+        "author": "pjsteele",
+        "comments": 2,
+        "labels": [
+            "question",
+            "wontfix"
+        ],
+        "assignees": [
+            "OlegRa"
+        ],
+        "locked": false,
+        "body": "### Is there an existing issue for this?\n\n- [x] I have searched the existing issues\n\n### Current Behavior\n\nWhen calling the C# SDK, I do not get the expected date for the last item\n\n```\nPortfolioHistoryRequest request = new()\n{\n    TimeFrame = TimeFrame.Day,\n    Period = new HistoryPeriod(2, HistoryPeriodUnit.Month),\n    IntradayReporting = IntradayReporting.MarketHours,           \n};\nvar result = _clientTrade.GetPortfolioHistoryAsync(request).Result;\nvar items = result.Items.ToArray();\n\n```\n\nThe data returns yesterday's data with today's date. See last row\n```\n[\n    {\n        \"Equity\": 334223.030000,\n        \"ProfitLoss\": -9481.820000,\n        \"ProfitLossPercentage\": -0.027600,\n        \"TimestampUtc\": \"2025-04-15T00:00:00Z\"\n    },\n    {\n        \"Equity\": 334315.020000,\n        \"ProfitLoss\": 91.990000,\n        \"ProfitLossPercentage\": 0.000300,\n        \"TimestampUtc\": \"2025-04-16T00:00:00Z\"\n    },\n    {\n        \"Equity\": 320071.980000,\n        \"ProfitLoss\": -14243.040000,\n        \"ProfitLossPercentage\": -0.042600,\n        \"TimestampUtc\": \"2025-04-17T00:00:00Z\"\n    },\n    {\n        \"Equity\": 319980.500000,\n        \"ProfitLoss\": -91.480000,\n        \"ProfitLossPercentage\": -0.000300,\n        \"TimestampUtc\": \"2025-04-18T00:00:00Z\"\n    },\n    {\n        \"Equity\": 298093.960000,\n        \"ProfitLoss\": -21886.540000,\n        \"ProfitLossPercentage\": -0.068400,\n        \"TimestampUtc\": \"2025-04-22T00:00:00Z\"\n    }\n]\n```\n\n### Expected Behavior\n\n_No response_\n\n### Steps To Reproduce\n\n```markdown\n\n```\n\n### Environment\n\n```markdown\n- SDK Version: 7.2\n- OS (version, bitness): \n- .NET SDK (version): .NET 9.0\n- target process .NET version/bitness:\n```\n\n### Anything else?\n\n_No response_",
+        "url": "https://github.com/alpacahq/alpaca-trade-api-csharp/issues/791"
+    },
+    {
+        "id": 2905684703,
+        "number": 789,
+        "title": "[BUG]: .NET Maui iOS will fail to JsonAccount deserialization in AppStore",
+        "state": "closed",
+        "created_at": "2025-03-09T21:25:48Z",
+        "updated_at": "2025-03-19T09:58:53Z",
+        "closed_at": "2025-03-19T09:58:52Z",
+        "author": "logikonline",
+        "comments": 3,
+        "labels": [
+            "duplicate"
+        ],
+        "assignees": [
+            "logikonline"
+        ],
+        "locked": false,
+        "body": "### Is there an existing issue for this?\n\n- [x] I have searched the existing issues\n\n### Current Behavior\n\n`JSON parsing error: Unable to find a constructor to use for type Alpaca.Markets.JsonAccount. A class should either have a default constructor, one constructor with arguments or a constructor marked with the JsonConstructor attribute. Path 'id', line 1, position 6..`\n\nCurrently iOS builds using project will fail deserialization.  I have tried adding a trimmerroot but that causes the app to crash.\n\n`<ItemGroup>\n  <TrimmerRootAssembly Include=\"Alpaca.Markets\" />\n</ItemGroup>`\n\nThe crux of the issue appears in the helper routine.  I tried modifying it but the method of deserializing appears to fail reflection.\n\n[AlpacaSource.zip](https://github.com/user-attachments/files/19152379/AlpacaSource.zip)\n\n`<DeserializeAsync>d__1`2[[Alpaca.Markets.IAccount, Alpaca.Markets, Version=8.0.0.9, Culture=neutral, PublicKeyToken=16fb7a27ac3b9689],[Alpaca.Markets.JsonAccount, Alpaca.Markets, Version=8.0.0.9, Culture=neutral, PublicKeyToken=16fb7a27ac3b9689]].MoveNext()\n   at Alpaca.Markets.HttpClientExtensions.<callAndDeserializeAsync>d__6`2[[Alpaca.Markets.IAccount, Alpaca.Markets, Version=8.0.0.9, Culture=neutral, PublicKeyToken=16fb7a27ac3b9689],[Alpaca.Markets.JsonAccount, Alpaca.Markets, Version=8.0.0.9, Culture=neutral, PublicKeyToken=16fb7a27ac3b9689]].MoveNext()\n   at Alpaca.Markets.HttpClientExtensions.<callAndDeserializeAsync>d__4`2[[Alpaca.Markets.IAccount, Alpaca.Markets, Version=8.0.0.9, Culture=neutral, PublicKeyToken=16fb7a27ac3b9689],[Alpaca.Markets.JsonAccount, Alpaca.Markets, Version=8.0.0.9, Culture=neutral, PublicKeyToken=16fb7a27ac3b9689]].MoveNext()\n   at `\n\n\n\n### Expected Behavior\n\nShould decode into the objects.\n\n### Steps To Reproduce\n\n```markdown\nThe app works locally on the simulator and deploying on my local device but builds uploaded to the store will fail.\n```\n\n### Environment\n\n```markdown\n- SDK Version: tried 7.20 and modified 8 beta to try\n- OS (version, bitness): iOS 16.7 to 18\n- .NET SDK (version): 9\n```\n\n### Anything else?\n\n_No response_",
+        "url": "https://github.com/alpacahq/alpaca-trade-api-csharp/issues/789"
+    },
+    {
+        "id": 2901822100,
+        "number": 788,
+        "title": "[QUESTION]: POCO objects for http requests?",
+        "state": "closed",
+        "created_at": "2025-03-07T02:06:06Z",
+        "updated_at": "2025-03-15T15:08:15Z",
+        "closed_at": "2025-03-15T15:08:13Z",
+        "author": "againstao",
+        "comments": 1,
+        "labels": [
+            "question"
+        ],
+        "assignees": [
+            "againstao"
+        ],
+        "locked": false,
+        "body": "### Is there an existing issue for this?\n\n- [x] I have searched the existing issues\n\n### What is your question?\n\nIs there a collection of POCO objects for http requests for automapping?\n\n### Anything else?\n\nBeen looking within the repo to see if there are any POCO objects I could use to set up some controller methods to automatically map some requests. Specifically, I was looking for something to use with the GetHistoricalBarsAsync call and the closest thing I found was HistoricalBarsRequest, although I do plan to do about a 1 to 1 mapping of the rest of the methods. \n\nHowever, it doesn't seem to work with raw data formatted in JSON. Am I just overlooking something or is there no collection of POCOs?\n\n![Image](https://github.com/user-attachments/assets/bbd943e1-1a7d-400d-91f3-4a80dba6ed69)",
+        "url": "https://github.com/alpacahq/alpaca-trade-api-csharp/issues/788"
+    },
+    {
+        "id": 2888940686,
+        "number": 787,
+        "title": "Add a Basic authentication support",
+        "state": "closed",
+        "created_at": "2025-03-01T14:30:10Z",
+        "updated_at": "2025-09-08T17:29:12Z",
+        "closed_at": "2025-09-08T17:29:12Z",
+        "author": "OlegRa",
+        "comments": 0,
+        "labels": [
+            "enhancement"
+        ],
+        "assignees": [
+            "OlegRa"
+        ],
+        "locked": false,
+        "body": "We need support for the Basic authorization in HTTP requests for connecting Broker API.",
+        "url": "https://github.com/alpacahq/alpaca-trade-api-csharp/issues/787"
+    },
+    {
+        "id": 2886266793,
+        "number": 786,
+        "title": "[BUG]: Incorrect Order Status and Executed Quantity on Position Closure",
+        "state": "closed",
+        "created_at": "2025-02-28T05:51:35Z",
+        "updated_at": "2025-09-08T17:26:57Z",
+        "closed_at": "2025-09-08T17:26:57Z",
+        "author": "ZoubidaCharifKhalifi",
+        "comments": 1,
+        "labels": [
+            "question"
+        ],
+        "assignees": [
+            "ZoubidaCharifKhalifi"
+        ],
+        "locked": false,
+        "body": "### Is there an existing issue for this?\n\n- [x] I have searched the existing issues\n\n### Current Behavior\n\nHi,\nOn February 26, we successfully opened a long position on TSLR with a quantity of 5 at 10:28, and the API returned the status as \"**Completed**.\" However, when closing the position at 16:30, the API returned the order status as \"**Replaced**\" and set the executed quantity to 0.\nWe have encountered similar issues before and even on our trades yesterday. Could you kindly investigate this bug and keep me informed of any updates?\nMany thanks,\nZoubida\n\n### Expected Behavior\n\n_No response_\n\n### Steps To Reproduce\n\n```markdown\n\n```\n\n### Environment\n\n```markdown\n- SDK Version: \n- OS (version, bitness): \n- .NET SDK (version):\n- target process .NET version/bitness:\n```\n\n### Anything else?\n\n_No response_",
+        "url": "https://github.com/alpacahq/alpaca-trade-api-csharp/issues/786"
+    },
+    {
+        "id": 2839364261,
+        "number": 784,
+        "title": "[BUG]: Paper Environment queries return Alpaca.Markets.RestClientErrorException: Forbidden",
+        "state": "closed",
+        "created_at": "2025-02-08T00:54:29Z",
+        "updated_at": "2025-02-17T09:21:19Z",
+        "closed_at": "2025-02-17T09:21:19Z",
+        "author": "Joe-V2",
+        "comments": 1,
+        "labels": [
+            "wontfix"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Is there an existing issue for this?\n\n- [x] I have searched the existing issues\n\n### Current Behavior\n\nWhen using a trading client from a paper environment in the manner provided by standard example code, attempting to access any information provided by said client results in the titular error.\n\nIn particular, this happens when client.GetClockAsync() is called within the example.\n\nOn closer inspection, this appears to be due to an outdated URI within the package, which is not yet updated to version 2.\n\n### Expected Behavior\n\nclient.GetClockAsync() should provide a Clock interface, and not generate access permission errors when correct keys are supplied.\n\n### Steps To Reproduce\n\n1.  Create a new console application in a new, empty folder by running `dotnet new console`.\n2.  Add a reference for Alpaca .NET SDK with `dotnet add package Alpaca.Markets`.\n3.  Replace content of the auto-generated `Program.cs` file with this code snippet:\n\n```cs\nusing System;\nusing Alpaca.Markets;\nusing System.Threading.Tasks;\n\nnamespace AlpacaExample\n{\n    internal static class Program\n    {\n        private const String KEY_ID = \"\";\n\n        private const String SECRET_KEY = \"\";\n\n        public static async Task Main()\n        {\n            var client = Environments.Paper\n                .GetAlpacaTradingClient(new SecretKey(KEY_ID, SECRET_KEY));\n\n            var clock = await client.GetClockAsync();\n\n            if (clock != null)\n            {\n                Console.WriteLine(\n                    \"Timestamp: {0}, NextOpen: {1}, NextClose: {2}\",\n                    clock.TimestampUtc, clock.NextOpenUtc, clock.NextCloseUtc);\n            }\n        }\n    }\n}\n```\n\n4.  Replace the `KEY_ID` and `SECRET_KEY` values with your data from the Alpaca dashboard.\n5.  Run the sample application using `dotnet run` command and check the output. You should see information about the current market timestamp and when the market will open and close next.\n\n\n### Environment\n\n- SDK Version: 7.2.0.1\n- OS: Windows 10 22H2, 19045.3803\n- .NET SDK: 9.0.0",
+        "url": "https://github.com/alpacahq/alpaca-trade-api-csharp/issues/784"
+    },
+    {
+        "id": 2817569081,
+        "number": 781,
+        "title": "Add support for the delayed SIP feed",
+        "state": "closed",
+        "created_at": "2025-01-29T08:41:13Z",
+        "updated_at": "2025-01-29T09:10:57Z",
+        "closed_at": "2025-01-29T09:10:57Z",
+        "author": "OlegRa",
+        "comments": 0,
+        "labels": [
+            "enhancement"
+        ],
+        "assignees": [
+            "OlegRa"
+        ],
+        "locked": false,
+        "body": "The `MarketDataFeed` enumeration should be extended with the new value `DelayedSip` that should be serialized into the `delayed_sip` JSON string. This value can be used only for \"latest\" requests and streaming, but we'll not add any client-side validation for now. See the following Go reference implementation:\n\n- alpacahq/alpaca-trade-api-go#325",
+        "url": "https://github.com/alpacahq/alpaca-trade-api-csharp/issues/781"
+    }
+]

@@ -1,0 +1,226 @@
+[
+    {
+        "sha": "8963042f06af60be496b81dce7c54173ccbf7d11",
+        "author": "altaccosc",
+        "email": "97206249+altaccosc@users.noreply.github.com",
+        "date": "2026-06-30T18:15:51Z",
+        "message": "Link to original source URL in description  (#43)\n\n* Retrieve baseUrl and manga url from server\n\n* Link to original source URl in description\n\nSo it can be opened in the browser\n\n* Bump extCode\n\n* Retrieve realUrl instead of baseUrl + url\n\n* Use realUrl instead of baseUrl + url\n\n* Do not hyperlink if realUrl is null",
+        "url": "https://github.com/Suwayomi/tachiyomi-extension/commit/8963042f06af60be496b81dce7c54173ccbf7d11"
+    },
+    {
+        "sha": "9dd0bb25bd1566608d37eb57d579f00f964d34df",
+        "author": "Mitchell Syer",
+        "email": "Syer10@users.noreply.github.com",
+        "date": "2026-05-31T04:13:10Z",
+        "message": "[skip ci] Update dessant/lock-threads",
+        "url": "https://github.com/Suwayomi/tachiyomi-extension/commit/9dd0bb25bd1566608d37eb57d579f00f964d34df"
+    },
+    {
+        "sha": "6d00040ec6bf9adc638f1abf549c27de4c4f6c2c",
+        "author": "altaccosc",
+        "email": "97206249+altaccosc@users.noreply.github.com",
+        "date": "2026-05-25T15:25:57Z",
+        "message": "Added option to append source to description (#40)\n\n* Retrieve manga source displayName and id from server\n\n* Added option to append source to description\n\n* Bump extVersionCode\n\n* Handle null descriptions\n\n* Remove source id from being fetched from the server\n\n* Remove source id from being shown",
+        "url": "https://github.com/Suwayomi/tachiyomi-extension/commit/6d00040ec6bf9adc638f1abf549c27de4c4f6c2c"
+    },
+    {
+        "sha": "66d8270e670d0e1827d34fbbc716de6eaab355c3",
+        "author": "Florian Freudiger",
+        "email": "25648113+FlorianFreudiger@users.noreply.github.com",
+        "date": "2026-05-16T21:05:49Z",
+        "message": "Add custom http headers preference (#38)\n\n* Add custom http headers preference\n\n* Return early in CustomHeadersInterceptor if no headers are set",
+        "url": "https://github.com/Suwayomi/tachiyomi-extension/commit/66d8270e670d0e1827d34fbbc716de6eaab355c3"
+    },
+    {
+        "sha": "769c2d3b2412fc3ddb50d5a479f418215dedfd6d",
+        "author": "Mitchell Syer",
+        "email": "Syer10@users.noreply.github.com",
+        "date": "2025-11-17T16:43:41Z",
+        "message": "Optionally fetch data from source (#32)",
+        "url": "https://github.com/Suwayomi/tachiyomi-extension/commit/769c2d3b2412fc3ddb50d5a479f418215dedfd6d"
+    },
+    {
+        "sha": "38e7babaa730f611a74458a43f0faab12ff6120a",
+        "author": "lamaxama",
+        "email": "163385206+lamaxama@users.noreply.github.com",
+        "date": "2025-11-09T15:35:31Z",
+        "message": "fix Unresolved class issue (#30)\n\n* fix Unresolved class: class eu.kanade.tachiyomi.extension.all.tachidesk.Tachidesk$OkAuthorizationInterceptor$isGraphQLUnauthorized$Outer\n\n* bump\n\n---------\n\nCo-authored-by: lamaxama <shl68536632@gmail.com>",
+        "url": "https://github.com/Suwayomi/tachiyomi-extension/commit/38e7babaa730f611a74458a43f0faab12ff6120a"
+    },
+    {
+        "sha": "7ff74b4e9e154e2fe092f2aef997037139d6e3fc",
+        "author": "Constantin Piber",
+        "email": "59023762+cpiber@users.noreply.github.com",
+        "date": "2025-11-09T01:10:33Z",
+        "message": "Introduce a setting for tracker download deletion (#29)\n\n* Introduce a setting for tracker download deletion\n\n* Version bump",
+        "url": "https://github.com/Suwayomi/tachiyomi-extension/commit/7ff74b4e9e154e2fe092f2aef997037139d6e3fc"
+    },
+    {
+        "sha": "85fc2a5dbc3c4d50966c90870d6e782026bdded8",
+        "author": "Constantin Piber",
+        "email": "59023762+cpiber@users.noreply.github.com",
+        "date": "2025-11-07T23:28:29Z",
+        "message": "Handle GQL errors in OkHttp interceptor (#28)\n\n* Handle GQL errors in OkHttp interceptor\n\nThis allows clients that perform manual GQL requests (like the tracker)\nto take advantage of the interceptor\n\n* Remove Apollo-specific interceptor\n\n* Version bump\n\n* `.use` response to avoid leaks",
+        "url": "https://github.com/Suwayomi/tachiyomi-extension/commit/85fc2a5dbc3c4d50966c90870d6e782026bdded8"
+    },
+    {
+        "sha": "a59bf8c53a9ba554b4127d55e8bd933b0b0afeb5",
+        "author": "Constantin Piber",
+        "email": "59023762+cpiber@users.noreply.github.com",
+        "date": "2025-11-07T17:35:48Z",
+        "message": "TokenManager: Add credentials for basic auth (#27)\n\n* TokenManager: Add credentials for basic auth\n\nThis is important for the tracker, since it uses this client, and\nexpects that basic auth should work. Before this, we added the basic\nheaders to Apollo, but not to OkHttp (but we added to headersBuilder,\nwhich works for the reader, which does not use our client...)\n\n* Bump version",
+        "url": "https://github.com/Suwayomi/tachiyomi-extension/commit/a59bf8c53a9ba554b4127d55e8bd933b0b0afeb5"
+    },
+    {
+        "sha": "72564a90d9afc23a4a5ba28df1e59c20a6ce2a00",
+        "author": "Mitchell Syer",
+        "email": "Syer10@users.noreply.github.com",
+        "date": "2025-11-07T17:35:11Z",
+        "message": "[ci skip] Update PR Template for Suwayomi",
+        "url": "https://github.com/Suwayomi/tachiyomi-extension/commit/72564a90d9afc23a4a5ba28df1e59c20a6ce2a00"
+    },
+    {
+        "sha": "d41cc9586b01253096e00e8820c0ae397fc0eda4",
+        "author": "Constantin Piber",
+        "email": "59023762+cpiber@users.noreply.github.com",
+        "date": "2025-09-08T14:54:44Z",
+        "message": "Close response before re-attempt (#24)\n\n* Close response before re-attempt\n\n* Bump version",
+        "url": "https://github.com/Suwayomi/tachiyomi-extension/commit/d41cc9586b01253096e00e8820c0ae397fc0eda4"
+    },
+    {
+        "sha": "95a34ac784f5351d7856a97b9c4d8957345111b1",
+        "author": "Mitchell Syer",
+        "email": "Syer10@users.noreply.github.com",
+        "date": "2025-09-02T20:40:03Z",
+        "message": "Forgot to Bump Version",
+        "url": "https://github.com/Suwayomi/tachiyomi-extension/commit/95a34ac784f5351d7856a97b9c4d8957345111b1"
+    },
+    {
+        "sha": "39fec3f79004dbbfd1ce34d512ecd96a19f1bb8e",
+        "author": "Constantin Piber",
+        "email": "59023762+cpiber@users.noreply.github.com",
+        "date": "2025-09-02T20:22:42Z",
+        "message": "Support other Auth Modes (#23)\n\n* Add AuthMode enum and migrate old login setting\n\n* Add Preference for Auth Mode\n\n* Fix fallback for migration\n\n* Use old preferences instead of trying to migrate them\n\n* Implement SIMPLE_LOGIN auth\n\n* Use Lock\n\n* Fix Cookie Login redirect detection\n\n* Pass token to avoid duplicate logins\n\n* Implement JWT auth\n\n* Actual retry\n\nJust using kotlin's `retry` doesn't work, because it does not use the\nnew headers, it just re-runs the entire flow. So instead wrap it in a\ncustom flow, which emits all values from Apollo, or switches to a new\nrequest if necessary\n\n* Add token headers in `headersBuilder` to allow regular requests\n\n* Make Mutation results nullable\n\nOn failure, data will be null, and error set\nhttps://www.apollographql.com/docs/kotlin/essentials/errors#truth-table\n\n* Handle truncated \"Unauthorized\" message from mutations\n\n* Add OkHttp Interceptor\n\nMove TokenManager to a lazy value, since `client` is not lazy, but\n`tokenManager` must not be evaluated immediately\n\n* Update schema",
+        "url": "https://github.com/Suwayomi/tachiyomi-extension/commit/39fec3f79004dbbfd1ce34d512ecd96a19f1bb8e"
+    },
+    {
+        "sha": "356f787ae33c49e36ce6b2f6c57a10e80222a0fe",
+        "author": "Yip Rui Fung",
+        "email": "rf@yrf.me",
+        "date": "2025-07-26T22:18:02Z",
+        "message": "Add more sorting options (#20)\n\n* Add sort by latest uploaded chapter\n\n* Bump extension version\n\n* Add more sorting options\n\n1. Latest fetched chapter\n2. Recently read\n3. Unread chapter count\n4. Downloaded chapter count",
+        "url": "https://github.com/Suwayomi/tachiyomi-extension/commit/356f787ae33c49e36ce6b2f6c57a10e80222a0fe"
+    },
+    {
+        "sha": "9fcc248a5ae45d9b3258432504d8c78f259c7f7f",
+        "author": "altaccosc",
+        "email": "97206249+altaccosc@users.noreply.github.com",
+        "date": "2025-06-24T14:29:17Z",
+        "message": "Fix trailing slash in the server URL breaking the extension (#19)\n\n* Fix trailing slashes\n\n* Fix mistake made in last commit\n\n* Update some dependencies, to make it build\n\n* Bump ext version number",
+        "url": "https://github.com/Suwayomi/tachiyomi-extension/commit/9fcc248a5ae45d9b3258432504d8c78f259c7f7f"
+    },
+    {
+        "sha": "38b5eb035e0e6c6a88f64421b140d6af8b318231",
+        "author": "Mitchell Syer",
+        "email": "Syer10@users.noreply.github.com",
+        "date": "2025-04-27T18:53:34Z",
+        "message": "[skip ci] Update README.md",
+        "url": "https://github.com/Suwayomi/tachiyomi-extension/commit/38b5eb035e0e6c6a88f64421b140d6af8b318231"
+    },
+    {
+        "sha": "c047a06a9a2020fbaa51ee80a4c862aeb05c973e",
+        "author": "Mitchell Syer",
+        "email": "Syer10@users.noreply.github.com",
+        "date": "2025-04-27T18:50:52Z",
+        "message": "[skip ci] Update README.md",
+        "url": "https://github.com/Suwayomi/tachiyomi-extension/commit/c047a06a9a2020fbaa51ee80a4c862aeb05c973e"
+    },
+    {
+        "sha": "b1307e199c09ca1eb5da3b8fc751622e2b147a64",
+        "author": "Mitchell Syer",
+        "email": "Syer10@users.noreply.github.com",
+        "date": "2024-09-13T18:03:26Z",
+        "message": "Test Build",
+        "url": "https://github.com/Suwayomi/tachiyomi-extension/commit/b1307e199c09ca1eb5da3b8fc751622e2b147a64"
+    },
+    {
+        "sha": "fdd59a87c79d483d57755f82c535ff8b1d5c2cd0",
+        "author": "BrutuZ",
+        "email": "BrutuZ@users.noreply.github.com",
+        "date": "2024-09-11T02:24:18Z",
+        "message": "Enable \"Latest\" view mode (#8)\n\n* Uses the existing \"Date added\" filter",
+        "url": "https://github.com/Suwayomi/tachiyomi-extension/commit/fdd59a87c79d483d57755f82c535ff8b1d5c2cd0"
+    },
+    {
+        "sha": "c82e8ce2bd45f064c98e4a4d08e4a73718e8ce2a",
+        "author": "Mitchell Syer",
+        "email": "Syer10@users.noreply.github.com",
+        "date": "2024-06-09T03:31:10Z",
+        "message": "Fix chapter order and downloads (#5)",
+        "url": "https://github.com/Suwayomi/tachiyomi-extension/commit/c82e8ce2bd45f064c98e4a4d08e4a73718e8ce2a"
+    },
+    {
+        "sha": "2599743f6f7c4920726bb3504691c848ad420350",
+        "author": "Mitchell Syer",
+        "email": "Syer10@users.noreply.github.com",
+        "date": "2024-06-09T02:36:58Z",
+        "message": "Fix default category (#4)",
+        "url": "https://github.com/Suwayomi/tachiyomi-extension/commit/2599743f6f7c4920726bb3504691c848ad420350"
+    },
+    {
+        "sha": "5123653499261c4883bb6c1040687becff083c74",
+        "author": "Mitchell Syer",
+        "email": "Syer10@users.noreply.github.com",
+        "date": "2024-06-08T14:40:32Z",
+        "message": "GraphQL Conversion (#3)\n\n* Implement graphql library\r\n\r\n* Fix Okhttp dependency\r\n\r\n* Initial GraphQL Conversion\r\n\r\n* Full GraphQL conversion\r\n\r\n* Fix github actions\r\n\r\n* Update Jvm Target\r\n\r\n* Manually set 1.8 target\r\n\r\n* Move some filters to GraphQL",
+        "url": "https://github.com/Suwayomi/tachiyomi-extension/commit/5123653499261c4883bb6c1040687becff083c74"
+    },
+    {
+        "sha": "1e8d47ba641a2e0acd478340bd44c20833e37ba7",
+        "author": "Mitchell Syer",
+        "email": "Mitchellptbo@gmail.com",
+        "date": "2024-02-18T15:06:37Z",
+        "message": "[SKIP CI] Keep `repo.json` file when creating repo",
+        "url": "https://github.com/Suwayomi/tachiyomi-extension/commit/1e8d47ba641a2e0acd478340bd44c20833e37ba7"
+    },
+    {
+        "sha": "1550cfd1585d925bd073f9537275a703211b6c5e",
+        "author": "Mitchell Syer",
+        "email": "Mitchellptbo@gmail.com",
+        "date": "2024-01-14T02:15:59Z",
+        "message": "Add link to automatically add extension repo",
+        "url": "https://github.com/Suwayomi/tachiyomi-extension/commit/1550cfd1585d925bd073f9537275a703211b6c5e"
+    },
+    {
+        "sha": "016747c27623f1b58063d15c7919bcb239bb0a20",
+        "author": "Syer10",
+        "email": "syer10@users.noreply.github.com",
+        "date": "2024-01-13T20:15:36Z",
+        "message": "Cleanup",
+        "url": "https://github.com/Suwayomi/tachiyomi-extension/commit/016747c27623f1b58063d15c7919bcb239bb0a20"
+    },
+    {
+        "sha": "f465c2a1047dddc2d11b5c353fabafbf6530009a",
+        "author": "Syer10",
+        "email": "syer10@users.noreply.github.com",
+        "date": "2024-01-13T20:06:42Z",
+        "message": "Possibly fix link",
+        "url": "https://github.com/Suwayomi/tachiyomi-extension/commit/f465c2a1047dddc2d11b5c353fabafbf6530009a"
+    },
+    {
+        "sha": "0faea5f930374d04a7050c4f0d6edb4199d0be41",
+        "author": "Syer10",
+        "email": "syer10@users.noreply.github.com",
+        "date": "2024-01-13T20:04:43Z",
+        "message": "Add tachiyomi repo link",
+        "url": "https://github.com/Suwayomi/tachiyomi-extension/commit/0faea5f930374d04a7050c4f0d6edb4199d0be41"
+    },
+    {
+        "sha": "0332eea4d55c1df259f76c243368b965be1fa6dd",
+        "author": "Syer10",
+        "email": "syer10@users.noreply.github.com",
+        "date": "2024-01-13T19:00:00Z",
+        "message": "Initial commit",
+        "url": "https://github.com/Suwayomi/tachiyomi-extension/commit/0332eea4d55c1df259f76c243368b965be1fa6dd"
+    }
+]

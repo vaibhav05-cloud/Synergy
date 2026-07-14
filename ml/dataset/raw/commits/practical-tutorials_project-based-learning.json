@@ -1,0 +1,242 @@
+[
+    {
+        "sha": "1b7d87e54d19e82eefbed2c4a7b0a02f3c09096f",
+        "author": "github-actions[bot]",
+        "email": "41898282+github-actions[bot]@users.noreply.github.com",
+        "date": "2026-07-13T10:06:11Z",
+        "message": "chore(link-rot): update sweep state [skip ci]",
+        "url": "https://github.com/practical-tutorials/project-based-learning/commit/1b7d87e54d19e82eefbed2c4a7b0a02f3c09096f"
+    },
+    {
+        "sha": "e4dd44b3b2b0218200904f7fb1a32300d260227e",
+        "author": "github-actions[bot]",
+        "email": "41898282+github-actions[bot]@users.noreply.github.com",
+        "date": "2026-07-06T11:21:25Z",
+        "message": "chore(link-rot): update sweep state [skip ci]",
+        "url": "https://github.com/practical-tutorials/project-based-learning/commit/e4dd44b3b2b0218200904f7fb1a32300d260227e"
+    },
+    {
+        "sha": "e7b5530c4c0ead32fa5e71d05a521ecf3793fa0d",
+        "author": "Tu Tran",
+        "email": "tuvtran97@gmail.com",
+        "date": "2026-07-04T18:39:04Z",
+        "message": "Auto-fix confirmed-dead and moved links via a bot-opened PR\n\nCloses the loop on the link-rot sweep: previously it only ever produced a\nreport, leaving every fix to be typed by hand. Adds a `prune` subcommand\nthat applies only the two categories safe enough to fix without a human\njudgment call:\n- entries HARD_DEAD for 2+ consecutive weekly checks with no known redirect\n  -> remove the line (cascading to remove a now-empty series title too)\n- entries that now redirect to a different working URL -> rewrite in place\n\nSuspect links, secondary/prose links, and anything matching more than one\nentry are left untouched for the existing manual report flow.\n\nlink-rot.yml now runs `prune` after the sweep and, if anything changed,\nopens or updates a single PR from a dedicated automated/link-rot-fixes\nbranch (same upsert pattern as the report issue -- one running PR, not a\nnew one weekly). It still requires a human merge; nothing auto-lands.\n\nAlso surfaces \"moved\" links in the report for the first time -- previously\nan OK-but-redirected URL never appeared anywhere.",
+        "url": "https://github.com/practical-tutorials/project-based-learning/commit/e7b5530c4c0ead32fa5e71d05a521ecf3793fa0d"
+    },
+    {
+        "sha": "b63b36ad91a52f4cc2923bae031ebac360ab727b",
+        "author": "github-actions[bot]",
+        "email": "41898282+github-actions[bot]@users.noreply.github.com",
+        "date": "2026-07-04T08:01:34Z",
+        "message": "chore(link-rot): update sweep state [skip ci]",
+        "url": "https://github.com/practical-tutorials/project-based-learning/commit/b63b36ad91a52f4cc2923bae031ebac360ab727b"
+    },
+    {
+        "sha": "30badb256c62560fbc4786c30771e596f21b0f65",
+        "author": "Tu Tran",
+        "email": "tuvtran97@gmail.com",
+        "date": "2026-07-04T07:31:29Z",
+        "message": "Rebuild maintenance automation on GitHub Actions (README-as-data CI)\n\nThe old automation was entirely dead: .travis.yml ran awesome_bot on Travis\nOSS (shut down), and .github/stale.yml targeted a defunct probot integration.\nResult: dozens of dead links, years-old broken-link issues, and duplicate PRs\nfixing the same link.\n\nAdds scripts/check_readme.py, a stdlib-only Python validator that parses\nREADME.md as structured data (grammar shared by every subcommand so lint/PR\nchecks/the weekly sweep can't drift apart):\n- `lint`: whole-file grammar, duplicate-URL, and Table of Contents checks\n- `check-diff`: flags only PR-added lines (shorteners, new http://, malformed\n  entries) so pre-existing link rot can't fail unrelated PRs\n- `check-links`: liveness-checks URLs with a 2-strike state machine, treating\n  bot-hostile domains (Medium, Reddit, etc.) as BLOCKED rather than dead\n- `report`: renders the weekly link-rot issue body\n\nWires this up via three workflows: validate-pr.yml (fork-safe PR gate),\nlink-rot.yml (weekly sweep, maintains one consolidated issue instead of\nscattered reports), and stale-prs.yml (PRs only -- issues are explicitly\nexempted, unlike the old probot config that buried broken-link reports).\n\nAlso replaces the generic issue/PR templates with ones that match what the\nvalidator actually enforces, and fixes CONTRIBUTING.md's `*`-bullet examples\n(the real source of format drift) to `-`.",
+        "url": "https://github.com/practical-tutorials/project-based-learning/commit/30badb256c62560fbc4786c30771e596f21b0f65"
+    },
+    {
+        "sha": "f55fe25bf6a579716f161e600f11aea7bdebcd35",
+        "author": "Tu Tran",
+        "email": "tuvtran97@gmail.com",
+        "date": "2026-07-04T06:07:19Z",
+        "message": "Add Networking from Scratch to C/C++ Network programming (#864)\n\nApplied manually from PR #864 using the repo's plain [Title](link)\nformat.\n\nCo-authored-by: Tanay10x <Tanay10x@users.noreply.github.com>\nCo-Authored-By: Claude Fable 5 <noreply@anthropic.com>",
+        "url": "https://github.com/practical-tutorials/project-based-learning/commit/f55fe25bf6a579716f161e600f11aea7bdebcd35"
+    },
+    {
+        "sha": "25df28924d2d2725e51573336745559b57372a41",
+        "author": "Tu Tran",
+        "email": "tuvtran97@gmail.com",
+        "date": "2026-07-04T06:07:03Z",
+        "message": "Remove dead 'Write a NoSQL Database in Python' entry (#850)\n\njeffknupp.com has been hijacked and now redirects to an unrelated\nsite. Fixes #721; applied manually from PR #850, whose branch had\nconverted the whole file to CRLF.\n\nCo-authored-by: fengfeng-zi <fengfeng-zi@users.noreply.github.com>\nCo-Authored-By: Claude Fable 5 <noreply@anthropic.com>",
+        "url": "https://github.com/practical-tutorials/project-based-learning/commit/25df28924d2d2725e51573336745559b57372a41"
+    },
+    {
+        "sha": "25546408a03842a499216258e5a7ebf9b379c0d9",
+        "author": "Tu Tran",
+        "email": "tuvtran97@gmail.com",
+        "date": "2026-07-04T06:06:38Z",
+        "message": "Remove two dead Medium links from JavaScript section (#849)\n\nBoth articles now return 410 Gone. Reported in #836; fix from PR #849\napplied without its unrelated resource-tag changes.\n\nCo-authored-by: fengfeng-zi <fengfeng-zi@users.noreply.github.com>\nCo-Authored-By: Claude Fable 5 <noreply@anthropic.com>",
+        "url": "https://github.com/practical-tutorials/project-based-learning/commit/25546408a03842a499216258e5a7ebf9b379c0d9"
+    },
+    {
+        "sha": "584915277c44de1ecc2212f9500aa133365be852",
+        "author": "Tu Tran",
+        "email": "tuvtran97@gmail.com",
+        "date": "2026-07-04T05:59:02Z",
+        "message": "Remove outdated Google URL Shortener exception from guidelines (#897)\n\nGoogle URL Shortener was discontinued in 2019. Applied manually from\nPR #897, which conflicted with the just-merged #844.\n\nCo-authored-by: chenlichao <chenlichao@users.noreply.github.com>\nCo-Authored-By: Claude Fable 5 <noreply@anthropic.com>",
+        "url": "https://github.com/practical-tutorials/project-based-learning/commit/584915277c44de1ecc2212f9500aa133365be852"
+    },
+    {
+        "sha": "41f97d1c586abffde8ad0d50b0972c0c37192c5a",
+        "author": "Tu Tran",
+        "email": "tuvtran97@gmail.com",
+        "date": "2026-07-04T05:58:39Z",
+        "message": "Add Streamlit 'Create an app' official tutorial (#853)\n\nApplied manually from PR #853, placed under Python > Web Applications\ninstead of a new bottom-of-file section.\n\nCo-authored-by: ShristiAnjana-bit <ShristiAnjana-bit@users.noreply.github.com>\nCo-Authored-By: Claude Fable 5 <noreply@anthropic.com>",
+        "url": "https://github.com/practical-tutorials/project-based-learning/commit/41f97d1c586abffde8ad0d50b0972c0c37192c5a"
+    },
+    {
+        "sha": "949f8e7a5bd197558fa0c275e5cb2464f1ca7c8a",
+        "author": "Tu Tran",
+        "email": "tuvtran97@gmail.com",
+        "date": "2026-07-04T05:58:24Z",
+        "message": "Add freeCodeCamp FastAPI course to Python Web Applications (#834)\n\nApplied manually from PR #834 with the (video) marker added.\n\nCo-authored-by: hackerccreative <hackerccreative@users.noreply.github.com>\nCo-Authored-By: Claude Fable 5 <noreply@anthropic.com>",
+        "url": "https://github.com/practical-tutorials/project-based-learning/commit/949f8e7a5bd197558fa0c275e5cb2464f1ca7c8a"
+    },
+    {
+        "sha": "23cd08370b76677e038b50cfc04608e89318eca3",
+        "author": "Tu Tran",
+        "email": "tuvtran97@gmail.com",
+        "date": "2026-07-04T05:58:12Z",
+        "message": "Add Swift.org SwiftUI tutorial and Stanford CS193p to Swift section (#880)\n\nApplied manually from PR #880 (diff contained a stray whitespace change).\n\nCo-authored-by: Licoler <Licoler@users.noreply.github.com>\nCo-Authored-By: Claude Fable 5 <noreply@anthropic.com>",
+        "url": "https://github.com/practical-tutorials/project-based-learning/commit/23cd08370b76677e038b50cfc04608e89318eca3"
+    },
+    {
+        "sha": "9859dbe11bf9cb86fcaca0192e849f988d4fd9cc",
+        "author": "Tu Tran",
+        "email": "tuvtran97@gmail.com",
+        "date": "2026-07-04T05:57:58Z",
+        "message": "Update Erlang chat app tutorial link to its new location\n\nThe tutorial moved to a new URL scheme on the same site; the old\n.html URL now returns 404. Reported in #872, #846, #896.\n\nCo-Authored-By: Claude Fable 5 <noreply@anthropic.com>",
+        "url": "https://github.com/practical-tutorials/project-based-learning/commit/9859dbe11bf9cb86fcaca0192e849f988d4fd9cc"
+    },
+    {
+        "sha": "d6224ba27be116550fd94208a74d01a35980607f",
+        "author": "Sushanth012",
+        "email": "146400678+Sushanth012@users.noreply.github.com",
+        "date": "2026-07-04T05:56:53Z",
+        "message": "Add Next.js App Router tutorial (#898)",
+        "url": "https://github.com/practical-tutorials/project-based-learning/commit/d6224ba27be116550fd94208a74d01a35980607f"
+    },
+    {
+        "sha": "3b5b484fdcdc7876f13f981d8e781d731f9c94ba",
+        "author": "aoright",
+        "email": "102943475+aoright@users.noreply.github.com",
+        "date": "2026-07-04T05:56:47Z",
+        "message": "docs: fix SSYGEN blog issues redirect and too-many-lists link (#893)\n\nCo-authored-by: 辰言 <oncwnuIWp30GguOyJ615Fqj8H-yc@git.weixin.qq.com>",
+        "url": "https://github.com/practical-tutorials/project-based-learning/commit/3b5b484fdcdc7876f13f981d8e781d731f9c94ba"
+    },
+    {
+        "sha": "107b7725e6c13756df7f6e834808b8d481465563",
+        "author": "Syed Osama Ali Shah",
+        "email": "86572800+Osamaali313@users.noreply.github.com",
+        "date": "2026-07-04T05:56:41Z",
+        "message": "Fix dead \"Build a Reddit Bot\" link (#881)\n\nThe pythonforengineers.com \"Build a Reddit Bot\" tutorial moved; the old URL\n(http://pythonforengineers.com/build-a-reddit-bot-part-1/) now returns 404.\nPoint the entry to the same article at its current location\n(https://www.pythonforengineers.com/blog/build-a-reddit-bot-part-1/).",
+        "url": "https://github.com/practical-tutorials/project-based-learning/commit/107b7725e6c13756df7f6e834808b8d481465563"
+    },
+    {
+        "sha": "2e8619210a1e872c996f22e03b614d0fa8ca8902",
+        "author": "Tianyu Hu",
+        "email": "1002770724@qq.com",
+        "date": "2026-07-04T05:56:35Z",
+        "message": "Update Write You A Scheme link (#876)",
+        "url": "https://github.com/practical-tutorials/project-based-learning/commit/2e8619210a1e872c996f22e03b614d0fa8ca8902"
+    },
+    {
+        "sha": "aa262334e9c86a8c5baf63cc9b3d9c17cef939f6",
+        "author": "Tianyu Hu",
+        "email": "1002770724@qq.com",
+        "date": "2026-07-04T05:56:30Z",
+        "message": "fix: remove dead Scotch tutorial links (#875)",
+        "url": "https://github.com/practical-tutorials/project-based-learning/commit/aa262334e9c86a8c5baf63cc9b3d9c17cef939f6"
+    },
+    {
+        "sha": "153b83725b7a6e3bb0a357e0898d4600b862ab34",
+        "author": "morning-verlu",
+        "email": "wurslu@gmail.com",
+        "date": "2026-07-04T05:56:24Z",
+        "message": "Fix Go websocket tutorial link (#874)\n\nCo-authored-by: morning-verlu <258725120+morning-verlu@users.noreply.github.com>",
+        "url": "https://github.com/practical-tutorials/project-based-learning/commit/153b83725b7a6e3bb0a357e0898d4600b862ab34"
+    },
+    {
+        "sha": "7d6c64e13b8585955069b1dc7113bb68790d2b6d",
+        "author": "morning-verlu",
+        "email": "wurslu@gmail.com",
+        "date": "2026-07-04T05:56:18Z",
+        "message": "Fix Rust linked lists resource link (#873)\n\nCo-authored-by: morning-verlu <258725120+morning-verlu@users.noreply.github.com>",
+        "url": "https://github.com/practical-tutorials/project-based-learning/commit/7d6c64e13b8585955069b1dc7113bb68790d2b6d"
+    },
+    {
+        "sha": "babd693a9b9ee0125aa18dfa0a8b596990db01eb",
+        "author": "fengfeng-zi",
+        "email": "xuf718@163.com",
+        "date": "2026-07-04T05:56:12Z",
+        "message": "docs: fix Multiple Object Tracker typo (#855)\n\nCo-authored-by: fengfeng-zi <269969865+fengfeng-zi@users.noreply.github.com>",
+        "url": "https://github.com/practical-tutorials/project-based-learning/commit/babd693a9b9ee0125aa18dfa0a8b596990db01eb"
+    },
+    {
+        "sha": "63bc19e98c911bd9841acc1ee068aeb31bada914",
+        "author": "fengfeng-zi",
+        "email": "xuf718@163.com",
+        "date": "2026-07-04T05:56:06Z",
+        "message": "docs: fix TF-IDF typo in deep learning section (#854)\n\nCo-authored-by: fengfeng-zi <269969865+fengfeng-zi@users.noreply.github.com>",
+        "url": "https://github.com/practical-tutorials/project-based-learning/commit/63bc19e98c911bd9841acc1ee068aeb31bada914"
+    },
+    {
+        "sha": "f1b8710ca99cce9408807d5fe0ea9da266c93d76",
+        "author": "Mariam M. S",
+        "email": "sannimariammorenikeji@gmail.com",
+        "date": "2026-07-04T05:56:00Z",
+        "message": "Fix formatting and grammar in CONTRIBUTING.md (#844)\n\nCorrected the following phrases:                                                                     1. \"a new entry in table of contents\"                                                               2. \"Links must be pointing straight to the tutorials\"                                                                                              3. \"Pull request for each of the tutorial\"",
+        "url": "https://github.com/practical-tutorials/project-based-learning/commit/f1b8710ca99cce9408807d5fe0ea9da266c93d76"
+    },
+    {
+        "sha": "ea0bfa2f724923b4db2021ab12c4599c1065205c",
+        "author": "puneetrwtz",
+        "email": "puneetrwtz100@gmail.com",
+        "date": "2026-07-04T05:55:55Z",
+        "message": "Update README.md (#843)",
+        "url": "https://github.com/practical-tutorials/project-based-learning/commit/ea0bfa2f724923b4db2021ab12c4599c1065205c"
+    },
+    {
+        "sha": "58d93baa120c51dadede311914784c47d0c5ddea",
+        "author": "Allwell",
+        "email": "164483433+Allwell987@users.noreply.github.com",
+        "date": "2026-07-04T05:55:49Z",
+        "message": "Update README.md (#814)\n\nFix typo: Permissinos → Permissions in PHP section",
+        "url": "https://github.com/practical-tutorials/project-based-learning/commit/58d93baa120c51dadede311914784c47d0c5ddea"
+    },
+    {
+        "sha": "243d33995fc5a616010fced6c9e131090e8e1a39",
+        "author": "Axel Baudot",
+        "email": "74733630+axelbdt@users.noreply.github.com",
+        "date": "2023-03-21T10:24:20Z",
+        "message": "Add \"Write a game boy emulator in Ocaml\" (#419)",
+        "url": "https://github.com/practical-tutorials/project-based-learning/commit/243d33995fc5a616010fced6c9e131090e8e1a39"
+    },
+    {
+        "sha": "4277a1088f06187c8e5ef4962181547d3228df6b",
+        "author": "Cheese",
+        "email": "seojeee@gmail.com",
+        "date": "2023-03-20T22:43:14Z",
+        "message": "Add a new c/c++ project (#403)",
+        "url": "https://github.com/practical-tutorials/project-based-learning/commit/4277a1088f06187c8e5ef4962181547d3228df6b"
+    },
+    {
+        "sha": "6d753e538e14b2332b3c98222b2d82dce88ae9c7",
+        "author": "Rory Donald",
+        "email": "84747220+rdonald@users.noreply.github.com",
+        "date": "2023-03-20T22:41:38Z",
+        "message": "Added Flutter Netflix Clone Tutorial (#408)\n\nCo-authored-by: Rory Donald <37783072+Donalror@users.noreply.github.com>",
+        "url": "https://github.com/practical-tutorials/project-based-learning/commit/6d753e538e14b2332b3c98222b2d82dce88ae9c7"
+    },
+    {
+        "sha": "74363c578424a120b23544b0ad1dc462dc0bffd8",
+        "author": "Rivaan Ranawat",
+        "email": "namanrivaan@gmail.com",
+        "date": "2022-08-28T05:18:14Z",
+        "message": "Adding Flutter Tutorials (#364)\n\n* adding flutter tutorials\r\n\r\n* removing ui tutorials, adding new project tutorials",
+        "url": "https://github.com/practical-tutorials/project-based-learning/commit/74363c578424a120b23544b0ad1dc462dc0bffd8"
+    },
+    {
+        "sha": "ba4c3c6c627e014698f67db4ce340cff709fba85",
+        "author": "Alireza Ghorbani",
+        "email": "erfanghorbanee@gmail.com",
+        "date": "2022-08-25T16:00:54Z",
+        "message": "Added Realtime Chat app tutorial for django (#371)\n\nBuilding Realtime Chat application with Vue, django-notifs, RabbitMQ and uWSGI.",
+        "url": "https://github.com/practical-tutorials/project-based-learning/commit/ba4c3c6c627e014698f67db4ce340cff709fba85"
+    }
+]

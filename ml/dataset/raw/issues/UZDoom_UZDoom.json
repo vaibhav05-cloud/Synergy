@@ -1,0 +1,363 @@
+[
+    {
+        "id": 4861846516,
+        "number": 1587,
+        "title": "TRAKINFO support",
+        "state": "open",
+        "created_at": "2026-07-11T10:35:27Z",
+        "updated_at": "2026-07-11T15:50:35Z",
+        "closed_at": null,
+        "author": "cyon-e",
+        "comments": 0,
+        "labels": [
+            "enhancement",
+            "compat"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Game\n\nAll\n\n### Problem Description\n\nThe 2024 Release added a TRAKINFO Lump to select between 3 Soundtracks.\nThe usual midi, the the recorded Roland MIDI and Andrew Hulshults IDKFA Remix\n\n\n### Feature Description\n\nIt allows the user to switch music tracks defined in the TRAKINFO Lump\n\n### Additional Media\n\nusefull comments from https://github.com/fabiangreffrath/woof/pull/1982 :\n---\n> So, TRAKINFO is a simple assignment from SHA1 of the original MIDI lump to a new music remix lump name?\n\nYes, it looks like this:\n```\n\t//D_INTRO\n\t\"0c0acce45130bab935d2f1e85664b29a3c724fcd\" : \n\t{\n\t\t\"MIDI\" : \"O_INTRO\",\n\t\t\"Remixed\" : \"H_INTRO\"\n\t},\n```\n`O_*` files are Roland SC-55 recodings, `H_*` files are excellent Andrew Hulshult [remix](https://www.youtube.com/watch?v=B4ytPQuLGzs).\n\n> Is there a spec somewhere?\n\nNo. TRAKINFO has comments and in a different format compared to the ID24 spec.\n\n---\n\n> @ceski-1 Remix from KEX port is very loud compared to MIDI music. Should we do something about it?\n\nHi, sorry to barge in, just throwing my two cents in. Since Update 1 dropped for KEX Doom a `volume` property that does exactly what it implies, and was used to increase the volume of the relatively quiet SC55 recordings of the OST. They can be seen on the second `TRAKINFO` lump in the KEX `extras.wad`\n\n```JSONC\n// O_E1M1\n\"b292d36331c81e1f2ee4d7bd2938e7fedb39f172\" : \n{\n\t\"volume\" : \"2.0\"\n},\n```",
+        "url": "https://github.com/UZDoom/UZDoom/issues/1587"
+    },
+    {
+        "id": 4857527299,
+        "number": 1583,
+        "title": "Plane_Align line special doesn't work with ACS?",
+        "state": "closed",
+        "created_at": "2026-07-10T18:08:25Z",
+        "updated_at": "2026-07-10T21:14:23Z",
+        "closed_at": "2026-07-10T21:14:23Z",
+        "author": "gavgav11",
+        "comments": 3,
+        "labels": [
+            "bug/bugfix"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### UZDoom Version\n\n5.0.0-pre-386-ga9fd9f9db7-m\n\n### Game\n\nDoom\n\n### Operating System\n\nLinux x86_64\n\n### OS Version\n\n_No response_\n\n### Hardware\n\nRyzen 5600G\n\n### Duplicate Confirmation\n\n- [x] I have searched and not found a similar issue.\n\n### Bug Description\n\nI'm trying to create a dynamic slope.\nI've tried setting Plane_Align in editor and then changing the floor value with Floor_RaiseByValue. The result is floor is raised normally without creating a slope.\nI also tried applying Plane_Align special after changing the floor height but it didn't seem to have any effect, does this look correct?\nSetLineSpecial(6, 181, 1, 0, 0, 0, 0);\n\n\n### Replication\n\n_No response_\n\n### Configuration\n\n```ini\n\n```\n\n### Log\n\n_No response_",
+        "url": "https://github.com/UZDoom/UZDoom/issues/1583"
+    },
+    {
+        "id": 4852445761,
+        "number": 1582,
+        "title": "Brutal doom, project brutality, brutal pack",
+        "state": "closed",
+        "created_at": "2026-07-10T05:55:02Z",
+        "updated_at": "2026-07-10T21:15:30Z",
+        "closed_at": "2026-07-10T21:15:30Z",
+        "author": "chriztheanvill",
+        "comments": 1,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "Hi.\n\nI don't know if this belongs here, but sometimes if I launch project brutality or brutal pack, sometimes just not work fine, but brutal doom always works excellent.\n\nWhen I say sometimes, if I reset the pc ( fedora kinoite ):\n\n- then run uzdoom (current release or preview), or works awesome or not.\n- after reset, no pkgs are launched, no scripts, only EasyEffects (I tried with out EasyEffects and same thing)\n\nI tried launching without any effects, wads, only project brutality or brutal pack.\n\nIssues:\n\n- low fps\n- consumes too much cpu\n\nmy pc:\n\nOperating System: Fedora Linux 44\nKDE Plasma Version: 6.7.2\nKDE Frameworks Version: 6.27.0\nQt Version: 6.11.1\nKernel Version: 7.1.3-200.fc44.x86_64 (64-bit)\nGraphics Platform: Wayland\nProcessors: 16 × AMD Ryzen 7 5700G with Radeon Graphics\nMemory: 32 GiB of RAM (27.3 GiB usable)\nGraphics Processor 1: AMD Radeon RX 6600\nGraphics Processor 2: AMD Radeon Graphics\nManufacturer: Micro-Star International Co., Ltd.\nProduct Name: MS-7C96\nSystem Version: 1.0\n\nA log:\n\n[log](https://gist.github.com/chriztheanvill/021dbdfb8ab2db04274a271a45fef376)",
+        "url": "https://github.com/UZDoom/UZDoom/issues/1582"
+    },
+    {
+        "id": 4849482670,
+        "number": 1580,
+        "title": "Flat bleed isn't taking into consideration display height differences due to special 242",
+        "state": "open",
+        "created_at": "2026-07-09T19:59:47Z",
+        "updated_at": "2026-07-09T20:01:28Z",
+        "closed_at": null,
+        "author": "SirBofu",
+        "comments": 0,
+        "labels": [
+            "bug/bugfix"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### UZDoom Version\n\nUZDoom 4.14.3\n\n### Game\n\nDoom\n\n### Operating System\n\nWindows 11\n\n### OS Version\n\n_No response_\n\n### Hardware\n\n_No response_\n\n### Duplicate Confirmation\n\n- [x] I have searched and not found a similar issue.\n\n### Bug Description\n\nThere is a display issue **(hardware renderer only)** when a map relies upon a sector bleed effect on a sector whose floor is being raised by Boom linedef special 242. This can be seen in MAP55 of [the latest Dominus Diabolicus build](https://www.dropbox.com/scl/fi/mcuuqttc86f1zodegdkk4/DominusD2-July9.zip?rlkey=slwc17fy5bscvmgmlz9fg9dv1&st=pvdv9eti&dl=0) in 1292, -440:\n\n<img width=\"1689\" height=\"1004\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/3f3173ca-5452-46e3-ac5d-f6b1dcc38b22\" />\n\nThe main nukage pit, sectors 14 and 391, has a 242 special setting its height from -32 to -24. Sectors 84 and 389 are set at height -152 within the nukage pit with a different floor texture and are intended to rise up out of the nukage when the player crosses a certain linedef via a trigger. In DSDA-Doom and other ports, the bleed effect from the surrounding sectors, due to the absence of the expected back sidedef, causes nukage to be drawn at the height of -32 for these sectors until they rise out of the nukage; however, in UZDoom, the nukage is drawn at height -32, with the void drawn where the indentation occurs.\n\n### Replication\n\n1. Downlooad the attached .WAD (Doom2, MAP01): \n\n[UZDoom242Bug.zip](https://github.com/user-attachments/files/29864220/UZDoom242Bug.zip)\n\n2. Start a new game loading the wad in another port, such as DSDA-Doom or Woof!\n3. Observe that in the pool, the surface of the pool is constant until the switch is raised and a pillar rises out of it.\n4. Load the WAD in UZDoom.\n5. Observe that in the spot where the pillar is, there is a black hole, and a slightly smaller patch of water can be seen at the edges of said hole.\n\n### Configuration\n\n```ini\n\n```\n\n### Log\n\n_No response_",
+        "url": "https://github.com/UZDoom/UZDoom/issues/1580"
+    },
+    {
+        "id": 4847047620,
+        "number": 1577,
+        "title": "Display \"autorun enabled\" instead of \"cl_run = true\" when switching?",
+        "state": "open",
+        "created_at": "2026-07-09T14:20:49Z",
+        "updated_at": "2026-07-14T03:52:57Z",
+        "closed_at": null,
+        "author": "SeriousMOod",
+        "comments": 2,
+        "labels": [
+            "enhancement"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Game\n\nAll\n\n### Problem Description\n\n_No response_\n\n### Feature Description\n\nI know it's a small thing, but is it possible to display something like \"autorun on/off\" instead of the current message? Purely for aesthetic reasons.\n\n### Additional Media\n\n_No response_",
+        "url": "https://github.com/UZDoom/UZDoom/issues/1577"
+    },
+    {
+        "id": 4844722930,
+        "number": 1576,
+        "title": "Add an option to enabled the old-school RED RED pain flash for Doom games",
+        "state": "open",
+        "created_at": "2026-07-09T08:47:30Z",
+        "updated_at": "2026-07-09T21:21:56Z",
+        "closed_at": null,
+        "author": "Lemono-o",
+        "comments": 0,
+        "labels": [
+            "enhancement",
+            "very-low-priority"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Game\n\nDoom\n\n### Problem Description\n\nBring back the blinding redness! please :)\n\n### Feature Description\n\nY'know when you eat a rocket to the face you get a beautiful shade of painful red for like 5ish solid seconds? I miss that blinding red screen when taking mega damage, it really sold the pain. But in more modern ports like UzDoom here the redness is capped, so you can actually SEE. That's sacrilegious if you ask me, bring back the legacy red screen effect! I'm sure I won't regret asking for this later.. The blinding red screen effect is too funny and panic-educing to be forgotten to time! The default UzDoom effect should probably be kept as the default, blood flashbangs are probably an acquired taste\n\nTL:DR, Add an option to make the red pain effect more true to Classic Doom, even when at the cost of visibility. See Chocolate Doom for examples. Oh and let it work with hardware rendering pls. Thanks! Oh and I already tried editing the .ini file to crank up the existing \"Blood_Flade_Scalar\" does not produce the desired effect, rip\n\n### Additional Media\n\n\nUzDoom Sacralige, odd amount of sight after eating an explosion\n<img width=\"1920\" height=\"1080\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/04c81ab7-acb7-4bfc-af31-97bd94ef451c\" />\n\nClassic holyness, can't see shit\n<img width=\"1920\" height=\"1080\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/3d6695f9-01be-4a4e-bbf4-a0e4ff1a7fcc\" />",
+        "url": "https://github.com/UZDoom/UZDoom/issues/1576"
+    },
+    {
+        "id": 4843129436,
+        "number": 1575,
+        "title": "Title screen is green when using Vulkan on macOS",
+        "state": "open",
+        "created_at": "2026-07-09T04:19:03Z",
+        "updated_at": "2026-07-09T04:19:03Z",
+        "closed_at": null,
+        "author": "AwesumIndustrys",
+        "comments": 0,
+        "labels": [
+            "bug/bugfix"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### UZDoom Version\n\n5.0.0-pre-458-g9a78750ffd\n\n### Game\n\nDoom\n\n### Operating System\n\nMac OS\n\n### OS Version\n\nmacOS 26.5.1\n\n### Hardware\n\n2021 MacBook Pro (16-inch, M1 Pro)\n\n### Duplicate Confirmation\n\n- [x] I have searched and not found a similar issue.\n\n### Bug Description\n\nWhen the Vulkan API is used, the red and blue color channels seemingly disappear leaving green as the only color available. This does not happen on OpenGL and the issue seems to resolve itself when entering a map.\n\nThe ENDOOM screen is also green when the game is quit before entering a map.\n\n<img width=\"1728\" height=\"1117\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/ee34dd8a-8c5c-4956-a27d-c64ce91ba7c8\" />\n\n### Replication\n\n1. Launch the game using the Vulkan renderer.\n2. Do not enter the maps.\n\n### Configuration\n\n```ini\n\n```\n\n### Log\n\n_No response_",
+        "url": "https://github.com/UZDoom/UZDoom/issues/1575"
+    },
+    {
+        "id": 4841230039,
+        "number": 1573,
+        "title": "Sprites on the automap are four times the size if you double the Scale Factor or use Downsampling.",
+        "state": "open",
+        "created_at": "2026-07-08T21:27:04Z",
+        "updated_at": "2026-07-09T18:31:34Z",
+        "closed_at": null,
+        "author": "TheFerries",
+        "comments": 2,
+        "labels": [
+            "bug/bugfix"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### UZDoom Version\n\nUZDoom 4.14.3\n\n### Game\n\nAll\n\n### Operating System\n\nWindows 10\n\n### OS Version\n\nWindows 10 Pro\n\n### Hardware\n\nGTX 1050ti\n\n### Duplicate Confirmation\n\n- [x] I have searched and not found a similar issue.\n\n### Bug Description\n\nWhat the title says, if you set the scale factor to 2.0 or downsample a higher resolution to your monitor (mine is 4k to a 1080p so it works as a nice 4x supersampling option). The sprites on the automap appear quite big compared to the usual.\n\nAs an example, here's map12 from Community Chest 3:\n-Here's how it looks without any of these 2 options:\n\n<img width=\"1920\" height=\"1080\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/70226d56-7ee1-4b3a-a2dc-30704db1d978\" />\n\nThe map itself is rather big, so its already pretty zoomed out by default, but the sprites look around the correct size.\n\n-Here's how it looks with either setting the scale factor to 2.0 or by downsampling 4k to 1080p:\n\n<img width=\"3840\" height=\"2160\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/6080d88c-11f2-4ad6-a435-0a6f872a553f\" />\n\nThey sure grow in size, they appear way too big and sure makes it feel like the map looks smaller than it actually is, not to mention it makes it harder to see stuff like ammo boxes or secret areas, not to mention groups of enemies look like they're clipping each other.\n\nDunno if this is intended behavour, since its 4 times the pixels, but I wonder if it could look like it does in the first image.\n\n### Replication\n\nIf you have a 1080p monitor, just set the scale factor to 2.0 to see it, or just set the resolution preset to 4k.\n\n### Configuration\n\nDon't think its necessary here.\n\n### Log\n\nIt's not a crash or game error, so I also don't think it's necessary.",
+        "url": "https://github.com/UZDoom/UZDoom/issues/1573"
+    },
+    {
+        "id": 4840267380,
+        "number": 1572,
+        "title": "Serialization of zero values in ACS-arrays for GDCC-compiled mods in save files",
+        "state": "open",
+        "created_at": "2026-07-08T18:51:44Z",
+        "updated_at": "2026-07-08T19:07:42Z",
+        "closed_at": null,
+        "author": "coold",
+        "comments": 0,
+        "labels": [
+            "bug/bugfix"
+        ],
+        "assignees": [
+            "RicardoLuis0"
+        ],
+        "locked": false,
+        "body": "### UZDoom Version\n\nUZDoom 4.14.3 trunk\n\n### Game\n\nDoom\n\n### Operating System\n\nWindows 11\n\n### OS Version\n\nWindows 11\n\n### Hardware\n\n7800X3D, 4900rtx, 16GB\n\n### Duplicate Confirmation\n\n- [x] I have searched and not found a similar issue.\n\n### Bug Description\n\nAfter playing for some time in DoomRPG my quicksave became to so quick. The longer you play - the longer save will freeze the game. Also unpacked save file can be hundreds of megs.\nIt can be mostly caused by DoomRPG, but also UZDoom itself serialize zero values from ACS arrays as is. \nBut as I understood zero values unreachable anyway, so it can cause save file bloat, and thus increase save time and freeze.\nMy naive version of this fix https://github.com/UZDoom/UZDoom/pull/1571\n\n### Replication\n\nI don`t know any other way except just to play DoomRPG for a time longer than 30 minutes\n\n### Configuration\n\n```ini\n\n```\n\n### Log\n\n_No response_",
+        "url": "https://github.com/UZDoom/UZDoom/issues/1572"
+    },
+    {
+        "id": 4830211676,
+        "number": 1570,
+        "title": "Update DrawSavePic to support tags",
+        "state": "open",
+        "created_at": "2026-07-07T16:04:59Z",
+        "updated_at": "2026-07-07T16:05:00Z",
+        "closed_at": null,
+        "author": "Boondorl",
+        "comments": 0,
+        "labels": [
+            "enhancement"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "Currently this only takes position and resolution parameters. Give access to all `DTA_` tags to make it more customizable.",
+        "url": "https://github.com/UZDoom/UZDoom/issues/1570"
+    },
+    {
+        "id": 4828554798,
+        "number": 1569,
+        "title": "window doesn't resize with updater",
+        "state": "closed",
+        "created_at": "2026-07-07T12:36:23Z",
+        "updated_at": "2026-07-11T15:53:34Z",
+        "closed_at": "2026-07-11T15:53:34Z",
+        "author": "RicardoLuis0",
+        "comments": 5,
+        "labels": [
+            "bug/bugfix"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### UZDoom Version\n\n9a78750ffd456dd130307e67015f6d335bc728aa\n\n### Game\n\nAll\n\n### Operating System\n\nWindows 11\n\n### OS Version\n\nWindows\n\n### Hardware\n\n_No response_\n\n### Duplicate Confirmation\n\n- [x] I have searched and not found a similar issue.\n\n### Bug Description\n\nhttps://github.com/user-attachments/assets/edb1e6f9-1fcf-4f58-8aa8-d6948ccf9685\n\n### Replication\n\n_No response_\n\n### Configuration\n\n```ini\nupdater_debug_always_update=true to show the banner always\n```\n\n### Log\n\n_No response_",
+        "url": "https://github.com/UZDoom/UZDoom/issues/1569"
+    },
+    {
+        "id": 4826559668,
+        "number": 1568,
+        "title": "Segfault when parsing LANGUAGE.csv in UZArchipelago-0.8.5.pk3",
+        "state": "open",
+        "created_at": "2026-07-07T08:11:20Z",
+        "updated_at": "2026-07-07T08:11:20Z",
+        "closed_at": null,
+        "author": "0dot0repeating",
+        "comments": 0,
+        "labels": [
+            "bug/bugfix"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### UZDoom Version\n\nfrom 5.0.0-pre-93-1947b9d8ef to current commit (9a78750ffd)\n\n### Game\n\nAll\n\n### Operating System\n\nLinux x86_64\n\n### OS Version\n\nArch Linux x86_64, kernel 7.0.7-arch2-1\n\n### Hardware\n\nCPU: AMD 7700x, GPU: AMD 6750XT\n\n### Duplicate Confirmation\n\n- [x] I have searched and not found a similar issue.\n\n### Bug Description\n\nUZDoom segfaults on startup while parsing lines 7, 34, 35, 37-43, and 138 of [the LANGUAGE.csv](https://github.com/user-attachments/files/29735627/LANGUAGE.csv) in [UZArchipelago-0.8.5.pk3](https://github.com/ToxicFrog/doom-mods/releases/tag/gzap-0.8.5), all of which are missing the Remarks column. Adding a comma to the end of each of these lines (aka. adding the column) resolves the segfault.\n\nThis was first noticed in a build made sometime in June (forgot the commit, sorry), was reconfirmed in the current trunk commit (9a78750ffd), and through git-bisect I've determined that it first appears in commit 1947b9d8ef.\n\n### Replication\n\n1. `uzdoom -config /dev/null -iwad path/to/doom2.wad -file path/to/UZArchipelago-0.8.5.pk3`\n2.  Segfault :(\n\n### Configuration\n\n```ini\nCompletely fresh config\n```\n\n### Log\n\n[stdout.log](https://github.com/user-attachments/files/29735514/stdout.log)\n[uzdoom-crash.log](https://github.com/user-attachments/files/29735457/uzdoom-crash.log)",
+        "url": "https://github.com/UZDoom/UZDoom/issues/1568"
+    },
+    {
+        "id": 4823051724,
+        "number": 1564,
+        "title": "Cross-compilation is broken",
+        "state": "open",
+        "created_at": "2026-07-06T20:57:44Z",
+        "updated_at": "2026-07-07T18:59:27Z",
+        "closed_at": null,
+        "author": "ValdikSS",
+        "comments": 2,
+        "labels": [
+            "bug/bugfix"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### UZDoom Version\n\ngit master\n\n### Game\n\nAll\n\n### Operating System\n\nLinux x86_64\n\n### OS Version\n\n_No response_\n\n### Hardware\n\n_No response_\n\n### Duplicate Confirmation\n\n- [x] I have searched and not found a similar issue.\n\n### Bug Description\n\nI was trying to compile UZDoom for ARM64 on x86_64 machine using regular Debian/Ubuntu cross-compilation architecture. Debian/Ubuntu in dpkg-buildpackage has a special set of wrappers which automate cross-compilation for many build systems, including CMake.\n\nUltimately, that did not work without commenting everything related to CMAKE_CROSSCOMPILING.\nIt seems that CMAKE_CROSSCOMPILING was added as a special case of cross-compiling for OS X PowerPC [\"Cross compiling without Rosetta\"](https://zdoom.org/w/index.php?title=Compile_ZDoom_on_Mac_OS_X#Configuring_for_cross_compiling:~:text=Cross%20compiling%20without%20Rosetta)\n\nFor anything else, it prevents cross-compiling as far as I understand.\n\nI'm not an expert in CMake that's why not making a PR, but that's what worked for me. `ZCMAKE_CROSSCOMPILING` is used as a commenting out measure.\n\n```diff\ndiff --git a/CMakeLists.txt b/CMakeLists.txt\nindex de68be2..2873682 100644\n--- a/CMakeLists.txt\n+++ b/CMakeLists.txt\n@@ -60,7 +60,7 @@ if( FORCE_CROSSCOMPILE )\n \tset( CMAKE_CROSSCOMPILING TRUE )\n endif()\n \n-if(CMAKE_CROSSCOMPILING)\n+if(ZCMAKE_CROSSCOMPILING)\n \tset(IMPORT_EXECUTABLES \"IMPORTFILE-NOTFOUND\" CACHE FILEPATH \"Export file from native build.\")\n \tinclude(${IMPORT_EXECUTABLES})\n endif()\n@@ -99,7 +99,7 @@ function( add_pk3 PK3_NAME )\n \tstring( REPLACE \".\" \"_\" PK3_TARGET ${PK3_NAME} )\n \n \tadd_custom_command( OUTPUT ${ZDOOM_OUTPUT_DIR}/${PK3_NAME}\n-\t\tCOMMAND zipdir -udf ${PK3_ZIPDIR_OPTIONS} ${ZDOOM_OUTPUT_DIR}/${PK3_NAME} ${ARGN}\n+\t\tCOMMAND ${ZDOOM_OUTPUT_DIR}/tools/zipdir/zipdir -udf ${PK3_ZIPDIR_OPTIONS} ${ZDOOM_OUTPUT_DIR}/${PK3_NAME} ${ARGN}\n \t\tDEPENDS zipdir )\n \n \t# Create a list of source files for this PK3, for use in the IDE\n@@ -459,7 +459,7 @@ set( ZMUSIC_LIBRARIES zmusic )\n \n set( LZMA_INCLUDE_DIR \"${CMAKE_CURRENT_SOURCE_DIR}/libraries/lzma/C\" )\n \n-if( NOT CMAKE_CROSSCOMPILING )\n+if( NOT ZCMAKE_CROSSCOMPILING )\n \tif( NOT CROSS_EXPORTS )\n \t\tset( CROSS_EXPORTS \"\" )\n \tendif()\n@@ -493,6 +493,6 @@ if( ZMUSIC_SYSTEM_INSTALL )\n \tadd_subdirectory( libraries/miniz )\n endif()\n \n-if( NOT CMAKE_CROSSCOMPILING )\n+if( NOT ZCMAKE_CROSSCOMPILING )\n \texport(TARGETS ${CROSS_EXPORTS} FILE \"${CMAKE_BINARY_DIR}/ImportExecutables.cmake\" )\n endif()\ndiff --git a/libraries/ZVulkan/src/glslang/glslang/OSDependent/Unix/CMakeLists.txt b/libraries/ZVulkan/src/glslang/glslang/OSDependent/Unix/CMakeLists.txt\nindex 354a3e9..4b133d1 100644\n--- a/libraries/ZVulkan/src/glslang/glslang/OSDependent/Unix/CMakeLists.txt\n+++ b/libraries/ZVulkan/src/glslang/glslang/OSDependent/Unix/CMakeLists.txt\n@@ -37,7 +37,7 @@ set_property(TARGET OSDependent PROPERTY POSITION_INDEPENDENT_CODE ON)\n \n # Link pthread\n set(CMAKE_THREAD_PREFER_PTHREAD ON)\n-if(${CMAKE_VERSION} VERSION_LESS \"3.1.0\" OR CMAKE_CROSSCOMPILING)\n+if(${CMAKE_VERSION} VERSION_LESS \"3.1.0\" OR ZCMAKE_CROSSCOMPILING)\n     # Needed as long as we support CMake 2.8 for Ubuntu 14.04,\n     # which does not support the recommended Threads::Threads target.\n     # https://cmake.org/cmake/help/v2.8.12/cmake.html#module:FindThreads\ndiff --git a/src/CMakeLists.txt b/src/CMakeLists.txt\nindex dc4d936..226a510 100644\n--- a/src/CMakeLists.txt\n+++ b/src/CMakeLists.txt\n@@ -495,15 +495,15 @@ else()\n endif()\n \n add_custom_command( OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/xlat_parser.c ${CMAKE_CURRENT_BINARY_DIR}/xlat_parser.h\n-\tCOMMAND lemon -C${CMAKE_CURRENT_BINARY_DIR} ${CMAKE_CURRENT_SOURCE_DIR}/gamedata/xlat/xlat_parser.y\n+\tCOMMAND ${ZDOOM_OUTPUT_DIR}/tools/lemon/lemon -C${CMAKE_CURRENT_BINARY_DIR} ${CMAKE_CURRENT_SOURCE_DIR}/gamedata/xlat/xlat_parser.y\n \tDEPENDS lemon ${CMAKE_CURRENT_SOURCE_DIR}/gamedata/xlat/xlat_parser.y )\n \n add_custom_command( OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/zcc-parse.c ${CMAKE_CURRENT_BINARY_DIR}/zcc-parse.h\n-\tCOMMAND lemon -C${CMAKE_CURRENT_BINARY_DIR} ${CMAKE_CURRENT_SOURCE_DIR}/common/scripting/frontend/zcc-parse.lemon\n+\tCOMMAND ${ZDOOM_OUTPUT_DIR}/tools/lemon/lemon -C${CMAKE_CURRENT_BINARY_DIR} ${CMAKE_CURRENT_SOURCE_DIR}/common/scripting/frontend/zcc-parse.lemon\n \tDEPENDS lemon ${CMAKE_CURRENT_SOURCE_DIR}/common/scripting/frontend/zcc-parse.lemon )\n \n add_custom_command( OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/sc_man_scanner.h\n-\tCOMMAND re2c --no-generation-date -s -o ${CMAKE_CURRENT_BINARY_DIR}/sc_man_scanner.h ${CMAKE_CURRENT_SOURCE_DIR}/common/engine/sc_man_scanner.re\n+\tCOMMAND ${ZDOOM_OUTPUT_DIR}/tools/re2c/re2c --no-generation-date -s -o ${CMAKE_CURRENT_BINARY_DIR}/sc_man_scanner.h ${CMAKE_CURRENT_SOURCE_DIR}/common/engine/sc_man_scanner.re\n \tDEPENDS re2c ${CMAKE_CURRENT_SOURCE_DIR}/common/engine/sc_man_scanner.re )\n \n include_directories( ${CMAKE_CURRENT_BINARY_DIR} )\ndiff --git a/tools/lemon/CMakeLists.txt b/tools/lemon/CMakeLists.txt\nindex a4da050..488a5c7 100644\n--- a/tools/lemon/CMakeLists.txt\n+++ b/tools/lemon/CMakeLists.txt\n@@ -1,6 +1,6 @@\n cmake_minimum_required( VERSION 3.16 )\n \n-if( NOT CMAKE_CROSSCOMPILING )\n+if( NOT ZCMAKE_CROSSCOMPILING )\n \tset( CMAKE_C_FLAGS_DEBUG \"${CMAKE_C_FLAGS_DEBUG} -D_DEBUG\" )\n \n \tadd_executable( lemon lemon.c )\ndiff --git a/tools/re2c/CMakeLists.txt b/tools/re2c/CMakeLists.txt\nindex 6b88877..449dc5e 100644\n--- a/tools/re2c/CMakeLists.txt\n+++ b/tools/re2c/CMakeLists.txt\n@@ -1,6 +1,6 @@\n cmake_minimum_required( VERSION 3.16 )\n \n-if( NOT CMAKE_CROSSCOMPILING )\n+if( NOT ZCMAKE_CROSSCOMPILING )\n \n include( CheckFunctionExists )\n include( CheckTypeSize )\ndiff --git a/tools/zipdir/CMakeLists.txt b/tools/zipdir/CMakeLists.txt\nindex d08ca09..de2fe20 100644\n--- a/tools/zipdir/CMakeLists.txt\n+++ b/tools/zipdir/CMakeLists.txt\n@@ -1,6 +1,6 @@\n cmake_minimum_required( VERSION 3.16 )\n \n-if( NOT CMAKE_CROSSCOMPILING )\n+if( NOT ZCMAKE_CROSSCOMPILING )\n \tinclude_directories( SYSTEM \"${BZIP2_INCLUDE_DIR}\" \"${LZMA_INCLUDE_DIR}\" )\n \tadd_executable( zipdir\n \t\tzipdir.c )\n\n```\n\n### Replication\n\n_No response_\n\n### Configuration\n\n```ini\n\n```\n\n### Log\n\n_No response_",
+        "url": "https://github.com/UZDoom/UZDoom/issues/1564"
+    },
+    {
+        "id": 4822944528,
+        "number": 1563,
+        "title": "Fix sound engine fully flushing on full console",
+        "state": "open",
+        "created_at": "2026-07-06T20:40:23Z",
+        "updated_at": "2026-07-06T20:40:23Z",
+        "closed_at": null,
+        "author": "Boondorl",
+        "comments": 0,
+        "labels": [
+            "refactor/maintenance"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "According to https://github.com/UZDoom/UZDoom/pull/1551#issuecomment-4895037824, when entering the full console mode (e.g. the console when in the main menu), the entire sound engine is restarted which includes re-parsing SNDINFOs. This can cause existing warnings to sound off again, making them too spammy. This should be fixed properly by only restarting the actual state of the sound engine, not everything related to it.",
+        "url": "https://github.com/UZDoom/UZDoom/issues/1563"
+    },
+    {
+        "id": 4822833337,
+        "number": 1562,
+        "title": "shrinking launcher",
+        "state": "closed",
+        "created_at": "2026-07-06T20:24:07Z",
+        "updated_at": "2026-07-06T22:36:47Z",
+        "closed_at": "2026-07-06T22:36:47Z",
+        "author": "Sonicthefan",
+        "comments": 0,
+        "labels": [
+            "bug/bugfix"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### UZDoom Version\n\n5.0.0-pre-451-ge3aca285b3\n\n### Game\n\nAll\n\n### Operating System\n\nWindows 11\n\n### OS Version\n\njust check my last reports for all these\n\n### Hardware\n\n_No response_\n\n### Duplicate Confirmation\n\n- [x] I have searched and not found a similar issue.\n\n### Bug Description\n\nthis isn't my doing but the launcher keeps shrinking whenever I open it\n\n<img width=\"365\" height=\"331\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/be3590d5-e9c7-4de4-80ac-f53bcabb49a4\" />\n\n### Replication\n\nopen the launcher\n\n### Configuration\n\n```ini\n\n```\n\n### Log\n\n_No response_",
+        "url": "https://github.com/UZDoom/UZDoom/issues/1562"
+    },
+    {
+        "id": 4822481511,
+        "number": 1561,
+        "title": "Incorrect wall brightness under 3D floors in the software renderer when viewed at certain angles",
+        "state": "open",
+        "created_at": "2026-07-06T19:35:04Z",
+        "updated_at": "2026-07-06T19:35:04Z",
+        "closed_at": null,
+        "author": "MIDIMan2",
+        "comments": 0,
+        "labels": [
+            "bug/bugfix"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### UZDoom Version\n\n4.14.3\n\n### Game\n\nAll\n\n### Operating System\n\nWindows 11\n\n### OS Version\n\nWindows 11 Pro\n\n### Hardware\n\nAMD Ryzen 7 5800X, NVIDIA GeForce RTX 3060\n\n### Duplicate Confirmation\n\n- [x] I have searched and not found a similar issue.\n\n### Bug Description\n\nWhen looking at a wall below a 3D floor from a distance or at a specific angle, the wall becomes as bright as it would be if it was above the 3D floor.\n\nSoftware:\n<img width=\"1920\" height=\"1080\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/7e1c8126-82e8-466d-83eb-78e0e263e91c\" />\n\nHardware:\n<img width=\"1920\" height=\"1080\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/2f539618-f6e1-43c3-b456-93ab53d63725\" />\n\nVideos demonstrating the bug:\nhttps://github.com/user-attachments/assets/5ebe33b2-039d-418c-a18a-9ed5cd6c5f43\nhttps://github.com/user-attachments/assets/aaf2c636-df12-4d68-a912-5c8892f6a4eb\n\nIt's worth noting that this bug was also in GZDoom since version 4.11.0. I've tested this bug in the latest preview build, and it exists there too.\n\n### Replication\n\n1. Load the map attached after these steps in the latest version of UZDoom.\n2. Play the map.\n3. View the inside of the tunnel from different angles.\n\n[WallFullbrightBug.zip](https://github.com/user-attachments/files/29716926/WallFullbrightBug.zip)\n\n### Configuration\n\n```ini\n\n```\n\n### Log\n\n_No response_",
+        "url": "https://github.com/UZDoom/UZDoom/issues/1561"
+    },
+    {
+        "id": 4816739277,
+        "number": 1559,
+        "title": "Mouse cursor is missing when \"MouseTrails\" is \"-1\"",
+        "state": "open",
+        "created_at": "2026-07-06T06:57:31Z",
+        "updated_at": "2026-07-06T13:47:27Z",
+        "closed_at": null,
+        "author": "SaturnsRing98",
+        "comments": 2,
+        "labels": [
+            "bug/bugfix"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### UZDoom Version\n\nUZDoom 4.14.3\n\n### Game\n\nAll\n\n### Operating System\n\nWindows 10\n\n### OS Version\n\nWindows 10 Home, Version 22H2\n\n### Hardware\n\nAMD Ryzen 7 2700X Eight Core Processor; Nvidia GeForce RTX 2060 (6GB)\n\n### Duplicate Confirmation\n\n- [x] I have searched and not found a similar issue.\n\n### Bug Description\n\nAfter having used the Registry Editor to fix a system bug where all my cursors appear washed out (including the ones inside UZDoom), the cursor no longer appears in UZDoom's menus, regardless of what the in-game Mouse Settings are.\n\n### Replication\n\nUsing the Registry Editor, Go to \"Computer\\HKEY_CURRENT_USER\\Control Panel\\Mouse\", and set \"MouseTrails\" to \"-1\". Restart the PC to apply the change, then open UZDoom.\n\n### Configuration\n\n```ini\n\n```\n\n### Log\n\n_No response_",
+        "url": "https://github.com/UZDoom/UZDoom/issues/1559"
+    },
+    {
+        "id": 4816412188,
+        "number": 1557,
+        "title": "Crash when starting a game",
+        "state": "closed",
+        "created_at": "2026-07-06T06:04:48Z",
+        "updated_at": "2026-07-06T13:44:59Z",
+        "closed_at": "2026-07-06T13:44:59Z",
+        "author": "xxthemgcartheifxx",
+        "comments": 0,
+        "labels": [
+            "bug/bugfix"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### UZDoom Version\n\n5.0.0-pre-445-gc4f42498db\n\n### Game\n\nDoom\n\n### Operating System\n\nWindows 11\n\n### OS Version\n\nWindows 11 Home\n\n### Hardware\n\n_No response_\n\n### Duplicate Confirmation\n\n- [x] I have searched and not found a similar issue.\n\n### Bug Description\n\nGame crashes on startup. Can get to the main menu screen but theres an immediate CTD when i start gameplay.\nTried using a fresh installation with the default INI config, no luck.\n Get the same error if i close out of the uzdoom launcher as well.\n\n\n\n### Replication\n\n1. Launch the game\n2.  Start Game from the main menu\n3.  Crash\n\n### Configuration\n\n```ini\n\n```\n\n### Log\n\nCode: C0000005 (Access Violation - tried to read address 00000007fffffff8)\nAddress: 00007ff73cb3dd57",
+        "url": "https://github.com/UZDoom/UZDoom/issues/1557"
+    },
+    {
+        "id": 4815293908,
+        "number": 1555,
+        "title": "TakeBody() ZScript Function",
+        "state": "open",
+        "created_at": "2026-07-06T01:42:22Z",
+        "updated_at": "2026-07-09T16:10:01Z",
+        "closed_at": null,
+        "author": "kinker31",
+        "comments": 6,
+        "labels": [
+            "enhancement",
+            "good first issue"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Game\n\nAll\n\n### Problem Description\n\nAttempting to work on a gameplay mod, and I wanna see about implementing inventory items that take away a fraction of the player's health when used. (e.g. powerup for a bit of player health, healing item that damages at first, etc.)\n\n### Feature Description\n\nI'd imagine TakeBody would work similar to GiveBody(), only that it subtracts the player's health (if the player can take damage) rather than add to it. For example, +15 would deal 15 damage to the player, and -40 would set the player's health to 40% of the max health if it was higher than that.\n\n### Additional Media\n\n_No response_",
+        "url": "https://github.com/UZDoom/UZDoom/issues/1555"
+    },
+    {
+        "id": 4796719764,
+        "number": 1544,
+        "title": "Music file can't compile",
+        "state": "closed",
+        "created_at": "2026-07-02T17:18:50Z",
+        "updated_at": "2026-07-02T22:56:12Z",
+        "closed_at": "2026-07-02T22:56:12Z",
+        "author": "VikingBoyBilly",
+        "comments": 6,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "### UZDoom Version\n\nUZDoom 4.14\n\n### Game\n\nAll\n\n### Operating System\n\nMac OS\n\n### OS Version\n\n_No response_\n\n### Hardware\n\nApple Silicon\n\n### Duplicate Confirmation\n\n- [x] I have searched and not found a similar issue.\n\n### Bug Description\n\nerror: use of undeclared identifier 'SampleType_Float32'\n  173 |         const SampleType stype{(sampletype == MusicSamplesFloat) ? SampleType_Float32 : SampleType_Int16};\n      |                                                                    ^~~~~~~~~~~~~~~~~~\n/Users/bill/Documents/GitHub/UZDoom/src/common/audio/music/music.cpp:247:2: error: unknown type name 'SoundStreamInfoEx'\n  247 |         SoundStreamInfoEx fmt;\n\n### Replication\n\n_No response_\n\n### Configuration\n\n```ini\n\n```\n\n### Log\n\n_No response_",
+        "url": "https://github.com/UZDoom/UZDoom/issues/1544"
+    }
+]

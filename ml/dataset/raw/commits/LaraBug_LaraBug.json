@@ -1,0 +1,242 @@
+[
+    {
+        "sha": "8e34fe4d9d345ba754f1ba4efd52f3f9658c7007",
+        "author": "Nathan Geerinck",
+        "email": "nathan@intilli.be",
+        "date": "2026-04-11T15:25:36Z",
+        "message": "Merge pull request #114 from LaraBug/docs/readme-refresh\n\nUpdate: rewrite README to match JS SDK style",
+        "url": "https://github.com/LaraBug/LaraBug/commit/8e34fe4d9d345ba754f1ba4efd52f3f9658c7007"
+    },
+    {
+        "sha": "fc2c8941a0fa59d22ac448e82c4d0e6c336b641b",
+        "author": "Nathan Geerinck",
+        "email": "nathan@intilli.be",
+        "date": "2026-04-11T15:25:06Z",
+        "message": "Update: rewrite README to match JS SDK style\n\nDrops the Lumen installation section (Lumen is EOL) and the detailed\n'reporting unhandled exceptions' walkthrough in favour of a docs link.\nAdds a local logo asset, left-aligned. Highlights queue and job\nmonitoring alongside exception tracking. Cross-links the JS SDK.",
+        "url": "https://github.com/LaraBug/LaraBug/commit/fc2c8941a0fa59d22ac448e82c4d0e6c336b641b"
+    },
+    {
+        "sha": "de22994653d8340014dc97596063e299c2413b20",
+        "author": "Nathan Geerinck",
+        "email": "nathan.geerinck@hey.com",
+        "date": "2026-04-11T10:56:41Z",
+        "message": "Merge pull request #113 from LaraBug/feature/self-tracking-guards\n\nAdd re-entry guards for safe self-tracking",
+        "url": "https://github.com/LaraBug/LaraBug/commit/de22994653d8340014dc97596063e299c2413b20"
+    },
+    {
+        "sha": "64456fc91b4e0bc47911a889b9a31e662a37521f",
+        "author": "Nathan Geerinck",
+        "email": "nathan@intilli.be",
+        "date": "2026-04-11T10:52:00Z",
+        "message": "Add: re-entry guards for safe self-tracking\n\nLaraBug::handle() now maintains a static \\$capturing flag, drops any\ncapture that re-enters while another is in flight, and swallows\ncapture-internal throwables to error_log instead of rethrowing. Exposes\nLaraBug::isCapturing() so the queue tracking path can check the same\nstate.\n\nJobMonitor::shouldTrack() now skips tracking entirely when a regular\nexception capture is in flight, and hard-blocks any job class in the\nLaraBug\\\\\\\\ namespace. Both guards make it safe to install the SDK inside\nthe LaraBug SaaS itself without triggering infinite loops.\n\nCo-Authored-By: Claude Opus 4.6 (1M context) <noreply@anthropic.com>",
+        "url": "https://github.com/LaraBug/LaraBug/commit/64456fc91b4e0bc47911a889b9a31e662a37521f"
+    },
+    {
+        "sha": "ea8a6eea43e7aa364c823b5382b9805878892feb",
+        "author": "Nathan Geerinck",
+        "email": "nathan@intilli.be",
+        "date": "2026-03-19T12:38:23Z",
+        "message": "Merge pull request #112 from LaraBug/feature/laravel-13-support\n\nAdd Laravel 13 support pt. 2",
+        "url": "https://github.com/LaraBug/LaraBug/commit/ea8a6eea43e7aa364c823b5382b9805878892feb"
+    },
+    {
+        "sha": "0144cf6efb19a9478bdc859c1821e8869d692d95",
+        "author": "Nathan Geerinck",
+        "email": "nathan@intilli.be",
+        "date": "2026-03-19T12:36:08Z",
+        "message": "Fix: testbench version",
+        "url": "https://github.com/LaraBug/LaraBug/commit/0144cf6efb19a9478bdc859c1821e8869d692d95"
+    },
+    {
+        "sha": "4f4e685235c8dee24b556647f49dac230a77bbb4",
+        "author": "Nathan Geerinck",
+        "email": "nathan.geerinck@hey.com",
+        "date": "2026-03-19T12:33:22Z",
+        "message": "Merge pull request #111 from LaraBug/feature/laravel-13-support\n\nAdd Laravel 13 support",
+        "url": "https://github.com/LaraBug/LaraBug/commit/4f4e685235c8dee24b556647f49dac230a77bbb4"
+    },
+    {
+        "sha": "a31bb0d8d283bafdb0c1f4f0af7bb4f8046c71f3",
+        "author": "Nathan Geerinck",
+        "email": "nathan@intilli.be",
+        "date": "2026-03-19T12:32:53Z",
+        "message": "Laravel 13 support",
+        "url": "https://github.com/LaraBug/LaraBug/commit/a31bb0d8d283bafdb0c1f4f0af7bb4f8046c71f3"
+    },
+    {
+        "sha": "42a5c3da13504ffe0e5a993d0690a19276cc05e9",
+        "author": "Nathan Geerinck",
+        "email": "nathan@intilli.be",
+        "date": "2026-03-19T10:14:26Z",
+        "message": "Fix: default value for ‘environments’ config key",
+        "url": "https://github.com/LaraBug/LaraBug/commit/42a5c3da13504ffe0e5a993d0690a19276cc05e9"
+    },
+    {
+        "sha": "c9384474b36a814c8813b94aed40fc666eb48016",
+        "author": "Nathan Geerinck",
+        "email": "nathan@intilli.be",
+        "date": "2026-01-28T09:38:19Z",
+        "message": "Merge pull request #110 from LaraBug/feature/queue-job-batching\n\nDynamic load-based batching for queue monitoring",
+        "url": "https://github.com/LaraBug/LaraBug/commit/c9384474b36a814c8813b94aed40fc666eb48016"
+    },
+    {
+        "sha": "2dd37ea5ea9ca93611c7841c092d84c80b34b29b",
+        "author": "Nathan Geerinck",
+        "email": "nathan@intilli.be",
+        "date": "2026-01-28T09:24:28Z",
+        "message": "Integrate in-memory queue job batching",
+        "url": "https://github.com/LaraBug/LaraBug/commit/2dd37ea5ea9ca93611c7841c092d84c80b34b29b"
+    },
+    {
+        "sha": "adda6ea6a5af38c0d5c3e4cde61f3b738e5522e3",
+        "author": "Nathan Geerinck",
+        "email": "nathan@intilli.be",
+        "date": "2026-01-26T14:15:06Z",
+        "message": "Merge pull request #109 from LaraBug/feature/queue-monitoring\n\nQueue Monitoring Feature",
+        "url": "https://github.com/LaraBug/LaraBug/commit/adda6ea6a5af38c0d5c3e4cde61f3b738e5522e3"
+    },
+    {
+        "sha": "da99741e1e48aff6dd3cea7188e2d8372dc4b813",
+        "author": "Nathan Geerinck",
+        "email": "nathan@intilli.be",
+        "date": "2026-01-26T11:26:37Z",
+        "message": "Merge branch 'feature/queue-monitoring' of github.com:LaraBug/LaraBug into feature/queue-monitoring",
+        "url": "https://github.com/LaraBug/LaraBug/commit/da99741e1e48aff6dd3cea7188e2d8372dc4b813"
+    },
+    {
+        "sha": "0bde050cfd920dd4582265a8fd9c152e7f5f8a90",
+        "author": "Nathan Geerinck",
+        "email": "nathan@intilli.be",
+        "date": "2026-01-26T11:26:31Z",
+        "message": "Fix config key",
+        "url": "https://github.com/LaraBug/LaraBug/commit/0bde050cfd920dd4582265a8fd9c152e7f5f8a90"
+    },
+    {
+        "sha": "b1c3c86a2b3094b7b38f2d790a6c5c6641045452",
+        "author": "Nathan Geerinck",
+        "email": "nathan@intilli.be",
+        "date": "2026-01-26T10:30:44Z",
+        "message": "Fix config key",
+        "url": "https://github.com/LaraBug/LaraBug/commit/b1c3c86a2b3094b7b38f2d790a6c5c6641045452"
+    },
+    {
+        "sha": "9de6d43b5d6d1cfde8bb328ad492964787269aff",
+        "author": "Nathan Geerinck",
+        "email": "nathan@intilli.be",
+        "date": "2026-01-26T10:17:10Z",
+        "message": "Track jobs by default",
+        "url": "https://github.com/LaraBug/LaraBug/commit/9de6d43b5d6d1cfde8bb328ad492964787269aff"
+    },
+    {
+        "sha": "511af05948885c220ebc36e3cb2a49515a5817ba",
+        "author": "Nathan Geerinck",
+        "email": "nathan@intilli.be",
+        "date": "2026-01-26T09:52:05Z",
+        "message": "Fix: get UUID",
+        "url": "https://github.com/LaraBug/LaraBug/commit/511af05948885c220ebc36e3cb2a49515a5817ba"
+    },
+    {
+        "sha": "0ef0ede9c139fb172d0dd19e8b0de61357615cd8",
+        "author": "Nathan Geerinck",
+        "email": "nathan@intilli.be",
+        "date": "2026-01-26T09:49:09Z",
+        "message": "Temp remove _ide_helper",
+        "url": "https://github.com/LaraBug/LaraBug/commit/0ef0ede9c139fb172d0dd19e8b0de61357615cd8"
+    },
+    {
+        "sha": "8b6d9d13e82fb272c0cf05873f18afee967a6a2c",
+        "author": "Nathan Geerinck",
+        "email": "nathan@intilli.be",
+        "date": "2026-01-26T09:48:47Z",
+        "message": "Update laravel support in readme",
+        "url": "https://github.com/LaraBug/LaraBug/commit/8b6d9d13e82fb272c0cf05873f18afee967a6a2c"
+    },
+    {
+        "sha": "52a286dcf0c833f74df4e53d4167b9dd48ee378e",
+        "author": "Nathan Geerinck",
+        "email": "nathan@intilli.be",
+        "date": "2026-01-26T08:51:58Z",
+        "message": "Fix IDE helper to prevent circular inheritance and class conflicts\n\n- Remove class declarations that override Laravel core classes\n- Circular inheritance between PendingDispatch and PendingClosureDispatch was breaking job dispatch\n- Keep only LaraBug facade declaration for IDE support\n- Prevents conflicts with Laravel's queue system",
+        "url": "https://github.com/LaraBug/LaraBug/commit/52a286dcf0c833f74df4e53d4167b9dd48ee378e"
+    },
+    {
+        "sha": "2ac8f49078b012795c0c367e6c1950d45cea4b22",
+        "author": "Nathan Geerinck",
+        "email": "nathan@intilli.be",
+        "date": "2026-01-26T08:48:42Z",
+        "message": "Remove queue monitoring docs",
+        "url": "https://github.com/LaraBug/LaraBug/commit/2ac8f49078b012795c0c367e6c1950d45cea4b22"
+    },
+    {
+        "sha": "63b6d7c520637abd01ed8ad229e7094c2a33f0af",
+        "author": "Nathan Geerinck",
+        "email": "nathan@intilli.be",
+        "date": "2026-01-26T08:47:15Z",
+        "message": "Timestamp collection for data",
+        "url": "https://github.com/LaraBug/LaraBug/commit/63b6d7c520637abd01ed8ad229e7094c2a33f0af"
+    },
+    {
+        "sha": "8b5b390ec152ffcfd0d39a28f3d236ad9c8f5619",
+        "author": "Nathan Geerinck",
+        "email": "nathan@intilli.be",
+        "date": "2026-01-25T19:22:30Z",
+        "message": "Remove logging + track extra queue job data",
+        "url": "https://github.com/LaraBug/LaraBug/commit/8b5b390ec152ffcfd0d39a28f3d236ad9c8f5619"
+    },
+    {
+        "sha": "3c80b2049851c63dd411ca24b5374c4ec56b8ac3",
+        "author": "Nathan Geerinck",
+        "email": "nathan@intilli.be",
+        "date": "2026-01-21T16:59:56Z",
+        "message": "Merge: resolve ServiceProvider conflicts and fix registration logic",
+        "url": "https://github.com/LaraBug/LaraBug/commit/3c80b2049851c63dd411ca24b5374c4ec56b8ac3"
+    },
+    {
+        "sha": "193547747b7a0375e180eda1d691addb2d186bf9",
+        "author": "Nathan Geerinck",
+        "email": "nathan@intilli.be",
+        "date": "2026-01-21T11:22:56Z",
+        "message": "Merge pull request #108 from LaraBug/feature/88-dsm-key-config\n\nAdd DSN configuration support",
+        "url": "https://github.com/LaraBug/LaraBug/commit/193547747b7a0375e180eda1d691addb2d186bf9"
+    },
+    {
+        "sha": "1b976336e163845c4dd3432b0b793081d65002c7",
+        "author": "Nathan Geerinck",
+        "email": "nathan@intilli.be",
+        "date": "2026-01-21T11:17:54Z",
+        "message": "Add DSN configuration support\n\n- Add Support\\Dsn class to parse DSN format (https://login-key:project-key@host/path)\n- Update ServiceProvider to use DSN when available\n- Add 'dsn' config option (LB_DSN) to larabug.php\n- DSN takes precedence over individual keys when set\n- Falls back to LB_KEY and LB_PROJECT_KEY if DSN not configured",
+        "url": "https://github.com/LaraBug/LaraBug/commit/1b976336e163845c4dd3432b0b793081d65002c7"
+    },
+    {
+        "sha": "c754d98fbccd6751ff368e36b124b8d62068de02",
+        "author": "Nathan Geerinck",
+        "email": "nathan@intilli.be",
+        "date": "2026-01-21T11:08:40Z",
+        "message": "Merge pull request #106 from LaraBug/feature/87-custom-context-data\n\nAdd custom context data support for exceptions (#87)",
+        "url": "https://github.com/LaraBug/LaraBug/commit/c754d98fbccd6751ff368e36b124b8d62068de02"
+    },
+    {
+        "sha": "368c15ea37d716c90c680ddcfb17cdbafbba6ddf",
+        "author": "Nathan Geerinck",
+        "email": "nathan@intilli.be",
+        "date": "2026-01-21T11:00:00Z",
+        "message": "Make context() and clearContext() static methods\n\n- Change customContext to static property\n- Make context() and clearContext() static methods\n- Auto-clear context after exception is reported\n- Allows static calls via Facade",
+        "url": "https://github.com/LaraBug/LaraBug/commit/368c15ea37d716c90c680ddcfb17cdbafbba6ddf"
+    },
+    {
+        "sha": "bff92f7a7e48a75dd50e031cc236f06e7a985f42",
+        "author": "Nathan Geerinck",
+        "email": "nathan@intilli.be",
+        "date": "2026-01-21T10:53:42Z",
+        "message": "Add methods to Facade",
+        "url": "https://github.com/LaraBug/LaraBug/commit/bff92f7a7e48a75dd50e031cc236f06e7a985f42"
+    },
+    {
+        "sha": "6b046fdd639e7dd5b05ed78595f51da0dfc484dc",
+        "author": "Nathan Geerinck",
+        "email": "nathan@intilli.be",
+        "date": "2026-01-21T10:49:04Z",
+        "message": "Add custom context data support (Issue #87)\n\n- Add context() method to set custom data on exceptions\n- Add clearContext() method to clear custom context\n- Automatically include custom context in exception data\n- Allows developers to attach contextual data when reporting exceptions\n- Useful for external service integrations and debugging",
+        "url": "https://github.com/LaraBug/LaraBug/commit/6b046fdd639e7dd5b05ed78595f51da0dfc484dc"
+    }
+]

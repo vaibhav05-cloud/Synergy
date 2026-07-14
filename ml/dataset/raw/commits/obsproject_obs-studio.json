@@ -1,0 +1,242 @@
+[
+    {
+        "sha": "ca937366c1e9fc7f22fd5f1c7d3a3a5f7951170b",
+        "author": "Hernán R",
+        "email": "hernan@null.net",
+        "date": "2026-07-06T14:50:57Z",
+        "message": "rtmp-services: Update Piczel.tv ingest servers",
+        "url": "https://github.com/obsproject/obs-studio/commit/ca937366c1e9fc7f22fd5f1c7d3a3a5f7951170b"
+    },
+    {
+        "sha": "0aefedcb14994e30ddf9c426620e451bc37d6a1a",
+        "author": "Ryan Foster",
+        "email": "ryan@obsproject.com",
+        "date": "2026-07-10T23:24:54Z",
+        "message": "CI: Provide GitHub token for gh usage\n\nThe GitHub CLI requires a token or it will fail.",
+        "url": "https://github.com/obsproject/obs-studio/commit/0aefedcb14994e30ddf9c426620e451bc37d6a1a"
+    },
+    {
+        "sha": "8a5dab518be6e0ba1298d297f9a04e7dc7029f74",
+        "author": "jcm",
+        "email": "6864788+jcm93@users.noreply.github.com",
+        "date": "2026-02-12T19:05:04Z",
+        "message": "mac-capture: Don't capture cursor for macOS Audio Capture sources",
+        "url": "https://github.com/obsproject/obs-studio/commit/8a5dab518be6e0ba1298d297f9a04e7dc7029f74"
+    },
+    {
+        "sha": "f2db0972ee3a3decd99b94458edf41be5be8e5ec",
+        "author": "Matt Gajownik",
+        "email": "matt@obsproject.com",
+        "date": "2026-07-08T21:55:52Z",
+        "message": "Update translations from Crowdin",
+        "url": "https://github.com/obsproject/obs-studio/commit/f2db0972ee3a3decd99b94458edf41be5be8e5ec"
+    },
+    {
+        "sha": "7db6bc73b2f64250dd00d9c43546e09956198c56",
+        "author": "Ryan Foster",
+        "email": "ryan@obsproject.com",
+        "date": "2026-07-06T19:51:49Z",
+        "message": "CI: Fix appcast generation job\n\nPreviously, the appcast generation happened in the same workflow that\nthe artifacts were generated, so they could be fetched without issue.\nSince they are no longer in the same workflow, we have to account for\nthat.",
+        "url": "https://github.com/obsproject/obs-studio/commit/7db6bc73b2f64250dd00d9c43546e09956198c56"
+    },
+    {
+        "sha": "83f5459afa34c448f5822eea4a487c0d3e9f099b",
+        "author": "Warchamp7",
+        "email": "warchamp2003@hotmail.com",
+        "date": "2026-07-03T11:31:22Z",
+        "message": "frontend: Fix empty volume name label",
+        "url": "https://github.com/obsproject/obs-studio/commit/83f5459afa34c448f5822eea4a487c0d3e9f099b"
+    },
+    {
+        "sha": "30d3b89b3bd02c40ca55d071b2fd038a1c40caa6",
+        "author": "Warchamp7",
+        "email": "warchamp2003@hotmail.com",
+        "date": "2026-07-02T15:14:40Z",
+        "message": "frontend: Parent mixer context menu to window\n\nParent the QMenu to the window. Fixes a warning for \"QWidgetWindow\nmust be a top level window.\"",
+        "url": "https://github.com/obsproject/obs-studio/commit/30d3b89b3bd02c40ca55d071b2fd038a1c40caa6"
+    },
+    {
+        "sha": "1b0fc3b8bea69261b5a3ad20cf40a9f91f584255",
+        "author": "Warchamp7",
+        "email": "warchamp2003@hotmail.com",
+        "date": "2026-07-02T15:11:57Z",
+        "message": "frontend: Fix resizing horizontal volume name",
+        "url": "https://github.com/obsproject/obs-studio/commit/1b0fc3b8bea69261b5a3ad20cf40a9f91f584255"
+    },
+    {
+        "sha": "b99ccb036722a3c5a689a68b11c96eb95176ef39",
+        "author": "Warchamp7",
+        "email": "warchamp2003@hotmail.com",
+        "date": "2026-07-02T13:40:12Z",
+        "message": "frontend: Fix invokeMethod function name",
+        "url": "https://github.com/obsproject/obs-studio/commit/b99ccb036722a3c5a689a68b11c96eb95176ef39"
+    },
+    {
+        "sha": "137fe34ce2b36c7173a0cab7e48a95a6cd5dd7cf",
+        "author": "Warchamp7",
+        "email": "warchamp2003@hotmail.com",
+        "date": "2026-07-02T00:59:49Z",
+        "message": "frontend: Remove What's New window padding",
+        "url": "https://github.com/obsproject/obs-studio/commit/137fe34ce2b36c7173a0cab7e48a95a6cd5dd7cf"
+    },
+    {
+        "sha": "02b0a796d55d1acbbcf77ad826d7808d441a93e6",
+        "author": "Warchamp7",
+        "email": "warchamp2003@hotmail.com",
+        "date": "2026-07-01T03:23:14Z",
+        "message": "frontend: Remove What's New bottom button",
+        "url": "https://github.com/obsproject/obs-studio/commit/02b0a796d55d1acbbcf77ad826d7808d441a93e6"
+    },
+    {
+        "sha": "a00854666f2d18b9989c36a46e6ba45a7aef183d",
+        "author": "pkv",
+        "email": "pkv@obsproject.com",
+        "date": "2026-06-30T06:30:44Z",
+        "message": "nv-filters: Remove direct calls to CUDA in Audio FX\n\nThe CUDA calls in AUDIO FX were added initially to big a bug on the SDK\nside where the SDK functions where not checking the CUDA context.\nThis led to interference with the VIDEO FX, potentially breaking it.\nThese bugs have been fixed by the SDK so we don't need anymore these\nCUDA calls.\n\nSigned-off-by: pkv <pkv@obsproject.com>",
+        "url": "https://github.com/obsproject/obs-studio/commit/a00854666f2d18b9989c36a46e6ba45a7aef183d"
+    },
+    {
+        "sha": "7a52bedca1afadb9e8c17e7f431332ad9c3179a0",
+        "author": "LinuxUserGD",
+        "email": "hugegameartgd@gmail.com",
+        "date": "2026-06-30T17:04:28Z",
+        "message": "frontend: Add missing <functional> include\n\nFixes the compile error `no template named 'function' in namespace 'std'`",
+        "url": "https://github.com/obsproject/obs-studio/commit/7a52bedca1afadb9e8c17e7f431332ad9c3179a0"
+    },
+    {
+        "sha": "dcbb7840fe4b9c4f2855672594c26002c0ddf89a",
+        "author": "Warchamp7",
+        "email": "warchamp2003@hotmail.com",
+        "date": "2026-06-23T23:10:46Z",
+        "message": "frontend: Show warning icon for Monitor Only",
+        "url": "https://github.com/obsproject/obs-studio/commit/dcbb7840fe4b9c4f2855672594c26002c0ddf89a"
+    },
+    {
+        "sha": "04d36e09b9af815495692048dc994bd51ec705a8",
+        "author": "Warchamp7",
+        "email": "warchamp2003@hotmail.com",
+        "date": "2026-06-23T23:04:33Z",
+        "message": "frontend: Remove Monitor Only from UI",
+        "url": "https://github.com/obsproject/obs-studio/commit/04d36e09b9af815495692048dc994bd51ec705a8"
+    },
+    {
+        "sha": "4819d1714b0384b52a3964672c0c3dfbd8a7b2fe",
+        "author": "Warchamp7",
+        "email": "warchamp2003@hotmail.com",
+        "date": "2026-06-26T19:16:11Z",
+        "message": "frontend: Use same base theme on Win 10/11",
+        "url": "https://github.com/obsproject/obs-studio/commit/4819d1714b0384b52a3964672c0c3dfbd8a7b2fe"
+    },
+    {
+        "sha": "74fd272db669c3c5945c3f3fa7912757e1504006",
+        "author": "tytan652",
+        "email": "tytan652@tytanium.xyz",
+        "date": "2026-06-27T04:56:50Z",
+        "message": "build-aux: Update Flatpak to 2026-06-26 deps\n\n- Update FFmpeg to version 8.1.2",
+        "url": "https://github.com/obsproject/obs-studio/commit/74fd272db669c3c5945c3f3fa7912757e1504006"
+    },
+    {
+        "sha": "27ac23ef750aafb2bb7ddd499ede5755a5a3087f",
+        "author": "Benedict Etzel",
+        "email": "benedict@hearthsim.net",
+        "date": "2026-06-10T21:39:47Z",
+        "message": "win-capture: Add Hearthstone Deck Tracker to compatibility list",
+        "url": "https://github.com/obsproject/obs-studio/commit/27ac23ef750aafb2bb7ddd499ede5755a5a3087f"
+    },
+    {
+        "sha": "3bba730f76bcecb1ac88be5740395291ca197a57",
+        "author": "Ryan Foster",
+        "email": "ryan@obsproject.com",
+        "date": "2026-06-26T18:30:14Z",
+        "message": "CI: Update deps to 2026-06-25 release\n\nNotable Changes:\n * deps.ffmpeg: Update FFmpeg to 8.1.2",
+        "url": "https://github.com/obsproject/obs-studio/commit/3bba730f76bcecb1ac88be5740395291ca197a57"
+    },
+    {
+        "sha": "b631635a388137f88d01bf35a0429529e3c411ab",
+        "author": "Matt Gajownik",
+        "email": "matt@obsproject.com",
+        "date": "2026-05-25T08:35:18Z",
+        "message": "win-capture: Build with file descriptor",
+        "url": "https://github.com/obsproject/obs-studio/commit/b631635a388137f88d01bf35a0429529e3c411ab"
+    },
+    {
+        "sha": "039d6ebb4698c881af47e961633dcdfcf9542d85",
+        "author": "Matt Gajownik",
+        "email": "matt@obsproject.com",
+        "date": "2026-05-25T08:33:09Z",
+        "message": "obs-vst: Build with file descriptor",
+        "url": "https://github.com/obsproject/obs-studio/commit/039d6ebb4698c881af47e961633dcdfcf9542d85"
+    },
+    {
+        "sha": "aa33016e28f42d1be962b105e6a319b21d81cb8d",
+        "author": "Matt Gajownik",
+        "email": "matt@obsproject.com",
+        "date": "2026-05-25T08:28:12Z",
+        "message": "obs-webrtc: Build with file descriptor",
+        "url": "https://github.com/obsproject/obs-studio/commit/aa33016e28f42d1be962b105e6a319b21d81cb8d"
+    },
+    {
+        "sha": "091dbeec810269c0eb325d24c80072a69a361c37",
+        "author": "Richard Stanway",
+        "email": "r1ch@r1ch.net",
+        "date": "2026-06-25T23:00:30Z",
+        "message": "frontend: Merge Windows process mitigation functions\n\nWe already started using SetProcessMitigationPolicy before #5164 got\nmerged and we dropped Windows 7 support, so we can do away with the\nruntime detection too.",
+        "url": "https://github.com/obsproject/obs-studio/commit/091dbeec810269c0eb325d24c80072a69a361c37"
+    },
+    {
+        "sha": "f6495d0017e7a3f7a29c4556f9c36c3cce63441d",
+        "author": "Ryan Foster",
+        "email": "ryan@obsproject.com",
+        "date": "2026-06-23T18:51:29Z",
+        "message": "CI: Move Sparkle Appcast creation to Publish workflow\n\nThis move allows us to separate appcast creation from the main build\njobs, which will enable us to increase the number of deltas we generate\nwithout impacting the push workflow on tags.\n\nThis largely moves the existing jobs from push to publish with two small\nchanges:\n1. the needs condition was changed from build-project to check-tag\n2. the if condition was changed from github.ref_type == 'tag' to\n   fromJSON(needs.check-tag.outputs.validTag)",
+        "url": "https://github.com/obsproject/obs-studio/commit/f6495d0017e7a3f7a29c4556f9c36c3cce63441d"
+    },
+    {
+        "sha": "3adff2b1aa1aedca9650c913adf9a82e507614f3",
+        "author": "Ryan Foster",
+        "email": "ryan@obsproject.com",
+        "date": "2026-06-24T17:52:14Z",
+        "message": "CI: Update korelstar/xmllint-problem-matcher to v1.3.0\n\nThis updates the action from node20 to node24, which will clear some CI\nwarnings.",
+        "url": "https://github.com/obsproject/obs-studio/commit/3adff2b1aa1aedca9650c913adf9a82e507614f3"
+    },
+    {
+        "sha": "2396e6e9bfda5fbda9f019c6f78386d4f6250fa1",
+        "author": "Ryan Foster",
+        "email": "ryan@obsproject.com",
+        "date": "2026-06-22T20:32:07Z",
+        "message": "CI: Update softprops/action-gh-release to v3.0.1\n\nGitHub Actions runs are emitting a warning about node20 because\nsoftprops/action-gh-release is outdated. Update to the latest stable\nrelease.",
+        "url": "https://github.com/obsproject/obs-studio/commit/2396e6e9bfda5fbda9f019c6f78386d4f6250fa1"
+    },
+    {
+        "sha": "7cd4e7de34b02f34e10f74db132e3034d2ff2da4",
+        "author": "Ryan Foster",
+        "email": "ryan@obsproject.com",
+        "date": "2026-06-22T20:12:16Z",
+        "message": "CI: Install NSIS in the windows-patches action\n\nThe windows-2022 runner had NSIS pre-installed. The windows-2025 runners\nare slimmer and do not have NSIS installed. The windows-2025 runners do\nhave winget available, which can be used to install NSIS.\n\nThe windows-2025 runners do not have NSIS in PATH by default, so we need\nto specify it manually in the config files.\n\nFollow-up to ac19ea663375cd02997be92b7d8ff6dd89a511ad.",
+        "url": "https://github.com/obsproject/obs-studio/commit/7cd4e7de34b02f34e10f74db132e3034d2ff2da4"
+    },
+    {
+        "sha": "7d869ccf0fb1804deb78e1bef8c3feaa4a23b7da",
+        "author": "Ryan Foster",
+        "email": "ryan@obsproject.com",
+        "date": "2026-06-21T22:30:16Z",
+        "message": "Merge pull request #13577 from RytoEX/fix-windows-signing\n\nCI: Fix windows signing",
+        "url": "https://github.com/obsproject/obs-studio/commit/7d869ccf0fb1804deb78e1bef8c3feaa4a23b7da"
+    },
+    {
+        "sha": "8c54b3d811d53644e080c079cf21c624540c64d2",
+        "author": "Ryan Foster",
+        "email": "ryan@obsproject.com",
+        "date": "2026-06-21T04:22:02Z",
+        "message": "CI: Update sign-windows commit",
+        "url": "https://github.com/obsproject/obs-studio/commit/8c54b3d811d53644e080c079cf21c624540c64d2"
+    },
+    {
+        "sha": "ac19ea663375cd02997be92b7d8ff6dd89a511ad",
+        "author": "Ryan Foster",
+        "email": "ryan@obsproject.com",
+        "date": "2026-06-21T03:53:00Z",
+        "message": "CI: Install NSIS in the windows-signing action\n\nThe windows-2022 runner had NSIS pre-installed. The windows-2025 runners\nare slimmer and do not have NSIS installed. The windows-2025 runners do\nhave winget available, which can be used to install NSIS.\n\nThe windows-2025 runners do not have NSIS in PATH by default, so we need\nto specify it manually in the config files.",
+        "url": "https://github.com/obsproject/obs-studio/commit/ac19ea663375cd02997be92b7d8ff6dd89a511ad"
+    }
+]

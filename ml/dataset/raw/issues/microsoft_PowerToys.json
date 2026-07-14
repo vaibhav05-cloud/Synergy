@@ -1,0 +1,399 @@
+[
+    {
+        "id": 4880757365,
+        "number": 49308,
+        "title": "[Cmd Pal][PerfMon] Network speed formatters lack unit tests and duplicate scaling logic (follow-up to #49071)",
+        "state": "open",
+        "created_at": "2026-07-14T07:13:49Z",
+        "updated_at": "2026-07-14T07:14:34Z",
+        "closed_at": null,
+        "author": "HoneyTyagii",
+        "comments": 0,
+        "labels": [
+            "Product-Command Palette"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Summary\r\n\r\nFollow-up to #49071. The Command Palette **Performance Monitor** extension formats network speeds with three near-identical scaling ladders that have **no unit-test coverage**. This is the exact code path where the #49071 bug (decimal units divided by `1024` instead of `1000`, so \"1.0 MB/s\" was really shown at 1,048,576 B/s) was able to ship unnoticed.\r\n\r\nThe divisor bug is now fixed, but the underlying risk remains: the logic is copy-pasted three times with hand-tuned magic thresholds and nothing guards the boundaries against regressions.\r\n\r\n### Where\r\n\r\n`src/modules/cmdpal/ext/Microsoft.CmdPal.Ext.PerformanceMonitor/PerformanceWidgetsPage.cs`\r\n\r\n`SystemNetworkUsageWidgetPage` contains three private formatters selected by `SpeedToString` based on `NetworkSpeedUnit`:\r\n\r\n- `FormatAsBitsPerSecString`   — Kbps / Mbps / Gbps, `/1000`, rollover at `< 999.5f`\r\n- `FormatAsBytesPerSecString`  — KB/s / MB/s / GB/s, `/1000`, rollover at `< 999.5f`\r\n- `FormatAsBinaryBytesPerSecString` — KiB/s / MiB/s / GiB/s, `/1024`, rollover at `< 1023.5f`\r\n\r\nAll three repeat the same three-tier structure (base → mid → top), the same `< 100 ? \"{0:0.0}\" : \"{0:0}\"` precision rule, and their own hardcoded rollover threshold. A one-character divisor mistake in any tier silently produces wrong values, which is precisely what happened in #49071.\r\n\r\n### Why it matters\r\n\r\n- There is no test project for the PerformanceMonitor extension and no test references `FormatAs*` / `SpeedToString` / `NetworkSpeedUnit`, so unit conversions are entirely unverified.\r\n- The three thresholds (`999.5f`, `999.5f`, `1023.5f`) and divisors (`1000` vs `1024`) are easy to get out of sync, as #49071 demonstrated.\r\n- These strings are user-facing in both the main list page and the dock bands.\r\n\r\n### Proposed change\r\n\r\n1. Add unit tests for the formatters covering:\r\n   - Base-unit values (e.g. `0`, small B/s)\r\n   - Rollover boundaries (values just below/at/above `999.5` KB and `1023.5` KiB) to lock in the \"don't display `1000 KB/s`\" behavior\r\n   - Correct prefix at each tier for all three `NetworkSpeedUnit` options\r\n   - Decimal-precision switch at `100`\r\n2. Optionally collapse the three ladders into one shared helper parameterized by `(divisor, rolloverThreshold, unitSuffixes[])` so the SI-vs-IEC difference lives in one place.\r\n\r\nThis is a maintainability / test-coverage follow-up, not a new user-facing regression.\r\n\r\n### Environment\r\n\r\nCommand Palette (Performance Monitor extension), current `main`. Applies to all platforms.\r\n",
+        "url": "https://github.com/microsoft/PowerToys/issues/49308"
+    },
+    {
+        "id": 4880299348,
+        "number": 49307,
+        "title": "Keyboard Manager Key Remapping Fails After Sleep or Startup",
+        "state": "open",
+        "created_at": "2026-07-14T05:59:42Z",
+        "updated_at": "2026-07-14T06:00:07Z",
+        "closed_at": null,
+        "author": "MU-XICHEN",
+        "comments": 0,
+        "labels": [
+            "Issue-Bug",
+            "Needs-Triage",
+            "Product-Keyboard Manager"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Microsoft PowerToys version\n\n0.100.2\n\n### Installation method\n\nMicrosoft Store\n\n### Area(s) with issue?\n\nKeyboard Manager\n\n### Steps to reproduce\n\nKeyboard Manager does not work properly after the computer wakes from sleep or when it launches automatically at startup. The remapped keys stop working, and the application must be closed and reopened to restore the mappings.\n\n### ✔️ Expected Behavior\n\n_No response_\n\n### ❌ Actual Behavior\n\n_No response_\n\n### Upload Bug Report ZIP-file\n\n[PowerToysReport_2026-07-14-13-55-49.zip](https://github.com/user-attachments/files/29995101/PowerToysReport_2026-07-14-13-55-49.zip)\n\n### Additional Information\n\n_No response_\n\n### Other Software\n\n_No response_",
+        "url": "https://github.com/microsoft/PowerToys/issues/49307"
+    },
+    {
+        "id": 4879848670,
+        "number": 49306,
+        "title": "The monitor cannot detect my hardware",
+        "state": "open",
+        "created_at": "2026-07-14T04:28:51Z",
+        "updated_at": "2026-07-14T04:29:34Z",
+        "closed_at": null,
+        "author": "Moyxi",
+        "comments": 0,
+        "labels": [
+            "Issue-Bug",
+            "Needs-Triage",
+            "Product-Command Palette"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Microsoft PowerToys version\n\n0.100.2\n\n### Installation method\n\nGitHub\n\n### Area(s) with issue?\n\nCommand Palette\n\n### Steps to reproduce\n\nThis often happens after turning off and restarting. Sometimes restarting the component via the menu may fix it, but the issue persists on the next restart.\nAlso, after restarting, my Time Component might move to the left of the Task Manager section, but in reality, before I shut down, the Time Widget was on the right side of the Task Manager widget.\n\n\n\n### ✔️ Expected Behavior\n\n<img width=\"247\" height=\"17\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/eb7658a9-d21c-4dad-8e26-4027b274f66f\" />\n\n### ❌ Actual Behavior\n\n\n<img width=\"238\" height=\"19\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/41648c6a-91a4-4dde-8e40-f722f2c5cdd7\" />\n\n### Upload Bug Report ZIP-file\n\n[PowerToysReport_2026-07-14-12-17-55.zip](https://github.com/user-attachments/files/29992917/PowerToysReport_2026-07-14-12-17-55.zip)\n\n### Additional Information\n\nWin11 25H2 26200.8737\nRun as administrator\n\n\n### Other Software\n\n_No response_",
+        "url": "https://github.com/microsoft/PowerToys/issues/49306"
+    },
+    {
+        "id": 4878152338,
+        "number": 49305,
+        "title": "Copy as Plain Text",
+        "state": "open",
+        "created_at": "2026-07-13T22:28:11Z",
+        "updated_at": "2026-07-13T22:29:56Z",
+        "closed_at": null,
+        "author": "JGSstudios",
+        "comments": 0,
+        "labels": [
+            "Needs-Triage",
+            "Product-Advanced Paste"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Description of the new feature / enhancement\n\nCopies text as plain text and removes plain text formatting.\n\n### Scenario when this would be used?\n\nSometimes, plain text IS formatting, which can cause problems when using \"Paste as Plain Text\" because it doesn't remove the plain text formatting. I was pasting from Copilot, and using the plain text paste, Libre Office Writer (Word not tested) formats it with the plain text formatting, so I have to use the in-program function to actually paste as plain text.\n\n### Supporting information\n\n_No response_",
+        "url": "https://github.com/microsoft/PowerToys/issues/49305"
+    },
+    {
+        "id": 4877593172,
+        "number": 49304,
+        "title": "PowerToys Run ran into an issue",
+        "state": "closed",
+        "created_at": "2026-07-13T21:04:19Z",
+        "updated_at": "2026-07-13T21:07:17Z",
+        "closed_at": "2026-07-13T21:07:15Z",
+        "author": "theisle69-boop",
+        "comments": 2,
+        "labels": [
+            "Issue-Bug",
+            "Resolution-Duplicate",
+            "Product-PowerToys Run"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Microsoft PowerToys version\n\n0.86.0.0\n\n### Installation method\n\nPowerToys auto-update\n\n### Area(s) with issue?\n\nGeneral\n\n### Steps to reproduce\n\n<img width=\"564\" height=\"417\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/9e14bca1-fcdf-4424-8977-2e3339b6181c\" />\n\nC:\\Users\\TREVGA\\AppData\\Local\\Microsoft\\PowerToys\\PowerToys Run\\Logs\\0.86.0.0\\2026-07-13.txt\n\nVersion: 0.86.0.0\nOS Version: Microsoft Windows NT 10.0.26200.0\nIntPtr Length: 8\nx64: True\nDate: 7/13/2026 1:26:58 PM\nException:\nSystem.Runtime.InteropServices.COMException (0x80263001): {Desktop composition is disabled} The operation could not be completed because desktop composition is disabled. (0x80263001)\n   at Standard.NativeMethods.DwmExtendFrameIntoClientArea(IntPtr hwnd, MARGINS& pMarInset)\n   at System.Windows.Shell.WindowChromeWorker._ExtendGlassFrame()\n   at System.Windows.Shell.WindowChromeWorker._UpdateFrameState(Boolean force)\n   at System.Windows.Shell.WindowChromeWorker._HandleDwmCompositionChanged(WM uMsg, IntPtr wParam, IntPtr lParam, Boolean& handled)\n   at System.Windows.Shell.WindowChromeWorker._WndProc(IntPtr hwnd, Int32 msg, IntPtr wParam, IntPtr lParam, Boolean& handled)\n   at System.Windows.Interop.HwndSource.PublicHooksFilterMessage(IntPtr hwnd, Int32 msg, IntPtr wParam, IntPtr lParam, Boolean& handled)\n   at System.Windows.Threading.ExceptionWrapper.InternalRealCall(Delegate callback, Object args, Int32 numArgs)\n   at System.Windows.Threading.ExceptionWrapper.TryCatchWhen(Object source, Delegate callback, Object args, Int32 numArgs, Delegate catchHandler)\n\n\n\n### ✔️ Expected Behavior\n\n_No response_\n\n### ❌ Actual Behavior\n\n_No response_\n\n### Upload Bug Report ZIP-file\n\n_No response_\n\n### Additional Information\n\n_No response_\n\n### Other Software\n\n_No response_",
+        "url": "https://github.com/microsoft/PowerToys/issues/49304"
+    },
+    {
+        "id": 4875684528,
+        "number": 49302,
+        "title": "Dock/Material/Transparent black font text",
+        "state": "open",
+        "created_at": "2026-07-13T16:40:19Z",
+        "updated_at": "2026-07-13T20:06:28Z",
+        "closed_at": null,
+        "author": "danagun",
+        "comments": 0,
+        "labels": [
+            "Needs-Triage",
+            "Product-Command Palette",
+            "CmdPal - Dock"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Description of the new feature / enhancement\n\nIs it technically possible for the text color in Dock/MaterialStatus to automatically adjust to what provides the greatest contrast against the background? Could you try it and see if this is aesthetically sensible and beneficial?  If it is, then it would be great to offer user control through an enable/disable switch. Assumption: there exists an algorithm to compute the color with the greatest contrast to another color. \n\n### Scenario when this would be used?\n\nIf I were or am a power user, I usually try to accomplish as much as possible in a given amount of time (and probably always have a stopwatch or countdown timer running). It is much slower to read material with little contrast to its background. But I may also appreciate the aesthetics of my work environment, and the transparent mode is very pleasing to look at.\n\n### Supporting information\n\nSystem hardware state information on the Dock is very useful and glanced at many times per work session. Dock/Material/Transparent is very classy, especially with the text in black, but can be very difficult to read on darker backgrounds. Acrylic is very easy to read but not as elegant.",
+        "url": "https://github.com/microsoft/PowerToys/issues/49302"
+    },
+    {
+        "id": 4874031457,
+        "number": 49299,
+        "title": "Appreciation for the PowerToys Command Palette documentation",
+        "state": "open",
+        "created_at": "2026-07-13T13:20:55Z",
+        "updated_at": "2026-07-13T13:25:22Z",
+        "closed_at": null,
+        "author": "gyodragos-cell",
+        "comments": 0,
+        "labels": [
+            "Issue-Docs",
+            "Needs-Triage",
+            "Product-Command Palette"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Describe the requested doc changes\n\nI just wanted to say thank you for the amazing work on PowerToys Command Palette.  \nThe documentation is clear, inspiring, and shows how much effort and passion the authors put into it.  \nIt’s easy to understand, beautifully designed, and truly helps users accomplish their tasks.  \nYou’ve made something special — I hope this message makes your day brighter and brings you many likes, because you deserve it!\n",
+        "url": "https://github.com/microsoft/PowerToys/issues/49299"
+    },
+    {
+        "id": 4872187700,
+        "number": 49298,
+        "title": "出了点问题",
+        "state": "closed",
+        "created_at": "2026-07-13T09:17:02Z",
+        "updated_at": "2026-07-13T09:22:10Z",
+        "closed_at": "2026-07-13T09:22:08Z",
+        "author": "fbdrjh",
+        "comments": 2,
+        "labels": [
+            "Issue-Bug",
+            "Resolution-Duplicate"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Microsoft PowerToys version\n\n0.94.2\n\n### Installation method\n\nGitHub\n\n### Area(s) with issue?\n\nGeneral\n\n### Steps to reproduce\n\n\n\nVersion: 0.94.2.0\nOS Version: Microsoft Windows NT 10.0.26200.0\nIntPtr Length: 8\nx64: True\nDate: 2026/7/13 17:07:45\nException:\nSystem.Reflection.TargetInvocationException: Exception has been thrown by the target of an invocation.\n ---> System.Runtime.InteropServices.COMException (0x80263001): {Desktop composition is disabled} 操作无法完成，因为已禁用桌面合成。 (0x80263001)\n   at Standard.NativeMethods.DwmExtendFrameIntoClientArea(IntPtr hwnd, MARGINS& pMarInset)\n   at System.Windows.Appearance.WindowBackdropManager.UpdateGlassFrame(IntPtr hwnd, WindowBackdropType backdropType)\n   at System.Windows.Appearance.WindowBackdropManager.ApplyBackdrop(IntPtr hwnd, WindowBackdropType backdropType)\n   at System.Windows.Appearance.WindowBackdropManager.SetBackdrop(Window window, WindowBackdropType backdropType)\n   at System.Windows.ThemeManager.ApplyStyleOnWindow(Window window, Boolean useLightColors)\n   at System.Windows.ThemeManager.OnApplicationThemeChanged(ThemeMode oldThemeMode, ThemeMode newThemeMode)\n   at PowerLauncher.Helper.ThemeManager.SetSystemTheme(Theme theme)\n   at PowerLauncher.Helper.ThemeManager.<>c__DisplayClass14_0.<UpdateTheme>b__0()\n   at System.Windows.Threading.Dispatcher.Invoke(Action callback, DispatcherPriority priority, CancellationToken cancellationToken, TimeSpan timeout)\n   at System.Windows.Threading.Dispatcher.Invoke(Action callback)\n   at PowerLauncher.Helper.ThemeManager.UpdateTheme()\n   at PowerLauncher.Helper.ThemeManager.OnUserPreferenceChanged(Object sender, UserPreferenceChangedEventArgs e)\n   at InvokeStub_UserPreferenceChangedEventHandler.Invoke(Object, Span`1)\n   at System.Reflection.MethodBaseInvoker.InvokeWithFewArgs(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)\n   --- End of inner exception stack trace ---\n   at System.Reflection.MethodBaseInvoker.InvokeWithFewArgs(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)\n   at System.Reflection.RuntimeMethodInfo.Invoke(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)\n   at System.Delegate.DynamicInvokeImpl(Object[] args)\n   at System.Windows.Threading.ExceptionWrapper.InternalRealCall(Delegate callback, Object args, Int32 numArgs)\n   at System.Windows.Threading.ExceptionWrapper.TryCatchWhen(Object source, Delegate callback, Object args, Int32 numArgs, Delegate catchHandler)\n\n\n\n### ✔️ Expected Behavior\n\n_No response_\n\n### ❌ Actual Behavior\n\n_No response_\n\n### Upload Bug Report ZIP-file\n\n[2026-07-13.txt](https://github.com/user-attachments/files/29961044/2026-07-13.txt)\n\n### Additional Information\n\n_No response_\n\n### Other Software\n\n_No response_",
+        "url": "https://github.com/microsoft/PowerToys/issues/49298"
+    },
+    {
+        "id": 4871147577,
+        "number": 49297,
+        "title": "Enhanced Clipboard",
+        "state": "open",
+        "created_at": "2026-07-13T06:52:16Z",
+        "updated_at": "2026-07-13T06:52:29Z",
+        "closed_at": null,
+        "author": "otherwork07",
+        "comments": 0,
+        "labels": [
+            "Needs-Triage",
+            "Product-Advanced Paste"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Description of the new feature / enhancement\n\nUpgrade the copy and paste (clipboard) functionality with advanced features such as: monitoring application actions on the clipboard, highlighting copied content with a slow-motion blinking effect to help users easily check if the desired content has been copied, etc.\n\nIt is possible to upgrade and rename \"Advanced Paste\" to \"Enhanced Copy and Paste Functionality\".\n\n### Scenario when this would be used?\n\nUpgrade the copy and paste (clipboard) functionality with advanced features such as: monitoring application actions on the clipboard, highlighting copied content with a slow-motion blinking effect to help users easily check if the desired content has been copied, etc.\n\n### Supporting information\n\n_No response_",
+        "url": "https://github.com/microsoft/PowerToys/issues/49297"
+    },
+    {
+        "id": 4871109796,
+        "number": 49296,
+        "title": "Add comments to keyboard manager",
+        "state": "open",
+        "created_at": "2026-07-13T06:46:40Z",
+        "updated_at": "2026-07-13T06:46:55Z",
+        "closed_at": null,
+        "author": "rennefJ",
+        "comments": 0,
+        "labels": [
+            "Needs-Triage",
+            "Product-Keyboard Manager"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Description of the new feature / enhancement\n\nIn the keyboard manager it would be great if there was an additional optional field where one could add comments to the individual keyboard shortcuts.\n\n\n### Scenario when this would be used?\n\nIf you have a lot of keyboard shortcuts in keyboard manager, you loose track of which shortcut is for which action exactly or why one created that combination. \nAllowing to add comments to each keyboard shortcut would allow to mor easily figure out what the shortcut is for.\nFor example:\nYou have \"Alt + T maps to Ctrl + T in msedge\" -> Comment \"Open new tab in Edge Browser\"\n\n### Supporting information\n\n_No response_",
+        "url": "https://github.com/microsoft/PowerToys/issues/49296"
+    },
+    {
+        "id": 4870968264,
+        "number": 49295,
+        "title": "CmdPal: Dock: Incorrectly reports display 1 as display 2",
+        "state": "open",
+        "created_at": "2026-07-13T06:22:55Z",
+        "updated_at": "2026-07-13T12:42:44Z",
+        "closed_at": null,
+        "author": "ReginaldTang",
+        "comments": 2,
+        "labels": [
+            "Issue-Bug",
+            "Needs-Triage",
+            "Product-Command Palette",
+            "CmdPal - Dock"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Microsoft PowerToys version\n\n0.100.2\n\n### Installation method\n\nMicrosoft Store\n\n### Area(s) with issue?\n\nCommand Palette\n\n### Steps to reproduce\n\n1. Connect a display to a device that has a 'lid'\n2. Put the main device to sleep\n3. While the device is sleeping, get the lock screen display on the second monitor (main device sleeping, second one active)\n(Would be easier on a device with an external power button: shut the lid first, and then press the button to wake up the external monitor)\n#### Would be more effective to reproduce if you wait ~10 seconds between closing the lid and pressing the power button\n\n### ✔️ Expected Behavior\n\nCmdPal correctly displays the correct dock for each display\n\n### ❌ Actual Behavior\n\nCmdPal mixes up the displays (thinks display 1(actual) is display 2(what it thinks))\n\n<img width=\"2880\" height=\"1916\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/2c97b143-68c6-4d02-8039-614d6a096ad3\" />\n\n### Upload Bug Report ZIP-file\n\n_No response_\n\n### Additional Information\n\n_No response_\n\n### Other Software\n\n_No response_",
+        "url": "https://github.com/microsoft/PowerToys/issues/49295"
+    },
+    {
+        "id": 4870389499,
+        "number": 49293,
+        "title": "Power Tools Error",
+        "state": "closed",
+        "created_at": "2026-07-13T04:27:09Z",
+        "updated_at": "2026-07-13T04:27:25Z",
+        "closed_at": "2026-07-13T04:27:21Z",
+        "author": "brucer55",
+        "comments": 0,
+        "labels": [
+            "Issue-Bug",
+            "Needs-Triage",
+            "Product-Environment Variables"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Microsoft PowerToys version\n\n0.87.1.0\n\n### Installation method\n\nGitHub\n\n### Area(s) with issue?\n\nEnvironment Variables\n\n### Steps to reproduce\n\nVersion: 0.87.1.0\nOS Version: Microsoft Windows NT 10.0.26200.0\nIntPtr Length: 8\nx64: True\nDate: 7/12/2026 2:31:05 PM\nException:\nSystem.Runtime.InteropServices.COMException (0x80263001): {Desktop composition is disabled} The operation could not be completed because desktop composition is disabled. (0x80263001)\n   at Standard.NativeMethods.DwmExtendFrameIntoClientArea(IntPtr hwnd, MARGINS& pMarInset)\n   at System.Windows.Appearance.WindowBackdropManager.UpdateGlassFrame(IntPtr hwnd, WindowBackdropType backdropType)\n   at System.Windows.Appearance.WindowBackdropManager.ApplyBackdrop(IntPtr hwnd, WindowBackdropType backdropType)\n   at System.Windows.Appearance.WindowBackdropManager.SetBackdrop(Window window, WindowBackdropType backdropType)\n   at System.Windows.ThemeManager.ApplyStyleOnWindow(Window window, Boolean useLightColors)\n   at System.Windows.ThemeManager.ApplyFluentOnWindow(Window window)\n   at System.Windows.ThemeManager.OnSystemThemeChanged()\n   at System.Windows.SystemResources.SystemThemeFilterMessage(IntPtr hwnd, Int32 msg, IntPtr wParam, IntPtr lParam, Boolean& handled)\n   at MS.Win32.HwndWrapper.WndProc(IntPtr hwnd, Int32 msg, IntPtr wParam, IntPtr lParam, Boolean& handled)\n   at System.Windows.Threading.ExceptionWrapper.InternalRealCall(Delegate callback, Object args, Int32 numArgs)\n   at System.Windows.Threading.ExceptionWrapper.TryCatchWhen(Object source, Delegate callback, Object args, Int32 numArgs, Delegate catchHandler)\n\n\n\n### ✔️ Expected Behavior\n\n_No response_\n\n### ❌ Actual Behavior\n\n_No response_\n\n### Upload Bug Report ZIP-file\n\n_No response_\n\n### Additional Information\n\n_No response_\n\n### Other Software\n\n_No response_",
+        "url": "https://github.com/microsoft/PowerToys/issues/49293"
+    },
+    {
+        "id": 4870143035,
+        "number": 49292,
+        "title": "Command Palette Dock Net Stats",
+        "state": "open",
+        "created_at": "2026-07-13T03:36:05Z",
+        "updated_at": "2026-07-13T03:36:17Z",
+        "closed_at": null,
+        "author": "pamith007",
+        "comments": 0,
+        "labels": [
+            "Needs-Triage",
+            "Product-Command Palette"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Description of the new feature / enhancement\n\nIn command palette dock, make it automatically identify my network device and start to show stats(sending and recieving speed of network).Everytime after starting my lap i need to do it manually by clicking on it and then skipping every other adapter till i get my current networking adaptor[its like old sequential access, boring:)] ... so i guess it will be more convenient if it automaticaly identify and select what i use for netwoking. \n\n<img width=\"190\" height=\"38\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/36df2c2a-0b17-4fa5-9b23-5b0d91433697\" />\n\n### Scenario when this would be used?\n\ncommand palette dock\n\n### Supporting information\n\n_No response_",
+        "url": "https://github.com/microsoft/PowerToys/issues/49292"
+    },
+    {
+        "id": 4869685389,
+        "number": 49290,
+        "title": "desktop composition disabled",
+        "state": "closed",
+        "created_at": "2026-07-13T01:45:57Z",
+        "updated_at": "2026-07-13T02:15:29Z",
+        "closed_at": "2026-07-13T02:15:27Z",
+        "author": "Luminous-Journey",
+        "comments": 2,
+        "labels": [
+            "Issue-Bug",
+            "Resolution-Duplicate",
+            "Product-PowerToys Run"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Microsoft PowerToys version\n\n0.94.0\n\n### Installation method\n\nMicrosoft Store\n\n### Area(s) with issue?\n\nFancyZones\n\n### Steps to reproduce\n\nUnknown\n\n### ✔️ Expected Behavior\n\nNormal operation, happend in the middle of normal usage, was not interacting with powertoys at all. was not even moving a window\n\n### ❌ Actual Behavior\n\nimage was stopped from being sent to displayed and input peripherals were disconected, audio still worked\n\n### Upload Bug Report ZIP-file\n\n[2026-07-12.txt](https://github.com/user-attachments/files/29948851/2026-07-12.txt)\n\n### Additional Information\n\nWin 11 Home 25H2\n.Net ver: 8.0.21 (x64)\nEnglish\nUser install\nrunning as default\n\n### Other Software\n\nwas playing ac black flag resynced",
+        "url": "https://github.com/microsoft/PowerToys/issues/49290"
+    },
+    {
+        "id": 4869379597,
+        "number": 49289,
+        "title": "問題が発生しました。",
+        "state": "closed",
+        "created_at": "2026-07-13T00:21:58Z",
+        "updated_at": "2026-07-13T01:27:03Z",
+        "closed_at": "2026-07-13T01:27:01Z",
+        "author": "Esprit-Plage",
+        "comments": 2,
+        "labels": [
+            "Issue-Bug",
+            "Resolution-Duplicate",
+            "Product-PowerToys Run"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Microsoft PowerToys version\n\n0.100.2.0\n\n### Installation method\n\nPowerToys auto-update\n\n### Area(s) with issue?\n\nPowerToys Run\n\n### Steps to reproduce\n\n[2026-07-13.txt](https://github.com/user-attachments/files/29947770/2026-07-13.txt)\n\n### ✔️ Expected Behavior\n\n_No response_\n\n### ❌ Actual Behavior\n\n_No response_\n\n### Upload Bug Report ZIP-file\n\n_No response_\n\n### Additional Information\n\n_No response_\n\n### Other Software\n\n_No response_",
+        "url": "https://github.com/microsoft/PowerToys/issues/49289"
+    },
+    {
+        "id": 4867996241,
+        "number": 49285,
+        "title": "Documentation: broken links and incorrect source file references in developer docs",
+        "state": "open",
+        "created_at": "2026-07-12T17:19:00Z",
+        "updated_at": "2026-07-12T17:19:14Z",
+        "closed_at": null,
+        "author": "Moli13337",
+        "comments": 0,
+        "labels": [
+            "Product-PowerToys Run",
+            "Area-Localization",
+            "Product-File Explorer"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "## Documentation: broken links and incorrect source file references\n\nWhile reviewing the developer documentation, I found three files with broken links or incorrect source file references:\n\n### 1. `doc/devdocs/modules/fileexploreraddons.md` — broken source code link\n\nLine 17 links to `src/modules/fileexplorerpreview`, which does not exist in the repository. The actual source code directory is `src/modules/previewpane`.\n\n### 2. `doc/devdocs/modules/launcher/plugins/calculator.md` — broken unit test links (10 occurrences)\n\nLines 50–63 link to `Microsoft.PowerToys.Run.Plugin.Calculator.UnitTests` (plural), but the actual test project directory is `Microsoft.PowerToys.Run.Plugin.Calculator.UnitTest` (singular). All 10 links in this section are broken.\n\n### 3. `doc/devdocs/core/runner.md` — incorrect file reference\n\nLine 122 references `centralized_keyboard_hook.cpp`, but the actual file is `centralized_kb_hook.cpp` (located at `src/runner/centralized_kb_hook.cpp`).\n\nI will submit a PR to fix these.",
+        "url": "https://github.com/microsoft/PowerToys/issues/49285"
+    },
+    {
+        "id": 4866939175,
+        "number": 49284,
+        "title": "CmdPal: Add extra world clocks",
+        "state": "open",
+        "created_at": "2026-07-12T12:01:21Z",
+        "updated_at": "2026-07-12T12:01:32Z",
+        "closed_at": null,
+        "author": "jiripolasek",
+        "comments": 0,
+        "labels": [
+            "Needs-Triage",
+            "Product-Command Palette",
+            "CmdPal - Dock"
+        ],
+        "assignees": [
+            "jiripolasek"
+        ],
+        "locked": false,
+        "body": "### Description of the new feature / enhancement\n\nAdd support for extra clocks with different time-zones, as list items and dock bands.\n\n### Scenario when this would be used?\n\nAllow users working across different times instantly see all times he needs.\n\n### Supporting information\n\n_No response_",
+        "url": "https://github.com/microsoft/PowerToys/issues/49284"
+    },
+    {
+        "id": 4866799066,
+        "number": 49283,
+        "title": "CmdPal: Content dialogs and collapsed mode do not play well together",
+        "state": "open",
+        "created_at": "2026-07-12T11:13:45Z",
+        "updated_at": "2026-07-12T11:14:00Z",
+        "closed_at": null,
+        "author": "jiripolasek",
+        "comments": 0,
+        "labels": [
+            "Issue-Bug",
+            "Needs-Triage",
+            "Product-Command Palette"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Microsoft PowerToys version\n\nmain\n\n### Installation method\n\nDev build in Visual Studio\n\n### Area(s) with issue?\n\nCommand Palette\n\n### Steps to reproduce\n\n<img width=\"1424\" height=\"548\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/56f941f6-655e-42c3-a1c4-6100a20e6ad4\" />\n\n### ✔️ Expected Behavior\n\n_No response_\n\n### ❌ Actual Behavior\n\n_No response_\n\n### Upload Bug Report ZIP-file\n\n_No response_\n\n### Additional Information\n\n_No response_\n\n### Other Software\n\n_No response_",
+        "url": "https://github.com/microsoft/PowerToys/issues/49283"
+    },
+    {
+        "id": 4866187270,
+        "number": 49282,
+        "title": "[MWB] Keyboard does not work on remote machine",
+        "state": "open",
+        "created_at": "2026-07-12T09:22:01Z",
+        "updated_at": "2026-07-13T00:14:16Z",
+        "closed_at": null,
+        "author": "henrykwok69-create",
+        "comments": 0,
+        "labels": [
+            "Issue-Bug",
+            "Needs-Triage",
+            "Product-Mouse Without Borders"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Microsoft PowerToys version\n\n0.100.2\n\n### Installation method\n\nMicrosoft Store\n\n### Area(s) with issue?\n\nMouse Without Borders\n\n### Steps to reproduce\n\ncant type based on one keyboard\n\n### ✔️ Expected Behavior\n\ncan use same keyboard to type after successful linkage\n\n### ❌ Actual Behavior\n\ncant type, only mouse movement is allowed. Tried i) being the admin role, ii) reboot, iii) reconnect, iv) create firewall rule, v) completely reset one of my computer ..... still cant solve the problem\n\n### Upload Bug Report ZIP-file\n\n_No response_\n\n### Additional Information\n\nOS Version: Microsoft Windows NT 10.0.26200.0 \n.NET Version: .NET 10.0.9\nPowerToys is running as admin (elevated)\nInstall scope: per user\nOperating System Language: English (Hong Kong SAR)\nSystem locale: en-HK\n\n### Other Software\n\n_No response_",
+        "url": "https://github.com/microsoft/PowerToys/issues/49282"
+    },
+    {
+        "id": 4865675413,
+        "number": 49281,
+        "title": "Command palette dock is unstable with frequent crashes",
+        "state": "open",
+        "created_at": "2026-07-12T06:16:18Z",
+        "updated_at": "2026-07-12T11:04:03Z",
+        "closed_at": null,
+        "author": "azazyahmed",
+        "comments": 2,
+        "labels": [
+            "Issue-Bug",
+            "Needs-Triage",
+            "Product-Command Palette",
+            "duplicate"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Microsoft PowerToys version\n\nv0.100.2\n\n### Installation method\n\nMicrosoft Store\n\n### Area(s) with issue?\n\nCommand Palette\n\n### Steps to reproduce\n\nUsually Spontaneous\nSometimes, on adding new a new extension, or using an extension (particularly the Simple snippet & To-do list)\n\n\n### ✔️ Expected Behavior\n\nCommand palette dock to be stable, and retain details/layouts with multiple screens\n\n### ❌ Actual Behavior\n\nCommand palete dock is unstable with frequent crashes. \nAlso, when working with multiple screens, the dock layouts (detail) are not retained correctly. Docks assigned to specific screens are often moved unexpectedly between monitors\n\n### Upload Bug Report ZIP-file\n\n[PowerToysReport_2026-07-12-08-57-50.zip](https://github.com/user-attachments/files/29935160/PowerToysReport_2026-07-12-08-57-50.zip)\n\n### Additional Information\n\nWindows 11 Enterprise \nMicrosoft .NET Runtime - 5.0.17 (x64)\nEnglish\nSystem installation\nNot admin\n\n### Other Software\n\nNothing of the following is installed:\n\nvim 8.2 (inside WSL)\nOpenSSH_for_Windows_8.1p1\nMy Cool Application v0.3 (include a code snippet if it would help!)",
+        "url": "https://github.com/microsoft/PowerToys/issues/49281"
+    }
+]

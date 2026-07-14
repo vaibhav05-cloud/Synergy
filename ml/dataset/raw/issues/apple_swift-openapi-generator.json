@@ -1,0 +1,369 @@
+[
+    {
+        "id": 4838685614,
+        "number": 923,
+        "title": "Unused import of `Foundation.URL` when OpenAPI spec does not contain a server URL",
+        "state": "open",
+        "created_at": "2026-07-08T15:06:11Z",
+        "updated_at": "2026-07-10T10:48:28Z",
+        "closed_at": null,
+        "author": "ahoppen",
+        "comments": 2,
+        "labels": [
+            "area/generator",
+            "kind/enhancement"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "If the OpenAPI spec does not contain a server URL, the package does not compile without warnings anymore:\n\n```swift\n/private/var/folders/6g/w8x1jq613lxb8rywcsr6c2sr0000gn/T/tmp.kMsrdZjt6T/Test/.build/plugins/outputs/test/MyAPI/destination/OpenAPIGenerator/GeneratedSources/Types.swift:11:9: error: package import of 'Foundation' was not used in package declarations [#UnusedImportAccess]\n 9 | package import struct Foundation.URL\n10 | package import struct Foundation.Data\n11 | package import struct Foundation.Date\n   |         `- error: package import of 'Foundation' was not used in package declarations [#UnusedImportAccess]\n12 | #endif\n13 | /// A type that performs HTTP operations defined by the OpenAPI document.\n```\n\nBuild the attached package with `swift build -Xswiftc -warnings-as-errors` to reproduce.\n\n[Test.zip](https://github.com/user-attachments/files/29806843/Test.zip)",
+        "url": "https://github.com/apple/swift-openapi-generator/issues/923"
+    },
+    {
+        "id": 4786810248,
+        "number": 921,
+        "title": "Xcodebuild archive fails on Mac Catalyst: Multiple commands produce `InternalCollectionsUtilities.o`",
+        "state": "closed",
+        "created_at": "2026-07-01T15:11:21Z",
+        "updated_at": "2026-07-02T14:27:19Z",
+        "closed_at": "2026-07-02T14:27:19Z",
+        "author": "GabrieleMoia",
+        "comments": 1,
+        "labels": [
+            "kind/bug",
+            "status/triage"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Description\n\nArchiving for Mac Catalyst fails with a build collision when `swift-openapi-generator` (as a build-tool plugin) and `swift-openapi-urlsession` are both present in the dependency graph.\n\n### Error\n\n```\nerror: Multiple commands produce \n'.../UninstalledProducts/macosx/InternalCollectionsUtilities.o'\n```\n\n### Root cause\n\n`swift-collections` enters the build graph via two independent paths with different roles:\n\n- **Runtime dependency**: `swift-openapi-urlsession` → `DequeModule` → `swift-collections`\n- **Host-tool dependency**: `swift-openapi-generator` (build-tool plugin) → `OrderedCollections` → `swift-collections`\n\nIn normal builds Xcode de-duplicates the package. During `xcodebuild archive` for Mac Catalyst, both the app-side build and the plugin's host-tool build emit `InternalCollectionsUtilities.o` to the same path (`UninstalledProducts/macosx/`), causing a collision.\n\nThis does **not** happen when archiving for iOS, because the app compiles for `iphoneos` and the outputs land in a different directory.\n\n### Workarounds tried\n\n- `ONLY_ACTIVE_ARCH=YES` — no effect; the collision is on the path, not the architecture\n- Separate CI jobs — no effect; Xcode invokes the plugin regardless of prior steps\n\n### Reproduction\n\n1. Create an Xcode project with Mac Catalyst enabled\n2. Add `swift-openapi-generator` as a build-tool plugin on a target\n3. Add `swift-openapi-urlsession` as a runtime dependency on the same or a related target\n4. Run `xcodebuild archive` with destination `generic/platform=macOS,variant=Mac Catalyst`\n\n### Package version(s)\n\nswift-openapi-generator: 1.10.2\nswift-openapi-urlsession: 1.1.0\n\n### Expected behavior\n\nArchiving for Mac Catalyst should succeed without requiring removal of the build-tool plugin.\n\n### Environment\n\nXcode: 26.2\nmacOS: 26.0\nSwift 5\n\n### Additional information\n\n_No response_",
+        "url": "https://github.com/apple/swift-openapi-generator/issues/921"
+    },
+    {
+        "id": 4743467523,
+        "number": 919,
+        "title": "Best practice for deduplicating in-flight requests",
+        "state": "open",
+        "created_at": "2026-06-25T11:43:50Z",
+        "updated_at": "2026-06-26T17:11:45Z",
+        "closed_at": null,
+        "author": "bartoszirzyk",
+        "comments": 8,
+        "labels": [
+            "kind/feature",
+            "status/triage"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Motivation\n\nHello,\nI wanted to ask how to approach with removing duplicated request in flight? I was wondering about creating dedicated Middleware that will catch all simultaneous calls, fire first one and on return share result with other callers. This might work fine, but I faced an issue where the first call is cancelled. This triggers cancel handler in URLSessionTransport that cancels request and returns nothing. This propagates to all callers waiting for the response.\n\n\n### Proposed solution\n\nIn iOS 27 there will be shield mechanism https://developer.apple.com/documentation/swift/withtaskcancellationshield(operation:)\nbut I need to have compatibility with older iOS versions.\n\nI thought about shared detached Task, but ClientMiddleware protocol assumes that next closure is non escaping, which would be required in order to pass it into a new task.\n\nOther option I would see is to be able to control cancel behaviour in URLSessionTransport. A flag in configuration that determines if canceling task means that dataTask is cancelled/ operation checks for cancellation. Right now call is fired anyway by URLSession, but later checks in e. g. bidirectionalStreamingRequest:\n```\n            try Task.checkCancellation()\n            return (try HTTPResponse(response), responseBody)\n```\nmakes impossible to react in higher layers. I would like to have more freedom of controlling such behaviour. If task is cancelled, it would make sense to still have a response and its body to evaluate and maybe clean up.\n\n\n### Alternatives considered\n\n_No response_\n\n### Additional information\n\n_No response_",
+        "url": "https://github.com/apple/swift-openapi-generator/issues/919"
+    },
+    {
+        "id": 4720049853,
+        "number": 918,
+        "title": "[URLSession transport] HTTPBodyOutputStreamBridge.cancel() races with stream/writer events",
+        "state": "closed",
+        "created_at": "2026-06-22T19:47:49Z",
+        "updated_at": "2026-06-24T19:51:20Z",
+        "closed_at": "2026-06-24T19:51:20Z",
+        "author": "budde",
+        "comments": 1,
+        "labels": [
+            "kind/bug",
+            "status/triage"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Description\n\nhttps://github.com/apple/swift-openapi-urlsession/pull/94 added a path for the `URLSession` delegate to pass errors back to `HTTPBodyOutputStreamBridge` via an added `cancel()` method. These cancellation events can race with other terminal events emitted by the output stream or by the writer task.  When more than one drives the state machine to its terminal state, the loser triggers a preconditionFailure.\n\n### Reproduction\n\nThe reproduction in #917 can trigger this when run continuously. This will take a significant number of iterations though. This happened a bit more reliably when setting up a custom local TCP relay to inject intermittent latency.\n\n```swift\nimport Foundation\nimport HTTPTypes\nimport OpenAPIRuntime\nimport OpenAPISession\n\nlet bodyBytes = 80 * 1024  // make sure we try to upload some bytes\nlet targetURL = URL(string: \"https://does-not-resolve.invalid/leak/repro\")!\n\nlet payload = [UInt8](repeating: 0xFF, count: bodyBytes)\n\nwhile true {\n    let body = HTTPBody(\n        payload,\n        length: .known(Int64(payload.count)),\n        iterationBehavior: .single\n    )\n\n    let request = HTTPRequest(\n        method: .post,\n        scheme: targetURL.scheme,\n        authority: targetURL.host,\n        path: targetURL.path,\n        headerFields: [\n            .contentType: \"application/octet-stream\",\n            .contentLength: String(payload.count),\n        ]\n    )\n\n    do {\n        _ = try await transport.send(\n            request,\n            body: body,\n            baseURL: targetURL,\n            operationID: \"repro\"\n        )\n    } catch {\n        // Expected — DNS resolution fails for .invalid. Body is discarded.\n    }\n}\n```\n\nExample debug logs showing the state changes before a percondition failure:\n\n```console\n[stream(_:handle:) HTTPBodyOutputStreamBridge.swift:107] Output stream delegate received event: NSStreamEvent(rawValue: 1).\n[state HTTPBodyOutputStreamBridge.swift:25] Output stream delegate state transition: initial -> waitingForBytes(spaceAvailable: false)\n[performAction(_:) HTTPBodyOutputStreamBridge.swift:45] Output stream delegate performing action from state machine: none\n[stream(_:handle:) HTTPBodyOutputStreamBridge.swift:107] Output stream delegate received event: NSStreamEvent(rawValue: 4).\n[state HTTPBodyOutputStreamBridge.swift:25] Output stream delegate state transition: waitingForBytes(spaceAvailable: false) -> waitingForBytes(spaceAvailable: true)\n[performAction(_:) HTTPBodyOutputStreamBridge.swift:45] Output stream delegate performing action from state machine: none\n[urlSession(_:task:didCompleteWithError:) BidirectionalStreamingURLSessionDelegate.swift:175] Task delegate: didCompleteWithError (error: Optional(Error Domain=NSURLErrorDomain Code=-1003 \"A server with the specified hostname could not be found.\" UserInfo={_kCFStreamErrorCodeKey=8, NSUnderlyingError=0x617014ab0 {Error Domain=kCFErrorDomainCFNetwork Code=-1003 \"(null)\" UserInfo={_kCFStreamErrorDomainKey=12, _kCFStreamErrorCodeKey=8, _NSURLErrorNWResolutionReportKey=Resolved 0 endpoints in 1ms using unknown from cache, _NSURLErrorNWPathKey=satisfied (Path is satisfied), interface: bridge0, ipv4}}, _NSURLErrorFailingURLSessionTaskErrorKey=LocalUploadTask <77AD2742-28D5-4F87-9177-2466D5AAED05>.<140>, _NSURLErrorRelatedURLSessionTaskErrorKey=(\n    \"LocalUploadTask <77AD2742-28D5-4F87-9177-2466D5AAED05>.<140>\"\n), NSLocalizedDescription=A server with the specified hostname could not be found., NSErrorFailingURLStringKey=https://does-not-resolve.invalid/leak/repro, NSErrorFailingURLKey=https://does-not-resolve.invalid/leak/repro, _kCFStreamErrorDomainKey=12}))\n[cancel(error:) HTTPBodyOutputStreamBridge.swift:125] Output stream received cancellation request.\n[startWriterTask() HTTPBodyOutputStreamBridge.swift:68] Output stream delegate produced chunk and suspended producer.\n[state HTTPBodyOutputStreamBridge.swift:25] Output stream delegate state transition: waitingForBytes(spaceAvailable: true) -> haveBytes(spaceAvailable: true, [62 bytes])\n[performAction(_:) HTTPBodyOutputStreamBridge.swift:45] Output stream delegate performing action from state machine: writeBytes\n[writePendingBytes(_:) HTTPBodyOutputStreamBridge.swift:97] Output stream delegate wrote 62 bytes to stream.\n[state HTTPBodyOutputStreamBridge.swift:25] Output stream delegate state transition: haveBytes(spaceAvailable: true, [62 bytes]) -> needBytes (spaceAvailable: true, _)\n[performAction(_:) HTTPBodyOutputStreamBridge.swift:45] Output stream delegate performing action from state machine: resumeProducer\n[state HTTPBodyOutputStreamBridge.swift:25] Output stream delegate state transition: needBytes (spaceAvailable: true, _) -> waitingForBytes(spaceAvailable: true)\n[performAction(_:) HTTPBodyOutputStreamBridge.swift:45] Output stream delegate performing action from state machine: none\n[state HTTPBodyOutputStreamBridge.swift:25] Output stream delegate state transition: waitingForBytes(spaceAvailable: true) -> closed (error: Optional(Error Domain=NSURLErrorDomain Code=-1003 \"A server with the specified hostname could not be found.\" UserInfo={_kCFStreamErrorCodeKey=8, NSUnderlyingError=0x617014ab0 {Error Domain=kCFErrorDomainCFNetwork Code=-1003 \"(null)\" UserInfo={_kCFStreamErrorDomainKey=12, _kCFStreamErrorCodeKey=8, _NSURLErrorNWResolutionReportKey=Resolved 0 endpoints in 1ms using unknown from cache, _NSURLErrorNWPathKey=satisfied (Path is satisfied), interface: bridge0, ipv4}}, _NSURLErrorFailingURLSessionTaskErrorKey=LocalUploadTask <77AD2742-28D5-4F87-9177-2466D5AAED05>.<140>, _NSURLErrorRelatedURLSessionTaskErrorKey=(\n    \"LocalUploadTask <77AD2742-28D5-4F87-9177-2466D5AAED05>.<140>\"\n), NSLocalizedDescription=A server with the specified hostname could not be found., NSErrorFailingURLStringKey=https://does-not-resolve.invalid/leak/repro, NSErrorFailingURLKey=https://does-not-resolve.invalid/leak/repro, _kCFStreamErrorDomainKey=12}))\n[performAction(_:) HTTPBodyOutputStreamBridge.swift:45] Output stream delegate performing action from state machine: closeStream\n[startWriterTask() HTTPBodyOutputStreamBridge.swift:74] Output stream delegate wrote final chunk.\nOpenAPIURLSession/HTTPBodyOutputStreamBridge.swift:220: Fatal error: wroteFinalChunk() called in invalid state: closed (error: Optional(Error Domain=NSURLErrorDomain Code=-1003 \"A server with the specified hostname could not be found.\" UserInfo={_kCFStreamErrorCodeKey=8, NSUnderlyingError=0x617014ab0 {Error Domain=kCFErrorDomainCFNetwork Code=-1003 \"(null)\" UserInfo={_kCFStreamErrorDomainKey=12, _kCFStreamErrorCodeKey=8, _NSURLErrorNWResolutionReportKey=Resolved 0 endpoints in 1ms using unknown from cache, _NSURLErrorNWPathKey=satisfied (Path is satisfied), interface: bridge0, ipv4}}, _NSURLErrorFailingURLSessionTaskErrorKey=LocalUploadTask <77AD2742-28D5-4F87-9177-2466D5AAED05>.<140>, _NSURLErrorRelatedURLSessionTaskErrorKey=(\n    \"LocalUploadTask <77AD2742-28D5-4F87-9177-2466D5AAED05>.<140>\"\n), NSLocalizedDescription=A server with the specified hostname could not be found., NSErrorFailingURLStringKey=https://does-not-resolve.invalid/leak/repro, NSErrorFailingURLKey=https://does-not-resolve.invalid/leak/repro, _kCFStreamErrorDomainKey=12}))\n```\n\n### Package version(s)\n\n`swift-openapi-urlsession` is pinned to commit `d3815571a632ab0e10f7e2d9c68caef885579661`.\n\n```console\n.\n├── swift-openapi-urlsession<https://github.com/apple/swift-openapi-urlsession.git@unspecified>\n│   ├── swift-openapi-runtime<https://github.com/apple/swift-openapi-runtime@1.12.0>\n│   │   └── swift-http-types<https://github.com/apple/swift-http-types@1.6.0>\n│   ├── swift-http-types<https://github.com/apple/swift-http-types@1.6.0>\n│   └── swift-collections<https://github.com/apple/swift-collections@1.6.0>\n└── swift-openapi-runtime<https://github.com/apple/swift-openapi-runtime@1.12.0>\n    └── swift-http-types<https://github.com/apple/swift-http-types@1.6.0>\n```\n\n### Expected behavior\n\nThe state machine in `HTTPBodyOutputStreamBridge` should accept and ignore additional terminal events coming from the CFStream delegate or the writer task if the bridge is already in the `closed` state.\n\n### Environment\n\n```console\nswift-driver version: 1.127.14.1 Apple Swift version 6.2.1 (swiftlang-6.2.1.4.8 clang-1700.4.4.1)\nTarget: arm64-apple-macosx26.0\n```\n\n### Additional information\n\n_No response_",
+        "url": "https://github.com/apple/swift-openapi-generator/issues/918"
+    },
+    {
+        "id": 4702488980,
+        "number": 917,
+        "title": "[URLSession transport] HTTPBodyOutputStreamBridge can leak memory due to URLSession errors not propagating",
+        "state": "closed",
+        "created_at": "2026-06-19T17:23:37Z",
+        "updated_at": "2026-06-19T23:51:52Z",
+        "closed_at": "2026-06-19T23:51:52Z",
+        "author": "budde",
+        "comments": 1,
+        "labels": [
+            "kind/bug",
+            "status/triage"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Description\n\nIn the URLSession transport, `HTTPBodyOutputStreamBridge` can leak memory in a couple scenarios due to errors from the underlying `URLSession` not getting propagated to the bridge and prompting cleanup:\n* If `URLSession` errors out while `HTTPBodyOutputStreamBridge` is still in the `. initial` state, it will not close `outputStream` before deinit and the `CFStreamPair` and its buffer will be held open.\n* If the `URLSession` fails while `HTTPBodyOutputStreamBridge` is in the `.haveBytes` state waiting for data to be read of the input stream, the bridge instance will never get cleaned up since the writer `Task` is never cancelled and holds a strong reference to `self`\n\n### Reproduction\n\nThe easiest way to reproduce these leaks is to make continuous requests against a host where DNS resolution fails. Running this loop should cause memory to (slowly) grow unbounded. Running with malloc logging enabled and taking memgraphs should show growing allocations from `URLSessionBidirectionalStreaming` classes.\n\n```swift\nimport Foundation\nimport HTTPTypes\nimport OpenAPIRuntime\nimport OpenAPISession\n\nlet bodyBytes = 80 * 1024  // make sure we try to upload some bytes\nlet targetURL = URL(string: \"https://does-not-resolve.invalid/leak/repro\")!\n\nlet payload = [UInt8](repeating: 0xFF, count: bodyBytes)\n\nwhile true {\n    let body = HTTPBody(\n        payload,\n        length: .known(Int64(payload.count)),\n        iterationBehavior: .single\n    )\n\n    let request = HTTPRequest(\n        method: .post,\n        scheme: targetURL.scheme,\n        authority: targetURL.host,\n        path: targetURL.path,\n        headerFields: [\n            .contentType: \"application/octet-stream\",\n            .contentLength: String(payload.count),\n        ]\n    )\n\n    do {\n        _ = try await transport.send(\n            request,\n            body: body,\n            baseURL: targetURL,\n            operationID: \"repro\"\n        )\n    } catch {\n        // Expected — DNS resolution fails for .invalid. Body is discarded.\n    }\n}\n```\n\n\n\n### Package version(s)\n\n```console\n.\n├── swift-openapi-urlsession<https://github.com/apple/swift-openapi-urlsession.git@1.3.0>\n│   ├── swift-openapi-runtime<https://github.com/apple/swift-openapi-runtime.git@1.12.0>\n│   │   └── swift-http-types<https://github.com/apple/swift-http-types.git@1.6.0>\n│   ├── swift-http-types<https://github.com/apple/swift-http-types.git@1.6.0>\n│   └── swift-collections<https://github.com/apple/swift-collections@1.6.0>\n├── swift-openapi-runtime<https://github.com/apple/swift-openapi-runtime.git@1.12.0>\n│   └── swift-http-types<https://github.com/apple/swift-http-types.git@1.6.0>\n└── swift-http-types<https://github.com/apple/swift-http-types.git@1.6.0>\n```\n\n### Expected behavior\n\nI would expect this not to leak :) \n\n### Environment\n\n```console\nswift-driver version: 1.127.14.1 Apple Swift version 6.2.1 (swiftlang-6.2.1.4.8 clang-1700.4.4.1)\nTarget: arm64-apple-macosx26.0\n```\n\n### Additional information\n\n_No response_",
+        "url": "https://github.com/apple/swift-openapi-generator/issues/917"
+    },
+    {
+        "id": 4588740345,
+        "number": 912,
+        "title": "Add a callback for client response decoding errors",
+        "state": "open",
+        "created_at": "2026-06-04T12:36:34Z",
+        "updated_at": "2026-07-11T07:56:14Z",
+        "closed_at": null,
+        "author": "mikolaj92",
+        "comments": 1,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "## Problem\n\nGenerated client calls currently wrap response decoding failures in `ClientError`, which gives useful context like operation ID, request, response, response body, cause, and the underlying decoding error.\n\nHowever, adopters do not have a central place to observe those decoding failures.\n\nIn production, this makes it hard to report response decoding problems consistently without wrapping every generated client call manually.\n\n```swift\ndo {\n    let output = try await client.getUser(.init(path: .init(id: id)))\n    // use output\n} catch {\n    errorReporter.record(error)\n    throw error\n}\n```\n\nThis works, but it is easy to miss call sites and it repeats the same reporting code across the app.\n\nMiddleware is useful for HTTP-level logging, but it observes the request/response around the transport call. The decoding failure happens later, when the runtime decodes the response body into the generated output type.\n\n## Proposed direction\n\nAdd a small callback on `Configuration` for response decoding failures:\n\n```swift\npublic var clientResponseDecodingErrorHandler: (@Sendable (ClientError) -> Void)?\n```\n\nThe callback would be called when response decoding fails, after the failure has been wrapped in `ClientError`.\n\nThe callback receives `ClientError` rather than the raw decoding error because the wrapped error includes operation and HTTP context. The raw decoding error remains available as `ClientError.underlyingError`.\n\nThe same `ClientError` would still be thrown to the caller.\n\n## Prior work\n\nThis builds on the discussion in:\n\n- apple/swift-openapi-runtime#162\n- apple/swift-openapi-generator#850\n\nThose PRs identified the same general production problem. This issue proposes a simpler model focused only on response decoding failures.\n",
+        "url": "https://github.com/apple/swift-openapi-generator/issues/912"
+    },
+    {
+        "id": 4512079158,
+        "number": 906,
+        "title": "Support nullable referenced schemas using anyOf with type: null",
+        "state": "open",
+        "created_at": "2026-05-24T15:35:25Z",
+        "updated_at": "2026-05-24T15:39:27Z",
+        "closed_at": null,
+        "author": "zunda-pixel",
+        "comments": 0,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "### Description\n\nWhen an OpenAPI 3.1 schema uses `anyOf` with a `$ref` and a `type: \"null\"` branch, Swift OpenAPI Generator does not appear to generate the expected optional Swift property.\n\nMinimal schema:\n\n```yaml\nopenapi: 3.1.0\ninfo:\n  title: Repro\n  version: 1.0.0\npaths: {}\ncomponents:\n  schemas:\n    Parent:\n      type: object\n      properties:\n        child:\n          anyOf:\n            - $ref: '#/components/schemas/Child'\n            - type: 'null'\n      required:\n        - child\n    Child:\n      type: object\n      properties:\n        name:\n          type: string\n      required:\n        - name\n```\n\n### Expected behavior\n\nThe generated Swift type for `Parent` should allow `child` to be decoded/encoded as a nullable referenced object, for example as an optional `Child`-like generated property.\n\n### Actual behavior\n\nThe generator did not produce a usable optional property for this schema shape in my project. I had to switch to this workaround:\n\n```yaml\nchild:\n  allOf:\n    - $ref: '#/components/schemas/Child'\n  nullable: true\n```\n\nThat workaround generates a usable optional Swift property, but it also emits warnings because `nullable` is not part of the OpenAPI 3.1 schema vocabulary:\n\n```text\nFound 'nullable' property. This property is not supported by OpenAPI v3.1.0.\nOpenAPIKit has translated it into 'type: [\"null\", ...]'.\n```\n\n### Why this matters\n\nOpenAPI 3.1 supports JSON Schema's `null` type, so `anyOf`/`oneOf` with a `type: \"null\"` branch is a common way to express a nullable `$ref`. It would be useful if Swift OpenAPI Generator supported this directly, or documented the recommended schema shape for nullable referenced objects.\n\n### Environment\n\n- Swift OpenAPI Generator: 1.12.0\n- OpenAPI document version: 3.1.0\n- Swift toolchain: Xcode toolchain, Swift 6.x\n",
+        "url": "https://github.com/apple/swift-openapi-generator/issues/906"
+    },
+    {
+        "id": 4347819484,
+        "number": 901,
+        "title": "Support skipping deprecated types and methods",
+        "state": "open",
+        "created_at": "2026-04-29T04:15:34Z",
+        "updated_at": "2026-04-29T09:46:32Z",
+        "closed_at": null,
+        "author": "tkrajacic",
+        "comments": 8,
+        "labels": [
+            "kind/support"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Motivation\n\nWith the newly introduced support for deprecations, generating code from the the AppStoreConnect openapi.json is unbearable. there are hundreds of deprecation warnings (and errors - more on that in another issue)\n\n### Proposed solution\n\nPlease allow for skipping creating deprecated types and methods when generating code in the config file.\n\n### Alternatives considered\n\n_No response_\n\n### Additional information\n\n_No response_",
+        "url": "https://github.com/apple/swift-openapi-generator/issues/901"
+    },
+    {
+        "id": 4320240230,
+        "number": 899,
+        "title": "Build plugin passes percent-encoded paths when project path contains spaces",
+        "state": "closed",
+        "created_at": "2026-04-24T03:09:04Z",
+        "updated_at": "2026-04-29T08:04:23Z",
+        "closed_at": "2026-04-29T08:04:23Z",
+        "author": "shindgew",
+        "comments": 0,
+        "labels": [
+            "kind/bug",
+            "status/triage"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Description\n\nWhen using `swift-openapi-generator` 1.11.1 through the build plugin, generation fails if the project directory contains a space in its path.\n\nThe plugin appears to pass `URL.path()` values as command-line arguments after the 1.11.1 migration from `PackagePlugin.Path` to `URL`. On recent Foundation, `URL.path()` returns a percent-encoded path, so a directory like:\n\n```text\n/Users/username/Documents/The Folder/Reproduceit\n```\n\nis passed to the generator as:\n\n```text\n/Users/username/Documents/The%20Folder/Reproduceit\n```\n\nThe generator then tries to open that encoded string as a filesystem path and reports that the config file does not exist.\n\nThis works on 1.10.4 and fails on 1.11.1.\n\n## Commit Hash\n\nLikely related to the plugin migration in 73997cc62c2193d5046e431c9d546119dda14502.\n\n## Context\n\nThe issue was encountered while building an Xcode project that uses the Swift OpenAPI Generator build plugin to generate code from an OpenAPI document and generator configuration file in the app target.\n\n### Reproduction\n\nCreate or open a Swift package or Xcode project in a directory whose path contains a space, for example:\n\n```text\n/Users/username/Documents/The Folder/Reproduceit\n```\n\nAdd `swift-openapi-generator` 1.11.1 as a plugin dependency and include the usual files in the target:\n\n```text\nReproduceit/OpenAPI/openapi.yaml\nReproduceit/OpenAPI/openapi-generator-config.yaml\n```\n\nBuild the target in Xcode, or otherwise run the build plugin.\n\nThe build fails during the plugin phase:\n\n```text\nPhaseScriptExecution Running swift-openapi-generator /Users/username/Library/Developer/Xcode/DerivedData/Reproduceit-epjtjkyhclqwledtfltpqtlyxzlr/Build/Intermediates.noindex/Reproduceit.build/Debug-iphoneos/Reproduceit.build/Script-7563506F2F9A6B7800C381F6.sh (in target 'Reproduceit' from project 'Reproduceit')\n    cd /Users/username/Documents/The\\ Folder/Reproduceit\n    /bin/sh -c /Users/username/Library/Developer/Xcode/DerivedData/Reproduceit-epjtjkyhclqwledtfltpqtlyxzlr/Build/Intermediates.noindex/Reproduceit.build/Debug-iphoneos/Reproduceit.build/Script-7563506F2F9A6B7800C381F6.sh\n\nError: Configuration file not found at path: /Users/username/Documents/The%20Folder/Reproduceit/Reproduceit/OpenAPI/openapi-generator-config.yaml. Please ensure the file exists and the path is correct.\nUsage: swift-openapi-generator <subcommand>\n  See 'swift-openapi-generator --help' for more information.\nCommand PhaseScriptExecution failed with a nonzero exit code\n```\n\nThe file exists at the decoded filesystem path:\n\n```text\n/Users/username/Documents/The Folder/Reproduceit/Reproduceit/OpenAPI/openapi-generator-config.yaml\n```\n\n### Package version(s)\n\n```text\nswift-openapi-generator: 1.11.1\n```\n\nThe same project is safe on:\n\n```text\nswift-openapi-generator: 1.10.4\n```\n\n### Expected behavior\n\nThe build plugin should pass valid filesystem paths to the generator, so paths containing spaces should work the same as they did on 1.10.4.\n\nExpected config path:\n\n```text\n/Users/username/Documents/The Folder/Reproduceit/Reproduceit/OpenAPI/openapi-generator-config.yaml\n```\n\n## Actual Behavior\n\nThe build plugin passes a percent-encoded path:\n\n```text\n/Users/username/Documents/The%20Folder/Reproduceit/Reproduceit/OpenAPI/openapi-generator-config.yaml\n```\n\nThe generator treats that as a literal filesystem path and fails with \"Configuration file not found\".\n\n### Environment\n\n```console\n$ swift --version\nswift-driver version: 1.148.6 Apple Swift version 6.3.2 (swiftlang-6.3.2.1.103 clang-2100.1.1.101)\nTarget: arm64-apple-macosx26.0\n```\n\n```console\n$ sw_vers\nProductName:\t\tmacOS\nProductVersion:\t\t26.5\nBuildVersion:\t\t25F5058e\n```\n\n```console\n$ uname -a\nDarwin Users-MacBook-Pro.local 25.5.0 Darwin Kernel Version 25.5.0: Tue Apr 14 21:52:16 PDT 2026; root:xnu-12377.120.99.0.7~25/RELEASE_ARM64_T6041 arm64\n```\n\n### Additional information\n\nA local fix is to use `URL.path(percentEncoded: false)` when constructing plugin command arguments, instead of `URL.path()`.\n\nFor example, in `Plugins/PluginsShared/PluginUtils.swift`, paths passed to the generator should be decoded filesystem paths:\n\n```swift\ndoc.path(percentEncoded: false)\nconfig.path(percentEncoded: false)\ngenSourcesDir.path(percentEncoded: false)\n```\n\nThis avoids passing `%20` as part of the literal filesystem path.",
+        "url": "https://github.com/apple/swift-openapi-generator/issues/899"
+    },
+    {
+        "id": 4295499835,
+        "number": 897,
+        "title": "Error when running \"swift run swift-openapi-generator generate\"",
+        "state": "closed",
+        "created_at": "2026-04-20T12:04:58Z",
+        "updated_at": "2026-04-20T17:08:33Z",
+        "closed_at": "2026-04-20T17:08:32Z",
+        "author": "nezhyborets",
+        "comments": 2,
+        "labels": [
+            "kind/bug",
+            "status/triage"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Description\n\nHere is basically the command and output from Terminal\n\n```\noleksiinezhyborets@Oleksiis-MacBook-Pro swift-openapi-generator % swift run swift-openapi-generator generate --config openapi-generator-config.yaml openapi.with-code-samples.yml\nerror: Disabled default traits by package 'swift-openapi-generator' (swift-openapi-generator) on package 'swift-openapi-runtime' (swift-openapi-runtime) that declares no traits. This is prohibited to allow packages to adopt traits initially without causing an API break.\n```\n\nI see that in Package.swift there is a comment about the dependency:\n```\n// Tests-only: Runtime library linked by generated code, and also\n// helps keep the runtime library new enough to work with the generated\n// code.\n.package(url: \"https://github.com/apple/swift-openapi-runtime\", from: \"1.11.0\", traits: []),\n```\n\nBut `traits: []` seems to be breaking things in my case. Is it required?\n\n### Reproduction\n\n[openapi-generator-config.yaml](https://github.com/user-attachments/files/26895053/openapi-generator-config.yaml)\n[openapi.with-code-samples.yml](https://github.com/user-attachments/files/26895054/openapi.with-code-samples.yml)\n\n### Package version(s)\n\n├── swift-algorithms<https://github.com/apple/swift-algorithms@1.2.1>(traits: default)\n│   └── swift-numerics<https://github.com/apple/swift-numerics.git@1.0.3>(traits: default)\n├── swift-collections<https://github.com/apple/swift-collections@1.1.4>(traits: default)\n├── openapikit<https://github.com/mattpolzin/OpenAPIKit@3.9.0>(traits: default)\n│   └── yams<https://github.com/jpsim/Yams@5.3.1>(traits: default)\n├── yams<https://github.com/jpsim/Yams@5.3.1>(traits: default)\n├── swift-argument-parser<https://github.com/apple/swift-argument-parser@1.5.0>(traits: default)\n├── swift-openapi-runtime<https://github.com/apple/swift-openapi-runtime@1.11.0>(traits: FullFoundation)\n│   └── swift-http-types<https://github.com/apple/swift-http-types@1.3.1>(traits: default)\n└── swift-http-types<https://github.com/apple/swift-http-types@1.3.1>(traits: default)\n\n### Expected behavior\n\nThere is no error and the file is generated successfully\n\n### Environment\n\nswift-driver version: 1.148.6 Apple Swift version 6.3.1 (swiftlang-6.3.1.1.2 clang-2100.0.123.102)\nTarget: arm64-apple-macosx26.0\n\n### Additional information\n\n_No response_",
+        "url": "https://github.com/apple/swift-openapi-generator/issues/897"
+    },
+    {
+        "id": 4241354918,
+        "number": 891,
+        "title": "Add support for Openapi const keyword",
+        "state": "closed",
+        "created_at": "2026-04-10T19:36:58Z",
+        "updated_at": "2026-04-13T21:02:25Z",
+        "closed_at": "2026-04-13T21:02:25Z",
+        "author": "jcubit",
+        "comments": 3,
+        "labels": [
+            "kind/feature",
+            "status/triage"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Motivation\n\nWhen designing an API is desirable to provide easy-to-use and interoperable errors. One could adopt or modify the standard [\"Problem Details for HTTP APIs\"](https://www.rfc-editor.org/rfc/rfc9457.html) in order to define public or internal errors. An example of the response type following this standard is\n\n```\n422 Unprocessable Content\nContent-Type: application/problem+json\n\n{\n\"status\": 422,\n\"type\": \"https://api.bank.com/validation-error\",\n\"title\": \"the request is not valid\",\n\"detail\": \"Missing source account and unsupported amount currency\",\n\"errors\": [\n// custom properties\n \"message\": ....\n]\n}\n```\n\nSome of these properties like detail, title and status are constants for specific errors. Currently we cannot define these constant values naturally when defining specific errors. For instance, we have to define an schema like this\n\n```\n...\n  components:\n    schemas:\n      ...\n      \"InvalidAccountValue\": {\n        \"type\": \"object\",\n        \"description\": \"The consumer is missing a scope, or the identified user doesn't have access to submit this quiz\",\n        \"properties\": {\n          \"status\": { \"type\": \"integer\" },\n          \"type\": { \"type\": \"string\" },\n          \"title\": { \"type\": \"string\" },\n          \"detail\": { \"type\": \"string\" },\n          \"errors\": {\n            \"type\": \"array\",\n            \"items\": {\n              \"$ref\": \"#/components/schemas/GeneralError\"\n            }\n          }\n        },\n        \"required\": [\n          \"status\",\n          \"type\",\n          \"title\",\n          \"detail\",\n          \"errors\"\n        ]\n      }\n```\n\n and then fill up the fields on the generated objects in each project that consumes or implements this API. These can lead to mistakes as they are not part of the contract of the OpenAPI specification as they should be.\n\n### Proposed solution\n\nThe Openapi v3 specifications support the `const` keyword in schemas. This allows to define in-place each specific value as constants on the specification. For instance the previous example is defined as\n\n```\n  components:\n    schemas:\n      ...\n      \"InvalidAccountValue\": {\n        \"type\": \"object\",\n        \"description\": \"The consumer is missing a scope, or the identified user doesn't have access to submit this quiz\",\n        \"properties\": {\n          \"status\": { \n            \"type\": \"integer\",\n            \"const\": 422\n          },\n          \"type\": { \n            \"type\": \"string\",\n            \"const\": \"https://api.bank.com/validation-error\"\n          },\n          \"title\": { \n            \"type\": \"string\",\n            \"const\": \"the request is not valid\",\n          },\n          \"detail\": { \n            \"type\": \"string\",\n            \"const\": \"Missing source account and unsupported amount currency\"\n          },\n          \"errors\": {\n            \"type\": \"array\",\n            \"items\": {\n              \"$ref\": \"#/components/schemas/GeneralError\"\n            }\n          }\n        },\n        \"required\": [\n          \"status\",\n          \"type\",\n          \"title\",\n          \"detail\",\n          \"errors\"\n        ]\n      }\n```\n\nThe generated code would then have these constants and they wouldn't need to be typed by hand on each project.\n\nAnother basic example in the v3.2 specification which shows the syntax:\n\n```\ncomponents:\n  schemas:\n    Pet:\n      type: object\n      properties:\n        name:\n          type: string\n      required:\n        - name\n        - petType\n      oneOf:\n        - $ref: '#/components/schemas/Cat'\n        - $ref: '#/components/schemas/Dog'\n    Cat:\n      description: A pet cat\n      type: object\n      properties:\n        petType:\n          const: 'cat'\n        huntingSkill:\n          type: string\n          description: The measured skill for hunting\n          enum:\n            - clueless\n            - lazy\n            - adventurous\n            - aggressive\n      required:\n        - huntingSkill\n    Dog:\n      description: A pet dog\n      type: object\n      properties:\n        petType:\n          const: 'dog'\n        packSize:\n          type: integer\n          format: int32\n          description: the size of the pack the dog is from\n          default: 0\n          minimum: 0\n      required:\n        - packSize\n```\n\n### Alternatives considered\n\nUse an enumeration instead of `const`. It works but it seems like a workaround for the moment. It might break when the name of the generated enum case is not valid (?)\n\n### Additional information\n\nThank you for considering this 🙏 ",
+        "url": "https://github.com/apple/swift-openapi-generator/issues/891"
+    },
+    {
+        "id": 4234331000,
+        "number": 890,
+        "title": "Build-tool plugin breaks swift-collections module resolution during xcodebuild archive",
+        "state": "open",
+        "created_at": "2026-04-09T18:59:46Z",
+        "updated_at": "2026-04-15T12:42:03Z",
+        "closed_at": null,
+        "author": "EdmundKorley",
+        "comments": 2,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "## Description\n\nWhen archiving an iOS project that uses `swift-openapi-generator` as a build-tool plugin, `xcodebuild archive` fails with:\n\n```\nswift-collections/Sources/ContainersPreview/Extensions/OutputSpan+Extras.swift:17:8: \nerror: Unable to find module dependency: 'InternalCollectionsUtilities'\n```\n\nThe same project builds and archives successfully when the OpenAPI generator plugin is removed from `Package.swift` and the generated sources (Types.swift, Client.swift) are committed directly.\n\n## Environment\n\n- Xcode 26.2 (Swift 6.2.3) and Xcode 26.4 (Swift 6.3)\n- swift-openapi-generator 1.10.4\n- swift-openapi-runtime 1.11.0\n- swift-collections 1.4.0 (transitive dependency via openapi-runtime)\n- macOS 26 (Tahoe), both local and GitHub Actions CI (macos-26 runner)\n- `SWIFT_ENABLE_EXPLICIT_MODULES=NO` does not resolve the issue\n\n## Reproduction\n\n1. Create an Xcode project with a local SPM package that uses `OpenAPIGenerator` as a build plugin\n2. The package depends on `swift-openapi-runtime` which transitively pulls `swift-collections` 1.4.0\n3. Run: `xcodebuild archive -scheme <Scheme> -sdk iphoneos -configuration Release -derivedDataPath /tmp/clean-dd -skipPackagePluginValidation`\n4. Archive fails with the `InternalCollectionsUtilities` module not found error\n\n**Key observation:** The error does NOT occur when:\n- Building for simulator (`-sdk iphonesimulator`)\n- Building Debug configuration\n- The plugin is removed and generated sources are committed directly\n- Using incremental builds with cached DerivedData\n\nIt ONLY fails with a clean DerivedData + archive + iphoneos SDK, suggesting the plugin's execution interferes with SPM's build graph ordering for device archives.\n\n## Workaround\n\nPre-generate the OpenAPI sources using the CLI tool, then strip the plugin from Package.swift before archiving:\n\n```bash\n# 1. Resolve packages\nxcodebuild -resolvePackageDependencies -scheme MyApp -derivedDataPath /tmp/bootstrap\n\n# 2. Generate sources via CLI\nswift run --package-path /tmp/bootstrap/SourcePackages/checkouts/swift-openapi-generator   swift-openapi-generator generate openapi.json   --config openapi-generator-config.yaml   --output-directory Sources/MyOpenAPIClient/   --plugin-source build\n\n# 3. Strip plugin from Package.swift\n# Remove .package(url: \"swift-openapi-generator\", ...) and plugins: [...] \n\n# 4. Archive without plugin\nxcodebuild archive -scheme MyApp -sdk iphoneos ...\n```\n\nThis is what we use in CI, but it adds significant complexity to the workflow.\n\n## Related issues\n\n- apple/swift-collections#546 (Archive fails when building XCFramework)\n- apple/swift-async-algorithms#376 (same InternalCollectionsUtilities error)\n- Swift Forums: [Xcode 26 - Unable to find module dependency](https://forums.swift.org/t/xcode-26-unable-to-find-module-dependency/80516)\n\n## Expected behavior\n\n`xcodebuild archive` should succeed with the OpenAPI generator build-tool plugin present, same as it does for Debug/Simulator builds.",
+        "url": "https://github.com/apple/swift-openapi-generator/issues/890"
+    },
+    {
+        "id": 4107775363,
+        "number": 881,
+        "title": "Getting several plugin warnings with the new version (1.11.0).",
+        "state": "closed",
+        "created_at": "2026-03-20T13:04:38Z",
+        "updated_at": "2026-03-23T17:03:24Z",
+        "closed_at": "2026-03-23T10:48:27Z",
+        "author": "emmceemoore",
+        "comments": 4,
+        "labels": [
+            "kind/bug",
+            "status/triage"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Description\n\nHere's what I'm seeing:\n\n<img width=\"908\" height=\"332\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/2156758a-c707-40e5-9823-b92a16492020\" />\n\n<img width=\"1514\" height=\"1318\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/cc3dbd23-607b-42df-b5da-be23b5383060\" />\n\n### Reproduction\n\n1. Upgrade `swift-openapi-generator` from version `1.10.4` to `1.11.0`.\n1. Do a \"clean\".\n1. Do a \"build\".\n1. Observe warnings.\n\n### Package version(s)\n\n`swift-openapi-generator`: `1.11.0`\n\n### Expected behavior\n\nI expect for there to be no warnings.\n\n### Environment\n\n```console\n% swift -version\n\nswift-driver version: 1.127.15 Apple Swift version 6.2.4 (swiftlang-6.2.4.1.4 clang-1700.6.4.2)\nTarget: arm64-apple-macosx26.0\n```\n\n- Xcode: 26.3\n\n### Additional information\n\n_No response_",
+        "url": "https://github.com/apple/swift-openapi-generator/issues/881"
+    },
+    {
+        "id": 4094168742,
+        "number": 879,
+        "title": "upgrade testing to swift testing framework",
+        "state": "closed",
+        "created_at": "2026-03-18T10:24:28Z",
+        "updated_at": "2026-03-23T20:50:53Z",
+        "closed_at": "2026-03-23T20:50:53Z",
+        "author": "bwdmr",
+        "comments": 3,
+        "labels": [
+            "kind/enhancement",
+            "status/triage"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Description\n\nid propose to upgrade from xct to swift testing. as part of the overall conformity with upcoming swift versions.\nid put in the work aswell.\n\n### Additional information\n\n_No response_",
+        "url": "https://github.com/apple/swift-openapi-generator/issues/879"
+    },
+    {
+        "id": 4037245730,
+        "number": 873,
+        "title": "am i wrong?",
+        "state": "closed",
+        "created_at": "2026-03-07T03:54:53Z",
+        "updated_at": "2026-03-07T08:08:45Z",
+        "closed_at": "2026-03-07T08:08:45Z",
+        "author": "wibed",
+        "comments": 1,
+        "labels": [
+            "status/triage",
+            "kind/support"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Question\n\nis this a simple json parser that takes up object definitions routes and their endpoints and translates them into swift objects structured as Types.swift Client/Server.swift ?",
+        "url": "https://github.com/apple/swift-openapi-generator/issues/873"
+    },
+    {
+        "id": 4024342237,
+        "number": 872,
+        "title": "oneOf-Enum and Parent Schema-Properties",
+        "state": "closed",
+        "created_at": "2026-03-04T21:49:15Z",
+        "updated_at": "2026-03-05T11:29:49Z",
+        "closed_at": "2026-03-05T11:29:49Z",
+        "author": "kaiwinter",
+        "comments": 4,
+        "labels": [
+            "kind/bug",
+            "status/triage"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Description\n\nI have a parent schema which has defined two `oneOf`s and two properties. One property is used as the discriminator the other property should be inherited by the schemas which are defined as `oneOf`. To achieve this the `oneOf`-schemas are using an `allOf` definition. The parent schema is generated as enum and the child schemas are generated as structs.\n\nThe problem I have is that the properties of the parent scheme are missing. They are not included in the `oneOf` structs. The `allOf` seems to produce just some kind of cyclic reference here.\n\n### Reproduction\n\nThis is my OAS:  \n```yaml\nopenapi: 3.0.3\ninfo: {title: Test, version: 1.0.0}\nservers:\n  - {url: 'https://test'}\npaths:\n  /v1/test:\n    get:\n      responses:\n        '200':\n          description: OK\n          content:\n            application/json;charset=UTF-8:\n              schema:\n                type: array\n                items: {$ref: '#/components/schemas/Parent'}\ncomponents:\n  schemas:\n    Parent:\n      type: object\n      oneOf:\n        - {$ref: '#/components/schemas/Child1'}\n        - {$ref: '#/components/schemas/Child2'}\n      discriminator: {propertyName: childrenType}\n      properties:\n        childrenType: {type: string}\n        parentKey: {type: string}\n      required: [childrenType, parentKey]\n\n    Child1:\n      allOf:\n        - {$ref: '#/components/schemas/Parent'}\n        - type: object\n          properties:\n            childDescription: {type: string}\n\n    Child2:\n      allOf:\n        - {$ref: '#/components/schemas/Parent'}\n        - type: object\n          properties:\n            childDescription: {type: string}\n```\n\nAnd this is the code which gets generated:\n```swift\npublic enum Components {\n    public enum Schemas {\n        @frozen public indirect enum Parent: Codable, Hashable, Sendable {\n            case child1(Components.Schemas.Child1)\n            case child2(Components.Schemas.Child2)\n            /// ...\n        }\n\n        public struct Child1: Codable, Hashable, Sendable {\n            public var value1: Components.Schemas.Parent\n            public struct Value2Payload: Codable, Hashable, Sendable {\n                public var childDescription: Swift.String?\n                /// ...\n            }\n            public var value2: Components.Schemas.Child1.Value2Payload\n            /// ...\n        }\n\n        public struct Child2: Codable, Hashable, Sendable {\n            public var value1: Components.Schemas.Parent\n            public struct Value2Payload: Codable, Hashable, Sendable {\n                public var childDescription: Swift.String?\n                /// ...\n            }\n            public var value2: Components.Schemas.Child2.Value2Payload\n            /// ...\n        }\n    }\n}\n```\n\n### Package version(s)\n\n```console\nswift-openapi-generator: 1.10.4\nswift-openapi-runtime: 1.10.1\nswift-openapi-urlsession: 1.2.0\n```\n\n### Expected behavior\n\nI would expect the structs `Child1` and `Child2` to have the `parentKey` property. And maybe the `Parent` enum to have the `parentKey` as a computed property which returns the value of the child structs.\n\n### Environment\n\n```console\nswift-driver version: 1.127.15 Apple Swift version 6.2.4 (swiftlang-6.2.4.1.4 clang-1700.6.4.2)\nTarget: arm64-apple-macosx26.0\n```\n\n### Additional information\n\nI don't know if I'm trying something totally crazy here. I just have a huge OAS with many such definitions and I want to change as little as possible. I already tried `OpenAPITools/openapi-generator` which adds `parentKey` to `Child1` and `Child2`. But that generator fall short on other places.\n\n",
+        "url": "https://github.com/apple/swift-openapi-generator/issues/872"
+    },
+    {
+        "id": 3989039359,
+        "number": 868,
+        "title": "Building the `OpenAPIRuntime` with `FoundationEssentials` only.",
+        "state": "closed",
+        "created_at": "2026-02-25T11:56:55Z",
+        "updated_at": "2026-03-03T11:53:32Z",
+        "closed_at": "2026-03-03T11:53:32Z",
+        "author": "madsodgaard",
+        "comments": 11,
+        "labels": [
+            "area/runtime",
+            "kind/enhancement"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "Currently `OpenAPIRuntime` has a lot of dependencies on methods, types etc from `Foundation`. So, currently its not possible to just replace all `import Foundation` with `import FoundationEssentials` as recently suggested by the ESG.\n\nI have made a POC of what it would take to remove all dependencies from `Foundation`, to allow us to use `openapi-generator` on platforms where including the ICU is not acceptable, due to binary sizes.\n\nThe changes can be seen in:\nhttps://github.com/apple/swift-openapi-runtime/compare/main...madsodgaard:swift-openapi-runtime:foundation-essentials\n\n**Note:** The above changes are just a POC and are not my final suggestion for a solution. \n\nI am starting this issue to discuss whether this is feasible and would be something the `swift-openapi-generator` maintainers would be open to going forward with. \n\nBelow is a list of the issues that we need to address if this were to work out:\n\n#### `NSLock`\nCurrently `NSLock` is used a few different places. But we should be able to just replace this with the Lock from `swift-nio`.\n\n#### `String(format:)`\nThis function is used in [Acceptable.swift](https://github.com/apple/swift-openapi-runtime/blob/16c8eb7f65d28f5ddb8cb0dc1be5ec32e796fe45/Sources/OpenAPIRuntime/Base/Acceptable.swift#L63 ) to convert `Double` to `String` with 3 decimals. I think we should be able to write a simple Swift impl of this.\n\n#### `trimmingCharacters(in:)`\nThis is only used to remove whitespaces and quotes. This is relatively simple to write a pure Swift impl for.\n\n#### `NSNull`, `NSNumber` etc...\nThe `OpenAPIValue` supports CoreFoundation types like `NSNull` and `NSNumber`. I propose that we add a default trait `FullFoundationTrait`, that hides the support for these behind them.\n\n#### `ISO8601DateFormatter`\nMy proposal for solving this is to hide this type behind `FullFoundationSupport`. Then we make a new implementation of `DateTranscoder` which uses the `.formatted()` APIs  from `FoundationEssentials`. \n\nUnfortunately, these APIs are only available on:\n```\n@available(macOS 12.0, iOS 15.0, tvOS 15.0, watchOS 8.0, *)\n```\n\nSo, that means that if people disable the `FullFoundationSupport` and run on Apple Platforms before the above, they loose access to the default `iso` date formatter and corresponding initializers on `Client`. Imo, this is fine, since the `FullFoundationSupport` is probably only for non-apple platforms. _(but this could be source-breaking)_\n\n#### `localizedDescription`\nThis is used quite a few places when logging the errors. I am not sure if this is a hard requirement or if we could use `\"\\(error)\"` instead?\n\n#### `localizedCompare` and `localizedCaseInsensitiveCompare`\nThis function has been replaced by a pure `<` Swift comparison. \n\n#### Percent-based encoding/decoding\nThe `URISerializer` and `URIParser` previously used `addingPercentEncoding` and `replacingOccurrences`. These have been replaced by pure Swift implementation inspired by implementations in `swift-foundation`.\n\n## Checklist\n- [x] `NSLock` (https://github.com/apple/swift-openapi-runtime/pull/172)\n- [x] `ISO8601DateFormatter` (https://github.com/apple/swift-openapi-runtime/pull/177)\n- [x] `localizedDescription` (https://github.com/apple/swift-openapi-runtime/pull/173)\n- [x] `localizedCompare` and `localizedCaseInsensitiveCompare` (https://github.com/apple/swift-openapi-runtime/pull/174)\n- [x] Percent-based encoding/decoding (https://github.com/apple/swift-openapi-runtime/pull/176)\n- [x] `CoreFoundation` types: `NSNumber`, `NSNull` etc... (https://github.com/apple/swift-openapi-runtime/pull/177)\n- [x] `String(format:)` (https://github.com/apple/swift-openapi-runtime/pull/178)\n- [x] `trimmingCharacters` (https://github.com/apple/swift-openapi-runtime/pull/175)\n- [x] Add CI step to check for regress (https://github.com/apple/swift-openapi-runtime/pull/179) \n",
+        "url": "https://github.com/apple/swift-openapi-generator/issues/868"
+    },
+    {
+        "id": 3884810117,
+        "number": 863,
+        "title": "Proposal: Export resolved context for extension tools (no internal API exposure)",
+        "state": "open",
+        "created_at": "2026-02-02T09:09:18Z",
+        "updated_at": "2026-02-11T11:31:11Z",
+        "closed_at": null,
+        "author": "novr",
+        "comments": 3,
+        "labels": [
+            "kind/feature",
+            "status/triage"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "## Motivation\n\nWe propose a **CLI-based contract** so that third-party tools (e.g. Build Tool Plugins) can generate **additional** Swift files alongside the built-in Types, Client, and Server, using the **same resolved** OpenAPI document and config—**without** the generator exposing or stabilizing any internal APIs (e.g. `_OpenAPIGeneratorCore`).\n\nThe real problem is **behavioral consistency**. The official generator applies Filter (e.g. only certain endpoints), visibility (public/internal), naming strategy, and other config. Manually re-implementing config resolution and re-parsing the spec in a third-party tool is error-prone and will drift when the generator's filter or naming rules change. Staying in sync with the generator's **resolved** output is what extension tools need—not access to internal data structures.\n\n**Use case:** [Kawarimi](https://github.com/novr/Kawarimi) is a SwiftPM Build Tool Plugin that today: (1) Invokes the official generator (via `_OpenAPIGeneratorCore`) to produce Types, Client, and Server; (2) Loads the same OpenAPI spec and config again and re-resolves filter, visibility, etc.; (3) Generates extra files: a `ClientTransport` mock and an `APIProtocol` default implementation. Any mismatch in filter or visibility between (1) and (2) leads to inconsistent generated code. Current workaround: re-parsing and re-resolving in a separate process, which duplicates logic and can drift from the generator's behavior.\n\n## Proposed solution\n\n**Possible directions (overview):**\n\n- **Option A – Callback / delegate:** The generator accepts an optional callback that receives the resolved document and config and can write extra files. Extension logic runs in the same process as the generator.\n- **Option B – CLI-based contract:** The generator optionally exports its \"Resolved Context\" (post-filtered document + resolved config) to a file. A separate process (e.g. another build tool) reads that file and generates additional Swift. No internal API exposure; only a documented file format.\n- **Option C – Pluggable generator list:** The generator supports a list of \"modes\" or pluggable implementations (including third-party) so one build command produces both built-in and custom outputs in the same process.\n\nWe recommend **Option B** for process isolation, no dependency clash risk, and no stability burden on internal types. Below is the concrete shape we have in mind.\n\n**Option B refined (\"Resolved Context\" export):**\n\n- **No internal API exposure.** The generator does not expose or stabilize `_OpenAPIGeneratorCore` or other internal types. Extension tools do not link against the generator's internals.\n- **CLI-based contract.** The generator gains an optional way to **export** its \"Resolved Context\" (e.g. post-filtered OpenAPI document + resolved configuration) to a file (e.g. JSON or a documented format). A separate process (e.g. Kawarimi) reads that file and generates additional Swift. Example: a `--save-resolved-config <path>` (or similar) flag that writes the resolved context after the main generation run.\n- **Process isolation and version safety.** Extension tools run in a separate process; no risk of dependency clashes (e.g. different SwiftSyntax or OpenAPIKit versions) inside the generator process.\n- **Opt-in and non-blocking.** The export step runs only when explicitly requested. Default runs are unchanged. Extension tools are separate build commands and do not block the generator's step.\n\n**Benefits:** Single source of truth; custom outputs stay in sync with filter, visibility, naming; zero maintenance burden for core (no linking against third-party code, no stability guarantee on internal types); enables mock transports, default handlers, and other extensions.\n\n**Anticipated concerns:**\n\n| Concern | Response |\n|--------|----------|\n| \"Exposing core logic will freeze internal data structures.\" | We are **not** asking for internal API exposure. Only an **exported artifact** (resolved document + config) in a documented format. Internal types can evolve; only the export format needs a stability story. |\n| \"Hooks could slow down builds.\" | The mechanism is **opt-in**. Extension tools run as **separate** build commands. |\n| \"Third-party tools might pull in conflicting dependencies.\" | **Process separation** (Option B): extension tools use their own dependencies in their own process. No dependency hell inside the core. |\n\n## Alternatives considered\n\n- **Option A (callback in-process):** Would require the core to load or depend on third-party code, risking dependency hell and forcing stability guarantees on internal types. We do not recommend it.\n- **Option C (pluggable generator list in one process):** Similar dependency and pipeline complexity; we prefer a clear separation: generator writes resolved context; extension reads it in another process.\n- **No export:** Third-party tools keep re-parsing spec and config. Current approach; works but duplicates logic and can drift from generator behavior.\n\n## Additional information\n\n- Use case / reference: [Kawarimi](https://github.com/novr/Kawarimi) (ClientTransport mock, APIProtocol default implementation).\n- We can propose a concrete schema for the exported file (which metadata to include) and contribute to a prototype if that would help.\n- Open questions: (1) Is adding an optional \"export resolved context\" (e.g. `--save-resolved-config <path>`) within the desired scope? (2) What format and schema would fit the project's goals? (3) Are there existing CLI flags or plugin outputs we could align with?\n",
+        "url": "https://github.com/apple/swift-openapi-generator/issues/863"
+    },
+    {
+        "id": 3833945353,
+        "number": 862,
+        "title": "enum without `type: string` becomes generic `OpenAPIValueContainer` type",
+        "state": "closed",
+        "created_at": "2026-01-20T14:19:51Z",
+        "updated_at": "2026-01-21T09:23:43Z",
+        "closed_at": "2026-01-21T09:23:43Z",
+        "author": "henrikraedergaard",
+        "comments": 2,
+        "labels": [
+            "kind/bug",
+            "status/triage"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Description\n\nSwift OpenAPI generator is unable to parse enums where `type: string` is missing.\n\nThis works:\n```yaml\nsomeEnum:\n  type: string\n  enum:\n    - value_a\n    - value_b\n    - value_c\n```\n\nThis does not work:\n```yaml\nsomeEnum:\n  enum:\n    - value_a\n    - value_b\n    - value_c\n```\n\nThe enums become generic `OpenAPIValueContainer` types instead of enums because the library does not recognize the enum without `type: string`. I tried manually adding `type: string` to `openapi.yaml` and that resolved it for me.  \n\nBelow images taken from: https://spec.openapis.org/oas/v3.1.0. On the website there exists both cases, one definition with `type: string` and another without. \n\n<img width=\"922\" height=\"594\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/330088af-6a69-4eeb-939e-8539a5fc9c6a\" />\n\n<img width=\"922\" height=\"459\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/47c60afd-beb0-475f-8d81-e699b3652aef\" />\n\n### Reproduction\n\nBelow is missing `type: string` and therefore fails\n\n```yaml\nservers:\n  - url: http://localhost:3000\ninfo:\n  version: 1.0.0\n  description: The REST for Test\ncomponents:\n  schemas:\n    Test:\n      type: object\n      properties:\n        name:\n          enum: \n            - test\n            - test2\n            - test3\n```\n\n### Package version(s)\n\n<img width=\"297\" height=\"71\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/f7b498dd-4256-4715-8864-c228d7a86b61\" />\n\n### Expected behavior\n\nExpected generated type to be an enum and not `OpenAPIValueContainer`\n\n### Environment\n\nN/A\n\n### Additional information\n\nN/A",
+        "url": "https://github.com/apple/swift-openapi-generator/issues/862"
+    },
+    {
+        "id": 3826304252,
+        "number": 859,
+        "title": "Generate better server code for response content `*/*` (dynamic Content-Type)",
+        "state": "open",
+        "created_at": "2026-01-18T04:02:34Z",
+        "updated_at": "2026-02-28T19:37:18Z",
+        "closed_at": null,
+        "author": "brandonbloom",
+        "comments": 5,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "## Description\n\nWhen an OpenAPI response uses `content: {'*/*': ...}` to indicate the response media type is intentionally unconstrained / dynamic / extensible, the generated **server serializer** currently emits code that:\n\n1. calls `converter.validateAcceptIfPresent(\"*/*\", in: request.headerFields)`, and\n2. sets the outgoing `Content-Type` to `\"*/*\"` (e.g. via `setResponseBodyAsBinary(..., contentType: \"*/*\")`).\n\nThis causes two practical problems:\n\n- Client compatibility: it effectively forces clients to include `Accept: */*` just to pass validation (a client sending `Accept: application/json` can be rejected even though the operation is intentionally “any content”).\n- Bad response header: it emits `Content-Type: */*`, which is not a useful concrete media type to put on the wire.\n\nWe’d like wildcard `*/*` to mean “no static content negotiation; content type is chosen dynamically at runtime”, not “alias for `application/octet-stream`”.\n\nCommit hash: `ecf21fdf08d4cf30ca506bb822f5fe580e090efb`\n\n## Reproduction\n\nMinimal spec:\n\n```yaml\n# openapi.yaml\nopenapi: 3.0.3\ninfo:\n  title: t\n  version: 1.0.0\npaths:\n  /download:\n    get:\n      operationId: download\n      responses:\n        \"200\":\n          description: ok\n          content:\n            \"*/*\":\n              schema:\n                type: string\n                format: binary\n```\n\nMinimal generator config:\n\n```yaml\n# openapi-generator-config.yaml\nmode:\n  - types\n  - server\n```\n\nIn the generated server serializer, the `*/*` response path includes `validateAcceptIfPresent(\"*/*\")` and emits `Content-Type: */*`.\n\n## Package version(s)\n\n- swift-openapi-generator: commit `ecf21fdf08d4cf30ca506bb822f5fe580e090efb`\n- (also involves generated code’s usage of swift-openapi-runtime `Converter.validateAcceptIfPresent` / `setResponseBodyAsBinary`)\n\n## Expected behavior\n\nFor response content type exactly `*/*` (server serializers):\n\n1. Skip `validateAcceptIfPresent` entirely.\n2. Do not emit `Content-Type: */*`.\n\nHowever, simply omitting `Content-Type` is not ideal; what we really want is *dynamic* `Content-Type`.\n\nFeature request: plumb dynamic headers/media type through the generated output model for the `*/*` case, so the handler can provide a real `Content-Type` at runtime.\n\nOne concrete approach would be to model the `*/*` body case as something that carries header fields too, for example:\n\n- `case any(OpenAPIRuntime.UndocumentedPayload)` (reusing an existing runtime type that carries `headerFields` + `body`), or\n- a dedicated “wildcard response payload” type (e.g. `{ headerFields: HTTPFields, body: HTTPBody }` or `{ contentType: String, body: HTTPBody }`).\n\nThen generated server serialization for this case would:\n\n- not validate `Accept`,\n- merge the payload’s header fields into `response.headerFields` (including a real `Content-Type` when provided),\n- return the payload body.\n\n## Environment\n\n```console\n$ swift --version\nswift-driver version: 1.127.14.1 Apple Swift version 6.2 (swiftlang-6.2.0.19.9 clang-1700.3.19.1)\nTarget: arm64-apple-macosx26.0\n\n$ uname -a\nDarwin Brandons-MacBook-Pro.local 25.2.0 Darwin Kernel Version 25.2.0: Tue Nov 18 21:09:56 PST 2025; root:xnu-12377.61.12~1/RELEASE_ARM64_T6041 arm64\n```\n\n## Additional information\n\n- `*/*` appears in real-world specs (e.g. Kubernetes; see prior discussion in generator issue #315).\n- A focused regression test could generate server code from the minimal spec above and assert the output does not contain `validateAcceptIfPresent(\"*/*\")` and does not contain `contentType: \"*/*\"`.\n",
+        "url": "https://github.com/apple/swift-openapi-generator/issues/859"
+    }
+]

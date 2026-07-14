@@ -1,0 +1,242 @@
+[
+    {
+        "sha": "03a8a7dd17f525ff57f16732d61fee0dd94f822f",
+        "author": "Peter Steinberger",
+        "email": "steipete@gmail.com",
+        "date": "2026-07-14T08:32:20Z",
+        "message": "refactor(json): share JSON5 fallback parsing",
+        "url": "https://github.com/openclaw/openclaw/commit/03a8a7dd17f525ff57f16732d61fee0dd94f822f"
+    },
+    {
+        "sha": "f8fb478e4c3ae94c092684b257d6882c5fa76b20",
+        "author": "Peter Steinberger",
+        "email": "peter@steipete.me",
+        "date": "2026-07-14T08:32:48Z",
+        "message": "refactor(ollama): trim internal exports (#107296)",
+        "url": "https://github.com/openclaw/openclaw/commit/f8fb478e4c3ae94c092684b257d6882c5fa76b20"
+    },
+    {
+        "sha": "eb7e32d2a2798c9b0cf7b4f1c876ae19289c811c",
+        "author": "Peter Steinberger",
+        "email": "steipete@gmail.com",
+        "date": "2026-07-14T08:19:46Z",
+        "message": "refactor(llm): parse retry units with ms",
+        "url": "https://github.com/openclaw/openclaw/commit/eb7e32d2a2798c9b0cf7b4f1c876ae19289c811c"
+    },
+    {
+        "sha": "89f53f1c381333b9396ff226b19b07ddd70a99ed",
+        "author": "Peter Steinberger",
+        "email": "peter@steipete.me",
+        "date": "2026-07-14T08:22:22Z",
+        "message": "fix(terminal): keystrokes typed while a terminal opens are lost; node PTY relay lifecycle races (#107214)\n\n* fix(terminal): harden node PTY relay and terminal session lifecycle\n\nPin node relay invokes to the authorized node connection (ROUTE_CHANGED\nguard), stop node-side input writes to settled/dead PTYs, finalize\nsessions on resize failure like write failure, keep surrogate pairs\nintact across scrollback and relay prelude truncation, bound the relay\npre-registration output buffer, and buffer Control UI keystrokes typed\nwhile terminal.open/attach is in flight so slow node-relay opens no\nlonger drop input. Correct the terminal.data seq doc to its real\ncontract and pin seq monotonicity, seq-gap bounds, input coercion, and\nrunner event routing with new tests.\n\n* refactor(terminal): extract startup input buffer and fix CI findings\n\nMove Control UI startup input buffering into terminal-startup-input.ts\n(LOC budget), drop a stale session-manager comment, remove a map\nspread, and fix test typings for event frames and typed mock access.",
+        "url": "https://github.com/openclaw/openclaw/commit/89f53f1c381333b9396ff226b19b07ddd70a99ed"
+    },
+    {
+        "sha": "2444cc2f37ea221fe5c8ebff0b8eb9f1c8195755",
+        "author": "Peter Steinberger",
+        "email": "peter@steipete.me",
+        "date": "2026-07-14T08:20:03Z",
+        "message": "refactor(openshell): trim internal exports (#107291)",
+        "url": "https://github.com/openclaw/openclaw/commit/2444cc2f37ea221fe5c8ebff0b8eb9f1c8195755"
+    },
+    {
+        "sha": "b58e0875edb76a37f4b4b4b5dad977b2f17b55a9",
+        "author": "wahaha1223",
+        "email": "0668001153@xydigit.com",
+        "date": "2026-07-14T08:16:10Z",
+        "message": "fix(voice-call): show ngrok errors when startup output is fragmented (#107122)\n\n* fix(voice-call): preserve split ngrok startup errors across stderr chunks\n\n* fix(voice-call): bound split ngrok error tail\n\n---------\n\nCo-authored-by: Peter Steinberger <steipete@gmail.com>",
+        "url": "https://github.com/openclaw/openclaw/commit/b58e0875edb76a37f4b4b4b5dad977b2f17b55a9"
+    },
+    {
+        "sha": "f20089c569478831086caf193f08a1e592203f0f",
+        "author": "Peter Steinberger",
+        "email": "peter@steipete.me",
+        "date": "2026-07-14T08:15:58Z",
+        "message": "fix: route heavy changed checks remotely (#107282)",
+        "url": "https://github.com/openclaw/openclaw/commit/f20089c569478831086caf193f08a1e592203f0f"
+    },
+    {
+        "sha": "16ff48c7290407580af2bb2efd30806020137d83",
+        "author": "Peter Steinberger",
+        "email": "steipete@gmail.com",
+        "date": "2026-07-14T08:13:50Z",
+        "message": "refactor(time): trust pretty-ms defaults",
+        "url": "https://github.com/openclaw/openclaw/commit/16ff48c7290407580af2bb2efd30806020137d83"
+    },
+    {
+        "sha": "47d37804a88fa94eb2ca7edd638a2746e64645c1",
+        "author": "Peter Steinberger",
+        "email": "peter@steipete.me",
+        "date": "2026-07-14T08:12:36Z",
+        "message": "improve(ui): catch i18n catalog drift locally (#107253)\n\n* ci(ui): verify i18n catalogs locally\n\n* fix(ui): preserve scoped i18n sync errors\n\n* refactor(ui): share i18n raw-copy verifier\n\n* test(ui): cover i18n lint gate\n\n* fix(ui): route lint threads to oxlint",
+        "url": "https://github.com/openclaw/openclaw/commit/47d37804a88fa94eb2ca7edd638a2746e64645c1"
+    },
+    {
+        "sha": "3d15bf513e79a9c0678f7c32054caf0a69b791af",
+        "author": "Peter Steinberger",
+        "email": "peter@steipete.me",
+        "date": "2026-07-14T08:12:04Z",
+        "message": "fix(onepassword): preserve pending tool authorization (#107275)\n\n* fix(onepassword): preserve pending tool authorization\n\n* refactor(onepassword): consume pending authorization in helper\n\n* chore: defer release note generation",
+        "url": "https://github.com/openclaw/openclaw/commit/3d15bf513e79a9c0678f7c32054caf0a69b791af"
+    },
+    {
+        "sha": "da9f974886a746cb39c3188214f012a9a98af413",
+        "author": "Peter Steinberger",
+        "email": "steipete@gmail.com",
+        "date": "2026-07-14T08:06:58Z",
+        "message": "fix(cli): adopt native Clack prompt contracts",
+        "url": "https://github.com/openclaw/openclaw/commit/da9f974886a746cb39c3188214f012a9a98af413"
+    },
+    {
+        "sha": "bb6874fddfac2bd77748e86ddd6cf8579110c2b4",
+        "author": "Peter Steinberger",
+        "email": "peter@steipete.me",
+        "date": "2026-07-14T08:09:05Z",
+        "message": "feat(sessions): upstream liveness for adopted catalog sessions (#107009)",
+        "url": "https://github.com/openclaw/openclaw/commit/bb6874fddfac2bd77748e86ddd6cf8579110c2b4"
+    },
+    {
+        "sha": "473753001a568ca4cb29d2271960cd9fb9248a57",
+        "author": "Peter Steinberger",
+        "email": "peter@steipete.me",
+        "date": "2026-07-14T08:07:06Z",
+        "message": "refactor(google-meet): trim internal exports (#107284)",
+        "url": "https://github.com/openclaw/openclaw/commit/473753001a568ca4cb29d2271960cd9fb9248a57"
+    },
+    {
+        "sha": "5bcee076a5ed172fb525f6e1b5d32d8cfa204db7",
+        "author": "Peter Steinberger",
+        "email": "peter@steipete.me",
+        "date": "2026-07-14T08:06:13Z",
+        "message": "refactor(channels): deprecate the never-consumed group intro hint adapter (#107252)\n\n* refactor(channels): deprecate the never-consumed group intro hint adapter\n\n* chore(channels): compress the intro-hint deprecation note to satisfy the size ratchet",
+        "url": "https://github.com/openclaw/openclaw/commit/5bcee076a5ed172fb525f6e1b5d32d8cfa204db7"
+    },
+    {
+        "sha": "202dea59bdf5d0bf3bb1b50424ee8a68af9efae8",
+        "author": "Peter Steinberger",
+        "email": "steipete@gmail.com",
+        "date": "2026-07-14T07:49:21Z",
+        "message": "fix(workboard): grant dispatch workers required tools",
+        "url": "https://github.com/openclaw/openclaw/commit/202dea59bdf5d0bf3bb1b50424ee8a68af9efae8"
+    },
+    {
+        "sha": "b940339c3207b34da48b4bb451eb19b85eabde6d",
+        "author": "Peter Steinberger",
+        "email": "peter@steipete.me",
+        "date": "2026-07-14T08:00:24Z",
+        "message": "fix: use plain agent progress labels (#107260)\n\n* fix(channels): simplify agent progress labels\n\n* chore: keep changelog release-owned\n\n* chore: refresh bundled channel metadata",
+        "url": "https://github.com/openclaw/openclaw/commit/b940339c3207b34da48b4bb451eb19b85eabde6d"
+    },
+    {
+        "sha": "9da229c8bacbdb7640c8763de59e0821bfbc0f7d",
+        "author": "Peter Steinberger",
+        "email": "steipete@gmail.com",
+        "date": "2026-07-14T08:00:06Z",
+        "message": "fix(test): drop deleted runner.credentials test from unit-fast forced list\n\nsrc/node-host/runner.credentials.test.ts was removed in 4dff4e95b17\n(#107270) but stayed in forcedUnitFastTestFiles, breaking\ntest/vitest-unit-fast-config.test.ts on every branch.",
+        "url": "https://github.com/openclaw/openclaw/commit/9da229c8bacbdb7640c8763de59e0821bfbc0f7d"
+    },
+    {
+        "sha": "4ed76a7ddb89604c35769e88d9d61c32e1a41d05",
+        "author": "Peter Steinberger",
+        "email": "steipete@gmail.com",
+        "date": "2026-07-14T07:40:54Z",
+        "message": "refactor(acp): use SDK protocol contracts",
+        "url": "https://github.com/openclaw/openclaw/commit/4ed76a7ddb89604c35769e88d9d61c32e1a41d05"
+    },
+    {
+        "sha": "b0104bd2cdbff91893b1de26232c94ae1769a137",
+        "author": "Peter Steinberger",
+        "email": "peter@steipete.me",
+        "date": "2026-07-14T07:54:00Z",
+        "message": "refactor(tui): centralize pending submission lifecycle (#107242)\n\n* refactor(tui): centralize pending submit state\n\n* fix(tui): keep submit state dependency leaf",
+        "url": "https://github.com/openclaw/openclaw/commit/b0104bd2cdbff91893b1de26232c94ae1769a137"
+    },
+    {
+        "sha": "f4b7a19624b90b2d901e1723f37e6e0d35c39d0d",
+        "author": "Peter Steinberger",
+        "email": "peter@steipete.me",
+        "date": "2026-07-14T07:53:17Z",
+        "message": "fix: avoid remote boxes for focused validation (#107166)\n\n* fix: avoid remote boxes for focused validation\n\n* fix: preserve explicit remote proof routing\n\n* fix: delegate when local diff refs are unavailable",
+        "url": "https://github.com/openclaw/openclaw/commit/f4b7a19624b90b2d901e1723f37e6e0d35c39d0d"
+    },
+    {
+        "sha": "a951cd2df2f056b6f7914a0839fb72da82f0045a",
+        "author": "Peter Steinberger",
+        "email": "steipete@gmail.com",
+        "date": "2026-07-14T07:50:59Z",
+        "message": "chore(docs-i18n): generalize max reasoning note",
+        "url": "https://github.com/openclaw/openclaw/commit/a951cd2df2f056b6f7914a0839fb72da82f0045a"
+    },
+    {
+        "sha": "4dff4e95b173f7c74aa818c3e1dfdb32257cbe9a",
+        "author": "Peter Steinberger",
+        "email": "peter@steipete.me",
+        "date": "2026-07-14T07:49:54Z",
+        "message": "refactor(node-host): trim internal exports (#107270)",
+        "url": "https://github.com/openclaw/openclaw/commit/4dff4e95b173f7c74aa818c3e1dfdb32257cbe9a"
+    },
+    {
+        "sha": "1d4188138e95eca79dfe6c4b8fa76009ccebe284",
+        "author": "Peter Steinberger",
+        "email": "steipete@gmail.com",
+        "date": "2026-07-14T07:47:17Z",
+        "message": "fix(docs-i18n): centralize translation safeguards",
+        "url": "https://github.com/openclaw/openclaw/commit/1d4188138e95eca79dfe6c4b8fa76009ccebe284"
+    },
+    {
+        "sha": "489690fa160e9fc362cd3d40d61c1713ca006c47",
+        "author": "Peter Steinberger",
+        "email": "peter@steipete.me",
+        "date": "2026-07-14T07:43:30Z",
+        "message": "fix(process): apply undefined env removals (#107258)\n\nCo-authored-by: Pavan Kumar Gondhi <pavangondhi@gmail.com>",
+        "url": "https://github.com/openclaw/openclaw/commit/489690fa160e9fc362cd3d40d61c1713ca006c47"
+    },
+    {
+        "sha": "497475061400317793a9384167404c399913f858",
+        "author": "Peter Steinberger",
+        "email": "steipete@gmail.com",
+        "date": "2026-07-14T07:34:01Z",
+        "message": "refactor(memory): use Chalk theme builders directly",
+        "url": "https://github.com/openclaw/openclaw/commit/497475061400317793a9384167404c399913f858"
+    },
+    {
+        "sha": "41c0c150b59197cafa1b8c513fd90f0dc85981bd",
+        "author": "Peter Steinberger",
+        "email": "steipete@gmail.com",
+        "date": "2026-07-14T07:28:12Z",
+        "message": "refactor(config): use Zod strict object builders",
+        "url": "https://github.com/openclaw/openclaw/commit/41c0c150b59197cafa1b8c513fd90f0dc85981bd"
+    },
+    {
+        "sha": "9bf994f399981fb8b52d4ed4ed28ab042c121609",
+        "author": "Peter Steinberger",
+        "email": "steipete@gmail.com",
+        "date": "2026-07-14T07:21:07Z",
+        "message": "refactor(cron): trust Croner run results",
+        "url": "https://github.com/openclaw/openclaw/commit/9bf994f399981fb8b52d4ed4ed28ab042c121609"
+    },
+    {
+        "sha": "63f497a428d839641884824868c617b5ccd3c576",
+        "author": "Peter Steinberger",
+        "email": "steipete@gmail.com",
+        "date": "2026-07-14T07:15:09Z",
+        "message": "fix(build): refresh cached CLI help per build",
+        "url": "https://github.com/openclaw/openclaw/commit/63f497a428d839641884824868c617b5ccd3c576"
+    },
+    {
+        "sha": "18ec9ce8f719d34ce4b134aa01f023eeb628fce6",
+        "author": "Michael Appel",
+        "email": "mappel@nvidia.com",
+        "date": "2026-07-14T07:21:15Z",
+        "message": "fix: block workspace dotenv endpoint overrides [AI] (#103914)\n\n* fix: block workspace dotenv endpoint overrides\n\n* docs: clarify workspace endpoint env sources\n\n* style: format dotenv suffix blocklist\n\n---------\n\nCo-authored-by: Pavan Kumar Gondhi <pavangondhi@gmail.com>",
+        "url": "https://github.com/openclaw/openclaw/commit/18ec9ce8f719d34ce4b134aa01f023eeb628fce6"
+    },
+    {
+        "sha": "ced9a4ae22a507f6585199b66d2f67148c5e1e95",
+        "author": "Peter Steinberger",
+        "email": "peter@steipete.me",
+        "date": "2026-07-14T07:20:48Z",
+        "message": "refactor(zalouser): trim internal exports (#107247)",
+        "url": "https://github.com/openclaw/openclaw/commit/ced9a4ae22a507f6585199b66d2f67148c5e1e95"
+    }
+]

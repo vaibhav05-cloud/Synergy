@@ -1,0 +1,242 @@
+[
+    {
+        "sha": "66ac36e7a47dd132267c5ce1f204f62da33647a9",
+        "author": "MichaelK",
+        "email": "168545120+MichaelK05-dev@users.noreply.github.com",
+        "date": "2026-07-13T17:05:06Z",
+        "message": "chore: Refactor ConsoleArguments to use in-class initializers (#20248)\n\nThis PR refactors the ConsoleArguments class to use in-class member\ninitializers for members with constant or default values, replacing\nequivalent entries in the constructor initializer list.\n\nRefs #962",
+        "url": "https://github.com/microsoft/terminal/commit/66ac36e7a47dd132267c5ce1f204f62da33647a9"
+    },
+    {
+        "sha": "dd494ac79a82a04e1e7252a91c8939a3c3039908",
+        "author": "Dustin L. Howett",
+        "email": "duhowett@microsoft.com",
+        "date": "2026-07-10T21:35:53Z",
+        "message": "drcs: reject attempts to write a glyph that is too tall (#20409)\n\nWe probably shouldn't walk this iterator off the end of the array. Or\nwrite into it.",
+        "url": "https://github.com/microsoft/terminal/commit/dd494ac79a82a04e1e7252a91c8939a3c3039908"
+    },
+    {
+        "sha": "3e6068a4800c4685fcc70f7b7b23ea9853d2c6ed",
+        "author": "結友",
+        "email": "miagetegorann@gmail.com",
+        "date": "2026-07-10T21:22:13Z",
+        "message": "renderer: speculatively fix an EnablePainting viewport desync (#20366)\n\nContributor asserts that EnablePainting updates _viewport without propagating\nit to the render engines, and that that might be the cause of #20269.\n\nRefs #20269",
+        "url": "https://github.com/microsoft/terminal/commit/3e6068a4800c4685fcc70f7b7b23ea9853d2c6ed"
+    },
+    {
+        "sha": "20f58611874b6090e444244b5277532aa47363ab",
+        "author": "Carlos Zamora",
+        "email": "carlos.zamora@microsoft.com",
+        "date": "2026-07-10T21:15:50Z",
+        "message": "Refresh hovered hyperlink on scroll (#20357)\n\n## Summary of the Pull Request\nUpdates the cached hovered hyperlink whenever a scroll occurs. All\nchanges were made in `ControlCore`:\n- Add `_refreshHoveredCell()` which simply sets the hovered cell again\n- Calls the new function in `UserScrollViewport()` for user-initiated\nscrolling and `updateScrollBar` for non-user-initiated scrolling\n\n## Validation Steps Performed\nWith multiple hyperlinks in the text buffer, the following scenarios\nresulted in the hovered hyperlink being updated properly:\n✅ mouse wheel scrolling\n✅ keyboard scrolling\n✅ scroll to mark\n\n## PR Checklist\nCloses #20219\n\nBased on #20239",
+        "url": "https://github.com/microsoft/terminal/commit/20f58611874b6090e444244b5277532aa47363ab"
+    },
+    {
+        "sha": "01441843446a56287e7e499f78182dd7bbfcc181",
+        "author": "Carlos Zamora",
+        "email": "carlos.zamora@microsoft.com",
+        "date": "2026-07-10T20:47:35Z",
+        "message": "Fix Export Tab leaking Enter via Command Palette (#20358)\n\n## Summary of the Pull Request\nFixes a bug where Enter would leak into the terminal session when\nrunning the export buffer command from the command palette.\n\nTurns out this is because `_ExportTab()` opens the file picker\nsynchronously in the key handler. The file picker spins a nested Win32\nmodal message loop, which pumps the queued `WM_CHAR` into the terminal.\n\nSwitching to the foreground thread gets out of the nested modal loop,\nresulting in the `WM_CHAR` being handled through XAML's pipeline and\nsuppressing it normally. The low priority makes it so that the command\npalette is visibly dismissed before opening the file picker.\n\n## Validation Steps Performed\nRun export buffer action from the command palette.\n✅ Enter does not go through to the underlying terminal.\n\n## PR Checklist\nCloses #20188 \nBased on #20221",
+        "url": "https://github.com/microsoft/terminal/commit/01441843446a56287e7e499f78182dd7bbfcc181"
+    },
+    {
+        "sha": "65345e075ecde5371a50148c455afd791685522f",
+        "author": "Dustin L. Howett",
+        "email": "duhowett@microsoft.com",
+        "date": "2026-07-10T19:58:51Z",
+        "message": "build: use Terrapin for the OneBranch build too (#20408)\n\nIt's a security requirement. Unlike 1ESPT, which fails the build if you\ntalk to a remote server, OneBranch happily chugs along and then files a\n\"the world is ending\" work item on you.\n\nI also made the Terrapin step template more reusable if we need to\nchange where it downloads from.",
+        "url": "https://github.com/microsoft/terminal/commit/65345e075ecde5371a50148c455afd791685522f"
+    },
+    {
+        "sha": "129025be528e0ae695f3b7b5812000771df36726",
+        "author": "Dustin L. Howett",
+        "email": "duhowett@microsoft.com",
+        "date": "2026-07-10T19:51:22Z",
+        "message": "build: try to enable codeql in onebranch (#20407)",
+        "url": "https://github.com/microsoft/terminal/commit/129025be528e0ae695f3b7b5812000771df36726"
+    },
+    {
+        "sha": "27da3bce626d95ef27479d5e709a98d51baf95cb",
+        "author": "Shivam Kumar",
+        "email": "shivamkingkumar5@gmail.com",
+        "date": "2026-07-10T01:02:29Z",
+        "message": "Fix integer overflow in custom shader Time calculation (#20360)\n\nThis PR removes an unnecessary 32-bit integer truncation in shader time\ncomputation and preserves the original modulo-based architecture while\nimproving precision in the tick-to-seconds conversion.",
+        "url": "https://github.com/microsoft/terminal/commit/27da3bce626d95ef27479d5e709a98d51baf95cb"
+    },
+    {
+        "sha": "e58bd4bdab46f7b0de02b6b3494be5a81e4940ad",
+        "author": "Danyal Ahmed",
+        "email": "58849388+danyalahmed1995@users.noreply.github.com",
+        "date": "2026-06-30T18:51:22Z",
+        "message": "Preserve selected font face after focus changes (#20359)\n\n## Summary\n\nFixes the font face `AutoSuggestBox` resetting to its previous value, or\nstale filter text, after a keyboard-selected font is committed and focus\nlater leaves the control.\n\nWinUI restores its cached user query when the suggestion list closes.\nThe existing `LostFocus` path then treated that programmatic restoration\nas fresh user input and committed the stale value.\n\nThis change distinguishes genuine user edits from programmatic text\nrestoration, preserving the committed font value while retaining the\nqueued selected-suggestion commit introduced by #20255.\n\nFixes #20353.\n\n## Validation\n\nManually validated with a local `CascadiaPackage` Debug x64 build:\n\n- Reproduced the reset before the fix.\n- Selected `Lucida Console` from `Consolas` using keyboard navigation.\n- Pressed Enter and confirmed `Lucida Console` was applied.\n- Returned focus to the Font face control and tabbed out again.\n- Verified `Lucida Console` remained selected.\n- Verified stale filter text did not return.\n- Verified the #20245 crash did not regress.\n- Verified Save and Discard changes both work.",
+        "url": "https://github.com/microsoft/terminal/commit/e58bd4bdab46f7b0de02b6b3494be5a81e4940ad"
+    },
+    {
+        "sha": "dc4ce1c096c07c23e1271f62b781a29b0746887d",
+        "author": "Tushar",
+        "email": "tusharsinghnx@gmail.com",
+        "date": "2026-06-25T20:11:38Z",
+        "message": "Get Windows SDK path from Registry (#19042)\n\n## Summary of the Pull Request\nThe Windows SDK path may not be the same on all PCs, especially when\nVisual Studio (VS) is installed on a drive other than `C:/`. However, we\ncan read the correct path from the Registry, which this PR does.\n\n## Validation Steps Performed\n1. Install VS on `E:/`.\n2. Build the solution and see it passes without erroring on accessing\n`MakePri.exe`.",
+        "url": "https://github.com/microsoft/terminal/commit/dc4ce1c096c07c23e1271f62b781a29b0746887d"
+    },
+    {
+        "sha": "d0263b86acb2b99fb92fb1a30eb32854526f736f",
+        "author": "Dustin L. Howett",
+        "email": "duhowett@microsoft.com",
+        "date": "2026-06-23T23:00:46Z",
+        "message": "tsm: use the much cheaper & non-async 26100 AppExtension APIs when possible (#20356)\n\nGetPublicPath doesn't require async _or_ Windows.Storage! FindAll is\njust the Sync version of FindAllAsync!",
+        "url": "https://github.com/microsoft/terminal/commit/d0263b86acb2b99fb92fb1a30eb32854526f736f"
+    },
+    {
+        "sha": "8824b02a782ebc0dc9843620905cc7e004f1e29e",
+        "author": "Anshika Jain",
+        "email": "anshikajain196872@gmail.com",
+        "date": "2026-06-23T18:20:08Z",
+        "message": "Always use MRU tab focus on tab close regardless of TabSwitcherMode (#20272)\n\n## Summary\nAlways focus the MRU (most recently used) tab when closing the current\ntab, regardless of TabSwitcherMode setting.\n\n## References\nFixes #19819\n\n## Detailed Description\nRemoved the `TabSwitcherMode` check in `_RemoveTab` (TabManagement.cpp)\nso tab-close focus behavior is always MRU-based, decoupling it from the\ntab switcher preference as noted by @DHowett.\n\n## Validation Steps\n- Opened 3 tabs, navigated Tab3 → Tab1, closed Tab1\n- With fix: Tab3 focused  (MRU)\n- Without fix: Tab2 focused (next in order)\n\n## PR Checklist\n Closes #19819",
+        "url": "https://github.com/microsoft/terminal/commit/8824b02a782ebc0dc9843620905cc7e004f1e29e"
+    },
+    {
+        "sha": "0c4881bc9cd2685c31026bf5d7eee9165b2da9b5",
+        "author": "Phil Scott",
+        "email": "phil.scott@gmail.com",
+        "date": "2026-06-23T17:27:17Z",
+        "message": "Fixes xbox controller crashing the Terminal (#20234)\n\n## Summary of the Pull Request\nFixes a denial of service by a toddler with an Xbox controller wanting\nto play Forza. They can impatiently press up and down and close out the\nterminal window.\n\nIssue is upstream in WinUI, but I think this gathers things into a state\nwhere Terminal can at least recover by adding a `GettingFocus` handler\non the `TabViewItem` that cancels that gamepad focus move before it\nreaches the framework handler.\n\n## References and Relevant Issues\nIssue #19671 and #20089\n\n## Validation Steps Performed\nHanded a controller to my toddler while working in terminal. I also\nbanged on the keys myself.\n\n## PR Checklist\nCloses #19671 \nCloses #20089",
+        "url": "https://github.com/microsoft/terminal/commit/0c4881bc9cd2685c31026bf5d7eee9165b2da9b5"
+    },
+    {
+        "sha": "05b613cf06c5169fbbcbb40644568fd6d03ea2b5",
+        "author": "Dustin L. Howett",
+        "email": "duhowett@microsoft.com",
+        "date": "2026-06-22T23:09:00Z",
+        "message": "Pre-warm SHGetKnownFolder to avoid a deadlock in the nvidia driver (#20351)\n\nThe nvidia driver attempts to use SHGetKnownFolder (which has its own\nlock!) under the loader lock, which occasionally triggers a deadlock\nwhen we attempt to do the same thing during settings load.\n\nCloses #20350 (superseded)\nCloses #20348\n\nCo-authored-by: gleb <46842077+groovg@users.noreply.github.com>",
+        "url": "https://github.com/microsoft/terminal/commit/05b613cf06c5169fbbcbb40644568fd6d03ea2b5"
+    },
+    {
+        "sha": "d288fa09d628fb98f23926f5d70e1b4f573459d4",
+        "author": "Danyal Ahmed",
+        "email": "58849388+danyalahmed1995@users.noreply.github.com",
+        "date": "2026-06-22T21:53:05Z",
+        "message": "Fix font face keyboard selection crash (#20255)\n\n## Summary\n\nFixes a crash in the Settings UI font face control when selecting a font\nsuggestion with the keyboard and pressing Enter.\n\nThe font face `AutoSuggestBox` path was explicitly unfocusing the box\nafter a chosen suggestion was submitted. During the keyboard suggestion\ncommit path, that `Focus(FocusState::Unfocused)` call can trigger a\nWinUI/XAML crash before the settings model update completes.\n\nThis change avoids explicitly unfocusing the `AutoSuggestBox` in the\nchosen-suggestion path and instead commits the selected font and moves\nfocus to the parent container.\n\nFixes #20245.\n\n## Validation\n\nManually validated with a local `CascadiaPackage` Debug x64 build:\n\n- Reproduced the crash before the fix.\n- Opened Settings → Defaults → Appearance → Font face.\n- Typed a partial font name.\n- Used arrow keys to select a suggestion.\n- Pressed Enter.\n- Verified Terminal no longer crashes.\n- Verified the selected font is applied and Save works.",
+        "url": "https://github.com/microsoft/terminal/commit/d288fa09d628fb98f23926f5d70e1b4f573459d4"
+    },
+    {
+        "sha": "d21b580353a5df195b113037ee0b5a492bb16201",
+        "author": "BamBamTram32",
+        "email": "islandson2432@gmail.com",
+        "date": "2026-06-22T21:18:38Z",
+        "message": "Update README.md (#20273)\n\nImproved README accessibility alt text",
+        "url": "https://github.com/microsoft/terminal/commit/d21b580353a5df195b113037ee0b5a492bb16201"
+    },
+    {
+        "sha": "0732b483acfa1253aee1e603844f9c7613031393",
+        "author": "Dustin L. Howett",
+        "email": "duhowett@microsoft.com",
+        "date": "2026-06-22T19:16:54Z",
+        "message": "Reflect OS PR !15916518: conhost: add ETL to our Feature Tests (#20334)\n\nThis may help us diagnose the OneCore windowing failures.\n\nRelated work items: MSFT-62650388",
+        "url": "https://github.com/microsoft/terminal/commit/0732b483acfa1253aee1e603844f9c7613031393"
+    },
+    {
+        "sha": "47253ef22bd4e97b4d91ee3941b8f77646ee354e",
+        "author": "Windows Console Service Bot",
+        "email": "14666831+consvc@users.noreply.github.com",
+        "date": "2026-06-19T22:53:08Z",
+        "message": "Localization Updates - main - 06/17/2026 03:05:24 (#20330)\n\nCo-authored-by: Console Service Bot <consvc@microsoft.com>",
+        "url": "https://github.com/microsoft/terminal/commit/47253ef22bd4e97b4d91ee3941b8f77646ee354e"
+    },
+    {
+        "sha": "1282d56a33bb15206fcb3a09d3bea0a33036f2cd",
+        "author": "Mike Griese",
+        "email": "migrie@microsoft.com",
+        "date": "2026-06-16T21:59:17Z",
+        "message": "Add support for \"workspaces\" based on window names (redux) (#20314)\n\nThis adds a new feature to the Windows Terminal: \"Workspaces\"\n\nWorkspaces are very shamelessly inspired by Edge workspaces of the same\nname.\n\nThe core idea is that when users name a window and they close that\nwindow, we will persist that Windows layout and buffers, seperately from\nthe rest of window restoration. So a user can open a named window, open\nsome profiles, some panes, do some stuff in it, then close it, and we\nwill keep that state around for the next time the user opens that window\nname.\n\nUnnamed windows still behave the same. If you close an unnamed window,\nand it's not the last window, then we won't persist the state of it.\n\nTo facilitate restoring named windows, we add a `openWorkspace` action.\nThis allows us to persist the open workspace action in the window layout\nrestoration path. So when we deserialize the list of tab layouts, and\nopen workspace action will tell us, hey, go retrieve this known\nworkspace from the state.json, instead of trying to serialize the window\nstate in two places.\n\nAs demoed in the video, we add a flyout to list the windows that the\nuser has open, and the named workspaces that they have saved. This\nallows users to quickly reopen previously closed workspaces, as well as\nquickly rename a window, thereby adding it to the list of saved\nworkspaces. This button can also be hidden using the theme settings.\n\nCloses #17084\n\n(this is a reboot of #20162, but with the event from #20311)",
+        "url": "https://github.com/microsoft/terminal/commit/1282d56a33bb15206fcb3a09d3bea0a33036f2cd"
+    },
+    {
+        "sha": "94dfb159163952015820ef7454a4df42d9d29277",
+        "author": "Dustin L. Howett",
+        "email": "duhowett@microsoft.com",
+        "date": "2026-06-16T17:56:17Z",
+        "message": "Import changes from os.2020 (#20322)\n\nSometimes, changes like this just appear and we have to deal with them.",
+        "url": "https://github.com/microsoft/terminal/commit/94dfb159163952015820ef7454a4df42d9d29277"
+    },
+    {
+        "sha": "b7108c65287938277114c681cff0401c2fc768ae",
+        "author": "Dustin L. Howett",
+        "email": "duhowett@microsoft.com",
+        "date": "2026-06-15T20:41:29Z",
+        "message": "Don't ignore the user's default environment inheritance setting for wt (#20321)",
+        "url": "https://github.com/microsoft/terminal/commit/b7108c65287938277114c681cff0401c2fc768ae"
+    },
+    {
+        "sha": "9853bc96076e811cef5eab4469095fc9be58201e",
+        "author": "Mike Griese",
+        "email": "migrie@microsoft.com",
+        "date": "2026-06-11T22:02:51Z",
+        "message": "Update formatting scripts for Preview-only VS and pwsh 7 (#20312)\n\nThis is a pair of changes to make the code formatting scripts work,\ncirca 2026.\n\n* If you only have VS Insiders installed, then vswhere can't actually\nfind a clang-format to build with. You need `-prerelease` to let it also\nfind preview builds of VS.\n* Years ago we updated OpenConsole.psm1 to only support pwsh 7. I, of\ncourse, use `cmd` as my dev env for terminal, so I use `runformat.cmd`,\nwhich always shelled to `powershell` (5). This updates that tool to use\npwsh 7. Clearly this impacted only me ever.\n\nrelated to #20162",
+        "url": "https://github.com/microsoft/terminal/commit/9853bc96076e811cef5eab4469095fc9be58201e"
+    },
+    {
+        "sha": "2c9d15200ed9bee437b2adaa6ac1ded933744cd7",
+        "author": "Mike Griese",
+        "email": "migrie@microsoft.com",
+        "date": "2026-06-11T21:26:34Z",
+        "message": "Convert the Open New Window handler to an event (#20311)\n\nFrom ye old days where we were a multi-process app, we would\n`shellexecute` to create a new Terminal process when we wanted to open a\nnew window.\n\nNow that we're all one process (#18215), this dance doesn't make sense\nanymore.\n\nSo: let's just add a bunch of plumbing to take the IContentArgs up to\nthe emperor and have it hand them back to a new window.\n\n(this will be used to resurrect #20162)",
+        "url": "https://github.com/microsoft/terminal/commit/2c9d15200ed9bee437b2adaa6ac1ded933744cd7"
+    },
+    {
+        "sha": "60a58c93d73358130c26d2023bb952e9408fe1f7",
+        "author": "Dustin L. Howett",
+        "email": "duhowett@microsoft.com",
+        "date": "2026-06-10T23:22:02Z",
+        "message": "Update the WinGet configs, vsconfig and README for VS 2026 (#20313)",
+        "url": "https://github.com/microsoft/terminal/commit/60a58c93d73358130c26d2023bb952e9408fe1f7"
+    },
+    {
+        "sha": "fc958b13ced981c0896bfb8b2dcc7453ddba0bda",
+        "author": "Dustin L. Howett",
+        "email": "duhowett@microsoft.com",
+        "date": "2026-06-10T22:43:30Z",
+        "message": "Move to Visual Studio 2026, SDK 26100 and toolset v145 (#20225)",
+        "url": "https://github.com/microsoft/terminal/commit/fc958b13ced981c0896bfb8b2dcc7453ddba0bda"
+    },
+    {
+        "sha": "56bb43c26525983c2d41cb55c327cc3f97e08c29",
+        "author": "Dustin L. Howett",
+        "email": "duhowett@microsoft.com",
+        "date": "2026-06-08T23:30:52Z",
+        "message": "chore: upgrade gsl to 4.2.2 (#20306)\n\nGSL 4.2.2 contains a fix for a warning (in GSL itself, natch!) that was\nmaking MSVC quite upset with us.",
+        "url": "https://github.com/microsoft/terminal/commit/56bb43c26525983c2d41cb55c327cc3f97e08c29"
+    },
+    {
+        "sha": "39e5453b19912788970b783c7ec4fc8d05104f36",
+        "author": "Windows Console Service Bot",
+        "email": "14666831+consvc@users.noreply.github.com",
+        "date": "2026-06-08T23:11:14Z",
+        "message": "Localization Updates - main - OSC 777 and Navigation Pane (#20277)\n\nCo-authored-by: Console Service Bot <consvc@microsoft.com>\nServicing-command: edit",
+        "url": "https://github.com/microsoft/terminal/commit/39e5453b19912788970b783c7ec4fc8d05104f36"
+    },
+    {
+        "sha": "47e255f0579142a2bec6c308bf4382b3062407ff",
+        "author": "Carlos Zamora",
+        "email": "carlos.zamora@microsoft.com",
+        "date": "2026-06-05T17:46:44Z",
+        "message": "Revert \"Fix Settings tab color mismatch with Settings page background (#19999)\" (#20292)\n\nThis reverts commit 3ab2acc2ad4970d06b2e07acc12eed49009ea3b9 aka Fix\nSettings tab color mismatch with Settings page background (#19999).\n\nCloses #20186\nRe-opens #19873",
+        "url": "https://github.com/microsoft/terminal/commit/47e255f0579142a2bec6c308bf4382b3062407ff"
+    },
+    {
+        "sha": "77e8ca9cb24aa43af212b41bfcd2454bed323556",
+        "author": "Carlos Zamora",
+        "email": "carlos.zamora@microsoft.com",
+        "date": "2026-06-04T23:35:29Z",
+        "message": "Revert \"Add support for \"workspaces\" based on window names (#20162)\" (#20291)\n\nThis reverts commit 4b8b6ffc6722a8ace43243a87edc00d2677d1bbf: Add\nsupport for \"workspaces\" based on window names (#20162)\n\n@DHowett found the following blocking issues:\n-\nhttps://github.com/microsoft/terminal/pull/20162#discussion_r3359134869\n- unrelated changes in `tools/runformat.cmd` and `OpenConsole.psm1`",
+        "url": "https://github.com/microsoft/terminal/commit/77e8ca9cb24aa43af212b41bfcd2454bed323556"
+    },
+    {
+        "sha": "4b8b6ffc6722a8ace43243a87edc00d2677d1bbf",
+        "author": "Mike Griese",
+        "email": "migrie@microsoft.com",
+        "date": "2026-06-04T21:00:25Z",
+        "message": "Add support for \"workspaces\" based on window names (#20162)\n\nThis adds a new feature to the Windows Terminal: \"Workspaces\"\n\nWorkspaces are very shamelessly inspired by Edge workspaces of the same\nname.\n\nThe core idea is that when users name a window and they close that\nwindow, we will persist that Windows layout and buffers, seperately from\nthe rest of window restoration. So a user can open a named window, open\nsome profiles, some panes, do some stuff in it, then close it, and we\nwill keep that state around for the next time the user opens that window\nname.\n\nUnnamed windows still behave the same. If you close an unnamed window,\nand it's not the last window, then we won't persist the state of it.\n\nTo facilitate restoring named windows, we add a `openWorkspace` action.\nThis allows us to persist the open workspace action in the window layout\nrestoration path. So when we deserialize the list of tab layouts, and\nopen workspace action will tell us, hey, go retrieve this known\nworkspace from the state.json, instead of trying to serialize the window\nstate in two places.\n\nAs demoed in the video, we add a flyout to list the windows that the\nuser has open, and the named workspaces that they have saved. This\nallows users to quickly reopen previously closed workspaces, as well as\nquickly rename a window, thereby adding it to the list of saved\nworkspaces. This button can also be hidden using the theme settings.\n\nCloses #17084",
+        "url": "https://github.com/microsoft/terminal/commit/4b8b6ffc6722a8ace43243a87edc00d2677d1bbf"
+    }
+]

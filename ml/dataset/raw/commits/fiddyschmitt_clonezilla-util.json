@@ -1,0 +1,242 @@
+[
+    {
+        "sha": "0ad632656896398882e8471a043c7b0262118b06",
+        "author": "fiddyschmitt",
+        "email": "15338956+fiddyschmitt@users.noreply.github.com",
+        "date": "2026-07-13T12:29:43Z",
+        "message": "Record Batch 8 (parallel bzip2 serving) in the performance plan\n\n8a: multi-block groups decoded in parallel + buffered decoder input\n(fixed a 2 MB/s gate bottleneck). 8b: bit-aligned block boundaries so\nevery ~900 KB block is its own entry (median 5.5 MB -> 900 KB),\ndecoded via in-memory bit-shift reconstruction. Validated byte-exact\non sda1 (3.7x single-thread floor) and MD5-gated through the mount\nstack. Big-image cached number pending the next suite run.\n\nCo-Authored-By: Claude Fable 5 <noreply@anthropic.com>\nClaude-Session: https://claude.ai/code/session_01EzNgdgRVgqwy2gcCFfjPY8",
+        "url": "https://github.com/fiddyschmitt/clonezilla-util/commit/0ad632656896398882e8471a043c7b0262118b06"
+    },
+    {
+        "sha": "80a645bdc54af3c61b006049b6099ef357f3ae4e",
+        "author": "fiddyschmitt",
+        "email": "15338956+fiddyschmitt@users.noreply.github.com",
+        "date": "2026-07-13T11:42:21Z",
+        "message": "bzip2: bit-aligned block boundaries lift the parallelism cap (Batch 8b)\n\nThe byte-aligned magic search only finds block boundaries that happen\nto land on a byte (~1 in 8), merging the rest into coarse entries that\ncan only decode single-threaded - median 5.5 MB, with outliers into\nthe hundreds of MB. Scan every bit offset instead (rolling 64-bit\naccumulator, 8 alignments checked per byte) so every ~900 KB block is\nits own entry, and decode a block that starts mid-byte by\nreconstructing a standalone byte-aligned .bz2 image in memory\n(bzip2recover's bit-shift technique): the 4-byte file header followed\nby the block's bits shifted onto the byte-4 boundary. A wrong\nreconstruction fails the block CRC (loud), never silent garbage.\n\nMapping gains CompressedStart/EndBitInByte (0 for gzip and old\nbyte-aligned indexes, which then behave exactly as before). The cache\nfilename bumps to .bzip2_index_v2.json so existing indexes rebuild\nonce at the finer granularity.\n\nValidated on sda1.img.bz2 with a fresh build: 458 entries (was 61),\nmedian 900 KB, 397 starting mid-byte, byte-exact vs a full reference\ndecode across 100 random multi-entry reads plus every\nentry-boundary/mid-entry/EOF read; sequential MD5 through the\nCachingStream stack 35 MB/s (3.7x the single-thread floor, up from\n1.8x in 8a). The few remaining >32 MB entries are single bzip2 blocks\nwhose RLE stage swallowed a large zero-run - inherent, and they decode\nfast.\n\nCo-Authored-By: Claude Fable 5 <noreply@anthropic.com>\nClaude-Session: https://claude.ai/code/session_01EzNgdgRVgqwy2gcCFfjPY8",
+        "url": "https://github.com/fiddyschmitt/clonezilla-util/commit/80a645bdc54af3c61b006049b6099ef357f3ae4e"
+    },
+    {
+        "sha": "1e72824945fc762f2928bbfff5a9cbe73f0179fa",
+        "author": "fiddyschmitt",
+        "email": "15338956+fiddyschmitt@users.noreply.github.com",
+        "date": "2026-07-13T10:55:17Z",
+        "message": "bzip2: parallel multi-block serving (Batch 8a)\n\nGroup consecutive index entries into ~32 MB spans; GetRecommendation\nreturns a whole group and Read decodes a group's entries concurrently,\neach into its own slice of the caller's buffer (bzip2 blocks are\nindependently decodable; workers use independent SharedStream views).\nSingle-entry reads keep the inline path.\n\nAlso wrap the decoder's input in a BufferedStream: SharpCompress pulls\ninput in tiny reads, and each previously paid the SharedStream gate\n(lock + FileStream reposition). That overhead dominated serving - a\n576 MB sequential scan through the CachingStream stack ran at 2 MB/s\n(0.2x a plain single-threaded decode); with buffering + parallel\ngroups it reaches 17 MB/s (1.8x) on the same giant-entry-dominated\nfile, byte-exact (md5 match vs reference, plus boundary/mid-entry/EOF\nchecks).\n\nParallel width is currently capped by index granularity: the\nbyte-aligned magic search merges ~6 real blocks per entry (median\n5.5 MB) and leaves giant entries (up to 4.3 GB) that decode\nsingle-threaded. Bit-aligned block finding lifts that cap - next\ncommit.\n\nCo-Authored-By: Claude Fable 5 <noreply@anthropic.com>\nClaude-Session: https://claude.ai/code/session_01EzNgdgRVgqwy2gcCFfjPY8",
+        "url": "https://github.com/fiddyschmitt/clonezilla-util/commit/1e72824945fc762f2928bbfff5a9cbe73f0179fa"
+    },
+    {
+        "sha": "e3f59634b2dfd0ea73e94d0fc54f35e85ded7d2b",
+        "author": "fiddyschmitt",
+        "email": "15338956+fiddyschmitt@users.noreply.github.com",
+        "date": "2026-07-13T06:53:01Z",
+        "message": "Record cached-suite confirmation of the bzip2 index persistence fix\n\nTwo cached runs: 139.2 -> 113.8 -> 77.0 min. bzip2 drive tests settle\nat ~5.6 min each. Run-1 mount anomaly (22.7 min despite the index\nexisting) investigated and closed as a one-off: identical disk state\nnow reproduces 5m36s in isolation.\n\nCo-Authored-By: Claude Fable 5 <noreply@anthropic.com>\nClaude-Session: https://claude.ai/code/session_01EzNgdgRVgqwy2gcCFfjPY8",
+        "url": "https://github.com/fiddyschmitt/clonezilla-util/commit/e3f59634b2dfd0ea73e94d0fc54f35e85ded7d2b"
+    },
+    {
+        "sha": "55898a78e628d2db48cccaa4cf5937e99bbeecc5",
+        "author": "fiddyschmitt",
+        "email": "15338956+fiddyschmitt@users.noreply.github.com",
+        "date": "2026-07-12T08:03:29Z",
+        "message": "Drive images: persist the bzip2 block index (synthesize a cache)\n\nThe drive-image flow (CompressedImage) provides no partition cache,\nand the cache synthesis added for gz/zstd excluded bzip2 - so\nBzip2Decompressor got a null index filename and Bzip2StreamSeekable\nrebuilt the block index (a full parallel decode of the compressed\nimage) on every mount, never saving it. This is why the 2 TB bzip2\ndrive-image tests barely differed between fresh and cached suite runs\n(~23 min each) while partition bzip2, whose index persists, collapsed\n19.8 -> 3.2 min.\n\nAdd bzip2 to the synthesis so the index lands in the same whole-file\ncache folder gz/zstd use. Validated on the 395 MB sda1.img.bz2 with a\nscratch cache: run 1 builds and saves the .bzip2_index.json, run 2\nloads it, identical listings.\n\nCo-Authored-By: Claude Fable 5 <noreply@anthropic.com>\nClaude-Session: https://claude.ai/code/session_01EzNgdgRVgqwy2gcCFfjPY8",
+        "url": "https://github.com/fiddyschmitt/clonezilla-util/commit/55898a78e628d2db48cccaa4cf5937e99bbeecc5"
+    },
+    {
+        "sha": "a1e6e98ccc8fdcf94c94156ecd3fdf5825a20a11",
+        "author": "fiddyschmitt",
+        "email": "15338956+fiddyschmitt@users.noreply.github.com",
+        "date": "2026-07-12T07:55:13Z",
+        "message": "Record investigations: bzip2 drive-image index never persisted; Sparse cleared\n\nbzip2: CompressedImage passes no partition cache and the drive-image\ncache synthesis covers only gz/zstd, so the block index is rebuilt on\nevery mount and never saved - the ~23 min \"serving\" cost is mostly\nindex construction. Fix identified (extend synthesis to BZip2).\n\nSparse.ExtractAndSparsifyFile: exercised path diffs 0 lines vs\nbaseline; isolated same-day A/B republish shows identical performance.\nIn-suite spread was E: cache state + contention. Closed, not a\nregression.\n\nCo-Authored-By: Claude Fable 5 <noreply@anthropic.com>\nClaude-Session: https://claude.ai/code/session_01EzNgdgRVgqwy2gcCFfjPY8",
+        "url": "https://github.com/fiddyschmitt/clonezilla-util/commit/a1e6e98ccc8fdcf94c94156ecd3fdf5825a20a11"
+    },
+    {
+        "sha": "c6117e48d49986a42aa218fe9492317b1eb6c59e",
+        "author": "fiddyschmitt",
+        "email": "15338956+fiddyschmitt@users.noreply.github.com",
+        "date": "2026-07-12T06:44:56Z",
+        "message": "Record 2026-07-12 fresh+cached suite results in the performance plan\n\nFresh 736.4 min (equal to baseline total while building all indexes);\ncached 139.2 min (5.3x). All persistence paths confirmed. New top\ntarget: bzip2 drive-image serving (~47 min of the cached suite).\n\nCo-Authored-By: Claude Fable 5 <noreply@anthropic.com>\nClaude-Session: https://claude.ai/code/session_01EzNgdgRVgqwy2gcCFfjPY8",
+        "url": "https://github.com/fiddyschmitt/clonezilla-util/commit/c6117e48d49986a42aa218fe9492317b1eb6c59e"
+    },
+    {
+        "sha": "281601458ea8fb4001e4eb90b03a29d767d0ff8e",
+        "author": "fiddyschmitt",
+        "email": "15338956+fiddyschmitt@users.noreply.github.com",
+        "date": "2026-07-11T03:19:48Z",
+        "message": "Zstd: ZstdSeekable 0.3.0 - fill spans (ZSTZRAN3)\n\nThe package now records single-repeated-byte runs >= 1 MiB (zeros in\ndisk images, 0xFF in flash dumps) during the verified build and serves\nreads inside them by filling the buffer directly - no window load, no\ndecoder, no compressed I/O. Resume points are not thinned inside runs,\nso the MaxPointGap serving gate is unaffected.\n\nOne semantic to honour: ZstdIndexedStream.Read now also returns short\nat fill-span edges (it stops decoding where a run begins so the next\nread skips the decoder), which makes SeekableZstdStream's Read\nfill-loop load-bearing rather than defensive - comment updated.\n\nExisting ZSTZRAN2 indexes still load and serve; delete a .zsi and\nre-index to gain fill spans (biggest win: the 2 TB drive image's null\ntail).\n\nValidated on a crafted 178 MB synthetic (test suite was live, so E:\nuntouched): 0x00/0xFF runs incl. a 40 MB run crossing point-span and\n32 MB recommendation boundaries, a sub-threshold 512 KB run, an EOF\nrun - spans recorded byte-exact, sub-threshold ignored, every\ndecode<->fill edge byte-exact, CachingStream-stack MD5 match, reuse\nfrom disk. ALL PASS.\n\nCo-Authored-By: Claude Fable 5 <noreply@anthropic.com>\nClaude-Session: https://claude.ai/code/session_01EzNgdgRVgqwy2gcCFfjPY8",
+        "url": "https://github.com/fiddyschmitt/clonezilla-util/commit/281601458ea8fb4001e4eb90b03a29d767d0ff8e"
+    },
+    {
+        "sha": "ba257f6646e1f9a327a76efb24324852ac406f2d",
+        "author": "fiddyschmitt",
+        "email": "15338956+fiddyschmitt@users.noreply.github.com",
+        "date": "2026-07-11T02:13:38Z",
+        "message": "Zstd: replace in-repo libZstd with the ZstdSeekable NuGet package\n\nlibZstd's v2 engine was upstreamed into the standalone ZstdSeekable\n0.2.0 package (single-pass verified build, flat build RAM, incremental\n.wip + resume, ZSTZRAN2 with ZSTZRAN1 loading, plus a\nframe-start-only divergence fallback). Delete libZstd and reference\nthe package; keep a thin bridge in libClonezilla:\n\n- SeekableZstdStream adapts ZstdIndexedStream to IReadSuggestor\n  (32 MB-aligned sub-spans within a point span) and fill-loops Read\n  for CachingStream's one-Read-per-recommendation contract; its\n  recommendations return an empty range at/past EOF instead of\n  throwing.\n- ZstdDecompressor gates serving on index density (largest resume gap\n  <= 4x TargetSpanBytes, else extraction fallback) so a degraded\n  frame-start-only index on a huge single-frame stream never serves a\n  mount worse than cache.train would.\n- Serilog ILogger bridge + ~1 GB-interval build-progress reporter keep\n  the house log format.\n\nIndex filename and format are unchanged, so existing\n<partition>.zstd_index.zsi files stay valid. Validated by a harness\ndriving the production path (ZstdDecompressor + PartitionCache) on\nsdb1: byte-exact random/boundary reads, sequential MD5 through the\nCachingStream+suggestor stack, and reload-from-disk reuse.\n\nCo-Authored-By: Claude Fable 5 <noreply@anthropic.com>\nClaude-Session: https://claude.ai/code/session_01EzNgdgRVgqwy2gcCFfjPY8",
+        "url": "https://github.com/fiddyschmitt/clonezilla-util/commit/ba257f6646e1f9a327a76efb24324852ac406f2d"
+    },
+    {
+        "sha": "e818c54402485afc67fe4ee6647591cf9eddbc29",
+        "author": "fiddyschmitt",
+        "email": "15338956+fiddyschmitt@users.noreply.github.com",
+        "date": "2026-07-10T13:47:26Z",
+        "message": "zstd index build v2: single pass, verify-as-you-go, resumable (Batch 7 follow-up)\n\nThe v1 build verified after fully indexing: a second complete read+decode of the compressed source\n(23.5 of sda2's 32.3 build minutes), plus drop-and-merge healing, plus every compressed window held\nin RAM until the final save (~8 GB transient for the 2 TB drive image). And an interrupted build\nlost everything.\n\nv2 restructures the build into one sequential pass with two shadow decoders running alongside the\ntrue decode:\n- an INSURANCE shadow for the last confirmed point, covering its still-open span - so when its\n  successor is confirmed, the point's entire serving span has been byte-verified against output that\n  was in hand anyway (no re-read, no re-decode);\n- a CANDIDATE shadow for the point under trial; divergence (normal, ~12% of boundaries) just re-arms\n  at a later boundary while the insurance shadow keeps the open span covered - this also handles\n  long zero-stretches end-to-end, which v1's bounded 4 MB trial could not;\n- a diverging INSURANCE shadow (divergence deeper than a whole span; never observed on real data)\n  aborts indexing and the caller falls back to extraction: never wrong data, at worst no index.\n\nSealed points are appended and flushed to the .wip file the moment they are confirmed (format v2\n\"ZSTZRAN2\": inline compressed windows, gztool-style zeroed header counts until finalisation), so\nbuild memory is ~10 MB flat and an interrupted build RESUMES: sealed points are kept, the build\nfast-forwards from the last sealed frame-start point (keeping the verification truth chain rooted -\na zstd point cannot checkpoint full decoder state the way a gzip point can, which is why resume is\nnot gztool-cheap on single-frame sources), re-establishes the insurance shadow, and continues.\n\nMeasured (19.9 GB sda2, 45.4 GB uncompressed): 21.4 min vs v1's 32.3, producing the identical\n677 points / 605.9 MB index. Validated byte-exact on sdb1 and sda1 including crafted-interruption\nresume tests (truncated mid-record .wip -> resumed -> identical final index, all reads correct).\nShadows share the main thread; offloading them to a worker is a future lever if build CPU matters.\n\nCo-Authored-By: Claude Fable 5 <noreply@anthropic.com>\nClaude-Session: https://claude.ai/code/session_01EzNgdgRVgqwy2gcCFfjPY8",
+        "url": "https://github.com/fiddyschmitt/clonezilla-util/commit/e818c54402485afc67fe4ee6647591cf9eddbc29"
+    },
+    {
+        "sha": "2da359c3c027c662abc3238859afe842f7abe52e",
+        "author": "fiddyschmitt",
+        "email": "15338956+fiddyschmitt@users.noreply.github.com",
+        "date": "2026-07-10T13:04:20Z",
+        "message": "zstd index: report build and verification progress\n\nThe zstd index build was silent for its whole duration (tens of minutes on large images; an hour+\non the 2 TB drive image) between the opening and closing log lines, unlike every other long build\nin the app (gz/bzip2 indexing and train extraction all report continuously). It now logs the house\nformat - Indexed <bytes>. (<percent>% through source file) - every 1 GB of decompressed output\nduring the build pass, and a Verified <n> of <total> resume points counter every 50 spans during\nthe verification pass.\n\nCo-Authored-By: Claude Fable 5 <noreply@anthropic.com>\nClaude-Session: https://claude.ai/code/session_01EzNgdgRVgqwy2gcCFfjPY8",
+        "url": "https://github.com/fiddyschmitt/clonezilla-util/commit/2da359c3c027c662abc3238859afe842f7abe52e"
+    },
+    {
+        "sha": "50504ce2923b498fdf2f7ccbd53c463c34fcedee",
+        "author": "fiddyschmitt",
+        "email": "15338956+fiddyschmitt@users.noreply.github.com",
+        "date": "2026-07-10T12:16:12Z",
+        "message": "Streams: replace IndependentStream with SharedStream.CreateView() (pattern from ZstdSeekable)\n\nThe old sharing pattern required every call site to know both the shared lock object and the wrapper\nclass, and to thread them through correctly (8 sites did this by hand). Back-port the standalone\nZstdSeekable package's approach: a SharedStream owns the base stream and a private gate, and mints\nindependent read cursors via CreateView() - callers never see the lock, the view class, or the\nsharing rules; the contract is correct by construction.\n\n- libCommon: new SharedStream (private nested view). The view locks EVERY touch of the base stream\n  on the gate - including Length - which resolves plan item P9 exactly as prescribed: the redundant\n  Stream.Synchronized layer IndependentStream carried (kept only for Length/Position atomicity) is\n  gone, with the atomicity concern addressed properly. Position is a view-local field.\n- SubStream: parameter retyped from IndependentStream to Stream (it only ever used Stream members;\n  the doc now states the independent-cursor contract).\n- Converted all 8 construction sites: Bzip2StreamSeekable (read path + parallel index build),\n  GZipStreamSeekable, ZstdStreamSeekable, ZstdSeekableIndex.VerifyAndHeal, RawDriveImage,\n  TrainDecompressor, MountedPartitionImage and Program.ListContents (the extractor stream factories\n  are now just sharedPartitionStream.CreateView).\n- ZstdStreamSeekable additionally gains a public CreateView() mirroring the package: an independent\n  cursor sharing the source, gate, index and mappings.\n- IndependentStream deleted.\n\nRemaining Stream.Synchronized uses reviewed and deliberately kept: SynchronisedExtractor (serialises\none shared extracted stream across Dokan handles - a different job) and CompressedImage/ImageFile\n(guard mixed direct-sequential + shared access phases on drive-image streams).\n\nValidated: full solution build; gz zran harness (16/16 index points vs gztool -ll, stored-block\ncrossing reads, block spans/edges/300 random reads byte-exact) and zstd harness (6 verified points,\nblock starts/crossings, 200 random + 50 reloaded reads, sequential full-read MD5) both ALL PASS.\n\nCo-Authored-By: Claude Fable 5 <noreply@anthropic.com>\nClaude-Session: https://claude.ai/code/session_01EzNgdgRVgqwy2gcCFfjPY8",
+        "url": "https://github.com/fiddyschmitt/clonezilla-util/commit/50504ce2923b498fdf2f7ccbd53c463c34fcedee"
+    },
+    {
+        "sha": "3cd45e2d0c8b88ea50325844222fff57542ab0ad",
+        "author": "fiddyschmitt",
+        "email": "15338956+fiddyschmitt@users.noreply.github.com",
+        "date": "2026-07-10T08:46:56Z",
+        "message": "libZstd: rename assembly to libZstdSeekable (case-insensitive publish collision with native libzstd.dll)\n\nThe single-file publish flattens ZstdNet's native libzstd.dll into the same output directory as our\nmanaged assemblies; on case-insensitive Windows paths, libZstd.dll collides with it and publish\nfails with NETSDK1152 (surfaced by Visual Studio only as its generic WebTools error). Project\nfolder and namespaces remain libZstd; only the output assembly is renamed.\n\nVerified: dotnet publish with the FolderProfile now succeeds and the deployed exe runs.\n\nCo-Authored-By: Claude Fable 5 <noreply@anthropic.com>\nClaude-Session: https://claude.ai/code/session_01EzNgdgRVgqwy2gcCFfjPY8",
+        "url": "https://github.com/fiddyschmitt/clonezilla-util/commit/3cd45e2d0c8b88ea50325844222fff57542ab0ad"
+    },
+    {
+        "sha": "d3094a0448c358178bb5fea9a927b642afbc7df5",
+        "author": "fiddyschmitt",
+        "email": "15338956+fiddyschmitt@users.noreply.github.com",
+        "date": "2026-07-10T08:31:14Z",
+        "message": "Plan: record Batch 7 at-scale validation results (sda2: 677/677 points verified)\n\nCo-Authored-By: Claude Fable 5 <noreply@anthropic.com>\nClaude-Session: https://claude.ai/code/session_01EzNgdgRVgqwy2gcCFfjPY8",
+        "url": "https://github.com/fiddyschmitt/clonezilla-util/commit/d3094a0448c358178bb5fea9a927b642afbc7df5"
+    },
+    {
+        "sha": "369f0dcb11287e06bd13ffd05d3ff9a3065091ff",
+        "author": "fiddyschmitt",
+        "email": "15338956+fiddyschmitt@users.noreply.github.com",
+        "date": "2026-07-10T08:16:32Z",
+        "message": "Drive images: synthesize a partition cache so gz/zstd use their indexes (not extraction)\n\nThe bare drive-image flow (CompressedImage - e.g. sda.img.gz / sda.img.zst) passed no partition\ncache to DecompressorSelector, so GzDecompressor and ZstdDecompressor - which need a cache object to\nknow where to keep their index files - returned no seekable stream and ALWAYS fell back to\nextracting the whole decompressed image to cache.train. The gz drive-image listing has been a 2 TB\nextraction all along; zstd would have kept extracting despite Batch 7.\n\nDecompressorSelector now synthesizes a PartitionCache whenever none was provided and the format has\nindex support (gz, zstd), rooted in the same whole-file hash folder the extraction cache uses (the\nhash computation is extracted into GetWholeFileCacheFolder(), byte-identical key, so existing cache\nfolders remain valid and index files land beside cache.train).\n\nFixed in the same change: the hash helper reads 50 MB of decompressed content and used to leave the\ncompressed stream positioned mid-file; the gzip index build pipes the stream to gztool from its\nCURRENT position, so it received a headless stream and produced a corrupt index. The helper now\nseeks back to 0. (Diagnosing this also established that stdin-built gztool indexes are format v1 -\ngzipindX with line numbers - which GztoolIndex already parses.)\n\nSmoke-tested end-to-end on sda1.img.gz through the real binary: gztool index built (137 access\npoints at the 4 MiB span), parsed for in-process reads, listing correct, and the index is reused on\na second run. The zstd drive path shares the identical wiring.\n\nSee PERFORMANCE_PLAN.md (Batch 7 follow-up).\n\nCo-Authored-By: Claude Fable 5 <noreply@anthropic.com>\nClaude-Session: https://claude.ai/code/session_01EzNgdgRVgqwy2gcCFfjPY8",
+        "url": "https://github.com/fiddyschmitt/clonezilla-util/commit/369f0dcb11287e06bd13ffd05d3ff9a3065091ff"
+    },
+    {
+        "sha": "77577b2cbe3412830ed1607a1d52eed39aa02694",
+        "author": "fiddyschmitt",
+        "email": "15338956+fiddyschmitt@users.noreply.github.com",
+        "date": "2026-07-10T05:57:02Z",
+        "message": "zstd: in-memory random access via verified resume points (Batch 7)\n\nLarge zstd partitions previously fell back to extracting the whole decompressed stream to an\non-disk cache.train (Clonezilla's -z9 output is a single standard zstd frame, ~2 MB window - not the\nseekable format). New libZstd gives standard zstd streams the same in-memory seekable treatment gz\n(gztool index) and bzip2 (block index) already have.\n\nThe zstd-specific hard part: a block can depend on decoder state beyond the window (repeat offsets,\ncarried entropy tables), so unlike gzip an arbitrary block boundary is NOT a safe resume point.\nMeasured on real Clonezilla output: ~88% of boundaries resume correctly via a synthetic frame header\n+ ZSTD_DCtx_refPrefix(window); the rest diverge - sometimes silently and megabytes late (long\nRLE/zero runs neither use nor update repeat-offset state, hiding stale state from any bounded\nlookahead; observed on real data).\n\nCorrectness is therefore baked in empirically:\n- ZstdSeekableIndex builds by one sequential block-fed decode (ZstdSharp), arming a candidate point\n  every ~64 MB and trial-decoding 4 MB through a shadow decoder before acceptance.\n- Every span is then verified end-to-end (piecewise MD5 vs the true decode at every candidate\n  boundary; contiguous per-worker slices to stay disk-friendly). An unsound point is dropped and its\n  predecessor re-verified over the merged span - healing terminates because a frame-start resume IS\n  the true decode. If verification cannot converge, no index is produced and DecompressorSelector\n  falls back to extraction exactly as before.\n- ZstdStreamSeekable clamps every read to its verified span (only output within a span is proven;\n  decoder state at its end is not) and recommends 32 MB sub-spans so the CachingStream above stays\n  within Batch 6 (E)'s pooled-buffer sizes. Windows live zstd-compressed in the .zsi index, loaded\n  lazily.\n\nZstdNet remains the sequential/train decoder; ZstdSharp (managed zstd port) is used only where the\nadvanced API is required. Wired via IPartitionCache.GetZstdIndexFilename().\n\nValidated byte-exact against in-RAM ground truth on real images (sdb1 345 MB: block starts/edges/\ncross-chunk/200 random reads/reload/sequential-MD5 all pass; sda1 417 MB nearly-incompressible: all\npass); 19.9 GB sda2 pass-1 at scale produced 677 candidates cleanly. Full suite run pending.\n\nSee PERFORMANCE_PLAN.md Batch 7.\n\nCo-Authored-By: Claude Fable 5 <noreply@anthropic.com>\nClaude-Session: https://claude.ai/code/session_01EzNgdgRVgqwy2gcCFfjPY8",
+        "url": "https://github.com/fiddyschmitt/clonezilla-util/commit/77577b2cbe3412830ed1607a1d52eed39aa02694"
+    },
+    {
+        "sha": "5addd904b42fd1c29f0f89df744366cf8aa81e96",
+        "author": "fiddyschmitt",
+        "email": "15338956+fiddyschmitt@users.noreply.github.com",
+        "date": "2026-07-10T04:55:07Z",
+        "message": "Plan: pagefile-skip needs a product decision, not a silent default\n\nCo-Authored-By: Claude Fable 5 <noreply@anthropic.com>\nClaude-Session: https://claude.ai/code/session_01EzNgdgRVgqwy2gcCFfjPY8",
+        "url": "https://github.com/fiddyschmitt/clonezilla-util/commit/5addd904b42fd1c29f0f89df744366cf8aa81e96"
+    },
+    {
+        "sha": "17c6e9314c3c31348554c0d96593e403ddf90ea5",
+        "author": "fiddyschmitt",
+        "email": "15338956+fiddyschmitt@users.noreply.github.com",
+        "date": "2026-07-10T04:54:43Z",
+        "message": "Cache: pool the segment buffers instead of allocating per miss (Batch 6 E)\n\nEvery CachingStream cache miss allocated a fresh multi-MB byte[] (the block-sized read\nrecommendation) and dropped it to the GC on eviction - the main source of the LOH churn measured\nduring full-copy runs (gcFrag spiking to ~2 GB, violent gen2 saw-toothing). Segments now rent from\nBuffers.BufferPool (already sized for 50 MB arrays) and return on eviction, on Close(), and on the\nserve-without-caching path.\n\nRented arrays can be larger than requested, so CacheEntry.Content may exceed the entry's Length;\nevery consumer is bounded by Start/End (verified: no consumers outside CachingStream itself). The\nshort-read Array.Resize copy is gone for the same reason. Entries supplied via precapturedCache are\nmarked unpooled and never returned.\n\nSee PERFORMANCE_PLAN.md Batch 6 (E). Complements (B): denser checkpoints cut how much is decoded\nand discarded per cold seek; pooling cuts the allocation cost of what remains.\n\nCo-Authored-By: Claude Fable 5 <noreply@anthropic.com>\nClaude-Session: https://claude.ai/code/session_01EzNgdgRVgqwy2gcCFfjPY8",
+        "url": "https://github.com/fiddyschmitt/clonezilla-util/commit/17c6e9314c3c31348554c0d96593e403ddf90ea5"
+    },
+    {
+        "sha": "a5d8d30016c2310818b371bd7ab3bcd15f73296b",
+        "author": "fiddyschmitt",
+        "email": "15338956+fiddyschmitt@users.noreply.github.com",
+        "date": "2026-07-10T04:51:49Z",
+        "message": "gz: denser index access points, 4 MiB span instead of 10 (Batch 6 B)\n\nA cold read costs on average half a span of decode-and-discard from the nearest access point, so\npoint density directly multiplies scattered-read throughput - the fragmented-file pathology\n(files whose NTFS clusters scatter across the partition read at 0.1-0.6 MB/s because every\ncluster-run pays the discard). 4 MiB spans cut the average discard from ~5 MB to ~2 MB per cold\nseek (~2.5x less decode work), which compounds with the in-process zran reads (I0).\n\nCost: a ~2.5x bigger on-disk index (e.g. 68 MB -> ~180 MB for a 45 GB partition), built once per\nimage. Point windows are loaded lazily by file offset, so resident memory is unaffected by density.\nExisting cached indexes keep their original 10 MiB density and remain fully valid.\n\nVerified with the zranproto harness: a -s 4 index (16 points vs 7) parses, matches gztool -ll\n16/16, and all byte-exactness checks pass on synthetic and production data.\n\nSee PERFORMANCE_PLAN.md Batch 6 (B).\n\nCo-Authored-By: Claude Fable 5 <noreply@anthropic.com>\nClaude-Session: https://claude.ai/code/session_01EzNgdgRVgqwy2gcCFfjPY8",
+        "url": "https://github.com/fiddyschmitt/clonezilla-util/commit/a5d8d30016c2310818b371bd7ab3bcd15f73296b"
+    },
+    {
+        "sha": "406744c6d3bfeab7e516f60edae5a2a26917143d",
+        "author": "fiddyschmitt",
+        "email": "15338956+fiddyschmitt@users.noreply.github.com",
+        "date": "2026-07-10T04:49:48Z",
+        "message": "Cache: share the RAM budget across all partitions (Batch 6 A)\n\nThe layer-4 CachingStream was budgeted at 1/4 of system RAM PER PARTITION, so a 3-partition mount\ncould commit 3/4 of RAM to decompression caches - the measured root cause of the memory exhaustion\nduring full-copy runs (free RAM fell to ~400 MB, the machine paged itself unusable, and reads\nstarted failing with 0x800705AA).\n\nLimitByRAMUsage instances now split their declared budget evenly: a process-wide count of live\ninstances divides each one's cap (CacheLimitValue / liveCount). All callers pass the same 1/4-RAM\nvalue, so the TOTAL cache commitment stays <= 1/4 RAM regardless of how many partitions are mounted.\nNo cross-instance locking - each instance still evicts only from its own LRU list; an instance that\nis never Close()d keeps its slot reserved, which errs towards using less memory, never more.\n\nSee PERFORMANCE_PLAN.md Batch 6 (A).\n\nCo-Authored-By: Claude Fable 5 <noreply@anthropic.com>\nClaude-Session: https://claude.ai/code/session_01EzNgdgRVgqwy2gcCFfjPY8",
+        "url": "https://github.com/fiddyschmitt/clonezilla-util/commit/406744c6d3bfeab7e516f60edae5a2a26917143d"
+    },
+    {
+        "sha": "0efeafb59e47cff19b38c93414b3954f276e1447",
+        "author": "fiddyschmitt",
+        "email": "15338956+fiddyschmitt@users.noreply.github.com",
+        "date": "2026-07-10T01:14:31Z",
+        "message": "gz: decode reads in-process (zran) instead of spawning gztool per read (I0)\n\nEvery cache-miss read of a gz-backed stream used to spawn gztool.exe, feed it the compressed span\nover stdin and read the output back over stdout - a large per-read cost (a dominant share of the\n1-4 MB/s mount baseline) and a reliability hazard: a failed spawn under memory pressure hard-failed\nthe read (the jboss xsd copy failure and the ext4_lvm suite hang). gztool remains the index BUILDER;\nreads now decode in-process:\n\n- GztoolIndex parses gztool's binary .gzi directly (v0/v1, big-endian, format from gztool 1.8.2's\n  serialize_index_to_file). Point windows stay on disk and load lazily - TB-scale images have 100k+\n  points. This also replaces the \"gztool -ll\" text-scrape for the block mappings.\n- Vendored SharpZipLib v1.4.2 inflater (MIT; libGZip/Vendored/SharpZipLib/README.md has provenance)\n  with two additions: StreamManipulator.PrimeBits (zlib inflatePrime equivalent) and\n  Inflater.PrimeForResume (raw-mode inflateSetDictionary + prime). No existing BCL/NuGet inflater\n  can resume mid-stream: DeflateStream exposes neither primitive (and a bit-shifted input stream is\n  not a valid substitute - stored blocks re-align to the original byte grid), and ZLibDotNet 0.1.1\n  mis-decodes real DEFLATE streams mid-stream.\n- ZranInflate pumps from the access point (prime split bits, preload <=32 KB window) straight into\n  the caller's buffer.\n- GZipStreamSeekable serves reads in-process and falls back to the old gztool-subprocess path\n  automatically (unparseable index -> whole stream; per-read anomaly such as a multi-member gzip\n  member ending inside a span -> that read). The brittle bytesRead != bytesToRead hard-fail is out\n  of the read path.\n\nVerified byte-exact against ground truth: synthetic 64 MB gz (stored-block regions included) -\n7/7 parsed points match gztool -ll, all block spans / point edges / 300 random reads pass through\nGZipStreamSeekable; production sda2.ntfs-ptcl-img.gz index (4,317 points, 45.4 GB uncompressed,\nbits 0-7 all represented) - 12 random direct-vs-decode-through cross-checks byte-identical;\n~54 MB/s decompressed per cold 10 MB span. Full suite run pending.\n\nCo-Authored-By: Claude Fable 5 <noreply@anthropic.com>\nClaude-Session: https://claude.ai/code/session_01EzNgdgRVgqwy2gcCFfjPY8",
+        "url": "https://github.com/fiddyschmitt/clonezilla-util/commit/0efeafb59e47cff19b38c93414b3954f276e1447"
+    },
+    {
+        "sha": "aa10cd68c61142dcdef927049f42cb68db924441",
+        "author": "fiddyschmitt",
+        "email": "15338956+fiddyschmitt@users.noreply.github.com",
+        "date": "2026-07-10T00:29:40Z",
+        "message": "SharpCompress: rebuild the patched package from the 0.49.1 TAG (fixes the xz perf regression)\n\nThe 06-23 local package (0.49.1-localbzip2patch) was accidentally built from the fork's default\nbranch = upstream MASTER (0.49.1 + ~3.5 weeks of dev commits), one of which regressed XZ decode\n~1.7x in sparse/high-compression regions. Dense-region decode is unaffected, which is what let a\nhead-only benchmark wrongly exonerate the package; the regression cost ~60-70 min on the 10h suite's\nXz drive-image listing (a ~2 TB mostly-null decode).\n\nNull-region micro-bench (8 GB-of-zeros xz, MB/s): SharpCompress 0.37 = 275; official 0.49.1 = 283;\nold master-based pack = 159; NEW tag-based pack = 283. The new 0.49.1-localbzip2patch2 is the\nofficial 0.49.1 source plus only the (upstream-merged) bzip2 tolerateTruncatedStream patch -\nadamhathcock/sharpcompress#1358, merged 2026-06-23, not yet in any release.\n\nFull-suite validation: Xz listing 248-265 -> 192.8 min, matching the pre-migration baseline binary\n(194) on the same machine; 74/74 green incl. all bzip2 tests.\n\nOnce upstream ships a release containing PR #1358: switch both PackageReferences to the official\nversion and delete nuget.config + the local-nuget feed.\n\nPERFORMANCE_PLAN.md documents the full regression investigation (Experiments 1-4 + resolution).\n\nCo-Authored-By: Claude Fable 5 <noreply@anthropic.com>\nClaude-Session: https://claude.ai/code/session_01EzNgdgRVgqwy2gcCFfjPY8",
+        "url": "https://github.com/fiddyschmitt/clonezilla-util/commit/aa10cd68c61142dcdef927049f42cb68db924441"
+    },
+    {
+        "sha": "d83e579b63df698a27b80975d3a683c0673c4c0a",
+        "author": "fiddyschmitt",
+        "email": "15338956+fiddyschmitt@users.noreply.github.com",
+        "date": "2026-07-10T00:29:16Z",
+        "message": "VFS: verify the mounted volume is ours before using it (I1 crash fix)\n\nA 4h ListContents run died with an unhandled FileNotFoundException opening a virtual file on its own\ninternal mount: rclone (in another session) owned the drive letter, and our mount logic - which only\nwaits for the letter to APPEAR - silently adopted the foreign volume, on which our paths don't exist.\nA letter squatted by another session can also look free to the GetLogicalDrives scan.\n\nEach mount attempt now plants a uniquely-named UnlistedFolder sentinel in a fresh RootFolder and,\nonce the letter appears, probes it THROUGH the mounted letter (briefly retried while the mount\nsettles). Only our own live VFS instance can answer, so a squatter (rclone/subst/network mapping) is\ndetected deterministically. On mismatch the attempt is torn down and:\n- an auto-chosen letter falls back to the next free one, excluding letters already tried (up to 3\n  attempts, then Log.Fatal);\n- a user-chosen letter (-m) fails loudly naming the squatting volume - no silent substitution.\n\nAlso:\n- WaitForFolderToExist gained a timeout (30s here): a failed Dokan mount previously left the app\n  spinning forever on while(true).\n- The mount verbs log and open Explorer at the ACTUAL mounted letter, which can differ from the\n  tentative one after a fallback.\n\nValidated by two full 74/74 suite runs; root cause confirmed by a rclone-off run on the unfixed\nbinary (crash did not recur). See PERFORMANCE_PLAN.md Investigation I1.\n\nCo-Authored-By: Claude Fable 5 <noreply@anthropic.com>\nClaude-Session: https://claude.ai/code/session_01EzNgdgRVgqwy2gcCFfjPY8",
+        "url": "https://github.com/fiddyschmitt/clonezilla-util/commit/d83e579b63df698a27b80975d3a683c0673c4c0a"
+    },
+    {
+        "sha": "e7f414d682b172f57addbc0547a72366c128eb65",
+        "author": "fiddyschmitt",
+        "email": "15338956+fiddyschmitt@users.noreply.github.com",
+        "date": "2026-06-30T13:35:07Z",
+        "message": "Dokan: shared timeout watchdog instead of a per-read Timer (D6 throughput fix)\n\nThe D6 watchdog allocated, scheduled, and disposed a System.Threading.Timer on every ReadFile - even\nthe millions of tiny fast metadata reads a drive-image tree-walk issues. Each took the global\ntimer-queue lock; a bisect attributed ~14 min of the full-suite regression to this churn (it also\ninflated unrelated per-read work via GC/lock pressure).\n\nReplace it with one free-running static Timer (5s) that walks a ConcurrentDictionary of in-flight\nreads and extends each still-running one via TryResetTimeout, up to the 10-min runaway cap.\nStartTimeoutWatchdog now just inserts into that dictionary and returns a readonly struct whose\nDispose() removes it, so `using var` allocates nothing and the fast path pays only a dictionary\ninsert/remove. A fast read completes between ticks and is never touched; only genuinely-slow reads\n(still alive at a 5s boundary) get extended - same 0x800705AA protection D6 gave, without the churn.\n\nValidated by a full 74/74 suite run (693 min, down from 759): gz and zst large-drive-image listings\nback to baseline, slow-read tests (ext4_lvm, dd, Ubuntu FS) still pass. The remaining xz regression is\na separate cause (D3 per-read item reopen) - see PERFORMANCE_PLAN.md.\n\nCo-Authored-By: Claude Opus 4.8 <noreply@anthropic.com>\nClaude-Session: https://claude.ai/code/session_01EzNgdgRVgqwy2gcCFfjPY8",
+        "url": "https://github.com/fiddyschmitt/clonezilla-util/commit/e7f414d682b172f57addbc0547a72366c128eb65"
+    },
+    {
+        "sha": "618fcfdfda095dc5510b9dba4919bb8287c02e41",
+        "author": "Fidel",
+        "email": "15338956+fiddyschmitt@users.noreply.github.com",
+        "date": "2026-06-24T07:23:18Z",
+        "message": "Dokan: extend the deadline for genuinely-slow reads (D6)\n\nA full Explorer copy of a gz image hit 0x800705AA on heavily-fragmented files (logs / Temp / WU\ndownload blobs). Those read at ~0.1-0.6 MB/s - their clusters scatter across the partition, so reads\nseek all over the gz stream and re-decompress past the cache - so a few-MB file takes 25-70s, exceeding\nthe 20s Dokan timeout; the driver then abandons the IRP (surfaces as 0x800705AA, can unmount).\n\nAdd a watchdog around ReadFile (covers the mmap branch too): while a read runs, a timer extends the\noperation's deadline every 10s via IDokanFileInfo.TryResetTimeout(20s), capped at 10 minutes so a true\nhang still fails. A fast read disposes the timer before its first tick, so the common path pays nothing.\nThis is the legitimate TryResetTimeout case D5 set aside (now justified by measured slow reads).\n\nRead throughput itself is a separate follow-up (see PERFORMANCE_PLAN.md \"Future investigation - mount\nread throughput\"). See CODE_REVIEW_PLAN.md D6.\n\nCo-Authored-By: Claude Opus 4.8 <noreply@anthropic.com>\nClaude-Session: https://claude.ai/code/session_01EzNgdgRVgqwy2gcCFfjPY8",
+        "url": "https://github.com/fiddyschmitt/clonezilla-util/commit/618fcfdfda095dc5510b9dba4919bb8287c02e41"
+    },
+    {
+        "sha": "b99944c5bcacce28fe37e84a2820987df4e5d693",
+        "author": "Fidel",
+        "email": "15338956+fiddyschmitt@users.noreply.github.com",
+        "date": "2026-06-23T11:41:59Z",
+        "message": "Dokan: set an explicit operation timeout (D5)\n\nMake the per-operation timeout explicit instead of relying on the driver default (15s): set\noptions.TimeOut = 20s. After D1-D4 every callback is bounded (a single ReadFile decompresses at most\none buffer; the slow $MFT parse happens at mount time, outside callbacks), so this is purely a safety\nnet before Dokan abandons an IRP - which can surface to the app as 0x800705AA and, at the threshold,\nunmount the volume.\n\nSingleThread is left at its default (false) so Dokan keeps dispatching callbacks on multiple threads;\ndocumented with a comment.\n\nDeliberately no TryResetTimeout: per the Dokan docs it is for callbacks expected to outlast the\ntimeout (via a per-operation watchdog timer, e.g. remote/cold-storage fetches). Our reads are bounded\nwell under 20s, and a naive one-shot reset would only delay - and thereby mask - a genuine hang.\n\nSee CODE_REVIEW_PLAN.md D5.\n\nCo-Authored-By: Claude Opus 4.8 <noreply@anthropic.com>\nClaude-Session: https://claude.ai/code/session_01EzNgdgRVgqwy2gcCFfjPY8",
+        "url": "https://github.com/fiddyschmitt/clonezilla-util/commit/b99944c5bcacce28fe37e84a2820987df4e5d693"
+    },
+    {
+        "sha": "fc48fdd6f0bf343a307e2ce996d989940893c7b2",
+        "author": "Fidel",
+        "email": "15338956+fiddyschmitt@users.noreply.github.com",
+        "date": "2026-06-23T11:30:25Z",
+        "message": "Dokan: reuse one stream for the memory-mapped read path (D4)\n\nThe mmap (paging) branch of ReadFile opened a fresh stream and disposed it on every page fault (these\nreads carry no handle context, so unlike normal reads they couldn't stash a per-handle stream). After\nD3 that was no longer a full worker checkout, but it still churned a stream per fault.\n\n- FileEntry.ReadForMemoryMap keeps one reusable stream per file for paging reads:\n  - per-handle entries (CreatesNewStreamPerCall, e.g. the native extractor): lazily creates and caches\n    an independent stream, serialised by its own lock. Cheap to keep - a PooledNativeItemStream holds no\n    worker (borrows one only per read).\n  - shared-stream entries (!CreatesNewStreamPerCall): uses the shared stream under FileEntry.ReadLock,\n    the same lock normal reads use, so the two stay mutually exclusive on that single stream.\n- DokanVFS mmap branch is now just bytesRead = file.ReadForMemoryMap(...).\n\nSee CODE_REVIEW_PLAN.md D4.\n\nCo-Authored-By: Claude Opus 4.8 <noreply@anthropic.com>\nClaude-Session: https://claude.ai/code/session_01EzNgdgRVgqwy2gcCFfjPY8",
+        "url": "https://github.com/fiddyschmitt/clonezilla-util/commit/fc48fdd6f0bf343a307e2ce996d989940893c7b2"
+    },
+    {
+        "sha": "fab653907bfa0ae5bd2b78cddd277f6a9f8db71b",
+        "author": "Fidel",
+        "email": "15338956+fiddyschmitt@users.noreply.github.com",
+        "date": "2026-06-23T11:14:05Z",
+        "message": "Dokan: decouple open file handles from native workers (D3)\n\nCreateFile -> GetStream -> Extract used to checkout a pool worker (blocking until one was free) and hold\nit for the open handle's whole lifetime. So more than poolSize (4) files open for read on one partition\nblocked CreateFile until a handle closed -> Dokan timeout -> 0x800705AA (thumbnails, preview pane,\nrobocopy /MT, AV scans).\n\nBorrow a worker per Read instead of per open handle:\n\n- New PooledNativeItemStream (returned by Extract) holds no worker - just (pool, index, length,\n  position). Seek/Position are logical. Each Read borrows a worker, opens the item on it, seeks to\n  position, fills the buffer under that single borrow, then returns the worker. Workers share the\n  partition's decompression cache, so the re-seek is cheap.\n- NativeExtractorPool.Extract returns the lightweight stream (no Take); added internal\n  TakeWorker/ReturnWorker (ReturnWorker tolerates unmount-teardown races).\n- SevenZipExtractorUsingNative.OpenItemStream: onClosed is now optional.\n\nNet: open handles are unbounded (CreateFile never blocks); the pool size now caps concurrent reads, not\nopen files. One ReadFile maps to one worker borrow. See CODE_REVIEW_PLAN.md D3.\n\nCo-Authored-By: Claude Opus 4.8 <noreply@anthropic.com>\nClaude-Session: https://claude.ai/code/session_01EzNgdgRVgqwy2gcCFfjPY8",
+        "url": "https://github.com/fiddyschmitt/clonezilla-util/commit/fab653907bfa0ae5bd2b78cddd277f6a9f8db71b"
+    },
+    {
+        "sha": "b57ce9e5d2993e19809652c7787b2755b3b8582a",
+        "author": "Fidel",
+        "email": "15338956+fiddyschmitt@users.noreply.github.com",
+        "date": "2026-06-23T10:58:02Z",
+        "message": "Dokan: scope the read lock to stream ownership (D2)\n\nReadFile locked FileEntry.ReadLock (shared by every handle of a file) for the whole seek+decompress,\nso two handles reading the same file serialized even though each has its own stream. Match the lock to\nstream ownership:\n\n- FileEntryStream gains a per-handle ReadLock.\n- Normal read, per-handle stream (CreatesNewStreamPerCall): lock the per-handle wrapper - same-handle\n  reads stay serialized, but different handles to the same file now run in parallel.\n- Normal read, shared stream (!CreatesNewStreamPerCall, e.g. mount-as-image-files): still locks\n  FileEntry.ReadLock (one stream, must serialize) - unchanged.\n- Mmap read, fresh per-call stream: no lock (created for one read, shared with nobody); shared-stream\n  mmap reads still take FileEntry.ReadLock.\n- Removed two stale commented-out experimental blocks in the old lock body.\n\nSafe because CreatesNewStreamPerCall == true means GetStream() hands out a distinct stream per handle,\nso cross-handle locking was never needed for those. See CODE_REVIEW_PLAN.md D2.\n\nCo-Authored-By: Claude Opus 4.8 <noreply@anthropic.com>\nClaude-Session: https://claude.ai/code/session_01EzNgdgRVgqwy2gcCFfjPY8",
+        "url": "https://github.com/fiddyschmitt/clonezilla-util/commit/b57ce9e5d2993e19809652c7787b2755b3b8582a"
+    },
+    {
+        "sha": "36f9e80a860e7d7181fc75036d2d73d1caad6ede",
+        "author": "Fidel",
+        "email": "15338956+fiddyschmitt@users.noreply.github.com",
+        "date": "2026-06-23T10:48:37Z",
+        "message": "Dokan: never let exceptions escape callbacks (D1)\n\nAn unhandled exception in a Dokan callback becomes a generic driver failure that surfaces to the\ncalling app as 0x800705AA (ERROR_NO_SYSTEM_RESOURCES). Make the callbacks that traverse user paths or\nopen streams return an NtStatus instead of throwing:\n\n- ReadFile: wrap the body; on failure log + return DokanResult.Error (bytesRead=0). The two throws\n  become FileNotFound (mmap path, missing entry) and Unsuccessful (missing info.Context).\n- CreateFile: a failing GetStream() now logs + returns DokanResult.Error (was an uncaught throw).\n- GetFileInformation: an unresolved path returns FileNotFound (was a throw).\n- FindFiles / FindFilesWithPattern: wrapped; on failure log + return an empty list + DokanResult.Error.\n\nTrivial callbacks (constants/NotImplemented), GetDiskFreeSpace (stable in-memory snapshot), and\nFlushFileBuffers (already guarded) can't throw and are unchanged. See CODE_REVIEW_PLAN.md D1.\n\nCo-Authored-By: Claude Opus 4.8 <noreply@anthropic.com>\nClaude-Session: https://claude.ai/code/session_01EzNgdgRVgqwy2gcCFfjPY8",
+        "url": "https://github.com/fiddyschmitt/clonezilla-util/commit/36f9e80a860e7d7181fc75036d2d73d1caad6ede"
+    }
+]

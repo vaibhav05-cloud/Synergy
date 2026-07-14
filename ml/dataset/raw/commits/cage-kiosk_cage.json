@@ -1,0 +1,242 @@
+[
+    {
+        "sha": "73fe0f48e3512c4e88b1ffdc9d147173baf16a41",
+        "author": "Simon Ser",
+        "email": "contact@emersion.fr",
+        "date": "2026-06-30T18:53:18Z",
+        "message": "github/workflows: run CI on release branches",
+        "url": "https://github.com/cage-kiosk/cage/commit/73fe0f48e3512c4e88b1ffdc9d147173baf16a41"
+    },
+    {
+        "sha": "350e2ef8b952ee59bd07a716866b7176dd5f18e9",
+        "author": "Simon Ser",
+        "email": "contact@emersion.fr",
+        "date": "2026-06-28T17:28:54Z",
+        "message": "xdg_shell: split off initial commit handler to separate function",
+        "url": "https://github.com/cage-kiosk/cage/commit/350e2ef8b952ee59bd07a716866b7176dd5f18e9"
+    },
+    {
+        "sha": "0f0c637a063c54ca63eccddd87108c64c304c6ee",
+        "author": "Simon Ser",
+        "email": "contact@emersion.fr",
+        "date": "2026-06-28T17:26:07Z",
+        "message": "xdg_shell: explicitly schedule configure for initial commit\n\nCompositors must reply to initial commit with a configure event.\nThis happens implicitly via set_fullscreen()/view_position(), but\nlet's be explicit.",
+        "url": "https://github.com/cage-kiosk/cage/commit/0f0c637a063c54ca63eccddd87108c64c304c6ee"
+    },
+    {
+        "sha": "5f83b27d62d7d0bbfd29a803104e7a3b499413ee",
+        "author": "nodscher",
+        "email": "nodscher@icloud.com",
+        "date": "2026-06-28T16:20:38Z",
+        "message": "xdg_shell: fix windows requesting fullscreen on startup",
+        "url": "https://github.com/cage-kiosk/cage/commit/5f83b27d62d7d0bbfd29a803104e7a3b499413ee"
+    },
+    {
+        "sha": "e5db9506b4bfff602b704329d5b7ff0a8a6bdb42",
+        "author": "Rudi Heitbaum",
+        "email": "rudi@heitbaum.com",
+        "date": "2026-06-02T22:42:58Z",
+        "message": "build: guard git version detection against missing .git directory\n\nWhen building from a release tarball, there is no .git directory\nand git rev-parse would either fail or pick up a parent repository's\nHEAD. Guard the git version detection with fs.is_dir('.git') so\nthat tarball builds produce a clean version string.\n\nRequires importing the fs module.\n\nSigned-off-by: Rudi Heitbaum <rudi@heitbaum.com>",
+        "url": "https://github.com/cage-kiosk/cage/commit/e5db9506b4bfff602b704329d5b7ff0a8a6bdb42"
+    },
+    {
+        "sha": "1f9f0d2581cdd3baef9f3dbe55a1722c5ff1906b",
+        "author": "Simon Ser",
+        "email": "contact@emersion.fr",
+        "date": "2026-05-13T21:08:42Z",
+        "message": "Create a single wlr_xcursor_manager\n\nNo need to create multiple of these: all use the same parameters.",
+        "url": "https://github.com/cage-kiosk/cage/commit/1f9f0d2581cdd3baef9f3dbe55a1722c5ff1906b"
+    },
+    {
+        "sha": "6d6ecd44d7719632592e6991ae06b5e3a9c75171",
+        "author": "Simon Ser",
+        "email": "contact@emersion.fr",
+        "date": "2026-05-13T21:02:27Z",
+        "message": "cage: stop using DEFAULT_XCURSOR as a cursor theme name\n\nThat's a cursor image name, not a cursor theme name.\n\nNULL means use default.",
+        "url": "https://github.com/cage-kiosk/cage/commit/6d6ecd44d7719632592e6991ae06b5e3a9c75171"
+    },
+    {
+        "sha": "5ce4051db2e8edc0f6c94cbff0ff375081c0fd1d",
+        "author": "Simon Ser",
+        "email": "contact@emersion.fr",
+        "date": "2026-05-13T21:00:08Z",
+        "message": "output: drop unnecessary wlr_xcursor_manager_load() call\n\nwlr_cursor_set_xcursor() takes care of this already.",
+        "url": "https://github.com/cage-kiosk/cage/commit/5ce4051db2e8edc0f6c94cbff0ff375081c0fd1d"
+    },
+    {
+        "sha": "cb5b4b40e380f47dd506ee3bee3a6c08d34ecbbd",
+        "author": "ry",
+        "email": "291640687+umi-ry7@users.noreply.github.com",
+        "date": "2026-06-12T18:54:17Z",
+        "message": "ci: update actions/checkout to v4 from v2",
+        "url": "https://github.com/cage-kiosk/cage/commit/cb5b4b40e380f47dd506ee3bee3a6c08d34ecbbd"
+    },
+    {
+        "sha": "79e1e0dfaad77f1ca096349a0f8b2666fbe3ee03",
+        "author": "tjallingt",
+        "email": "tjallingt@gmail.com",
+        "date": "2026-04-09T14:41:54Z",
+        "message": "seat: Use XCURSOR_SIZE and XCURSOR_THEME when creating the cursor manager",
+        "url": "https://github.com/cage-kiosk/cage/commit/79e1e0dfaad77f1ca096349a0f8b2666fbe3ee03"
+    },
+    {
+        "sha": "14d12cfa49d12d8fa71e74870eb7577760218246",
+        "author": "David Cohen",
+        "email": "dacohen@pm.me",
+        "date": "2026-04-02T08:17:08Z",
+        "message": "cage: add -x flag to disable XWayland at runtime\n\nAllows disabling XWayland support at runtime even when the binary was\nbuilt with it.",
+        "url": "https://github.com/cage-kiosk/cage/commit/14d12cfa49d12d8fa71e74870eb7577760218246"
+    },
+    {
+        "sha": "4ba2f605f43362314f14941793f62653825f1bca",
+        "author": "Simon Ser",
+        "email": "contact@emersion.fr",
+        "date": "2026-04-17T15:12:20Z",
+        "message": "seat: change default seat name to \"default\" from \"seat0\"\n\n\"seat0\" is confusing because it's the name used by logind for\nphysical seats. Logical Wayland seats are completely orthogonal to\nlogin physical seats, so let's switch the name to reduce mixups a\nbit.\n\nSee the discussion in https://github.com/cage-kiosk/cage/pull/497",
+        "url": "https://github.com/cage-kiosk/cage/commit/4ba2f605f43362314f14941793f62653825f1bca"
+    },
+    {
+        "sha": "bed2ff5afe94a68102a95c714251e232a397c7dd",
+        "author": "Simon Ser",
+        "email": "contact@emersion.fr",
+        "date": "2026-04-28T15:33:22Z",
+        "message": "ci: use \"meson setup\"",
+        "url": "https://github.com/cage-kiosk/cage/commit/bed2ff5afe94a68102a95c714251e232a397c7dd"
+    },
+    {
+        "sha": "6d9a16e0426144e414a4f5c838781fb08591c67e",
+        "author": "Simon Ser",
+        "email": "contact@emersion.fr",
+        "date": "2026-04-28T15:32:15Z",
+        "message": "ci: use variables for package lists\n\nAvoids duplicating these.",
+        "url": "https://github.com/cage-kiosk/cage/commit/6d9a16e0426144e414a4f5c838781fb08591c67e"
+    },
+    {
+        "sha": "3783af4fadc27057b24025fefe78d942e3f01128",
+        "author": "Simon Ser",
+        "email": "contact@emersion.fr",
+        "date": "2026-04-11T07:28:43Z",
+        "message": "build: bump version to 0.3.0",
+        "url": "https://github.com/cage-kiosk/cage/commit/3783af4fadc27057b24025fefe78d942e3f01128"
+    },
+    {
+        "sha": "94904c714d1fcc3c9dc9d74ef8c5c597e8bd9d7a",
+        "author": "Yuxuan Shui",
+        "email": "yshuiv7@gmail.com",
+        "date": "2026-04-03T22:50:00Z",
+        "message": "Make buffer bigger to prevent wayland disconnection\n\nFixes #492",
+        "url": "https://github.com/cage-kiosk/cage/commit/94904c714d1fcc3c9dc9d74ef8c5c597e8bd9d7a"
+    },
+    {
+        "sha": "b7c3dba382588a071b89bdef675c807e1c8a3d52",
+        "author": "Simon Ser",
+        "email": "contact@emersion.fr",
+        "date": "2026-03-29T16:47:43Z",
+        "message": "build: drop cage_heaers\n\nListing header files is unnecessary, Meson already takes care of\nthat.",
+        "url": "https://github.com/cage-kiosk/cage/commit/b7c3dba382588a071b89bdef675c807e1c8a3d52"
+    },
+    {
+        "sha": "b5c3e71b023290ef320cc4d2a91362ffcd1f740e",
+        "author": "Sungjoon Moon",
+        "email": "sumoon@seoulsaram.org",
+        "date": "2026-02-27T14:51:32Z",
+        "message": "Upgrade wlroots to v0.20\n\nBreaking changes:\n - https://gitlab.freedesktop.org/wlroots/wlroots/-/merge_requests/5230",
+        "url": "https://github.com/cage-kiosk/cage/commit/b5c3e71b023290ef320cc4d2a91362ffcd1f740e"
+    },
+    {
+        "sha": "a1e5bf3789ece68ee703e93f3843906d29cad394",
+        "author": "Simon Ser",
+        "email": "contact@emersion.fr",
+        "date": "2026-03-05T14:28:21Z",
+        "message": "Fix segfault during cleanup when wlr_scene isn't created\n\nIf backend creation fails, server.scene is NULL.\n\nDiscovered when investigating the following issue:\nhttps://github.com/cage-kiosk/cage/issues/481",
+        "url": "https://github.com/cage-kiosk/cage/commit/a1e5bf3789ece68ee703e93f3843906d29cad394"
+    },
+    {
+        "sha": "dcd64ae48bd088e4288bf233b8fc138190fec6b0",
+        "author": "Yuxuan Shui",
+        "email": "yshuiv7@gmail.com",
+        "date": "2026-01-04T20:27:18Z",
+        "message": "Implement the drm-lease-v1 protocol",
+        "url": "https://github.com/cage-kiosk/cage/commit/dcd64ae48bd088e4288bf233b8fc138190fec6b0"
+    },
+    {
+        "sha": "73bf1c8bd6bbeabe2c05cee8a8a55edbd45e7982",
+        "author": "Simon Ser",
+        "email": "contact@emersion.fr",
+        "date": "2025-12-27T12:54:17Z",
+        "message": "xwayland: fix crash when request_fullscreen is called while unmapped\n\nCloses: https://github.com/cage-kiosk/cage/issues/463",
+        "url": "https://github.com/cage-kiosk/cage/commit/73bf1c8bd6bbeabe2c05cee8a8a55edbd45e7982"
+    },
+    {
+        "sha": "832e88b0c964a324bb09c7af02ed0650b73dfb9b",
+        "author": "Simon Ser",
+        "email": "contact@emersion.fr",
+        "date": "2025-12-21T12:50:30Z",
+        "message": "xdg_shell: skip configure in request_fullscreen handler if unmapped\n\nwlr_xdg_surface_schedule_configure() requires the xdg_surface to\nbe initialized.\n\nCloses: https://github.com/cage-kiosk/cage/issues/456",
+        "url": "https://github.com/cage-kiosk/cage/commit/832e88b0c964a324bb09c7af02ed0650b73dfb9b"
+    },
+    {
+        "sha": "cb8582c0565fb127a77f74eb20c202ae5f2b5e3c",
+        "author": "Yuxuan Shui",
+        "email": "yshuiv7@gmail.com",
+        "date": "2025-12-17T03:53:01Z",
+        "message": "Fix segfault when title or app_id is NULL",
+        "url": "https://github.com/cage-kiosk/cage/commit/cb8582c0565fb127a77f74eb20c202ae5f2b5e3c"
+    },
+    {
+        "sha": "ea2069f4278a0e7c86ecae739a77ff3f16dc870e",
+        "author": "Simon Ser",
+        "email": "contact@emersion.fr",
+        "date": "2025-12-09T21:38:54Z",
+        "message": "xwayland: remove associate/dissociate listeners",
+        "url": "https://github.com/cage-kiosk/cage/commit/ea2069f4278a0e7c86ecae739a77ff3f16dc870e"
+    },
+    {
+        "sha": "af0a3cf8a6092fcb5a2488f905cfed42cea6e2f4",
+        "author": "GnSight",
+        "email": "ftyg@live.com",
+        "date": "2025-10-01T03:53:09Z",
+        "message": "Add support for wlr-foreign-toplevel-management",
+        "url": "https://github.com/cage-kiosk/cage/commit/af0a3cf8a6092fcb5a2488f905cfed42cea6e2f4"
+    },
+    {
+        "sha": "f9626f79519f8ee22d7bb0c3880a66791d82f923",
+        "author": "Simon Ser",
+        "email": "contact@emersion.fr",
+        "date": "2025-10-01T15:46:45Z",
+        "message": "build: bump version to 0.2.1",
+        "url": "https://github.com/cage-kiosk/cage/commit/f9626f79519f8ee22d7bb0c3880a66791d82f923"
+    },
+    {
+        "sha": "2e593fe5a8a2186a558ceb414674775e4ba5d2b1",
+        "author": "Simon Ser",
+        "email": "contact@emersion.fr",
+        "date": "2025-06-29T18:18:33Z",
+        "message": "Fix renderer, allocator and scene memory leaks on exit",
+        "url": "https://github.com/cage-kiosk/cage/commit/2e593fe5a8a2186a558ceb414674775e4ba5d2b1"
+    },
+    {
+        "sha": "3da3ec0c2776594a546478f0fc31f96ef74e03ac",
+        "author": "Simon Ser",
+        "email": "contact@emersion.fr",
+        "date": "2024-02-16T15:36:55Z",
+        "message": "output: use backend commits\n\nPass the whole new desired state to the backend, so that the\nbackend can leverage KMS atomic commits.",
+        "url": "https://github.com/cage-kiosk/cage/commit/3da3ec0c2776594a546478f0fc31f96ef74e03ac"
+    },
+    {
+        "sha": "c311ee5cdc9f17c04582b6603cf263aff570499f",
+        "author": "Simon Ser",
+        "email": "contact@emersion.fr",
+        "date": "2025-06-11T22:10:40Z",
+        "message": "ci: set --wrap-mode=nodownload\n\nMake sure Meson doesn't automagically download and build\ndependencies, so that we use system libraries.",
+        "url": "https://github.com/cage-kiosk/cage/commit/c311ee5cdc9f17c04582b6603cf263aff570499f"
+    },
+    {
+        "sha": "e8eec5412938c4600e4a2ba912207efe3d9e41ff",
+        "author": "Simon Ser",
+        "email": "contact@emersion.fr",
+        "date": "2025-06-11T22:04:54Z",
+        "message": "ci: install libdisplay-info\n\nThis dependency was missing.",
+        "url": "https://github.com/cage-kiosk/cage/commit/e8eec5412938c4600e4a2ba912207efe3d9e41ff"
+    }
+]

@@ -1,0 +1,242 @@
+[
+    {
+        "sha": "f1a2a70f2804720198a071816bc311e765869296",
+        "author": "Partha Shankar",
+        "email": "152790727+Partha-Shankar@users.noreply.github.com",
+        "date": "2026-07-14T06:57:50Z",
+        "message": "[generation] Fix misleading synced_gpus warning in continuous batching (#47158)\n\n* [generation] Fix misleading synced_gpus warning in continuous batching\n\nCorrect the warning negation when synced_gpus is passed in continuous batching generation mode. Since synced_gpus is ignored and not processed, the warning should read 'is ignored' instead of 'is not ignored'.\n\nAdd a regression test in test_continuous_batching.py to verify.\n\n* Remove regression test per maintainer review feedback\n\n---------\n\nCo-authored-by: Rémi Ouazan <83456801+remi-or@users.noreply.github.com>",
+        "url": "https://github.com/huggingface/transformers/commit/f1a2a70f2804720198a071816bc311e765869296"
+    },
+    {
+        "sha": "fc7cf96750ef241f7f9cff3efd87b3dc988c99fd",
+        "author": "BADAOUI Abdennacer",
+        "email": "106801897+Abdennacer-Badaoui@users.noreply.github.com",
+        "date": "2026-07-14T04:05:50Z",
+        "message": "Update AMD CI runner groups to amd-mi300 (#47307)",
+        "url": "https://github.com/huggingface/transformers/commit/fc7cf96750ef241f7f9cff3efd87b3dc988c99fd"
+    },
+    {
+        "sha": "6805d433ef66b5419429eb081b6321415e29d781",
+        "author": "Timothy Leffel",
+        "email": "tjleffel@gmail.com",
+        "date": "2026-07-13T23:49:35Z",
+        "message": "Point to Gemma 4 model in Gemma4ForCausalLM docstring example (#47255)\n\nPoint to gemma 4 model in Gemma4ForCausalLM docstring example",
+        "url": "https://github.com/huggingface/transformers/commit/6805d433ef66b5419429eb081b6321415e29d781"
+    },
+    {
+        "sha": "4a272654925b87aea9b56267c8b3a99b0928e0dd",
+        "author": "Ting SUN",
+        "email": "suntcrick@gmail.com",
+        "date": "2026-07-13T23:23:15Z",
+        "message": "Fix Qwen Omni batched text postprocessing (#47197)\n\n* Fix Qwen Omni batched text postprocessing\n\nSigned-off-by: Ting Sun <suntcrick@gmail.com>\n\n* Add Qwen Omni batched text pipeline regression test\n\nSigned-off-by: Ting Sun <suntcrick@gmail.com>\n\n---------\n\nSigned-off-by: Ting Sun <suntcrick@gmail.com>",
+        "url": "https://github.com/huggingface/transformers/commit/4a272654925b87aea9b56267c8b3a99b0928e0dd"
+    },
+    {
+        "sha": "81eb7c3bc2a5d6ff15f26dea9bf00dd1b18a4e8b",
+        "author": "Sreekant Baheti",
+        "email": "60787859+Sreekant13@users.noreply.github.com",
+        "date": "2026-07-13T23:19:25Z",
+        "message": "Fix AqlmConfig error messages to say \"int\" instead of \"float\" (#47089)\n\n* Fix AqlmConfig error messages: int fields say \"int\", not \"float\"\n\nAqlmConfig.post_init validates that in_group_size, out_group_size,\nnum_codebooks and nbits_per_codebook are ints (`not isinstance(x, int)`), but\nthe raised TypeError messages said each \"must be a float\". That is misleading:\npassing a float is exactly what triggers the error, so the message told users\nto do the very thing that fails. Say \"int\" instead, and add a regression test.\n\n* Update tests/quantization/aqlm_integration/test_aqlm.py\n\n* Apply repo consistency fixes\n\n---------\n\nCo-authored-by: Matt <Rocketknight1@users.noreply.github.com>\nCo-authored-by: github-actions[bot] <github-actions[bot]@users.noreply.github.com>",
+        "url": "https://github.com/huggingface/transformers/commit/81eb7c3bc2a5d6ff15f26dea9bf00dd1b18a4e8b"
+    },
+    {
+        "sha": "11ed2ff4df5fdfb3117f0e3365ef6ad94081ba69",
+        "author": "smart8986",
+        "email": "zhangyanfei8986@gmail.com",
+        "date": "2026-07-13T14:16:05Z",
+        "message": "Fix check for interactive stdout in _style function (#47283)",
+        "url": "https://github.com/huggingface/transformers/commit/11ed2ff4df5fdfb3117f0e3365ef6ad94081ba69"
+    },
+    {
+        "sha": "529858a5db5095acf20b1bc4857151f73b461f5d",
+        "author": "Sreekant Baheti",
+        "email": "60787859+Sreekant13@users.noreply.github.com",
+        "date": "2026-07-13T13:40:21Z",
+        "message": "Fix get_json_schema crash on non-string docstring choices (#47072)\n\nThe `(choices: ...)` block in a Google-format docstring is parsed with\n`json.loads`, so it accepts any JSON values, but `get_json_schema` then called\n`.strip()` on every element. This raised `AttributeError: 'int' object has no\nattribute 'strip'` for non-string choices such as `(choices: [1, 2, 3])` or\n`(choices: [true, false])`, even though the equivalent `Literal[...]` type hint\nalready supports non-string enums.\n\nOnly strip string choices and leave other JSON values (ints, bools, ...) as-is,\nand add a regression test.",
+        "url": "https://github.com/huggingface/transformers/commit/529858a5db5095acf20b1bc4857151f73b461f5d"
+    },
+    {
+        "sha": "35bb43e74618aef9ac00222ff29530962c5ee49b",
+        "author": "Harry Mellor",
+        "email": "19981378+hmellor@users.noreply.github.com",
+        "date": "2026-07-13T11:20:32Z",
+        "message": "Make `MODEL_IDS_TO_TOKENIZERS_BACKEND` capture all DeepSeek R1 distills (#47296)\n\nSigned-off-by: Harry Mellor <19981378+hmellor@users.noreply.github.com>",
+        "url": "https://github.com/huggingface/transformers/commit/35bb43e74618aef9ac00222ff29530962c5ee49b"
+    },
+    {
+        "sha": "13dfd790d80e228945617c90ec753094baf918c0",
+        "author": "WilliamRoyNelson",
+        "email": "william.roy.nelson@gmail.com",
+        "date": "2026-07-13T10:07:25Z",
+        "message": "Update doc preprocessing regex to prevent ReDoS (#47187)",
+        "url": "https://github.com/huggingface/transformers/commit/13dfd790d80e228945617c90ec753094baf918c0"
+    },
+    {
+        "sha": "01dd2fd817a51a67eeb9126233faf9cbb380a17c",
+        "author": "Cyril Vallez",
+        "email": "cyril.vallez@huggingface.co",
+        "date": "2026-07-13T07:42:14Z",
+        "message": "[generate] Add proper MTP support (#46229)\n\n* very raw start for later\n\n* good progress\n\n* close to it\n\n* fix path\n\n* a few fixes\n\n* continue\n\n* fix mask shapes\n\n* it works\n\n* support any drafting method\n\n* improve\n\n* fixes\n\n* fix dtype\n\n* fix dtype\n\n* add config\n\n* add ty ignores\n\n* skip config check\n\n* avoid changing signatures - put it into generation_config instead\n\n* raise error if invalid\n\n* change name\n\n* name changes\n\n* remove pos_ids for mask\n\n* cache is not strictly needed\n\n* fix\n\n* create on meta\n\n* add loss\n\n* move to modeling_layers\n\n* fix modular\n\n* fix\n\n* fix\n\n* test",
+        "url": "https://github.com/huggingface/transformers/commit/01dd2fd817a51a67eeb9126233faf9cbb380a17c"
+    },
+    {
+        "sha": "4517f141cca1825aad8354a9ef154bfe9c81bd32",
+        "author": "Ferdinand Mom",
+        "email": "47445085+3outeille@users.noreply.github.com",
+        "date": "2026-07-13T03:46:33Z",
+        "message": "Shard on read Dtensor aware (#46717)\n\n* add distributed config\n\n* Add native FSDP2 module and migrate FSDP imports (Phase A PR-2).\n\nMove FSDP2 wrapping and plan verification to distributed/fsdp.py, keep\nintegrations/fsdp.py as a backward-compatible re-export, and update core\ncall sites to import from transformers.distributed.fsdp.\n\n* linting\n\n* unecessary\n\n* copyright edit\n\n* revert\n\n* add shard on read\n\n* jsut shard on read\n\n* cleaning\n\n* linting\n\n* fix\n\n* fix\n\n* remove redundant test file\n\n* Update src/transformers/distributed/fsdp.py\r\n\r\nnaming\n\nCo-authored-by: Arthur <48595927+ArthurZucker@users.noreply.github.com>\n\n* avoid looping, just look at dict\n\n* expand_fsdp returns reshard_targets, no_reshard_targets right away\n\n* better _resolve_tied_embed_lm_head_plan\n\n* cleaning\n\n* ruff\n\n* more robust detection of embed and lm_head\n\n* cleaning\n\n* ruff\n\n* typo\n\n* cleaner\n\n* cleaner\n\n* typo\n\n* refactor dense path + apply_contiguous_shard\n\n* linting\n\n* cleaning\n\n* refactor _apply_strided_shard\n\n* better\n\n* refactor _slice_and_cat\n\n* better comment\n\n* refactor moe dtensor shard ops\n\n* better comment\n\n* comment\n\n* cleaning\n\n* linting\n\n* expand_fsdp_plan iterate over modules\n\n* comment about tie embedding\n\n* add comment tied embedding\n\n* some cleaning\n\n* cleaning + comment\n\n* rename function for clarity\n\n* Apply suggestion from @ArthurZucker\n\nCo-authored-by: Arthur <48595927+ArthurZucker@users.noreply.github.com>\n\n* doc\n\n* comment\n\n---------\n\nCo-authored-by: Arthur <48595927+ArthurZucker@users.noreply.github.com>",
+        "url": "https://github.com/huggingface/transformers/commit/4517f141cca1825aad8354a9ef154bfe9c81bd32"
+    },
+    {
+        "sha": "63f32a8782cb70da3365acab16f2b67947737985",
+        "author": "BADAOUI Abdennacer",
+        "email": "106801897+Abdennacer-Badaoui@users.noreply.github.com",
+        "date": "2026-07-11T09:54:51Z",
+        "message": "Switch AMD daily CI to mi300 runners (#47259)",
+        "url": "https://github.com/huggingface/transformers/commit/63f32a8782cb70da3365acab16f2b67947737985"
+    },
+    {
+        "sha": "1f8daee0c80cd53a44b1094b79309dd8675d6392",
+        "author": "Yih-Dar",
+        "email": "2521628+ydshieh@users.noreply.github.com",
+        "date": "2026-07-10T22:00:50Z",
+        "message": "tests: reduce processor test memory usage by using tiny Hub checkpoints (#47213)\n\n* tests/kimi_k25: add tiny_model_id to speed up processor tests\n\nUse hf-internal-testing/tiny-processor-kimi_k25 (75KB tokenizer vs 19MB full)\nso most tests load the tiny processor instead of the full one.\n\nCo-Authored-By: Claude Sonnet 4.6 <noreply@anthropic.com>\n\n* tests/llama4: add tiny_model_id, remove _setup_tokenizer hook\n\nUse hf-internal-testing/tiny-processor-llama4 (500 vocab vs 200k) so\ntests load the tiny processor instead of the full one.\n\nCo-Authored-By: Claude Sonnet 4.6 <noreply@anthropic.com>\n\n* tests/deepseek_ocr2,got_ocr2: add tiny_model_id, remove _setup_tokenizer\n\n- deepseek_ocr2: tiny-processor-deepseek_ocr2 (500 vocab vs 102k)\n- got_ocr2: tiny-processor-got_ocr2 (500 vocab vs 32k); add\n  _setup_image_processor() to preserve default 384x384 size; update\n  test_ocr_queries expected input_ids shapes for tiny tokenizer\n\nCo-Authored-By: Claude Sonnet 4.6 <noreply@anthropic.com>\n\n* fix\n\n* Add analyze_mem.py and memory_tracker_plugin from debug_mem\n\nBrings memory profiling tooling into fix_slow_processor branch:\n- analyze_mem.py: runs processor tests and aggregates memory usage\n- memory_tracker_plugin.py: pytest plugin for per-test memory tracking\n- conftest.py: integrate memory tracker plugin\n\nCo-Authored-By: Claude Sonnet 4.6 <noreply@anthropic.com>\n\n* Fix processor test failures for florence2, granite4_vision, pp_chart2table\n\n- florence2: skip 6 tests that check max_length/padding; processor always\n  produces ~585 tokens (256 image tokens + task prompt) and does not forward\n  tokenizer padding kwargs\n- granite4_vision: add _setup_image_processor with LlavaNextImageProcessor\n  (returns required image_sizes key); add num_additional_image_tokens=1 to\n  prepare_processor_dict to match tiny repo config\n- pp_chart2table: skip test_model_input_names (image processor declares\n  original_image_size in model_input_names but does not return it); fix\n  test_ocr_queries token count assertion 325→324\n\nCo-Authored-By: Claude Sonnet 4.6 <noreply@anthropic.com>\n\n* Fix granite4_vision test_image_token_filling expected token count\n\nnum_additional_image_tokens=1 adds 1 to base features: 405 - 1 (CLS) = 404.\n\nCo-Authored-By: Claude Sonnet 4.6 <noreply@anthropic.com>\n\n* Fix Florence2 processor tests: use image_seq_length=2 instead of skipping\n\nAdd _setup_image_processor hook that loads image processor from tiny repo\nbut sets image_seq_length=2, keeping output sequences short enough for\nthe standard max_length/padding tests to pass.\n\nCo-Authored-By: Claude Sonnet 4.6 <noreply@anthropic.com>\n\n* tests/pp_chart2table: fix test_model_input_names instead of skipping\n\nAdd _setup_image_processor returning PPChart2TableImageProcessor() (default,\nmodel_input_names=['pixel_values']) so the Hub config's extra 'original_image_size'\nentry doesn't cause the assertion to fail.\n\nCo-Authored-By: Claude Sonnet 4.6 <noreply@anthropic.com>\n\n* tests/kimi_k25: use tiny_video_320x240.mp4 instead of 4K source video\n\nThe previous video (raushan-testing-hf/tiny_video.mp4) was 3840x2160 (4K),\ncausing ~150 MB of memory just to decode frames before resizing to 28x28.\nSwitch to hf-internal-testing/test-videos/tiny_video_320x240.mp4 (320x240,\nsame 11 frames) which is 144x cheaper to decode.\n\nCo-Authored-By: Claude Sonnet 4.6 <noreply@anthropic.com>\n\n* tests: reduce memory in deepseek_ocr2 and audioflamingo3 processor tests\n\n- deepseek_ocr2: use (769,577) image instead of (3264,2448) — same 2×3 tiling\n  grid (ar≈0.75 matches 2×3 canvas best), same 1121 token count, 18× smaller tensor\n- audioflamingo3: use tiny processor + small public audio fixture instead of\n  full nvidia/audio-flamingo-3-hf model + nvidia/AudioSkills wav in\n  test_apply_transcription_request_single\n\nCo-Authored-By: Claude Sonnet 4.6 <noreply@anthropic.com>\n\n* tests: eliminate full-model downloads in audioflamingo3 processor tests\n\nReplace self.checkpoint (nvidia/audio-flamingo-3-hf) with tiny_model_id in\ntest_can_load_various_tokenizers, test_save_load_pretrained_default,\ntest_tokenizer_integration, and test_chat_template. For tokenizer_integration,\ndrop hardcoded golden tokens and just assert slow==fast parity.\n\nCo-Authored-By: Claude Sonnet 4.6 <noreply@anthropic.com>\n\n* tests: fix kimi_k25 slow setup and stale video assertions\n\n- Remove model_id (RaushanTurganbay/kimi2.7-processor): no test calls\n  get_processor(use_tiny_ckpt=False), so the full-model download in setUpClass\n  was purely wasted time\n- Replace hardcoded pixel_values_videos length assertions (written for 4K video)\n  with video_grid_thw-based checks; also verify num_frames vs fps give different\n  token counts\n\nCo-Authored-By: Claude Sonnet 4.6 <noreply@anthropic.com>\n\n* tests: reduce memory in sam3, qwen3_asr, vibevoice_asr processor tests\n\n- sam3: add _setup_image_processor reducing default size from 1008×1008 to 64×64\n  (mask_size 288×288 → 16×16); default sizes allocate ~100 MB of tensors\n- qwen3_asr: replace self.checkpoint (Qwen/Qwen3-ASR-0.6B-hf) with tiny_model_id\n  in test_can_load_various_tokenizers, test_save_load_pretrained_default, and\n  get_processor() in test_chat_template, test_apply_transcription_request_with_language,\n  test_decode_formats; use small public audio fixture instead of bezzam dataset\n- vibevoice_asr: same pattern — tiny_model_id for load tests, get_processor() for\n  transcription/decode tests, replace bezzam wav with small public audio fixture\n\nCo-Authored-By: Claude Sonnet 4.6 <noreply@anthropic.com>\n\n* tests: eliminate full-model downloads in musicflamingo processor tests\n\nReplace self.checkpoint (nvidia/music-flamingo-2601-hf) with tiny_model_id in\ntest_can_load_various_tokenizers, test_save_load_pretrained_default; use\nget_processor() in test_chat_template and test_transcription_helpers_not_supported;\nsimplify test_tokenizer_integration to slow==fast parity check with tiny tokenizer.\n\nCo-Authored-By: Claude Sonnet 4.6 <noreply@anthropic.com>\n\n* fix(glmasr): use tiny_model_id in test_can_load_various_tokenizers and test_save_load_pretrained_default\n\nCo-Authored-By: Claude Sonnet 4.6 <noreply@anthropic.com>\n\n* fix(vibevoice_asr): mock batch_decode in test_decode_output_formats to avoid tiny tokenizer vocab mismatch\n\nCo-Authored-By: Claude Sonnet 4.6 <noreply@anthropic.com>\n\n* docs(vibevoice_asr): add comment explaining mock in test_decode_output_formats\n\nCo-Authored-By: Claude Sonnet 4.6 <noreply@anthropic.com>\n\n* fix(vibevoice_asr): use real decoded string in test_decode_output_formats mock\n\nCo-Authored-By: Claude Sonnet 4.6 <noreply@anthropic.com>\n\n* docs(vibevoice_asr): clarify mock comment in test_decode_output_formats\n\nCo-Authored-By: Claude Sonnet 4.6 <noreply@anthropic.com>\n\n* fix(vibevoice_asr): mock tokenizer.decode to avoid tiny-tokenizer JSON parse failure\n\ntest_decode_output_formats hardcoded Qwen token IDs that the tiny tokenizer\ndecodes to garbage, breaking json.loads(). Mock tokenizer.decode with the\nreal decoded string from the full processor (microsoft/VibeVoice-ASR-HF)\nprior to PR #47213, which is what this test was always validating.\n\nCo-Authored-By: Claude Sonnet 4.6 <noreply@anthropic.com>\n\n* ci: trigger processor tests via test_processing_common.py touch\n\nCo-Authored-By: Claude Sonnet 4.6 <noreply@anthropic.com>\n\n* ci: restrict test fetcher to processor tests only for this PR\n\nTemporarily limit JOB_TO_TEST_FILE to tests_processors so CI only\nruns processor tests, avoiding unrelated modeling/tokenization jobs.\n\nCo-Authored-By: Claude Sonnet 4.6 <noreply@anthropic.com>\n\n* format\n\n* format\n\n* fix(ovis2): add _setup_image_processor and image_token to prepare_processor_dict\n\n- max_patches=1 ensures each image produces exactly 1 tile so\n  len(pixel_values)==batch_size as _test_apply_chat_template expects\n- image_token='<IMG_ATOM>' in prepare_processor_dict prevents mismatch\n  in test_processor_from_pretrained_vs_from_components when the tokenizer\n  lacks an image_token attribute (defaults to '<image>' without the kwarg)\n\nCo-Authored-By: Claude Sonnet 4.6 <noreply@anthropic.com>\n\n* revert(qwen3_asr): restore original test until checkpoints are updated\n\nEric will update the Qwen3 ASR checkpoints; the tiny-processor-qwen3_asr\nswitch will be re-applied once the new checkpoint is available.\n\nCo-Authored-By: Claude Sonnet 4.6 <noreply@anthropic.com>\n\n* revert: remove analyze_mem, memory_tracker_plugin, conftest changes\n\nThese memory profiling tools are not part of the processor test speed-up\nscope for PR #47213.\n\nCo-Authored-By: Claude Sonnet 4.6 <noreply@anthropic.com>\n\n* revert: restore tests_fetcher.py and test_processing_common.py to main\n\nBoth were temporary CI-triggering changes not meant for the PR.\n\nCo-Authored-By: Claude Sonnet 4.6 <noreply@anthropic.com>\n\n* test: add @slow test_tokenizer_full_integration for audioflamingo3 and musicflamingo\n\nPreserves the original golden-token assertions (EXPECTED_OUTPUT) against the\nfull Hub checkpoints as a slow test, while the fast test_tokenizer_integration\nuses the tiny repo for a quick slow/fast parity check.\n\nCo-Authored-By: Claude Sonnet 4.6 <noreply@anthropic.com>\n\n* fixup: use self.checkpoint in test_tokenizer_full_integration\n\nCo-Authored-By: Claude Sonnet 4.6 <noreply@anthropic.com>\n\n* processor tests: add source comments, remove unused checkpoints, document setup hooks\n\n- Add `# Tiny processor created with make_tiny_processor.py from \"<repo>\"` comment\n  on every `tiny_model_id` class attribute (14 files)\n- Remove unused `checkpoint = ...` class attributes from glmasr and vibevoice_asr\n  (neither file ever references `self.checkpoint`)\n- Add explanatory comments on all `_setup_image_processor` / `_setup_video_processor`\n  hooks that lacked them, explaining why each custom setup is needed\n\nCo-Authored-By: Claude Sonnet 4.6 <noreply@anthropic.com>\n\n---------\n\nCo-authored-by: ydshieh <ydshieh@users.noreply.github.com>",
+        "url": "https://github.com/huggingface/transformers/commit/1f8daee0c80cd53a44b1094b79309dd8675d6392"
+    },
+    {
+        "sha": "d47a534df8d8bea23e5ad9f3d2a0a1d448cf7d29",
+        "author": "Michael Benayoun",
+        "email": "mickbenayoun@gmail.com",
+        "date": "2026-07-10T19:59:32Z",
+        "message": "Torch compile backend defaults to \"neuron\" (#47035)\n\n* feat: torch compile backend defaults to \"neuron\"\n\n* fix: restore doc back to normal\n\n* doc: add information about backend in docs",
+        "url": "https://github.com/huggingface/transformers/commit/d47a534df8d8bea23e5ad9f3d2a0a1d448cf7d29"
+    },
+    {
+        "sha": "d610229d0f0d80c7927694f164e3dd362750ca19",
+        "author": "Yih-Dar",
+        "email": "2521628+ydshieh@users.noreply.github.com",
+        "date": "2026-07-10T16:50:40Z",
+        "message": "Fix flash-attn Docker build broken by setuptools 83 removing pkg_resources (#47251)\n\n* Fix flash-attn build failure caused by setuptools>=83 removing pkg_resources\n\ntorch 2.13.0 (released 2026-07-08) added an unconditional setuptools>=77.0.3\nrequirement. pip resolves this to setuptools 83.0.0, which removed pkg_resources.\nThe Ubuntu 22.04 system wheel (used during --no-build-isolation builds) still\nimports pkg_resources, causing flash-attn to fail to build.\n\nFix: upgrade wheel to >=0.43 (which uses importlib.metadata instead) right\nbefore flash-attn is installed.\n\nCo-Authored-By: Claude Sonnet 4.6 <noreply@anthropic.com>\n\n* Add context comment for wheel upgrade before flash-attn\n\nCo-Authored-By: Claude Sonnet 4.6 <noreply@anthropic.com>\n\n* build\n\n* check run\n\n* Use if/else for flash-attn install to fail loudly on real errors\n\nThe old `... || echo` pattern silently swallowed all install failures\n(including the setuptools/pkg_resources issue), causing the image to be\npushed without flash-attn installed. Use if/else to only skip gracefully\nfor the two expected cases (FLASH_ATTN=false, nightly torch), and let\nany actual install failure correctly break the Docker build.\n\nCo-Authored-By: Claude Sonnet 4.6 <noreply@anthropic.com>\n\n* Simplify flash-attn condition back to single FLASH_ATTN check\n\nCo-Authored-By: Claude Sonnet 4.6 <noreply@anthropic.com>\n\n* Fix comment to reflect single FLASH_ATTN condition\n\nCo-Authored-By: Claude Sonnet 4.6 <noreply@anthropic.com>\n\n* check run\n\n* Revert workflow/utils changes unrelated to flash-attn fix\n\nCo-Authored-By: Claude Sonnet 4.6 <noreply@anthropic.com>\n\n---------\n\nCo-authored-by: ydshieh <ydshieh@users.noreply.github.com>",
+        "url": "https://github.com/huggingface/transformers/commit/d610229d0f0d80c7927694f164e3dd362750ca19"
+    },
+    {
+        "sha": "31fd032c002454456646d659000c71c22b100513",
+        "author": "Elad Segal",
+        "email": "eladsegal@users.noreply.github.com",
+        "date": "2026-07-10T16:31:41Z",
+        "message": "Add heterogeneous config support (per-layer configuration) (#45333)\n\n* Add heterogeneous config support (per-layer configuration)\n\n* Updates\n\n* Create HeterogeneousConfigMixin\n\n* Add docs\n\n* Update comment\n\n* Clean up heterogeneous config access and reassignment\n\n* __getattribute__ improvements\n\n* Fix heterogeneous config fallbacks to use live global values\n\n* Avoid ContextVar in heterogeneous config access for torch.compile compatibility\n\n* Add missing HeterogeneousConfigMixin comments\n\n* Update docs phrasing\n\n* Use __getattribute__(\"__dict__\") instead of catching an exception\n\n* PR review fixes\n\n* Add Nemotron-Labs-3-Puzzle-75B-A9B as an example\n\n* Update model links in heterogeneous configurations doc\n\n---------\n\nCo-authored-by: Elad Segal <13485709+eladsegal@users.noreply.github.com>",
+        "url": "https://github.com/huggingface/transformers/commit/31fd032c002454456646d659000c71c22b100513"
+    },
+    {
+        "sha": "74920edf0ffa1a46e656517b38e3879c7243add9",
+        "author": "eustlb",
+        "email": "94853470+eustlb@users.noreply.github.com",
+        "date": "2026-07-10T14:26:53Z",
+        "message": "[fix] update integration test values (#47146)\n\n* fix\n\n* move to fixtures",
+        "url": "https://github.com/huggingface/transformers/commit/74920edf0ffa1a46e656517b38e3879c7243add9"
+    },
+    {
+        "sha": "439d1167357b304df0ca3dc19271c195fbb4a543",
+        "author": "shivakumar shivampeta",
+        "email": "40639865+sshivampeta@users.noreply.github.com",
+        "date": "2026-07-10T13:49:41Z",
+        "message": "Fix DeepSpeed SP loss aggregation and LocalLayerRepository kwargs (#47073)\n\n* Fix DeepSpeed SP loss aggregation and LocalLayerRepository kwargs\n\nReplace the Python conditional loop in deepspeed_sp_compute_loss with tensor-only aggregation via torch.where, avoiding CUDA host sync and preventing NaN losses on zero-token ranks from polluting the total. Remove the unsupported package_name argument from LocalLayerRepository calls so ty check and local kernel loading match the installed kernels\nAPI.\n\nFixes #47068\n\n* Fix DeepSpeed SP loss aggregation for zero-token ranks\n\nReplace the Python conditional loop in deepspeed_sp_compute_loss with tensor-only aggregation via torch.where, avoiding CUDA host sync and preventing NaN losses on zero-token ranks from polluting the total.\n\nFixes #47068\n\n* Fix DeepSpeed SP loss aggregation for zero-token ranks\n\nReplace the Python conditional loop in deepspeed_sp_compute_loss with\ntensor-only aggregation via torch.where, avoiding CUDA host sync and\npreventing NaN losses on zero-token ranks from polluting the total.\n\nFixes #47068\n\nCo-authored-by: Myeongsu Koo <rnaudtndi@naver.com>\n\n* Address review: inline SP loss aggregation, drop dedicated test\n\nFixes #47068\n\nCo-authored-by: Myeongsu Koo <rnaudtndi@naver.com>\n\n---------\n\nCo-authored-by: Myeongsu Koo <rnaudtndi@naver.com>",
+        "url": "https://github.com/huggingface/transformers/commit/439d1167357b304df0ca3dc19271c195fbb4a543"
+    },
+    {
+        "sha": "1567e34b383d14a26aa2cab76d3fb19c42d0f7d6",
+        "author": "Andreas Goulas",
+        "email": "goulasand@gmail.com",
+        "date": "2026-07-10T13:49:36Z",
+        "message": "Fix FA performance regression (#47134)\n\n* fix performance regression\n\n* partial revert\n\n---------\n\nCo-authored-by: Anton Vlasjuk <73884904+vasqu@users.noreply.github.com>",
+        "url": "https://github.com/huggingface/transformers/commit/1567e34b383d14a26aa2cab76d3fb19c42d0f7d6"
+    },
+    {
+        "sha": "7ca3c8d47c221fa6c464cceafda432034a2d3d0a",
+        "author": "Ferdinand Mom",
+        "email": "47445085+3outeille@users.noreply.github.com",
+        "date": "2026-07-10T13:49:16Z",
+        "message": "tests only for the top 10 download models (#47244)\n\n* tests only for the top 10 download models\n\n* fix merge conflict",
+        "url": "https://github.com/huggingface/transformers/commit/7ca3c8d47c221fa6c464cceafda432034a2d3d0a"
+    },
+    {
+        "sha": "2593eed739e7b6ced9f86426e1e282015285d111",
+        "author": "Yih-Dar",
+        "email": "2521628+ydshieh@users.noreply.github.com",
+        "date": "2026-07-10T13:48:45Z",
+        "message": "Fix InputTokensDetails missing cache_write_tokens for openai>=2.34.0 (#47248)\n\nCo-authored-by: ydshieh <ydshieh@users.noreply.github.com>",
+        "url": "https://github.com/huggingface/transformers/commit/2593eed739e7b6ced9f86426e1e282015285d111"
+    },
+    {
+        "sha": "ae228e182744dbd1ca6cd239437a9960f40cf3d7",
+        "author": "Yih-Dar",
+        "email": "2521628+ydshieh@users.noreply.github.com",
+        "date": "2026-07-10T13:45:47Z",
+        "message": "Revert \"Trigger a scheduled run\" (#47249)\n\nRevert \"Trigger a scheduled run (#47209)\"\n\nThis reverts commit 464f4730787e07ffd2df16c35144a0b1701bd6a0.",
+        "url": "https://github.com/huggingface/transformers/commit/ae228e182744dbd1ca6cd239437a9960f40cf3d7"
+    },
+    {
+        "sha": "750b08f56e2e0cb693092bdbb5831ce7c0c36e12",
+        "author": "Yih-Dar",
+        "email": "2521628+ydshieh@users.noreply.github.com",
+        "date": "2026-07-10T13:35:08Z",
+        "message": "Fix CI read-only cache failures by patching cached_files in conftest (#47043)\n\n* update\n\n* Add docstring to _with_tmpdir_cache_fallback\n\n* Trigger to make sure things works\n\n* Trigger to make sure things works\n\n* Trigger to make sure things works\n\n* Fix XET cache path in read-only cache fallback by also patching os.environ\n\n* Revert vit test change (was only for read-only cache testing)\n\n* Update docstring to reflect actual retry mechanism (cache_dir kwarg + HF_XET_CACHE)\n\n* Fix InputTokensDetails missing cache_write_tokens for openai>=2.34.0\n\n* Revert \"Fix InputTokensDetails missing cache_write_tokens for openai>=2.34.0\"\n\nThis reverts commit eb7839e995e6af9ffd730bcbabf26a20a3708f2c.\n\n---------\n\nCo-authored-by: ydshieh <ydshieh@users.noreply.github.com>",
+        "url": "https://github.com/huggingface/transformers/commit/750b08f56e2e0cb693092bdbb5831ce7c0c36e12"
+    },
+    {
+        "sha": "8f9c9d15de2957073435a3736994969ef205b296",
+        "author": "Ilyas Moutawwakil",
+        "email": "57442720+IlyasMoutawwakil@users.noreply.github.com",
+        "date": "2026-07-10T13:21:44Z",
+        "message": "Remove Executorch from CI until latest version is supported and fully tested on CI env (#47242)\n\nremove executorch",
+        "url": "https://github.com/huggingface/transformers/commit/8f9c9d15de2957073435a3736994969ef205b296"
+    },
+    {
+        "sha": "59a725dc5430853818bfe1cfe6742373752fa552",
+        "author": "Harry Mellor",
+        "email": "19981378+hmellor@users.noreply.github.com",
+        "date": "2026-07-10T13:15:45Z",
+        "message": "Be more defensive with `remap_legacy_layer_types` for custom models (#47245)\n\nBe more defencive with `remap_legacy_layer_types` for custom models\n\nSigned-off-by: Harry Mellor <19981378+hmellor@users.noreply.github.com>",
+        "url": "https://github.com/huggingface/transformers/commit/59a725dc5430853818bfe1cfe6742373752fa552"
+    },
+    {
+        "sha": "0066dee2ec1f06d3046de43eb65e7e57059b68d0",
+        "author": "Ferdinand Mom",
+        "email": "47445085+3outeille@users.noreply.github.com",
+        "date": "2026-07-10T06:50:46Z",
+        "message": "Fix DistributedConfig docstring for unimplemented sp_plan  (#47237)\n\n* Fix DistributedConfig docstring for unimplemented SP/EP plans\n\n`enable_sequence_parallel` is not wired up yet, and `enable_expert_parallel`\nroutes MoE models through `base_model_ep_plan` (not the `base_model_sp_plan`\n/ `base_model_sp_ep_plan` / `base_model_tp_ep_plan` referenced in the\ndocstring, none of which exist). Also drop the dangling `select_parallel_plan`\nreference from `tp_plan`, which resolves to `base_model_tp_plan`.\n\n* Update src/transformers/distributed/configuration_utils.py\n\nCo-authored-by: Arthur <48595927+ArthurZucker@users.noreply.github.com>\n\n---------\n\nCo-authored-by: Arthur <48595927+ArthurZucker@users.noreply.github.com>",
+        "url": "https://github.com/huggingface/transformers/commit/0066dee2ec1f06d3046de43eb65e7e57059b68d0"
+    },
+    {
+        "sha": "0bc355418bb265136a66c2dedc501066ffbc237d",
+        "author": "Tarek Ziade",
+        "email": "tarek@ziade.org",
+        "date": "2026-07-09T14:05:08Z",
+        "message": "Switch mlinter to 0.1.2 (#47172)\n\n* prep for 0.1.2 release of mlinter\n\n* make fix-repo\n\n* use initialization\n\n* pin to fresh 0.1.2 release",
+        "url": "https://github.com/huggingface/transformers/commit/0bc355418bb265136a66c2dedc501066ffbc237d"
+    },
+    {
+        "sha": "e3e822300497c60b241a8563540252393d1f5054",
+        "author": "anagnorisis2peripeteia",
+        "email": "129746152+anagnorisis2peripeteia@users.noreply.github.com",
+        "date": "2026-07-09T13:19:25Z",
+        "message": "trainer: clear MPS graph cache via torch_empty_cache_steps (#45818)\n\n* trainer: clear MPS graph cache after each optimizer step (pytorch#182648)\n\nMPSGraph bakes tensor shapes into compiled graphs and never evicts them.\nWith variable-length inputs (padded sequences, graph batching), the cache\ngrows without bound across training iterations: measured at 408 GB/3 epochs\nfor BERT fine-tuning on WikiText-2 (4499 MB in 200 iters).\n\ntorch.mps.clear_graph_cache() (pytorch >= 2.13) clears compiled forward +\nbackward graphs after each optimizer step while preserving within-step\nforward→backward reuse. Overhead: 1.28x vs always-cache (clear_per_iter\nresult from bench_graph_cache_policy.py), memory growth: flat.\n\nThe call is a no-op when hasattr check fails (pytorch < 2.13), so no\nregression for earlier versions.\n\nFixes: huggingface/transformers#33717, openai/whisper#1740 (via pytorch#182648)\n\n* benchmark: subprocess isolation + psutil for accurate RSS; add max_len sweep\n\nru_maxrss is monotonic on macOS so sequential strategy runs all show\n+0.0 MB after the first. Fix: each strategy in a fresh subprocess with\npsutil current RSS. Also add sweep script showing freeze vs clear crossover\nat ~200 unique padded lengths.\n\n* trainer: add MPS cache tests; move bench scripts to benchmark/benches/\n\n* style: fix ruff I001/F841 in bench scripts and test imports\n\n* style: apply ruff format to bench scripts and test file\n\n* trainer: gate MPS graph cache clearing\n\n* trainer: move MPS graph cache clear into training_step\n\n---------\n\nCo-authored-by: Cameron Beeley <cameronbeeley@Camerons-MacBook-Pro.local>",
+        "url": "https://github.com/huggingface/transformers/commit/e3e822300497c60b241a8563540252393d1f5054"
+    },
+    {
+        "sha": "464f4730787e07ffd2df16c35144a0b1701bd6a0",
+        "author": "Yih-Dar",
+        "email": "2521628+ydshieh@users.noreply.github.com",
+        "date": "2026-07-09T13:53:03Z",
+        "message": "Trigger a scheduled run (#47209)\n\n* trigger\n\n* trigger\n\n* trigger\n\n---------\n\nCo-authored-by: ydshieh <ydshieh@users.noreply.github.com>",
+        "url": "https://github.com/huggingface/transformers/commit/464f4730787e07ffd2df16c35144a0b1701bd6a0"
+    },
+    {
+        "sha": "bcccc3e78af91df124e78968bf059082480d7e69",
+        "author": "Tarek Ziade",
+        "email": "tarek@ziade.org",
+        "date": "2026-07-09T13:39:29Z",
+        "message": "Make executorch exporter tests always use xnnpack backend (#47201)\n\n* Make exporter tests CPU-only (require_non_gpu) and fix executorch import on CPU\n\nThe ONNX/ExecuTorch export tests target CPU (executorch exports via xnnpack on\nCPU); their deps live in the CPU torch-light CI image. Mark\ntest_torch_export/test_onnx_export/test_executorch_export with a new\nrequire_non_gpu decorator so they run on the CPU image rather than the GPU\nnightly (where executorch cannot be installed without clobbering the CUDA torch).\n\nAlso make the ExecuTorch CUDA backend import in exporter_executorch.py optional:\nit pulls in `triton`, which CPU-only torch builds don't ship, so importing it\nunconditionally broke collection of every model test on the CPU image. The\n`cuda` backend now raises a clear error if requested without it; xnnpack (CPU)\nexport is unaffected.\n\n* cpu markers\n\n* don't fail on cpu build\n\n* keep comment\n\n* lower min torch version\n\n* dev-ci\n\n* Drop @slow from ExecuTorch export tests so they run in CPU PR CI\n\nThe executorch export tests are @require_non_gpu (CPU-only) and their deps now\nlive in the torch-light CI image. But @slow tests are only enabled on the GPU\nslow lanes (self-comment-ci / self-scheduled, RUN_SLOW=yes) — never in the CPU\nPR CI (tests_torch has no RUN_SLOW path). With @require_non_gpu they can't run\non those GPU lanes either, so they executed nowhere (verified: 0 passed / all\nskipped as \"test is slow\" in PR #47201's run). Dropping @slow lets them run in\ntests_torch on the torch-light image when the fetcher selects exporter/model\nchanges. torch.export / ONNX export tests keep @slow (they still run on the GPU\nslow lanes).\n\n* dev-ci\n\n* remark et as slow and make it use xnnpack backend by default\n\n* add executorch 1.2\n\n* build images\n\n* Apply suggestion from @IlyasMoutawwakil\n\n* Skip executorch install when FLASH_ATTN is enabled\n\nflash-attn and executorch have incompatible build dependencies;\nskip executorch when building the FLASH_ATTN image variant.\n\nCo-Authored-By: Claude Sonnet 4.6 <noreply@anthropic.com>\n\n* Revert build-docker-images.yml trigger branch to original\n\nCo-Authored-By: Claude Sonnet 4.6 <noreply@anthropic.com>\n\n* trigger\n\n* Revert \"trigger\"\n\nThis reverts commit 2e9662fb60e60b55392a21a6d0de006fed6260f3.\n\n---------\n\nCo-authored-by: IlyasMoutawwakil <moutawwakil.ilyas.tsi@gmail.com>\nCo-authored-by: Yih-Dar <2521628+ydshieh@users.noreply.github.com>\nCo-authored-by: ydshieh <ydshieh@users.noreply.github.com>\nCo-authored-by: Ilyas Moutawwakil <57442720+IlyasMoutawwakil@users.noreply.github.com>\nCo-authored-by: Claude Sonnet 4.6 <noreply@anthropic.com>",
+        "url": "https://github.com/huggingface/transformers/commit/bcccc3e78af91df124e78968bf059082480d7e69"
+    }
+]

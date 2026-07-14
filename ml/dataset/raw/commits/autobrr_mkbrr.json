@@ -1,0 +1,242 @@
+[
+    {
+        "sha": "b038989e47a3c7bf13cfe58dd1783352b4087ecd",
+        "author": "dependabot[bot]",
+        "email": "49699333+dependabot[bot]@users.noreply.github.com",
+        "date": "2026-07-05T14:48:35Z",
+        "message": "chore(deps): bump github.com/schollz/progressbar/v3 from 3.19.0 to 3.19.1 in the golang group (#174)\n\n* chore(deps): bump github.com/schollz/progressbar/v3 in the golang group\n\nBumps the golang group with 1 update: [github.com/schollz/progressbar/v3](https://github.com/schollz/progressbar).\n\n\nUpdates `github.com/schollz/progressbar/v3` from 3.19.0 to 3.19.1\n- [Release notes](https://github.com/schollz/progressbar/releases)\n- [Commits](https://github.com/schollz/progressbar/compare/v3.19.0...v3.19.1)\n\n---\nupdated-dependencies:\n- dependency-name: github.com/schollz/progressbar/v3\n  dependency-version: 3.19.1\n  dependency-type: direct:production\n  update-type: version-update:semver-patch\n  dependency-group: golang\n...\n\nSigned-off-by: dependabot[bot] <support@github.com>\n\n* chore(deps): sync gui module with root golang group bump\n\n* chore(ci): include gui module in dependabot gomod updates\n\n---------\n\nSigned-off-by: dependabot[bot] <support@github.com>\nCo-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>\nCo-authored-by: soup <s0up4200@pm.me>",
+        "url": "https://github.com/autobrr/mkbrr/commit/b038989e47a3c7bf13cfe58dd1783352b4087ecd"
+    },
+    {
+        "sha": "2cf20a46374c328a4bb2324f0f5852240081cd8c",
+        "author": "soup",
+        "email": "s0up4200@pm.me",
+        "date": "2026-07-05T14:29:32Z",
+        "message": "fix(gui): allow workers 0 (auto) and up to 64 to match CLI (#176)\n\n* fix(gui): allow workers 0 (auto) and up to 64 to match CLI\n\nThe Default Workers setting was clamped to 1-32, making the CLI's\n0 = automatic worker selection unreachable from the GUI, and the\nper-preset Workers Override was capped at 32 while values above 32\nloaded from presets.yaml were honored.\n\nWiden both inputs to 0-64, fix the falsy fallbacks that turned an\nentered 0 into 1, default new installs to 0 (auto) to match the CLI,\nand render 'auto' in helper text when the default is 0.\n\nFixes #175\n\n* fix(gui): clamp preset workers override to 0-64 on input\n\nHTML min/max attributes don't block typed out-of-range values, so\napply the same 0-64 clamp used for Default Workers to the per-preset\nWorkers Override input.",
+        "url": "https://github.com/autobrr/mkbrr/commit/2cf20a46374c328a4bb2324f0f5852240081cd8c"
+    },
+    {
+        "sha": "c32116d3fcd51a2347b815814add80e40571e6f5",
+        "author": "soup",
+        "email": "s0up4200@pm.me",
+        "date": "2026-06-22T20:55:36Z",
+        "message": "fix(schema): add missing skip_prefix and fail_on_season_warning to batch schema (#171)\n\nThe BatchJob struct supports skip_prefix and fail_on_season_warning (both\ndocumented in batch-mode docs), but schema/batch.json never declared them,\nso editor validation and autocomplete rejected these valid fields.",
+        "url": "https://github.com/autobrr/mkbrr/commit/c32116d3fcd51a2347b815814add80e40571e6f5"
+    },
+    {
+        "sha": "35daa3afeeb4866915857dd952b092f288b8d22b",
+        "author": "dependabot[bot]",
+        "email": "49699333+dependabot[bot]@users.noreply.github.com",
+        "date": "2026-06-22T20:55:09Z",
+        "message": "chore(deps): bump actions/checkout from 6 to 7 in the github group (#172)\n\nBumps the github group with 1 update: [actions/checkout](https://github.com/actions/checkout).\n\n\nUpdates `actions/checkout` from 6 to 7\n- [Release notes](https://github.com/actions/checkout/releases)\n- [Changelog](https://github.com/actions/checkout/blob/main/CHANGELOG.md)\n- [Commits](https://github.com/actions/checkout/compare/v6...v7)\n\n---\nupdated-dependencies:\n- dependency-name: actions/checkout\n  dependency-version: '7'\n  dependency-type: direct:production\n  update-type: version-update:semver-major\n  dependency-group: github\n...\n\nSigned-off-by: dependabot[bot] <support@github.com>\nCo-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>",
+        "url": "https://github.com/autobrr/mkbrr/commit/35daa3afeeb4866915857dd952b092f288b8d22b"
+    },
+    {
+        "sha": "299a21d2a9cb72cace80db169934cf1128786cdf",
+        "author": "gl0ryus",
+        "email": "96798013+gl0ryus@users.noreply.github.com",
+        "date": "2026-06-19T14:20:01Z",
+        "message": "feat(gui): add drag and drop support (#169)\n\n* feat(gui): add drag-and-drop file support and window size persistence\n\nEnable Wails native file drop across all pages. A full-screen overlay\nappears while dragging to hint the accepted input:\n- Create: any file or folder sets the source path\n- Inspect: .torrent files are loaded and inspected immediately\n- Check: .torrent → torrent field; anything else → content field\n- Modify: .torrent files populate the input torrent field\n\nAlso persist the window size in localStorage so the app restores to the\nlast-used dimensions on next launch.\n\n* feat(gui): add inline clear buttons to path input fields\n\nEach torrent/file/folder input now shows a small × button inside the\nright edge of the field whenever it has a value. Clicking it clears the\nfield without having to manually select and delete the text.\n\nAffected fields:\n- Create: Source Path, Output Directory\n- Check: Torrent File, Content Path\n- Modify: Input Torrent, Output Directory\n\n* fix(gui): correct drop-overlay JSDoc comment\n\n* fix(gui): fix CI build and harden drag-and-drop UX\n\n- Remove gui/frontend/pnpm-workspace.yaml. Its `allowBuilds` key made\n  `pnpm install --frozen-lockfile` abort on pnpm 9 (used in CI) with\n  \"packages field missing or empty\", failing every Build GUI job. esbuild\n  builds fine without it on the pnpm version CI uses.\n- useFileDrop: reliably dismiss the drop overlay — reset on window-exit\n  dragleave, on dragend, and via a mousemove fallback — so an Esc-cancelled\n  or aborted drag can no longer strand the full-screen overlay.\n- App.tsx: guard localStorage access, ignore non-finite saved sizes, and\n  clamp the restored window size to the available screen so a size saved on\n  a larger display can't restore off-screen.\n- Create/Check/Modify: clearing a path via the × button now also clears the\n  stale result/error card, and the clear buttons get an aria-label.\n\n---------\n\nCo-authored-by: soup <s0up4200@pm.me>",
+        "url": "https://github.com/autobrr/mkbrr/commit/299a21d2a9cb72cace80db169934cf1128786cdf"
+    },
+    {
+        "sha": "156c996fc6f4316b650233ecbd2acfdb0e7f98ef",
+        "author": "soup",
+        "email": "s0up4200@pm.me",
+        "date": "2026-06-18T20:18:33Z",
+        "message": "fix(gui): harden GUI against blank-screen render crashes (#170)\n\nAdds a React error boundary so a single page render error degrades to a\nrecoverable card instead of unmounting the whole app into a blank window.\nIt is placed inside Layout around the route outlet (keyed by route so it\nresets on navigation), with a top-level instance for crashes in the\nLayout/sidebar itself.\n\nAlso closes the nil-slice-marshals-to-null class that #168 began with\nListPresets: InspectResult.Trackers/TrackerTiers/WebSeeds and\nVerifyResult.MissingFiles now initialise as empty slices, and the Inspect\npage sanitises restored localStorage state. Create/Modify coerce the\npersisted trackers field to a valid array, and getDirectory tolerates\nnon-string input.",
+        "url": "https://github.com/autobrr/mkbrr/commit/156c996fc6f4316b650233ecbd2acfdb0e7f98ef"
+    },
+    {
+        "sha": "b94721d60b63539af171ce27652d47bba66440ae",
+        "author": "gl0ryus",
+        "email": "96798013+gl0ryus@users.noreply.github.com",
+        "date": "2026-05-25T19:19:42Z",
+        "message": "fix(gui): prevent blank screen in GUI when all presets are deleted (#168)\n\n* fix(gui): prevent blank screen when all presets are deleted\n\nIn Go, a nil slice marshals to null in JSON, not []. ListPresets()\ndeclared names as var names []string which stays nil when the presets\nmap is empty, causing the JSON response to be null instead of [].\n\nOn the frontend, setPresets(null) replaced the string array state with\nnull. Navigating to the Create page then crashed React with\n\"Cannot read properties of null (reading 'length')\" because\npresets.length was called on null, blanking the entire UI.\n\nFix: initialise names with make([]string, 0) so an empty list always\nmarshals to []. Also add a nullish coalescing guard on the frontend\nas a defensive fallback.\n\nAlso add pnpm-workspace.yaml to allow esbuild build scripts, required\nby pnpm v10+ supply-chain policy checks.\n\n* fix(gui): remove pnpm workspace config\n\n---------\n\nCo-authored-by: soup <s0up4200@pm.me>",
+        "url": "https://github.com/autobrr/mkbrr/commit/b94721d60b63539af171ce27652d47bba66440ae"
+    },
+    {
+        "sha": "5b24d79a315774392a22ef68b65b2efcbd10432d",
+        "author": "dependabot[bot]",
+        "email": "49699333+dependabot[bot]@users.noreply.github.com",
+        "date": "2026-05-21T15:00:23Z",
+        "message": "chore(deps): bump the github group with 4 updates (#167)",
+        "url": "https://github.com/autobrr/mkbrr/commit/5b24d79a315774392a22ef68b65b2efcbd10432d"
+    },
+    {
+        "sha": "d93e9cbf43119f5c86f674f06475d074c0773204",
+        "author": "soup",
+        "email": "s0up4200@pm.me",
+        "date": "2026-04-30T10:59:34Z",
+        "message": "perf: streamline hashing and verification hot paths (#164)\n\n* perf: streamline piece hashing\n\n* perf: cap automatic hasher workers\n\n* perf: trim hashing and verify hot paths\n\n* perf: tune automatic workers by platform",
+        "url": "https://github.com/autobrr/mkbrr/commit/d93e9cbf43119f5c86f674f06475d074c0773204"
+    },
+    {
+        "sha": "d89efe2c5c500eecb78d9dd1f49ffbfb4923fa94",
+        "author": "Sammy",
+        "email": "sammy.tahtah@gmail.com",
+        "date": "2026-04-30T10:28:30Z",
+        "message": "feat(gui): add cross-platform desktop GUI using Wails (#165)\n\n* feat(gui): add qui with wails\n\n* feat(gui): enhance torrent creation with output directory selection\n\n* feat(gui): implement preset management features including create, save, delete, and load presets\n\n* feat(gui): add versioning support to the application and update sidebar to display version information\n\n* feat(gui): add 'Amethyst Haze' theme with corresponding styles and update theme options\n\n* feat: add wails release workflow\n\n* icons\n\n* feat(gui): enhance theme management with system mode support and improve UI interactions\n\n- Updated theme options to include a 'system' mode that adapts to the user's OS theme settings.\n- Modified the AppSidebar to reflect the new theme mode.\n- Added functionality to toggle between system, light, and dark modes in the theme hook.\n- Improved UI components in Check and Create pages with tooltips and clearer button actions.\n- Enhanced Inspect page with collapsible sections for trackers and files, and added copy functionality for tracker URLs.\n\n* feat(gui): add content size calculation and tracker optimization features\n\n- Implemented GetContentSize function to calculate the total size of content at a given path.\n- Enhanced Create page to fetch and display content size, recommended piece size, and tracker information.\n- Added UI elements to indicate tracker optimizations and display relevant size constraints.\n- Updated App.d.ts and App.js to include new API methods for content size retrieval.\n\n* chore(gui): update .gitignore\n\n* feat(gui): add support development section to README and update AppSidebar with donation button\n\n- Added a new \"Support Development\" section to the README.md to encourage contributions and provide links for donations.\n- Updated AppSidebar component to include a new donation button that links to the support development section in the README.\n\n* chore: update test commands to exclude GUI tests and add .vscode to .gitignore\n\n* fix(ci): exclude gui package from tests using explicit package paths\n\n* chore(ci): update libwebkit2gtk version in release workflow\n\n* fix(ci): use webkit2gtk-4.1 for Ubuntu 24.04 compatibility\n\nUbuntu 24.04 (Noble) no longer provides libwebkit2gtk-4.0-dev.\nSwitch to libwebkit2gtk-4.1-dev and add -tags webkit2_41 build flag\nfor the Linux Wails build.\n\n* update README\n\n* chore(gui): remove unused import and dead code\n\n* chore(gui): remove SelectOutputDirectory function and its references from App API\n\n* chore(ci): update release workflow to use versioned archive names\n\n- Modified the release workflow to generate archive names based on the version and platform suffix instead of static names.\n- Updated the macOS, Windows, and Linux build steps to reflect these changes for better version tracking and artifact management.\n\n* feat(gui): show torrent creation progress and result in dialog\n\n* feat(gui): add form persistence, progress display, and UX improvements\n\n- Add form state persistence with localStorage for Create, Check, Modify pages\n- Add Reset buttons to clear saved form state\n- Implement verify progress events with ProgressCallback in torrent package\n- Fix hash rate display (convert bytes/s to MiB/s, show GiB/s for fast speeds)\n- Add larger piece sizes (32/64/128 MiB) to Create page\n- Filter piece size options based on tracker's max limit\n- Setup toast notifications (fix sonner theme, add Toaster to App)\n- Replace console.error with toast.error for user-visible errors\n- Move Output Directory to main form section in Create and Modify\n- Fix dialog text overflow with break-words\n- Consistent Advanced Options styling between Create and Modify\n- Settings page presets section uses full width\n- Add clipboard error handling in Inspect page\n- Add warning logs for silent error cases in backend\n\n* fix(gui): improve error handling and add inspect page persistence\n\n- Fix silent failure in ApplyToMetaInfo when bencode marshal fails\n- Add nil context checks in progress callbacks to prevent panics\n- Add preset name validation to prevent path traversal\n- Fix ListPresets/GetAllPresets to distinguish missing file from errors\n- Change CreateRequest.IsPrivate to *bool for consistency with ModifyRequest\n- Add Warning field to TorrentResult for propagating warnings\n- Fix Settings.tsx error masking with Promise.allSettled\n- Add console.error logging to localStorage catch blocks\n- Add localStorage persistence and Reset button to Inspect page\n- Fix preset \"None\" option to clear fields instead of loading invalid preset\n\n* fix(gui): improve error handling, validation, and type consistency\n\n- Display TorrentResult.warning in Create success dialog\n- Add proper URL validation with url.Parse() in OpenURL\n- Surface preset loading errors to users instead of silent logging\n- Keep delete dialog open on failure for retry\n- Add frontend preset name validation matching backend\n- Add done channel for verify progress goroutine cleanup\n- Show toast notifications for localStorage failures\n- Make preset rename atomic (save first, then delete old)\n- Add JSON tags to preset.Options for consistent TypeScript naming\n- Replace string-based error checking with sentinel errors\n- Document required vs optional fields in request types\n\n* feat(gui): add search, collapsible folders, and navigation to FileTree\n\n* fix(gui): enhance validation and error handling in torrent operations\n\n- Added validation for required fields in CreateTorrent and VerifyTorrent requests.\n- Updated VerifyResult struct to include MissingPieces for better tracking of verification status.\n- Modified preset loading to handle unsupported config versions gracefully.\n- Adjusted release workflow to remove build time from ldflags for cleaner versioning.\n\n* fix(trackers): use shared default piece size ranges for UseDefaultRanges trackers\n\n* feat(gui): add inspect functionality and preset management in Modify and Create pages\n\n- Implemented an Inspect button in both Modify and Create pages to allow users to inspect torrent files.\n- Added preset selection functionality in the Modify page, enabling users to load preset configurations.\n- Enhanced output directory handling by defaulting to the source directory if not specified.\n- Improved user navigation by integrating the useNavigate hook for seamless routing.\n\n* feat(gui): add workers configuration for torrent creation and settings management\n\n- Introduced a new `workers` field in the CreateRequest struct to allow users to specify the number of parallel workers for torrent creation.\n- Implemented logic to retrieve effective worker count from settings, allowing for preset overrides.\n- Enhanced the Settings page to manage default worker settings, including input validation and storage in localStorage.\n- Updated the Create page to utilize the effective workers count when creating torrents, improving performance and user control.\n\n* feat(gui): add season pack detection and warning display\n\n- Add season pack analysis to GUI torrent creation\n- Display warning when incomplete season packs are detected\n- Add \"Fail on season warning\" toggle in advanced options\n- Preserve preference-like options (noDate, noCreator, entropy,\n  failOnSeasonWarning) across form resets\n- Allow presets to override preference options when specified\n- Update README with expanded GUI features\n- Add AnalyzeSeasonPackFromPath helper for GUI analysis\n\n* feat(gui): improve inspect page layout with metadata badges and tracker tiers\n\n* remove gui binary from git\n\n* Update dependencies.\n\n* Fix #131.\n\n* feat(verify): improve progress communication.\n\n* feat(verify): verify first part without delay.\n\n+ code refactoring\n[GUI] Check progress bar took an eternity to start for more than 30Go torrent verification.\nFixes #166\n\nCo-authored-by: Copilot <copilot@github.com>\n\n* Apply coderabbitai proposed fix.\n\nCo-authored-by: Copilot <copilot@github.com>\n\n* docs(types): update progressCallback documentation\n\n* fix(preset): restrict config file permissions\n\n* fix(gui): align progress and piece recommendations\n\n* build(gui): isolate Wails module\n\n---------\n\nCo-authored-by: soup <s0up4200@pm.me>\nCo-authored-by: Copilot <copilot@github.com>",
+        "url": "https://github.com/autobrr/mkbrr/commit/d89efe2c5c500eecb78d9dd1f49ffbfb4923fa94"
+    },
+    {
+        "sha": "1f9149eb005382b715954214abebb26beb382dfd",
+        "author": "dependabot[bot]",
+        "email": "49699333+dependabot[bot]@users.noreply.github.com",
+        "date": "2026-04-27T17:57:13Z",
+        "message": "chore(deps): bump actions/checkout from 4 to 6 in the github group across 1 directory (#160)\n\nBumps the github group with 1 update: [actions/checkout](https://github.com/actions/checkout).\n\n\nUpdates `actions/checkout` from 4 to 6\n- [Release notes](https://github.com/actions/checkout/releases)\n- [Changelog](https://github.com/actions/checkout/blob/main/CHANGELOG.md)\n- [Commits](https://github.com/actions/checkout/compare/v4...v6)\n\n---\nupdated-dependencies:\n- dependency-name: actions/checkout\n  dependency-version: '6'\n  dependency-type: direct:production\n  update-type: version-update:semver-major\n  dependency-group: github\n...\n\nSigned-off-by: dependabot[bot] <support@github.com>\nCo-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>",
+        "url": "https://github.com/autobrr/mkbrr/commit/1f9149eb005382b715954214abebb26beb382dfd"
+    },
+    {
+        "sha": "b16fb1312a64a97ce10f74b0f9bc654d9797c581",
+        "author": "soup",
+        "email": "s0up4200@pm.me",
+        "date": "2026-04-06T21:47:15Z",
+        "message": "fix(tracker): increase TorrentLeech max piece length from 2^24 to 2^27 (#161)",
+        "url": "https://github.com/autobrr/mkbrr/commit/b16fb1312a64a97ce10f74b0f9bc654d9797c581"
+    },
+    {
+        "sha": "3f6f53e2d636a64ee639a82241fe0b7585318db7",
+        "author": "spindrift",
+        "email": "spindrift@badkitty.zone",
+        "date": "2026-04-06T21:46:50Z",
+        "message": "feat(trackers): update Aither piece size ranges (#162)",
+        "url": "https://github.com/autobrr/mkbrr/commit/3f6f53e2d636a64ee639a82241fe0b7585318db7"
+    },
+    {
+        "sha": "4c952ed23a00726294212a3a1cafb8b1542fd88a",
+        "author": "soup",
+        "email": "s0up4200@pm.me",
+        "date": "2026-04-01T08:59:47Z",
+        "message": "Add Claude Code GitHub Workflow (#158)",
+        "url": "https://github.com/autobrr/mkbrr/commit/4c952ed23a00726294212a3a1cafb8b1542fd88a"
+    },
+    {
+        "sha": "b9c78e134d74ca4ad0cfa179270f329c3178efbc",
+        "author": "soup",
+        "email": "s0up4200@pm.me",
+        "date": "2026-04-01T08:59:38Z",
+        "message": "fix(release): remove self-managed homebrew tap (#157)",
+        "url": "https://github.com/autobrr/mkbrr/commit/b9c78e134d74ca4ad0cfa179270f329c3178efbc"
+    },
+    {
+        "sha": "34606fcaa5734e9c3d3e4d478245f1a641750a45",
+        "author": "soup",
+        "email": "s0up4200@pm.me",
+        "date": "2026-04-01T08:25:47Z",
+        "message": "feat(create): add --target-piece-count option (#156)",
+        "url": "https://github.com/autobrr/mkbrr/commit/34606fcaa5734e9c3d3e4d478245f1a641750a45"
+    },
+    {
+        "sha": "61efa7d15a23dce3ec02859b9c37f8dc309fdf44",
+        "author": "dependabot[bot]",
+        "email": "49699333+dependabot[bot]@users.noreply.github.com",
+        "date": "2026-04-01T07:28:17Z",
+        "message": "chore(deps): bump github.com/fatih/color from 1.18.0 to 1.19.0 in the golang group (#155)\n\nCo-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>",
+        "url": "https://github.com/autobrr/mkbrr/commit/61efa7d15a23dce3ec02859b9c37f8dc309fdf44"
+    },
+    {
+        "sha": "3ad0aee53e88da0f03ab35637cfcf097818a9747",
+        "author": "soup",
+        "email": "s0up4200@pm.me",
+        "date": "2026-03-31T20:58:00Z",
+        "message": "fix(check): use torrent-level byte offsets for multi-file verification (#154)",
+        "url": "https://github.com/autobrr/mkbrr/commit/3ad0aee53e88da0f03ab35637cfcf097818a9747"
+    },
+    {
+        "sha": "1c5affaa37f1899d3a3ae58a02d5e04e52e6861b",
+        "author": "soup",
+        "email": "s0up4200@pm.me",
+        "date": "2026-03-31T18:14:03Z",
+        "message": "feat(modify): add ability to remove private/source/comment fields (#153)",
+        "url": "https://github.com/autobrr/mkbrr/commit/1c5affaa37f1899d3a3ae58a02d5e04e52e6861b"
+    },
+    {
+        "sha": "5466955518d832a8e17cc3b0699cf97c6d88682f",
+        "author": "soup",
+        "email": "s0up4200@pm.me",
+        "date": "2026-03-31T15:06:22Z",
+        "message": "fix: add entropy support to batch mode (#152)",
+        "url": "https://github.com/autobrr/mkbrr/commit/5466955518d832a8e17cc3b0699cf97c6d88682f"
+    },
+    {
+        "sha": "cd5ba11bea7830391afc85ab8613c1aa2c459e53",
+        "author": "soup",
+        "email": "s0up4200@pm.me",
+        "date": "2026-03-31T14:53:40Z",
+        "message": "fix: apply entropy option from preset during modify (#151)",
+        "url": "https://github.com/autobrr/mkbrr/commit/cd5ba11bea7830391afc85ab8613c1aa2c459e53"
+    },
+    {
+        "sha": "34c8312bb311b90e3dbad9e86969317e4a9311b2",
+        "author": "tetrahydroc",
+        "email": "tetrahydroc@gmail.com",
+        "date": "2026-03-31T12:10:43Z",
+        "message": "feat: support path-based glob patterns (#147)\n\n* add doublestar support, implement proper glob support for include/exclude patterns\n\n* update doublestar to 4.10.0\n\n* coderabbit nits, tighten dir matching pattern, extra tests, docstrings\n\n* fix: restore glob filtering behavior\n\n---------\n\nCo-authored-by: soup <s0up4200@pm.me>",
+        "url": "https://github.com/autobrr/mkbrr/commit/34c8312bb311b90e3dbad9e86969317e4a9311b2"
+    },
+    {
+        "sha": "89779bf4de4edf7bf77a782c1beb1a712335af41",
+        "author": "soup",
+        "email": "s0up4200@pm.me",
+        "date": "2026-03-31T11:12:44Z",
+        "message": "feat(trackers): add onlyencodes piece rules (#150)",
+        "url": "https://github.com/autobrr/mkbrr/commit/89779bf4de4edf7bf77a782c1beb1a712335af41"
+    },
+    {
+        "sha": "9326b63e07968744924eeb6d83df15cb421233df",
+        "author": "tivolimeister",
+        "email": "3366283+tivolimeister@users.noreply.github.com",
+        "date": "2026-03-14T19:30:40Z",
+        "message": "feat: add name argument (#141)\n\nCo-authored-by: coderabbitai[bot] <136622811+coderabbitai[bot]@users.noreply.github.com>\nCo-authored-by: costmuffled <costmuffled@gmail.com>\nCo-authored-by: soup <s0up4200@pm.me>",
+        "url": "https://github.com/autobrr/mkbrr/commit/9326b63e07968744924eeb6d83df15cb421233df"
+    },
+    {
+        "sha": "a06c9661f1416f48917d6ffa1c363d50f008638b",
+        "author": "Chris Finazzo",
+        "email": "chris.finazzo@gmail.com",
+        "date": "2026-03-13T20:03:08Z",
+        "message": "Update installation instructions for Homebrew (#146)",
+        "url": "https://github.com/autobrr/mkbrr/commit/a06c9661f1416f48917d6ffa1c363d50f008638b"
+    },
+    {
+        "sha": "c3ac2c5f3ad7c38870da872b7015140dd72cf222",
+        "author": "dependabot[bot]",
+        "email": "49699333+dependabot[bot]@users.noreply.github.com",
+        "date": "2026-03-08T15:42:57Z",
+        "message": "chore(deps): bump the github group with 5 updates (#145)",
+        "url": "https://github.com/autobrr/mkbrr/commit/c3ac2c5f3ad7c38870da872b7015140dd72cf222"
+    },
+    {
+        "sha": "b46ed882ce308cbee8790ed746a7bd090259f193",
+        "author": "tivolimeister",
+        "email": "3366283+tivolimeister@users.noreply.github.com",
+        "date": "2026-03-01T11:37:37Z",
+        "message": "Add new tracker configuration for torrentleech.org (#139)",
+        "url": "https://github.com/autobrr/mkbrr/commit/b46ed882ce308cbee8790ed746a7bd090259f193"
+    },
+    {
+        "sha": "7d59bca59d0e8eadebf709165bbde508ed3d46e1",
+        "author": "dependabot[bot]",
+        "email": "49699333+dependabot[bot]@users.noreply.github.com",
+        "date": "2026-03-01T11:36:44Z",
+        "message": "chore(deps): bump github.com/anacrolix/torrent in the golang group (#144)",
+        "url": "https://github.com/autobrr/mkbrr/commit/7d59bca59d0e8eadebf709165bbde508ed3d46e1"
+    },
+    {
+        "sha": "ad74e5652ecd9c011f50717aa73cfccf3930cba5",
+        "author": "dependabot[bot]",
+        "email": "49699333+dependabot[bot]@users.noreply.github.com",
+        "date": "2026-03-01T11:36:00Z",
+        "message": "chore(deps): bump the github group with 3 updates (#143)",
+        "url": "https://github.com/autobrr/mkbrr/commit/ad74e5652ecd9c011f50717aa73cfccf3930cba5"
+    },
+    {
+        "sha": "79cef171b91d26965fce16181a59f91f398e0baa",
+        "author": "Fabricio",
+        "email": "hi@fabricio.dev",
+        "date": "2026-03-01T11:35:40Z",
+        "message": "chore: replace custom min/max with go1.21+ native builtins (#142)",
+        "url": "https://github.com/autobrr/mkbrr/commit/79cef171b91d26965fce16181a59f91f398e0baa"
+    }
+]

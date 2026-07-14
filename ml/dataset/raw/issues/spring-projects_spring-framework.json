@@ -1,0 +1,408 @@
+[
+    {
+        "id": 4879265498,
+        "number": 37049,
+        "title": "`ResolvableType::isInstance` should respect AOP proxy",
+        "state": "open",
+        "created_at": "2026-07-14T02:23:29Z",
+        "updated_at": "2026-07-14T02:26:22Z",
+        "closed_at": null,
+        "author": "quaff",
+        "comments": 0,
+        "labels": [
+            "status: waiting-for-triage"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "Currently doesn't detect target wrapped by proxy.\n```java\nboolean b1 = resolvableType.isInstance(target); // true\n// wrap target to JDK Dynamic Proxy\nboolean b2 = resolvableType.isInstance(proxy); // false\n```\nSee https://github.com/spring-projects/spring-framework/pull/37047#issue-4879201728",
+        "url": "https://github.com/spring-projects/spring-framework/issues/37049"
+    },
+    {
+        "id": 4876832514,
+        "number": 37046,
+        "title": "Improve org.springframework.beans.factory.BeanRegistry.Spec in order to improve control of bean creation when programatically registering beans",
+        "state": "open",
+        "created_at": "2026-07-13T19:15:49Z",
+        "updated_at": "2026-07-13T19:16:24Z",
+        "closed_at": null,
+        "author": "Guillaume-Lacombe",
+        "comments": 0,
+        "labels": [
+            "status: waiting-for-triage"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "Hi everyone !\n\nCurrently when registering beans programatically with a bean customizer , the customizer is a\njava.util.function.Consumer<Spec<T>>\nThe Spec in a interface (  org.springframework.beans.factory.BeanRegistry.Spec<T> )\n\nIt permits to set \n- the scope, as the @org.springframework.context.annotation.Primary annotation would\n- the order, as the @org.springframework.context.annotation.Order annotation would\n- the fallback flag \n- the backgroundInit flag as the @... .Bean.bootstrap()  annotation would\n\nIt misses some useful methods\n- One for defining the bean qualifier as the @org.springframework.beans.factory.annotation.Qualifier would\n- One for defining the initMethod cf. org.springframework.context.annotation.Bean.initMethod()\n- One for defining the destroyMethod cf. org.springframework.context.annotation.Bean.destroyMethod()\n- One for defining the autowireCandidate flag cf. org.springframework.context.annotation.Bean.autowireCandidate()\n- One for defining aliases cf. @org.springframework.core.annotation.AliasFor\n\n",
+        "url": "https://github.com/spring-projects/spring-framework/issues/37046"
+    },
+    {
+        "id": 4874058124,
+        "number": 37042,
+        "title": "Servlet header rework regresses throughput since 7.0.5",
+        "state": "open",
+        "created_at": "2026-07-13T13:24:10Z",
+        "updated_at": "2026-07-13T15:29:01Z",
+        "closed_at": null,
+        "author": "180254",
+        "comments": 0,
+        "labels": [
+            "status: waiting-for-triage"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "**Observations on our service overhead tests**\n\nI found a problem while conducting \"overhead\" tests on our service. By \"overhead\" I mean tests in which the data processing is mocked - it does no actual work and simply returns fake data, but all service architecture blocks are involved.\n\nUpgrading Spring Framework 7.0.4 → 7.0.5 (via Spring Boot 4.0.2 → 4.0.3) caused a ~8x throughput drop on one of our Spring MVC (Servlet, Jetty) services. The problem also occurs on 7.0.8. We bisected it to a single change: reverting `org.springframework.http.server.ServletServerHttpRequest` and `org.springframework.http.server.ServletServerHttpResponse` to their 7.0.4 versions (while keeping Spring Framework current (7.0.8) for everything else) fully restores throughput.\n\nA brief overview of our service and how it relates to the problem:\n- The service runs on Spring MVC behind Jetty, is served over HTTP/2, and is CPU-constrained (~2 vCPU). It touches HTTP headers many times per request, on both sides of the exchange.\n- Request side: every request reads a number of incoming headers (identity/authorization and various metadata supplied by our API management gateway) to make per-request decisions. Some headers are checked multiple times across different subcomponents and filters.\n- Response side: responses are produced as ResponseEntity, so the framework pipeline (content negotiation, message conversion, and container-level compression) reads the response headers several times per request. A couple of custom headers are also set early, on the raw servlet response, before serialization.\n\n**References**\n\n- gh-36334\n- gh-36343\n- gh-36426 \n\n**Minimal sample application**\n\nhttps://github.com/180254/spring-framework-issue-37042\n\nWhat do the \"shadowServletServerHttpRequest\" and \"shadowServletServerHttpResponse\" profiles do? These are Maven profiles activated in the sample app. Each profile copies its corresponding class (ServletServerHttpRequest or ServletServerHttpResponse), taken from Spring Framework 7.0.4, onto the classpath, so that it overrides (\"shadows\") the version otherwise provided. In effect, I'm running a newer version of the Spring Framework but with these specific classes reverted to their 7.0.4 form.\n\nPlease see REQ/S for various cases:\n\n```bash\n$ ./matrix.sh \n\n===== SUMMARY (req/s; responseHeaderCount=50 responseHeaderReads=50 requestHeaderReads=50, server CPUs=0-1) =====\nCONTAINER VERSION                                                                  PROTO    REQ/S      CORES   \n--------- ----------------                                                         -----    -----      -----   \ntomcat    7.0.4                                                                    h1       2830.94    1.97    \ntomcat    7.0.5                                                                    h1       937.20     1.98    \ntomcat    7.0.8                                                                    h1       905.66     1.98    \ntomcat    7.0.8+shadowServletServerHttpRequest                                     h1       1531.25    1.97    \ntomcat    7.0.8+shadowServletServerHttpResponse                                    h1       1229.97    1.99    \ntomcat    7.0.8+shadowServletServerHttpRequest,shadowServletServerHttpResponse     h1       2956.34    1.98    \ntomcat    7.0.4                                                                    h2       2987.46    1.98    \ntomcat    7.0.5                                                                    h2       952.25     1.98    \ntomcat    7.0.8                                                                    h2       923.62     1.98    \ntomcat    7.0.8+shadowServletServerHttpRequest                                     h2       1628.64    1.98    \ntomcat    7.0.8+shadowServletServerHttpResponse                                    h2       1287.94    1.99    \ntomcat    7.0.8+shadowServletServerHttpRequest,shadowServletServerHttpResponse     h2       2912.74    1.99    \njetty     7.0.4                                                                    h1       2157.92    1.98    \njetty     7.0.5                                                                    h1       778.80     1.98    \njetty     7.0.8                                                                    h1       818.60     1.99    \njetty     7.0.8+shadowServletServerHttpRequest                                     h1       1001.91    1.99    \njetty     7.0.8+shadowServletServerHttpResponse                                    h1       1373.84    1.98    \njetty     7.0.8+shadowServletServerHttpRequest,shadowServletServerHttpResponse     h1       2513.35    1.97    \njetty     7.0.4                                                                    h2       2407.70    1.99    \njetty     7.0.5                                                                    h2       781.01     1.98    \njetty     7.0.8                                                                    h2       821.94     1.98    \njetty     7.0.8+shadowServletServerHttpRequest                                     h2       1043.09    1.99    \njetty     7.0.8+shadowServletServerHttpResponse                                    h2       1415.36    1.97    \njetty     7.0.8+shadowServletServerHttpRequest,shadowServletServerHttpResponse     h2       2482.93    1.96    \n```\n\n",
+        "url": "https://github.com/spring-projects/spring-framework/issues/37042"
+    },
+    {
+        "id": 4872414555,
+        "number": 37041,
+        "title": "No easy way to add session header in the STOMP CONNECTED frame",
+        "state": "open",
+        "created_at": "2026-07-13T09:46:14Z",
+        "updated_at": "2026-07-13T09:46:25Z",
+        "closed_at": null,
+        "author": "navjot-singh02",
+        "comments": 0,
+        "labels": [
+            "status: waiting-for-triage"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "We had a requirement where we wanted to add the `session` header to the `CONNECTED` stomp frame to share it with the Stomp clients. As per STOMP's documentation, it is possible to add an optional `session` header to the `CONNECTED` frame to uniquely identify the session: https://stomp.github.io/stomp-specification-1.2.html#CONNECTED_Frame\n\nIn order to achieve this I added an outbound channel interceptor to add the session header to `CONNECT_ACK` messages. Here is the implementation that I ended up with:\n\n```\ninternal object StompConnectedFrameInterceptor : ChannelInterceptor {\n    /**\n     * Unfortunately Spring Api doesn't expose the supported Stomp versions, so we have to replicate here\n     */\n    internal val SUPPORTED_STOMP_VERSIONS = listOf(\"1.2\", \"1.1\", \"1.0\")\n\n    override fun preSend(message: Message<*>, channel: MessageChannel): Message<*> {\n        val messageAccessor = StompHeaderAccessor.wrap(message)\n        if (messageAccessor.messageType != SimpMessageType.CONNECT_ACK) {\n            return message\n        }\n\n        val sessionId = messageAccessor.sessionId ?: return message\n\n        /**\n         * Create the CONNECTED frame ourselves so Spring does not drop the custom\n         * session header during its CONNECT_ACK -> CONNECTED translation. Since this\n         * bypasses Spring's translation, we must also set version and heartbeat here.\n         * See StompSubProtocolHandler for details\n         */\n        val connectedAccessor = StompHeaderAccessor.create(StompCommand.CONNECTED)\n        connectedAccessor.setNativeHeader(StompHeaders.SESSION, sessionId)\n\n        connectedAccessor.version = negotiateStompVersion(messageAccessor)\n\n        val heartbeat = getHeartbeat(messageAccessor)\n        connectedAccessor.setHeartbeat(heartbeat[0], heartbeat[1])\n\n        return MessageBuilder.fromMessage(message)\n            .copyHeaders(connectedAccessor.messageHeaders)\n            .build()\n    }\n\n    private fun negotiateStompVersion(connectAckAccessor: StompHeaderAccessor): String {\n        val connectMessage = connectAckAccessor.getHeader(StompHeaderAccessor.CONNECT_MESSAGE_HEADER) as? Message<*>\n        val connectAccessor = connectMessage?.let { StompHeaderAccessor.wrap(it) }\n        val acceptedVersion = connectAccessor?.acceptVersion?.let { acceptVersions ->\n            SUPPORTED_STOMP_VERSIONS.firstOrNull { it in acceptVersions }\n        }\n\n        return acceptedVersion ?: throw IllegalArgumentException(\n            \"No supported STOMP version found in CONNECT message. Supported versions: $SUPPORTED_STOMP_VERSIONS\",\n        )\n    }\n\n    private fun getHeartbeat(connectAckAccessor: StompHeaderAccessor): LongArray {\n        val heartbeat = connectAckAccessor.getHeader(SimpMessageHeaderAccessor.HEART_BEAT_HEADER) as? LongArray\n        return heartbeat?.takeIf { it.size == 2 } ?: longArrayOf(0, 0)\n    }\n}\n```\n\nI had to do the version negotiation and heartbeat negotiation myself. If I skip it, then there were no version and heartbeat headers in the frame received by clients. The downside of this application is that much of the Spring's internal code is being rewritten here. Also the STOMP versions are also being redeclared here.\n\nI looked into the code and found out that the `StompSubProtocolHandler` is responsible for translating the `CONNECT_ACK` to the actual `CONNECTED` frame. During this translation all the headers except the version and heartbeat are ignored, so essentially even if we set the session header it will be ignored by the translation logic.\n\nIs there a purpose to not allow optional headers defined by the STOMP protocol specifically the `session` header? If there is no specific purpose, could it be supported? I would be happy to contribute if required\n",
+        "url": "https://github.com/spring-projects/spring-framework/issues/37041"
+    },
+    {
+        "id": 4855940822,
+        "number": 37039,
+        "title": "Optimize FormContentFilter to avoid parameter parsing on non-existent endpoints (404) or not supported methods",
+        "state": "closed",
+        "created_at": "2026-07-10T14:34:30Z",
+        "updated_at": "2026-07-12T15:25:02Z",
+        "closed_at": "2026-07-12T15:24:48Z",
+        "author": "mhankus",
+        "comments": 6,
+        "labels": [
+            "in: web",
+            "status: declined"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "Enhancement request \n\nCurrently, `FormContentFilter` (org.springframework.web.filter) automatically parses request parameters if a payload is present and the HTTP method is PUT, PATCH, or DELETE.\n\nThe Problem:\nThis parsing occurs early in the filter chain, before request routing takes place. If a request is sent to a non-existent endpoint, it will ultimately fail with a 404 Not Found error. Consequently, the CPU cycles and memory used to parse the form data are entirely wasted. For high-traffic applications or services targeted by automated scanners, this creates unnecessary performance overhead.\n\nHow to improve:\nDefer form content parsing until after the request has been successfully routed to a valid handler, ensuring that 404 requests fail fast without consuming parsing resources.\n\nRead world example:\nWhen application is scanned for security issues application throws errors like \n\n```\nCould not decode HTTP form payload\norg.springframework.http.converter.HttpMessageNotReadableException: Could not decode HTTP form payload\n\tat org.springframework.http.converter.FormHttpMessageConverter.read(FormHttpMessageConverter.java:367)\n\tat org.springframework.web.filter.FormContentFilter.parseIfNecessary(FormContentFilter.java:109)\n\tat org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:88)\n\tat org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)\n\tat org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:166)\n\tat org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:142)\n\tat org.springframework.web.filter.ServerHttpObservationFilter.doFilterInternal(ServerHttpObservationFilter.java:110)\n\tat org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)\n\tat org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:166)\n\tat org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:142)\n\tat org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201)\n\tat org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)\n\tat org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:166)\n\tat org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:142)\n``` \n\nAnd request was made to endpoint which does not exists (path was  /poc.jsp) with PUT method.\n\n\n\n\n",
+        "url": "https://github.com/spring-projects/spring-framework/issues/37039"
+    },
+    {
+        "id": 4855192985,
+        "number": 37038,
+        "title": "Revise applicability of `FullyQualifiedConfigurationBeanNameGenerator`",
+        "state": "open",
+        "created_at": "2026-07-10T12:56:59Z",
+        "updated_at": "2026-07-10T12:56:59Z",
+        "closed_at": null,
+        "author": "jhoeller",
+        "comments": 0,
+        "labels": [
+            "type: documentation",
+            "in: core"
+        ],
+        "assignees": [
+            "jhoeller"
+        ],
+        "locked": false,
+        "body": "`FullyQualifiedConfigurationBeanNameGenerator` as introduced in 7.0 (#33448) involves a different naming policy for `@Bean`-derived beans in case of no explicit bean name specified. This may have wide-ranging impact even for internal configuration classes and Boot auto-configuration, in particular if the default bean names are expected to be stable for injection by name. We need to document the impact of such a change and potentially introduce ways of narrowing the applicability to specific application packages only.",
+        "url": "https://github.com/spring-projects/spring-framework/issues/37038"
+    },
+    {
+        "id": 4847549329,
+        "number": 37036,
+        "title": "Improve efficiency of list creation in data binding",
+        "state": "open",
+        "created_at": "2026-07-09T15:20:46Z",
+        "updated_at": "2026-07-09T15:20:46Z",
+        "closed_at": null,
+        "author": "sbrannen",
+        "comments": 0,
+        "labels": [
+            "in: core",
+            "type: enhancement"
+        ],
+        "assignees": [
+            "sbrannen"
+        ],
+        "locked": false,
+        "body": null,
+        "url": "https://github.com/spring-projects/spring-framework/issues/37036"
+    },
+    {
+        "id": 4847545412,
+        "number": 37035,
+        "title": "Improve documentation for SpEL compilation support",
+        "state": "open",
+        "created_at": "2026-07-09T15:20:17Z",
+        "updated_at": "2026-07-09T15:20:17Z",
+        "closed_at": null,
+        "author": "sbrannen",
+        "comments": 0,
+        "labels": [
+            "type: documentation",
+            "in: core"
+        ],
+        "assignees": [
+            "sbrannen"
+        ],
+        "locked": false,
+        "body": null,
+        "url": "https://github.com/spring-projects/spring-framework/issues/37035"
+    },
+    {
+        "id": 4847535145,
+        "number": 37034,
+        "title": "Revise operator internals in SpEL",
+        "state": "open",
+        "created_at": "2026-07-09T15:19:02Z",
+        "updated_at": "2026-07-09T15:19:02Z",
+        "closed_at": null,
+        "author": "sbrannen",
+        "comments": 0,
+        "labels": [
+            "in: core",
+            "type: enhancement"
+        ],
+        "assignees": [
+            "sbrannen"
+        ],
+        "locked": false,
+        "body": null,
+        "url": "https://github.com/spring-projects/spring-framework/issues/37034"
+    },
+    {
+        "id": 4845441813,
+        "number": 37031,
+        "title": "Refactor async XML parsing limit checks",
+        "state": "open",
+        "created_at": "2026-07-09T10:32:43Z",
+        "updated_at": "2026-07-09T10:32:43Z",
+        "closed_at": null,
+        "author": "rstoyanchev",
+        "comments": 0,
+        "labels": [
+            "in: web",
+            "type: bug"
+        ],
+        "assignees": [
+            "rstoyanchev"
+        ],
+        "locked": false,
+        "body": null,
+        "url": "https://github.com/spring-projects/spring-framework/issues/37031"
+    },
+    {
+        "id": 4845427841,
+        "number": 37030,
+        "title": "Refactor redirect handling in UrlHandlerFilter",
+        "state": "open",
+        "created_at": "2026-07-09T10:30:37Z",
+        "updated_at": "2026-07-09T10:30:37Z",
+        "closed_at": null,
+        "author": "rstoyanchev",
+        "comments": 0,
+        "labels": [
+            "in: web",
+            "type: enhancement"
+        ],
+        "assignees": [
+            "rstoyanchev"
+        ],
+        "locked": false,
+        "body": null,
+        "url": "https://github.com/spring-projects/spring-framework/issues/37030"
+    },
+    {
+        "id": 4845413724,
+        "number": 37029,
+        "title": "Revise stylesheet source handling in XsltView",
+        "state": "open",
+        "created_at": "2026-07-09T10:28:37Z",
+        "updated_at": "2026-07-09T10:28:37Z",
+        "closed_at": null,
+        "author": "rstoyanchev",
+        "comments": 0,
+        "labels": [
+            "in: web",
+            "type: enhancement"
+        ],
+        "assignees": [
+            "rstoyanchev"
+        ],
+        "locked": false,
+        "body": null,
+        "url": "https://github.com/spring-projects/spring-framework/issues/37029"
+    },
+    {
+        "id": 4845397576,
+        "number": 37028,
+        "title": "Fix part constraint checks in PartEventHttpMessageReader",
+        "state": "open",
+        "created_at": "2026-07-09T10:26:02Z",
+        "updated_at": "2026-07-09T10:26:02Z",
+        "closed_at": null,
+        "author": "rstoyanchev",
+        "comments": 0,
+        "labels": [
+            "in: web",
+            "type: bug"
+        ],
+        "assignees": [
+            "rstoyanchev"
+        ],
+        "locked": false,
+        "body": null,
+        "url": "https://github.com/spring-projects/spring-framework/issues/37028"
+    },
+    {
+        "id": 4845383066,
+        "number": 37027,
+        "title": "Revise view name handling in UrlFilenameViewController",
+        "state": "open",
+        "created_at": "2026-07-09T10:23:49Z",
+        "updated_at": "2026-07-09T10:23:49Z",
+        "closed_at": null,
+        "author": "rstoyanchev",
+        "comments": 0,
+        "labels": [
+            "in: web",
+            "type: enhancement"
+        ],
+        "assignees": [
+            "rstoyanchev"
+        ],
+        "locked": false,
+        "body": null,
+        "url": "https://github.com/spring-projects/spring-framework/issues/37027"
+    },
+    {
+        "id": 4845366807,
+        "number": 37026,
+        "title": "Fix buffer leak in RSocket SETUP frame handling",
+        "state": "open",
+        "created_at": "2026-07-09T10:21:11Z",
+        "updated_at": "2026-07-09T10:21:11Z",
+        "closed_at": null,
+        "author": "rstoyanchev",
+        "comments": 0,
+        "labels": [
+            "in: web",
+            "type: bug"
+        ],
+        "assignees": [
+            "rstoyanchev"
+        ],
+        "locked": false,
+        "body": null,
+        "url": "https://github.com/spring-projects/spring-framework/issues/37026"
+    },
+    {
+        "id": 4845352534,
+        "number": 37025,
+        "title": "Ensure correct Jetty core response cookie handling",
+        "state": "open",
+        "created_at": "2026-07-09T10:19:03Z",
+        "updated_at": "2026-07-09T10:19:03Z",
+        "closed_at": null,
+        "author": "rstoyanchev",
+        "comments": 0,
+        "labels": [
+            "in: web",
+            "type: bug"
+        ],
+        "assignees": [
+            "rstoyanchev"
+        ],
+        "locked": false,
+        "body": null,
+        "url": "https://github.com/spring-projects/spring-framework/issues/37025"
+    },
+    {
+        "id": 4845334985,
+        "number": 37024,
+        "title": "Handle pre-flight requests in functional endpoint setup without DispatcherHandler",
+        "state": "open",
+        "created_at": "2026-07-09T10:16:18Z",
+        "updated_at": "2026-07-09T10:16:18Z",
+        "closed_at": null,
+        "author": "rstoyanchev",
+        "comments": 0,
+        "labels": [
+            "in: web",
+            "type: enhancement"
+        ],
+        "assignees": [
+            "rstoyanchev"
+        ],
+        "locked": false,
+        "body": null,
+        "url": "https://github.com/spring-projects/spring-framework/issues/37024"
+    },
+    {
+        "id": 4845301791,
+        "number": 37023,
+        "title": "Improve WebSocket handshake error logging",
+        "state": "open",
+        "created_at": "2026-07-09T10:11:43Z",
+        "updated_at": "2026-07-09T10:11:43Z",
+        "closed_at": null,
+        "author": "rstoyanchev",
+        "comments": 0,
+        "labels": [
+            "in: web",
+            "type: enhancement"
+        ],
+        "assignees": [
+            "rstoyanchev"
+        ],
+        "locked": false,
+        "body": null,
+        "url": "https://github.com/spring-projects/spring-framework/issues/37023"
+    },
+    {
+        "id": 4837926260,
+        "number": 37020,
+        "title": "Limit bracket depth in `PropertyEditorRegistrySupport`'s `addStrippedPropertyPaths()`",
+        "state": "open",
+        "created_at": "2026-07-08T13:31:51Z",
+        "updated_at": "2026-07-08T13:31:51Z",
+        "closed_at": null,
+        "author": "sbrannen",
+        "comments": 0,
+        "labels": [
+            "in: core",
+            "type: enhancement"
+        ],
+        "assignees": [
+            "sbrannen"
+        ],
+        "locked": false,
+        "body": "Currently, `addStrippedPropertyPaths()` recursively enumerates all subsets of `[key]` segments in a property path, producing `2^n − 1` stripped path variants for a path with `n` bracket pairs, and both callers (`findCustomEditor()` and `guessPropertyTypeFromEditors()`) build the full list eagerly before iterating it.\n\nSince property paths with more than a few bracket segments likely do not exist in real-life applications, we can probably revise `addStrippedPropertyPaths()` so that it short-circuits when the bracket-segment count exceeds a small limit, such as 8, thereby retaining existing behavior for all realistic inputs while rejecting nesting depths greater than the limit.\n\nNOTE: This issue is assigned and therefore not suitable for community contributions.\n",
+        "url": "https://github.com/spring-projects/spring-framework/issues/37020"
+    },
+    {
+        "id": 4837842434,
+        "number": 37019,
+        "title": "Improve efficiency of map creation in `DataBinder`",
+        "state": "open",
+        "created_at": "2026-07-08T13:21:20Z",
+        "updated_at": "2026-07-08T13:21:20Z",
+        "closed_at": null,
+        "author": "sbrannen",
+        "comments": 0,
+        "labels": [
+            "in: core",
+            "type: enhancement"
+        ],
+        "assignees": [
+            "sbrannen"
+        ],
+        "locked": false,
+        "body": "When `DataBinder` resolves a `Map<String, T>` constructor parameter during constructor binding, `createMap()` iterates all parameter names and calls `createIndexedValue()` — and therefore `createObject()` for non-simple value types — once per matching parameter name rather than once per distinct map key. For a map entry whose value type has multiple constructor parameters, each sub-field parameter name triggers a full nested object construction for the same key, with all but the last result immediately discarded.\n\nTo address this, we can probably skip `createIndexedValue()` when the extracted key is already present in the map, aligning `createMap()` with `createList()` and `createArray()`, which already avoid redundant element construction by deduplicating indexes via `getIndexes()` before iterating.\n\nNOTE: This issue is assigned and therefore not suitable for community contributions.\n",
+        "url": "https://github.com/spring-projects/spring-framework/issues/37019"
+    }
+]

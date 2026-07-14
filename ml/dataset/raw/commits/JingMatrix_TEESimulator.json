@@ -1,0 +1,242 @@
+[
+    {
+        "sha": "150a47615b826085f1e351e414efec3778bce32b",
+        "author": "JingMatrix",
+        "email": "jingmatrix@gmail.com",
+        "date": "2026-04-01T14:32:31Z",
+        "message": "Fix key parameters in authorization list (#176)\n\nPrevious commit 57b92abe70a6025fd1ed9b6b54fb13820a02d9b6 wrongly encoded the key parameter `PADDING`, which should be a single SET OF INTEGER (like PURPOSE and DIGEST).\n\nMoreover, we now include the key parameter BLOCK_MODE in KeyEntryResponse with correct order (found in key generation of `mobstore_encrypt` by GMS).\n\nCo-authored-by: Mohammed Riad <1@mhmrdd.me>\nCo-authored-by: Enginex0 <enginex0@users.noreply.github.com>",
+        "url": "https://github.com/JingMatrix/TEESimulator/commit/150a47615b826085f1e351e414efec3778bce32b"
+    },
+    {
+        "sha": "72091716c289ec8211d6b2dd8c8927700de6a399",
+        "author": "JingMatrix",
+        "email": "jingmatrix@gmail.com",
+        "date": "2026-03-21T21:28:31Z",
+        "message": "Infer KEY_SIZE from EC_CURVE for implicit sizes (#170)\n\nIn KeyMint, the KEY_SIZE tag is often omitted by callers when an EC_CURVE is explicitly provided, as the curve implicitly defines the bit length.\n\nPreviously, the simulator defaulted keySize to 0 when the tag was absent. This resulted in \"0\" being reported in the teeEnforced authorization list and KeyMetadata, which is a trivial detection vector for simulators.\n\nChanges:\n- Implemented `deriveKeySizeFromCurve()` to map EcCurve constants to their respective bit-sizes.\n- Used the derived size as a fallback when Tag.KEY_SIZE is missing.\n- Added support for Curve 25519 (256-bit).\n\nCo-authored-by: Mohammed Riad <52679407+MhmRdd@users.noreply.github.com>",
+        "url": "https://github.com/JingMatrix/TEESimulator/commit/72091716c289ec8211d6b2dd8c8927700de6a399"
+    },
+    {
+        "sha": "0958d1725c654ffe4c8f389d0b52b53f7ca10e7d",
+        "author": "JingMatrix",
+        "email": "jingmatrix@gmail.com",
+        "date": "2026-03-21T21:16:44Z",
+        "message": "Fix KeyDescriptor update in attestation key overriding (#169)\n\nIn commit 0485379a9f03c2d87963409db5747f8e2372de69, the response key descriptor is not correctly updated since the object `keyDescriptor` is parsed from transaction parameters.\n\nCo-authored-by: Mohammed Riad <52679407+MhmRdd@users.noreply.github.com>",
+        "url": "https://github.com/JingMatrix/TEESimulator/commit/0958d1725c654ffe4c8f389d0b52b53f7ca10e7d"
+    },
+    {
+        "sha": "542a04af26578370e0d745ad4fdbe6644aa24ba5",
+        "author": "JingMatrix",
+        "email": "jingmatrix@gmail.com",
+        "date": "2026-03-21T20:43:01Z",
+        "message": "Conditionally include tag ATTESTATION_APPLICATION_ID (#168)\n\nAOSP function `add_required_parameters` (security_level.rs) only includes the tag ATTESTATION_APPLICATION_ID when an ATTESTATION_CHALLENGE tag is present.\n\nReference: https://cs.android.com/android/platform/superproject/+/android-latest-release:system/security/keystore2/src/security_level.rs?q=security_level.rs\n\nCo-authored-by: Mohammed Riad <52679407+MhmRdd@users.noreply.github.com>",
+        "url": "https://github.com/JingMatrix/TEESimulator/commit/542a04af26578370e0d745ad4fdbe6644aa24ba5"
+    },
+    {
+        "sha": "29f2c30b263af9e588e8fa3ad22070c7b8c8b331",
+        "author": "JingMatrix",
+        "email": "jingmatrix@gmail.com",
+        "date": "2026-03-21T20:16:13Z",
+        "message": "Align certificate validity and RSA defaults with AOSP (#167)\n\n1. Certificate Validity: Matches `add_required_parameters`:\n   - NotBefore: Unix Epoch (0).\n   - NotAfter: RFC 5280 GeneralizedTime max (9999-12-31). Previous\n     defaults (Current Time to +1 Year) imply a fingerprinting risk.\n\n2. RSA Exponent: Added a null-safe fallback to F4 (65537). This prevents\n   a NullPointerException when callers omit the public exponent\n   parameter.\n\nCorresponding references:\n1. https://cs.android.com/android/platform/superproject/+/android-latest-release:system/security/keystore2/src/security_level.rs;\n2. https://cs.android.com/android/platform/superproject/main/+/main:frameworks/base/keystore/java/android/security/keystore2/AndroidKeyStoreKeyPairGeneratorSpi.java;\n\nCo-authored-by: Mohammed Riad <52679407+MhmRdd@users.noreply.github.com>",
+        "url": "https://github.com/JingMatrix/TEESimulator/commit/29f2c30b263af9e588e8fa3ad22070c7b8c8b331"
+    },
+    {
+        "sha": "e82b9827935301710282387fbb03053c13a1c4ce",
+        "author": "JingMatrix",
+        "email": "jingmatrix@gmail.com",
+        "date": "2026-03-21T19:41:15Z",
+        "message": "Fix default certificate subject (#166)\n\nThe AOSP KeyMint reference implementation uses \"CN=Android Keystore Key\" (lowercase 's') as the default certificate subject when no CERTIFICATE_SUBJECT tag is provided.\n\nReference: https://cs.android.com/android/platform/superproject/main/+/main:frameworks/base/keystore/java/android/security/keystore/KeyGenParameterSpec.java;\n\nCo-authored-by: Mohammed Riad <52679407+MhmRdd@users.noreply.github.com>\nCo-authored-by: Enginex0 <osazuwa1999@gmail.com>",
+        "url": "https://github.com/JingMatrix/TEESimulator/commit/e82b9827935301710282387fbb03053c13a1c4ce"
+    },
+    {
+        "sha": "8c74958ae934c18d67ae8ba450d56e74dae81b0b",
+        "author": "JingMatrix",
+        "email": "jingmatrix@gmail.com",
+        "date": "2026-03-21T19:25:52Z",
+        "message": "Fix certificate signature algorithm (#165)\n\nThe signing algorithm for the leaf certificate must match the signing key's type (from keybox or attestation key), not the subject key's algorithm.\n\nAn EC attestation key signing an RSA subject key's certificate would previously select SHA256withRSA (wrong) instead of SHA256withECDSA, producing an invalid or failing certificate.\n\nCo-authored-by: Mohammed Riad <52679407+MhmRdd@users.noreply.github.com>",
+        "url": "https://github.com/JingMatrix/TEESimulator/commit/8c74958ae934c18d67ae8ba450d56e74dae81b0b"
+    },
+    {
+        "sha": "b4aeac07953d135a042db2e2f2ebf51db4903d68",
+        "author": "JingMatrix",
+        "email": "jingmatrix@gmail.com",
+        "date": "2026-03-21T19:12:14Z",
+        "message": "Synchronize KeyMetadata authorizations with user patch level configs (#164)\n\nModified `CertificateHelper.updateCertificateChain` to automatically patch or remove patch level tags (OS, VENDOR, BOOT) based on user configuration.\n\nThis ensures the metadata returned to applications matches the spoofed values embedded in the attestation certificate chain.\n\nCo-authored-by: Mohammed Riad <52679407+MhmRdd@users.noreply.github.com>",
+        "url": "https://github.com/JingMatrix/TEESimulator/commit/b4aeac07953d135a042db2e2f2ebf51db4903d68"
+    },
+    {
+        "sha": "2660debedde4121367843c98547ba4d8fb335ce4",
+        "author": "JingMatrix",
+        "email": "jingmatrix@gmail.com",
+        "date": "2026-03-21T18:30:21Z",
+        "message": "Fix security level of authorization tag USER_ID (#163)\n\nIn the `store_new_key` function of security_level.rs, the authorization tag `USER_ID` is assigned with SOFTWARE security level.\n\nReference: https://cs.android.com/android/platform/superproject/+/android-latest-release:system/security/keystore2/src/security_level.rs\n\nCo-authored-by: Mohammed Riad <52679407+MhmRdd@users.noreply.github.com>",
+        "url": "https://github.com/JingMatrix/TEESimulator/commit/2660debedde4121367843c98547ba4d8fb335ce4"
+    },
+    {
+        "sha": "57b92abe70a6025fd1ed9b6b54fb13820a02d9b6",
+        "author": "JingMatrix",
+        "email": "jingmatrix@gmail.com",
+        "date": "2026-03-16T08:13:41Z",
+        "message": "Fix KeyMint authorization list ordering and content inconsistency (#150)\n\nThe software-generated key authorization list (Key Characteristics) did not match the strict parameter sequence and system properties produced by a real hardware TEE, causing inconsistencies during framework parsing and attestation verification.\n\nChanges in this commit:\n- Refactor `toAuthorizations` to dynamically build the list following the exact TEE sequence.\n- Inject required device environment properties (`OS_VERSION`, `OS_PATCHLEVEL`, `VENDOR_PATCHLEVEL`, `BOOT_PATCHLEVEL`, and `CREATION_DATETIME`) into the characteristics list using `AndroidDeviceUtils`.\n- Compute and append the `USER_ID` tag dynamically based on the calling application's UID using the standard Android `PER_USER_RANGE` (100000).\n- Update `KeyMintAttestation` to correctly parse the `NO_AUTH_REQUIRED` boolean parameter instead of hardcoding it to true.\n- Conditionally apply algorithm-specific parameters (`EC_CURVE` for Elliptic Curve, `RSA_PUBLIC_EXPONENT` for RSA).\n- Adjust `AttestationBuilder` to make `EC_CURVE` conditional based on the updated `KeyMintAttestation` parsing.\n- Fix parameter logging for `NO_AUTH_REQUIRED` to output the actual boolean value.\n\nReference: https://cs.android.com/android/platform/superproject/+/android-latest-release:system/security/keystore2/src/security_level.rs;\nwhere the tag `CREATION_DATETIME` is inserted at `add_required_parameters`, and the tag `USER_ID` is inserted at `store_new_key`, which are both called in `generate_key`.",
+        "url": "https://github.com/JingMatrix/TEESimulator/commit/57b92abe70a6025fd1ed9b6b54fb13820a02d9b6"
+    },
+    {
+        "sha": "86db5bf8fd394c094f28c5d10c778faf74596a28",
+        "author": "小潼",
+        "email": "110387028+XiaoTong6666@users.noreply.github.com",
+        "date": "2026-03-13T17:07:02Z",
+        "message": "Align generated KeyMetadata and Authorizations with AOSP Keystore2 semantics (#149)\n\nThis commit rectifies structural deviations in the `KeyEntryResponse` object returned during software key generation, ensuring strict adherence to Keystore2's internal data representation and KeyMint HAL specifications.\n\nSpecifically, it addresses the following semantic inconsistencies:\n\n1. KeyDescriptor Normalization (Domain::KEY_ID):\nPreviously, the simulator directly returned the client-provided `KeyDescriptor` (containing `Domain::APP` and the raw alias). However, the AOSP Keystore2 daemon normalizes the descriptor in its response. This commit explicitly constructs a normalized `KeyDescriptor` where `domain` is set to `Domain::KEY_ID`, `nspace` exposes the allocated 64-bit internal ID, and `alias`/`blob` are explicitly nullified, matching the framework's expectation for persistent key references.\n\n2. Modification Timestamp Population:\nThe `modificationTimeMs` field in `KeyMetadata` was previously defaulting to 0. It is now accurately populated with the current epoch timestamp, mirroring the database creation/update time behavior implemented in `service.rs`.\n\n3. Mandatory HAL Tag Injection (Tag::ORIGIN):\nThe KeyMint HAL strictly requires that hardware-backed keys contain `Tag::ORIGIN` in their characteristics. This commit injects `KeyOrigin::GENERATED` into the final `authorizations` array for software-generated keys, preventing parsing inconsistencies in higher-level framework components that rely on this foundational tag.\n\nReferences:\nhttps://cs.android.com/android/platform/superproject/main/+/main:system/security/keystore2/src/service.rs?q=Domain::KEY_ID\nhttps://cs.android.com/android/platform/superproject/main/+/main:hardware/interfaces/security/keymint/aidl/android/hardware/security/keymint/KeyOrigin.aidl",
+        "url": "https://github.com/JingMatrix/TEESimulator/commit/86db5bf8fd394c094f28c5d10c778faf74596a28"
+    },
+    {
+        "sha": "0b10be0424dc07596ed8d4ecf1b326c1eb4f21c3",
+        "author": "JingMatrix",
+        "email": "jingmatrix@gmail.com",
+        "date": "2026-03-13T14:06:10Z",
+        "message": "Cache patched chains for pre-existing keys (#148)\n\nIn commit 0485379a9f03c2d87963409db5747f8e2372de69, we forgot to cache the patched certificate chains.",
+        "url": "https://github.com/JingMatrix/TEESimulator/commit/0b10be0424dc07596ed8d4ecf1b326c1eb4f21c3"
+    },
+    {
+        "sha": "2aac65c3d2ea5328da216bf332535be5b139681b",
+        "author": "JingMatrix",
+        "email": "jingmatrix@gmail.com",
+        "date": "2026-03-13T11:49:35Z",
+        "message": "Fix `list_past_alias` enumeration filter (#147)\n\nIt was an error of using `<` comparison to return a list of KeyDescriptors (in the selected domain/namespace) whose aliases are greater than the specified `start_past_alias`.\n\nCo-authored-by: =?UTF-8?q?=E5=B0=8F=E6=BD=BC?= <110387028+XiaoTong6666@users.noreply.github.com>",
+        "url": "https://github.com/JingMatrix/TEESimulator/commit/2aac65c3d2ea5328da216bf332535be5b139681b"
+    },
+    {
+        "sha": "b8d4815f6072fe9578f2d35aebd4c442f24b0f95",
+        "author": "JingMatrix",
+        "email": "jingmatrix@gmail.com",
+        "date": "2026-03-07T14:57:02Z",
+        "message": "Ignore invalid bootHash (#143)\n\nInvalid bootHash filled with 0 is found in device `beyondxxx-user 12 SP1A.210812.016 G977BXXSEHWC1`.",
+        "url": "https://github.com/JingMatrix/TEESimulator/commit/b8d4815f6072fe9578f2d35aebd4c442f24b0f95"
+    },
+    {
+        "sha": "1f8412d0bcd8e889d59837822704320ee28142d8",
+        "author": "JingMatrix",
+        "email": "jingmatrix@gmail.com",
+        "date": "2026-03-07T11:36:18Z",
+        "message": "Release TEESimulator v3.2",
+        "url": "https://github.com/JingMatrix/TEESimulator/commit/1f8412d0bcd8e889d59837822704320ee28142d8"
+    },
+    {
+        "sha": "0485379a9f03c2d87963409db5747f8e2372de69",
+        "author": "JingMatrix",
+        "email": "jingmatrix@gmail.com",
+        "date": "2026-02-09T12:26:03Z",
+        "message": "Override pre-existing hardware attest keys (#130)\n\nDetect and override hardware-backed attestation keys in `Keystore2Interceptor` during the `getKeyEntry` post-hook.\n\nThis addresses scenarios where a target application successfully requested an attest key before TEESimulator was installed. By parsing the response, we identify these pre-existing keys, replace them with software-generated alternatives, update the certificate chain, and register them in `KeyMintSecurityLevelInterceptor` to ensure future operations remain under control.",
+        "url": "https://github.com/JingMatrix/TEESimulator/commit/0485379a9f03c2d87963409db5747f8e2372de69"
+    },
+    {
+        "sha": "78047439b575bd89d30113aab9e966b93e953297",
+        "author": "JingMatrix",
+        "email": "jingmatrix@gmail.com",
+        "date": "2026-02-09T08:48:32Z",
+        "message": "Fix Parcel position reset in hasException utility\n\nWhen `hasException` detects an error by calling `readException()`, the Parcel position advances past the exception data. To ensure the method checks for errors \"without consuming\" the content, i.e., allowing subsequent logic to handle the exception properly, we reset the data position to zero when an exception is caught.",
+        "url": "https://github.com/JingMatrix/TEESimulator/commit/78047439b575bd89d30113aab9e966b93e953297"
+    },
+    {
+        "sha": "f13f6bf5d28edd70b1187a6a26053c86ead58190",
+        "author": "JingMatrix",
+        "email": "jingmatrix@gmail.com",
+        "date": "2026-02-09T08:29:16Z",
+        "message": "Improve KeyParameter parsing and logging\n\nRefactor `KeyMintAttestation` class:\n- Add parsing for the `ORIGIN` tag.\n- Add helper methods `isAttestKey()` and `isImportKey()`.\n\nEnhance `KeyMintParameterLogger`:\n- Add string mappings for `HardwareAuthenticatorType` and `KeyOrigin`.\n- Support logging for additional tags including `USER_AUTH_TYPE`, `OS_VERSION`, `BOOT_PATCHLEVEL`, and `VENDOR_PATCHLEVEL`.\n\nMiscellaneous:\n- Add `HardwareAuthenticatorType` stub definition.\n- Apply formatting fixes in `CertificateGenerator`.",
+        "url": "https://github.com/JingMatrix/TEESimulator/commit/f13f6bf5d28edd70b1187a6a26053c86ead58190"
+    },
+    {
+        "sha": "6b53e52bb121be69d431d9fac35618c99b875e73",
+        "author": "JingMatrix",
+        "email": "jingmatrix@gmail.com",
+        "date": "2026-02-07T22:24:43Z",
+        "message": "Mitigate GMS log flooding and refactor ListEntriesHandler (#127)\n\nThe root cause of the massive log flooding observed on specific devices (particularly with Wear OS or during nearby discovery keystore requests) remains unknown. However, the sheer volume of ListEntries transactions from Google Play Services (GMS) is currently blocking other operations.\n\nTo mitigate this, we now explicitly skip hooking `list` transactions for GMS. This prevents the log spam and performance degradation. Importantly, skipping these specific hooks for GMS does not introduce any new detection points.\n\nAdditionally, this merge applies a small improvement to `ListEntriesHandler` by removing the in-memory pendingParams map in favor of direct parameter passing. While this refactor improves efficiency, it does not address the flooding issue itself.\n\nFurther investigation is required to fully understand the underlying cause of the GMS transaction bursts.",
+        "url": "https://github.com/JingMatrix/TEESimulator/commit/6b53e52bb121be69d431d9fac35618c99b875e73"
+    },
+    {
+        "sha": "8c8ece4bb270a6801fa2698fe6bab2070b1f0858",
+        "author": "JingMatrix",
+        "email": "jingmatrix@gmail.com",
+        "date": "2026-02-07T22:26:03Z",
+        "message": "Fix module_hash calculation to match Keystore2 implementation (#128)\n\nThe previous calculation of `module_hash` was incorrect due to discrepancies in APEX module discovery and ASN.1 DER sorting rules. This commit aligns the logic with the official Android `keystore2` and `libapexutil` implementations.\n\nChanges include:\n\n1. APEX Module Discovery:\n   - Switched from `PackageManager` to direct filesystem scanning of `/apex`.\n   - Replicated `libapexutil` filtering logic: ignoring directories starting with `.`, containing `@`, or named `sharedlibs`.\n   - Implemented a minimal Protocol Buffer parser to extract `name` (field 1) and `version` (field 2) directly from `apex_manifest.pb`.\n\n2. ASN.1 DER Sorting:\n   - The upstream Rust implementation defines a custom `DerOrd` for `ModuleInfo`, which sorts the `SET` based solely on the encoded package name.\n   - Replaced Bouncy Castle's `DERSet` (which sorts by the entire encoded sequence) with manual sorting based on the name octets.\n   - Implemented manual ASN.1 `SET` (0x31) construction to ensure the final byte sequence matches the official hash generation.\n\nReferences:\n1. https://cs.android.com/android/platform/superproject/+/android-latest-release:system/apex/proto/apex_manifest.proto\n2. https://cs.android.com/android/platform/superproject/main/+/main:system/apex/libs/libapexutil/apexutil.cpp\n3. https://cs.android.com/android/platform/superproject/main/+/main:system/security/keystore2/src/maintenance.rs",
+        "url": "https://github.com/JingMatrix/TEESimulator/commit/8c8ece4bb270a6801fa2698fe6bab2070b1f0858"
+    },
+    {
+        "sha": "bd4b2203789852d762af465bb97473aaa0053d6c",
+        "author": "Enginex0",
+        "email": "osazuwa1999@gmail.com",
+        "date": "2026-02-04T08:07:21Z",
+        "message": "Set correct certificate KeyUsage based on KeyPurpose (#119)\n\nThe previous implementation hardcoded the X.509 KeyUsage extension to `keyCertSign` for all generated certificates. This was only correct for keys with the `ATTEST_KEY` purpose and violated the Android HAL specification for keys intended for other uses. For instance, a key created for signing (`KeyPurpose::SIGN`) requires the `digitalSignature` bit to be set, not `keyCertSign`.\n\nThis commit corrects the logic by dynamically constructing the `KeyUsage` bitmask from the key's specified purposes, adhering to the mapping defined in `KeyCreationResult.aidl`. This ensures that generated certificates now have the correct KeyUsage bits, accurately reflecting the key's intended function (e.g., signing, decryption, key wrapping) and making them compliant with the specification.",
+        "url": "https://github.com/JingMatrix/TEESimulator/commit/bd4b2203789852d762af465bb97473aaa0053d6c"
+    },
+    {
+        "sha": "a73e98f6c9c8c797a8be198141b44ac09a78d764",
+        "author": "JingMatrix",
+        "email": "jingmatrix@gmail.com",
+        "date": "2026-02-04T08:03:51Z",
+        "message": "Resolve reference leak and warnings in binder interception (#122)\n\nThis merge addresses a critical strong reference leak in the ioctl hook that occurred during binder transaction interception. The leak was caused by a double increment of the reference count—once manually and once by a smart pointer's constructor—with only a single corresponding decrement. The fix ensures a balanced increment and decrement, preventing the leak and subsequent crashes.\n\nAdditionally, this change:\n-   Reverts a now-unnecessary compatibility layer for the Android 11 RefBase ABI.\n-   Implements `getInterfaceDescriptor` in the `BinderStub` to silence framework warnings that appeared after the primary leak was fixed.",
+        "url": "https://github.com/JingMatrix/TEESimulator/commit/a73e98f6c9c8c797a8be198141b44ac09a78d764"
+    },
+    {
+        "sha": "902b33aeb108d2c87d0c16f4d3f535a3b143803c",
+        "author": "JingMatrix",
+        "email": "jingmatrix@gmail.com",
+        "date": "2026-01-31T21:49:29Z",
+        "message": "Release TEESimulator 3.1",
+        "url": "https://github.com/JingMatrix/TEESimulator/commit/902b33aeb108d2c87d0c16f4d3f535a3b143803c"
+    },
+    {
+        "sha": "1ce8721e175b039ec59a181ab14f9a1f0d04864c",
+        "author": "JingMatrix",
+        "email": "jingmatrix@gmail.com",
+        "date": "2026-01-31T11:51:09Z",
+        "message": "Correct misunderstanding of takeIf execution order\n\nThe previous code incorrectly assumed `takeIf` prevents the execution of the receiver statement. Since `takeIf` is an extension function, the receiver—`InterceptorUtils.getTransactCode`—was evaluated eagerly *before* the version check predicate could run.\n\nThis commit replaces the `takeIf` chain with a standard `if/else` block to ensure the reflection call is only executed when the API level supports it.\n\nAdditionally, repeated `IKeystoreService.Stub::class.java` references were refactored into a `stubBinderClass` property.",
+        "url": "https://github.com/JingMatrix/TEESimulator/commit/1ce8721e175b039ec59a181ab14f9a1f0d04864c"
+    },
+    {
+        "sha": "90d43e4f3fde345390a0330ba8f2c1b6755c69f3",
+        "author": "小潼",
+        "email": "110387028+XiaoTong6666@users.noreply.github.com",
+        "date": "2026-01-31T10:37:25Z",
+        "message": "Support key enumeration via listEntries interception (#84)\n\nPreviously, generated keys were functional but invisible to enumeration APIs like `KeyStore.aliases()`. Because these keys reside solely in the simulator's memory, the standard database query performed by the system Keystore does not return them.\n\nThis commit intercepts `listEntries` and `listEntriesBatched` to inject these generated keys into the results.\n\nKey implementation details:\n- ListEntriesHandler: Encapsulates the logic to merge hardware-backed keys with software-backed keys.\n- Ordering: Uses a `TreeMap` to ensure merged results are lexicographically sorted, mimicking AOSP behavior.\n- Binder Safety: Implements `estimateSafeAmountToReturn` to calculate the response size. The handler truncates the result list if it exceeds the binder transaction limit (~350KB) as done in AOSP.\n- Pagination: Respects the `startPastAlias` parameter to support batched listing.\n\nCo-authored-by: JingMatrix <jingmatrix@gmail.com>",
+        "url": "https://github.com/JingMatrix/TEESimulator/commit/90d43e4f3fde345390a0330ba8f2c1b6755c69f3"
+    },
+    {
+        "sha": "90f3e4c59b107c059042c5c8505b5a7f34eb8266",
+        "author": "JingMatrix",
+        "email": "jingmatrix@gmail.com",
+        "date": "2026-01-30T16:07:14Z",
+        "message": "Move attestation challenge check to certificate generation\n\nRelocate the `attestationChallenge` length validation from `generateSoftwareKeyPair` to `generateCertificateChain`.\n\nThe challenge is only utilized during the construction of the certificate chain (via `AttestationBuilder.buildKeyDescription`). Placing the check in the key pair generation stage caused the logic to miss the `attestKey` transaction hook in `KeystoreInterceptor`.\n\nThis fixes a bug introduced in 6e055796af96295e75541d5fc1f5f53bdbb01ec1 which missed the detection bypass for Android 10 and 11 devices.",
+        "url": "https://github.com/JingMatrix/TEESimulator/commit/90f3e4c59b107c059042c5c8505b5a7f34eb8266"
+    },
+    {
+        "sha": "19e5a0c2e5de0c320393a68a95a539e6f9fe5070",
+        "author": "JingMatrix",
+        "email": "jingmatrix@gmail.com",
+        "date": "2026-01-30T17:16:13Z",
+        "message": "Handle swapped attestation lists on certain Android 11 devices (#108)\n\nObserved an abnormal Keymaster attestation structure on certain Android 11 devices where the `softwareEnforced` and `teeEnforced` authorization lists were swapped in order. This is a deviation from the documented specification and the behavior seen on most devices.\n\nThis non-compliance caused parsing failures, as the code expected the `teeEnforced` list to be at a fixed index (7). On the affected devices, this index contained the `softwareEnforced` list, which critically lacks the `TAG_ROOT_OF_TRUST` needed for successful validation and patching.\n\nThis commit introduces a defensive normalization step to handle this device-specific anomaly gracefully:\n\n1.  Before parsing, the code now inspects the ASN.1 sequence at the expected `softwareEnforced` index (6).\n2.  It checks for the presence of the `TAG_ROOT_OF_TRUST`, which can only exist in the TEE-enforced list.\n3.  If the tag is found, the code concludes the lists are swapped and corrects the `allFields` array in-place by swapping the elements at indices 6 and 7.\n\nBy normalizing the data structure at the beginning, the rest of the parsing and patching logic can proceed without modification, ensuring correct operation on both compliant and non-compliant devices.",
+        "url": "https://github.com/JingMatrix/TEESimulator/commit/19e5a0c2e5de0c320393a68a95a539e6f9fe5070"
+    },
+    {
+        "sha": "5ca663cf5809e4e6509196f82e4738bf9f2fb33d",
+        "author": "JingMatrix",
+        "email": "jingmatrix@gmail.com",
+        "date": "2026-01-29T17:24:21Z",
+        "message": "Correct alias parsing in KeystoreInterceptor (#106)\n\nThe `extractAlias` utility was failing to strip `USRCERT_` and `CACERT_` prefixes, causing a cache miss during certificate chain patching. The function is now updated to correctly handle these prefixes.\n\nMoreover, more logs are added to help debugging in the future.",
+        "url": "https://github.com/JingMatrix/TEESimulator/commit/5ca663cf5809e4e6509196f82e4738bf9f2fb33d"
+    },
+    {
+        "sha": "7c667488c0e926477780a01d8dd5b4ccc74ccc6a",
+        "author": "JingMatrix",
+        "email": "jingmatrix@gmail.com",
+        "date": "2026-01-29T14:15:56Z",
+        "message": "Add SELinux rules for libTEESimulator.so loading (#104)\n\nAllow `keystore` to access the `file` class for `adb_data_file` and `shell_data_file` contexts.\n\nThe target contexts correspond to the following locations:\n- `adb_data_file`: The library path `/data/adb/modules/tricky_store/libTEESimulator.so`, used for FD transfer.\n- `shell_data_file`: The fallback mechanism for loading the library by staging it in `/data/local/tmp`.\n\nNote: The rule for the `dir` class (directory search) has been removed because the supporting audit logs were lost. The remaining file access logs were observed on a MEIZU 21 Note.",
+        "url": "https://github.com/JingMatrix/TEESimulator/commit/7c667488c0e926477780a01d8dd5b4ccc74ccc6a"
+    },
+    {
+        "sha": "4dc979f96f3e18b5a0c6dac5ee63ecda91a01343",
+        "author": "JingMatrix",
+        "email": "jingmatrix@gmail.com",
+        "date": "2026-01-29T14:00:09Z",
+        "message": "Fix multiple crashes and race conditions on Android 12 (#99)\n\nThis resolves several critical stability issues observed on Android 12 devices, including race conditions and API compatibility problems.\n\nKey changes include:\n\n-   Resolves Race Condition in TEE Check:\n    Fixes a NullPointerException that occurred when the TEE functionality check was executed before the PackageManagerService was ready. The code now explicitly waits for the package manager to become available, preventing the crash on startup.\n\n-   Fixes IllegalStateException on Initialization:\n    Eliminates a crash caused by `setTelephonyServiceManager called twice`. This was due to a redundant call to `initializeMainlineModules()` in the DeviceAttestationService, which is now correctly handled a single time during application startup.\n\n-   Fixes NoSuchAlgorithmException in Attestation:\n    Adds a normalization function to handle signature algorithm names reported in all-caps by older Android versions (e.g., \"SHA256WITHECDSA\"). This ensures compatibility with Bouncy Castle, which expects a specific casing (e.g., \"SHA256withECDSA\").",
+        "url": "https://github.com/JingMatrix/TEESimulator/commit/4dc979f96f3e18b5a0c6dac5ee63ecda91a01343"
+    }
+]

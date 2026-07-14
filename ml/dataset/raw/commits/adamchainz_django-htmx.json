@@ -1,0 +1,242 @@
+[
+    {
+        "sha": "a94f71d6df93506235be334d48bba20f32f517e1",
+        "author": "Adam Johnson",
+        "email": "me@adamj.eu",
+        "date": "2026-07-12T22:18:02Z",
+        "message": "Version 1.28.0",
+        "url": "https://github.com/adamchainz/django-htmx/commit/a94f71d6df93506235be334d48bba20f32f517e1"
+    },
+    {
+        "sha": "bd140eb8d9048701f96ed800ddf88bb07f69cc23",
+        "author": "Adam Johnson",
+        "email": "me@adamj.eu",
+        "date": "2026-07-12T21:52:49Z",
+        "message": "Support htmx version 4 (#606)\n\nVendor htmx 4.0.0-beta5 alongside htmx 2, and add a 'version' argument\nto the `htmx_script` template tags to select between them. The default\nhtmx version remains at 2, since htmx 4 is in beta.\n\nUpdate the example app to use htmx version 4 and add\n`HtmxDetails.source` to the middleware for the new `HX-Source` header.",
+        "url": "https://github.com/adamchainz/django-htmx/commit/bd140eb8d9048701f96ed800ddf88bb07f69cc23"
+    },
+    {
+        "sha": "af14e7ff626d615abd46798f72add4f24f94dfbf",
+        "author": "Adam Johnson",
+        "email": "me@adamj.eu",
+        "date": "2026-06-14T21:04:36Z",
+        "message": "Add Django 6.1 support (#603)",
+        "url": "https://github.com/adamchainz/django-htmx/commit/af14e7ff626d615abd46798f72add4f24f94dfbf"
+    },
+    {
+        "sha": "870813b5ce586d5b26d34bea19cbcb75a6c93c92",
+        "author": "Adam Johnson",
+        "email": "me@adamj.eu",
+        "date": "2026-06-13T22:27:21Z",
+        "message": "Drop Django 4.2 to 5.1 support (#602)\n\nThese versions are all EOL since April.",
+        "url": "https://github.com/adamchainz/django-htmx/commit/870813b5ce586d5b26d34bea19cbcb75a6c93c92"
+    },
+    {
+        "sha": "93101e737aa4aa8ded6567424da04b11e0815bee",
+        "author": "pre-commit-ci[bot]",
+        "email": "66853113+pre-commit-ci[bot]@users.noreply.github.com",
+        "date": "2026-06-12T20:25:15Z",
+        "message": "[pre-commit.ci] pre-commit autoupdate (#601)",
+        "url": "https://github.com/adamchainz/django-htmx/commit/93101e737aa4aa8ded6567424da04b11e0815bee"
+    },
+    {
+        "sha": "df642a48b3accfd93d683082b87b17500bd3db32",
+        "author": "Adam Johnson",
+        "email": "me@adamj.eu",
+        "date": "2026-05-31T22:41:50Z",
+        "message": "Move example project to use 'uv run' (#600)",
+        "url": "https://github.com/adamchainz/django-htmx/commit/df642a48b3accfd93d683082b87b17500bd3db32"
+    },
+    {
+        "sha": "ba78dbd13b189bc6b70c4d08d663781deceff45c",
+        "author": "Adam Johnson",
+        "email": "me@adamj.eu",
+        "date": "2026-05-27T22:24:52Z",
+        "message": "Improve GitHub Actions workflow (#599)\n\nTidy up some problematic patterns, including some found with\n[zizmor](https://docs.zizmor.sh/), and use\n[gha-update](https://gha-update.readthedocs.io/en/latest/) to pin GitHub\nActions to specific hashes.",
+        "url": "https://github.com/adamchainz/django-htmx/commit/ba78dbd13b189bc6b70c4d08d663781deceff45c"
+    },
+    {
+        "sha": "15473ea6d699f1a6730b94740646721d55ae4617",
+        "author": "Adam Johnson",
+        "email": "me@adamj.eu",
+        "date": "2026-05-13T10:37:10Z",
+        "message": "Upgrade dependencies (#598)",
+        "url": "https://github.com/adamchainz/django-htmx/commit/15473ea6d699f1a6730b94740646721d55ae4617"
+    },
+    {
+        "sha": "05d60516b811c4451aac512317e40dd1484f269a",
+        "author": "pre-commit-ci[bot]",
+        "email": "66853113+pre-commit-ci[bot]@users.noreply.github.com",
+        "date": "2026-05-13T10:17:37Z",
+        "message": "[pre-commit.ci] pre-commit autoupdate (#597)",
+        "url": "https://github.com/adamchainz/django-htmx/commit/05d60516b811c4451aac512317e40dd1484f269a"
+    },
+    {
+        "sha": "15303ac574b169db5651fa0786efc00c3b85e3cc",
+        "author": "Adam Johnson",
+        "email": "me@adamj.eu",
+        "date": "2026-04-29T21:55:21Z",
+        "message": "Use Read the Docs native uv support (#596)\n\nPer https://about.readthedocs.com/blog/2026/04/uv-native-support/.",
+        "url": "https://github.com/adamchainz/django-htmx/commit/15303ac574b169db5651fa0786efc00c3b85e3cc"
+    },
+    {
+        "sha": "c72c35b3b29956f51142b346881b241f62a4d683",
+        "author": "Adam Johnson",
+        "email": "me@adamj.eu",
+        "date": "2026-04-21T22:09:20Z",
+        "message": "Upgrade dependencies (#595)",
+        "url": "https://github.com/adamchainz/django-htmx/commit/c72c35b3b29956f51142b346881b241f62a4d683"
+    },
+    {
+        "sha": "e80a25eff2ffe96ee8b7f687f7c5c0fcd3c53fde",
+        "author": "Adam Johnson",
+        "email": "me@adamj.eu",
+        "date": "2026-04-21T21:54:49Z",
+        "message": "Use uv to run download_htmx.py",
+        "url": "https://github.com/adamchainz/django-htmx/commit/e80a25eff2ffe96ee8b7f687f7c5c0fcd3c53fde"
+    },
+    {
+        "sha": "a440802ebd9dbd749b0a63bc563be7f5ed7a7b6b",
+        "author": "Adam Johnson",
+        "email": "me@adamj.eu",
+        "date": "2026-04-20T23:09:53Z",
+        "message": "Upgrade example project\n\nUse Python 3.14 and Django 6.0, and uv for setup.",
+        "url": "https://github.com/adamchainz/django-htmx/commit/a440802ebd9dbd749b0a63bc563be7f5ed7a7b6b"
+    },
+    {
+        "sha": "b46b32f8f1d8616bce43192f0b8f4508cf1903a4",
+        "author": "Adam Johnson",
+        "email": "me@adamj.eu",
+        "date": "2026-04-20T13:24:09Z",
+        "message": "Upgrade pytest configuration (#593)\n\nUse the new proper TOML support [added in pytest\n9](https://docs.pytest.org/en/stable/changelog.html#pytest-9-0-0-2025-11-05).",
+        "url": "https://github.com/adamchainz/django-htmx/commit/b46b32f8f1d8616bce43192f0b8f4508cf1903a4"
+    },
+    {
+        "sha": "5bb170139213a7c74c263a5e2b9ee0f8f3c7e894",
+        "author": "Adam Johnson",
+        "email": "me@adamj.eu",
+        "date": "2026-04-07T17:24:47Z",
+        "message": "Upgrade pre-commit to Python 3.14 (#588)",
+        "url": "https://github.com/adamchainz/django-htmx/commit/5bb170139213a7c74c263a5e2b9ee0f8f3c7e894"
+    },
+    {
+        "sha": "0108a49c83d34f8f566cec977a0ed198991fe444",
+        "author": "Adam Johnson",
+        "email": "me@adamj.eu",
+        "date": "2026-04-06T22:06:51Z",
+        "message": "Upgrade dependencies (#587)",
+        "url": "https://github.com/adamchainz/django-htmx/commit/0108a49c83d34f8f566cec977a0ed198991fe444"
+    },
+    {
+        "sha": "1a490a8539595b17e18083e2ba27174ffbdec5b1",
+        "author": "pre-commit-ci[bot]",
+        "email": "66853113+pre-commit-ci[bot]@users.noreply.github.com",
+        "date": "2026-04-06T21:12:01Z",
+        "message": "[pre-commit.ci] pre-commit autoupdate (#586)",
+        "url": "https://github.com/adamchainz/django-htmx/commit/1a490a8539595b17e18083e2ba27174ffbdec5b1"
+    },
+    {
+        "sha": "dd538d0f291009d9c7d76acbaaceb727cc24d97c",
+        "author": "Adam Johnson",
+        "email": "me@adamj.eu",
+        "date": "2026-03-16T21:43:32Z",
+        "message": "Remove debug 'ls' from GitHub Actions workflow",
+        "url": "https://github.com/adamchainz/django-htmx/commit/dd538d0f291009d9c7d76acbaaceb727cc24d97c"
+    },
+    {
+        "sha": "733dffe3867ae55c7a22383f1ab93d82f0705900",
+        "author": "Adam Johnson",
+        "email": "me@adamj.eu",
+        "date": "2026-03-16T21:39:55Z",
+        "message": "Improve Coverage.py configuration (#585)\n\nHide data files within a directory to avoid cluttering the repository\nroot, and minimize reports.",
+        "url": "https://github.com/adamchainz/django-htmx/commit/733dffe3867ae55c7a22383f1ab93d82f0705900"
+    },
+    {
+        "sha": "fdb3df448c0f036f746208c8346a4347806070f2",
+        "author": "Adam Johnson",
+        "email": "me@adamj.eu",
+        "date": "2026-03-08T21:24:09Z",
+        "message": "Upgrade dependencies (#584)",
+        "url": "https://github.com/adamchainz/django-htmx/commit/fdb3df448c0f036f746208c8346a4347806070f2"
+    },
+    {
+        "sha": "068cd56708e82f0ca056ae32b551fc6e840182a7",
+        "author": "dependabot[bot]",
+        "email": "49699333+dependabot[bot]@users.noreply.github.com",
+        "date": "2026-03-08T21:12:46Z",
+        "message": "Bump the github-actions group with 2 updates (#581)",
+        "url": "https://github.com/adamchainz/django-htmx/commit/068cd56708e82f0ca056ae32b551fc6e840182a7"
+    },
+    {
+        "sha": "42dc10e62dccaaa224b75876bace38baa9be63a8",
+        "author": "pre-commit-ci[bot]",
+        "email": "66853113+pre-commit-ci[bot]@users.noreply.github.com",
+        "date": "2026-03-08T21:01:00Z",
+        "message": "[pre-commit.ci] pre-commit autoupdate (#582)",
+        "url": "https://github.com/adamchainz/django-htmx/commit/42dc10e62dccaaa224b75876bace38baa9be63a8"
+    },
+    {
+        "sha": "5ec3fa146a61307d81dc5a474b8be9c20190c7e8",
+        "author": "Adam Johnson",
+        "email": "me@adamj.eu",
+        "date": "2026-02-14T23:34:40Z",
+        "message": "Upgrade dependencies (#580)",
+        "url": "https://github.com/adamchainz/django-htmx/commit/5ec3fa146a61307d81dc5a474b8be9c20190c7e8"
+    },
+    {
+        "sha": "8ba6ac36dd27dc02b9667ac1c96c426ff15fac1f",
+        "author": "pre-commit-ci[bot]",
+        "email": "66853113+pre-commit-ci[bot]@users.noreply.github.com",
+        "date": "2026-02-11T22:52:41Z",
+        "message": "[pre-commit.ci] pre-commit autoupdate (#579)",
+        "url": "https://github.com/adamchainz/django-htmx/commit/8ba6ac36dd27dc02b9667ac1c96c426ff15fac1f"
+    },
+    {
+        "sha": "3edcb835b6dbd07b1ed2604a05501a5e7668b6b8",
+        "author": "Adam Johnson",
+        "email": "me@adamj.eu",
+        "date": "2026-02-03T21:11:27Z",
+        "message": "Add Tidelift link on Sponsor button",
+        "url": "https://github.com/adamchainz/django-htmx/commit/3edcb835b6dbd07b1ed2604a05501a5e7668b6b8"
+    },
+    {
+        "sha": "4200f462f51b4c1d2179e112adcb668853f7d305",
+        "author": "dependabot[bot]",
+        "email": "49699333+dependabot[bot]@users.noreply.github.com",
+        "date": "2026-01-06T20:36:36Z",
+        "message": "Bump the github-actions group with 2 updates (#577)",
+        "url": "https://github.com/adamchainz/django-htmx/commit/4200f462f51b4c1d2179e112adcb668853f7d305"
+    },
+    {
+        "sha": "ca552def501fdd732881c60356f8dc7b46cf5c23",
+        "author": "pre-commit-ci[bot]",
+        "email": "66853113+pre-commit-ci[bot]@users.noreply.github.com",
+        "date": "2026-01-06T20:17:59Z",
+        "message": "[pre-commit.ci] pre-commit autoupdate (#578)",
+        "url": "https://github.com/adamchainz/django-htmx/commit/ca552def501fdd732881c60356f8dc7b46cf5c23"
+    },
+    {
+        "sha": "518d41d5fbbfa05dbf61b82963e47722a0ffbfa0",
+        "author": "Adam Johnson",
+        "email": "me@adamj.eu",
+        "date": "2025-12-08T12:11:47Z",
+        "message": "Upgrade dependencies (#576)",
+        "url": "https://github.com/adamchainz/django-htmx/commit/518d41d5fbbfa05dbf61b82963e47722a0ffbfa0"
+    },
+    {
+        "sha": "279cf84916d6b94a9393bb3dfced35f0007393e1",
+        "author": "pre-commit-ci[bot]",
+        "email": "66853113+pre-commit-ci[bot]@users.noreply.github.com",
+        "date": "2025-12-06T23:27:14Z",
+        "message": "[pre-commit.ci] pre-commit autoupdate (#574)",
+        "url": "https://github.com/adamchainz/django-htmx/commit/279cf84916d6b94a9393bb3dfced35f0007393e1"
+    },
+    {
+        "sha": "d2301e87b25b99da084e214502e355aaa03edc90",
+        "author": "dependabot[bot]",
+        "email": "49699333+dependabot[bot]@users.noreply.github.com",
+        "date": "2025-12-06T23:13:18Z",
+        "message": "Bump actions/checkout from 5 to 6 in the github-actions group (#573)\n\nBumps the github-actions group with 1 update:\n[actions/checkout](https://github.com/actions/checkout).\n\nUpdates `actions/checkout` from 5 to 6\n<details>\n<summary>Release notes</summary>\n<p><em>Sourced from <a\nhref=\"https://github.com/actions/checkout/releases\">actions/checkout's\nreleases</a>.</em></p>\n<blockquote>\n<h2>v6.0.0</h2>\n<h2>What's Changed</h2>\n<ul>\n<li>Update README to include Node.js 24 support details and requirements\nby <a href=\"https://github.com/salmanmkc\"><code>@​salmanmkc</code></a>\nin <a\nhref=\"https://redirect.github.com/actions/checkout/pull/2248\">actions/checkout#2248</a></li>\n<li>Persist creds to a separate file by <a\nhref=\"https://github.com/ericsciple\"><code>@​ericsciple</code></a> in <a\nhref=\"https://redirect.github.com/actions/checkout/pull/2286\">actions/checkout#2286</a></li>\n<li>v6-beta by <a\nhref=\"https://github.com/ericsciple\"><code>@​ericsciple</code></a> in <a\nhref=\"https://redirect.github.com/actions/checkout/pull/2298\">actions/checkout#2298</a></li>\n<li>update readme/changelog for v6 by <a\nhref=\"https://github.com/ericsciple\"><code>@​ericsciple</code></a> in <a\nhref=\"https://redirect.github.com/actions/checkout/pull/2311\">actions/checkout#2311</a></li>\n</ul>\n<p><strong>Full Changelog</strong>: <a\nhref=\"https://github.com/actions/checkout/compare/v5.0.0...v6.0.0\">https://github.com/actions/checkout/compare/v5.0.0...v6.0.0</a></p>\n<h2>v6-beta</h2>\n<h2>What's Changed</h2>\n<p>Updated persist-credentials to store the credentials under\n<code>$RUNNER_TEMP</code> instead of directly in the local git\nconfig.</p>\n<p>This requires a minimum Actions Runner version of <a\nhref=\"https://github.com/actions/runner/releases/tag/v2.329.0\">v2.329.0</a>\nto access the persisted credentials for <a\nhref=\"https://docs.github.com/en/actions/tutorials/use-containerized-services/create-a-docker-container-action\">Docker\ncontainer action</a> scenarios.</p>\n<h2>v5.0.1</h2>\n<h2>What's Changed</h2>\n<ul>\n<li>Port v6 cleanup to v5 by <a\nhref=\"https://github.com/ericsciple\"><code>@​ericsciple</code></a> in <a\nhref=\"https://redirect.github.com/actions/checkout/pull/2301\">actions/checkout#2301</a></li>\n</ul>\n<p><strong>Full Changelog</strong>: <a\nhref=\"https://github.com/actions/checkout/compare/v5...v5.0.1\">https://github.com/actions/checkout/compare/v5...v5.0.1</a></p>\n</blockquote>\n</details>\n<details>\n<summary>Changelog</summary>\n<p><em>Sourced from <a\nhref=\"https://github.com/actions/checkout/blob/main/CHANGELOG.md\">actions/checkout's\nchangelog</a>.</em></p>\n<blockquote>\n<h1>Changelog</h1>\n<h2>V6.0.0</h2>\n<ul>\n<li>Persist creds to a separate file by <a\nhref=\"https://github.com/ericsciple\"><code>@​ericsciple</code></a> in <a\nhref=\"https://redirect.github.com/actions/checkout/pull/2286\">actions/checkout#2286</a></li>\n<li>Update README to include Node.js 24 support details and requirements\nby <a href=\"https://github.com/salmanmkc\"><code>@​salmanmkc</code></a>\nin <a\nhref=\"https://redirect.github.com/actions/checkout/pull/2248\">actions/checkout#2248</a></li>\n</ul>\n<h2>V5.0.1</h2>\n<ul>\n<li>Port v6 cleanup to v5 by <a\nhref=\"https://github.com/ericsciple\"><code>@​ericsciple</code></a> in <a\nhref=\"https://redirect.github.com/actions/checkout/pull/2301\">actions/checkout#2301</a></li>\n</ul>\n<h2>V5.0.0</h2>\n<ul>\n<li>Update actions checkout to use node 24 by <a\nhref=\"https://github.com/salmanmkc\"><code>@​salmanmkc</code></a> in <a\nhref=\"https://redirect.github.com/actions/checkout/pull/2226\">actions/checkout#2226</a></li>\n</ul>\n<h2>V4.3.1</h2>\n<ul>\n<li>Port v6 cleanup to v4 by <a\nhref=\"https://github.com/ericsciple\"><code>@​ericsciple</code></a> in <a\nhref=\"https://redirect.github.com/actions/checkout/pull/2305\">actions/checkout#2305</a></li>\n</ul>\n<h2>V4.3.0</h2>\n<ul>\n<li>docs: update README.md by <a\nhref=\"https://github.com/motss\"><code>@​motss</code></a> in <a\nhref=\"https://redirect.github.com/actions/checkout/pull/1971\">actions/checkout#1971</a></li>\n<li>Add internal repos for checking out multiple repositories by <a\nhref=\"https://github.com/mouismail\"><code>@​mouismail</code></a> in <a\nhref=\"https://redirect.github.com/actions/checkout/pull/1977\">actions/checkout#1977</a></li>\n<li>Documentation update - add recommended permissions to Readme by <a\nhref=\"https://github.com/benwells\"><code>@​benwells</code></a> in <a\nhref=\"https://redirect.github.com/actions/checkout/pull/2043\">actions/checkout#2043</a></li>\n<li>Adjust positioning of user email note and permissions heading by <a\nhref=\"https://github.com/joshmgross\"><code>@​joshmgross</code></a> in <a\nhref=\"https://redirect.github.com/actions/checkout/pull/2044\">actions/checkout#2044</a></li>\n<li>Update README.md by <a\nhref=\"https://github.com/nebuk89\"><code>@​nebuk89</code></a> in <a\nhref=\"https://redirect.github.com/actions/checkout/pull/2194\">actions/checkout#2194</a></li>\n<li>Update CODEOWNERS for actions by <a\nhref=\"https://github.com/TingluoHuang\"><code>@​TingluoHuang</code></a>\nin <a\nhref=\"https://redirect.github.com/actions/checkout/pull/2224\">actions/checkout#2224</a></li>\n<li>Update package dependencies by <a\nhref=\"https://github.com/salmanmkc\"><code>@​salmanmkc</code></a> in <a\nhref=\"https://redirect.github.com/actions/checkout/pull/2236\">actions/checkout#2236</a></li>\n</ul>\n<h2>v4.2.2</h2>\n<ul>\n<li><code>url-helper.ts</code> now leverages well-known environment\nvariables by <a href=\"https://github.com/jww3\"><code>@​jww3</code></a>\nin <a\nhref=\"https://redirect.github.com/actions/checkout/pull/1941\">actions/checkout#1941</a></li>\n<li>Expand unit test coverage for <code>isGhes</code> by <a\nhref=\"https://github.com/jww3\"><code>@​jww3</code></a> in <a\nhref=\"https://redirect.github.com/actions/checkout/pull/1946\">actions/checkout#1946</a></li>\n</ul>\n<h2>v4.2.1</h2>\n<ul>\n<li>Check out other refs/* by commit if provided, fall back to ref by <a\nhref=\"https://github.com/orhantoy\"><code>@​orhantoy</code></a> in <a\nhref=\"https://redirect.github.com/actions/checkout/pull/1924\">actions/checkout#1924</a></li>\n</ul>\n<h2>v4.2.0</h2>\n<ul>\n<li>Add Ref and Commit outputs by <a\nhref=\"https://github.com/lucacome\"><code>@​lucacome</code></a> in <a\nhref=\"https://redirect.github.com/actions/checkout/pull/1180\">actions/checkout#1180</a></li>\n<li>Dependency updates by <a\nhref=\"https://github.com/dependabot\"><code>@​dependabot</code></a>- <a\nhref=\"https://redirect.github.com/actions/checkout/pull/1777\">actions/checkout#1777</a>,\n<a\nhref=\"https://redirect.github.com/actions/checkout/pull/1872\">actions/checkout#1872</a></li>\n</ul>\n<h2>v4.1.7</h2>\n<ul>\n<li>Bump the minor-npm-dependencies group across 1 directory with 4\nupdates by <a\nhref=\"https://github.com/dependabot\"><code>@​dependabot</code></a> in <a\nhref=\"https://redirect.github.com/actions/checkout/pull/1739\">actions/checkout#1739</a></li>\n<li>Bump actions/checkout from 3 to 4 by <a\nhref=\"https://github.com/dependabot\"><code>@​dependabot</code></a> in <a\nhref=\"https://redirect.github.com/actions/checkout/pull/1697\">actions/checkout#1697</a></li>\n<li>Check out other refs/* by commit by <a\nhref=\"https://github.com/orhantoy\"><code>@​orhantoy</code></a> in <a\nhref=\"https://redirect.github.com/actions/checkout/pull/1774\">actions/checkout#1774</a></li>\n<li>Pin actions/checkout's own workflows to a known, good, stable\nversion. by <a href=\"https://github.com/jww3\"><code>@​jww3</code></a> in\n<a\nhref=\"https://redirect.github.com/actions/checkout/pull/1776\">actions/checkout#1776</a></li>\n</ul>\n<h2>v4.1.6</h2>\n<ul>\n<li>Check platform to set archive extension appropriately by <a\nhref=\"https://github.com/cory-miller\"><code>@​cory-miller</code></a> in\n<a\nhref=\"https://redirect.github.com/actions/checkout/pull/1732\">actions/checkout#1732</a></li>\n</ul>\n<h2>v4.1.5</h2>\n<ul>\n<li>Update NPM dependencies by <a\nhref=\"https://github.com/cory-miller\"><code>@​cory-miller</code></a> in\n<a\nhref=\"https://redirect.github.com/actions/checkout/pull/1703\">actions/checkout#1703</a></li>\n<li>Bump github/codeql-action from 2 to 3 by <a\nhref=\"https://github.com/dependabot\"><code>@​dependabot</code></a> in <a\nhref=\"https://redirect.github.com/actions/checkout/pull/1694\">actions/checkout#1694</a></li>\n<li>Bump actions/setup-node from 1 to 4 by <a\nhref=\"https://github.com/dependabot\"><code>@​dependabot</code></a> in <a\nhref=\"https://redirect.github.com/actions/checkout/pull/1696\">actions/checkout#1696</a></li>\n<li>Bump actions/upload-artifact from 2 to 4 by <a\nhref=\"https://github.com/dependabot\"><code>@​dependabot</code></a> in <a\nhref=\"https://redirect.github.com/actions/checkout/pull/1695\">actions/checkout#1695</a></li>\n</ul>\n<!-- raw HTML omitted -->\n</blockquote>\n<p>... (truncated)</p>\n</details>\n<details>\n<summary>Commits</summary>\n<ul>\n<li><a\nhref=\"https://github.com/actions/checkout/commit/1af3b93b6815bc44a9784bd300feb67ff0d1eeb3\"><code>1af3b93</code></a>\nupdate readme/changelog for v6 (<a\nhref=\"https://redirect.github.com/actions/checkout/issues/2311\">#2311</a>)</li>\n<li><a\nhref=\"https://github.com/actions/checkout/commit/71cf2267d89c5cb81562390fa70a37fa40b1305e\"><code>71cf226</code></a>\nv6-beta (<a\nhref=\"https://redirect.github.com/actions/checkout/issues/2298\">#2298</a>)</li>\n<li><a\nhref=\"https://github.com/actions/checkout/commit/069c6959146423d11cd0184e6accf28f9d45f06e\"><code>069c695</code></a>\nPersist creds to a separate file (<a\nhref=\"https://redirect.github.com/actions/checkout/issues/2286\">#2286</a>)</li>\n<li><a\nhref=\"https://github.com/actions/checkout/commit/ff7abcd0c3c05ccf6adc123a8cd1fd4fb30fb493\"><code>ff7abcd</code></a>\nUpdate README to include Node.js 24 support details and requirements (<a\nhref=\"https://redirect.github.com/actions/checkout/issues/2248\">#2248</a>)</li>\n<li>See full diff in <a\nhref=\"https://github.com/actions/checkout/compare/v5...v6\">compare\nview</a></li>\n</ul>\n</details>\n<br />\n\n\n[![Dependabot compatibility\nscore](https://dependabot-badges.githubapp.com/badges/compatibility_score?dependency-name=actions/checkout&package-manager=github_actions&previous-version=5&new-version=6)](https://docs.github.com/en/github/managing-security-vulnerabilities/about-dependabot-security-updates#about-compatibility-scores)\n\nDependabot will resolve any conflicts with this PR as long as you don't\nalter it yourself. You can also trigger a rebase manually by commenting\n`@dependabot rebase`.\n\n[//]: # (dependabot-automerge-start)\n[//]: # (dependabot-automerge-end)\n\n---\n\n<details>\n<summary>Dependabot commands and options</summary>\n<br />\n\nYou can trigger Dependabot actions by commenting on this PR:\n- `@dependabot rebase` will rebase this PR\n- `@dependabot recreate` will recreate this PR, overwriting any edits\nthat have been made to it\n- `@dependabot merge` will merge this PR after your CI passes on it\n- `@dependabot squash and merge` will squash and merge this PR after\nyour CI passes on it\n- `@dependabot cancel merge` will cancel a previously requested merge\nand block automerging\n- `@dependabot reopen` will reopen this PR if it is closed\n- `@dependabot close` will close this PR and stop Dependabot recreating\nit. You can achieve the same result by closing it manually\n- `@dependabot show <dependency name> ignore conditions` will show all\nof the ignore conditions of the specified dependency\n- `@dependabot ignore <dependency name> major version` will close this\ngroup update PR and stop Dependabot creating any more for the specific\ndependency's major version (unless you unignore this specific\ndependency's major version or upgrade to it yourself)\n- `@dependabot ignore <dependency name> minor version` will close this\ngroup update PR and stop Dependabot creating any more for the specific\ndependency's minor version (unless you unignore this specific\ndependency's minor version or upgrade to it yourself)\n- `@dependabot ignore <dependency name>` will close this group update PR\nand stop Dependabot creating any more for the specific dependency\n(unless you unignore this specific dependency or upgrade to it yourself)\n- `@dependabot unignore <dependency name>` will remove all of the ignore\nconditions of the specified dependency\n- `@dependabot unignore <dependency name> <ignore condition>` will\nremove the ignore condition of the specified dependency and ignore\nconditions\n\n\n</details>\n\nSigned-off-by: dependabot[bot] <support@github.com>\nCo-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>",
+        "url": "https://github.com/adamchainz/django-htmx/commit/d2301e87b25b99da084e214502e355aaa03edc90"
+    }
+]

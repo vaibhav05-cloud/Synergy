@@ -1,0 +1,242 @@
+[
+    {
+        "sha": "c1e239dc349680d3eb24fb320ad9b073bceb4bf7",
+        "author": "Pepijn Peeters",
+        "email": "me@pepijnpeeters.nl",
+        "date": "2026-07-13T16:25:28Z",
+        "message": "Use related key for BelongsToMany::touch() (#60708)",
+        "url": "https://github.com/laravel/framework/commit/c1e239dc349680d3eb24fb320ad9b073bceb4bf7"
+    },
+    {
+        "sha": "34da7b5d271b7a873babd6e3daf2f7a045afe297",
+        "author": "DAFFA ADITYA PRATAMA",
+        "email": "187154992+daffa-aditya-p@users.noreply.github.com",
+        "date": "2026-07-13T16:11:02Z",
+        "message": "[13.x] Route incrementEachQuietly/decrementEachQuietly through Model::__call (#60737)\n\nThese two methods were added recently (#60720) as protected, but were\nnot included in the list of methods that Model::__call forwards to the\ninstance. Calling them dynamically on a model -- e.g.\n\\->incrementEachQuietly(['votes' => 1]) -- was therefore forwarded\nto the query builder, which has no such method, and threw a\nBadMethodCallException. Every sibling (increment, decrement,\nincrementQuietly, decrementQuietly, incrementEach, decrementEach) is\nalready listed; this adds the two missing quiet-each variants.",
+        "url": "https://github.com/laravel/framework/commit/34da7b5d271b7a873babd6e3daf2f7a045afe297"
+    },
+    {
+        "sha": "db9b85988e6de117da3de226b060e543b262e8b2",
+        "author": "Joost de Bruijn",
+        "email": "joostdebruijn@users.noreply.github.com",
+        "date": "2026-07-13T16:05:22Z",
+        "message": "fix: providesTemporaryUploadUrls should return true for s3 driver (#60755)",
+        "url": "https://github.com/laravel/framework/commit/db9b85988e6de117da3de226b060e543b262e8b2"
+    },
+    {
+        "sha": "4a3298aad781da756580bea54107e4830581ffe4",
+        "author": "Denys Finchenko",
+        "email": "dfinchenko@users.noreply.github.com",
+        "date": "2026-07-13T15:59:15Z",
+        "message": "Add test for the Email rule's strict method (#60740)",
+        "url": "https://github.com/laravel/framework/commit/4a3298aad781da756580bea54107e4830581ffe4"
+    },
+    {
+        "sha": "6a6137e24de3493f07aee9479c7a3e7ed55b11ec",
+        "author": "Sergey Sannikov",
+        "email": "semx@nxt.ru",
+        "date": "2026-07-13T15:58:32Z",
+        "message": "[13.x] Fix Number::forHumans() and abbreviate() returning \"-0\" for tiny negative values (#60736)\n\n* [13.x] Fix Number::forHumans() and abbreviate() returning \"-0\" for tiny negative values\n\nFor a negative number whose magnitude rounds down to zero at the requested\nprecision (e.g. Number::forHumans(-0.4)), summarize() prepended the sign\nunconditionally and produced \"-0\". Only add the sign when the summarized\nmagnitude is not the zero representation.\n\n* Update Number.php\n\n---------\n\nCo-authored-by: semx <7532921+semx@users.noreply.github.com>\nCo-authored-by: Taylor Otwell <taylor@laravel.com>",
+        "url": "https://github.com/laravel/framework/commit/6a6137e24de3493f07aee9479c7a3e7ed55b11ec"
+    },
+    {
+        "sha": "950830b2a9487d90c6a4e96b4a4e30ac13e4658b",
+        "author": "Lucas Michot",
+        "email": "lucas@semalead.com",
+        "date": "2026-07-13T15:57:07Z",
+        "message": "Fix stale transformations being reapplied when branching an Image after toBytes() (#60748)",
+        "url": "https://github.com/laravel/framework/commit/950830b2a9487d90c6a4e96b4a4e30ac13e4658b"
+    },
+    {
+        "sha": "7413b660e221514531ebbae685c675993eb06414",
+        "author": "Lucas Michot",
+        "email": "lucas@semalead.com",
+        "date": "2026-07-13T15:56:47Z",
+        "message": "Fix Str::containsAll() returning true for an empty needles array (#60746)\n\nStr::containsAll('...', []) returned true because the loop simply never ran, contradicting its own docblock and the contains()/endsWith()/startsWith() convention of returning false for an empty needles array.",
+        "url": "https://github.com/laravel/framework/commit/7413b660e221514531ebbae685c675993eb06414"
+    },
+    {
+        "sha": "461c04a494ef9aab45905d328f46eff5411e4d42",
+        "author": "Denys Finchenko",
+        "email": "dfinchenko@users.noreply.github.com",
+        "date": "2026-07-13T15:56:19Z",
+        "message": "Add test for the Uri toStringable method (#60739)",
+        "url": "https://github.com/laravel/framework/commit/461c04a494ef9aab45905d328f46eff5411e4d42"
+    },
+    {
+        "sha": "dd4af91c610dd98fefd4a4f8599f4e0b8e581e3f",
+        "author": "Lucas Michot",
+        "email": "lucas@semalead.com",
+        "date": "2026-07-13T15:55:55Z",
+        "message": "Replace manual all/any foreach loops with array_all/array_any (#60742)\n\nContinues the pattern already used across the codebase (Arr::has, Gate::any, MessageBag, etc.) by replacing hand-rolled foreach-with-early-return loops with the array_all/array_any helpers where the collection being iterated is a plain array.",
+        "url": "https://github.com/laravel/framework/commit/dd4af91c610dd98fefd4a4f8599f4e0b8e581e3f"
+    },
+    {
+        "sha": "f03ee207ed341bcfc4eb394104934de6b6a0d60e",
+        "author": "Lucas Michot",
+        "email": "lucas@semalead.com",
+        "date": "2026-07-13T15:55:24Z",
+        "message": "Use PHPUnit rector sets instead of individual rules (#60744)\n\nSkips the specific rules within each set that would otherwise change behavior, so this is a no-op for the current codebase.",
+        "url": "https://github.com/laravel/framework/commit/f03ee207ed341bcfc4eb394104934de6b6a0d60e"
+    },
+    {
+        "sha": "701c839fa35ce870e205f0d51a2aefa6f4595fc2",
+        "author": "Jack Bayliss",
+        "email": "jjbayliss@icloud.com",
+        "date": "2026-07-13T15:54:51Z",
+        "message": "[13.x] Only register pail in DevCommands when `pcntl_fork` is available (#60749)\n\n* Update DevCommands.php\n\n* Update DevCommands.php\n\n* testssss",
+        "url": "https://github.com/laravel/framework/commit/701c839fa35ce870e205f0d51a2aefa6f4595fc2"
+    },
+    {
+        "sha": "1e1ab46f69e2c92bf00f73f7b8ff784d13e4f50c",
+        "author": "Lucas Michot",
+        "email": "lucas@semalead.com",
+        "date": "2026-07-13T15:54:30Z",
+        "message": "Remove redundant Mockery::close() calls (#60743)\n\nAfterEachTestSubscriber already closes Mockery after every test.",
+        "url": "https://github.com/laravel/framework/commit/1e1ab46f69e2c92bf00f73f7b8ff784d13e4f50c"
+    },
+    {
+        "sha": "dd3a9225c1e1b227445e3ab22e290e4cf8e2632e",
+        "author": "Lucas Michot",
+        "email": "lucas@semalead.com",
+        "date": "2026-07-13T15:54:17Z",
+        "message": "[13.x] Optimize by using contains or doesntContain  (#60745)\n\n* Use Collection contains/doesntContain instead of filter/reject + count/isEmpty checks\n\nReplaces map/filter/reject chains ending in count() or isEmpty()/isNotEmpty() checks, as well as an in_array() lookup, with the more direct contains()/doesntContain() methods.\n\n* Use doesntContain instead of negated contains",
+        "url": "https://github.com/laravel/framework/commit/dd3a9225c1e1b227445e3ab22e290e4cf8e2632e"
+    },
+    {
+        "sha": "5d48063faba1c664823b6c4676816f4acf0e5029",
+        "author": "Choraimy Kroonstuiver",
+        "email": "3661474+axlon@users.noreply.github.com",
+        "date": "2026-07-13T15:53:32Z",
+        "message": "Add #[SensitiveParameter] to parameters carrying secrets (#60753)",
+        "url": "https://github.com/laravel/framework/commit/5d48063faba1c664823b6c4676816f4acf0e5029"
+    },
+    {
+        "sha": "3093ff3a61f88225f16fec35dda65e1e7c0867a4",
+        "author": "Jack Bayliss",
+        "email": "jjbayliss@icloud.com",
+        "date": "2026-07-11T15:27:35Z",
+        "message": "[13.x] Ability to set session prefix for Redis (#60700)\n\n* Update SessionManager.php\n\n* test\n\n* test\n\n* cs got me",
+        "url": "https://github.com/laravel/framework/commit/3093ff3a61f88225f16fec35dda65e1e7c0867a4"
+    },
+    {
+        "sha": "82988f68db7ff7b54db7129d6be7faaf41ed5d6b",
+        "author": "Wim Reckman",
+        "email": "wimreckman@gmail.com",
+        "date": "2026-07-11T15:15:04Z",
+        "message": "[13.x] Support null for shortcut field in return type array for HasParameters::getOptions (#60723) (#60728)",
+        "url": "https://github.com/laravel/framework/commit/82988f68db7ff7b54db7129d6be7faaf41ed5d6b"
+    },
+    {
+        "sha": "1fd74f54d08fd942f2f0791fe0208b00c465aa5a",
+        "author": "Christos Koumpis",
+        "email": "56029580+Button99@users.noreply.github.com",
+        "date": "2026-07-11T15:10:57Z",
+        "message": "normalize HTTP client request header lookups (#60734)",
+        "url": "https://github.com/laravel/framework/commit/1fd74f54d08fd942f2f0791fe0208b00c465aa5a"
+    },
+    {
+        "sha": "56a36ae2e2ed07078b1942bb11055d263c67dc49",
+        "author": "Shane Rosenthal",
+        "email": "srosenthal82@gmail.com",
+        "date": "2026-07-09T22:43:55Z",
+        "message": "[13.x] Add incrementEachQuietly and decrementEachQuietly to Eloquent models (#60720)\n\nAdds quiet variants of `incrementEach` and `decrementEach`, mirroring the\nexisting `incrementQuietly`/`decrementQuietly` methods for the single-column\n`increment`/`decrement`. Closes a consistency gap where every other mutator\nhad a \"Quietly\" counterpart except the \"Each\" pair.\n\nCo-authored-by: Claude Opus 4.8 (1M context) <noreply@anthropic.com>",
+        "url": "https://github.com/laravel/framework/commit/56a36ae2e2ed07078b1942bb11055d263c67dc49"
+    },
+    {
+        "sha": "8136d58841587508d5f2536dce4f90712f80418a",
+        "author": "JurianArie",
+        "email": "28654085+JurianArie@users.noreply.github.com",
+        "date": "2026-07-09T12:59:33Z",
+        "message": "[13.x] Add WithoutMiddleware controller middleware attribute (#60709)\n\n* Add without middleware controller attribute\n\n* Add support for inheritance\n\nTo align with edffb2f30aa27a1f943f9e13829fb90f915deec8\n\n* Format\n\n* Format\n\n* formatting\n\n---------\n\nCo-authored-by: Taylor Otwell <taylor@laravel.com>",
+        "url": "https://github.com/laravel/framework/commit/8136d58841587508d5f2536dce4f90712f80418a"
+    },
+    {
+        "sha": "871351c00948a276b44991b4951ea177daa22d65",
+        "author": "Rubrasum",
+        "email": "josephbetbeze@gmail.com",
+        "date": "2026-07-09T12:48:24Z",
+        "message": "Use Str::beforeLast instead of just before so that it gets the full model path and doesn't stop short at the directory. (#60707)",
+        "url": "https://github.com/laravel/framework/commit/871351c00948a276b44991b4951ea177daa22d65"
+    },
+    {
+        "sha": "c7666c5f70160522a2798a1d31efab8583b11a79",
+        "author": "Denys Finchenko",
+        "email": "dfinchenko@users.noreply.github.com",
+        "date": "2026-07-09T12:46:54Z",
+        "message": "[13.x] Sync more getter return types with their property generics (#60699)",
+        "url": "https://github.com/laravel/framework/commit/c7666c5f70160522a2798a1d31efab8583b11a79"
+    },
+    {
+        "sha": "42016ac902ddea211341026cb1ed0e19341f9b2c",
+        "author": "taylorotwell",
+        "email": "463230+taylorotwell@users.noreply.github.com",
+        "date": "2026-07-09T12:45:43Z",
+        "message": "Update facade docblocks",
+        "url": "https://github.com/laravel/framework/commit/42016ac902ddea211341026cb1ed0e19341f9b2c"
+    },
+    {
+        "sha": "407a4798756df7ea4c8cac4c73365165a8503420",
+        "author": "Tresor-Kasenda",
+        "email": "34010260+Tresor-Kasenda@users.noreply.github.com",
+        "date": "2026-07-09T12:39:37Z",
+        "message": "Make MailFake::assertQueuedTimes() public (#60710)\n\nIt was left protected while the equivalent assertSentTimes() method\nis public, so it can't be called directly as Mail::assertQueuedTimes(),\nunlike its sent-mail counterpart.",
+        "url": "https://github.com/laravel/framework/commit/407a4798756df7ea4c8cac4c73365165a8503420"
+    },
+    {
+        "sha": "290852119141779b92217c55ced0e4b749fd3668",
+        "author": "Denys Finchenko",
+        "email": "dfinchenko@users.noreply.github.com",
+        "date": "2026-07-09T12:39:14Z",
+        "message": "Add test for the scheduler's quarterlyOn method (#60712)",
+        "url": "https://github.com/laravel/framework/commit/290852119141779b92217c55ced0e4b749fd3668"
+    },
+    {
+        "sha": "ebae97d18d3d56a3a6a31fb9f8c5150ec414bc61",
+        "author": "taylorotwell",
+        "email": "463230+taylorotwell@users.noreply.github.com",
+        "date": "2026-07-08T19:55:09Z",
+        "message": "Update facade docblocks",
+        "url": "https://github.com/laravel/framework/commit/ebae97d18d3d56a3a6a31fb9f8c5150ec414bc61"
+    },
+    {
+        "sha": "150b91a60e2039875808dfb3df300b6fb76595c7",
+        "author": "Md Muhtasim Munif Fahim",
+        "email": "s1911024120@ru.ac.bd",
+        "date": "2026-07-08T19:54:40Z",
+        "message": "Add separator params to Storage facade docblocks (#60703)",
+        "url": "https://github.com/laravel/framework/commit/150b91a60e2039875808dfb3df300b6fb76595c7"
+    },
+    {
+        "sha": "9fb675493193003196e201345e2a7c44e427a9c6",
+        "author": "DAFFA ADITYA PRATAMA",
+        "email": "187154992+daffa-aditya-p@users.noreply.github.com",
+        "date": "2026-07-08T19:15:17Z",
+        "message": "Fix SQS queue size null coalescing precedence (#60702)",
+        "url": "https://github.com/laravel/framework/commit/9fb675493193003196e201345e2a7c44e427a9c6"
+    },
+    {
+        "sha": "f67e234f539f9569bede32fa519055c2c520c830",
+        "author": "taylorotwell",
+        "email": "463230+taylorotwell@users.noreply.github.com",
+        "date": "2026-07-07T23:45:20Z",
+        "message": "Update facade docblocks",
+        "url": "https://github.com/laravel/framework/commit/f67e234f539f9569bede32fa519055c2c520c830"
+    },
+    {
+        "sha": "3dd48304992219c7091cb94c91eebeb253f3ed17",
+        "author": "nuno maduro",
+        "email": "enunomaduro@gmail.com",
+        "date": "2026-07-07T23:44:43Z",
+        "message": "[13.x] Adds first-party support for `image` processing (#59276)\n\nThis PR introduces Laravel’s first-party image manipulation API through a new Illuminate\\Image component, backed by Intervention Image and supporting GD / Imagick drivers. Images may be read from uploads, storage disks, paths, URLs, bytes, or Base64 strings, then fluently transformed through an ordered pipeline with operations such as resize, scale, cover, contain, crop, rotate, orient, blur, grayscale, sharpen, and flipping.\n\nThe API also supports format conversion, quality control, optimization, inspection of processed image metadata, and convenient filesystem storage methods. Image drivers are managed through Laravel’s standard manager pattern, allowing applications to select drivers per image, configure a default driver, register custom drivers, and provide custom transformation handlers.",
+        "url": "https://github.com/laravel/framework/commit/3dd48304992219c7091cb94c91eebeb253f3ed17"
+    },
+    {
+        "sha": "2a56fe6d59b854d27f43acb90938cc7416ed8733",
+        "author": "taylorotwell",
+        "email": "463230+taylorotwell@users.noreply.github.com",
+        "date": "2026-07-07T17:02:15Z",
+        "message": "Update facade docblocks",
+        "url": "https://github.com/laravel/framework/commit/2a56fe6d59b854d27f43acb90938cc7416ed8733"
+    }
+]

@@ -1,0 +1,242 @@
+[
+    {
+        "sha": "956b8c585591b401a543e409accb163eeaaa1193",
+        "author": "dirkf",
+        "email": "fieldhouse@gmx.net",
+        "date": "2025-11-26T01:29:22Z",
+        "message": "[YouTube] Bug-fix for `c1f5c3274a`",
+        "url": "https://github.com/ytdl-org/youtube-dl/commit/956b8c585591b401a543e409accb163eeaaa1193"
+    },
+    {
+        "sha": "d5f561166b9decff97ad6657cc992c7b0fd1aba2",
+        "author": "dirkf",
+        "email": "fieldhouse@gmx.net",
+        "date": "2025-11-26T01:16:35Z",
+        "message": "[core] Re-work format_note display in format list with abbreviated codec name",
+        "url": "https://github.com/ytdl-org/youtube-dl/commit/d5f561166b9decff97ad6657cc992c7b0fd1aba2"
+    },
+    {
+        "sha": "d0283f5385acd21dd51afa2102844c8cb2fe6b62",
+        "author": "dirkf",
+        "email": "fieldhouse@gmx.net",
+        "date": "2025-11-20T17:29:25Z",
+        "message": "[YouTube] Revert forcing player JS by default\n\n* still leaving the parameters in place\n\nthx bashonly for confirming this suggestion",
+        "url": "https://github.com/ytdl-org/youtube-dl/commit/d0283f5385acd21dd51afa2102844c8cb2fe6b62"
+    },
+    {
+        "sha": "6315f4b1dfaa735f3ce07ddbcde5e1e2d3b8cef8",
+        "author": "dirkf",
+        "email": "fieldhouse@gmx.net",
+        "date": "2025-11-19T20:38:14Z",
+        "message": "[utils] Support additional codecs and dynamic_range",
+        "url": "https://github.com/ytdl-org/youtube-dl/commit/6315f4b1dfaa735f3ce07ddbcde5e1e2d3b8cef8"
+    },
+    {
+        "sha": "aeb1254fcf89ea43876522371ca6d1e3c2bff25f",
+        "author": "dirkf",
+        "email": "fieldhouse@gmx.net",
+        "date": "2025-11-04T21:52:43Z",
+        "message": "[YouTube] Fix playlist thumbnail extraction\n\nThx seproDev, yt-dlp/yt-dlp#11615",
+        "url": "https://github.com/ytdl-org/youtube-dl/commit/aeb1254fcf89ea43876522371ca6d1e3c2bff25f"
+    },
+    {
+        "sha": "25890f2ad102f9bfaaea7b725e4977c521908680",
+        "author": "dirkf",
+        "email": "fieldhouse@gmx.net",
+        "date": "2025-11-04T21:45:12Z",
+        "message": "[YouTube] Improve detection of geo-restriction\n\nThx yt-dlp",
+        "url": "https://github.com/ytdl-org/youtube-dl/commit/25890f2ad102f9bfaaea7b725e4977c521908680"
+    },
+    {
+        "sha": "d65882a0220b5c7dd25b16b90ed6d273aac264d9",
+        "author": "dirkf",
+        "email": "fieldhouse@gmx.net",
+        "date": "2025-11-04T21:43:43Z",
+        "message": "[YouTube] Improve mark_watched()\n\nThx: Brett824, yt-dlp/yt-dlp#4146",
+        "url": "https://github.com/ytdl-org/youtube-dl/commit/d65882a0220b5c7dd25b16b90ed6d273aac264d9"
+    },
+    {
+        "sha": "39378f7b5cdd6e11ff0ba6ec0f6b4a7788cfea9a",
+        "author": "dirkf",
+        "email": "fieldhouse@gmx.net",
+        "date": "2025-11-04T21:32:06Z",
+        "message": "[YouTube] Fix incorrect chapter extraction\n\n* align `_get_text()` with yt-dlp (thx, passim) at last",
+        "url": "https://github.com/ytdl-org/youtube-dl/commit/39378f7b5cdd6e11ff0ba6ec0f6b4a7788cfea9a"
+    },
+    {
+        "sha": "6f5d4c32897090d7222df451d09e00cf2e9994e1",
+        "author": "dirkf",
+        "email": "fieldhouse@gmx.net",
+        "date": "2025-11-04T21:28:46Z",
+        "message": "[YouTube] Improve targeting of pre-roll wait\n\nExperimental for now.\nThx: yt-dlp/yt-dlp#14646",
+        "url": "https://github.com/ytdl-org/youtube-dl/commit/6f5d4c32897090d7222df451d09e00cf2e9994e1"
+    },
+    {
+        "sha": "5d445f8c5fff7d2cf495d4b20ca41526350b3513",
+        "author": "dirkf",
+        "email": "fieldhouse@gmx.net",
+        "date": "2025-11-04T20:58:12Z",
+        "message": "[YouTube] Re-work client selection\n\n* use `android_sdkless` by default\n* use `web_safari` (HLS only) if logged in\n* skip any non-HLS format with n-challenge",
+        "url": "https://github.com/ytdl-org/youtube-dl/commit/5d445f8c5fff7d2cf495d4b20ca41526350b3513"
+    },
+    {
+        "sha": "a1e2c7d90b2a5e67acf489483d5e583e588a272a",
+        "author": "dirkf",
+        "email": "fieldhouse@gmx.net",
+        "date": "2025-11-04T20:52:15Z",
+        "message": "[YouTube] Add further InnerTube clients\n\nFWIW: android-sdkless, tv_downgraded, web_creator\nThx yt-dlp passim",
+        "url": "https://github.com/ytdl-org/youtube-dl/commit/a1e2c7d90b2a5e67acf489483d5e583e588a272a"
+    },
+    {
+        "sha": "c55ace3c503c7bddb9c25112bd19bea282bbae59",
+        "author": "dirkf",
+        "email": "fieldhouse@gmx.net",
+        "date": "2025-11-04T20:51:08Z",
+        "message": "[YouTube] Use insertion-order-preserving dict for InnerTube client data",
+        "url": "https://github.com/ytdl-org/youtube-dl/commit/c55ace3c503c7bddb9c25112bd19bea282bbae59"
+    },
+    {
+        "sha": "43e3121020c95b6b31e8fe629ef170b448c2ff70",
+        "author": "dirkf",
+        "email": "fieldhouse@gmx.net",
+        "date": "2025-11-04T20:13:19Z",
+        "message": "[utils] Align `parse_duration()` behaviour with yt-dlp\n\n* handle comma-separated long-form durations\n* support : as millisecond separator.",
+        "url": "https://github.com/ytdl-org/youtube-dl/commit/43e3121020c95b6b31e8fe629ef170b448c2ff70"
+    },
+    {
+        "sha": "7a488f7faef0dcb60cab77304313d9eced03987e",
+        "author": "dirkf",
+        "email": "fieldhouse@gmx.net",
+        "date": "2025-11-04T06:22:02Z",
+        "message": "[utils] Stabilise traversal results using `compat_dict`\n\nIn `traverse_obj()`, use `compat_dict` to construct dicts,\nensuring insertion order sort, but`compat_builtin_dict`\nto test for dict-iness...",
+        "url": "https://github.com/ytdl-org/youtube-dl/commit/7a488f7faef0dcb60cab77304313d9eced03987e"
+    },
+    {
+        "sha": "5585d76da68931ca39b3edd137382bed78746251",
+        "author": "dirkf",
+        "email": "fieldhouse@gmx.net",
+        "date": "2025-11-03T20:45:53Z",
+        "message": "[compat] Add `compat_dict`\n\nA dict that preserves insertion order and otherwise resembles the\ndict builtin (if it isn't it) rather than `collections.OrderedDict`.\n\nAlso:\n* compat_builtins_dict: the built-in definition in case `compat_dict`\n  was imported as `dict`\n* compat_dict_items: use instead of `dict.items` to get items from\n  a `compat_dict` in insertion order, if you didn't define `dict` as\n  `compat_dict`.",
+        "url": "https://github.com/ytdl-org/youtube-dl/commit/5585d76da68931ca39b3edd137382bed78746251"
+    },
+    {
+        "sha": "931e15621cadbdeea4e16c533177d749f159b6e3",
+        "author": "dirkf",
+        "email": "fieldhouse@gmx.net",
+        "date": "2025-11-04T23:48:37Z",
+        "message": "[compat] Add `compat_abc_ABC`\n\nBase class for abstract classes",
+        "url": "https://github.com/ytdl-org/youtube-dl/commit/931e15621cadbdeea4e16c533177d749f159b6e3"
+    },
+    {
+        "sha": "27867cc814b60b7a9e95de4e971a3743f33bbd96",
+        "author": "dirkf",
+        "email": "fieldhouse@gmx.net",
+        "date": "2025-11-03T20:41:04Z",
+        "message": "[compat] Add `compat_thread`",
+        "url": "https://github.com/ytdl-org/youtube-dl/commit/27867cc814b60b7a9e95de4e971a3743f33bbd96"
+    },
+    {
+        "sha": "70b40dd1efeb7d4afc7f860ddcaea28455a64d11",
+        "author": "dirkf",
+        "email": "fieldhouse@gmx.net",
+        "date": "2025-11-01T20:37:55Z",
+        "message": "[utils] Add `subs_list_to_dict()` traversal helper\n\nThx: yt-dlp/yt-dlp#10653, etc",
+        "url": "https://github.com/ytdl-org/youtube-dl/commit/70b40dd1efeb7d4afc7f860ddcaea28455a64d11"
+    },
+    {
+        "sha": "a9b4649d928b397a0b9f60fc7f9311e2be57d4b0",
+        "author": "dirkf",
+        "email": "fieldhouse@gmx.net",
+        "date": "2025-11-01T20:35:11Z",
+        "message": "[utils] Apply `partial_application` decorator to existing functions\n\nThx: yt-dlp/yt-dlp#10653 (etc)",
+        "url": "https://github.com/ytdl-org/youtube-dl/commit/a9b4649d928b397a0b9f60fc7f9311e2be57d4b0"
+    },
+    {
+        "sha": "23a848c3141ad2ba1e7bb62708f5ed72ef81c98a",
+        "author": "dirkf",
+        "email": "fieldhouse@gmx.net",
+        "date": "2025-11-01T20:24:43Z",
+        "message": "[utils] Add `partial_application` decorator function\n\nThx: yt-dlp/yt-dlp#10653",
+        "url": "https://github.com/ytdl-org/youtube-dl/commit/23a848c3141ad2ba1e7bb62708f5ed72ef81c98a"
+    },
+    {
+        "sha": "a96a77875023407233bae4111a36d113b756a4e3",
+        "author": "dirkf",
+        "email": "fieldhouse@gmx.net",
+        "date": "2025-10-31T14:27:33Z",
+        "message": "[core] Fix housekeeping for `available_at`",
+        "url": "https://github.com/ytdl-org/youtube-dl/commit/a96a77875023407233bae4111a36d113b756a4e3"
+    },
+    {
+        "sha": "68fe8c1781f6bbfef3aa75cf7746f6508d7ef75c",
+        "author": "dirkf",
+        "email": "fieldhouse@gmx.net",
+        "date": "2025-10-31T13:36:55Z",
+        "message": "[utils] Support traversal helper functions `require`, `value`, `unpack`\n\nThx: yt-dlp/yt-dlp#10653",
+        "url": "https://github.com/ytdl-org/youtube-dl/commit/68fe8c1781f6bbfef3aa75cf7746f6508d7ef75c"
+    },
+    {
+        "sha": "96419fa7064c7f77ccb1909e23150fde603f9f36",
+        "author": "dirkf",
+        "email": "fieldhouse@gmx.net",
+        "date": "2025-10-31T12:20:26Z",
+        "message": "[utils] Support `filter` traversal key\n\nThx yt-dlp/yt-dlp#10653",
+        "url": "https://github.com/ytdl-org/youtube-dl/commit/96419fa7064c7f77ccb1909e23150fde603f9f36"
+    },
+    {
+        "sha": "cca41c9d2ca51fbfdc9a8c16f2f7b049b577300b",
+        "author": "dirkf",
+        "email": "fieldhouse@gmx.net",
+        "date": "2025-10-31T12:09:14Z",
+        "message": "[test] Move dict_get() traversal test to its own class\n\nMatches yt-dlp/yt-dlp#9426",
+        "url": "https://github.com/ytdl-org/youtube-dl/commit/cca41c9d2ca51fbfdc9a8c16f2f7b049b577300b"
+    },
+    {
+        "sha": "bc39e5e6787579b3cb6d1fef3ff5e05e6db0ce71",
+        "author": "dirkf",
+        "email": "fieldhouse@gmx.net",
+        "date": "2025-10-31T12:08:08Z",
+        "message": "[test] Fix test_traversal_morsel for Py 3.14+\n\nThx: yt-dlp/yt-dlp#13471",
+        "url": "https://github.com/ytdl-org/youtube-dl/commit/bc39e5e6787579b3cb6d1fef3ff5e05e6db0ce71"
+    },
+    {
+        "sha": "014ae63a11d6f8647e262ed25d68f1e4aab9ae20",
+        "author": "dirkf",
+        "email": "fieldhouse@gmx.net",
+        "date": "2025-10-30T16:36:45Z",
+        "message": "[test] Support additional args and kwargs in report_warning() mocks",
+        "url": "https://github.com/ytdl-org/youtube-dl/commit/014ae63a11d6f8647e262ed25d68f1e4aab9ae20"
+    },
+    {
+        "sha": "1e109aaee13a30e2a23f982410ffb3e4f73913df",
+        "author": "dirkf",
+        "email": "fieldhouse@gmx.net",
+        "date": "2025-10-17T05:55:27Z",
+        "message": "[workflows/ci] Avoid installing wheel and setuptools with pip\n\nWorks around dependent wheel installation failure with Py 3.4 from 2025-10",
+        "url": "https://github.com/ytdl-org/youtube-dl/commit/1e109aaee13a30e2a23f982410ffb3e4f73913df"
+    },
+    {
+        "sha": "efb4011211f4cfb97894e8d30eace79e90e33c72",
+        "author": "dirkf",
+        "email": "fieldhouse@gmx.net",
+        "date": "2025-10-17T05:24:43Z",
+        "message": "[YouTube] Introduce `_extract_and_report_alerts()` per yt-dlp\n\nFixes #33196.\n\nAlso removing previous `_extract_alerts()` method.",
+        "url": "https://github.com/ytdl-org/youtube-dl/commit/efb4011211f4cfb97894e8d30eace79e90e33c72"
+    },
+    {
+        "sha": "c1f5c3274a0ebc3181fc7094b53815445c154782",
+        "author": "dirkf",
+        "email": "fieldhouse@gmx.net",
+        "date": "2025-10-17T05:22:53Z",
+        "message": "[YouTube] Improve some traversals\n\nPending full alignment with yt-dlp ...",
+        "url": "https://github.com/ytdl-org/youtube-dl/commit/c1f5c3274a0ebc3181fc7094b53815445c154782"
+    },
+    {
+        "sha": "e21ff28f6fb9a9dbb8097b951f6c709af33221f3",
+        "author": "dirkf",
+        "email": "fieldhouse@gmx.net",
+        "date": "2025-10-17T05:20:42Z",
+        "message": "[YouTube] Misc clean-ups from linter, etc",
+        "url": "https://github.com/ytdl-org/youtube-dl/commit/e21ff28f6fb9a9dbb8097b951f6c709af33221f3"
+    }
+]

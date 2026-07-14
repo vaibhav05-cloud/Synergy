@@ -1,0 +1,242 @@
+[
+    {
+        "sha": "9604fd04da85f8ecfa71415efa0a601a976227f7",
+        "author": "Philippe Miossec",
+        "email": "pmiossec@gmail.com",
+        "date": "2023-08-28T10:07:33Z",
+        "message": "chore: updating dependencies\n\n* structuremap 2.6.4.1",
+        "url": "https://github.com/git-tfs/git-tfs/commit/9604fd04da85f8ecfa71415efa0a601a976227f7"
+    },
+    {
+        "sha": "16fa7a3c724326691f522059f26ba5039f8b322c",
+        "author": "dh2i-sam",
+        "email": "61070442+dh2i-sam@users.noreply.github.com",
+        "date": "2024-05-03T07:32:53Z",
+        "message": "Fix handling of renamed branches for clone/fetch (#1493)\n\n* In GitTfsRemote.FetchWithMerge(), apply special handling to initial\r\nbranch commits that are renaming, as rename destinations will have\r\nthese.\r\nIn GitTfsRemote.InitTfsRemoteOfChangeset(), when iterating over branch\r\nancestry, call InitBranch() on the ancestor branch, not the target\r\nbranch.  Also only request fetching of parents for the most distant\r\nancestor.  Also when handling renamed branches, assign the renameResult\r\nfor successors.\r\nIn GitTfsRemote.InitTfsBranch(), pull the initial commit hash out of\r\nrenameResult, if provided.\r\n\r\n---------\r\n\r\nCo-authored-by: Philippe Miossec <pmiossec@gmail.com>",
+        "url": "https://github.com/git-tfs/git-tfs/commit/16fa7a3c724326691f522059f26ba5039f8b322c"
+    },
+    {
+        "sha": "98648bf895ecbc2588343144832747aab26f59f4",
+        "author": "Philippe Miossec",
+        "email": "pmiossec@gmail.com",
+        "date": "2024-04-05T13:04:21Z",
+        "message": "chore: remove deprecated code formatter task",
+        "url": "https://github.com/git-tfs/git-tfs/commit/98648bf895ecbc2588343144832747aab26f59f4"
+    },
+    {
+        "sha": "193b9cf5d30a4f74ec161336ac84378ad8775206",
+        "author": "Philippe Miossec",
+        "email": "pmiossec@gmail.com",
+        "date": "2024-04-05T12:35:41Z",
+        "message": "Update libgit2sharp to v0.30",
+        "url": "https://github.com/git-tfs/git-tfs/commit/193b9cf5d30a4f74ec161336ac84378ad8775206"
+    },
+    {
+        "sha": "c15705acaa2ff05dd3426e6be205b01afa4a0a14",
+        "author": "Philippe Miossec",
+        "email": "pmiossec@gmail.com",
+        "date": "2024-04-05T12:12:06Z",
+        "message": "test: update to xunit 2.7\n\nrequired adaptation: https://github.com/xunit/xunit/issues/2744",
+        "url": "https://github.com/git-tfs/git-tfs/commit/c15705acaa2ff05dd3426e6be205b01afa4a0a14"
+    },
+    {
+        "sha": "a0838b0390a958e2e34391687424414405f9f4b0",
+        "author": "Philippe Miossec",
+        "email": "pmiossec@gmail.com",
+        "date": "2024-04-05T11:13:15Z",
+        "message": "Revert \"chore: Downgrade (again) Cake.Git preventing doing a release\"\n\nThis reverts commit ed1cd0903352ae74b4a31ebcdc2c55ddcaa4fc02\n\nbecause that was not the cause of the problem",
+        "url": "https://github.com/git-tfs/git-tfs/commit/a0838b0390a958e2e34391687424414405f9f4b0"
+    },
+    {
+        "sha": "e1941749e1f3431f3f15300ce3b9d40575d440a9",
+        "author": "Philippe Miossec",
+        "email": "pmiossec@gmail.com",
+        "date": "2023-08-28T10:00:32Z",
+        "message": "chore: target .net v4.8\n\nbecause it is here to stay for a long time (and runtime is provided by windows update on win >=10)",
+        "url": "https://github.com/git-tfs/git-tfs/commit/e1941749e1f3431f3f15300ce3b9d40575d440a9"
+    },
+    {
+        "sha": "614676a98e5c48a9d51e78c25baeb2e5989da32d",
+        "author": "Philippe Miossec",
+        "email": "pmiossec@gmail.com",
+        "date": "2024-04-05T10:40:05Z",
+        "message": "chore: remove unnecessary usings\n\nnow that using <ImplicitUsings>",
+        "url": "https://github.com/git-tfs/git-tfs/commit/614676a98e5c48a9d51e78c25baeb2e5989da32d"
+    },
+    {
+        "sha": "6e39ab3277179e9c99383dc09db7571bf4cb5cdd",
+        "author": "Philippe Miossec",
+        "email": "pmiossec@gmail.com",
+        "date": "2024-04-05T10:02:59Z",
+        "message": "build: use a Directory.Build.props file",
+        "url": "https://github.com/git-tfs/git-tfs/commit/6e39ab3277179e9c99383dc09db7571bf4cb5cdd"
+    },
+    {
+        "sha": "be035b0e8fd2d2f915a908a839b6278884413387",
+        "author": "Marian Dolinský",
+        "email": "mariandolinsky@outlook.com",
+        "date": "2024-04-04T19:55:05Z",
+        "message": "Fix typo and formatting",
+        "url": "https://github.com/git-tfs/git-tfs/commit/be035b0e8fd2d2f915a908a839b6278884413387"
+    },
+    {
+        "sha": "32b187f2f34831d66fca4ab5bfe13e1833a53c72",
+        "author": "Marian Dolinský",
+        "email": "mariandolinsky@outlook.com",
+        "date": "2024-04-04T16:57:01Z",
+        "message": "fix: Fix handling `description` file into bare repo",
+        "url": "https://github.com/git-tfs/git-tfs/commit/32b187f2f34831d66fca4ab5bfe13e1833a53c72"
+    },
+    {
+        "sha": "3d788906ffd90bf3866795999e9516bcb532015b",
+        "author": "Marian Dolinský",
+        "email": "mariandolinsky@outlook.com",
+        "date": "2024-04-04T15:55:18Z",
+        "message": "chore(build.ps1): cleanup\n\n* Remove not-existent variable reference\n* Remove unused parameters",
+        "url": "https://github.com/git-tfs/git-tfs/commit/3d788906ffd90bf3866795999e9516bcb532015b"
+    },
+    {
+        "sha": "0ade34ecb1cbc34aa98c978339dece5352cf16df",
+        "author": "Git-tfs release bot",
+        "email": "no-reply@git-tfs.com",
+        "date": "2024-04-04T16:55:03Z",
+        "message": "Prepare release v0.34",
+        "url": "https://github.com/git-tfs/git-tfs/commit/0ade34ecb1cbc34aa98c978339dece5352cf16df"
+    },
+    {
+        "sha": "ed1cd0903352ae74b4a31ebcdc2c55ddcaa4fc02",
+        "author": "Philippe Miossec",
+        "email": "pmiossec@gmail.com",
+        "date": "2024-04-04T16:41:21Z",
+        "message": "chore: Downgrade (again) Cake.Git preventing doing a release\n\nwith error: \"too many redirects or authentication replays\"",
+        "url": "https://github.com/git-tfs/git-tfs/commit/ed1cd0903352ae74b4a31ebcdc2c55ddcaa4fc02"
+    },
+    {
+        "sha": "538950c3110578b658aea0c6597ffff37a983575",
+        "author": "Philippe Miossec",
+        "email": "pmiossec@gmail.com",
+        "date": "2024-04-04T15:58:17Z",
+        "message": "chore: Downgrade Cake.Git preventing doing a release\n\ndue to a bug in LibGit2Sharp\nDetails https://github.com/cake-contrib/Cake_Git/issues/151#issuecomment-906157528",
+        "url": "https://github.com/git-tfs/git-tfs/commit/538950c3110578b658aea0c6597ffff37a983575"
+    },
+    {
+        "sha": "738a165cbf0410bddacdeeb6abd07222771ac46f",
+        "author": "Philippe Miossec",
+        "email": "pmiossec@gmail.com",
+        "date": "2024-04-04T15:34:43Z",
+        "message": "Merge pull request #1486 from pmiossec/update_ci_dependencies\n\nchore: Update ci dependencies",
+        "url": "https://github.com/git-tfs/git-tfs/commit/738a165cbf0410bddacdeeb6abd07222771ac46f"
+    },
+    {
+        "sha": "6325fd206e4227d2753aa8562989208f0d8db5c2",
+        "author": "Philippe Miossec",
+        "email": "pmiossec@gmail.com",
+        "date": "2023-08-28T13:25:23Z",
+        "message": "build: run dotnet restore\n\nto avoid error:\nerror NETSDK1004: Assets file 'src\\GitTfs.Vs2015\\obj\\project.assets.json' not found. Run a NuGet package restore to generate this file.",
+        "url": "https://github.com/git-tfs/git-tfs/commit/6325fd206e4227d2753aa8562989208f0d8db5c2"
+    },
+    {
+        "sha": "a20f0aef9748db6f5be6b9608238bd26a0198e04",
+        "author": "Philippe Miossec",
+        "email": "pmiossec@gmail.com",
+        "date": "2023-08-28T10:47:02Z",
+        "message": "build: fix cake parameters syntax",
+        "url": "https://github.com/git-tfs/git-tfs/commit/a20f0aef9748db6f5be6b9608238bd26a0198e04"
+    },
+    {
+        "sha": "40f37ea2fe82429f58ddf0939ac883cd2b5e527d",
+        "author": "Philippe Miossec",
+        "email": "pmiossec@gmail.com",
+        "date": "2023-08-28T10:38:20Z",
+        "message": "build: remove AppVeyor parameters not needed\n\nand that makes the build fail",
+        "url": "https://github.com/git-tfs/git-tfs/commit/40f37ea2fe82429f58ddf0939ac883cd2b5e527d"
+    },
+    {
+        "sha": "32f95ed9f97d14b66836781c522ed8c1c7cb6add",
+        "author": "Philippe Miossec",
+        "email": "pmiossec@gmail.com",
+        "date": "2023-08-28T10:24:12Z",
+        "message": "build: fix AppVeyor parameters syntax",
+        "url": "https://github.com/git-tfs/git-tfs/commit/32f95ed9f97d14b66836781c522ed8c1c7cb6add"
+    },
+    {
+        "sha": "a19c29dc4215083887f9784979a3bf5b9dffdc23",
+        "author": "Philippe Miossec",
+        "email": "pmiossec@gmail.com",
+        "date": "2023-08-28T10:15:59Z",
+        "message": "chore: update AppVeyor image used",
+        "url": "https://github.com/git-tfs/git-tfs/commit/a19c29dc4215083887f9784979a3bf5b9dffdc23"
+    },
+    {
+        "sha": "7b5b3000285e8200da1de179dd12aef74b34692e",
+        "author": "Philippe Miossec",
+        "email": "pmiossec@gmail.com",
+        "date": "2023-08-28T10:13:02Z",
+        "message": "fix: fix build using `./build.ps1`\n\nbecause it was using an old version of msbuild by default\n(required cake update to v1.3.0 for VS2022 support https://cakebuild.net/blog/2021/10/cake-v1.3.0-released )",
+        "url": "https://github.com/git-tfs/git-tfs/commit/7b5b3000285e8200da1de179dd12aef74b34692e"
+    },
+    {
+        "sha": "68d9c760bdca409662eea331d95df38ad41bb8ab",
+        "author": "Philippe Miossec",
+        "email": "pmiossec@gmail.com",
+        "date": "2023-08-28T10:05:13Z",
+        "message": "chore: update cake to the last compatible version\n\nto be able to specify the `MSBuildToolVersion.VS2022`\nas the msbuild version to use (i.e v17)\notherwise the old v4 was used by default\nand was not able to build the project",
+        "url": "https://github.com/git-tfs/git-tfs/commit/68d9c760bdca409662eea331d95df38ad41bb8ab"
+    },
+    {
+        "sha": "7f46bb3d0a347fd283395abe17a4afd6446ecfb7",
+        "author": "Philippe Miossec",
+        "email": "pmiossec@gmail.com",
+        "date": "2023-08-28T09:56:09Z",
+        "message": "chore: update to last paket version",
+        "url": "https://github.com/git-tfs/git-tfs/commit/7f46bb3d0a347fd283395abe17a4afd6446ecfb7"
+    },
+    {
+        "sha": "6f2c84ef917269b065b410050ddee3353d85dfca",
+        "author": "Philippe Miossec",
+        "email": "pmiossec@gmail.com",
+        "date": "2024-04-04T14:52:31Z",
+        "message": "chore: changelog",
+        "url": "https://github.com/git-tfs/git-tfs/commit/6f2c84ef917269b065b410050ddee3353d85dfca"
+    },
+    {
+        "sha": "3d49f26005abb46fbbf9497eeea625fd5bbc1235",
+        "author": "Philippe Miossec",
+        "email": "pmiossec@gmail.com",
+        "date": "2024-04-04T14:44:05Z",
+        "message": "refactor: convert to interpolated strings",
+        "url": "https://github.com/git-tfs/git-tfs/commit/3d49f26005abb46fbbf9497eeea625fd5bbc1235"
+    },
+    {
+        "sha": "4d665823b0025afe62813a98d2ddee7c86fc2f76",
+        "author": "Philippe Miossec",
+        "email": "pmiossec@gmail.com",
+        "date": "2024-04-04T14:37:06Z",
+        "message": "refactor: clean namespaces",
+        "url": "https://github.com/git-tfs/git-tfs/commit/4d665823b0025afe62813a98d2ddee7c86fc2f76"
+    },
+    {
+        "sha": "076a9de035d6bfb8e34ea3f8e9ff722f87f95b8c",
+        "author": "Philippe Miossec",
+        "email": "pmiossec@gmail.com",
+        "date": "2024-04-04T14:22:12Z",
+        "message": "refactor: convert to use Expression Bodies",
+        "url": "https://github.com/git-tfs/git-tfs/commit/076a9de035d6bfb8e34ea3f8e9ff722f87f95b8c"
+    },
+    {
+        "sha": "414f9859811a8670dd6edacaea2fdcc1121a78fe",
+        "author": "Philippe Miossec",
+        "email": "pmiossec@gmail.com",
+        "date": "2024-04-04T13:15:28Z",
+        "message": "refactor(Wrappers): convert to use Expression Bodies",
+        "url": "https://github.com/git-tfs/git-tfs/commit/414f9859811a8670dd6edacaea2fdcc1121a78fe"
+    },
+    {
+        "sha": "62a9a38cf25bbf4718f1aabe356467b83da7334e",
+        "author": "Philippe Miossec",
+        "email": "pmiossec@gmail.com",
+        "date": "2024-04-04T12:57:24Z",
+        "message": "fix(Verify): fix crash when unwrapping something already unwrapped\n\n* use unwarpped _item because we already have it\n* add a check in case it happen again to return already unwrapped item\n\nFixes #1483",
+        "url": "https://github.com/git-tfs/git-tfs/commit/62a9a38cf25bbf4718f1aabe356467b83da7334e"
+    }
+]

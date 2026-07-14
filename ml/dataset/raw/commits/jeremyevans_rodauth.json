@@ -1,0 +1,242 @@
+[
+    {
+        "sha": "8471e32e232294313d8545dcfa6b7c0ce21266c7",
+        "author": "Jeremy Evans",
+        "email": "code@jeremyevans.net",
+        "date": "2026-07-12T16:15:50Z",
+        "message": "Fix instance_variables_to_inspect place\n\nPreviously, it operating in the Roda scope, not in Rodauth scope.\nWhile it's a good idea in Roda scope (at least when the Roda\nshape_friendly plugin is used), that change should be made in Roda.\nWe should only make the change for Rodauth scope, so move this to\nBase. Additionally, add a spec for it (the spec is actually what\ncaught this issue), and move the nocov markers to only contain the\nif.",
+        "url": "https://github.com/jeremyevans/rodauth/commit/8471e32e232294313d8545dcfa6b7c0ce21266c7"
+    },
+    {
+        "sha": "4471bbcc90977ace68e50ccd33cf38511c2ce24a",
+        "author": "Janko Marohnić",
+        "email": "janko.marohnic@gmail.com",
+        "date": "2026-07-12T11:09:23Z",
+        "message": "Exclude nil instance variables from `#inspect` output on Ruby 4+",
+        "url": "https://github.com/jeremyevans/rodauth/commit/4471bbcc90977ace68e50ccd33cf38511c2ce24a"
+    },
+    {
+        "sha": "643ace6a8abfe82c25f4caa459ba3141cb025014",
+        "author": "Jeremy Evans",
+        "email": "code@jeremyevans.net",
+        "date": "2026-07-10T21:28:59Z",
+        "message": "Work with Roda shape_friendly plugin\n\nThis sets the SCOPE_INSTANCE_VARIABLES plugin constant so that\nthe Roda scope instance variables that rodauth uses are set to\nnil on initialization.",
+        "url": "https://github.com/jeremyevans/rodauth/commit/643ace6a8abfe82c25f4caa459ba3141cb025014"
+    },
+    {
+        "sha": "5d5255fd7135a210873d2dc0027a0e67657174a1",
+        "author": "Jeremy Evans",
+        "email": "code@jeremyevans.net",
+        "date": "2026-07-10T21:21:08Z",
+        "message": "Add Rodauth::OPTS empty frozen hash\n\nThis helps avoid default hash allocations. The default hashes\nshouldn't be modified, and this helps detect cases where they are.\n\nAdditionally, places that use {}.freeze switch to using OPTS.\nOn Ruby 3.4+, these places don't allocate, but this helps avoid\nallocations on earlier versions.",
+        "url": "https://github.com/jeremyevans/rodauth/commit/5d5255fd7135a210873d2dc0027a0e67657174a1"
+    },
+    {
+        "sha": "1b1fe6240e618adfdade786c22bbd7375ffee853",
+        "author": "Jeremy Evans",
+        "email": "code@jeremyevans.net",
+        "date": "2026-07-10T21:13:20Z",
+        "message": "Remove unnecessary to_sym calls\n\nThis hasn't been needed since Ruby 1.8 support was dropped.",
+        "url": "https://github.com/jeremyevans/rodauth/commit/1b1fe6240e618adfdade786c22bbd7375ffee853"
+    },
+    {
+        "sha": "0d000a6e1c87c38b9aebf85ac0f5a2fed5fc2ab9",
+        "author": "Jeremy Evans",
+        "email": "code@jeremyevans.net",
+        "date": "2026-07-10T21:09:48Z",
+        "message": "Add transaction_opts configuration method for defining transaction options\n\nThe expected use case is for setting transaction isolation levels,\nbut it can be used for other things.",
+        "url": "https://github.com/jeremyevans/rodauth/commit/0d000a6e1c87c38b9aebf85ac0f5a2fed5fc2ab9"
+    },
+    {
+        "sha": "2732c44d1095f47ba552666a38adf87bd8c4732e",
+        "author": "Jeremy Evans",
+        "email": "code@jeremyevans.net",
+        "date": "2026-06-10T21:04:34Z",
+        "message": "Warn if feature configuration methods define methods that the feature does not implement\n\nIn this case, it is likely that the feature configuration methods do\nnot operate as expected. If a feature really needs a configuration\nmethod to define a method that it does not itself define, they can\nuse the new allowed_undefined_configuration_methods accessor. The\njson feature uses it to allow configuration of the only_json? method,\nwhich is defined in the base feature.\n\nThese warnings found all of the issues solved in the recent commits.",
+        "url": "https://github.com/jeremyevans/rodauth/commit/2732c44d1095f47ba552666a38adf87bd8c4732e"
+    },
+    {
+        "sha": "6a4caa2fb285f58b2618b172cf46f0ae9afe96ee",
+        "author": "Jeremy Evans",
+        "email": "code@jeremyevans.net",
+        "date": "2026-06-10T20:56:28Z",
+        "message": "Make get_reset_password_key configuration method in reset_password feature work as expected\n\nPreviously, the method defined by the configuration method was not\ncalled. This changes get_password_reset_key to call it.",
+        "url": "https://github.com/jeremyevans/rodauth/commit/6a4caa2fb285f58b2618b172cf46f0ae9afe96ee"
+    },
+    {
+        "sha": "3f45ec2c8be688ba1c01fe03c978112fa83a331f",
+        "author": "Jeremy Evans",
+        "email": "code@jeremyevans.net",
+        "date": "2026-06-10T20:54:33Z",
+        "message": "Make unlock_account_key configuration method in lockout feature work as expected\n\nPreviously, the configuration method defined a method that was not\ncalled. This changes the implementation to call the defined method.",
+        "url": "https://github.com/jeremyevans/rodauth/commit/3f45ec2c8be688ba1c01fe03c978112fa83a331f"
+    },
+    {
+        "sha": "374614191e7efa946d6d19934d42137ff42154a8",
+        "author": "Jeremy Evans",
+        "email": "code@jeremyevans.net",
+        "date": "2026-06-10T20:52:18Z",
+        "message": "Make sms_request_response configuration method in sms_codes feature work as expected\n\nThis was the opposite of convert_token_id, where the default method is\nprefixed with an underscore, but the configuration method created\na method not prefixed by an underscore.",
+        "url": "https://github.com/jeremyevans/rodauth/commit/374614191e7efa946d6d19934d42137ff42154a8"
+    },
+    {
+        "sha": "c4ef452071e2363dc5df0332cbd61f5b0702e013",
+        "author": "Jeremy Evans",
+        "email": "code@jeremyevans.net",
+        "date": "2026-06-10T20:50:32Z",
+        "message": "Make convert_token_id configuration method work as expected\n\nPreviously, convert_token_id was defined as an auth_private_method,\nso it defined a method that started with an underscore, but the\nactual method does not start with an underscore, so using the\nconfiguration method defined an unused method.",
+        "url": "https://github.com/jeremyevans/rodauth/commit/c4ef452071e2363dc5df0332cbd61f5b0702e013"
+    },
+    {
+        "sha": "fe7f2fd00dc381730812792078037e6c69aec98d",
+        "author": "Jeremy Evans",
+        "email": "code@jeremyevans.net",
+        "date": "2026-06-08T16:04:40Z",
+        "message": "Bump version to 2.44.0",
+        "url": "https://github.com/jeremyevans/rodauth/commit/fe7f2fd00dc381730812792078037e6c69aec98d"
+    },
+    {
+        "sha": "fdd4314526f830b67318a75a026272a77187773e",
+        "author": "Jeremy Evans",
+        "email": "code@jeremyevans.net",
+        "date": "2026-06-01T14:14:44Z",
+        "message": "Add nocov markers around code for older rack versions",
+        "url": "https://github.com/jeremyevans/rodauth/commit/fdd4314526f830b67318a75a026272a77187773e"
+    },
+    {
+        "sha": "be6daa898d3d5d8eabc091103729cec0346e9f69",
+        "author": "Jeremy Evans",
+        "email": "code@jeremyevans.net",
+        "date": "2026-06-01T14:08:50Z",
+        "message": "Update CHANGELOG",
+        "url": "https://github.com/jeremyevans/rodauth/commit/be6daa898d3d5d8eabc091103729cec0346e9f69"
+    },
+    {
+        "sha": "9cb5bf05c9560c9df7dee88ca56a7dbd2b0bb3e0",
+        "author": "Yuki Fukuma",
+        "email": "fukuma21@gmail.com",
+        "date": "2026-06-01T02:04:57Z",
+        "message": "Conditionally require rack in base feature so Rack.release is defined",
+        "url": "https://github.com/jeremyevans/rodauth/commit/9cb5bf05c9560c9df7dee88ca56a7dbd2b0bb3e0"
+    },
+    {
+        "sha": "6018eb0ce784ca2a00fc7b9ee4e39be9a5e9b8a3",
+        "author": "Jeremy Evans",
+        "email": "code@jeremyevans.net",
+        "date": "2026-05-28T19:21:08Z",
+        "message": "Clear other active sessions when first multifactor authentication method is added\n\nWhen adding SMS, TOTP, or WebAuthn authentication, if two factor\nauthentication is not already setup, and the active_sessions feature\nis in use, clear other active sessions. This prevents an active\nsession that was only single factor authenticated from being valid\nwhen two factor authentication is enabled.\n\nWhile the previous behavior is not considered a vulnerability, since\nthe session was fully authenticated when it was created, this seems\nlike a more secure default.",
+        "url": "https://github.com/jeremyevans/rodauth/commit/6018eb0ce784ca2a00fc7b9ee4e39be9a5e9b8a3"
+    },
+    {
+        "sha": "67948f992a830e01594f5fee56fa394d9f5ce4af",
+        "author": "Jeremy Evans",
+        "email": "code@jeremyevans.net",
+        "date": "2026-05-27T00:09:46Z",
+        "message": "Use a shape-friendly approach on Ruby 3.2 with YJIT available\n\nThis changes Rodauth::Auth classes to use a shape-friendly approach\nwhen YJIT is available. It assumes that if you care about performance,\nyou will be using YJIT if it is available, and using Ruby 3.2+.\nOn Ruby <3.2 or when YJIT is not available, the shape friendly\napproach is not used, so the only instance variable set by default\nis `@scope` (as it was before).\n\nThis works by tracking which instance variables are used by each\nfeature, using the new uses_instance_variables feature method.  When\ncreating a new Rodauth::Auth instance, the instance variables used by\nall of the features in the configuration are set to nil (which is\nfast if you are using YJIT). For instance variables set manually\ninside a specific Rodauth configuration, the uses_instance_variables\nmethod can also be used.\n\nauth_cached_method previously used a non-shape-friendly approach,\nbecause it checked whether an instance variable was defined.\ncached_auth_method has been added to replace it. cached_auth_method\nassumes that a nil instance variable value indicates the instance\nvariable has not been cached, and any non-nil value indicates it\nhas been cached.  This only works for cases where the cached value\ncannot be nil. The sms_codes feature had a case using\nauth_cached_method where the cached value could be nil. This\nreplaces it with manual caching, using false to indicate a cached\nnegative value. The use of false for negative caching is also used\nin the http_basic_auth and otp features. In the internal_request\nfeature, the `@internal_request_return_value` could legitimately be\neither nil or false, so that uses a\n`@internal_request_return_value_set` instance variable to track\nwhether the `@internal_request_return_value` was set or not.\n\nCases previously using `if defined?(@iv)` now use `unless @iv.nil?`\nor `if @iv`. There are no remaining uses of\n`remove_instance_variable`, and the only remaining use of\n`instance_variable_defined?` is in the soft-deprecated\n`auth_cached_method` method.\n\nIn the json feature, json_request? previously returned an integer;\nit now returns true or false.",
+        "url": "https://github.com/jeremyevans/rodauth/commit/67948f992a830e01594f5fee56fa394d9f5ce4af"
+    },
+    {
+        "sha": "490384cae55ddd118a647a4ffdf1465c853748fd",
+        "author": "Jeremy Evans",
+        "email": "code@jeremyevans.net",
+        "date": "2026-05-25T17:13:48Z",
+        "message": "Add Add JRuby 10.1 to CI",
+        "url": "https://github.com/jeremyevans/rodauth/commit/490384cae55ddd118a647a4ffdf1465c853748fd"
+    },
+    {
+        "sha": "665751bf721fc023123f8630f632b55f9827500a",
+        "author": "Tomás Miguez",
+        "email": "tmiguez@fu.do",
+        "date": "2026-04-30T18:45:26Z",
+        "message": "Fix typos in README.rdoc",
+        "url": "https://github.com/jeremyevans/rodauth/commit/665751bf721fc023123f8630f632b55f9827500a"
+    },
+    {
+        "sha": "0ccc349af97f4ca867e9b8de1e82611dcf75edf4",
+        "author": "Jeremy Evans",
+        "email": "code@jeremyevans.net",
+        "date": "2026-04-28T02:27:22Z",
+        "message": "Unbreak CI on Ruby 2.4/2.5\n\nCI for these Ruby versions is currently broken due to a temporary\nissue in Rack breaking support in these Ruby versions.\n\nOnly test rack-head on Ruby 4.0+.\n\nUpdate CHANGELOG.",
+        "url": "https://github.com/jeremyevans/rodauth/commit/0ccc349af97f4ca867e9b8de1e82611dcf75edf4"
+    },
+    {
+        "sha": "42d07363207b6be4ff3ece9a08446f27b3bef7bb",
+        "author": "Jonas Mueller",
+        "email": "jonas@tigger.cloud",
+        "date": "2026-04-20T05:56:36Z",
+        "message": "Add after_no_matching_login hook\n\nIn order to log failed login attempts, add a callback for a non-matching logins.\n\nUsage:\n\n    after_no_matching_login do\n      logger.info \"Failed login attempt for #{login_param_value}\"\n    end",
+        "url": "https://github.com/jeremyevans/rodauth/commit/42d07363207b6be4ff3ece9a08446f27b3bef7bb"
+    },
+    {
+        "sha": "d9c82c88d7fe8611b4d3e070d3a72d99b9f08ce8",
+        "author": "Jeremy Evans",
+        "email": "code@jeremyevans.net",
+        "date": "2026-03-20T14:51:45Z",
+        "message": "Fix web link to reset_password_verifies_account feature",
+        "url": "https://github.com/jeremyevans/rodauth/commit/d9c82c88d7fe8611b4d3e070d3a72d99b9f08ce8"
+    },
+    {
+        "sha": "6236811913899dba4a67b0d8577f0896de709c63",
+        "author": "Jeremy Evans",
+        "email": "code@jeremyevans.net",
+        "date": "2026-03-20T14:32:02Z",
+        "message": "Bump version to 2.43.0",
+        "url": "https://github.com/jeremyevans/rodauth/commit/6236811913899dba4a67b0d8577f0896de709c63"
+    },
+    {
+        "sha": "2c9c07d12be05de8d2dbb9e667110e8160688fde",
+        "author": "Jeremy Evans",
+        "email": "code@jeremyevans.net",
+        "date": "2026-03-18T17:41:00Z",
+        "message": "Use jsonb as json type in migrations on SQLite 3.45+\n\nThis doesn't actually matter except for documentation purposes,\nbecause SQLite doesn't treat json and jsonb differently.\n\nWhile here, have MySQL use the json type when testing in CI.",
+        "url": "https://github.com/jeremyevans/rodauth/commit/2c9c07d12be05de8d2dbb9e667110e8160688fde"
+    },
+    {
+        "sha": "e62ee062112e1a9739a8781025324df821962d0c",
+        "author": "Jeremy Evans",
+        "email": "code@jeremyevans.net",
+        "date": "2026-03-18T17:32:11Z",
+        "message": "Mention not using foreign key for account_authentication_audit_logs.account_id\n\nIf you are allowing account deletions, you probably shouldn't have\na foreign key in the audit log, as it would mean you would either\nhave to delete the audit log records before deleting the account,\nor you couldn't delete the account.\n\nBy default, Rodauth doesn't support account deletions. The\nclose_account feature does not delete accounts on close by default.\nHowever, it can be configured to do so.",
+        "url": "https://github.com/jeremyevans/rodauth/commit/e62ee062112e1a9739a8781025324df821962d0c"
+    },
+    {
+        "sha": "7184dd87a4c56689201aaef5cd0dd28df7c455a7",
+        "author": "Jeremy Evans",
+        "email": "code@jeremyevans.net",
+        "date": "2026-03-14T20:10:55Z",
+        "message": "Bump copyright year",
+        "url": "https://github.com/jeremyevans/rodauth/commit/7184dd87a4c56689201aaef5cd0dd28df7c455a7"
+    },
+    {
+        "sha": "6ea5a5f65cccec961af975d3ab2b16db26897fb5",
+        "author": "Jeremy Evans",
+        "email": "code@jeremyevans.net",
+        "date": "2026-03-14T20:10:41Z",
+        "message": "Update to actions/checkout@v6",
+        "url": "https://github.com/jeremyevans/rodauth/commit/6ea5a5f65cccec961af975d3ab2b16db26897fb5"
+    },
+    {
+        "sha": "fc8aaf39020cd0f55e516a0e4a4b83e04992b76b",
+        "author": "Jeremy Evans",
+        "email": "code@jeremyevans.net",
+        "date": "2026-02-21T18:42:28Z",
+        "message": "Add reset_password_verifies_account feature\n\nThis moves the related code from the reset_password feature to its own\nfeature, so that users only have to pay the cost for the feature if\nthey are using it.\n\nUpdate the spec to provide 100% coverage.",
+        "url": "https://github.com/jeremyevans/rodauth/commit/fc8aaf39020cd0f55e516a0e4a4b83e04992b76b"
+    },
+    {
+        "sha": "aa7b398877d8bf2bd4a08be9bb6e83a10d1975ea",
+        "author": "Mike Manfrin",
+        "email": "manfrin@gmail.com",
+        "date": "2026-01-28T18:45:59Z",
+        "message": "Removing errant editor autoformatting.",
+        "url": "https://github.com/jeremyevans/rodauth/commit/aa7b398877d8bf2bd4a08be9bb6e83a10d1975ea"
+    },
+    {
+        "sha": "15ed86e4a16a5ad2d38ea030916d66df6609f723",
+        "author": "Mike Manfrin",
+        "email": "manfrin@gmail.com",
+        "date": "2026-01-28T18:39:16Z",
+        "message": "Adding documentation for reset_password_implicily_verifies? option.",
+        "url": "https://github.com/jeremyevans/rodauth/commit/15ed86e4a16a5ad2d38ea030916d66df6609f723"
+    }
+]

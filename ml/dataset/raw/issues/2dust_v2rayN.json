@@ -1,0 +1,358 @@
+[
+    {
+        "id": 4877708073,
+        "number": 9746,
+        "title": "[Feature request]: Accept a list of json configs from subscription links",
+        "state": "closed",
+        "created_at": "2026-07-13T21:22:27Z",
+        "updated_at": "2026-07-14T01:07:04Z",
+        "closed_at": "2026-07-14T01:07:04Z",
+        "author": "irxri",
+        "comments": 1,
+        "labels": [
+            "enhancement"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### 相关问题\n\nAllow subscription links to return a list as `[<json>]` to create multiple custom json configs the same way V2rayNG allows\n\n### 描述你希望的解决方案\n\nhave similar behavior as V2rayNG\n\n### 描述你所考虑的替代方案\n\n_No response_\n\n### 我确认已查询历史issues\n\n- [x] 是",
+        "url": "https://github.com/2dust/v2rayN/issues/9746"
+    },
+    {
+        "id": 4873821349,
+        "number": 9743,
+        "title": "[Feature request]:",
+        "state": "open",
+        "created_at": "2026-07-13T12:55:54Z",
+        "updated_at": "2026-07-13T12:55:54Z",
+        "closed_at": null,
+        "author": "lelegaga",
+        "comments": 0,
+        "labels": [
+            "enhancement"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### 相关问题\n\nXRAY内核TUN模式\n\n### 描述你希望的解决方案\n\nfakeip能否在xray内核开启TUN模式下生效而不是只能sinbox内核才能生效\n\n### 描述你所考虑的替代方案\n\n_No response_\n\n### 我确认已查询历史issues\n\n- [x] 是",
+        "url": "https://github.com/2dust/v2rayN/issues/9743"
+    },
+    {
+        "id": 4871339116,
+        "number": 9741,
+        "title": "[Bug] Active indicator is missing in v2rayN 7.23.4",
+        "state": "closed",
+        "created_at": "2026-07-13T07:19:14Z",
+        "updated_at": "2026-07-14T06:52:23Z",
+        "closed_at": "2026-07-14T06:52:23Z",
+        "author": "alirezarah",
+        "comments": 3,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### 操作系统 / v2rayN / Core 版本\n\nWindows 11 / v2rayN 7.23.4 x64 / Xray Core\n\n### 预期情况\n\nWhen a configuration is activated, an orange \"Active\" label should appear next to the active profile in the server list, as in previous versions.\n\n### 实际情况\n\nThe configuration connects successfully and works normally, but the orange \"Active\" indicator is not displayed next to the active profile.\n\nI cannot find any setting to enable this indicator.\n\n### 复现方法\n\n1. Open v2rayN 7.23.4.\n2. Select any server profile.\n3. Activate the profile.\n4. Check the server list.\n\nThe connection works, but the \"Active\" label does not appear.\n\n### 软件日志\n\nNo error logs. The connection works correctly. This issue is only about the missing Active indicator in the UI.\n\n### 内核日志\n\nI attached a screenshot from an older version showing the expected Active indicator.\nPlease confirm if this feature was removed or if it is a bug in v2rayN 7.23.4.\n\n### 额外信息\n\n_No response_\n\n### 我确认已更新至最新版本\n\n- [x] 是\n\n### 我确认已查询历史issues\n\n- [x] 是\n\n### 我确认系统版本是受支持的\n\n- [x] 是",
+        "url": "https://github.com/2dust/v2rayN/issues/9741"
+    },
+    {
+        "id": 4871279617,
+        "number": 9740,
+        "title": "[Bug]: 更新到 Avalonia 12 后,软件记不住主界面和所有设置窗口的大小",
+        "state": "open",
+        "created_at": "2026-07-13T07:11:41Z",
+        "updated_at": "2026-07-13T07:41:22Z",
+        "closed_at": null,
+        "author": "te225",
+        "comments": 0,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### 操作系统 / v2rayN / Core 版本\n\nv2rayN-windows-64-desktop\n\n### 预期情况\n\n和升级前一样可以记住窗口大小\n\n### 实际情况\n\n 最新的代码记不住软件主界面和所有设置窗口的大小\n对比前后的guiNConfig.json\n发现窗口大小有关的设置会被重置\n\n### 复现方法\n#9148 \n1 调整软件设置菜单中的任意一个设置窗口的大小.关闭后.再次打开,发现大小被重置了\n2 调整软件主界面大小.重启软件,界面大小被重置了\n\n### 软件日志\n\nnull\n\n### 内核日志\n\nnull\n\n### 额外信息\n\n_No response_\n\n### 我确认已更新至最新版本\n\n- [x] 是\n\n### 我确认已查询历史issues\n\n- [x] 是\n\n### 我确认系统版本是受支持的\n\n- [x] 是",
+        "url": "https://github.com/2dust/v2rayN/issues/9740"
+    },
+    {
+        "id": 4871076207,
+        "number": 9739,
+        "title": "[Feature request]: Two issues in v2rayN 7.23.4 routing presets",
+        "state": "closed",
+        "created_at": "2026-07-13T06:41:25Z",
+        "updated_at": "2026-07-14T01:10:29Z",
+        "closed_at": "2026-07-14T01:09:30Z",
+        "author": "alexaesmirnoff-byte",
+        "comments": 2,
+        "labels": [
+            "enhancement"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### 相关问题\n\nThank you for your work on v2rayN!\n\n### 描述你希望的解决方案\n\nI found two issues in **v2rayN for Windows 7.23.4.** \n**Version tested:** \nhttps://github.com/2dust/v2rayN/releases/download/7.23.4/v2rayN-windows-64.zip \n\n**1. Missing routing rule for Russian domains in the \"All except Russia\" preset** \n\nAfter downloading the regional preset for Russia, the predefined routing rule set **\"All except Russia\"** does not contain a direct routing rule for Russian domains (geosite:category-ru). \n\nAs a result, this rule has to be added manually: \n•\t**Remark**: Russian domains direct \n•\t**Domain**: geosite:category-ru \n•\t**outboundTag**: direct \n\nI placed this rule above the existing rule: \n•\t**IP/CID**R: geoip:ru \n•\t**outboundTag**: direct \n\nIt would be helpful if this rule were included in the preset by default. \n\n**2. Built-in routing presets cannot be removed** \n\nThe following built-in routing presets cannot be deleted, even when they are not used:\n •\tV4-全局 (Global)\n •\tV4-绕过大陆 (Whitelist)\n •\tV4-黑名单 (Blacklist) \n\nIt would be useful either to allow users to delete unused built-in presets or to provide an option to hide them. \nThank you!\n\n### 描述你所考虑的替代方案\n\n_No response_\n\n### 我确认已查询历史issues\n\n- [x] 是",
+        "url": "https://github.com/2dust/v2rayN/issues/9739"
+    },
+    {
+        "id": 4869636390,
+        "number": 9738,
+        "title": "[Bug]: Windows 最新版开启 TUN 后无法使用并出现 DNS 请求风暴",
+        "state": "closed",
+        "created_at": "2026-07-13T01:32:54Z",
+        "updated_at": "2026-07-14T06:39:47Z",
+        "closed_at": "2026-07-14T06:39:47Z",
+        "author": "cx8802",
+        "comments": 2,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "### 操作系统 / v2rayN / Core 版本\n\n- 操作系统：Windows x64（Build 26200）\n- v2rayN：7.23.4（当前最新发布版）\n- Core：7.23.4 发布包内置版本\n\n### 预期情况\n\n开启 TUN 模式后，系统网络应能正常通过代理访问；DNS 查询应被正常解析，不应出现持续、大量重复查询。\n\n### 实际情况\n\n在 Windows 上开启 TUN 模式后，网络无法正常使用，同时出现持续的大量 DNS 查询，形成类似 DNS 请求风暴的现象。关闭 TUN 模式后该现象消失。\n\n这与一般的单次 DNS 解析失败不同：开启 TUN 后会持续产生 DNS 请求，影响正常联网，并可能造成额外的 CPU 与网络占用。\n\n### 复现方法\n\n1. 在 Windows 上启动 v2rayN 7.23.4。\n2. 导入可在非 TUN 模式下正常使用的节点。\n3. 确认非 TUN 模式下代理和 DNS 均可正常工作。\n4. 开启 TUN 模式。\n5. 观察到网络无法正常使用，并持续出现大量 DNS 请求。\n6. 关闭 TUN 模式后，DNS 请求风暴停止，网络恢复到非 TUN 模式下的正常状态。\n\n### 软件日志\n\n暂未提供。日志中可能包含节点、服务器地址等敏感信息，因此未直接上传未经脱敏的完整日志。\n\n### 内核日志\n\n暂未提供。主要可观察现象为：开启 TUN 后持续产生大量、重复的 DNS 请求，关闭 TUN 后停止。\n\n### 额外信息\n\n已注意到仓库中的 TUN 模式统一说明 #8977。本报告关注的是最新版 Windows 客户端开启 TUN 后出现持续 DNS 请求风暴并导致 TUN 无法使用的具体表现，希望能够增加失败重试退避、DNS 循环检测，或在网络异常时自动恢复，避免持续产生 DNS 请求。\n\n### 我确认已更新至最新版本\n\n- [x] 是\n\n### 我确认已查询历史issues\n\n- [x] 是\n\n### 我确认系统版本是受支持的\n\n- [x] 是",
+        "url": "https://github.com/2dust/v2rayN/issues/9738"
+    },
+    {
+        "id": 4861794314,
+        "number": 9730,
+        "title": "[Bug]: 出现Unknown Hard Error报错",
+        "state": "open",
+        "created_at": "2026-07-11T10:17:10Z",
+        "updated_at": "2026-07-13T03:28:51Z",
+        "closed_at": null,
+        "author": "noname-nikke",
+        "comments": 3,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### 操作系统 / v2rayN / Core 版本\n\nWindows 11 25H2/7.23.3\n\n### 预期情况\n\n是否与目前版本存在不兼容问题\n\n### 实际情况\n\n使用途中突然出现此情况，之前更新过.NET Runtime<!-- Uploading \"dcdcce6c2e5a85871512e141bdc0fde8.png\"... -->\n\n### 复现方法\n\n每次打开使用会随时突然Unknown Hard Error报错\n\n### 软件日志\n\n2026-07-11 15:26:29.5811-INFO v2rayN start up | v2rayN - V7.23.3 - X64 | F:\\download\\Compressed\\v2rayN-windows-64\\v2rayN-windows-64\\ | F:\\download\\Compressed\\v2rayN-windows-64\\v2rayN-windows-64\\v2rayN.exe | Microsoft Windows NT 10.0.26200.0\n2026-07-11 15:26:29.6120-INFO MigrateProfileExtraGroup: No items to migrate.\n2026-07-11 15:26:30.5842-INFO Setup Scheduled Tasks\n2026-07-11 15:27:21.8183-INFO AppExitAsync Begin\n2026-07-11 15:27:21.9781-INFO AppExitAsync End\n2026-07-11 15:27:21.9872-INFO OnExit\n2026-07-11 15:27:23.5470-INFO v2rayN start up | v2rayN - V7.23.3 - X64 | F:\\download\\Compressed\\v2rayN-windows-64\\v2rayN-windows-64\\ | F:\\download\\Compressed\\v2rayN-windows-64\\v2rayN-windows-64\\v2rayN.exe | Microsoft Windows NT 10.0.26200.0\n2026-07-11 15:27:23.5862-INFO MigrateProfileExtraGroup: No items to migrate.\n2026-07-11 15:27:24.5048-INFO Setup Scheduled Tasks\n2026-07-11 15:28:24.5160-INFO Execute check update\n2026-07-11 15:31:29.3527-INFO v2rayN start up | v2rayN - V7.23.3 - X64 | F:\\download\\Compressed\\v2rayN-windows-64\\v2rayN-windows-64\\ | F:\\download\\Compressed\\v2rayN-windows-64\\v2rayN-windows-64\\v2rayN.exe | Microsoft Windows NT 10.0.26200.0\n2026-07-11 15:31:29.3926-INFO MigrateProfileExtraGroup: No items to migrate.\n2026-07-11 15:31:30.3120-INFO Setup Scheduled Tasks\n2026-07-11 15:32:30.3299-INFO Execute check update\n2026-07-11 15:38:45.3110-INFO v2rayN start up | v2rayN - V7.23.3 - X64 | F:\\download\\Compressed\\v2rayN-windows-64\\v2rayN-windows-64\\ | F:\\download\\Compressed\\v2rayN-windows-64\\v2rayN-windows-64\\v2rayN.exe | Microsoft Windows NT 10.0.26200.0\n2026-07-11 15:38:45.3511-INFO MigrateProfileExtraGroup: No items to migrate.\n2026-07-11 15:38:46.2786-INFO Setup Scheduled Tasks\n2026-07-11 15:38:55.6633-INFO Current_SessionEnding\n2026-07-11 15:38:55.6633-INFO AppExitAsync Begin\n2026-07-11 15:44:50.8596-INFO v2rayN start up | v2rayN - V7.23.3 - X64 | F:\\download\\Compressed\\v2rayN-windows-64\\v2rayN-windows-64\\ | F:\\download\\Compressed\\v2rayN-windows-64\\v2rayN-windows-64\\v2rayN.exe | Microsoft Windows NT 10.0.26200.0\n2026-07-11 15:44:50.8803-INFO MigrateProfileExtraGroup: No items to migrate.\n2026-07-11 15:44:51.9077-INFO Setup Scheduled Tasks\n2026-07-11 15:45:51.9142-INFO Execute check update\n2026-07-11 15:50:10.8869-INFO AppExitAsync Begin\n2026-07-11 15:50:12.0399-INFO AppExitAsync End\n2026-07-11 15:50:12.0476-INFO OnExit\n2026-07-11 15:50:24.2356-INFO v2rayN start up | v2rayN - V7.23.3 - X64 | F:\\download\\Compressed\\v2rayN-windows-64\\v2rayN-windows-64\\ | F:\\download\\Compressed\\v2rayN-windows-64\\v2rayN-windows-64\\v2rayN.exe | Microsoft Windows NT 10.0.26200.0\n2026-07-11 15:50:24.2558-INFO MigrateProfileExtraGroup: No items to migrate.\n2026-07-11 15:50:25.1786-INFO Setup Scheduled Tasks\n2026-07-11 15:51:25.1940-INFO Execute check update\n2026-07-11 17:57:37.2443-INFO v2rayN start up | v2rayN - V7.23.3 - X64 | F:\\download\\Compressed\\v2rayN-windows-64\\v2rayN-windows-64\\ | F:\\download\\Compressed\\v2rayN-windows-64\\v2rayN-windows-64\\v2rayN.exe | Microsoft Windows NT 10.0.26200.0\n2026-07-11 17:57:37.2687-INFO MigrateProfileExtraGroup: No items to migrate.\n2026-07-11 17:57:38.3275-INFO Setup Scheduled Tasks\n2026-07-11 17:58:38.3292-INFO Execute check update\n2026-07-11 18:02:19.6203-INFO v2rayN start up | v2rayN - V7.23.3 - X64 | F:\\download\\Compressed\\v2rayN-windows-64\\v2rayN-windows-64\\ | F:\\download\\Compressed\\v2rayN-windows-64\\v2rayN-windows-64\\v2rayN.exe | Microsoft Windows NT 10.0.26200.0\n2026-07-11 18:02:19.6420-INFO MigrateProfileExtraGroup: No items to migrate.\n2026-07-11 18:02:20.6129-INFO Setup Scheduled Tasks\n2026-07-11 18:03:20.6194-INFO Execute check update\n2026-07-11 18:03:57.9750-INFO v2rayN start up | v2rayN - V7.23.3 - X64 | F:\\download\\Compressed\\v2rayN-windows-64\\v2rayN-windows-64\\ | F:\\download\\Compressed\\v2rayN-windows-64\\v2rayN-windows-64\\v2rayN.exe | Microsoft Windows NT 10.0.26200.0\n2026-07-11 18:03:57.9970-INFO MigrateProfileExtraGroup: No items to migrate.\n2026-07-11 18:03:58.9494-INFO Setup Scheduled Tasks\n2026-07-11 18:04:58.9550-INFO Execute check update\n\n\n### 内核日志\n\n[VLESS] 🇯🇵日本高速05|BGP|CUCM(aws-link23***xyz:443)\nv2rayN - V7.23.3 - X64 | F:\\download\\Compressed\\v2rayN-windows-64\\v2rayN-windows-64\\ | F:\\download\\Compressed\\v2rayN-windows-64\\v2rayN-windows-64\\v2rayN.exe | Microsoft Windows NT 10.0.26200.0\n启动服务 (2026/07/11 18:03:59)...\nXray 26.6.1 (Xray, Penetrates Everything.) 9f96d16 (go1.26.3 windows/amd64)\nA unified platform for anti-censorship.\n2026/07/11 18:03:59.379815 [Info] infra/conf/serial: Reading config: &{Name:config.json Format:json}\n[VLESS] 🇯🇵日本高速05|BGP|CUCM(aws-link23***xyz:443)\n2026/07/11 18:03:59.667284 [Warning] core: Xray 26.6.1 started\n2026/07/11 18:03:59.789440 from 127.0.0.1:4965 accepted //119.255.133.50:443 [socks -> direct]\n2026/07/11 18:03:59.824876 [Warning] [2293000443] app/proxyman/inbound: connection ends > proxy/http: failed to read http request > malformed HTTP request \"\\x16\\x03\\x01\\x02\\x00\\x01\\x00\\x01\\xfc\\x03\\x03`~\\xb7o\\xd8\\x0f\\x18s[\\x8d8Ŵ\\xef\\x84I\\xbc\\xfbHXI\\xa3\\x88\\xdd\\xc5(\\xf5\\xac\\x06!\\xf1\\x12 g\\x9c\\x8c\\xe0\\xba(\\x1dĳ\\xc8]O\\xc8\\xdc\\xc3-/\\xc7QH+\\xfd\\xbc\\x82j\\xd7\\xcdn\\x1c'xz\\x00>\\x13\\x02\\x13\\x03\\x13\\x01\\xc0,\\xc00\\x00\\x9f̨̩̪\\xc0+\\xc0/\\x00\\x9e\\xc0$\\xc0(\\x00k\\xc0#\\xc0'\\x00g\\xc0\"\n2026/07/11 18:03:59.914722 from 127.0.0.1:4962 accepted //119.255.133.10:443 [socks -> direct]\n2026/07/11 18:04:00.479483 from tcp:127.0.0.1:4972 accepted tcp:www.google.com:443 [socks -> proxy]\n2026/07/11 18:04:00.502108 from 127.0.0.1:4974 accepted //push.services.mozilla.com:443 [socks >> proxy]\n2026/07/11 18:04:00.502108 from 127.0.0.1:4975 accepted //alive.github.com:443 [socks >> proxy]\n2026/07/11 18:04:00.846275 [Warning] [546882010] app/proxyman/inbound: connection ends > proxy/http: failed to read http request > malformed HTTP request \"\\x16\\x03\\x01\\x02\\x00\\x01\\x00\\x01\\xfc\\x03\\x03j\\xad\\x93\\xe8\\xe8\\xf5<\\x1b\\xab\\xa4C\\x92\\xa5ˏe\\xe5\\x05\\xbf\"\n2026/07/11 18:04:01.134804 from 127.0.0.1:4980 accepted //push.services.mozilla.com:443 [socks >> proxy]\n2026/07/11 18:04:01.155876 from 127.0.0.1:4979 accepted http://steamconnecttest.com/204 [socks >> proxy]\n2026/07/11 18:04:01 系统代理设置改变 - ForcedClear\n2026/07/11 18:04:01 当前延迟: 81 ms，none\n2026/07/11 18:04:01.839047 from 127.0.0.1:4985 accepted //api.steampowered.com:443 [socks >> proxy]\n\n\n### 额外信息\n\n_No response_\n\n### 我确认已更新至最新版本\n\n- [x] 是\n\n### 我确认已查询历史issues\n\n- [x] 是\n\n### 我确认系统版本是受支持的\n\n- [x] 是",
+        "url": "https://github.com/2dust/v2rayN/issues/9730"
+    },
+    {
+        "id": 4861077661,
+        "number": 9729,
+        "title": "[Bug]: 策略组生成json配置错误导致xray无法启动",
+        "state": "closed",
+        "created_at": "2026-07-11T07:03:29Z",
+        "updated_at": "2026-07-11T10:06:52Z",
+        "closed_at": "2026-07-11T10:06:52Z",
+        "author": "baijunty",
+        "comments": 1,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### 操作系统 / v2rayN / Core 版本\n\nWindows11/v7.23.3/26.3.27\n\n### 预期情况\n\n正常运行\n\n### 实际情况\n\n策略组里添加多个代理子配置，每一个子配置单独设置时都能正常运行，组合后就无法启动xray\n排查后发现是生成的json配置下balancers对象里fallbackTag导致的，删除后使用命令单独启动正常\n\n### 复现方法\n\n新建策略组，添加两个及以上的子配置项\n\n### 软件日志\n\nF:\\shadowsocks\\guiConfigs\\pac.txt\n[Shadowsocks] ama_kcp(127***1:8801)\nv2rayN - V7.23.3 - X64 | F:\\shadowsocks\\ | F:\\shadowsocks\\v2rayN.exe | Microsoft Windows NT 10.0.26200.0\n启动服务 (2026/07/11 14:53:53)...\nXray 26.3.27 (Xray, Penetrates Everything.) d2758a0 (go1.26.1 windows/amd64)\nA unified platform for anti-censorship.\n2026/07/11 14:53:53.816640 [Info] infra/conf/serial: Reading config: &{Name:config.json Format:json}\n2026/07/11 14:53:53.881619 [Warning] common/errors: The feature Shadowsocks (with no Forward Secrecy, etc.) is deprecated, not recommended for using and might be removed. Please migrate to VLESS Encryption as soon as possible.\n[Shadowsocks] ama_kcp(127***1:8801)\nF:\\shadowsocks\\guiConfigs\\pac.txt\n2026/07/11 14:53:54.052720 [Warning] core: Xray 26.3.27 started\n2026/07/11 14:53:54.262405 from 127.0.0.1:64230 accepted //dcg.microsoft.com:443 [socks -> direct]\n2026/07/11 14:53:54.641320 from DNS accepted https://cloudflare-dns.com/dns-query [dns-module -> proxy]\n2026/07/11 14:53:54.942477 from tcp:127.0.0.1:64236 accepted tcp:www.google.com:443 [socks -> proxy]\n2026/07/11 14:53:55.382591 from 127.0.0.1:64234 accepted //signalrp2-relayhub-prod-as02-1.service.signalr.net:443 [socks >> proxy]\n2026/07/11 14:53:55.677260 from 127.0.0.1:65074 accepted //alive.github.com:443 [socks >> proxy]\n2026/07/11 14:53:55 当前延迟: 179 ms，none\n2026/07/11 14:53:55.822310 from 127.0.0.1:63116 accepted //signalrp2-relayhub-prod-as02-1.service.signalr.net:443 [socks >> proxy]\n2026/07/11 14:53:56.284122 from 127.0.0.1:63115 accepted //mobile.events.data.microsoft.com:443 [socks >> proxy]\n2026/07/11 14:53:57.093655 from 127.0.0.1:63119 accepted //dcg.microsoft.com:443 [socks -> direct]\n2026/07/11 14:54:11.908453 from 127.0.0.1:50468 accepted //mtalk.google.com:443 [socks -> proxy]\n2026/07/11 14:54:19.644074 from 127.0.0.1:64293 accepted //www.google.com:443 [socks -> proxy]\n2026/07/11 14:54:19.791726 from 127.0.0.1:50362 accepted //collector.github.com:443 [socks >> proxy]\n2026/07/11 14:54:19.804881 from 127.0.0.1:50816 accepted //api.github.com:443 [socks >> proxy]\n2026/07/11 14:54:34.647832 from 127.0.0.1:49330 accepted //clients4.google.com:443 [socks -> proxy]\n2026/07/11 14:54:37.985171 from 127.0.0.1:64225 accepted //optimizationguide-pa.googleapis.com:443 [socks -> proxy]\n2026/07/11 14:54:37.989067 from 127.0.0.1:53393 accepted //content-autofill.googleapis.com:443 [socks -> proxy]\n2026/07/11 14:54:38.380123 from 127.0.0.1:63208 accepted //github.githubassets.com:443 [socks >> proxy]\n2026/07/11 14:54:38.380866 from 127.0.0.1:50864 accepted //github.githubassets.com:443 [socks >> proxy]\n2026/07/11 14:54:38.380866 from 127.0.0.1:55039 accepted //github.githubassets.com:443 [socks >> proxy]\n2026/07/11 14:54:38.380866 from 127.0.0.1:50917 accepted //github.com:443 [socks >> proxy]\n2026/07/11 14:54:38.380866 from 127.0.0.1:55821 accepted //github.githubassets.com:443 [socks >> proxy]\n2026/07/11 14:54:38.380866 from 127.0.0.1:57970 accepted //github.githubassets.com:443 [socks >> proxy]\n2026/07/11 14:54:38.398623 from 127.0.0.1:62193 accepted //github.com:443 [socks >> proxy]\n2026/07/11 14:54:38.399170 from 127.0.0.1:53403 accepted //github.com:443 [socks >> proxy]\n2026/07/11 14:54:38.432833 from 127.0.0.1:58350 accepted //github.com:443 [socks >> proxy]\n2026/07/11 14:54:38.432833 from 127.0.0.1:63015 accepted //github.com:443 [socks >> proxy]\n2026/07/11 14:54:38.797489 from 127.0.0.1:51391 accepted //github.com:443 [socks >> proxy]\n2026/07/11 14:54:39.030137 from 127.0.0.1:50964 accepted //private-user-images.githubusercontent.com:443 [socks >> proxy]\n2026/07/11 14:54:39.030642 from 127.0.0.1:54669 accepted //avatars.githubusercontent.com:443 [socks >> proxy]\n2026/07/11 14:54:39.030642 from 127.0.0.1:62145 accepted //avatars.githubusercontent.com:443 [socks >> proxy]\n2026/07/11 14:54:39.032306 from 127.0.0.1:61452 accepted //avatars.githubusercontent.com:443 [socks >> proxy]\n2026/07/11 14:54:39.032306 from 127.0.0.1:57780 accepted //avatars.githubusercontent.com:443 [socks >> proxy]\n2026/07/11 14:54:39.032306 from 127.0.0.1:59695 accepted //avatars.githubusercontent.com:443 [socks >> proxy]\n2026/07/11 14:54:39.032306 from 127.0.0.1:49255 accepted //avatars.githubusercontent.com:443 [socks >> proxy]\n2026/07/11 14:54:39.744863 from 127.0.0.1:59749 accepted //avatars.githubusercontent.com:443 [socks >> proxy]\n2026/07/11 14:54:39.745389 from 127.0.0.1:52785 accepted //avatars.githubusercontent.com:443 [socks >> proxy]\n2026/07/11 14:54:39.884291 from 127.0.0.1:52033 accepted //content-autofill.googleapis.com:443 [socks -> proxy]\n2026/07/11 14:54:52.740048 from tcp:127.0.0.1:52036 accepted tcp:github.com:443 [socks >> proxy]\n2026/07/11 14:54:53.494666 from tcp:127.0.0.1:52039 accepted tcp:github.com:443 [socks >> proxy]\n2026/07/11 14:55:31.308796 from 127.0.0.1:64260 accepted //vscode-sync.trafficmanager.net:443 [socks >> proxy]\n2026/07/11 14:55:47.196818 from 127.0.0.1:65093 accepted //github.com:443 [socks >> proxy]\n2026/07/11 14:55:48.207790 from 127.0.0.1:58023 accepted //api.github.com:443 [socks >> proxy]\n2026/07/11 14:55:56.021757 from 127.0.0.1:59352 accepted //accounts.google.com:443 [socks -> proxy]\n[PolicyGroup] [Xray]blance\nv2rayN - V7.23.3 - X64 | F:\\shadowsocks\\ | F:\\shadowsocks\\v2rayN.exe | Microsoft Windows NT 10.0.26200.0\n启动服务 (2026/07/11 14:56:54)...\nXray 26.3.27 (Xray, Penetrates Everything.) d2758a0 (go1.26.1 windows/amd64)\nA unified platform for anti-censorship.\n2026/07/11 14:56:54.574816 [Info] infra/conf/serial: Reading config: &{Name:config.json Format:json}\n[PolicyGroup] [Xray]blance\nF:\\shadowsocks\\guiConfigs\\pac.txt\nFailed to start: main: failed to create server > core: not all dependencies are resolved.\n2026/07/11 14:57:00 当前延迟: -1 ms，none\n\n### 内核日志\n\nFailed to start: main: failed to create server > core: not all dependencies are resolved.\n2026/07/11 14:57:00 当前延迟: -1 ms，none\n\n### 额外信息\n\n_No response_\n\n### 我确认已更新至最新版本\n\n- [x] 是\n\n### 我确认已查询历史issues\n\n- [x] 是\n\n### 我确认系统版本是受支持的\n\n- [x] 是",
+        "url": "https://github.com/2dust/v2rayN/issues/9729"
+    },
+    {
+        "id": 4856796752,
+        "number": 9724,
+        "title": "[Bug]: Hysteria2 节点通过分享链接导入时，仅凭 pinSHA256 无法连接，需手动补齐完整 PEM 证书 (Karing 交叉测试正常)",
+        "state": "closed",
+        "created_at": "2026-07-10T16:24:30Z",
+        "updated_at": "2026-07-11T13:04:24Z",
+        "closed_at": "2026-07-11T07:28:23Z",
+        "author": "AndersonGhost",
+        "comments": 6,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### 操作系统 / v2rayN / Core 版本\n\nwin 10 / v7.23.3  / v26.3.27\n\n### 预期情况\n\n当 v2rayN 通过分享链接或二维码导入 Hysteria2 节点时，如果链接中已经包含了有效的 pinSHA256 参数，客户端应能像 Karing 一样，仅凭该指纹参数正确引导底层代理内核（Xray/sing-box）完成 TLS 握手验证，而不需要用户二次手动去服务器或原设备复制庞大的 PEM 完整证书文本。\n\n### 实际情况\n\nBug 描述 (Describe the bug)\n在使用 Hysteria2 协议配合自签名证书时，为了应对未来移除 allowInsecure 参数的更新，我在 v2rayN 中配置了完整证书并生成了固定证书指纹 (pinnedPeerCertSha256)。节点在 PC A 上运行完美。\n但是，当通过 v2rayN 将该节点导出为分享链接（或二维码）并导入到另一台 PC B 的 v2rayN 时，节点无法连接。经排查发现，导出的链接中仅包含 pinSHA256 参数（完整 PEM 证书因长度限制被丢弃），而 v2rayN 在仅有指纹、没有完整证书的情况下，无法正确向底层内核传递验证参数，导致连接彻底失败。\n\n作为交叉对比验证，使用手机端 Karing 扫描同一个由 v2rayN 生成的二维码，Karing 能够准确识别 pinSHA256 参数并顺利建立连接。这证明分享协议及参数本身无误，问题出在 v2rayN 在导入解析时的参数映射逻辑上。\n\n### 复现方法\n\n复现步骤 (To Reproduce)\n\n1.在 PC A 的 v2rayN 中，配置一个 Hysteria2 节点（使用自签名证书）。\n2.关闭 allowInsecure 开关。\n3.在 TLS 高级设置中，填入完整的 PEM 证书，v2rayN 自动识别并填充了 证书指纹 (SHA-256)。此时 PC A 连接测试完全正常。\n4.右键该节点 -> 导出为分享链接 / 分享二维码。（观察链接，发现自带了 &pinSHA256= 参数，但无完整证书）。\n5.在 PC B 的 v2rayN 中，通过剪贴板导入该链接。\n6.在 PC B 上测试连接该节点 -> 连接失败 / 超时。\n7.（关键排查步）将 PC A 上的那段几千字的完整 PEM 证书文本手动复制，粘贴到 PC B 该节点对应的“完整证书（链）”空白框中，保存后 -> 连接瞬间恢复正常。\n\n交叉验证 (Cross Validation)\n使用手机端代理软件 Karing，扫描 PC A 第 4 步生成的同一个二维码，不需要手动输入任何完整证书，直接扫描即可连接成功。\n\n\n\n截图说明 (Screenshots)\n<img width=\"1027\" height=\"1132\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/16ed2a9c-240b-43c4-b250-a7a1d6f1bbbd\" />\n图 1：PC A 上配置完整证书后正常使用的截图。\n\n<img width=\"1027\" height=\"956\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/0e8eac74-708d-4ef8-922c-e68de7733503\" />\n图 2：PC B 导入链接后，只有指纹没有完整证书，导致无法连接的截图。\n\n\n### 软件日志\n\n******\n\n### 内核日志\n\n*******\n\n### 额外信息\n\n_No response_\n\n### 我确认已更新至最新版本\n\n- [x] 是\n\n### 我确认已查询历史issues\n\n- [x] 是\n\n### 我确认系统版本是受支持的\n\n- [x] 是",
+        "url": "https://github.com/2dust/v2rayN/issues/9724"
+    },
+    {
+        "id": 4855895844,
+        "number": 9722,
+        "title": "[Bug]: mac arm64 打开Tun模型断网，我换上个版本就正常了",
+        "state": "closed",
+        "created_at": "2026-07-10T14:28:09Z",
+        "updated_at": "2026-07-11T03:25:23Z",
+        "closed_at": "2026-07-11T03:25:23Z",
+        "author": "woodywangjs-mi",
+        "comments": 2,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### 操作系统 / v2rayN / Core 版本\n\n最新版\n\n### 预期情况\n\n打开tun就断网 上个版本正常\n\n### 实际情况\n\n打开tun就断网 上个版本正常\n\n### 复现方法\n\n打开tun就断网 上个版本正常\n\n### 软件日志\n\nd'd\n\n### 内核日志\n\n大大大\n\n### 额外信息\n\n_No response_\n\n### 我确认已更新至最新版本\n\n- [x] 是\n\n### 我确认已查询历史issues\n\n- [x] 是\n\n### 我确认系统版本是受支持的\n\n- [x] 是",
+        "url": "https://github.com/2dust/v2rayN/issues/9722"
+    },
+    {
+        "id": 4853347152,
+        "number": 9720,
+        "title": "建议增加一个隐藏/显示服务器列表“IP”列的选项",
+        "state": "closed",
+        "created_at": "2026-07-10T08:23:23Z",
+        "updated_at": "2026-07-11T08:07:03Z",
+        "closed_at": "2026-07-11T08:05:15Z",
+        "author": "ggyy-001",
+        "comments": 2,
+        "labels": [
+            "enhancement"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### 相关问题\n\n你好 @2dust，  首先非常感谢你一直以来对 v2rayN 的辛勤维护和更新，现在的版本功能非常全面，日常使用体验非常好。  我想针对主界面服务器列表中的“IP”列提一个小小的建议：  虽然这一列在查看节点信息和调试时有一定的作用，但对于日常使用频率不高的用户来说，它会一直占用主界面水平布局的空间。目前该列无法隐藏，用户如果通过手动拖拽调整列宽，很容易导致界面整体比例错乱，对于喜欢整洁界面的用户来说不太方便。\n\n### 描述你希望的解决方案\n\n建议方案： 是否考虑增加一个简单的交互开关来控制该列的显示？比如：  表头右键菜单： 在列表表头区域点击鼠标右键时，增加一个类似 Excel 或其它软件的列管理菜单，允许用户勾选或取消勾选“显示 IP 列”。  设置菜单选项： 或者在“参数设置”中增加一个对应的显示开关，允许用户按需开启或关闭。  这样既能保留该功能以方便有需要的用户，也能让界面布局更加简洁和可控。  再次感谢你对这个项目的无私奉献，辛苦了！期待 v2rayN 越来越好。\n\n### 描述你所考虑的替代方案\n\n_No response_\n\n### 我确认已查询历史issues\n\n- [x] 是",
+        "url": "https://github.com/2dust/v2rayN/issues/9720"
+    },
+    {
+        "id": 4852557112,
+        "number": 9719,
+        "title": "[Bug]: 当sudo密码为连续空格时无法打开TUN模式",
+        "state": "closed",
+        "created_at": "2026-07-10T06:14:09Z",
+        "updated_at": "2026-07-11T03:22:49Z",
+        "closed_at": "2026-07-11T03:22:49Z",
+        "author": "FredWe",
+        "comments": 6,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### 操作系统 / v2rayN / Core 版本\n\nmacOS 26.5.1 / v2rayN 任何版本\n\n### 预期情况\n\n打开TUN模式时，输入连续空格作为密码，这个连续空格应正确地传递给sudo\n\n### 实际情况\n\n问题: 当sudo密码由连续空格组成时，IsNullOrEmpty() 方法判定为空。因为复用了[‎Extension::IsNullOrEmpty](https://github.com/2dust/v2rayN/blob/1768b4a7ee44b775d61334f4ea70cca94d8dde48/v2rayN/ServiceLib/Common/Extension.cs#L7)，字符串中有空格字符命中了IsNullOrWhiteSpace，这导致代码流程中\"确定\"按钮无法被点击。\n\n### 复现方法\n\n- 点击启用TUN模式\n- 在弹出对话框“系统的 sudo 密码”中输入连续空格\n- 点击确定则无反应\n\n### 软件日志\n\n略，没有进到日志\n\n### 内核日志\n\n 略\n\n### 额外信息\n\n[        if (txtPassword.Text.IsNullOrEmpty())\n](https://github.com/2dust/v2rayN/blob/1768b4a7ee44b775d61334f4ea70cca94d8dde48/v2rayN/v2rayN.Desktop/Views/SudoPasswordInputView.axaml.cs#L24)\n\n将 txtPassword.Text.IsNullOrEmpty() 改为 string.IsNullOrEmpty(password)，确保正确处理空格。\n确保即使密码包含连续空格，也能正确传递给验证方法。\n这样用户输入连续空格作为密码时，\"确定\"按钮就能正常工作，密码会被传递给 sudo 验证。\n\n\n### 我确认已更新至最新版本\n\n- [x] 是\n\n### 我确认已查询历史issues\n\n- [x] 是\n\n### 我确认系统版本是受支持的\n\n- [x] 是",
+        "url": "https://github.com/2dust/v2rayN/issues/9719"
+    },
+    {
+        "id": 4851886886,
+        "number": 9718,
+        "title": "[Bug]: 最新版开启Tun模式后，报错无法找到geosite.dat文件",
+        "state": "open",
+        "created_at": "2026-07-10T04:02:22Z",
+        "updated_at": "2026-07-13T05:26:45Z",
+        "closed_at": null,
+        "author": "nicoxb",
+        "comments": 5,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### 操作系统 / v2rayN / Core 版本\n\nMacOS26.5.1/7.23.3/26.6.27\n\n### 预期情况\n\n正常可用\n\n### 实际情况\n\n版本信息：\n\n<img width=\"593\" height=\"422\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/ccd37e31-0056-4d42-80a3-01c026491953\" />\n\n更新版本后，软件重启；此时TUN是自动关闭的；然后打开TUN开关，直接报错：\n```text\n2026/07/10 11:03:07.318458 [Info] infra/conf/serial: Reading config: &{Name:/Users/xxx/Library/Application Support/v2rayN/binConfigs/config.json Format:json}\nFailed to start: main: failed to load config files: [/Users/xxx/Library/Application Support/v2rayN/binConfigs/config.json] > infra/conf: failed to build routing configuration > infra/conf: invalid field rule > common/geodata: illegal domain rule: geosite:google > common/geodata: failed to open geosite.dat > stat /Users/xxx/Library/Application Support/v2rayN/bin/xray/geosite.dat: no such file or directory\n```\n我看了下，确实没有这个文件；\n这个文件在`/Users/xxx/Library/Application Support/v2rayN/bin`目录下；\n7.22.x时还是好的，更新后就报错了；我已经删除了`/Users/xxx/Library/Application Support/v2rayN`目录，重新安装配置，还是这个报错；\n\n### 复现方法\n\n最新版7.23.3开启TUN模式\n\n### 软件日志\n\n2026-07-10 11:49:47.4188-INFO OnClosing -> WindowClosing\n2026-07-10 11:49:51.4876-INFO AppExitAsync Begin\n2026-07-10 11:49:51.9493-INFO Successfully set the file execution permission, /Users/xxx/Library/Application Support/v2rayN/binConfigs/kill_as_sudo.sh\n2026-07-10 11:49:52.2465-INFO AppExitAsync End\n2026-07-10 11:49:56.6651-INFO v2rayN start up | v2rayN - V7.23.3 - Arm64 | /Users/xxx/Library/Application Support/v2rayN | /Applications/v2rayN.app/Contents/MacOS/v2rayN | Unix 26.5.1\n2026-07-10 11:49:56.8018-INFO MigrateProfileExtraGroup: No items to migrate.\n2026-07-10 11:49:57.3148-INFO Successfully set the file execution permission, /Applications/v2rayN.app/Contents/MacOS/AmazTool\n2026-07-10 11:49:57.3148-INFO Successfully set the file execution permission, /Users/xxx/Library/Application Support/v2rayN/bin/xray/xray\n2026-07-10 11:49:57.3148-INFO Successfully set the file execution permission, /Users/xxx/Library/Application Support/v2rayN/bin/mihomo/mihomo\n2026-07-10 11:49:57.3148-INFO Successfully set the file execution permission, /Users/xxx/Library/Application Support/v2rayN/bin/sing_box/sing-box\n2026-07-10 11:49:57.3171-INFO Setup Scheduled Tasks\n2026-07-10 11:50:34.0530-INFO Successfully set the file execution permission, /Users/xxx/Library/Application Support/v2rayN/binConfigs/run_as_sudo.sh\n2026-07-10 11:50:57.3225-INFO Execute check update\n2026-07-10 11:50:57.3349-DEBUG UpdateService,Connection refused (127.0.0.1:7890)\n2026-07-10 11:50:57.3428-DEBUG    at System.Net.Http.HttpConnectionPool.ConnectToTcpHostAsync(String host, Int32 port, HttpRequestMessage initialRequest, Boolean async, CancellationToken cancellationToken)\n   at System.Net.Http.HttpConnectionPool.ConnectAsync(HttpRequestMessage request, Boolean async, CancellationToken cancellationToken)\n   at System.Net.Http.HttpConnectionPool.CreateHttp11ConnectionAsync(HttpRequestMessage request, Boolean async, CancellationToken cancellationToken)\n   at System.Net.Http.HttpConnectionPool.InjectNewHttp11ConnectionAsync(QueueItem queueItem)\n   at System.Threading.Tasks.TaskCompletionSourceWithCancellation`1.WaitWithCancellationAsync(CancellationToken cancellationToken)\n   at System.Net.Http.HttpConnectionPool.SendWithVersionDetectionAndRetryAsync(HttpRequestMessage request, Boolean async, Boolean doRequestAuth, CancellationToken cancellationToken)\n   at System.Net.Http.HttpConnectionPool.EstablishProxyTunnelAsync(Boolean async, CancellationToken cancellationToken)\n   at System.Net.Http.HttpConnectionPool.ConnectAsync(HttpRequestMessage request, Boolean async, CancellationToken cancellationToken)\n   at System.Net.Http.HttpConnectionPool.CreateHttp11ConnectionAsync(HttpRequestMessage request, Boolean async, CancellationToken cancellationToken)\n   at System.Net.Http.HttpConnectionPool.InjectNewHttp11ConnectionAsync(QueueItem queueItem)\n   at System.Threading.Tasks.TaskCompletionSourceWithCancellation`1.WaitWithCancellationAsync(CancellationToken cancellationToken)\n   at System.Net.Http.HttpConnectionPool.SendWithVersionDetectionAndRetryAsync(HttpRequestMessage request, Boolean async, Boolean doRequestAuth, CancellationToken cancellationToken)\n   at System.Net.Http.SocketsHttpHandler.<SendAsync>g__CreateHandlerAndSendAsync|115_0(HttpRequestMessage request, CancellationToken cancellationToken)\n   at System.Net.Http.HttpClient.<SendAsync>g__Core|83_0(HttpRequestMessage request, HttpCompletionOption completionOption, CancellationTokenSource cts, Boolean disposeCts, CancellationTokenSource pendingRequestsCts, CancellationToken originalCancellationToken)\n   at ServiceLib.Services.DownloadService.UrlRedirectAsync(String url, Boolean blProxy) in /Users/runner/work/v2rayN/v2rayN/v2rayN/ServiceLib/Services/DownloadService.cs:line 92\n   at ServiceLib.Services.UpdateService.GetRemoteVersion(DownloadService downloadHandle, ECoreType type, Boolean preRelease) in /Users/runner/work/v2rayN/v2rayN/v2rayN/ServiceLib/Services/UpdateService.cs:line 190\n   at ServiceLib.Services.UpdateService.CheckUpdateAsync(DownloadService downloadHandle, ECoreType type, Boolean preRelease) in /Users/runner/work/v2rayN/v2rayN/v2rayN/ServiceLib/Services/UpdateService.cs:line 154\n2026-07-10 11:50:57.3432-ERROR System.Net.Sockets.SocketException: Connection refused\n2026-07-10 11:50:57.3466-DEBUG UpdateService,Connection refused (127.0.0.1:7890)\n2026-07-10 11:50:57.3466-DEBUG    at System.Net.Http.HttpConnectionPool.ConnectToTcpHostAsync(String host, Int32 port, HttpRequestMessage initialRequest, Boolean async, CancellationToken cancellationToken)\n   at System.Net.Http.HttpConnectionPool.ConnectAsync(HttpRequestMessage request, Boolean async, CancellationToken cancellationToken)\n   at System.Net.Http.HttpConnectionPool.CreateHttp11ConnectionAsync(HttpRequestMessage request, Boolean async, CancellationToken cancellationToken)\n   at System.Net.Http.HttpConnectionPool.InjectNewHttp11ConnectionAsync(QueueItem queueItem)\n   at System.Threading.Tasks.TaskCompletionSourceWithCancellation`1.WaitWithCancellationAsync(CancellationToken cancellationToken)\n   at System.Net.Http.HttpConnectionPool.SendWithVersionDetectionAndRetryAsync(HttpRequestMessage request, Boolean async, Boolean doRequestAuth, CancellationToken cancellationToken)\n   at System.Net.Http.HttpConnectionPool.EstablishProxyTunnelAsync(Boolean async, CancellationToken cancellationToken)\n   at System.Net.Http.HttpConnectionPool.ConnectAsync(HttpRequestMessage request, Boolean async, CancellationToken cancellationToken)\n   at System.Net.Http.HttpConnectionPool.CreateHttp11ConnectionAsync(HttpRequestMessage request, Boolean async, CancellationToken cancellationToken)\n   at System.Net.Http.HttpConnectionPool.InjectNewHttp11ConnectionAsync(QueueItem queueItem)\n   at System.Threading.Tasks.TaskCompletionSourceWithCancellation`1.WaitWithCancellationAsync(CancellationToken cancellationToken)\n   at System.Net.Http.HttpConnectionPool.SendWithVersionDetectionAndRetryAsync(HttpRequestMessage request, Boolean async, Boolean doRequestAuth, CancellationToken cancellationToken)\n   at System.Net.Http.SocketsHttpHandler.<SendAsync>g__CreateHandlerAndSendAsync|115_0(HttpRequestMessage request, CancellationToken cancellationToken)\n   at System.Net.Http.HttpClient.<SendAsync>g__Core|83_0(HttpRequestMessage request, HttpCompletionOption completionOption, CancellationTokenSource cts, Boolean disposeCts, CancellationTokenSource pendingRequestsCts, CancellationToken originalCancellationToken)\n   at ServiceLib.Services.DownloadService.UrlRedirectAsync(String url, Boolean blProxy) in /Users/runner/work/v2rayN/v2rayN/v2rayN/ServiceLib/Services/DownloadService.cs:line 92\n   at ServiceLib.Services.UpdateService.GetRemoteVersion(DownloadService downloadHandle, ECoreType type, Boolean preRelease) in /Users/runner/work/v2rayN/v2rayN/v2rayN/ServiceLib/Services/UpdateService.cs:line 190\n   at ServiceLib.Services.UpdateService.CheckUpdateAsync(DownloadService downloadHandle, ECoreType type, Boolean preRelease) in /Users/runner/work/v2rayN/v2rayN/v2rayN/ServiceLib/Services/UpdateService.cs:line 154\n2026-07-10 11:50:57.3471-ERROR System.Net.Sockets.SocketException: Connection refused\n2026-07-10 11:50:57.3471-DEBUG UpdateService,Connection refused (127.0.0.1:7890)\n2026-07-10 11:50:57.3481-DEBUG    at System.Net.Http.HttpConnectionPool.ConnectToTcpHostAsync(String host, Int32 port, HttpRequestMessage initialRequest, Boolean async, CancellationToken cancellationToken)\n   at System.Net.Http.HttpConnectionPool.ConnectAsync(HttpRequestMessage request, Boolean async, CancellationToken cancellationToken)\n   at System.Net.Http.HttpConnectionPool.CreateHttp11ConnectionAsync(HttpRequestMessage request, Boolean async, CancellationToken cancellationToken)\n   at System.Net.Http.HttpConnectionPool.InjectNewHttp11ConnectionAsync(QueueItem queueItem)\n   at System.Threading.Tasks.TaskCompletionSourceWithCancellation`1.WaitWithCancellationAsync(CancellationToken cancellationToken)\n   at System.Net.Http.HttpConnectionPool.SendWithVersionDetectionAndRetryAsync(HttpRequestMessage request, Boolean async, Boolean doRequestAuth, CancellationToken cancellationToken)\n   at System.Net.Http.HttpConnectionPool.EstablishProxyTunnelAsync(Boolean async, CancellationToken cancellationToken)\n   at System.Net.Http.HttpConnectionPool.ConnectAsync(HttpRequestMessage request, Boolean async, CancellationToken cancellationToken)\n   at System.Net.Http.HttpConnectionPool.CreateHttp11ConnectionAsync(HttpRequestMessage request, Boolean async, CancellationToken cancellationToken)\n   at System.Net.Http.HttpConnectionPool.InjectNewHttp11ConnectionAsync(QueueItem queueItem)\n   at System.Threading.Tasks.TaskCompletionSourceWithCancellation`1.WaitWithCancellationAsync(CancellationToken cancellationToken)\n   at System.Net.Http.HttpConnectionPool.SendWithVersionDetectionAndRetryAsync(HttpRequestMessage request, Boolean async, Boolean doRequestAuth, CancellationToken cancellationToken)\n   at System.Net.Http.SocketsHttpHandler.<SendAsync>g__CreateHandlerAndSendAsync|115_0(HttpRequestMessage request, CancellationToken cancellationToken)\n   at System.Net.Http.HttpClient.<SendAsync>g__Core|83_0(HttpRequestMessage request, HttpCompletionOption completionOption, CancellationTokenSource cts, Boolean disposeCts, CancellationTokenSource pendingRequestsCts, CancellationToken originalCancellationToken)\n   at ServiceLib.Services.DownloadService.UrlRedirectAsync(String url, Boolean blProxy) in /Users/runner/work/v2rayN/v2rayN/v2rayN/ServiceLib/Services/DownloadService.cs:line 92\n   at ServiceLib.Services.UpdateService.GetRemoteVersion(DownloadService downloadHandle, ECoreType type, Boolean preRelease) in /Users/runner/work/v2rayN/v2rayN/v2rayN/ServiceLib/Services/UpdateService.cs:line 190\n   at ServiceLib.Services.UpdateService.CheckUpdateAsync(DownloadService downloadHandle, ECoreType type, Boolean preRelease) in /Users/runner/work/v2rayN/v2rayN/v2rayN/ServiceLib/Services/UpdateService.cs:line 154\n2026-07-10 11:50:57.3481-ERROR System.Net.Sockets.SocketException: Connection refused\n2026-07-10 11:50:57.3481-DEBUG UpdateService,Connection refused (127.0.0.1:7890)\n2026-07-10 11:50:57.3481-DEBUG    at System.Net.Http.HttpConnectionPool.ConnectToTcpHostAsync(String host, Int32 port, HttpRequestMessage initialRequest, Boolean async, CancellationToken cancellationToken)\n   at System.Net.Http.HttpConnectionPool.ConnectAsync(HttpRequestMessage request, Boolean async, CancellationToken cancellationToken)\n   at System.Net.Http.HttpConnectionPool.CreateHttp11ConnectionAsync(HttpRequestMessage request, Boolean async, CancellationToken cancellationToken)\n   at System.Net.Http.HttpConnectionPool.InjectNewHttp11ConnectionAsync(QueueItem queueItem)\n   at System.Threading.Tasks.TaskCompletionSourceWithCancellation`1.WaitWithCancellationAsync(CancellationToken cancellationToken)\n   at System.Net.Http.HttpConnectionPool.SendWithVersionDetectionAndRetryAsync(HttpRequestMessage request, Boolean async, Boolean doRequestAuth, CancellationToken cancellationToken)\n   at System.Net.Http.HttpConnectionPool.EstablishProxyTunnelAsync(Boolean async, CancellationToken cancellationToken)\n   at System.Net.Http.HttpConnectionPool.ConnectAsync(HttpRequestMessage request, Boolean async, CancellationToken cancellationToken)\n   at System.Net.Http.HttpConnectionPool.CreateHttp11ConnectionAsync(HttpRequestMessage request, Boolean async, CancellationToken cancellationToken)\n   at System.Net.Http.HttpConnectionPool.InjectNewHttp11ConnectionAsync(QueueItem queueItem)\n   at System.Threading.Tasks.TaskCompletionSourceWithCancellation`1.WaitWithCancellationAsync(CancellationToken cancellationToken)\n   at System.Net.Http.HttpConnectionPool.SendWithVersionDetectionAndRetryAsync(HttpRequestMessage request, Boolean async, Boolean doRequestAuth, CancellationToken cancellationToken)\n   at System.Net.Http.SocketsHttpHandler.<SendAsync>g__CreateHandlerAndSendAsync|115_0(HttpRequestMessage request, CancellationToken cancellationToken)\n   at System.Net.Http.HttpClient.<SendAsync>g__Core|83_0(HttpRequestMessage request, HttpCompletionOption completionOption, CancellationTokenSource cts, Boolean disposeCts, CancellationTokenSource pendingRequestsCts, CancellationToken originalCancellationToken)\n   at ServiceLib.Services.DownloadService.UrlRedirectAsync(String url, Boolean blProxy) in /Users/runner/work/v2rayN/v2rayN/v2rayN/ServiceLib/Services/DownloadService.cs:line 92\n   at ServiceLib.Services.UpdateService.GetRemoteVersion(DownloadService downloadHandle, ECoreType type, Boolean preRelease) in /Users/runner/work/v2rayN/v2rayN/v2rayN/ServiceLib/Services/UpdateService.cs:line 190\n   at ServiceLib.Services.UpdateService.CheckUpdateAsync(DownloadService downloadHandle, ECoreType type, Boolean preRelease) in /Users/runner/work/v2rayN/v2rayN/v2rayN/ServiceLib/Services/UpdateService.cs:line 154\n2026-07-10 11:50:57.3481-ERROR System.Net.Sockets.SocketException: Connection refused\n\n\n### 内核日志\n\n/Users/xxx/Library/Application Support/v2rayN/binConfigs/proxy_set_osx_sh.sh\nXray 26.6.1 (Xray, Penetrates Everything.) 9f96d16 (go1.26.3 darwin/arm64)\nA unified platform for anti-censorship.\n2026/07/10 11:50:34.192420 [Info] infra/conf/serial: Reading config: &{Name:/Users/xxx/Library/Application Support/v2rayN/binConfigs/config.json Format:json}\nFailed to start: main: failed to load config files: [/Users/xxx/Library/Application Support/v2rayN/binConfigs/config.json] > infra/conf: failed to build routing configuration > infra/conf: invalid field rule > common/geodata: illegal domain rule: geosite:google > common/geodata: failed to open geosite.dat > stat /Users/xxx/Library/Application Support/v2rayN/bin/xray/geosite.dat: no such file or directory\n2026/07/10 11:50:36 当前延迟: -1 ms，none\n\n\n### 额外信息\n\n_No response_\n\n### 我确认已更新至最新版本\n\n- [x] 是\n\n### 我确认已查询历史issues\n\n- [x] 是\n\n### 我确认系统版本是受支持的\n\n- [x] 是",
+        "url": "https://github.com/2dust/v2rayN/issues/9718"
+    },
+    {
+        "id": 4851354206,
+        "number": 9717,
+        "title": "[Feature request]: 重新支持较旧版本的操作系统",
+        "state": "closed",
+        "created_at": "2026-07-10T02:03:23Z",
+        "updated_at": "2026-07-10T13:29:02Z",
+        "closed_at": "2026-07-10T09:14:42Z",
+        "author": "IsaacLiu09",
+        "comments": 14,
+        "labels": [
+            "enhancement"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### 相关问题\n\ndeb 包无法用于 Ubuntu 24.04 LTS\n\n### 描述你希望的解决方案\n\n希望能继续支持。鄙人用 Linux Mint，基于 Ubuntu 26.04 LTS 的版本等到圣诞节以后才会发布。\n\n### 描述你所考虑的替代方案\n\n提供 Flatpak 打包\n\n### 我确认已查询历史issues\n\n- [x] 是",
+        "url": "https://github.com/2dust/v2rayN/issues/9717"
+    },
+    {
+        "id": 4849166046,
+        "number": 9715,
+        "title": "[Bug]: TUN mode looking for geodat files in a wrong location",
+        "state": "open",
+        "created_at": "2026-07-09T19:10:54Z",
+        "updated_at": "2026-07-11T12:59:38Z",
+        "closed_at": null,
+        "author": "E-D-W-I-N",
+        "comments": 9,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### 操作系统 / v2rayN / Core 版本\n\nArch Linux 7.1.2-arch3-1 / v2RayN - v7.23.3\n\n### 预期情况\n\nTUN mode working\n\n### 实际情况\n\ngeodat files default location is v2rayN-linux-64/bin/. Non-TUN mode is looking in this folder. But TUN mode is looking in v2rayN-linux-64/bin/xray and there's no geodat files in there\n\n### 复现方法\n\nTurn on TUN mode\n\n### 软件日志\n\nFailed to start: main: failed to load config files: [/home/user/vpn/v2rayN-linux-64/binConfigs/config.json] > infra/conf: failed to build routing configuration > infra/conf: invalid field rule > common/geodata: illegal domain rule: geosite:category-ads-all > common/geodata: failed to open geosite.dat > stat /home/user/vpn/v2rayN-linux-64/bin/xray/geosite.dat: no such file or directory\n\n### 内核日志\n\n-\n\n### 额外信息\n\n_No response_\n\n### 我确认已更新至最新版本\n\n- [x] 是\n\n### 我确认已查询历史issues\n\n- [x] 是\n\n### 我确认系统版本是受支持的\n\n- [x] 是",
+        "url": "https://github.com/2dust/v2rayN/issues/9715"
+    },
+    {
+        "id": 4847705409,
+        "number": 9714,
+        "title": "[Feature request]: 主界面增加“极速导入”按钮 & 连接面板显示“直连/代理”",
+        "state": "closed",
+        "created_at": "2026-07-09T15:40:58Z",
+        "updated_at": "2026-07-10T03:26:19Z",
+        "closed_at": "2026-07-10T03:26:19Z",
+        "author": "amydog22",
+        "comments": 3,
+        "labels": [
+            "enhancement"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### 相关问题\n\n当我想要快速添加分流规则时，当前的操作链路较长（需要点开多级设置菜单），并且“当前连接”面板无法直观区分特定请求是“直连”还是“代理”\n\n### 描述你希望的解决方案\n\n主界面顶部菜单栏增设“极速导入黑名单”快捷按钮，支持读取剪贴板一键写入配置并刷新。  “当前连接”面板的 Result 处，明确标示 Proxy / Direct 状态。注：我本地已初步实现上述功能（效果见附图）。若官方有意向收录，我可以整理代码提交 PR。\n\n### 描述你所考虑的替代方案\n\n维持现状：手动进入多级菜单修改规则，并依赖第三方抓包工具验证分流状态，步骤繁琐，极易打断排错工作流。  开发完整UI：曾考虑开发全套的增删改查界面。但为了保证对主干代码的侵入性最小，本提案仅聚焦最高频的“一键添加”，低频的删除操作仍复用现有设置面板，避免引入过重的 UI 变更。\n\n### 我确认已查询历史issues\n\n- [x] 是",
+        "url": "https://github.com/2dust/v2rayN/issues/9714"
+    },
+    {
+        "id": 4843320881,
+        "number": 9712,
+        "title": "[Bug]: macOS Tahoe 26.5.2  M5 arm64 ：Bad CPU type in executable",
+        "state": "closed",
+        "created_at": "2026-07-09T04:58:47Z",
+        "updated_at": "2026-07-11T08:32:23Z",
+        "closed_at": "2026-07-11T08:32:23Z",
+        "author": "baihuzi",
+        "comments": 1,
+        "labels": [
+            "enhancement"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "macOS Tahoe 26.5.2\n芯片：M5\narm64\n\n\n### 相关问题\n\n［VLESS］ new-s0-05wjr9sa（152***44:8443） V2rayN - V7.23.2 - Arm64 | /Users/alenwu/Library/Application Support/v2rayN | /Applications/v2rayN.app/Contents/MacOS/v2rayN | Unix 26.5.2 启动服务（2026/07/09 12:34:03）... ErrorStartingProcess, /Users/alenwu/Library/Application Support/v2rayN/bin/xray/xray, /Users/alenwu/Library/Application Support/v2rayN/binConfigs, Bad CPU type in executable /Users/alenwu/Library/Application Support/v2rayN/binConfigs/proxy_set_osx_sh.sh 2026/07/09 12:34:05 当前延迟：-1 ms, none ［VLESS］ new-s0-05wjr9sa（152***44:844ErrorStartingProcess, /Users/alenwu/Library/Application Support/v2rayN/bin/xray/xray, /Users/alenwu/Library/Application Support/v2rayN/binConfigs, Bad CPU type in executable\n\n### 描述你希望的解决方案\n\nupdate version fix\n\n### 描述你所考虑的替代方案\n\n fix\n\n### 我确认已查询历史issues\n\n- [x] 是",
+        "url": "https://github.com/2dust/v2rayN/issues/9712"
+    },
+    {
+        "id": 4842721562,
+        "number": 9711,
+        "title": "[Bug]: Updating sing-box SRS rule-set may overwrite valid files with truncated/429 downloads, causing core startup failure",
+        "state": "open",
+        "created_at": "2026-07-09T02:47:28Z",
+        "updated_at": "2026-07-10T08:49:33Z",
+        "closed_at": null,
+        "author": "yc99-gif",
+        "comments": 3,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "### 操作系统和版本\n\nWindows 11 10.0.22621.0\n\n### v2rayN 版本\n\nv2rayN V7.22.7 X64\n\n### 预期情况\n\n更新 geo / sing-box SRS 规则集时，如果某个 `.srs` 文件下载失败、被截断、或返回 HTTP 错误响应，v2rayN 不应覆盖原有可用文件。\n\n建议在覆盖前进行至少一种校验：\n\n- 检查 HTTP status code 是否为 200\n- 检查下载大小是否合理 / 是否等于 `Content-Length`\n- 对 `.srs` 调用 `sing-box rule-set decompile` 或等价解析校验\n- 校验失败时保留旧文件，并提示用户具体哪个 rule-set 下载失败\n\n### 实际情况\n\n更新规则后，sing-box core 启动失败：\n\n```text\nFATAL[0000] create service: initialize router: parse rule-set[0]: read rule[0]: unexpected EOF\n运行 Core 失败，请查看提示信息\n```\n\n检查发现本地文件：\n\n```text\nD:\\v2rayN-windows-64\\bin\\srss\\geosite-youtube.srs\n```\n\n大小只有：\n\n```text\n199 bytes\n```\n\n远端正确文件为：\n\n```text\nhttps://raw.githubusercontent.com/2dust/sing-box-rules/rule-set-geosite/geosite-youtube.srs\n```\n\n当时重新用可用节点下载后，正确文件大小为：\n\n```text\n1286 bytes\n```\n\n进一步对比发现，本地 199-byte 文件正好等于远端正确文件的前 199 bytes，说明下载过程中被截断，但仍然覆盖了原有文件。\n\n手动替换为完整的 1286-byte 文件后，core 可以正常启动。\n\n### 复现/触发条件\n\n这个问题在代理环境下不算罕见。某些代理服务器/出口 IP 可能会被 GitHub / `raw.githubusercontent.com` / CDN 风控或限流。\n\n实际观察到的情况：\n\n- 浏览器访问 `https://github.com` 正常\n- 但下载 `https://raw.githubusercontent.com/.../*.srs` 时异常\n- 某些节点访问 raw 文件会返回：\n\n```text\nHTTP/1.1 429 Too Many Requests\nContent-Length: 199\n```\n\n- 有时也可能不是完整的 429 文本，而是 `.srs` 文件下载到一半被截断\n- 换到另一个代理节点后，同一个 raw URL 可以正常返回 `HTTP 200` 和完整文件\n\n也就是说，用户可能以为 GitHub 可正常访问，但 v2rayN 后台更新 `.srs` 文件时，实际拿到的是截断内容或 429 错误响应。如果此时直接覆盖旧文件，就会导致原本可用的 core 在下一次启动时失败。\n\n### 额外信息\n\n这个问题不一定是上游 `2dust/sing-box-rules` 规则文件错误。更准确地说，是下载链路异常时，v2rayN 的更新逻辑缺少完整性/可解析性校验。\n\n这类异常在代理环境下比较容易出现：\n\n```text\nGitHub 页面可访问\nraw.githubusercontent.com 文件下载被限流/风控/截断\n```\n\n因此建议 v2rayN 在覆盖已有 `.srs` 文件前，先验证新下载文件是否有效。如果验证失败，应保留旧文件，并提示用户该 rule-set 下载失败，而不是让截断文件覆盖正常文件。\n\n### 我确认已更新至最新版本\n\n- [x] 是\n\n### 我确认已查询历史issues\n\n- [x] 是",
+        "url": "https://github.com/2dust/v2rayN/issues/9711"
+    },
+    {
+        "id": 4836109929,
+        "number": 9705,
+        "title": "[Feature request]: 建议修改macOS上软件图标颜色",
+        "state": "closed",
+        "created_at": "2026-07-08T09:21:42Z",
+        "updated_at": "2026-07-08T13:07:41Z",
+        "closed_at": "2026-07-08T13:07:41Z",
+        "author": "FlowerRealm",
+        "comments": 2,
+        "labels": [
+            "enhancement"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### 相关问题\n\nScreenshot 2026-07-08 at 2.19.52 AM 在一堆黑白里这个非常的显眼\n\n### 描述你希望的解决方案\n\n希望改为黑白, 使用别的方式区分开启/关闭系统代理\n\n### 描述你所考虑的替代方案\n\n_No response_\n\n### 我确认已查询历史issues\n\n- [x] 是",
+        "url": "https://github.com/2dust/v2rayN/issues/9705"
+    },
+    {
+        "id": 4835955321,
+        "number": 9704,
+        "title": "[Bug]: Process-based routing is not working",
+        "state": "closed",
+        "created_at": "2026-07-08T09:01:31Z",
+        "updated_at": "2026-07-11T08:32:37Z",
+        "closed_at": "2026-07-11T08:32:37Z",
+        "author": "MosDevIR",
+        "comments": 2,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### 操作系统 / v2rayN / Core 版本\n\nV7.22.7\n\n### 预期情况\n\nTraffic for the application (using firefox.exe as an example) will be routed through the proxy\n\n### 实际情况\n\nI came across an interesting bug. When using core singbox, I get these errors.\n\n```\n[VMess] DE - 291(come***com:6216)\nv2rayN - V7.22.7 - X64 | D:\\200. Administrator\\20. Network\\1.VPN\\v2rayN-windows-64-desktop\\ | D:\\200. Administrator\\20. Network\\1.VPN\\v2rayN-windows-64-desktop\\v2rayN.exe | Microsoft Windows NT 10.0.26100.0\nStarting service (1405/04/17 12:00:25)...\n[VMess] DE - 291(come***com:6216)\n+0330 2026-07-08 12:00:25 INFO network: updated default interface Ethernet, index 4\n+0330 2026-07-08 12:00:25 INFO inbound/mixed[socks]: tcp server started at 127.0.0.1:10808\n+0330 2026-07-08 12:00:25 INFO clash-api: restful api listening at 127.0.0.1:10813\n+0330 2026-07-08 12:00:25 INFO sing-box started (0.11s)\n+0330 2026-07-08 12:00:26 INFO [750968766 0ms] inbound/mixed[socks]: inbound connection from 127.0.0.1:39116\n+0330 2026-07-08 12:00:26 INFO [750968766 7ms] inbound/mixed[socks]: inbound connection to www.google.com:443\n+0330 2026-07-08 12:00:26 INFO [750968766 8ms] router: found process path: D:\\200. Administrator\\20. Network\\1.VPN\\v2rayN-windows-64-desktop\\v2rayN.exe\n+0330 2026-07-08 12:00:26 DEBUG [750968766 8ms] router: match[0] => sniff\n+0330 2026-07-08 12:00:26 DEBUG [750968766 31ms] router: sniffed protocol: tls, domain: www.google.com\n+0330 2026-07-08 12:00:26 DEBUG [750968766 31ms] router: match[5] port_range=0:65535 => route(direct)\n+0330 2026-07-08 12:00:26 INFO [750968766 31ms] outbound/direct[direct]: outbound connection to www.google.com:443\n+0330 2026-07-08 12:00:26 DEBUG [750968766 31ms] dns: lookup domain www.google.com\n+0330 2026-07-08 12:00:26 DEBUG [750968766 36ms] dns: exchanged www.google.com NOERROR 60\n+0330 2026-07-08 12:00:26 DEBUG [750968766 36ms] dns: exchanged AAAA www.google.com. 60 IN AAAA 2001:4860:4802:32::78\n+0330 2026-07-08 12:00:26 INFO outbound/vmess[proxy]: outbound connection to www.google.com:443\n+0330 2026-07-08 12:00:26 DEBUG dns: lookup domain come.btctim.com\n+0330 2026-07-08 12:00:36 DEBUG [750968766 10.3s] dns: lookup succeed for www.google.com: 2001:4860:4802:32::78\n+0330 2026-07-08 12:00:36 ERROR [750968766 10.3s] connection: open connection to www.google.com:443 using outbound/direct[direct]: dial tcp [2001:4860:4802:32::78]:443: connectex: A socket operation was attempted to an unreachable network.\n+0330 2026-07-08 12:00:36 DEBUG dns: lookup failed for come.btctim.com: context deadline exceeded\n+0330 2026-07-08 12:00:37 INFO [359785407 0ms] inbound/mixed[socks]: inbound connection from 127.0.0.1:35164\n+0330 2026-07-08 12:00:37 INFO [359785407 2ms] inbound/mixed[socks]: inbound connection to www.google.com:443\n+0330 2026-07-08 12:00:37 INFO [359785407 5ms] router: found process path: D:\\200. Administrator\\20. Network\\1.VPN\\v2rayN-windows-64-desktop\\v2rayN.exe\n+0330 2026-07-08 12:00:37 DEBUG [359785407 6ms] router: match[0] => sniff\n+0330 2026-07-08 12:00:37 DEBUG [359785407 19ms] router: sniffed protocol: tls, domain: www.google.com\n+0330 2026-07-08 12:00:37 DEBUG [359785407 19ms] router: match[5] port_range=0:65535 => route(direct)\n+0330 2026-07-08 12:00:37 INFO [359785407 19ms] outbound/direct[direct]: outbound connection to www.google.com:443\n+0330 2026-07-08 12:00:37 DEBUG [359785407 19ms] dns: lookup domain www.google.com\n+0330 2026-07-08 12:00:47 DEBUG [359785407 10.2s] dns: lookup succeed for www.google.com: 2001:4860:4802:32::78\n+0330 2026-07-08 12:00:47 ERROR [359785407 10.2s] connection: open connection to www.google.com:443 using outbound/direct[direct]: dial tcp [2001:4860:4802:32::78]:443: connectex: A socket operation was attempted to an unreachable network.\n1405/04/17 12:00:47 The delay: -1 ms, none\n\n```\n\n\n\n\nBut when it's core xray, I don't have this problem and I can easily do split app.\n\n```\n[VMess] DE - 291(come***com:6216)\nv2rayN - V7.22.7 - X64 | D:\\200. Administrator\\20. Network\\1.VPN\\v2rayN-windows-64-desktop\\ | D:\\200. Administrator\\20. Network\\1.VPN\\v2rayN-windows-64-desktop\\v2rayN.exe | Microsoft Windows NT 10.0.26100.0\nStarting service (1405/04/17 12:05:03)...\nXray 26.6.1 (Xray, Penetrates Everything.) 9f96d16 (go1.26.3 windows/amd64)\nA unified platform for anti-censorship.\n2026/07/08 12:05:03.789238 [Info] infra/conf/serial: Reading config: &{Name:config.json Format:json}\n2026/07/08 12:05:03.791874 [Warning] common/errors: The feature VMess (with no Forward Secrecy, etc.) is deprecated, not recommended for using and might be removed. Please migrate to VLESS Encryption as soon as possible.\n2026/07/08 12:05:03.791874 [Debug] app/log: Logger started\n2026/07/08 12:05:03.794562 [Info] app/dns: DNS: created UDP client initialized for 119.29.29.29:53\n2026/07/08 12:05:03.794562 [Info] app/dns: DNS: created UDP client initialized for 119.29.29.29:53\n2026/07/08 12:05:03.794562 [Info] app/dns: DNS: created UDP client initialized for 119.29.29.29:53\n2026/07/08 12:05:03.798103 [Debug] app/proxyman/inbound: creating stream worker on 127.0.0.1:10808\n2026/07/08 12:05:03.799196 [Info] transport/internet/tcp: listening TCP on 127.0.0.1:10808\n2026/07/08 12:05:03.799196 [Warning] core: Xray 26.6.1 started\n[VMess] DE - 291(come***com:6216)\n2026/07/08 12:05:04.907255 [Info] [1913474206] proxy/socks: TCP Connect request to tcp:www.google.com:443\n2026/07/08 12:05:04.927847 [Info] [1913474206] app/dispatcher: sniffed domain: www.google.com\n2026/07/08 12:05:04.935432 from tcp:127.0.0.1:33662 accepted tcp:www.google.com:443 [socks -> direct]\n2026/07/08 12:05:04.935432 [Info] [1913474206] app/dispatcher: taking detour [direct] for [tcp:www.google.com:443]\n2026/07/08 12:05:04.935957 [Info] [1913474206] transport/internet/tcp: dialing TCP to tcp:www.google.com:443\n2026/07/08 12:05:04.935957 [Debug] [1913474206] transport/internet: dialing to tcp:www.google.com:443\n2026/07/08 12:05:05.031927 [Info] [1913474206] proxy/freedom: connection opened to tcp:www.google.com:443, local endpoint 192.168.1.5:33663, remote endpoint 142.251.151.119:443\n2026/07/08 12:05:05.031927 [Debug] [1913474206] proxy: CopyRawConn (maybe) readv\n1405/04/17 12:05:05 The delay: 83 ms, none\n\n```\n\n\n\nI feel like this bug has been fixed in xray but not in singbox.\n\n\n<img width=\"1595\" height=\"561\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/dece6b55-8897-4b0c-a145-1561aadc7e28\" />\n\n### 复现方法\n\n!!!\n\n### 软件日志\n\n!!!\n\n### 内核日志\n\n!!!\n\n### 额外信息\n\n_No response_\n\n### 我确认已更新至最新版本\n\n- [x] 是\n\n### 我确认已查询历史issues\n\n- [x] 是\n\n### 我确认系统版本是受支持的\n\n- [x] 是",
+        "url": "https://github.com/2dust/v2rayN/issues/9704"
+    }
+]

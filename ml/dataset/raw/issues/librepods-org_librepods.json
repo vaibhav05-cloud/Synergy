@@ -1,0 +1,370 @@
+[
+    {
+        "id": 4868099885,
+        "number": 668,
+        "title": "LibrePods",
+        "state": "open",
+        "created_at": "2026-07-12T17:46:59Z",
+        "updated_at": "2026-07-12T17:46:59Z",
+        "closed_at": null,
+        "author": "mouhannadthalji",
+        "comments": 0,
+        "labels": [
+            "bug",
+            "android"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### App version\n\nv1.0.0-rc1-debug (61)\n\n### App source\n\nGitHub\n\n### Device\n\nsamsung SM-F731W\n\n### Android / OS version\n\nBP4A.251205.006 (BP4A.251205.006.F731WVLS8GZF1)\n\n### Root / hook method\n\nNo root (native L2CAP support)\n\n### AirPods model\n\nAirPods Pro 2 (USB-C)\n\n### AirPods firmware\n\n_No response_\n\n### What happened\n\nMmm\n\n### Logs\n\n_No response_\n\n### Additional context\n\n_No response_",
+        "url": "https://github.com/librepods-org/librepods/issues/668"
+    },
+    {
+        "id": 4866925086,
+        "number": 667,
+        "title": "Reporting a fork by macdirtycow which unlocks premium features",
+        "state": "closed",
+        "created_at": "2026-07-12T11:56:25Z",
+        "updated_at": "2026-07-12T22:09:20Z",
+        "closed_at": "2026-07-12T21:48:49Z",
+        "author": "MishaOpstal",
+        "comments": 4,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "Hey, I came across this fork of the project and thought it should be reported.\nThey basically force set the _isPremium boolean to true in their fork, which is just not okay in my opinion.\n\nI'm not sure where to properly report this so I'm opening this issue so that you may do so yourself.\n\nHere is the repository url:\nhttps://github.com/macdirtycow/earthpods",
+        "url": "https://github.com/librepods-org/librepods/issues/667"
+    },
+    {
+        "id": 4839719432,
+        "number": 666,
+        "title": "[Linux] --start-minimized still shows \"unknown\" window in GNOME app switcher",
+        "state": "open",
+        "created_at": "2026-07-08T17:25:34Z",
+        "updated_at": "2026-07-08T18:05:50Z",
+        "closed_at": null,
+        "author": "villa1337",
+        "comments": 1,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "## Description\n\nWhen running LibrePods with `--start-minimized` on GNOME (Wayland), the app correctly starts with only the tray icon visible. However, an \"unknown\" window still appears in the GNOME app switcher (Alt+Tab).\n\n## Environment\n\n- **OS:** Fedora 44\n- **DE:** GNOME (Wayland)\n- **GPU:** NVIDIA RTX 5070 (proprietary driver 595.80)\n- **LibrePods version:** v0.1.0 AppImage (linux-v0.1.0 release)\n- **Launch command:** `WGPU_BACKEND=gl librepods-x86_64.AppImage --start-minimized`\n- **Note:** `WGPU_BACKEND=gl` is required because Vulkan crashes with `ERROR_SURFACE_LOST_KHR` on this setup\n\n## Expected Behavior\n\nWhen started with `--start-minimized`, the app should only show the system tray icon with no window in the app switcher.\n\n## Actual Behavior\n\nA window labeled \"unknown\" appears in the GNOME app switcher. The tray icon works correctly.\n\n## Possible Cause\n\nThe GPU rendering surface (wgpu/EGL window) is likely being created even in minimized mode. On GNOME Wayland, any mapped surface — even hidden — appears in the app switcher unless the appropriate window type hints are set or the surface is not created at all.\n\n## Suggested Fix\n\nIn `--start-minimized` mode, either:\n1. Don't create the GPU surface until the user explicitly opens the window from the tray\n2. Set the window role/type so GNOME excludes it from the switcher\n3. Unmap/destroy the surface after initialization if running headless",
+        "url": "https://github.com/librepods-org/librepods/issues/666"
+    },
+    {
+        "id": 4827900969,
+        "number": 662,
+        "title": "App Not working",
+        "state": "open",
+        "created_at": "2026-07-07T11:10:48Z",
+        "updated_at": "2026-07-07T11:10:48Z",
+        "closed_at": null,
+        "author": "amansihagg",
+        "comments": 0,
+        "labels": [
+            "bug",
+            "android"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### App version\n\nv0.2.9-play (55)\n\n### App source\n\nPlay\n\n### Device\n\nOPPO CPH2637\n\n### Android / OS version\n\nBP2A.250605.015 (CPH2637_16.0.5.1001(EX01))\n\n### Root / hook method\n\nNo root (native L2CAP support)\n\n### AirPods model\n\nAirPods Pro 2 (Lightning)\n\n### AirPods firmware\n\n_No response_\n\n### What happened\n\nMy airpods are connected but app is showing that please connect airpods\n\n### Logs\n\n_No response_\n\n### Additional context\n\n_No response_",
+        "url": "https://github.com/librepods-org/librepods/issues/662"
+    },
+    {
+        "id": 4807786796,
+        "number": 661,
+        "title": "Air pods app",
+        "state": "closed",
+        "created_at": "2026-07-04T05:31:17Z",
+        "updated_at": "2026-07-04T05:58:01Z",
+        "closed_at": "2026-07-04T05:58:01Z",
+        "author": "bassdd13",
+        "comments": 0,
+        "labels": [
+            "bug",
+            "android"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### App version\n\nv1.0.0-rc1-debug (61)\n\n### App source\n\nGitHub\n\n### Device\n\nXiaomi 21081111RG\n\n### Android / OS version\n\nUP1A.231005.007 (UP1A.231005.007)\n\n### Root / hook method\n\nNo root (native L2CAP support)\n\n### AirPods model\n\nAirPods (4th gen)\n\n### AirPods firmware\n\n_No response_\n\n### What happened\n\nFound No App for control\n\n\n### Logs\n\n_No response_\n\n### Additional context\n\n_No response_",
+        "url": "https://github.com/librepods-org/librepods/issues/661"
+    },
+    {
+        "id": 4800578881,
+        "number": 660,
+        "title": "Proposal: cross-link as complementary projects (OpenHearing — hearing test + assist for any earbuds)",
+        "state": "open",
+        "created_at": "2026-07-03T05:17:51Z",
+        "updated_at": "2026-07-03T05:17:51Z",
+        "closed_at": null,
+        "author": "HMAKT99",
+        "comments": 0,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "Hi! First — LibrePods is fantastic work, congrats on v1.0.\n\nI maintain [OpenHearing](https://github.com/HMAKT99/OpenHearing) (GPLv3), which I think sits exactly next to LibrePods without overlapping:\n\n- **LibrePods**: drives AirPods' own hearing-aid mode and features on Android (root, AirPods hardware).\n- **OpenHearing**: does its own on-device pure-tone hearing test → per-ear amplification profile → real-time DSP assist. No root, works with any earbuds — but it can't talk to AirPods' native mode.\n\nYour README explicitly (and reasonably) declines to build a hearing test; OpenHearing has one, and conversely we point people who own AirPods and want the native mode to LibrePods — our README already links to you, and your protocol docs are credited as the reference for our (not yet started) AirPods phase.\n\nWould you be open to a short mutual mention — e.g. a line in your README's related-projects/FAQ area for people who arrive without AirPods or without root? Happy to send the PR so it's zero effort on your side, worded however you prefer. And if you'd rather not, totally fine — closing this is no offense taken.\n\nThanks for everything the project has documented — it's been genuinely useful.\n— Arun (OpenHearing)",
+        "url": "https://github.com/librepods-org/librepods/issues/660"
+    },
+    {
+        "id": 4787598330,
+        "number": 659,
+        "title": "When installing on Pixel 8, it removes hearing aid setup from prior ipad setup",
+        "state": "open",
+        "created_at": "2026-07-01T16:56:43Z",
+        "updated_at": "2026-07-01T16:56:43Z",
+        "closed_at": null,
+        "author": "Nemi5150",
+        "comments": 0,
+        "labels": [
+            "bug",
+            "android"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### App version\n\n0.2.9-play\n\n### App source\n\nPlay\n\n### Device\n\nPixel 8\n\n### Android / OS version\n\nlatest\n\n### Root / hook method\n\nNo root (native L2CAP support)\n\n### AirPods model\n\nAirPods Pro 3\n\n### AirPods firmware\n\nNA\n\n### What happened\n\nI wrote a review and you wanted me to contact you, but I was not sure how to do that so here I am. \n\nI do not currently have the app installed. I have setup my APP3 on an ipad with ipados 26. I setup the hearing aid function inputting my audiogram from the doctor. Doing this and connecting to my pixel as a bluetooth device, I had no extended APP3 functionality, but it hearing aid function is stored on device and would modify the audio output even when connected to a non-apple device. \n\nafter installing Librepods on my pixel and connecting the APP3, I gained the extended functionality that the app delivers, but immediately lost the hearing aid settings on the APP3. \n\nI then uninstalled Librepods and reconnected to the pixel and the hearing aid functionality was still missing. I then went back to the Ipad I originallly used to setup the APP3 and it \"recognized\" an available APP3 that could connect, as if it had never connected to them before. It then went through the initial setup on the ipad asking questions about what features I wanted setup. I skipped all and when I went into the settings for the APP3 on the ipad and selected the hearing aid feature to turn on, it allowed me to select the prior audiogram I had input before. All other settings that I have changed had to be reselected as if the APP3 had been reset. \n\n### Logs\n\n_No response_\n\n### Additional context\n\n_No response_",
+        "url": "https://github.com/librepods-org/librepods/issues/659"
+    },
+    {
+        "id": 4780426603,
+        "number": 658,
+        "title": "Support Request: Add Xiaomi POCO F6 Pro (Android 16 / Build BP2A)",
+        "state": "open",
+        "created_at": "2026-06-30T21:07:45Z",
+        "updated_at": "2026-06-30T21:07:45Z",
+        "closed_at": null,
+        "author": "opreaalexandrumihai85-maker",
+        "comments": 0,
+        "labels": [
+            "enhancement"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Scope\n\nAndroid\n\n### Problem or use case\n\nHello! I am running the latest HyperOS 3.1 based on Android 16 on my POCO F6 Pro (Model: 23113RKC6G, Build: BP2A.250605.031.A3). Since Android 16 has the updated native Bluetooth stack, the app should run natively, but it blocks the screen with the \"Not supported\" error because Xiaomi is not in the whitelist. Could you please add Xiaomi/POCO to the supported manufacturer list in the next release? Thank you!\n\n### Proposed solution\n\n_No response_\n\n### Alternatives considered\n\n_No response_",
+        "url": "https://github.com/librepods-org/librepods/issues/658"
+    },
+    {
+        "id": 4763163912,
+        "number": 657,
+        "title": "Tablet UI",
+        "state": "open",
+        "created_at": "2026-06-28T18:12:56Z",
+        "updated_at": "2026-06-28T18:16:27Z",
+        "closed_at": null,
+        "author": "hanslauch325-eng",
+        "comments": 0,
+        "labels": [
+            "enhancement",
+            "android"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Scope\n\nAndroid\n\n### Problem or use case\n\nCurrently the UI on a Tablet looks not really good, everything is really stretched out and the Dynamic Island pop-up takes up like 1/3 of the entire screen. A proper Tablet UI would be really nice! \n\n<img width=\"3392\" height=\"2400\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/37128529-48a0-4e8c-b5e2-7232307bc081\" />\n\n\n\n### Proposed solution\n\n_No response_\n\n### Alternatives considered\n\n_No response_",
+        "url": "https://github.com/librepods-org/librepods/issues/657"
+    },
+    {
+        "id": 4742008630,
+        "number": 654,
+        "title": "App not compatible android 16",
+        "state": "closed",
+        "created_at": "2026-06-25T08:17:00Z",
+        "updated_at": "2026-06-25T08:30:07Z",
+        "closed_at": "2026-06-25T08:30:07Z",
+        "author": "ridhwanbro",
+        "comments": 0,
+        "labels": [
+            "bug",
+            "android"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### App version\n\nVo.2.5.(build 46)\n\n### App source\n\nPlay\n\n### Device\n\nIqoo 12 \n\n### Android / OS version\n\nAndroid 16 origin os 6\n\n### Root / hook method\n\nNo root (native L2CAP support)\n\n### AirPods model\n\nAirPods (4th gen) with ANC\n\n### AirPods firmware\n\nUnknown \n\n### What happened\n\nI can not use this app on my iqoo 12 \nBecause it is not compatible with Android 16 an origin os 6.\n\n### Logs\n\n_No response_\n\n### Additional context\n\n_No response_",
+        "url": "https://github.com/librepods-org/librepods/issues/654"
+    },
+    {
+        "id": 4741863587,
+        "number": 653,
+        "title": "Airpods Pro 2 and 3 disconnecting",
+        "state": "open",
+        "created_at": "2026-06-25T07:53:52Z",
+        "updated_at": "2026-06-30T01:55:56Z",
+        "closed_at": null,
+        "author": "AgentOfenkaese",
+        "comments": 1,
+        "labels": [
+            "bug",
+            "android"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### App version\n\nv1.0.0-rc1\n\n### App source\n\nGitHub\n\n### Device\n\nNothing 3(a)\n\n### Android / OS version\n\nInfinityX (A16)\n\n### Root / hook method\n\nKernelSU + Xposed\n\n### AirPods model\n\nAirPods Pro 2 (USB-C)\n\n### AirPods firmware\n\n8454768\n\n### What happened\n\nWhen I connect to my AirPods (happens both on my Pro 2 and 3) and start playing media, they randomly start disconnecting shortly after. While the Pro 2 automatically reconnect almost instantly, the Pro 3 have trouble fully reconnecting, sometimes I need to put them back in my case in order to reconnect. If this happens they are connected according to Bluetooth settings, but arent able to play media. this started happening after updating to Librepods 1.0.0.\n\nI'm using KernelSU Next + Vector from JingMatrix (API 101)\n\n### Logs\n\n[_data_user_0_me.kavishdevar.librepods_files_logs_airpods_log_20260625_094520.txt](https://github.com/user-attachments/files/29327266/_data_user_0_me.kavishdevar.librepods_files_logs_airpods_log_20260625_094520.txt)\n\n### Additional context\n\n_No response_",
+        "url": "https://github.com/librepods-org/librepods/issues/653"
+    },
+    {
+        "id": 4726611000,
+        "number": 652,
+        "title": "嘻嘻",
+        "state": "open",
+        "created_at": "2026-06-23T14:03:31Z",
+        "updated_at": "2026-06-23T14:03:31Z",
+        "closed_at": null,
+        "author": "s0933759551-dot",
+        "comments": 0,
+        "labels": [
+            "bug",
+            "android"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### App version\n\nv0.2.9-play (55)\n\n### App source\n\nGitHub\n\n### Device\n\nOPPO CPH2801\n\n### Android / OS version\n\nBP2A.250605.015 (CPH2801_16.0.5.703(EX01))\n\n### Root / hook method\n\nNo root (native L2CAP support)\n\n### AirPods model\n\nAirPods Pro 3\n\n### AirPods firmware\n\n84576\n\n### What happened\n\n套\n\n### Logs\n\n_No response_\n\n### Additional context\n\n_No response_",
+        "url": "https://github.com/librepods-org/librepods/issues/652"
+    },
+    {
+        "id": 4725560097,
+        "number": 651,
+        "title": "AirPods not connected",
+        "state": "open",
+        "created_at": "2026-06-23T11:55:34Z",
+        "updated_at": "2026-06-23T11:55:34Z",
+        "closed_at": null,
+        "author": "cristianoaloigiGB",
+        "comments": 0,
+        "labels": [
+            "bug",
+            "android"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### App version\n\nv0.2.9-play\n\n### App source\n\nGitHub\n\n### Device\n\nGoogle Pixel 9 Pro XL\n\n### Android / OS version\n\nAndroid 17 Beta\n\n### Root / hook method\n\nNo root (native L2CAP support)\n\n### AirPods model\n\nAirPods (4th gen) with ANC\n\n### AirPods firmware\n\n8454480\n\n### What happened\n\nin the main page it's says:\nAirPods not connected\n\n### Logs\n\n_No response_\n\n### Additional context\n\n_No response_",
+        "url": "https://github.com/librepods-org/librepods/issues/651"
+    },
+    {
+        "id": 4725283163,
+        "number": 650,
+        "title": "Factory reset option in the app",
+        "state": "open",
+        "created_at": "2026-06-23T11:17:05Z",
+        "updated_at": "2026-07-05T19:10:18Z",
+        "closed_at": null,
+        "author": "BurhanBudak",
+        "comments": 3,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "The app would be a good way to help people who wants to reset their pods who lack the reset button(recent bad Apple design). Apple description of using the flashing light and captive button under the etui charging case is pretentious and bad.\n\nI checked the repo, no body else asked so why not? ",
+        "url": "https://github.com/librepods-org/librepods/issues/650"
+    },
+    {
+        "id": 4723043533,
+        "number": 649,
+        "title": "529",
+        "state": "open",
+        "created_at": "2026-06-23T05:54:49Z",
+        "updated_at": "2026-06-23T05:54:49Z",
+        "closed_at": null,
+        "author": "andyjun995",
+        "comments": 0,
+        "labels": [
+            "bug",
+            "android"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### App version\n\nv0.2.9-play (55)\n\n### App source\n\nBuilt from source\n\n### Device\n\nGoogle Pixel 10\n\n### Android / OS version\n\nCP1A.260505.005 (CP1A.260505.005)\n\n### Root / hook method\n\nNo root (native L2CAP support)\n\n### AirPods model\n\nAirPods Pro 2 (USB-C)\n\n### AirPods firmware\n\n_No response_\n\n### What happened\n\nなし\n\n### Logs\n\n_No response_\n\n### Additional context\n\n_No response_",
+        "url": "https://github.com/librepods-org/librepods/issues/649"
+    },
+    {
+        "id": 4718360863,
+        "number": 648,
+        "title": "Head Gestures turning off",
+        "state": "open",
+        "created_at": "2026-06-22T16:00:01Z",
+        "updated_at": "2026-06-28T18:16:16Z",
+        "closed_at": null,
+        "author": "hanslauch325-eng",
+        "comments": 2,
+        "labels": [
+            "bug",
+            "android"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### App version\n\nv1.0.0 rc1-play\n\n### App source\n\nPlay\n\n### Device\n\nOPPO Find X9 Ultra \n\n### Android / OS version\n\nAndroid 16, ColorOS 16.0.8.304\n\n### Root / hook method\n\nNo root (native L2CAP support)\n\n### AirPods model\n\nAirPods Pro 3\n\n### AirPods firmware\n\n8454768\n\n### What happened\n\nThere's an issue I noticed for a few versions now were Head Gestures just randomly turn off after like 2-3 connections with my AirPods and my phone. I have to manually turn them on again but then they work fine until they randomly turn off again \n\n### Logs\n\n_No response_\n\n### Additional context\n\n_No response_",
+        "url": "https://github.com/librepods-org/librepods/issues/648"
+    },
+    {
+        "id": 4714693073,
+        "number": 647,
+        "title": "Linux ARM support",
+        "state": "open",
+        "created_at": "2026-06-22T08:08:49Z",
+        "updated_at": "2026-06-28T18:57:32Z",
+        "closed_at": null,
+        "author": "ZorroSvardendahl",
+        "comments": 2,
+        "labels": [
+            "enhancement",
+            "help wanted",
+            "linux"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Scope\n\nLinux\n\n### Problem or use case\n\nThere is currently only x86 support for Linux. ARM64 support would be great for running on ashai linux etc.\n\n### Proposed solution\n\nTry making an arm64 build and see if it compiles without any huge hiccups.\n\n### Alternatives considered\n\n_No response_",
+        "url": "https://github.com/librepods-org/librepods/issues/647"
+    },
+    {
+        "id": 4709511212,
+        "number": 646,
+        "title": "Error in pop-up window",
+        "state": "open",
+        "created_at": "2026-06-21T05:57:39Z",
+        "updated_at": "2026-06-21T05:57:39Z",
+        "closed_at": null,
+        "author": "qStars",
+        "comments": 0,
+        "labels": [
+            "bug",
+            "android"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### App version\n\n1.0.0-rc1-play\n\n### App source\n\nPlay\n\n### Device\n\nGoogle Pixel 9 Pro \n\n### Android / OS version\n\nAndroid 17\n\n### Root / hook method\n\nNo root (native L2CAP support)\n\n### AirPods model\n\nAirPods (2nd gen)\n\n### AirPods firmware\n\n_No response_\n\n### What happened\n\nThe mobile phone first horizontal screen.\nThen connect the headphones, and the up and down pop-up windows will be severely stretched horizontally.\n\n### Logs\n\n_No response_\n\n### Additional context\n\n_No response_",
+        "url": "https://github.com/librepods-org/librepods/issues/646"
+    },
+    {
+        "id": 4702725418,
+        "number": 643,
+        "title": "Voice",
+        "state": "open",
+        "created_at": "2026-06-19T18:11:10Z",
+        "updated_at": "2026-06-19T18:11:10Z",
+        "closed_at": null,
+        "author": "ankit3747437-blip",
+        "comments": 0,
+        "labels": [
+            "bug",
+            "android"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### App version\n\nv0.2.9-play (55)\n\n### App source\n\nPlay\n\n### Device\n\nOPPO CPH2825\n\n### Android / OS version\n\nBP2A.250605.015 (CPH2825_16.0.7.201(EX01))\n\n### Root / hook method\n\nOther (describe in additional context)\n\n### AirPods model\n\nAirPods (4th gen)\n\n### AirPods firmware\n\n8454768\n\n### What happened\n\nVoice \n\n### Logs\n\nVoice \n\n### Additional context\n\nVoice ",
+        "url": "https://github.com/librepods-org/librepods/issues/643"
+    },
+    {
+        "id": 4700216829,
+        "number": 642,
+        "title": "Airpods not Connected Issue during first time after installation",
+        "state": "closed",
+        "created_at": "2026-06-19T11:15:25Z",
+        "updated_at": "2026-06-19T11:22:26Z",
+        "closed_at": "2026-06-19T11:22:26Z",
+        "author": "myself-karthick",
+        "comments": 1,
+        "labels": [
+            "bug",
+            "android"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### App version\n\nv0.2.5\n\n### App source\n\nGitHub\n\n### Device\n\nSamsung Galaxy A17\n\n### Android / OS version\n\nAndroid 16\n\n### Root / hook method\n\nNo root (native L2CAP support)\n\n### AirPods model\n\nAirPods Pro 2 (USB-C)\n\n### AirPods firmware\n\n_No response_\n\n### What happened\n\nHi, I have installed the application in my Samsung A17 device for the first time, Even after connecting to airpods Pro 2 Via bluetooth. The App shows Airpods not Connected. \n\nI have attached the logs generated during the troubleshoot. Kindly help me with the issue.\n\nThanks in Advance\n\n[_data_user_0_me.kavishdevar.librepods_files_logs_airpods_log_20260619_163853.txt](https://github.com/user-attachments/files/29134653/_data_user_0_me.kavishdevar.librepods_files_logs_airpods_log_20260619_163853.txt)\n\n### Logs\n\n_No response_\n\n### Additional context\n\n_No response_",
+        "url": "https://github.com/librepods-org/librepods/issues/642"
+    }
+]

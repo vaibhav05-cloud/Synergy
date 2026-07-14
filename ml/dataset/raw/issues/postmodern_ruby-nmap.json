@@ -1,0 +1,398 @@
+[
+    {
+        "id": 2100410356,
+        "number": 95,
+        "title": "Improve support of the '-p' option",
+        "state": "closed",
+        "created_at": "2024-01-25T13:30:25Z",
+        "updated_at": "2024-01-25T14:45:46Z",
+        "closed_at": "2024-01-25T14:45:37Z",
+        "author": "jinxka",
+        "comments": 1,
+        "labels": [],
+        "assignees": [],
+        "locked": true,
+        "body": "Hello,\r\n\r\nThe nmap option '-p' allow us to specify whether we want the port to use TCP or UDP like:\r\n\r\n`nmap -Pn -sU -sT -p U:102,T:502`\r\n\r\nWould it be possible to upgrade the gem to follow this comportement?\r\n\r\nThanks\r\n\r\n",
+        "url": "https://github.com/postmodern/ruby-nmap/issues/95"
+    },
+    {
+        "id": 2100094509,
+        "number": 94,
+        "title": "Add `# frozen_string_literal: true` to all files",
+        "state": "closed",
+        "created_at": "2024-01-25T10:44:06Z",
+        "updated_at": "2024-01-25T10:45:02Z",
+        "closed_at": "2024-01-25T10:45:02Z",
+        "author": "postmodern",
+        "comments": 0,
+        "labels": [
+            "improvement"
+        ],
+        "assignees": [
+            "postmodern"
+        ],
+        "locked": false,
+        "body": null,
+        "url": "https://github.com/postmodern/ruby-nmap/issues/94"
+    },
+    {
+        "id": 2097404535,
+        "number": 93,
+        "title": "Switch to using `require_relative` to improve load-times",
+        "state": "closed",
+        "created_at": "2024-01-24T04:26:17Z",
+        "updated_at": "2024-01-25T10:45:02Z",
+        "closed_at": "2024-01-25T10:45:01Z",
+        "author": "postmodern",
+        "comments": 0,
+        "labels": [
+            "improvement"
+        ],
+        "assignees": [
+            "postmodern"
+        ],
+        "locked": false,
+        "body": "Switch to using `require_relative` to load other `nmap/` files to improve load-times.",
+        "url": "https://github.com/postmodern/ruby-nmap/issues/93"
+    },
+    {
+        "id": 1453915339,
+        "number": 91,
+        "title": "How to rewrite Nmap::Program(Nmap::Task.new",
+        "state": "closed",
+        "created_at": "2022-11-17T20:05:36Z",
+        "updated_at": "2022-11-17T21:49:35Z",
+        "closed_at": "2022-11-17T20:17:09Z",
+        "author": "rgaufman",
+        "comments": 2,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "Hi there,\r\n\r\nI have this code:\r\n\r\n```ruby\r\n    Nmap::Command.find.sudo_task(Nmap::Task.new do |nmap|\r\n      nmap.ping = true\r\n      nmap.arp_ping = arp_ping\r\n      nmap.skip_discovery = false\r\n      nmap.disable_dns = true\r\n      nmap.ipv6 = ip_address.ipv6?\r\n      nmap.verbose = false\r\n      nmap.quiet = true\r\n      nmap.xml = temp_file.path\r\n      nmap.targets = [ip]\r\n    end)\r\n```\r\n\r\nCan you please shed how to write this to work in the latest verson? -- I tried changing Nmap::Program to Nmap::Command but it throws: \r\n\r\n```\r\nNoMethodError: undefined method `find' for Nmap::Command:Class\r\n```",
+        "url": "https://github.com/postmodern/ruby-nmap/issues/91"
+    },
+    {
+        "id": 1441895924,
+        "number": 90,
+        "title": "Rename `nmap.raw_ip` to `nmap.send_ip`",
+        "state": "closed",
+        "created_at": "2022-11-09T11:09:32Z",
+        "updated_at": "2022-11-09T14:29:36Z",
+        "closed_at": "2022-11-09T14:29:36Z",
+        "author": "postmodern",
+        "comments": 1,
+        "labels": [
+            "rename"
+        ],
+        "assignees": [
+            "postmodern"
+        ],
+        "locked": false,
+        "body": "Rename `nmap.raw_ip` to `nmap.send_ip`, to match the `--send-ip` option.",
+        "url": "https://github.com/postmodern/ruby-nmap/issues/90"
+    },
+    {
+        "id": 1441894365,
+        "number": 89,
+        "title": "Rename `nmap.raw_ethernet` to `nmap.send_eth`",
+        "state": "closed",
+        "created_at": "2022-11-09T11:08:31Z",
+        "updated_at": "2022-11-09T14:29:58Z",
+        "closed_at": "2022-11-09T14:29:58Z",
+        "author": "postmodern",
+        "comments": 1,
+        "labels": [
+            "rename"
+        ],
+        "assignees": [
+            "postmodern"
+        ],
+        "locked": false,
+        "body": "Rename `nmap.raw_ethernet` to `nmap.send_eth`, to match the `--send-eth` option.",
+        "url": "https://github.com/postmodern/ruby-nmap/issues/89"
+    },
+    {
+        "id": 1441889063,
+        "number": 88,
+        "title": "Rename `nmap.disable_stylesheet` to `nmap.no_stylesheet`",
+        "state": "closed",
+        "created_at": "2022-11-09T11:05:19Z",
+        "updated_at": "2022-11-09T14:30:17Z",
+        "closed_at": "2022-11-09T14:30:17Z",
+        "author": "postmodern",
+        "comments": 1,
+        "labels": [
+            "rename"
+        ],
+        "assignees": [
+            "postmodern"
+        ],
+        "locked": false,
+        "body": "Rename `nmap.disable_stylesheet` to `nmap.no_stylesheet`, to match the `--no-stylesheet` option.",
+        "url": "https://github.com/postmodern/ruby-nmap/issues/88"
+    },
+    {
+        "id": 1441886478,
+        "number": 87,
+        "title": "Rename `nmap.nmap_stylesheet` to `nmap.webxml`",
+        "state": "closed",
+        "created_at": "2022-11-09T11:03:47Z",
+        "updated_at": "2022-11-09T14:30:40Z",
+        "closed_at": "2022-11-09T14:30:40Z",
+        "author": "postmodern",
+        "comments": 1,
+        "labels": [],
+        "assignees": [
+            "postmodern"
+        ],
+        "locked": false,
+        "body": "Rename `nmap.nmap_stylesheet` to `nmap.webxml` to match the `--webxml` option name.",
+        "url": "https://github.com/postmodern/ruby-nmap/issues/87"
+    },
+    {
+        "id": 1441883192,
+        "number": 86,
+        "title": "Rename `nmap.append` to `nmap.append_output`",
+        "state": "closed",
+        "created_at": "2022-11-09T11:02:01Z",
+        "updated_at": "2022-11-09T14:30:56Z",
+        "closed_at": "2022-11-09T14:30:55Z",
+        "author": "postmodern",
+        "comments": 1,
+        "labels": [
+            "rename"
+        ],
+        "assignees": [
+            "postmodern"
+        ],
+        "locked": false,
+        "body": "Rename `nmap.append` to `nmap.append_output` to match the `--apend-output` option.",
+        "url": "https://github.com/postmodern/ruby-nmap/issues/86"
+    },
+    {
+        "id": 1441880136,
+        "number": 85,
+        "title": "Add `nmap.extra_verbose` (aka `-vv`)",
+        "state": "closed",
+        "created_at": "2022-11-09T11:00:05Z",
+        "updated_at": "2022-11-09T14:31:16Z",
+        "closed_at": "2022-11-09T14:31:16Z",
+        "author": "postmodern",
+        "comments": 1,
+        "labels": [
+            "feature",
+            "option"
+        ],
+        "assignees": [
+            "postmodern"
+        ],
+        "locked": false,
+        "body": "Map `nmap.extra_verbose` to `-vv`.",
+        "url": "https://github.com/postmodern/ruby-nmap/issues/85"
+    },
+    {
+        "id": 1441878264,
+        "number": 84,
+        "title": "Allow passing a numeric value to `nmap.verbose`",
+        "state": "closed",
+        "created_at": "2022-11-09T10:58:46Z",
+        "updated_at": "2022-11-09T14:31:36Z",
+        "closed_at": "2022-11-09T14:31:36Z",
+        "author": "postmodern",
+        "comments": 1,
+        "labels": [
+            "improvement",
+            "option"
+        ],
+        "assignees": [
+            "postmodern"
+        ],
+        "locked": false,
+        "body": "It should be possible to output options such as `-v1` or `-v2`.",
+        "url": "https://github.com/postmodern/ruby-nmap/issues/84"
+    },
+    {
+        "id": 1441871765,
+        "number": 83,
+        "title": "Rename `nmap.grepable` to `nmap.output_grepable`",
+        "state": "closed",
+        "created_at": "2022-11-09T10:54:01Z",
+        "updated_at": "2022-11-09T14:31:54Z",
+        "closed_at": "2022-11-09T14:31:53Z",
+        "author": "postmodern",
+        "comments": 1,
+        "labels": [
+            "rename"
+        ],
+        "assignees": [
+            "postmodern"
+        ],
+        "locked": false,
+        "body": "Rename `nmap.grepable` to `nmap.output_grepable` to make it more obvious.",
+        "url": "https://github.com/postmodern/ruby-nmap/issues/83"
+    },
+    {
+        "id": 1441870488,
+        "number": 82,
+        "title": "Rename `nmap.skiddie` to `nmap.output_skiddie`",
+        "state": "closed",
+        "created_at": "2022-11-09T10:53:07Z",
+        "updated_at": "2022-11-09T14:32:09Z",
+        "closed_at": "2022-11-09T14:32:09Z",
+        "author": "postmodern",
+        "comments": 1,
+        "labels": [
+            "rename"
+        ],
+        "assignees": [
+            "postmodern"
+        ],
+        "locked": false,
+        "body": "Rename `nmap.skiddie` to `nmap.ouput_skiddie` to make it more obvious.",
+        "url": "https://github.com/postmodern/ruby-nmap/issues/82"
+    },
+    {
+        "id": 1441869507,
+        "number": 81,
+        "title": "Rename `nmap.xml` to `nmap.output_xml`",
+        "state": "closed",
+        "created_at": "2022-11-09T10:52:22Z",
+        "updated_at": "2022-11-09T14:32:26Z",
+        "closed_at": "2022-11-09T14:32:25Z",
+        "author": "postmodern",
+        "comments": 1,
+        "labels": [
+            "rename"
+        ],
+        "assignees": [
+            "postmodern"
+        ],
+        "locked": false,
+        "body": "Rename `nmap.xml` to `nmap.output_xml` to make it more obvious.",
+        "url": "https://github.com/postmodern/ruby-nmap/issues/81"
+    },
+    {
+        "id": 1441867612,
+        "number": 80,
+        "title": "Rename `nmap.save` to `nmap.output_normal`",
+        "state": "closed",
+        "created_at": "2022-11-09T10:51:10Z",
+        "updated_at": "2022-11-09T14:32:40Z",
+        "closed_at": "2022-11-09T14:32:40Z",
+        "author": "postmodern",
+        "comments": 1,
+        "labels": [
+            "rename"
+        ],
+        "assignees": [
+            "postmodern"
+        ],
+        "locked": false,
+        "body": "Rename `nmap.save` to `nmap.output_normal`.",
+        "url": "https://github.com/postmodern/ruby-nmap/issues/80"
+    },
+    {
+        "id": 1441839969,
+        "number": 79,
+        "title": "Rename `nmap.tcp_scan_flags` to just `nmap.scan_flags` to better match the option name",
+        "state": "closed",
+        "created_at": "2022-11-09T10:32:19Z",
+        "updated_at": "2022-11-09T14:29:20Z",
+        "closed_at": "2022-11-09T14:29:20Z",
+        "author": "postmodern",
+        "comments": 1,
+        "labels": [
+            "rename"
+        ],
+        "assignees": [
+            "postmodern"
+        ],
+        "locked": false,
+        "body": "We should rename `nmap.tcp_scan_flags` to `nmap.scan_flags`.",
+        "url": "https://github.com/postmodern/ruby-nmap/issues/79"
+    },
+    {
+        "id": 1440691031,
+        "number": 78,
+        "title": "Add `Nmap::Command::ScanFlags`",
+        "state": "closed",
+        "created_at": "2022-11-08T18:19:42Z",
+        "updated_at": "2022-11-09T06:22:06Z",
+        "closed_at": "2022-11-09T06:22:05Z",
+        "author": "postmodern",
+        "comments": 1,
+        "labels": [
+            "feature",
+            "option"
+        ],
+        "assignees": [
+            "postmodern"
+        ],
+        "locked": false,
+        "body": "Add a custom type for the `--scanflags` option.\r\n\r\n```\r\n           The --scanflags argument can be a numerical flag value such as 9 (PSH and\r\n           FIN), but using symbolic names is easier. Just mash together any combination\r\n           of URG, ACK, PSH, RST, SYN, and FIN. For example, --scanflags\r\n           URGACKPSHRSTSYNFIN sets everything, though it's not very useful for scanning.\r\n           The order these are specified in is irrelevant.\r\n```",
+        "url": "https://github.com/postmodern/ruby-nmap/issues/78"
+    },
+    {
+        "id": 1439100167,
+        "number": 77,
+        "title": "Add `Nmap::Command::HexString`",
+        "state": "closed",
+        "created_at": "2022-11-07T22:32:37Z",
+        "updated_at": "2022-11-08T18:18:46Z",
+        "closed_at": "2022-11-08T18:18:46Z",
+        "author": "postmodern",
+        "comments": 1,
+        "labels": [
+            "feature",
+            "option"
+        ],
+        "assignees": [
+            "postmodern"
+        ],
+        "locked": false,
+        "body": "Add a custom type `HexString` to validate the values given to `--data`.\r\n\r\n```\r\n       --data hex string (Append custom binary data to sent packets)\r\n           This option lets you include binary data as payload in sent packets.  hex\r\n           string may be specified in any of the following formats: 0xAABBCCDDEEFF...,\r\n           AABBCCDDEEFF...  or \\xAA\\xBB\\xCC\\xDD\\xEE\\xFF.... Examples of use are --data\r\n           0xdeadbeef and --data \\xCA\\xFE\\x09. Note that if you specify a number like\r\n           0x00ff no byte-order conversion is performed. Make sure you specify the\r\n           information in the byte order expected by the receiver.\r\n```",
+        "url": "https://github.com/postmodern/ruby-nmap/issues/77"
+    },
+    {
+        "id": 1439031469,
+        "number": 75,
+        "title": "Add missing `--script-timeout` option",
+        "state": "closed",
+        "created_at": "2022-11-07T21:43:10Z",
+        "updated_at": "2022-11-07T22:31:39Z",
+        "closed_at": "2022-11-07T22:31:39Z",
+        "author": "postmodern",
+        "comments": 1,
+        "labels": [
+            "feature",
+            "option"
+        ],
+        "assignees": [
+            "postmodern"
+        ],
+        "locked": false,
+        "body": "Map in the `--script-timeout` option.\r\n\r\n```\r\n       --script-timeout time\r\n           While some scripts complete in fractions of a second, others can take hours\r\n           or more depending on the nature of the script, arguments passed in, network\r\n           and application conditions, and more. The --script-timeout option sets a\r\n           ceiling on script execution time. Any script instance which exceeds that time\r\n           will be terminated and no output will be shown. If debugging (-d) is enabled,\r\n           Nmap will report on each timeout. For host and service scripts, a script\r\n           instance only scans a single target host or port and the timeout period will\r\n           be reset for the next instance.\r\n\r\n           The special value 0 can be used to mean “no timeout”, which can be used to\r\n           override the T5 timing template, which sets the script timeout to 10 minutes.\r\n```",
+        "url": "https://github.com/postmodern/ruby-nmap/issues/75"
+    },
+    {
+        "id": 1439028893,
+        "number": 74,
+        "title": "Add missing `--initial-rtt-timeout` option",
+        "state": "closed",
+        "created_at": "2022-11-07T21:41:07Z",
+        "updated_at": "2022-11-07T22:31:26Z",
+        "closed_at": "2022-11-07T22:31:26Z",
+        "author": "postmodern",
+        "comments": 1,
+        "labels": [
+            "feature",
+            "option"
+        ],
+        "assignees": [
+            "postmodern"
+        ],
+        "locked": false,
+        "body": "Map in the `--initial-rtt-timeout` option.\r\n\r\n```\r\n--initial-rtt-timeout time\r\n       (Adjust probe timeouts)\r\n           Nmap maintains a running timeout value for determining how long it will wait\r\n           for a probe response before giving up or retransmitting the probe. This is\r\n           calculated based on the response times of previous probes.\r\n\r\n           If the network latency shows itself to be significant and variable, this\r\n           timeout can grow to several seconds. It also starts at a conservative (high)\r\n           level and may stay that way for a while when Nmap scans unresponsive hosts.\r\n\r\n           Specifying a lower --max-rtt-timeout and --initial-rtt-timeout than the\r\n           defaults can cut scan times significantly. This is particularly true for\r\n           pingless (-Pn) scans, and those against heavily filtered networks. Don't get\r\n           too aggressive though. The scan can end up taking longer if you specify such\r\n           a low value that many probes are timing out and retransmitting while the\r\n           response is in transit.\r\n```",
+        "url": "https://github.com/postmodern/ruby-nmap/issues/74"
+    }
+]

@@ -1,0 +1,242 @@
+[
+    {
+        "sha": "def832f409c01f0acd3937b9317dde03d0273552",
+        "author": "Eric Hare",
+        "email": "ericrhare@gmail.com",
+        "date": "2026-07-08T04:01:37Z",
+        "message": "fix(ci): publish bundle deps before nightly main (#13982)\n\n* fix(ci): publish bundle deps before nightly main\n\n* fix(ci): wait for bundle pypi propagation",
+        "url": "https://github.com/langflow-ai/langflow/commit/def832f409c01f0acd3937b9317dde03d0273552"
+    },
+    {
+        "sha": "6fef05c00d6e64d92e381c1b21d789fc8da121c5",
+        "author": "Adam Aghili",
+        "email": "Adam.Aghili@ibm.com",
+        "date": "2026-07-07T21:47:25Z",
+        "message": "Merge remote-tracking branch 'origin/release-1.10.2'",
+        "url": "https://github.com/langflow-ai/langflow/commit/6fef05c00d6e64d92e381c1b21d789fc8da121c5"
+    },
+    {
+        "sha": "2433e8797288015a78a0ab718224d4e35fc62bb6",
+        "author": "Adam Aghili",
+        "email": "Adam.Aghili@ibm.com",
+        "date": "2026-07-07T17:29:53Z",
+        "message": "chore: upgrade uv.lock\n\nupgrade uv.lock",
+        "url": "https://github.com/langflow-ai/langflow/commit/2433e8797288015a78a0ab718224d4e35fc62bb6"
+    },
+    {
+        "sha": "a69a47ff1b5c99ce9c50edc4df45de4397151f17",
+        "author": "Anderson Filho",
+        "email": "115162146+andifilhohub@users.noreply.github.com",
+        "date": "2026-07-06T23:35:23Z",
+        "message": "fix: cascade span deletes when clearing traces for a flow (#13960)\n\n* fix: cascade span deletes when clearing traces for a flow\n\nDELETE /api/v1/traces (Clear all) bulk-deletes trace rows directly, which\nbypasses the ORM's delete-orphan cascade on TraceTable.spans. The span.trace_id\nforeign key lacked ondelete=CASCADE at the database level, so Postgres rejected\nthe delete whenever spans still referenced the trace.\n\nFixes #13955\n\n* chore: update tests\n\nupdate tests\n\n* chore: remove torchvision pin\n\nremove torchvision pin they fixed the indexing issue\n\n* [autofix.ci] apply automated fixes\n\n* [autofix.ci] apply automated fixes (attempt 2/3)\n\n* chore: update start_projects and .secrets.baseline\n\n* chore: add missed starter projects\n\n* chore: revert kb test changes\n\n---------\n\nCo-authored-by: Adam Aghili <Adam.Aghili@ibm.com>\nCo-authored-by: autofix-ci[bot] <114827586+autofix-ci[bot]@users.noreply.github.com>",
+        "url": "https://github.com/langflow-ai/langflow/commit/a69a47ff1b5c99ce9c50edc4df45de4397151f17"
+    },
+    {
+        "sha": "b40e4aa02661dcc9d630e1e97a0af45d45e88ae4",
+        "author": "Adam-Aghili",
+        "email": "149833988+Adam-Aghili@users.noreply.github.com",
+        "date": "2026-07-06T20:58:00Z",
+        "message": "chore: upgrade lock files (#13971)\n\n* chore: upgrade lock files\n\nupgrade lock files\n\n* chore: update package versions\n\nupdate package versions\n\n* chore: add tls debug\n\nadd tls debug\n\n* chore: remove tls debug\n\nremove tls debug\n\n* chore: explicitly include _assets in hatchling\n\n[tool.hatch.build.targets.wheel.force-include]\n\"src/lfx/_assets\" = \"lfx/_assets\"\n\n* fix: hatchling force\n\n* chore: update component_index.json\n\nupdate component_index.json\n\n* chore: update sdk version\n\nupdate sdk version",
+        "url": "https://github.com/langflow-ai/langflow/commit/b40e4aa02661dcc9d630e1e97a0af45d45e88ae4"
+    },
+    {
+        "sha": "3965c3be972224663311f60784edf056839fd62e",
+        "author": "Eric Hare",
+        "email": "ericrhare@gmail.com",
+        "date": "2026-07-06T17:09:43Z",
+        "message": "feat: add global variable model overrides (#13935)\n\n* feat: add global variable model overrides\n\n* [autofix.ci] apply automated fixes\n\n* test: refresh upgrade flow language model fixture\n\n* fix: address model override review comments\n\n* Update component_index.json\n\n* [autofix.ci] apply automated fixes\n\n* chore: auto-bake note keys and regenerate backend locales/en.json [skip ci]\n\n* chore: trigger CI\n\n* [autofix.ci] apply automated fixes\n\n* [autofix.ci] apply automated fixes (attempt 2/3)\n\n---------\n\nCo-authored-by: autofix-ci[bot] <114827586+autofix-ci[bot]@users.noreply.github.com>\nCo-authored-by: github-actions[bot] <github-actions[bot]@users.noreply.github.com>",
+        "url": "https://github.com/langflow-ai/langflow/commit/3965c3be972224663311f60784edf056839fd62e"
+    },
+    {
+        "sha": "315cc41b43c446bfb0e63d420ca55021f6f8987e",
+        "author": "Eric Hare",
+        "email": "ericrhare@gmail.com",
+        "date": "2026-07-01T22:12:55Z",
+        "message": "ci: surface nightly Group 3 stall via 90s pytest thread-timeout (#13938)\n\nci: lower pytest timeout to 90s + thread method to surface nightly Group 3 stall\n\nThe nightly Backend Unit Tests Group 3 hangs at ~98% then hits the 50-min\nstep wall. Root: app-boot (\"client\" fixture) tests stall ~127s on a\nfirewalled outbound connect, but the pytest timeout was set to 150s — just\nabove the stall — so the per-test timeout never fired and the group silently\naccumulated until the step wall.\n\nLower timeout 150 -> 90 (fires below the ~127s stall) and switch\ntimeout_method signal -> thread so a timeout dumps ALL thread stacks\n(faulthandler), naming the exact blocking call even when it is a leaked\nbackground task. Diagnostic/temporary; revert once the stall is identified\nand bounded.",
+        "url": "https://github.com/langflow-ai/langflow/commit/315cc41b43c446bfb0e63d420ca55021f6f8987e"
+    },
+    {
+        "sha": "50f4f071ae6b82dbb43fb06d6323b500bdfaf6c1",
+        "author": "Eric Hare",
+        "email": "ericrhare@gmail.com",
+        "date": "2026-07-01T18:18:54Z",
+        "message": "test(frontend): harden model dropdown footer clicks in select-gpt-model (#13936)\n\nThe @release starter-project Playwright tests (Document Q&A, Twitter Thread\nGenerator, etc.) intermittently timed out in initialGPTsetup at\nselect-gpt-model.ts clicking `manage-model-providers`:\n\n    locator.click: Timeout 20000ms — resolved to <button manage-model-providers>\n      … waiting for element to be visible, enabled and stable\n\nThe dropdown footer buttons (\"Manage providers\", \"Refresh list\") render inside\nthe in-canvas model popover, which is drawn without a portal\n(PopoverContentWithoutPortal). When the language-model node sits low on the\ncanvas the footer is clipped or shifts while the model list settles, so a plain\nclick() never satisfies Playwright's actionability check. This path is only\nreached in the \"enable provider\" fallback (OpenAI not yet configured for the\nworker), so exactly one test per worker hit it — which made it look flaky and\nshard-order dependent.\n\nRoute both footer clicks through a `clickModelDropdownFooter` helper that waits\nfor the button, scrolls it into view, and dispatches the click directly — the\nsame dispatchEvent workaround already used for the model option selection.\n\nCo-authored-by: Claude Opus 4.8 <noreply@anthropic.com>",
+        "url": "https://github.com/langflow-ai/langflow/commit/50f4f071ae6b82dbb43fb06d6323b500bdfaf6c1"
+    },
+    {
+        "sha": "ab8508db73520eb9043ca46acbcbcca7da19f8cf",
+        "author": "Eric Hare",
+        "email": "ericrhare@gmail.com",
+        "date": "2026-07-01T18:18:38Z",
+        "message": "fix(ci): consolidate recent nightly CI fixes\n\nSquash the recent Eric-authored main commits above 26dc6fd3bc into one branch-head commit.",
+        "url": "https://github.com/langflow-ai/langflow/commit/ab8508db73520eb9043ca46acbcbcca7da19f8cf"
+    },
+    {
+        "sha": "a6f5f51a576147c78b9426ea8bca60a7b3f2c4d6",
+        "author": "Eric Hare",
+        "email": "ericrhare@gmail.com",
+        "date": "2026-06-30T18:31:17Z",
+        "message": "fix: scope local vector store collections by user (#13882)\n\n* fix: restrict log retrieval to superusers\n\n* fix: scope local vector store collections by user\n\nTwo users sharing a resolved persist_directory and collection/index name\ncould read each other's documents in the local (on-disk) Chroma, LocalDB,\nand FAISS vector stores. Derive a stable, non-identifying per-user name\n(sha256(user_id:name)) on the local/on-disk path only, failing safe to the\noriginal name when there is no runtime user. Remote/server-backed stores are\nunchanged.\n\nExtract the scoping into a shared lfx.base.vectorstores.user_scoping module\nused by all three components, restamp the component index and the affected\nstarter projects, and add regression tests for each component plus the helper.\n\nSupersedes #13876.\n\n* fix: address CodeRabbit review on scoping hash + logs-stream tests\n\n- user_scoping: length-prefix the sha256 payload so different (user_id,\n  collection_name) pairs (e.g. ('a:b','c') vs ('a','b:c')) cannot collide onto\n  the same local store; add a regression test for the separator boundary.\n- test_log_router: add request-level coverage for /logs-stream — a 403 for an\n  active non-superuser, and a superuser reaching the handler (501 with the buffer\n  disabled) to prove the auth gate is cleared without consuming the infinite SSE\n  stream.\n\nCodeRabbit's two FAISS-test comments (component-test harness, exercise\nsearch_documents) are moot: the merge resolves the FAISS test to release-1.10.2's\n#13871 version (uses fakes, exercises the load/search path), dropping this PR's\nFAISS test.\n\n* [autofix.ci] apply automated fixes\n\n* fix: Constrain local SaveToFile paths (#13877)\n\n* fix: constrain local save file paths\n\n* [autofix.ci] apply automated fixes\n\n* [autofix.ci] apply automated fixes (attempt 2/3)\n\n* Update component_index.json\n\n* [autofix.ci] apply automated fixes\n\n* [autofix.ci] apply automated fixes\n\n* [autofix.ci] apply automated fixes\n\n---------\n\nCo-authored-by: autofix-ci[bot] <114827586+autofix-ci[bot]@users.noreply.github.com>\n\n* fix(deps): upgrade composio and composio-langchain to 0.16.0 (#13855)\n\n* fix(deps): upgrade composio and composio-langchain to 0.16.0\n\ncomposio==0.9.2 declared composio-client>=1.13.0 without an upper\nbound. When installed fresh, pip resolves composio-client==1.41.0\nwhich dropped the composio_client.types.tool_router_create_session_params\nmodule that composio==0.9.2 imports at load time, causing:\n\n  ModuleNotFoundError: No module named\n  'composio_client.types.tool_router_create_session_params'\n\ncomposio==0.16.0 pins composio-client==1.41.0 exactly, so the two\npackages are always in sync and the import error cannot occur.\n\nFixes #13853\n\nSigned-off-by: Radhakrishnan Pachyappan <gingeekrishna@gmail.com>\n\n* fix(composio): handle renamed substitute_reserved_python_keywords in 0.16.0\n\ncomposio-langchain==0.16.0 made _substitute_reserved_python_keywords\npublic by dropping the leading underscore. The monkey-patch in\nsafe_provider.py accessed it by the old private name, causing:\n\n  AttributeError: module 'composio_langchain.provider' has no attribute\n  '_substitute_reserved_python_keywords'\n\nUse getattr with a fallback so the patch works with both the old\n(<0.16.0) and new (>=0.16.0) name.\n\nSigned-off-by: Radhakrishnan Pachyappan <gingeekrishna@gmail.com>\n\n* [autofix.ci] apply automated fixes\n\n---------\n\nSigned-off-by: Radhakrishnan Pachyappan <gingeekrishna@gmail.com>\nCo-authored-by: autofix-ci[bot] <114827586+autofix-ci[bot]@users.noreply.github.com>\n\n* fix(knowledge-bases): honor configured OLLAMA_BASE_URL during file ingestion (#13901)\n\nfix(knowledge-bases): honor configured OLLAMA_BASE_URL during ingestion\n\nKB file ingestion (and the memory-base ingestion/retrieval/delete paths\nthat share KBIngestionHelper.build_embeddings) built EmbeddingModelComponent\nprogrammatically without ollama_base_url. The component's StrInput default\n'http://localhost:11434' then leaked through getattr() and truthy-short-\ncircuited the OLLAMA_BASE_URL global-variable/env resolution in\nget_embeddings, so a KB pointed at a remote Ollama server always tried\nlocalhost and failed with 'Failed to connect to Ollama' — even though the\nsame server worked in flows and via curl.\n\nPass ollama_base_url=None explicitly so get_embeddings resolves the user's\nconfigured base URL, falling back to localhost only when nothing is set.\n\nFixes #13883\n\n* Update .secrets.baseline\n\n* [autofix.ci] apply automated fixes\n\n---------\n\nSigned-off-by: Radhakrishnan Pachyappan <gingeekrishna@gmail.com>\nCo-authored-by: autofix-ci[bot] <114827586+autofix-ci[bot]@users.noreply.github.com>\nCo-authored-by: Radhakrishnan Pachyappan <gingeekrishna@gmail.com>",
+        "url": "https://github.com/langflow-ai/langflow/commit/a6f5f51a576147c78b9426ea8bca60a7b3f2c4d6"
+    },
+    {
+        "sha": "ee60a50dc0bb586b01a3824c76b72734523dfbd0",
+        "author": "Eric Hare",
+        "email": "ericrhare@gmail.com",
+        "date": "2026-06-30T03:11:19Z",
+        "message": "fix: gate litellm off Python 3.14 so pip install langflow resolves (#13814)\n\n* fix: gate litellm off Python 3.14 so pip install langflow resolves\n\nlitellm has no Python 3.14-compatible release: every version from 1.83.8\nonward declares Requires-Python <3.14, so nothing satisfying the\nlitellm>=1.85.1 floor installs on 3.14 (the newest 3.14-installable litellm\nis 1.83.7). Because langflow-base advertises requires-python <3.15,\n`pip install langflow` (and uv) on 3.14 dead-ends resolving\nlitellm<2.0.0,>=1.85.1 from the [complete] extra:\n\n  ERROR: No matching distribution found for litellm<2.0.0,>=1.85.1;\n  extra == \"complete\"\n\nGate the litellm extra with `python_version < '3.14'`, matching the existing\nlangwatch/cuga/ibm-watsonx 3.14 markers in the same file, so 3.14 installs\nskip litellm instead of failing. requires-python is unchanged. Drop the\nmarker once upstream ships a 3.14-compatible litellm.\n\nCo-Authored-By: Claude Opus 4.8 <noreply@anthropic.com>\n\n* fix: gate opik/toolguard/altk + uv override off Python 3.14 too\n\nThe initial commit gated only langflow-base's own litellm extra, but\n`[complete]` also pulls litellm transitively through three packages that were\nnot python-gated: opik and toolguard (unconditional litellm deps) and\nagent-lifecycle-toolkit/altk (litellm<2.0.0, previously platform-gated only).\nWith the unconditional [tool.uv] litellm override still forcing >=1.85.1, the\nuv lock selected an uninstallable litellm 1.89.2 for Python 3.14, and pip would\nhave pulled a sub-floor litellm via those extras (caught in review).\n\nGate all three extras and the uv override with `python_version < '3.14'`. Every\nlitellm edge in the lock now requires <3.14, so a Python 3.14 `complete` install\nresolves with no litellm on any platform. The <3.14 resolution is unchanged\n(litellm stays 1.89.2); lock churn is markers-only, no version moves.\n\nopik/toolguard/altk themselves support 3.14, but all hard-depend on litellm,\nwhich has no 3.14-compatible release, so they cannot function on 3.14 with an\nin-floor litellm and are dropped there until upstream litellm supports 3.14.\n\nCo-Authored-By: Claude Opus 4.8 <noreply@anthropic.com>\n\n* test: skip toolguard policy tests when toolguard is absent (Python 3.14)\n\nGating toolguard off Python 3.14 (this PR) removes it from the 3.14 test\nenvironment, so the three policy tests that import it — directly in\ntest_guarded_tool.py, transitively via the llm_wrapper / tool_invoker\ncomponents in the other two — failed collection with ModuleNotFoundError.\n\nGuard each module with the same `try: import toolguard / except ImportError:\npytest.skip(allow_module_level=True)` pattern the altk tests already use, so\nthey skip cleanly on 3.14 and run unchanged on <3.14. test_policies_component.py\nneeds no guard (it mocks _import_toolguard).\n\nVerified by collecting the full unit tree with toolguard/altk/opik blocked:\n10101 tests collected, 0 errors; the 3 files still collect and pass (50 tests)\nwhen toolguard is present.\n\nCo-Authored-By: Claude Opus 4.8 <noreply@anthropic.com>\n\n* test: skip litellm/toolguard component imports when absent (Python 3.14)\n\nThe direct-import sweep (test_all_lfx_component_modules_directly_importable)\nflags any import error not in its expected-missing allow-list as a hard\nfailure. litellm and toolguard are gated to python_version<'3.14' in\npyproject, so on a clean 3.14 install they are absent and 6 modules fail:\nthe 3 crewai components (`from crewai import Agent` -> litellm) and the 3\nmodels_and_agents/policies components (import toolguard directly).\n\nAdd litellm and toolguard to the allow-list alongside the existing\naltk/langchain_ibm/ibm_watsonx_ai gated entries so these import failures\nare classified as skipped rather than failed on 3.14.\n\nCo-Authored-By: Claude Opus 4.8 <noreply@anthropic.com>\n\n* fix: move litellm uv override to workspace root\n\n* test: skip py314-gated crewai imports\n\n* test: avoid py314 crewai starter imports\n\n* [autofix.ci] apply automated fixes\n\n* [autofix.ci] apply automated fixes\n\n---------\n\nCo-authored-by: Claude Opus 4.8 <noreply@anthropic.com>\nCo-authored-by: autofix-ci[bot] <114827586+autofix-ci[bot]@users.noreply.github.com>",
+        "url": "https://github.com/langflow-ai/langflow/commit/ee60a50dc0bb586b01a3824c76b72734523dfbd0"
+    },
+    {
+        "sha": "ae7f1668c608578482ebad141ecb0d3500708550",
+        "author": "Eric Hare",
+        "email": "ericrhare@gmail.com",
+        "date": "2026-06-29T21:28:14Z",
+        "message": "fix(mcp): launch stdio servers with shell=False (no bash -c / cmd /c wrapper) (#13900)\n\n* fix(mcp): launch stdio servers with shell=False (no bash -c / cmd /c wrapper)\n\nFollow-up to #13874. The MCP stdio launcher previously wrapped the\nconfigured command in `bash -c \"exec ...\"` (POSIX) / `cmd /c` (Windows).\nA denylist (DANGEROUS_MCP_ENV_VARS) plus a launch-time backstop blocked\ndangerous env vars, but a denylist can never enumerate every shell /\nloader / interpreter variable.\n\nBuild StdioServerParameters(command, args, env) directly instead. The\ncommand string is shlex-split into executable + args and exec'd without a\nshell; the MCP SDK handles platform differences (anyio.open_process on\nPOSIX, create_windows_process -- which resolves .cmd/.bat wrappers via\nshutil.which -- on Windows). This structurally eliminates the entire\nshell-startup injection class (shell metacharacters, IFS, CDPATH,\nBASH_ENV/ENV/BASH_FUNC_*, PS4/SHELLOPTS xtrace): no shell is ever spawned.\n\n- Collapse the POSIX/Windows shell-wrapper branches into one structured,\n  shell-free StdioServerParameters; drop now-unused subprocess/platform imports.\n- Keep the loader/interpreter denylist entries (LD_PRELOAD, DYLD_*,\n  GCONV_PATH, PYTHONPATH, NODE_OPTIONS, PATH, ...) -- still honored by the\n  dynamic linker / interpreter regardless of the shell -- and keep the\n  launch-time _validate_mcp_stdio_env backstop. Shell-startup entries are\n  retained as defense-in-depth (inert while shell=False) and to keep\n  write-time MCPServerConfig validation aligned.\n- All callers (mcp_component -> update_tools, deactivated mcp_stdio,\n  v2 API) keep the existing string-based connect_to_server contract.\n- Add TestMCPStdioShellFreeLaunch: benign launch builds structured argv;\n  shell-metacharacter payloads become literal argv (no chaining);\n  BASH_FUNC_*/IFS and loader/interpreter env still rejected pre-spawn.\n\nCo-Authored-By: Claude Opus 4.8 <noreply@anthropic.com>\n\n* [autofix.ci] apply automated fixes\n\n---------\n\nCo-authored-by: Claude Opus 4.8 <noreply@anthropic.com>\nCo-authored-by: autofix-ci[bot] <114827586+autofix-ci[bot]@users.noreply.github.com>",
+        "url": "https://github.com/langflow-ai/langflow/commit/ae7f1668c608578482ebad141ecb0d3500708550"
+    },
+    {
+        "sha": "572fb5b433852c3bf85de3675d81df17f48fc76e",
+        "author": "Eric Hare",
+        "email": "ericrhare@gmail.com",
+        "date": "2026-06-29T20:52:06Z",
+        "message": "fix: constrain Directory component paths (#13878)\n\n* fix: constrain directory component paths\n\n* test: include directory component root setting\n\n* fix: allow Windows drive/UNC directory paths inside configured roots\n\nMove the drive/UNC rejection out of the pre-check so canonicalization plus\nthe _allowed_roots() containment check decides; operator-configured roots on\nanother drive are reachable again while out-of-root paths stay blocked.\n\n* [autofix.ci] apply automated fixes\n\n* fix: restamp embedded Directory code in LangflowAssistant flow\n\nThe agentic LangflowAssistant.json bundled flow embedded a stale snapshot\nof DirectoryComponent in its node template.code.value: it predated the\npath-scope hardening AND the legacy/replacement markers, calling\nself.resolve_path(path) with no allowed-root containment. Because the JSON\nflow load path execs the stored code (lfx/custom/validate.py), this ran the\npre-patch traversal logic rather than the patched component.\n\nRestamp the node to the patched DirectoryComponent source (adds\n_resolve_directory_path/_allowed_roots containment) and update the node\nmetadata.code_hash c55e0e29079d -> fb2f47568d72 to match the component\nindex. No starter projects embed Directory, so no further restamps needed.\n\n---------\n\nCo-authored-by: autofix-ci[bot] <114827586+autofix-ci[bot]@users.noreply.github.com>",
+        "url": "https://github.com/langflow-ai/langflow/commit/572fb5b433852c3bf85de3675d81df17f48fc76e"
+    },
+    {
+        "sha": "3b110d99563dc8c7e610da88b69d134ea4d3af18",
+        "author": "Eric Hare",
+        "email": "ericrhare@gmail.com",
+        "date": "2026-06-29T20:50:33Z",
+        "message": "fix: Block Python interpreter format traversal (#13880)\n\n* fix: block Python interpreter format traversal\n\n* fix: block sibling formatter-sink sandbox bypasses in Python REPL\n\nThe AST attribute check only saw str.format/format_map, but the same\n__globals__ traversal is reachable through string.Formatter().vformat /\nget_field / get_value and operator.attrgetter, where the dunder chain lives\ninside a string argument invisible to the AST. Add those method names to\n_BLOCKED_ATTRIBUTES and restore the literal replacement-field dunder regex so a\ndunder-bearing template is rejected regardless of which formatter consumes it.\n\nAdds env-canary regression tests for the vformat, get_field and attrgetter\nbypasses.\n\n* fix: block operator.methodcaller sandbox bypass in Python REPL\n\nThe format-traversal hardening added attrgetter and the string.Formatter\nprimitives to the blocked-attribute set but missed operator.methodcaller,\nwhich reaches the same sinks invisibly to the AST: methodcaller defers a\nmethod *name* as a runtime string, so methodcaller(\"format\", f)(tmpl) (==\ntmpl.format(f)) with a runtime-assembled tmpl defeats both the literal\n{...__ field scan and the attribute check, and methodcaller(\"__getattribute__\",\n\"__globals__\")(f) bypasses the dunder-attribute check outright.\n\nAdd methodcaller to _BLOCKED_ATTRIBUTES and add env-canary regression tests\nmirroring the attrgetter coverage. itemgetter is intentionally left unblocked\n(subscription only, cannot bootstrap attribute traversal, common in legit code).",
+        "url": "https://github.com/langflow-ai/langflow/commit/3b110d99563dc8c7e610da88b69d134ea4d3af18"
+    },
+    {
+        "sha": "2e46d063ac9cb642503868d42c713f8f5f4d4740",
+        "author": "Eric Hare",
+        "email": "ericrhare@gmail.com",
+        "date": "2026-06-29T20:27:29Z",
+        "message": "fix: block dangerous MCP stdio env vars (#13874)",
+        "url": "https://github.com/langflow-ai/langflow/commit/2e46d063ac9cb642503868d42c713f8f5f4d4740"
+    },
+    {
+        "sha": "42a233269ac0ba86ff8a8a3aff7a8edb5ac0e63c",
+        "author": "Eric Hare",
+        "email": "ericrhare@gmail.com",
+        "date": "2026-06-29T20:24:39Z",
+        "message": "fix: restrict log retrieval to superusers (#13873)",
+        "url": "https://github.com/langflow-ai/langflow/commit/42a233269ac0ba86ff8a8a3aff7a8edb5ac0e63c"
+    },
+    {
+        "sha": "19ef79d033fe324a56df392fa0c05ebc4c7ba496",
+        "author": "Eric Hare",
+        "email": "ericrhare@gmail.com",
+        "date": "2026-06-29T20:24:01Z",
+        "message": "fix: validate file paths by resolved cache containment (#13872)\n\n* fix: validate file paths by resolved cache containment\n\n* fix: restrict cache file path resolution to real files\n\nUse Path.is_file() instead of Path.exists() in get_file_path_value so\ndirectories inside the cache dir and an empty-string input (which resolves\nto CWD) are rejected, matching the helper's file-only intent.",
+        "url": "https://github.com/langflow-ai/langflow/commit/19ef79d033fe324a56df392fa0c05ebc4c7ba496"
+    },
+    {
+        "sha": "95b2074fea2e3d47e4db3f8acbd326f97d92416d",
+        "author": "Eric Hare",
+        "email": "ericrhare@gmail.com",
+        "date": "2026-06-29T20:17:09Z",
+        "message": "fix: block public builds of code execution agents (#13875)\n\n* fix: block public code execution agents\n\n* fix: block Cuga code-execution agent on public flow path",
+        "url": "https://github.com/langflow-ai/langflow/commit/95b2074fea2e3d47e4db3f8acbd326f97d92416d"
+    },
+    {
+        "sha": "6282420e12571de6cfc48884619f26a6096dddf9",
+        "author": "Eric Hare",
+        "email": "ericrhare@gmail.com",
+        "date": "2026-06-29T20:14:24Z",
+        "message": "fix: isolate FAISS persistence by user (#13871)\n\n* fix: isolate FAISS persistence by user\n\n* fix: tighten FAISS index_name validation to a portable allow-list\n\nReplace the deny-list (slash, backslash, empty, '.', '..') in\nget_index_name with a strict portable allow-list (letters, digits, dot,\nunderscore, hyphen, with at least one non-dot character). This also\nrejects the colon and Windows drive-relative prefixes such as\n'D:shared', which would otherwise escape the per-user persist directory\nwhen joined onto the base path.\n\n* [autofix.ci] apply automated fixes\n\n* [autofix.ci] apply automated fixes (attempt 2/3)\n\n---------\n\nCo-authored-by: autofix-ci[bot] <114827586+autofix-ci[bot]@users.noreply.github.com>",
+        "url": "https://github.com/langflow-ai/langflow/commit/6282420e12571de6cfc48884619f26a6096dddf9"
+    },
+    {
+        "sha": "26dc6fd3bc3a49178022b81c58e44a7d0a659a34",
+        "author": "github-actions[bot]",
+        "email": "41898282+github-actions[bot]@users.noreply.github.com",
+        "date": "2026-06-29T14:49:30Z",
+        "message": "chore: update test durations (#13888)\n\nCo-authored-by: github-merge-queue <118344674+github-merge-queue@users.noreply.github.com>",
+        "url": "https://github.com/langflow-ai/langflow/commit/26dc6fd3bc3a49178022b81c58e44a7d0a659a34"
+    },
+    {
+        "sha": "a277209fe4e2e109141af41d3c07d5d91693f07f",
+        "author": "vjgit96",
+        "email": "vijay.katuri@ibm.com",
+        "date": "2026-06-25T20:39:39Z",
+        "message": "ci: push nightly .devX Docker images to langflowai/langflow and fix db-migration-validation image references (#13836)\n\n* ci: push nightly .devX docker images to langflowai/langflow in addition to langflowai/langflow-nightly\n\nMirrors PyPI behaviour where .devX releases are published under the\n'langflow' package name (not 'langflow-nightly'). The Docker nightly\nworkflow now tags and pushes every nightly image to both repos:\n\n- langflowai/langflow-nightly:{ver}  (existing)\n- langflowai/langflow:{ver}          (new — matches PyPI)\n- langflowai/langflow-nightly:latest (existing)\n- langflowai/langflow:latest         (new)\n\nSame mirroring applied to the base and main-all variants, and to GHCR.\n\nThe arch-specific intermediate tags (used to assemble multi-arch\nmanifests) remain under the '-nightly' repos; only the final merged\nmanifests are additionally published to the canonical 'langflow' repos.\n\nFixes: LE-1667\n\n* ci: update db-migration-validation to use canonical langflowai/langflow image\n\nThe db-migration-validation workflow was still referencing the old\nlangflowai/langflow-nightly image for its nightly upgrade step.\nNow that .devX images are also pushed to langflowai/langflow (canonical\nrepo, matching PyPI), update all consumer-side references:\n\n- nightly_build.yml: nightly_tag now passes langflowai/langflow:<tag>\n- db-migration-validation.yml: default and shell fallbacks updated to\n  langflowai/langflow:latest; inline comments updated to match\n\nThe langflowai/langflow-nightly images remain in use as intermediate\narch-specific staging tags inside docker-nightly-build.yml only.\n\nRelates to: LE-1667\n\n* ci: fix stale langflow-nightly package name reference in comment\n\nThe nightly is published as canonical .devN pre-releases of langflow /\nlangflow-base (not as separate langflow-nightly / langflow-base-nightly\npackages). Update the generate-shared-tag step comment to accurately\nreflect this since the rename that happened in the 1.10 release cycle.\n\nRelates to: LE-1353, LE-1667\n\n* fix(ci): do not set :latest on canonical langflow repo for nightly .devX images\n\nNightly .devX images should not overwrite the stable :latest tag on\nlangflowai/langflow. The :latest (and :base-latest) floating tags are\nonly set on the -nightly repos (langflowai/langflow-nightly), which\nare explicitly nightly-only. The canonical langflowai/langflow repo\nonly receives the versioned tag (e.g. :1.11.0.dev20250522), matching\nPyPI behaviour where langflow==1.11.0.dev20250522 is published but\nnever becomes the 'latest' release index entry.\n\nAddresses PR review comment from @jordanrfrazier.\n\nRelates to: LE-1667\n\n* fix(ci): prevent shell injection from inputs.nightly_tag in db-migration-validation\n\nPass inputs.nightly_tag through an env: block and reference it as\n$INPUT_NIGHTLY_TAG in the shell script rather than expanding the\nGitHub Actions expression directly inside run:. Direct expansion of\n${{ inputs.* }} in shell scripts allows an attacker-controlled input\nto inject arbitrary shell commands (CWE-78).\n\nFlagged by CodeRabbit security review.\n\nRelates to: LE-1667",
+        "url": "https://github.com/langflow-ai/langflow/commit/a277209fe4e2e109141af41d3c07d5d91693f07f"
+    },
+    {
+        "sha": "c6dbca308dc85526d5cecb31211821ec4f5e1d05",
+        "author": "Eric Hare",
+        "email": "ericrhare@gmail.com",
+        "date": "2026-06-25T20:27:42Z",
+        "message": "fix: remove hardcoded default superuser password (#13822)\n\n* fix: remove hardcoded default superuser password\n\n* fix: harden legacy superuser credential handling\n\n* fix: update superuser CI paths\n\n* [autofix.ci] apply automated fixes\n\n* fix: have images default auto_login to false\n\nhave images default auto_login to false\n\n* fix: reject legacy superuser password\n\n* fix: align docker auth setup docs\n\n* docs: fix custom docker auth examples\n\n* docs: include auth env in docker upgrade examples\n\n---------\n\nCo-authored-by: autofix-ci[bot] <114827586+autofix-ci[bot]@users.noreply.github.com>\nCo-authored-by: Adam Aghili <Adam.Aghili@ibm.com>",
+        "url": "https://github.com/langflow-ai/langflow/commit/c6dbca308dc85526d5cecb31211821ec4f5e1d05"
+    },
+    {
+        "sha": "cf5c37f293acd0520ab58ba6f5bc7b21bbdd897b",
+        "author": "Eric Hare",
+        "email": "ericrhare@gmail.com",
+        "date": "2026-06-25T14:16:05Z",
+        "message": "fix: handle invalid session auth tokens (#13823)\n\n* fix: handle invalid session auth tokens\n\n* [autofix.ci] apply automated fixes\n\n---------\n\nCo-authored-by: autofix-ci[bot] <114827586+autofix-ci[bot]@users.noreply.github.com>",
+        "url": "https://github.com/langflow-ai/langflow/commit/cf5c37f293acd0520ab58ba6f5bc7b21bbdd897b"
+    },
+    {
+        "sha": "2e990b2c6a9d303a40de7634164dfba192c7b0af",
+        "author": "Eric Hare",
+        "email": "ericrhare@gmail.com",
+        "date": "2026-06-24T23:57:35Z",
+        "message": "fix: disable mem0 telemetry by default (#13824)",
+        "url": "https://github.com/langflow-ai/langflow/commit/2e990b2c6a9d303a40de7634164dfba192c7b0af"
+    },
+    {
+        "sha": "3b6d1541392f139be7384c478e6ed826657358bb",
+        "author": "Eric Hare",
+        "email": "ericrhare@gmail.com",
+        "date": "2026-06-24T22:34:57Z",
+        "message": "fix: use session exec in telemetry writer (#13821)",
+        "url": "https://github.com/langflow-ai/langflow/commit/3b6d1541392f139be7384c478e6ed826657358bb"
+    },
+    {
+        "sha": "4da60c4b1274615985a02a3dbbf74f7dcdb1bf69",
+        "author": "Eric Hare",
+        "email": "ericrhare@gmail.com",
+        "date": "2026-06-24T20:17:42Z",
+        "message": "fix: keep nightly prerelease wheels explicit (#13817)",
+        "url": "https://github.com/langflow-ai/langflow/commit/4da60c4b1274615985a02a3dbbf74f7dcdb1bf69"
+    },
+    {
+        "sha": "7db38d1abbdc9ae764f8e7e28da64cb5104217f6",
+        "author": "Eric Hare",
+        "email": "ericrhare@gmail.com",
+        "date": "2026-06-24T03:31:21Z",
+        "message": "fix: unblock nightly bundle install resolution",
+        "url": "https://github.com/langflow-ai/langflow/commit/7db38d1abbdc9ae764f8e7e28da64cb5104217f6"
+    },
+    {
+        "sha": "1a602204977d550783daa99c54bc238763de30ff",
+        "author": "Eric Hare",
+        "email": "ericrhare@gmail.com",
+        "date": "2026-06-23T23:54:36Z",
+        "message": "Merge remote-tracking branch 'origin/release-1.10.1'\n\n# Conflicts:\n#\t.secrets.baseline\n#\tsrc/backend/tests/.test_durations",
+        "url": "https://github.com/langflow-ai/langflow/commit/1a602204977d550783daa99c54bc238763de30ff"
+    },
+    {
+        "sha": "a66b75ac2603b26988fb6be95303fdc61f807190",
+        "author": "Eric Hare",
+        "email": "ericrhare@gmail.com",
+        "date": "2026-06-23T23:15:24Z",
+        "message": "chore: require bumped sdk for lfx release",
+        "url": "https://github.com/langflow-ai/langflow/commit/a66b75ac2603b26988fb6be95303fdc61f807190"
+    },
+    {
+        "sha": "f85901e49d976e69457a0b11bc220747511fc172",
+        "author": "Eric Hare",
+        "email": "ericrhare@gmail.com",
+        "date": "2026-06-23T23:12:43Z",
+        "message": "chore: bump sdk release version",
+        "url": "https://github.com/langflow-ai/langflow/commit/f85901e49d976e69457a0b11bc220747511fc172"
+    }
+]

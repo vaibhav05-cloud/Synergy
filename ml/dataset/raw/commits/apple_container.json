@@ -1,0 +1,242 @@
+[
+    {
+        "sha": "608902412d61761ebd1efc285a9d0a1727e6e2c1",
+        "author": "J Logan",
+        "email": "john_logan@apple.com",
+        "date": "2026-07-13T20:36:49Z",
+        "message": "Add commit/issue alert to PR template. (#1945)",
+        "url": "https://github.com/apple/container/commit/608902412d61761ebd1efc285a9d0a1727e6e2c1"
+    },
+    {
+        "sha": "57b07fa2acfc432cb7a3c3f5f507c3bbc182ccb1",
+        "author": "0x4C33",
+        "email": "60883781+haoruilee@users.noreply.github.com",
+        "date": "2026-07-13T20:04:39Z",
+        "message": "Verify kernel archive integrity (#1703)\n\nCloses https://github.com/apple/container/issues/1687\n\nThe default kernel archive is downloaded from a remote release URL\nduring first-run setup and via `container system kernel set\n--recommended`. Previously, the archive contents were not verified after\ndownload, so integrity depended on HTTPS and the release artifact\nremaining unchanged.\n\nThis change adds digest verification for kernel archives. The\nrecommended/default kernel now has pinned digest metadata using an\nalgorithm-prefixed value such as `sha256:<hex>`. `container system\nkernel set --tar` accepts `--digest`; remote tar URLs require it, and\nlocal tar archives can also be verified before unpacking and\ninstallation.\n\nThe system config also supports `kernel.digest`, and a custom\n`kernel.url` must provide a digest for that archive.",
+        "url": "https://github.com/apple/container/commit/57b07fa2acfc432cb7a3c3f5f507c3bbc182ccb1"
+    },
+    {
+        "sha": "5f277a9cbf8640d166e0c166df5ebbd31bf16408",
+        "author": "Aditya Ramani",
+        "email": "a_ramani@apple.com",
+        "date": "2026-07-11T03:44:39Z",
+        "message": "Use containerization version 0.37.0 (#1932)\n\nUpdate the containerization dependency to 0.37.0 to pick up bug fixes",
+        "url": "https://github.com/apple/container/commit/5f277a9cbf8640d166e0c166df5ebbd31bf16408"
+    },
+    {
+        "sha": "e1a5cfdc701e96ffe4a8bb463646eaaff8badb4e",
+        "author": "J Logan",
+        "email": "john_logan@apple.com",
+        "date": "2026-07-07T20:52:19Z",
+        "message": "Updates containerization to 0.36.0. (#1912)\n\n- Picks up the workaround removal for grpc-swift in Vminitd.",
+        "url": "https://github.com/apple/container/commit/e1a5cfdc701e96ffe4a8bb463646eaaff8badb4e"
+    },
+    {
+        "sha": "36dc0639025f72bada65892eaaac525bc941c13a",
+        "author": "adityabagchi24",
+        "email": "aditya.bagchi006@gmail.com",
+        "date": "2026-07-07T17:23:50Z",
+        "message": "Upgrade grpc-swift-nio-transport to 2.9.0 and remove HTTP2ConnectBuff… (#1790)\n\n- Fixes #1789.\n- Release 2.9.0 of `grpc-swift-nio-transport` fixes\n  an HTTP/2 initialization race where the server could\n  send SETTINGS before gRPC handlers are added to\n  the pipeline, causing the client to hang. The new\n  `WrappedChannel.wrapping(config:serviceConfig:makeChannel:)`\n  API calls `configure(channel)` inside the channel\n  initializer, ensuring the pipeline is set up before any inbound\n  bytes arrive. This eliminates the need for the custom\n  `HTTP2ConnectBufferingHandler` workaround.",
+        "url": "https://github.com/apple/container/commit/36dc0639025f72bada65892eaaac525bc941c13a"
+    },
+    {
+        "sha": "edd6dee2db36aef6733dc373b7b9c9d1673e7302",
+        "author": "Noah Thornton",
+        "email": "noah_thornton@apple.com",
+        "date": "2026-07-06T22:43:30Z",
+        "message": "Integration coverage xpc helpers (#1551)\n\n- This fixes the LLVM coverage data not properly being emitted for XPC\n  services. It requires piping the `LLVM_PROFILE_FILE` environment\n  variable through to all the services and plugins. The variable itself\n  also required the \"%c\" formatter to ensure that it continuously emits\n  coverage data, otherwise when XPC services are killed via \"bootout\" they\n  do not emit coverage.",
+        "url": "https://github.com/apple/container/commit/edd6dee2db36aef6733dc373b7b9c9d1673e7302"
+    },
+    {
+        "sha": "3ad6e9b8ba91418f033f8f05567022cf647b1f2c",
+        "author": "J Logan",
+        "email": "john_logan@apple.com",
+        "date": "2026-07-03T00:30:31Z",
+        "message": "Removes obsolete CLITests directory. (#1886)\n\n- Closes #1833.",
+        "url": "https://github.com/apple/container/commit/3ad6e9b8ba91418f033f8f05567022cf647b1f2c"
+    },
+    {
+        "sha": "76f387e3be2855b84ba411c72ef14c9439a413aa",
+        "author": "J Logan",
+        "email": "john_logan@apple.com",
+        "date": "2026-07-02T22:34:46Z",
+        "message": "Restore reverted migrations, migrate last tests. (#1880)\n\n- Part of #1833.\n- CLI progress and registry test migrations were inadventently reverted\nby #1857.\n- Migrate TestCLINoParallelCases to TestCLIImagePruneSerial and\nTestCLINetworkPruneSerial.\n- Clean up test selection patterns in Makefile.\n- Remove all legacy CLITests files.\n- Use swift-testing `withKnownIssue` to run but ignore failures on flaky\n`testCreateNameLongestValid` and `testIsolatedNetwork`.\n- Extracts a fixture helper for tests requiring a retry loop.",
+        "url": "https://github.com/apple/container/commit/76f387e3be2855b84ba411c72ef14c9439a413aa"
+    },
+    {
+        "sha": "d9fdf39af6d4d1a3f3e885fab5514c53a121f468",
+        "author": "Kathryn Baldauf",
+        "email": "k_baldauf@apple.com",
+        "date": "2026-07-02T03:18:31Z",
+        "message": "Add TestCLISystemLogs and TestCLITermIO integration tests in new integration test suite (#1879)\n\nThis PR adds two test suites that were missing from the new integration\ntest suite\n\nSigned-off-by: Kathryn Baldauf <k_baldauf@apple.com>",
+        "url": "https://github.com/apple/container/commit/d9fdf39af6d4d1a3f3e885fab5514c53a121f468"
+    },
+    {
+        "sha": "5973b9cc626a3e7a499bb316a958237ebe14e2ed",
+        "author": "J Logan",
+        "email": "john_logan@apple.com",
+        "date": "2026-07-02T01:25:34Z",
+        "message": "Finalize Makefile for integration test rework. (#1878)\n\n- Part of #1833.\n- Replace old targets with new ones.\n- Try increased parallelism after test tweaks in #1857.\n- Exclude test files from coverage analysis.",
+        "url": "https://github.com/apple/container/commit/5973b9cc626a3e7a499bb316a958237ebe14e2ed"
+    },
+    {
+        "sha": "4a7906059558689b584e1e99efcf460df12a25ea",
+        "author": "Kathryn Baldauf",
+        "email": "k_baldauf@apple.com",
+        "date": "2026-07-01T23:03:03Z",
+        "message": "Ensure test filenames match test suite names and each file has a single suite defined (#1877)\n\nThis PR cleans up some of the new IntegrationTests files to ensure that\neach file has a single test suite defined within it and the name of the\nfile matches the name of the test suite.\n\nSigned-off-by: Kathryn Baldauf <k_baldauf@apple.com>",
+        "url": "https://github.com/apple/container/commit/4a7906059558689b584e1e99efcf460df12a25ea"
+    },
+    {
+        "sha": "69a2505aeb815538ca0732b59c1e3ec2da127c25",
+        "author": "J Logan",
+        "email": "john_logan@apple.com",
+        "date": "2026-07-01T20:23:16Z",
+        "message": "Migrates container run integration tests. (#1857)\n\n- Part of #1833.",
+        "url": "https://github.com/apple/container/commit/69a2505aeb815538ca0732b59c1e3ec2da127c25"
+    },
+    {
+        "sha": "9bd3c473451a40a1ee28f02104826d224636948d",
+        "author": "J Logan",
+        "email": "john_logan@apple.com",
+        "date": "2026-07-01T00:37:51Z",
+        "message": "Migrates container create, run-lifecycle, exec, remove, copy. (#1844)\n\n- Part of #1833.",
+        "url": "https://github.com/apple/container/commit/9bd3c473451a40a1ee28f02104826d224636948d"
+    },
+    {
+        "sha": "88ab3192f988a780399f9770e25c823eb848aa66",
+        "author": "J Logan",
+        "email": "john_logan@apple.com",
+        "date": "2026-06-30T22:25:16Z",
+        "message": "Migrate image, volume and miscellaneous system tests. (#1868)\n\n- Part of #1833.\n- Distributes fixture extensions for images and containers added as part\nof previous builder PR to more sensible locations.",
+        "url": "https://github.com/apple/container/commit/88ab3192f988a780399f9770e25c823eb848aa66"
+    },
+    {
+        "sha": "811abf75bf386a42a40f6a2b9782553e5b1df8a6",
+        "author": "Kathryn Baldauf",
+        "email": "k_baldauf@apple.com",
+        "date": "2026-06-30T18:08:49Z",
+        "message": "Add checksum validation to hawkeye installation (#1869)\n\nSigned-off-by: Kathryn Baldauf <k_baldauf@apple.com>",
+        "url": "https://github.com/apple/container/commit/811abf75bf386a42a40f6a2b9782553e5b1df8a6"
+    },
+    {
+        "sha": "586fa07d2abb3539f46f84b6b6241d8a18f845a0",
+        "author": "J Logan",
+        "email": "john_logan@apple.com",
+        "date": "2026-06-30T17:40:26Z",
+        "message": "Migrate registry tests to new test support types. (#1845)\n\n- Part of #1833.",
+        "url": "https://github.com/apple/container/commit/586fa07d2abb3539f46f84b6b6241d8a18f845a0"
+    },
+    {
+        "sha": "d29e6edd5e8af60819774b80c0dbe296c59f6a52",
+        "author": "J Logan",
+        "email": "john_logan@apple.com",
+        "date": "2026-06-30T17:00:34Z",
+        "message": "Migrates network integration tests. (#1858)\n\n- Part of #1833.",
+        "url": "https://github.com/apple/container/commit/d29e6edd5e8af60819774b80c0dbe296c59f6a52"
+    },
+    {
+        "sha": "3842977f4aa4c53cc9b9df65900aa1ab4498fdc1",
+        "author": "J Logan",
+        "email": "john_logan@apple.com",
+        "date": "2026-06-29T23:40:06Z",
+        "message": "Migrate basic system tests to new test support types. (#1841)\n\n- Part of #1833.",
+        "url": "https://github.com/apple/container/commit/3842977f4aa4c53cc9b9df65900aa1ab4498fdc1"
+    },
+    {
+        "sha": "c37c405bbd181182732679eb4329f5dbf9accc78",
+        "author": "J Logan",
+        "email": "john_logan@apple.com",
+        "date": "2026-06-29T22:58:19Z",
+        "message": "Migrates container machine tests. (#1856)\n\n- Part of #1833.",
+        "url": "https://github.com/apple/container/commit/c37c405bbd181182732679eb4329f5dbf9accc78"
+    },
+    {
+        "sha": "6317a832d400b39786b5fe750bdf49f99950511f",
+        "author": "J Logan",
+        "email": "john_logan@apple.com",
+        "date": "2026-06-29T19:12:31Z",
+        "message": "Adds build fixture and migrates build CLI tests. (#1848)\n\n- Part of #1833.\n- Also changes test directory names to include test ID so that they are\neasily identifiable.",
+        "url": "https://github.com/apple/container/commit/6317a832d400b39786b5fe750bdf49f99950511f"
+    },
+    {
+        "sha": "c34d340a602055efe2a655af258fc8bced034413",
+        "author": "Kathryn Baldauf",
+        "email": "k_baldauf@apple.com",
+        "date": "2026-06-26T22:35:36Z",
+        "message": "Update containerization import to 0.35.0 (#1842)\n\nSigned-off-by: Kathryn Baldauf <k_baldauf@apple.com>",
+        "url": "https://github.com/apple/container/commit/c34d340a602055efe2a655af258fc8bced034413"
+    },
+    {
+        "sha": "be3b1f20c4ca25aedcc4cf1cb08a099ebb8a3a6c",
+        "author": "J Logan",
+        "email": "john_logan@apple.com",
+        "date": "2026-06-26T21:17:18Z",
+        "message": "Migrate some container tests, remove concurrent demo tests. (#1840)\n\n- Part of #1833.\n- Tweaks `ContainerFixture.withContainer()` to support the legacy\n`longRun()` pattern without boilerplate.",
+        "url": "https://github.com/apple/container/commit/be3b1f20c4ca25aedcc4cf1cb08a099ebb8a3a6c"
+    },
+    {
+        "sha": "649164d9e29ae3017d9a3da76be345513f7fc426",
+        "author": "J Logan",
+        "email": "john_logan@apple.com",
+        "date": "2026-06-26T19:00:44Z",
+        "message": "Enhanced test fixtures for integration tests. (#1834)\n\n- Part of #1833.\n- Adds `ContainerFixture` with scoped resource lifecycle and cleanup in\nplace of implementation inheritance for test support functions. The\nfixture also handles resource prefixing and uses a more ergonomic\n`CommandResult` in place of a tuple for return values.\n- `ImageWarmup` suite pre-pulls well-known images, and\n`copyWarmupImage()` tags test-local refs, keeping the canonical image\nstore untouched.\n- Three-phase `integration-new`: warmup, followed by concurrent tests\n(managed by the swift test\n`--experimental-maximum-parallelization-width` flag), followed by\nserialized tests.\n- `coverage-new` merges unit + integration-new profraw, replacing\n`coverage` in CI as a migration progress indicator.\n- Updates GH workflow so non-coverage invokes both the `integration` and\n`integration-new` Makefile targets, while coverage runs invoke the\n`coverage-new` target.",
+        "url": "https://github.com/apple/container/commit/649164d9e29ae3017d9a3da76be345513f7fc426"
+    },
+    {
+        "sha": "aa7fef3d1d61a4ea8156203cb61817862877a635",
+        "author": "John Costa",
+        "email": "costajohnt@gmail.com",
+        "date": "2026-06-26T17:04:30Z",
+        "message": "Route `container image save` reference list to stderr in stdout mode (#1804)\n\n- Fixes #1801.\n- When `container image save` runs without `--output`,\n  stdout carries the OCI tar archive. The command writes \n  the archive bytes to stdout and then `print(reference)`s\n  each saved image reference to stdout afterward,\n  appending non-archive text after the tar EOF marker,\n  which will cause strict tar/OCI consumers to fail.\n- This routes the saved-reference list to stderr in the\n  no-`--output` branch, so stdout contains only archive\n  bytes. When saving to a file via `--output`, stdout is\n  free, so the references continue to print to stdout\n  exactly as before.\n\nCo-authored-by: Claude Opus 4.8 (1M context) <noreply@anthropic.com>",
+        "url": "https://github.com/apple/container/commit/aa7fef3d1d61a4ea8156203cb61817862877a635"
+    },
+    {
+        "sha": "27acdbe2f862da42d6e5e71a418f9a6fa6794aa9",
+        "author": "dependabot[bot]",
+        "email": "49699333+dependabot[bot]@users.noreply.github.com",
+        "date": "2026-06-26T04:44:11Z",
+        "message": "ci: bump the github-actions group across 1 directory with 2 updates (#1792)\n\n- Updates `actions/checkout` from 6.0.3 to 7.0.0\n- Updates `softprops/action-gh-release` from 3.0.0 to 3.0.1\n\nSigned-off-by: dependabot[bot] <support@github.com>\nCo-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>",
+        "url": "https://github.com/apple/container/commit/27acdbe2f862da42d6e5e71a418f9a6fa6794aa9"
+    },
+    {
+        "sha": "0b6c79f3d38187c0ca283cea69a682b455f4cb10",
+        "author": "SEPURI-SAI-KRISHNA",
+        "email": "saik20533@gmail.com",
+        "date": "2026-06-26T04:38:40Z",
+        "message": "fix: propagate error from createDirectory in system start (#1785)\n\n- `SystemStart` used `try!` when creating the apiserver\n  data directory. File system operations can fail for\n  legitimate reasons: insufficient permissions, disk full,\n  read-only volume. Crashing the process in these cases\n  gives the user no actionable error message.\n- Replaced with `try` so the error propagates up and is\n  surfaced cleanly.",
+        "url": "https://github.com/apple/container/commit/0b6c79f3d38187c0ca283cea69a682b455f4cb10"
+    },
+    {
+        "sha": "0c95007763399afc5df1969908ddf043c7554839",
+        "author": "Hugo, CY LAU",
+        "email": "cheukyin175@gmail.com",
+        "date": "2026-06-26T02:42:37Z",
+        "message": "perf(parser): add collection capacity hints to known-size loops (#1791)\n\n- For result sets with known sizes, it's more efficient\n  to supply the size as a capacity hint.",
+        "url": "https://github.com/apple/container/commit/0c95007763399afc5df1969908ddf043c7554839"
+    },
+    {
+        "sha": "af71f87408870b906ebb5e20f89c9373dc7bb44f",
+        "author": "Bhavesh Varma",
+        "email": "151822885+radheradhe01@users.noreply.github.com",
+        "date": "2026-06-26T00:48:11Z",
+        "message": "Remove duplicate release workflow that double-builds and races on every tag (#1781)\n\n- Closes #1755.",
+        "url": "https://github.com/apple/container/commit/af71f87408870b906ebb5e20f89c9373dc7bb44f"
+    },
+    {
+        "sha": "4a6084cc95d5d7e1ff5efb312345a97d3591c70e",
+        "author": "J Logan",
+        "email": "john_logan@apple.com",
+        "date": "2026-06-25T21:06:45Z",
+        "message": "Remove network variant computation from API server. (#1814)\n\n- Closes #1812.\n- The network plugin is the source of truth for the variant, if any,\nthat applies to the network. Resolving a missing variant configuration\noption in the API server can create a situation where the variant the\nruntime uses for interface selection is incorrect.\n- Adds serial suites trait to tests to see whether it helps current CI\nissues.\n\n## Type of Change\n- [x] Bug fix\n- [ ] New feature  \n- [ ] Breaking change\n- [ ] Documentation update\n\n## Motivation and Context\nFixes a flaw in our interface strategy logic.\n\n## Testing\n- [x] Tested locally\n- [ ] Added/updated tests\n- [ ] Added/updated docs",
+        "url": "https://github.com/apple/container/commit/4a6084cc95d5d7e1ff5efb312345a97d3591c70e"
+    },
+    {
+        "sha": "137b3bdaf0dafad4c74ae3523c34a6695dfe5565",
+        "author": "SEPURI-SAI-KRISHNA",
+        "email": "saik20533@gmail.com",
+        "date": "2026-06-25T19:40:39Z",
+        "message": "Fix/exec empty arguments crash (#1783)\n\n- `swift-argument-parser` enforces that `arguments` is\n  non-empty before `run()` is invoked, so the force-unwrap\n  of `arguments.first!` is not reachable in practice. However,\n  the guard makes the invariant explicit in the code itself,\n  removes reliance on ArgumentParser's implicit\n  enforcement, and would satisfy force-unwrap lint rules\n  if enabled in the future.",
+        "url": "https://github.com/apple/container/commit/137b3bdaf0dafad4c74ae3523c34a6695dfe5565"
+    }
+]

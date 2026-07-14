@@ -1,0 +1,242 @@
+[
+    {
+        "sha": "73e48c24d12951d21e209868c385015a6213c2de",
+        "author": "dependabot[bot]",
+        "email": "49699333+dependabot[bot]@users.noreply.github.com",
+        "date": "2026-07-13T12:26:06Z",
+        "message": "chore(deps): bump the production-deps group with 17 updates (#509)",
+        "url": "https://github.com/snapotter-hq/SnapOtter/commit/73e48c24d12951d21e209868c385015a6213c2de"
+    },
+    {
+        "sha": "ec72ff100d5c6c426d302aa89f8e2be4c65a06e8",
+        "author": "dependabot[bot]",
+        "email": "49699333+dependabot[bot]@users.noreply.github.com",
+        "date": "2026-07-13T11:52:48Z",
+        "message": "chore(deps-dev): bump the dev-deps group with 10 updates (#510)",
+        "url": "https://github.com/snapotter-hq/SnapOtter/commit/ec72ff100d5c6c426d302aa89f8e2be4c65a06e8"
+    },
+    {
+        "sha": "a39b3fe47fc6359bc036aee67895be929e7d30c0",
+        "author": "dependabot[bot]",
+        "email": "49699333+dependabot[bot]@users.noreply.github.com",
+        "date": "2026-07-13T11:52:46Z",
+        "message": "chore(deps): bump node from c601a46 to a25c993 in /docker (#506)",
+        "url": "https://github.com/snapotter-hq/SnapOtter/commit/a39b3fe47fc6359bc036aee67895be929e7d30c0"
+    },
+    {
+        "sha": "30d36d7949817751b869916775138dc4fa7a34d2",
+        "author": "SnapOtter",
+        "email": "snapotter.hq@gmail.com",
+        "date": "2026-07-13T11:27:16Z",
+        "message": "fix(security): bump Pillow to 12.3.0, fixes 5 disclosed CVEs (#517)",
+        "url": "https://github.com/snapotter-hq/SnapOtter/commit/30d36d7949817751b869916775138dc4fa7a34d2"
+    },
+    {
+        "sha": "5bd052286c5a7920161b21cb791cc122fe3a1616",
+        "author": "SnapOtter",
+        "email": "snapotter.hq@gmail.com",
+        "date": "2026-07-13T10:17:27Z",
+        "message": "fix(landing): stop mangling #hash fragments in localized links (#516)",
+        "url": "https://github.com/snapotter-hq/SnapOtter/commit/5bd052286c5a7920161b21cb791cc122fe3a1616"
+    },
+    {
+        "sha": "74e7d23abad924f04b348f00edf34e67188c4f2e",
+        "author": "SnapOtter",
+        "email": "snapotter.hq@gmail.com",
+        "date": "2026-07-13T09:39:29Z",
+        "message": "fix(landing): rework footer badge/switcher layout (#514)",
+        "url": "https://github.com/snapotter-hq/SnapOtter/commit/74e7d23abad924f04b348f00edf34e67188c4f2e"
+    },
+    {
+        "sha": "2dee9ead0b1c84c02831c5e92082cd4598b7b8f5",
+        "author": "SnapOtter",
+        "email": "snapotter.hq@gmail.com",
+        "date": "2026-07-13T08:59:09Z",
+        "message": "feat(landing): move language switcher from navbar to footer (#513)",
+        "url": "https://github.com/snapotter-hq/SnapOtter/commit/2dee9ead0b1c84c02831c5e92082cd4598b7b8f5"
+    },
+    {
+        "sha": "ce54d06e797c8f3fe25ed8c00ef42047ddf63882",
+        "author": "SnapOtter",
+        "email": "snapotter.hq@gmail.com",
+        "date": "2026-07-13T08:49:01Z",
+        "message": "feat(landing): add Twelve Tools and Wired Business footer badges (#512)",
+        "url": "https://github.com/snapotter-hq/SnapOtter/commit/ce54d06e797c8f3fe25ed8c00ef42047ddf63882"
+    },
+    {
+        "sha": "e1b8c24e5d78153a62629972932a65cd1491ee77",
+        "author": "SnapOtter",
+        "email": "snapotter.hq@gmail.com",
+        "date": "2026-07-13T06:23:16Z",
+        "message": "feat(analytics): instance census, full capture, richer error context (#511)\n\nAdd a once-per-boot instance_started event (arch, os, deploy_mode,\ngpu_present) so the fleet architecture mix is measurable. It reuses the\nexisting per-instance instance_id and is exempt from the volume sample\nrate, since a census that fires once per boot must not be thinned.\n\nRestore useful capture depth now that the sponsored plan removes the\nquota pressure behind the earlier hardening:\n\n- PostHog sample rate 0.1 to 1.0 (full analytics when enabled); the\n  property allowlist still blocks file data.\n- Sentry per-instance ceiling 20 to 500/hr, breadcrumb trail restored\n  (sanitized: urls/paths redacted, data payloads dropped), full stack\n  paths kept; local vars, request bodies, and PII still dropped. Both\n  api and web.\n\nHonor ANALYTICS_ENABLED=false as an opt-out alias: it was documented on\nthe Docker Hub README but never wired in 2.x, so anyone who set it was\nstill tracked.\n\nAll capture stays behind the analytics opt-out gate.",
+        "url": "https://github.com/snapotter-hq/SnapOtter/commit/e1b8c24e5d78153a62629972932a65cd1491ee77"
+    },
+    {
+        "sha": "b6fdabaea86f8cbcb207764bb1f174445201b094",
+        "author": "SnapOtter",
+        "email": "snapotter.hq@gmail.com",
+        "date": "2026-07-11T21:02:15Z",
+        "message": "ci(release): keep image attestations in GitHub's API, drop provenance sidecars (#504)\n\nStop pushing SLSA attestations to the registries as OCI referrer tags (attest.yml: push-to-registry: false) and disable buildx's default provenance sidecars (release.yml: provenance: false). GHCR rendered both as package versions / unknown-unknown architecture entries on the package page. The release/publish flow (publish-images gate, RELEASE_TOKEN, web Sentry DSN) is unchanged.",
+        "url": "https://github.com/snapotter-hq/SnapOtter/commit/b6fdabaea86f8cbcb207764bb1f174445201b094"
+    },
+    {
+        "sha": "c06a672313163e13d617966986ece526ab8896e3",
+        "author": "SnapOtter",
+        "email": "snapotter.hq@gmail.com",
+        "date": "2026-07-11T16:00:50Z",
+        "message": "chore: make AGPL license detectable (#467)\n\nReplace the root LICENSE file's custom preamble with the verbatim AGPL-3.0 text so GitHub's license detector and directory scrapers recognize the repo as AGPL-3.0. The dual-license/commercial explanation moves to LICENSING.md.",
+        "url": "https://github.com/snapotter-hq/SnapOtter/commit/c06a672313163e13d617966986ece526ab8896e3"
+    },
+    {
+        "sha": "601557edaed32f331b5271334923f1c010098d91",
+        "author": "SnapOtter",
+        "email": "snapotter.hq@gmail.com",
+        "date": "2026-07-11T14:27:51Z",
+        "message": "feat(erase-object): add freeform lasso selection mode (#503)\n\nAdds a Brush | Lasso toggle to the object eraser. Lasso lets the user drag a freeform loop that auto-closes and fills into the mask, so they select around a subject instead of painting every pixel. Frontend-only; the mask contract is unchanged. Also un-skips the erase-object e2e suite via a shared mockAiFeaturesInstalled helper (7 tests now run; 2 multi-file tests fixme'd for a pre-existing tool-page remount bug). Closes #492.",
+        "url": "https://github.com/snapotter-hq/SnapOtter/commit/601557edaed32f331b5271334923f1c010098d91"
+    },
+    {
+        "sha": "380419dd0603693ad542082bd6197e6505f9b1e9",
+        "author": "SnapOtter",
+        "email": "snapotter.hq@gmail.com",
+        "date": "2026-07-11T14:27:35Z",
+        "message": "fix(erase-object): crop-based HD inpainting to remove ghosting and blur (#501)\n\nDilate the mask, crop a padded box around it, run LaMa on the crop at 512, and composite back cleanly. Fixes the ghost remnants (#491) and sharpens small/medium-object fills in high-res images (#141 core). Same model, still offline, no new bundle. Closes #491.",
+        "url": "https://github.com/snapotter-hq/SnapOtter/commit/380419dd0603693ad542082bd6197e6505f9b1e9"
+    },
+    {
+        "sha": "cb5db59f77e6b77fd9a575996b8514d6760aaf5b",
+        "author": "SnapOtter",
+        "email": "snapotter.hq@gmail.com",
+        "date": "2026-07-11T11:53:00Z",
+        "message": "feat(tools): remove background from animated GIFs (WebP, APNG) (#502)\n\nAdds a dedicated remove-gif-background AI tool: removes the background from an animated GIF, WebP, or APNG frame by frame and reassembles a transparent (or composited) animation in WebP, APNG, or GIF, with full per-frame effects. Reuses the background-removal bundle. Verified end-to-end with the real rembg model.\n\nCloses #496.",
+        "url": "https://github.com/snapotter-hq/SnapOtter/commit/cb5db59f77e6b77fd9a575996b8514d6760aaf5b"
+    },
+    {
+        "sha": "e7cfc00fe1d294256a0a4663797b8a8cdf58d8c0",
+        "author": "SnapOtter",
+        "email": "contact@snapotter.com",
+        "date": "2026-07-11T11:20:32Z",
+        "message": "fix: preserve colored blocks in PDF-to-Word (#500)",
+        "url": "https://github.com/snapotter-hq/SnapOtter/commit/e7cfc00fe1d294256a0a4663797b8a8cdf58d8c0"
+    },
+    {
+        "sha": "430b87eda0078c9afe31aa49da1f2293c928a147",
+        "author": "SnapOtter",
+        "email": "snapotter.hq@gmail.com",
+        "date": "2026-07-11T08:46:28Z",
+        "message": "feat(onboarding): collect install method and friction area in the usage survey (#499)\n\nAdds install method and hardest-setup-area as two optional questions to the first-login usage survey, so these fields are collected at onboarding scale instead of only via the low-traffic admin installer card. Both stay null until chosen and are omitted from the payload when unanswered. No API change and no new i18n; reuses the shared feedback schema and existing locale strings.",
+        "url": "https://github.com/snapotter-hq/SnapOtter/commit/430b87eda0078c9afe31aa49da1f2293c928a147"
+    },
+    {
+        "sha": "b4575966495c1a022154149832aedcd727d411e2",
+        "author": "SnapOtter",
+        "email": "snapotter.hq@gmail.com",
+        "date": "2026-07-11T08:18:26Z",
+        "message": "fix(telemetry): sharpen Sentry signal for v2.1.0 residual defects (#498)\n\nFollow-ups to the v2.1.0 Sentry telemetry overhaul, found by reviewing live release:2.1.0 events:\n\n- error_code tag was empty because reportError read only the top-level err.code; add extractErrorCode() to walk the cause chain (pg SQLSTATE, node E-code, else first short code).\n- InputValidationError from a tool's processV2 in the worker was logged as error_class=bug; classify it as expected for any source. Worker-side ZodError stays a bug (schema drift).\n- AI dispatcher timeouts rejected with a bare Error, which the sanitizer scrubbed to a message-less \"Error: Error\"; reject with an operational SafeError (code \"timeout\") at both timeout sites.\n\nEach fix written failing-test-first; affected and adjacent unit suites green plus full CI (integration + e2e).",
+        "url": "https://github.com/snapotter-hq/SnapOtter/commit/b4575966495c1a022154149832aedcd727d411e2"
+    },
+    {
+        "sha": "b8c3700c15333b2eb328cab0979f8d943c15d7ab",
+        "author": "SnapOtter",
+        "email": "snapotter.hq@gmail.com",
+        "date": "2026-07-11T07:12:42Z",
+        "message": "fix(landing-i18n): commit missed landing-seo re-translation (remove.bg comparison)\n\nThe remove.bg comparison + tweaked alternatives rows, re-translated into all 20 languages but missed in the merge PR. Admin-merged (landing-only PR, skipped Integration matrix contexts never report; known repo deadlock). pnpm i18n:check passes on all 4 surfaces; landing build clean.",
+        "url": "https://github.com/snapotter-hq/SnapOtter/commit/b8c3700c15333b2eb328cab0979f8d943c15d7ab"
+    },
+    {
+        "sha": "1bc9fe93ec4ca82295e77f2c8068bc700ef94367",
+        "author": "SnapOtter",
+        "email": "snapotter.hq@gmail.com",
+        "date": "2026-07-11T07:00:13Z",
+        "message": "feat(landing-i18n): recall a returning visitor's chosen language\n\nRender-blocking head script that routes a returning visitor to the language they explicitly picked (stored on switch). Only on default English pages; skips English-only tool-detail pages; crawler-safe. Admin-merged: landing-only PR, the skipped Integration matrix jobs never report the required contexts (known repo deadlock). Logic verified across 10 scenarios; landing build + typecheck clean.",
+        "url": "https://github.com/snapotter-hq/SnapOtter/commit/1bc9fe93ec4ca82295e77f2c8068bc700ef94367"
+    },
+    {
+        "sha": "4963ab3bbd36fe86b856a3be791f192af4582142",
+        "author": "SnapOtter",
+        "email": "snapotter.hq@gmail.com",
+        "date": "2026-07-11T05:52:47Z",
+        "message": "feat(docs-i18n): translate all documentation into 20 languages\n\nAll 181 docs markdown files translated into 20 languages (apps/docs/<locale>/**). Companion to the i18n code PR; admin-merged because the file count exceeds GitHub's per-PR CI trigger limit. Validated by pnpm i18n:check (all surfaces, 0 stale/missing) and a clean all-locale docs build.",
+        "url": "https://github.com/snapotter-hq/SnapOtter/commit/4963ab3bbd36fe86b856a3be791f192af4582142"
+    },
+    {
+        "sha": "00b651c9f851a8754cac755f6929ba2eeac8602b",
+        "author": "SnapOtter",
+        "email": "snapotter.hq@gmail.com",
+        "date": "2026-07-11T05:01:55Z",
+        "message": "feat(i18n): 21-language pipeline, landing/docs/API wiring, landing+API translations\n\nShared Claude Code translation pipeline (scripts/i18n, no API key) plus Astro/VitePress/Scalar i18n wiring. Landing and API reference translated into all 20 languages; docs i18n wiring + English source anchors. The translated docs markdown (apps/docs/<locale>/**, 3,620 files) follows in a companion PR because it exceeds GitHub's per-PR CI file limit.",
+        "url": "https://github.com/snapotter-hq/SnapOtter/commit/00b651c9f851a8754cac755f6929ba2eeac8602b"
+    },
+    {
+        "sha": "2e9136881654d1e4459e1d44052695be594e13cd",
+        "author": "SnapOtter",
+        "email": "snapotter.hq@gmail.com",
+        "date": "2026-07-11T04:49:02Z",
+        "message": "ci(release): authenticate main pushes with an admin RELEASE_TOKEN (#486)\n\nPoint semantic-release's version-bump push and the docs-changelog push at a RELEASE_TOKEN admin PAT so they clear the 16 required checks (default token is rejected). Falls back to the default token, so no change until the secret is set. Documents creating/rotating the token in RELEASE.md.",
+        "url": "https://github.com/snapotter-hq/SnapOtter/commit/2e9136881654d1e4459e1d44052695be594e13cd"
+    },
+    {
+        "sha": "4a5a6718e6656b5e301b1e4bd3acb63fe027ce6a",
+        "author": "SnapOtter",
+        "email": "snapotter.hq@gmail.com",
+        "date": "2026-07-11T04:39:26Z",
+        "message": "docs: point home modality chips at the sectioned tool pages (#485)\n\nThe tool reference moved to /tools/<section>/<toolId>, but the five modality chips on the docs home still linked to the old flat paths. A full page load survives via the Cloudflare _redirects shim, but VitePress client-side navigation bypasses it and lands on the 404 page.\n\nA dist-wide internal link check confirms these five were the only remaining stale links in the built site. The homepage e2e spec now pins all five chip hrefs and click-navigates one chip client-side, which is exactly the path that broke.",
+        "url": "https://github.com/snapotter-hq/SnapOtter/commit/4a5a6718e6656b5e301b1e4bd3acb63fe027ce6a"
+    },
+    {
+        "sha": "4426c733e731dbc10d963274048ba8de262a6ff0",
+        "author": "SnapOtter",
+        "email": "snapotter.hq@gmail.com",
+        "date": "2026-07-11T03:43:08Z",
+        "message": "docs: declutter the docs home hero and fix the enterprise door CTA (#483)\n\nThe repositioning in #469 pushed the full marketing pitch into the docs home hero: eyebrow badge, marketing h1, a bolded two-sentence value prop, and a second paragraph, all before the install command. The hero now states what the page is and gets out of the way: \"SnapOtter Documentation\" plus one line that keeps the self-hosted file-processing positioning, then the one-command install and quick links.\n\nThe Enterprise door CTA said \"Evaluate for your org\" but linked to /guide/architecture, already the first link in that same card. It now says \"See enterprise features\" and points at https://snapotter.com/enterprise, where the evaluation journey (features, pricing, demo booking) actually lives.\n\nAlso repairs the docs homepage e2e spec, which still asserted pre-2.0 copy and has been failing nightly since the hero changed, and adds coverage for both door CTAs.",
+        "url": "https://github.com/snapotter-hq/SnapOtter/commit/4426c733e731dbc10d963274048ba8de262a6ff0"
+    },
+    {
+        "sha": "b369b4fb412ea9ae415593ce5e6164f71f30db85",
+        "author": "SnapOtter",
+        "email": "snapotter.hq@gmail.com",
+        "date": "2026-07-11T03:09:53Z",
+        "message": "ci(release): gate image publish behind a manual approval (#482)\n\nAttach the manifest job to a publish-images GitHub Environment so Docker Hub + GHCR tags only go live after a maintainer approves the release run. Build + Trivy scan still run automatically; approval is the last step. Adds RELEASE.md runbook.",
+        "url": "https://github.com/snapotter-hq/SnapOtter/commit/b369b4fb412ea9ae415593ce5e6164f71f30db85"
+    },
+    {
+        "sha": "d572b5c33c578ee62f593a7b72a542cacd9da5cb",
+        "author": "SnapOtter",
+        "email": "snapotter.hq@gmail.com",
+        "date": "2026-07-10T18:07:15Z",
+        "message": "chore(branding): reframe assets to self-hosted infrastructure positioning (#479)\n\nRegenerate the social/OG card (200+ tools, Private file processing, self-hosted infrastructure) and sync to landing/web/docs; update banner, press kit, package + OpenAPI + Docker Hub descriptions, a leaked docs count, and the English About string.",
+        "url": "https://github.com/snapotter-hq/SnapOtter/commit/d572b5c33c578ee62f593a7b72a542cacd9da5cb"
+    },
+    {
+        "sha": "c6baf6018db1a782e0d23c71701f59de0202522a",
+        "author": "semantic-release-bot",
+        "email": "semantic-release-bot@martynus.net",
+        "date": "2026-07-10T13:55:46Z",
+        "message": "chore(release): 2.1.0 [skip ci]\n\n# [2.1.0](https://github.com/snapotter-hq/snapotter/compare/v2.0.0...v2.1.0) (2026-07-10)\n\n### Bug Fixes\n\n* **demo:** boot to dashboard, sample-data notice, robust mobile editor icon ([#464](https://github.com/snapotter-hq/snapotter/issues/464)) ([a94b69b](https://github.com/snapotter-hq/snapotter/commit/a94b69b14f783c07abfe757e21314f580fbda556))\n* **demo:** point banner \"Self-host SnapOtter\" link at the docs guide ([#466](https://github.com/snapotter-hq/snapotter/issues/466)) ([463ccff](https://github.com/snapotter-hq/snapotter/commit/463ccff5cb91c4b2d0f2c7309ea77789544ad2c3))\n* **demo:** populate admin data, fix settings crash and mobile editor icon ([#463](https://github.com/snapotter-hq/snapotter/issues/463)) ([7329bc6](https://github.com/snapotter-hq/snapotter/commit/7329bc6a1334b925cf95384d6ddc172f04a86610))\n* error-only Sentry telemetry, storm-proof capture, and crash fixes ([#476](https://github.com/snapotter-hq/snapotter/issues/476)) ([ae6a4c8](https://github.com/snapotter-hq/snapotter/commit/ae6a4c8b7c9275ccd8930251d429181568f83453))\n* **landing:** clarify OIDC is free, SAML is enterprise on pricing ([#461](https://github.com/snapotter-hq/snapotter/issues/461)) ([c2c9a9e](https://github.com/snapotter-hq/snapotter/commit/c2c9a9ed9bea9c66efec84b9e0b9b2ebbf863073))\n* **landing:** fix top nav overflow and text overlap ([#473](https://github.com/snapotter-hq/snapotter/issues/473)) ([ffeacd4](https://github.com/snapotter-hq/snapotter/commit/ffeacd4b3c7b5858d9048c2521569256e3569490))\n* **landing:** green the landing e2e suite ([#470](https://github.com/snapotter-hq/snapotter/issues/470)) ([10ae6d1](https://github.com/snapotter-hq/snapotter/commit/10ae6d1d3d6ce8a527937bfa31e76ba392bc09e0))\n* **landing:** highlight Open Source as Most Popular tier ([#462](https://github.com/snapotter-hq/snapotter/issues/462)) ([e468cef](https://github.com/snapotter-hq/snapotter/commit/e468cef6c0e28b4736dee32d2cf8c2ab1968a59c))\n* **landing:** reposition residual meta framing and demote homepage tool count ([#471](https://github.com/snapotter-hq/snapotter/issues/471)) ([958c3e8](https://github.com/snapotter-hq/snapotter/commit/958c3e8513eb3a4c3be7488894981fc8794b1c5f))\n* reliable, self-healing AI feature-bundle installs ([#472](https://github.com/snapotter-hq/snapotter/issues/472)) ([a731c3d](https://github.com/snapotter-hq/snapotter/commit/a731c3d1fe8303296e90cd138a01e903df871bb7))\n* restyle sponsor button ([37a3cfc](https://github.com/snapotter-hq/snapotter/commit/37a3cfc84477c10831f9ae61f183f4ab4ef45d50))\n* reword sponsor button to \"Support us\" ([#468](https://github.com/snapotter-hq/snapotter/issues/468)) ([331e3bf](https://github.com/snapotter-hq/snapotter/commit/331e3bfde04035151612275d9ae269909fed87a8))\n* update python protobuf dependency ([780624e](https://github.com/snapotter-hq/snapotter/commit/780624e168cfda5abf3b2501455fe62674550fcf))\n\n### Features\n\n* **demo:** populate the Files library with sample files ([#465](https://github.com/snapotter-hq/snapotter/issues/465)) ([a6e8f75](https://github.com/snapotter-hq/snapotter/commit/a6e8f75074e38b8e5d856311d4423e8a936ae690))\n* **landing:** add dismissible 2.0 launch banner ([ea7a671](https://github.com/snapotter-hq/snapotter/commit/ea7a671ccf29bcbab7a94c28efcbf6e1b9506b34))\n* **landing:** add Product dropdown to nav ([#475](https://github.com/snapotter-hq/snapotter/issues/475)) ([3d1744a](https://github.com/snapotter-hq/snapotter/commit/3d1744aec84049f1f296f1cce8f6fb726cf7f835))\n* **landing:** restore Developers nav link, swap out Features anchor ([#474](https://github.com/snapotter-hq/snapotter/issues/474)) ([a08afbc](https://github.com/snapotter-hq/snapotter/commit/a08afbc80afefb11cbc13e629d31225a6dceda2f))\n* reposition to self-hosted file-processing infrastructure ([#469](https://github.com/snapotter-hq/snapotter/issues/469)) ([af011d5](https://github.com/snapotter-hq/snapotter/commit/af011d55381f8b57797984b1c5b2ca974a033d1c))",
+        "url": "https://github.com/snapotter-hq/SnapOtter/commit/c6baf6018db1a782e0d23c71701f59de0202522a"
+    },
+    {
+        "sha": "ae6a4c8b7c9275ccd8930251d429181568f83453",
+        "author": "SnapOtter",
+        "email": "snapotter.hq@gmail.com",
+        "date": "2026-07-10T13:41:49Z",
+        "message": "fix: error-only Sentry telemetry, storm-proof capture, and crash fixes (#476)\n\nRemoves Sentry tracing entirely (BullMQ idle polling burned 4.8M transactions in 2 days at the baked 0.1 rate), decouples PostHog sampling, and replaces the type-only error scrub with a vetted-field sanitizer plus SafeError/ToolInputError contracts. One classified capture path with per-signature throttles and a per-process ceiling makes storms impossible (NODE-1E was 4,541 events from one 30s loop). Browser errors move to a dedicated web Sentry project with their own source maps. Adds the SNAPOTTER_TELEMETRY runtime kill switch and silences test fleets.\n\nCrash fixes: remote 204/304 SSRF process kill (NODE-20), conversion-preset boot crash loop (NODE-21), Redis version preflight + unhandled subscribe rejection (NODE-1T), Sign PDF on plain-http origins (NODE-1K/1M), wavesurfer/pdf.js teardown rejections (NODE-1P/1N), bundle-import ZlibError to 400 (NODE-1Z), chart-maker input errors declassified (NODE-1H/1J), asset requests skip the session DB lookup (NODE-1D).",
+        "url": "https://github.com/snapotter-hq/SnapOtter/commit/ae6a4c8b7c9275ccd8930251d429181568f83453"
+    },
+    {
+        "sha": "3d1744aec84049f1f296f1cce8f6fb726cf7f835",
+        "author": "SnapOtter",
+        "email": "contact@snapotter.com",
+        "date": "2026-07-10T12:09:57Z",
+        "message": "feat(landing): add Product dropdown to nav (#475)\n\nAdds a CSS-only Product dropdown (Developers, Self-hosted tools, Alternatives) to the top nav and restores the lg breakpoint. Mobile menu lists items flat. Updated homepage e2e (navbar + dropdown-hover tests, footer scope). Verified at 1024/1280px, 63/63 landing e2e.",
+        "url": "https://github.com/snapotter-hq/SnapOtter/commit/3d1744aec84049f1f296f1cce8f6fb726cf7f835"
+    },
+    {
+        "sha": "a08afbc80afefb11cbc13e629d31225a6dceda2f",
+        "author": "SnapOtter",
+        "email": "contact@snapotter.com",
+        "date": "2026-07-10T08:00:56Z",
+        "message": "feat(landing): restore Developers nav link, swap out Features anchor (#474)\n\nRestores Developers to the top nav by swapping out the Features homepage anchor. Nav is now Enterprise, Pricing, Alternatives, Developers, Docs, Talk to a human. Updated two e2e assertions that checked for a Features nav link. Verified visually at 1120/1280px and 62/62 landing e2e.",
+        "url": "https://github.com/snapotter-hq/SnapOtter/commit/a08afbc80afefb11cbc13e629d31225a6dceda2f"
+    }
+]

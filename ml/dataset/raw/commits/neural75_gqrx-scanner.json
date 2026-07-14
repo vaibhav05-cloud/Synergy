@@ -1,0 +1,242 @@
+[
+    {
+        "sha": "0283ab2c9f4976e9a1e64618bacbfed926e19284",
+        "author": "Piergiorgio Trubini",
+        "email": "trubini@gmail.com",
+        "date": "2026-06-27T11:13:33Z",
+        "message": "README: add (gqrx-scanner-monitor) name to loopback step",
+        "url": "https://github.com/neural75/gqrx-scanner/commit/0283ab2c9f4976e9a1e64618bacbfed926e19284"
+    },
+    {
+        "sha": "b7d2c586cadca11f574ac6c8513ca8066914b94d",
+        "author": "Piergiorgio Trubini",
+        "email": "trubini@gmail.com",
+        "date": "2026-06-27T11:09:07Z",
+        "message": "README: clarify audio interception section with Virtual Null Sink and volume controls\n\n- Replace 'null sink' terminology with 'Virtual Null Sink (\"Gqrx Scanner\n  Intercept\")' throughout\n- Add emphasis on digital decoder use case\n- Add 'Volume controls after interception' section documenting source app\n  vs gqrx-scanner-monitor volume sliders",
+        "url": "https://github.com/neural75/gqrx-scanner/commit/b7d2c586cadca11f574ac6c8513ca8066914b94d"
+    },
+    {
+        "sha": "8fcedd0970fe44e10736a4a11f570d0659367c26",
+        "author": "Piergiorgio Trubini",
+        "email": "trubini@gmail.com",
+        "date": "2026-06-27T10:31:41Z",
+        "message": "Guard VoxAudioReset calls with #ifndef OSX for macOS build",
+        "url": "https://github.com/neural75/gqrx-scanner/commit/8fcedd0970fe44e10736a4a11f570d0659367c26"
+    },
+    {
+        "sha": "a130cb2d45b03bf9af497d28400850e103d82adf",
+        "author": "Piergiorgio Trubini",
+        "email": "trubini@gmail.com",
+        "date": "2026-06-27T04:47:36Z",
+        "message": "pw-loopback: add media.class=Stream/Output/Audio on playback side to enable volume control\n\nThe pw-loopback stream (gqrx-scanner-monitor) lacked proper PulseAudio\nvolume control because its playback node did not have\nmedia.class=Stream/Output/Audio set, causing the PipeWire-PulseAudio\ncompat layer to ignore volume slider changes.\n\nFixes: volume slider on gqrx-scanner-monitor had no effect.",
+        "url": "https://github.com/neural75/gqrx-scanner/commit/a130cb2d45b03bf9af497d28400850e103d82adf"
+    },
+    {
+        "sha": "e254a2fb6dee4175debcddddcd97381273775e44",
+        "author": "Piergiorgio Trubini",
+        "email": "trubini@gmail.com",
+        "date": "2026-06-27T01:49:12Z",
+        "message": "VOX+timing refactor: wall-clock listen timer, µs precision elapsed, VAD reset\n\n- Replace counter-based listen_time/consecutive_silent with wall-clock\n  listen_timer_t (gettimeofday) in WaitUserInputOrDelay\n- Merge duplicated VOX detection blocks\n- VoxAudioReset() moved from WaitUserInputOrDelay entry to after\n  SetFreq() in bookmark and sweep scan loops\n- GetTime returns struct timeval (µs precision), DiffTime uses\n  gettimeofday — fixes elapsed time second-boundary rounding\n- Add VoxAudioReset() helper in vox-audio.c",
+        "url": "https://github.com/neural75/gqrx-scanner/commit/e254a2fb6dee4175debcddddcd97381273775e44"
+    },
+    {
+        "sha": "58b3add2afb7e95a603dfb5fa3f47e79ae36bc9b",
+        "author": "Piergiorgio Trubini",
+        "email": "trubini@gmail.com",
+        "date": "2026-06-07T23:33:50Z",
+        "message": "Unlimited pw-cat restart, clarify README on audio setup script\n\n- Remove one-shot guard: VoxAudioRestart() is called on every pipe death,\n  not just the first. Only popen() failure disables VOX.\n- README: clarify that gqrx-scan-setup-audio.sh is optional — by default\n  pw-cat captures the default audio monitor (all system audio). Script is\n  only needed when other audio sources (music, notifications) would\n  falsely trigger VOX.",
+        "url": "https://github.com/neural75/gqrx-scanner/commit/58b3add2afb7e95a603dfb5fa3f47e79ae36bc9b"
+    },
+    {
+        "sha": "d9406d60e9887f63f81f7946d2c5374a45f81707",
+        "author": "Piergiorgio Trubini",
+        "email": "trubini@gmail.com",
+        "date": "2026-06-07T23:19:31Z",
+        "message": "Factor open_capture_pipe() out of VoxAudioInit/VoxAudioRestart\n\n- Extract shared popen+pipe-configuration into static open_capture_pipe()\n- Both VoxAudioInit() and VoxAudioRestart() call it instead of duplicating\n  the popen, setvbuf, fcntl, pipe_dead reset logic\n- No behavior change — all 61 tests pass",
+        "url": "https://github.com/neural75/gqrx-scanner/commit/d9406d60e9887f63f81f7946d2c5374a45f81707"
+    },
+    {
+        "sha": "c685df6a0384e1cc06b610544fa34e17414d2f12",
+        "author": "Piergiorgio Trubini",
+        "email": "trubini@gmail.com",
+        "date": "2026-06-07T23:16:04Z",
+        "message": "Add one-shot pw-cat restart on pipe death\n\n- Extract PW_CAT_COMMAND macro shared between VoxAudioInit() and VoxAudioRestart()\n- Add VoxAudioRestart(): pclose() old pipe, popen() new pw-cat, reconfigure\n  pipe (unbuffer, non-blocking), re-init VAD state via VoxVADInit()\n- Does NOT touch SIGPIPE (already SIG_IGN from init)\n- In WaitUserInputOrDelay(): on first !VoxAudioIsAlive(), attempt one\n  restart; if it fails (or was already attempted), disable VOX permanently\n- All 61 tests pass, zero build warnings",
+        "url": "https://github.com/neural75/gqrx-scanner/commit/c685df6a0384e1cc06b610544fa34e17414d2f12"
+    },
+    {
+        "sha": "f1873d51913fd7a5b405a77129d4cb26e851ef61",
+        "author": "Piergiorgio Trubini",
+        "email": "trubini@gmail.com",
+        "date": "2026-06-07T22:48:25Z",
+        "message": "BacktrackFrequency rewrite with calibrating GetSignalLevelEx, Debounce hysteresis fix\n\n- GetSignalLevelEx: rewritten with calibrate/fast paths. Calibrate path polls every 50ms, tracks noise -> carrier max, detects settle stability (3 consecutive polls within 1dB), auto-adapts g_settle_time_us via EWMA. Fast path returns max of n_samp rapid reads (used by scan-loop/Debounce).\n\n- BacktrackFrequency: now returns bool with out-params (freq+level). Peak-picker sorts candidates by level descending instead of returning first. Single-candidate accepted only if >=5dB above squelch (BACKTRACK_MIN_MARGIN_DB). Backtrack always runs unconditionally on Missing signal.\n\n- Debounce: applies 3dB hysteresis margin (DEBOUNCE_HYSTERESIS_DB) before declaring signal lost, preventing backtrack oscillation on marginal carriers fluctuating +/-2-3dB.\n\n- AdjustFrequency: replaced usleep(150000) with GetSignalLevelEx(calibrate) at all 6 call sites; reference_level folded into existing settle call.\n\n- Send() guard: returns false if g_socket_dead, preventing writes to known-dead sockets.\n\n- SetFreq retry: added error_retries <= 0 check to avoid indefinite retry.\n\n- -d default changed from 2000 to 2500 ms.\n\n- Mock socket: RESPONSE_QUEUE_MAX 16 -> 128; g_socket_dead reset in mock_socket_reset().\n\n- test_backtrack_frequency_wraparound: fixed mock response count (10->11 per calibrate block, matching 1 initial + 10 polls); removed stale recheck/padding entries. Both backtrack tests updated for new bool API.",
+        "url": "https://github.com/neural75/gqrx-scanner/commit/f1873d51913fd7a5b405a77129d4cb26e851ef61"
+    },
+    {
+        "sha": "05bbee66c5b65bf4156076d60f1286458b10fe8a",
+        "author": "Piergiorgio Trubini",
+        "email": "trubini@gmail.com",
+        "date": "2026-06-07T17:38:12Z",
+        "message": "VAD DC fix, scan algorithm rework, reconnect hardening\n\nSetModulationAndBandwidth (new feature):\n  Add modulation-per-bookmark support.  Gqrx bookmarks store the\n  demodulator mode as a human-readable string (\"Narrow FM\") in CSV\n  field 4 and the filter bandwidth in field 5.  Previously these\n  were ignored and the scanner left the previous demodulator mode\n  active when jumping to a new frequency -- making multi-mode\n  scanning (e.g. AM airband + NFM repeaters + WFM broadcast)\n  unusable.\n\n  Changes:\n   - mode_table_entry_t struct + static const mode_table[] in\n     gqrx-prot.h mapping 13 Gqrx bookmark descriptions to protocol\n     mode IDs (OFF, RAW, AM, AMS, LSB, USB, CWL, CWR, CWU, CW,\n     FM, WFM, WFM_ST, WFM_ST_OIRT)\n   - SetModulationAndBandwidth() in gqrx-prot.c: looks up the\n     mode string, sends \"M <id> <bw>\\n\", checks RPRT 1\n   - FREQ struct gains modulation[BUFSIZE] and bandwidth[BUFSIZE]\n   - LoadFrequencies() parses bookmark CSV fields 4 and 5 with\n     whitespace trimming\n   - ScanBookmarkedFrequenciesInRange() calls SetModulationAndBandwidth()\n     after SetFreq() for every bookmark hit\n\nVAD:\n  - Per-frame DC removal in VoxLpcPitchStrength (static noise false positives)\n  - Consecutive pitch threshold 3->2, test_vad_noise2, voice threshold >0.20\n\nScan algorithm:\n  - BacktrackFrequency rewritten to peak-pick over level trace + settle+recheck\n  - AdjustFrequency: inclusive bounds, fix second-pass max search\n  - carrier_acquired goto path for backtrack reacquisition\n  - Saved frequency validation and corrupt-entry reset\n  - SaveFreq overflow: zero full array with memset\n\nReconnect hardening:\n  - Socket failure counter (3 strikes -> exit) in WaitUserInputOrDelay\n  - g_socket_dead check before every protocol call in scan loops\n\nHousekeeping: remove stray cmocka.h, add noise2.raw + README, fix tests",
+        "url": "https://github.com/neural75/gqrx-scanner/commit/05bbee66c5b65bf4156076d60f1286458b10fe8a"
+    },
+    {
+        "sha": "22a959b0c72813de7bd3a7d76fee3785bb8fa01d",
+        "author": "Piergiorgio Trubini",
+        "email": "trubini@gmail.com",
+        "date": "2026-06-06T15:31:27Z",
+        "message": "Prevent indefinite hang on broken TCP connection after suspend\n\n- Add SO_RCVTIMEO/SO_SNDTIMEO (3s) on the Gqrx socket after connect()\n  so read() returns with EAGAIN instead of blocking forever on a\n  half-open TCP connection (e.g. after resume from suspend).\n\n- Make Send() and Recv() return false on timeout/error instead of\n  calling error() which exits the process.  The protocol commands now\n  propagate failure up to the caller.\n\n- In WaitUserInputOrDelay() skip loop iteration when the socket read\n  fails, sleeping 100ms before retrying.  This prevents the scanner\n  from acting on stale data or hanging on a dead connection.\n\n- Guard setsockopt calls behind #ifndef TESTING_BUILD since mocked\n  test sockets do not support SO_RCVTIMEO.",
+        "url": "https://github.com/neural75/gqrx-scanner/commit/22a959b0c72813de7bd3a7d76fee3785bb8fa01d"
+    },
+    {
+        "sha": "a1123cefdc3ef339616515690d040063812f7ec3",
+        "author": "Piergiorgio Trubini",
+        "email": "trubini@gmail.com",
+        "date": "2026-06-06T14:30:24Z",
+        "message": "Fix macOS build: guard opt_max_probe and two-phase VOX code with #ifndef OSX\n\nopt_max_probe and opt_vox are declared inside #ifndef OSX guards but were\nreferenced without guards in the -l parsing (two references) and in the\ntwo-phase VOX exit logic in WaitUserInputOrDelay(). Wrap those references\nin matching #ifndef OSX … #endif so macOS compilation succeeds.",
+        "url": "https://github.com/neural75/gqrx-scanner/commit/a1123cefdc3ef339616515690d040063812f7ec3"
+    },
+    {
+        "sha": "e988ceea192d31daf9c23ecc30bf63e85f62c9e2",
+        "author": "Piergiorgio Trubini",
+        "email": "trubini@gmail.com",
+        "date": "2026-06-06T14:26:15Z",
+        "message": "Add two-phase VOX timing: probe_time:hangup_time for -l\n\n-l now accepts optional colon-separated values: -l [probe_time:]hangup_time\n- probe_time (ms): max time to wait for voice on a new carrier\n- hangup_time (ms): max silence after voice stops before moving on\n- Single value sets both equal (backward compatible)\n\nImplementation:\n- opt_max_probe: new global for probe timeout (μs)\n- WaitUserInputOrDelay: voice_was_detected flag switches between two phases\n- Phase 1 (no voice yet): exit after opt_max_probe of total listen time\n- Phase 2 (voice heard): exit after opt_max_listen of consecutive silence\n\nAlso fixed bookmark mode: reset skip=false after settle sleep to prevent\nslow_scan_cycle (1s) from persisting across subsequent bookmarks.",
+        "url": "https://github.com/neural75/gqrx-scanner/commit/e988ceea192d31daf9c23ecc30bf63e85f62c9e2"
+    },
+    {
+        "sha": "c3a280928cb78380cc1397a82f74d5ccb5f784e5",
+        "author": "Piergiorgio Trubini",
+        "email": "trubini@gmail.com",
+        "date": "2026-06-06T10:41:36Z",
+        "message": "Fix audio setup: orphaned-stream recovery, pw-cat JSON properties\n\ngqrx-scan-setup-audio-pw.sh:\n  - Add connect_stream_to_sink() helper for orphaned output ports\n  - Fix find_default_sink awk logic (emit on node start, not blank line)\n  - Handle orphaned streams in attach (fallback to default sink)\n  - Cleanup: kill orphaned pw-cat processes, recover stray streams\n\nsrc/vox-audio.c:\n  - Switch pw-cat --properties from key=value to JSON -P format\n  - Add node.name, application.name, application.id metadata",
+        "url": "https://github.com/neural75/gqrx-scanner/commit/c3a280928cb78380cc1397a82f74d5ccb5f784e5"
+    },
+    {
+        "sha": "80fb1f80bcb1f42d6c85c78249d90248efd1b762",
+        "author": "neural75",
+        "email": "trubini@gmail.com",
+        "date": "2026-06-06T08:02:14Z",
+        "message": "Merge pull request #34 from neural75/feat/vox-audio\n\nVoice Activity Detection (VOX) with PipeWire audio capture",
+        "url": "https://github.com/neural75/gqrx-scanner/commit/80fb1f80bcb1f42d6c85c78249d90248efd1b762"
+    },
+    {
+        "sha": "9b03c8349a73901b0659812ffa49d2c1165df1eb",
+        "author": "Piergiorgio Trubini",
+        "email": "trubini@gmail.com",
+        "date": "2026-06-06T07:52:35Z",
+        "message": "Add POST_BUILD copy of binary to bin/ for CI verify step",
+        "url": "https://github.com/neural75/gqrx-scanner/commit/9b03c8349a73901b0659812ffa49d2c1165df1eb"
+    },
+    {
+        "sha": "7a20e644e73904be450eecfb651f4c69a269509d",
+        "author": "Piergiorgio Trubini",
+        "email": "trubini@gmail.com",
+        "date": "2026-06-06T07:46:24Z",
+        "message": "Fix CI: add missing <setjmp.h> in vad_test.c, guard opt_vox usage on macOS",
+        "url": "https://github.com/neural75/gqrx-scanner/commit/7a20e644e73904be450eecfb651f4c69a269509d"
+    },
+    {
+        "sha": "cfc239537bfa11b06c094c3f6128fa55889b7d11",
+        "author": "Piergiorgio Trubini",
+        "email": "trubini@gmail.com",
+        "date": "2026-06-06T07:39:44Z",
+        "message": "Add --vox option description",
+        "url": "https://github.com/neural75/gqrx-scanner/commit/cfc239537bfa11b06c094c3f6128fa55889b7d11"
+    },
+    {
+        "sha": "a4337fdc0e6c3a296f1a7e9094658c34b67bc6f8",
+        "author": "Piergiorgio Trubini",
+        "email": "trubini@gmail.com",
+        "date": "2026-06-06T07:04:34Z",
+        "message": "Fix DiffTime sprintf buffer overflow warning\n\nIncrease days buffer from 10 to 32 bytes and use snprintf instead of\nsprintf to silence gcc -Wformat-overflow/-Wformat-truncation.",
+        "url": "https://github.com/neural75/gqrx-scanner/commit/a4337fdc0e6c3a296f1a7e9094658c34b67bc6f8"
+    },
+    {
+        "sha": "b5709da773889680bd906047f444a30910c1bedb",
+        "author": "Piergiorgio Trubini",
+        "email": "trubini@gmail.com",
+        "date": "2026-06-06T06:59:30Z",
+        "message": "Merge branch 'feat/delay-calibration' into feat/vox-audio",
+        "url": "https://github.com/neural75/gqrx-scanner/commit/b5709da773889680bd906047f444a30910c1bedb"
+    },
+    {
+        "sha": "0dcb327aa7b35fcafb48462310089b04924eca5e",
+        "author": "Piergiorgio Trubini",
+        "email": "trubini@gmail.com",
+        "date": "2026-06-06T06:59:12Z",
+        "message": "vox: suppress receiver hiss false positives with pitch-sustain VAD\n\n- Pitch scoring requires 3+ consecutive frames > 0.35 (isolated hiss\n  resets the counter, real voice sustains across many frames)\n- Raised ZC thresholds (0.30->0.35 pitch, 0.50->0.55 ZC)\n- Reduced hangover (6->2 frames)\n- Fixed max_lag clamping (N-32) in VoxLpcPitchStrength\n- consecutive_silent counter in caller for proper -l N timing\n- VoxAudioHasSignal drains pipe in batches for frame-granular VAD\n- Added hiss_low/high, voice_with_3s_pause test fixtures\n- All 60 tests pass",
+        "url": "https://github.com/neural75/gqrx-scanner/commit/0dcb327aa7b35fcafb48462310089b04924eca5e"
+    },
+    {
+        "sha": "044fb650425419bc114d0f8cf257d16503690a6d",
+        "author": "Piergiorgio Trubini",
+        "email": "trubini@gmail.com",
+        "date": "2026-06-06T03:53:10Z",
+        "message": "Refactor VOX into modular LPC analysis and pitch-based VAD modules\n\nExtract LPC functions (autocorrelation, Levinson-Durbin, LSF conversion,\nprediction gain, zero-crossings, pitch strength) into shared vox-lpc.h/c.\nReplace the energy-threshold and G.729B VAD with a simple pitch-based\nVAD in vox-vad.h/c that uses only amplitude-invariant features:\npitch periodicity (counts double), ZC extremes, and band-energy\ndifferential.  Add VoxAudioHexDump() helper for standalone debug use.\nWire --vox flag into gqrx-scan.c/h.  Update CMake build files and\ndefault to Release with make debug/release convenience targets.",
+        "url": "https://github.com/neural75/gqrx-scanner/commit/044fb650425419bc114d0f8cf257d16503690a6d"
+    },
+    {
+        "sha": "98f980ed605a0a4261f913c0d3ed2ad4a99bc4ba",
+        "author": "Piergiorgio Trubini",
+        "email": "trubini@gmail.com",
+        "date": "2026-06-05T13:33:27Z",
+        "message": "Fix pw-cat monitor capture with stream.capture.sink property\n\npw-cat --record needs --properties='stream.capture.sink=true\ntarget.object=<name>' to capture from a sink's monitor ports;\n-d <name>.monitor only works with PulseAudio compat layer (pacat).\n\nAlso:\n- Fix cmake_uninstall.cmake.in deprecation (exec_program -> execute_process)\n- Fix CMake install of audio script (target was installed as broken symlink)\n- vox-audio.c: pw-cat primary, _PA reference functions for debug",
+        "url": "https://github.com/neural75/gqrx-scanner/commit/98f980ed605a0a4261f913c0d3ed2ad4a99bc4ba"
+    },
+    {
+        "sha": "c01a0c61220a98446a15be8800d62f74ae4b8f2a",
+        "author": "Piergiorgio Trubini",
+        "email": "trubini@gmail.com",
+        "date": "2026-06-05T13:02:21Z",
+        "message": "VOX audio detection module + PipeWire audio setup script + source reorg\n\n- New vox-audio module (src/vox-audio.c/h):\n  - Primary: VoxAudioInit/Shutdown using pw-cat (PipeWire-native)\n  - Reference: VoxAudioInit_PA/Shutdown_PA using pacat (PulseAudio, for debug)\n  - SIGPIPE ignored during capture via sigaction save/restore\n  - Probes for tool availability before popen with actionable errors\n\n- Audio interception scripts:\n  - PipeWire-native: gqrx-scan-setup-audio-pw.sh (pw-cli/pw-link/pw-loopback)\n  - PulseAudio: gqrx-scan-setup-audio-pa.sh (pactl, kept for reference)\n  - Symlink: gqrx-scan-setup-audio.sh -> -pw.sh\n\n- Source reorganization:\n  - Moved all C sources/headers to src/ (gqrx-scan, gqrx-prot, vox-audio)\n  - Updated CMakeLists.txt include/source paths\n  - Fixed test include paths (unit_tests, sweep_test, mocks)\n\n- AGENTS.md: updated Architecture section, added Code Comments guide",
+        "url": "https://github.com/neural75/gqrx-scanner/commit/c01a0c61220a98446a15be8800d62f74ae4b8f2a"
+    },
+    {
+        "sha": "94fa6aea1cb986e3d92e75c4802c910f7167caef",
+        "author": "Piergiorgio Trubini",
+        "email": "trubini@gmail.com",
+        "date": "2026-06-05T11:09:53Z",
+        "message": "Revert to a more simple default, all tentative to make it smarter failed",
+        "url": "https://github.com/neural75/gqrx-scanner/commit/94fa6aea1cb986e3d92e75c4802c910f7167caef"
+    },
+    {
+        "sha": "ab6e7a5eec96e1bd08d589eea48b13e5d7c11df4",
+        "author": "Piergiorgio Trubini",
+        "email": "trubini@gmail.com",
+        "date": "2026-06-04T21:17:22Z",
+        "message": "feat: adaptive delay calibration with poll-and-flush settling detection\n\nReplaces the blind usleep with an adaptive poll loop that:\n- Polls GetSignalLevel every 50ms up to 350ms\n- Ignores above-squelch readings until the level first drops below\n  squelch (seen_below guard), filtering stale bleeds from previous freq\n- Catches real signals early when level transitions above squelch after\n  the flush, before the timeout fires\n- Falls back to GetSignalLevelEx(5) on timeout (350ms)\n- opt_speed=0 enables adaptive mode; any positive -x value uses fixed delay\n- -v debug output shows per-poll levels and exit reason\n- Default changed from 250ms blind wait to adaptive (350ms max)",
+        "url": "https://github.com/neural75/gqrx-scanner/commit/ab6e7a5eec96e1bd08d589eea48b13e5d7c11df4"
+    },
+    {
+        "sha": "9d1ea71d8c030f8fb3a22ad656f21a5f4c5a3841",
+        "author": "Piergiorgio Trubini",
+        "email": "trubini@gmail.com",
+        "date": "2026-06-04T13:02:50Z",
+        "message": "Remove squelch-delta-auto, noise_floor, sweep Frequencies alloc; add Debounce/Backtrack unit tests\n\nProduction:\n- Remove -q/--squelch_delta CLI option, opt_squelch_delta,\n  opt_squelch_delta_auto_enable globals, and all SetSquelchLevel calls\n  that modified receiver squelch on hit. The option tried to adjust the\n  Gqrx squelch dynamically based on noise floor, but the implementation\n  was fragile — its auto-mode carried complexity through both scan paths\n  without clear benefit, and mid-scan squelch changes could confuse the\n  user or cause visual glitches in Gqrx's UI. More fundamentally,\n  setting the squelch level is the receiver operator's responsibility\n  (separation of concerns): this program should detect signals against\n  whatever squelch the user has configured, not second-guess it.\n  Removing the option simplifies the code and eliminates the noise_floor\n  tracking that existed only to support it.\n- Remove noise_floor field from FREQ struct, its init/averaging in both\n  scan modes, and associated commented-out debug prints\n- Sweep mode no longer allocates the Frequencies array (previously was\n  unconditional; only used to store per-bin noise_floor for the removed\n  squelch-delta feature). The malloc is now inside\n  if (opt_scan_mode == bookmark) where it belongs.\n- Remove squelch_delta parameter from ScanFrequenciesInRange and\n  ScanBookmarkedFrequenciesInRange signatures\n- Fix pre-existing bug: fclose(bookmarksfd) on uninitialized pointer in\n  sweep mode (initialize to NULL, guard fclose)\n\nTests:\n- Add 4 socket-mocked unit tests (Linux, HAVE_WRAP_SOCKET_MOCKS):\n  - test_debounce_signal_persists (above squelch -> true)\n  - test_debounce_signal_lost (below squelch -> false)\n  - test_backtrack_frequency_wraparound (wraps on underflow, finds signal)\n  - test_backtrack_frequency_not_found (exhausts intervals, no signal)\n- Remove sweep test's manual Frequencies allocation (no longer needed)\n- Remove squelch_delta args from sweep/bookmark test calls\n- Add descr/tag lookup to bookmark test diagnostic output\n- Reduce n_loops from 2 to 1 for bookmark tests (cleaner 1:1 mapping)\n- Update README.md: remove -q docs\n\nAll 53 tests pass (46 unit + 7 sweep).",
+        "url": "https://github.com/neural75/gqrx-scanner/commit/9d1ea71d8c030f8fb3a22ad656f21a5f4c5a3841"
+    },
+    {
+        "sha": "d2d560fdbe7a74f6c2e2e2a7bacb86c39a0b6118",
+        "author": "Piergiorgio Trubini",
+        "email": "trubini@gmail.com",
+        "date": "2026-06-04T11:52:52Z",
+        "message": "Add bookmark scan mode integration tests + parse_hit_report robustness fix\n\n- parse_hit_report: advance by searching for next 'Freq:' instead of\n  strchr(tag, '\\n'), correctly handling multi-line squelch_delta_auto output\n- validate_hit_line(): verify stdout line format — 'active' with correct\n  descr brackets and 'Level: -XX.XX/-XX.XX'\n- Existing sweep tests now call validate_hit_line for each expected hit\n- Add TESTING_BUILD exit hook for ScanBookmarkedFrequenciesInRange\n  (g_testing_max_bookmark_loops)\n- Declare ScanBookmarkedFrequenciesInRange in header\n- 3 bookmark integration tests: all_hit, some_hit, all_noise\n- 3 new profiles: test/profiles/bookmark_*.txt",
+        "url": "https://github.com/neural75/gqrx-scanner/commit/d2d560fdbe7a74f6c2e2e2a7bacb86c39a0b6118"
+    },
+    {
+        "sha": "9ec73aca1d89a1657a477bbd93be28fb4aefa872",
+        "author": "Piergiorgio Trubini",
+        "email": "trubini@gmail.com",
+        "date": "2026-06-04T11:23:26Z",
+        "message": "Rename nearby_signals profile to two_nearby_signal",
+        "url": "https://github.com/neural75/gqrx-scanner/commit/9ec73aca1d89a1657a477bbd93be28fb4aefa872"
+    },
+    {
+        "sha": "b71c3dbc7a850c059671be8d15f76d1a62c77329",
+        "author": "Piergiorgio Trubini",
+        "email": "trubini@gmail.com",
+        "date": "2026-06-04T11:22:39Z",
+        "message": "Add 3-peak sweep test (well-separated carriers, 1 MHz range)",
+        "url": "https://github.com/neural75/gqrx-scanner/commit/b71c3dbc7a850c059671be8d15f76d1a62c77329"
+    }
+]

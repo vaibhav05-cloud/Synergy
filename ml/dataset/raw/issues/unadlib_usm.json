@@ -1,0 +1,350 @@
+[
+    {
+        "id": 2447401554,
+        "number": 69,
+        "title": "Is this functional and maintained? ",
+        "state": "closed",
+        "created_at": "2024-08-05T01:09:24Z",
+        "updated_at": "2024-08-09T04:04:25Z",
+        "closed_at": "2024-08-09T04:04:25Z",
+        "author": "IrvingArmenta",
+        "comments": 1,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "Hello, I noticed this repo thanks to \"Mutative\" so I am wondering if this project is working and is it still maintained? \r\nCan it be used in production?",
+        "url": "https://github.com/unadlib/usm/issues/69"
+    },
+    {
+        "id": 1291765444,
+        "number": 57,
+        "title": "How to use it with redux devtools?",
+        "state": "closed",
+        "created_at": "2022-07-01T19:34:01Z",
+        "updated_at": "2022-10-12T18:52:37Z",
+        "closed_at": "2022-10-12T18:52:37Z",
+        "author": "xoka4",
+        "comments": 4,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "in this post ( https://unadlib.medium.com/a-concise-design-that-completely-changed-redux-e95d6b76bd8b ) you've commented that it can be used with redux-devtools. But its not showing the states or actions. any solution?",
+        "url": "https://github.com/unadlib/usm/issues/57"
+    },
+    {
+        "id": 1266910891,
+        "number": 55,
+        "title": "any nextjs examples?",
+        "state": "closed",
+        "created_at": "2022-06-10T02:14:24Z",
+        "updated_at": "2022-07-01T19:10:31Z",
+        "closed_at": "2022-07-01T19:10:31Z",
+        "author": "p32929",
+        "comments": 4,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "Hello, thanks for creating this amazing library. I just wanted to test it out with nextjs & not sure, what I've done wrong, but I'm getting this error:\r\n![image](https://user-images.githubusercontent.com/6418354/172976733-e943d8f5-749e-46d0-8691-8f9abc6a4cc1.png)\r\n\r\nIs there any nextjs example with usm-redux?\r\nThanks",
+        "url": "https://github.com/unadlib/usm/issues/55"
+    },
+    {
+        "id": 1012622216,
+        "number": 50,
+        "title": "\"watch\" deep equality",
+        "state": "closed",
+        "created_at": "2021-09-30T21:01:53Z",
+        "updated_at": "2021-10-08T13:37:39Z",
+        "closed_at": "2021-10-08T13:37:39Z",
+        "author": "rwest202",
+        "comments": 6,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "I have been using the watch function like so:\r\n\r\n```\r\nimport { app } from '../store' // App is a module class\r\n\r\nwatch(\r\n    app,\r\n    () => app.customer,\r\n    () => {\r\n        // Do something with data\r\n    }\r\n);\r\n```\r\n\r\nHowever, I want to now watch for two properties at the same time\r\n\r\n```\r\nwatch(\r\n    app,\r\n    () => [app.customer, app.announcement],\r\n    () => {\r\n        // Do something with data\r\n    }\r\n);\r\n```\r\n\r\nThe watch function seems to use a `===` check for equality but I don't think this captures all the changes that may occur. What if a nested property changes, I don't believe the current logic will catch it.",
+        "url": "https://github.com/unadlib/usm/issues/50"
+    },
+    {
+        "id": 680343033,
+        "number": 34,
+        "title": "USM brand new version of v3 is in progress",
+        "state": "closed",
+        "created_at": "2020-08-17T15:58:37Z",
+        "updated_at": "2020-11-07T16:12:28Z",
+        "closed_at": "2020-11-07T16:12:28Z",
+        "author": "unadlib",
+        "comments": 0,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "* Rewrite the code completely\r\n* Remove lifecycle APIs\r\n* `usm-vuex` based on Vuex v4.0\r\n* `usm-mobx` based on MobX v6.0\r\n* `usm-redux` based on Redux v4.0",
+        "url": "https://github.com/unadlib/usm/issues/34"
+    },
+    {
+        "id": 565907781,
+        "number": 30,
+        "title": "import 'batch' with new react-redux version",
+        "state": "closed",
+        "created_at": "2020-02-16T13:46:22Z",
+        "updated_at": "2020-07-19T17:00:58Z",
+        "closed_at": "2020-07-19T17:00:58Z",
+        "author": "unadlib",
+        "comments": 0,
+        "labels": [
+            "enhancement"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "",
+        "url": "https://github.com/unadlib/usm/issues/30"
+    },
+    {
+        "id": 542437180,
+        "number": 28,
+        "title": "'action' function supports multi-modules",
+        "state": "closed",
+        "created_at": "2019-12-26T05:23:13Z",
+        "updated_at": "2020-07-19T17:00:58Z",
+        "closed_at": "2020-07-19T17:00:58Z",
+        "author": "unadlib",
+        "comments": 0,
+        "labels": [
+            "enhancement"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "",
+        "url": "https://github.com/unadlib/usm/issues/28"
+    },
+    {
+        "id": 463753800,
+        "number": 24,
+        "title": "`usm-redux` support reducer way for action function ",
+        "state": "closed",
+        "created_at": "2019-07-03T13:29:05Z",
+        "updated_at": "2019-07-14T14:57:18Z",
+        "closed_at": "2019-07-14T14:57:18Z",
+        "author": "unadlib",
+        "comments": 1,
+        "labels": [
+            "enhancement"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "```js\r\nclass Foo extends Module {\r\n  @state bar = {a: 1, b:2};\r\n\r\n  @reducer\r\n  setBar(value, state) {\r\n    return {\r\n      bar: {\r\n        a: value,\r\n        ...state.bar\r\n      },\r\n      ...state,\r\n    }\r\n  }\r\n}\r\n```",
+        "url": "https://github.com/unadlib/usm/issues/24"
+    },
+    {
+        "id": 460263454,
+        "number": 23,
+        "title": "Support for the non-use of decorators",
+        "state": "closed",
+        "created_at": "2019-06-25T07:42:10Z",
+        "updated_at": "2020-07-19T17:00:58Z",
+        "closed_at": "2020-07-19T17:00:58Z",
+        "author": "unadlib",
+        "comments": 0,
+        "labels": [
+            "enhancement"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "```js\r\nclass Foo extends Module {\r\n  constructor() {\r\n    super();\r\n    this.decorate({\r\n      state: {\r\n        value: 1,\r\n      },\r\n      actions: {\r\n        bar(state) {\r\n          state.value++;\r\n        }\r\n      },\r\n    });\r\n  }\r\n}\r\n```\r\n",
+        "url": "https://github.com/unadlib/usm/issues/23"
+    },
+    {
+        "id": 456598392,
+        "number": 21,
+        "title": "fix `bootstrap` internal init function",
+        "state": "closed",
+        "created_at": "2019-06-16T03:46:00Z",
+        "updated_at": "2019-06-16T03:50:53Z",
+        "closed_at": "2019-06-16T03:50:53Z",
+        "author": "unadlib",
+        "comments": 0,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "",
+        "url": "https://github.com/unadlib/usm/issues/21"
+    },
+    {
+        "id": 456596804,
+        "number": 19,
+        "title": "fix duplication states",
+        "state": "closed",
+        "created_at": "2019-06-16T03:17:10Z",
+        "updated_at": "2019-06-16T03:30:29Z",
+        "closed_at": "2019-06-16T03:30:29Z",
+        "author": "unadlib",
+        "comments": 0,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "",
+        "url": "https://github.com/unadlib/usm/issues/19"
+    },
+    {
+        "id": 456411419,
+        "number": 17,
+        "title": "fix `usm-vuex` cross-module computed values",
+        "state": "closed",
+        "created_at": "2019-06-14T19:59:52Z",
+        "updated_at": "2019-06-15T20:11:22Z",
+        "closed_at": "2019-06-15T20:11:22Z",
+        "author": "unadlib",
+        "comments": 0,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "",
+        "url": "https://github.com/unadlib/usm/issues/17"
+    },
+    {
+        "id": 453979938,
+        "number": 15,
+        "title": "`usm-redux` support async producers",
+        "state": "closed",
+        "created_at": "2019-06-10T03:11:54Z",
+        "updated_at": "2020-07-19T17:00:57Z",
+        "closed_at": "2020-07-19T17:00:57Z",
+        "author": "unadlib",
+        "comments": 0,
+        "labels": [
+            "enhancement"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "",
+        "url": "https://github.com/unadlib/usm/issues/15"
+    },
+    {
+        "id": 453617669,
+        "number": 12,
+        "title": "Dependency modules can not be USM module instance",
+        "state": "closed",
+        "created_at": "2019-06-07T17:26:23Z",
+        "updated_at": "2019-06-07T17:39:45Z",
+        "closed_at": "2019-06-07T17:39:45Z",
+        "author": "unadlib",
+        "comments": 1,
+        "labels": [
+            "enhancement"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "",
+        "url": "https://github.com/unadlib/usm/issues/12"
+    },
+    {
+        "id": 451092101,
+        "number": 11,
+        "title": "Support UMD and add rollup build script",
+        "state": "closed",
+        "created_at": "2019-06-01T14:40:44Z",
+        "updated_at": "2020-07-19T17:00:57Z",
+        "closed_at": "2020-07-19T17:00:57Z",
+        "author": "unadlib",
+        "comments": 0,
+        "labels": [
+            "enhancement"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "",
+        "url": "https://github.com/unadlib/usm/issues/11"
+    },
+    {
+        "id": 448558104,
+        "number": 9,
+        "title": "upgrade reselect v4.0+ for usm-redux",
+        "state": "closed",
+        "created_at": "2019-05-26T11:40:32Z",
+        "updated_at": "2020-07-19T17:00:57Z",
+        "closed_at": "2020-07-19T17:00:57Z",
+        "author": "unadlib",
+        "comments": 0,
+        "labels": [
+            "enhancement"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "",
+        "url": "https://github.com/unadlib/usm/issues/9"
+    },
+    {
+        "id": 447984990,
+        "number": 7,
+        "title": "sub-module reducers duplication",
+        "state": "closed",
+        "created_at": "2019-05-24T05:26:11Z",
+        "updated_at": "2019-05-26T07:21:46Z",
+        "closed_at": "2019-05-26T07:21:46Z",
+        "author": "unadlib",
+        "comments": 0,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "",
+        "url": "https://github.com/unadlib/usm/issues/7"
+    },
+    {
+        "id": 445783971,
+        "number": 6,
+        "title": "example use @computed decorator",
+        "state": "closed",
+        "created_at": "2019-05-19T05:59:17Z",
+        "updated_at": "2019-05-19T06:15:34Z",
+        "closed_at": "2019-05-19T06:15:34Z",
+        "author": "riskihajar",
+        "comments": 2,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "how to use a computed decorator?\r\n\r\ni tried but got an error\r\n`@computed accessToken = this.token`\r\n\r\nand the error\r\n`Cannot set property accessToken of #<Auth> which has only a getter`",
+        "url": "https://github.com/unadlib/usm/issues/6"
+    },
+    {
+        "id": 444999771,
+        "number": 5,
+        "title": "Extract lifecycle",
+        "state": "closed",
+        "created_at": "2019-05-16T14:48:40Z",
+        "updated_at": "2020-07-19T17:00:57Z",
+        "closed_at": "2020-07-19T17:00:57Z",
+        "author": "unadlib",
+        "comments": 0,
+        "labels": [
+            "enhancement"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "",
+        "url": "https://github.com/unadlib/usm/issues/5"
+    },
+    {
+        "id": 444999157,
+        "number": 4,
+        "title": "Adjust better type",
+        "state": "closed",
+        "created_at": "2019-05-16T14:47:36Z",
+        "updated_at": "2019-05-30T18:18:53Z",
+        "closed_at": "2019-05-30T18:18:53Z",
+        "author": "unadlib",
+        "comments": 0,
+        "labels": [
+            "enhancement"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "",
+        "url": "https://github.com/unadlib/usm/issues/4"
+    }
+]

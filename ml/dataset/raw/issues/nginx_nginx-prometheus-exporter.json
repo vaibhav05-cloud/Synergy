@@ -1,0 +1,372 @@
+[
+    {
+        "id": 4356660525,
+        "number": 1277,
+        "title": "Pushing edge version to docker hub is failing",
+        "state": "open",
+        "created_at": "2026-04-30T08:45:45Z",
+        "updated_at": "2026-04-30T08:45:48Z",
+        "closed_at": null,
+        "author": "wmuizelaar",
+        "comments": 1,
+        "labels": [
+            "community"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "**Describe the bug**\nWhile waiting for a new release, I wanted to use the 'edge' tag to make sure I at least can run a version where our internal audit-tooling is happy with. Then I learned the latest version was not pushed anymore.\n\n**To reproduce**\nLook at the actions output: https://github.com/nginx/nginx-prometheus-exporter/actions/runs/24051167416/job/70146974084\n\n**Expected behavior**\nThe publish to work\n\n**Your environment**\n\nN/A\n\n**Additional context**\nMaybe a token expired?",
+        "url": "https://github.com/nginx/nginx-prometheus-exporter/issues/1277"
+    },
+    {
+        "id": 3954182061,
+        "number": 1252,
+        "title": "Enable optional OpenMetrics exposition format and _created metrics",
+        "state": "closed",
+        "created_at": "2026-02-17T18:47:23Z",
+        "updated_at": "2026-06-07T02:24:03Z",
+        "closed_at": "2026-06-07T02:24:03Z",
+        "author": "eriksywu",
+        "comments": 3,
+        "labels": [
+            "stale",
+            "community"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "**Is your feature request related to a problem? Please describe.**\nLike all cumulative counters, nginx counters can exhibit the uninitialized counter problem whereby the rate/increase contribution of the first scraped sample is dropped. CreatedTimestamp is an additional field supported by prometheus Counters/Summaries/Histograms to propagate additional information to infer a zero datapoint for a newly initialized counter. \nThere's active development in various prometheus-conformant tsdb projects (i.e https://github.com/prometheus/proposals/pull/60) to support the ingest of CT values. \n\n\n**Describe the solution you'd like**\nThe current nginx exporter's Collector implementations (NginxCollector and NginxPlusCollector) do not send prometheus.Metric objects created with CTs. The change is quite trivial to do so - i.e call `promethues.MustNewConstMetricWithCreatedTimestamp`. This behaviour will be entirely opt-in via some cmd-line arg or envvar.\n\n\n**Describe alternatives you've considered**\nA clear and concise description of any alternative solutions or features you've considered.\n\n**Additional context**\nThe changeset for the proposed feature may also include the support of OpenMetricsText exposition format but OM support is not a dependency\n",
+        "url": "https://github.com/nginx/nginx-prometheus-exporter/issues/1252"
+    },
+    {
+        "id": 3900690607,
+        "number": 1245,
+        "title": "Add `--web.nginx-metrics-only` flag",
+        "state": "closed",
+        "created_at": "2026-02-05T09:54:55Z",
+        "updated_at": "2026-05-17T02:23:26Z",
+        "closed_at": "2026-05-17T02:23:26Z",
+        "author": "jensschulze",
+        "comments": 3,
+        "labels": [
+            "stale",
+            "community"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "**Is your feature request related to a problem? Please describe.**\n\nWe run this exporter (alongside others, also written in Go) in a Kubernetes environment using Kuma as the service mesh.\nMetrics are aggregated per pod via Kuma sidecar's metrics-hijacker feature.\n\nWhen multiple containers within the same pod expose Go runtime metrics, promhttp metrics, etc., these metrics automatically receive the Kuma sidecar’s labels. As a result, Prometheus reports duplicated metrics. This issue occurs consistently in our setup. \n\n**Describe the solution you'd like**\n\nSupport disabling any metrics except for the Nginx metrics in the exporters (i.e. Go runtime metrics etc.)\n\nThis is quite straightforward to implement and has a small trade-off: the runtime metrics of the exporters are not essential for us. Based on our experience, the metrics exporters have never been the cause of operational issues in our systems.\n\nPull Request: https://github.com/nginx/nginx-prometheus-exporter/pull/1241\n\n**Describe alternatives you've considered**\n\nWe identified two possible alternatives:\n\n* Drop any Go runtime metrics (e.g. via Prometheus relabel rules). (Just no: we operate many Go applications whose metrics we have to monitor.)\n* Add custom labels to the Go runtime metrics. (More complex and kind of odd)\n",
+        "url": "https://github.com/nginx/nginx-prometheus-exporter/issues/1245"
+    },
+    {
+        "id": 3798864379,
+        "number": 1226,
+        "title": "\"latest\" tag not updated",
+        "state": "closed",
+        "created_at": "2026-01-10T01:25:18Z",
+        "updated_at": "2026-04-20T02:21:16Z",
+        "closed_at": "2026-04-20T02:21:16Z",
+        "author": "Aransh",
+        "comments": 3,
+        "labels": [
+            "stale",
+            "community"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "**Describe the bug**\nWhile 1.5.1 has been pushed 3 months ago, the image tagged \"latest\" is still 1.5.0\n\n**To reproduce**\nConfirmed by \"Digest\" f261b7bcfe50 in [DockerHub](https://hub.docker.com/r/nginx/nginx-prometheus-exporter/tags), also by running:\n```\ndocker exec -it nginx-exporter nginx-prometheus-exporter --version\nnginx_exporter, version 1.5.0 (branch: HEAD, revision: b14979c9f3634dcd5a2b158874e713beb3aca3d7)\n  build user:       goreleaser\n  build date:       2025-10-07T15:37:41Z\n  go version:       go1.25.1\n  platform:         linux/arm64\n  tags:             unknown\n```\n\n**Expected behavior**\nCI release process of a new version should update the \"latest\" tag",
+        "url": "https://github.com/nginx/nginx-prometheus-exporter/issues/1226"
+    },
+    {
+        "id": 3739122059,
+        "number": 1221,
+        "title": "Update readMe with new license status metric",
+        "state": "closed",
+        "created_at": "2025-12-17T14:22:56Z",
+        "updated_at": "2025-12-31T17:03:03Z",
+        "closed_at": "2025-12-31T17:03:03Z",
+        "author": "vepatel",
+        "comments": 1,
+        "labels": [
+            "documentation",
+            "community"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "Update the readme with new license metric introduced in https://github.com/nginx/nginx-prometheus-exporter/pull/1102",
+        "url": "https://github.com/nginx/nginx-prometheus-exporter/issues/1221"
+    },
+    {
+        "id": 3719130408,
+        "number": 1213,
+        "title": "Release 1.5.2",
+        "state": "open",
+        "created_at": "2025-12-11T12:10:32Z",
+        "updated_at": "2026-07-12T18:05:41Z",
+        "closed_at": null,
+        "author": "vepatel",
+        "comments": 7,
+        "labels": [
+            "backlog",
+            "community"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "Create a new release for prom-exporter ",
+        "url": "https://github.com/nginx/nginx-prometheus-exporter/issues/1213"
+    },
+    {
+        "id": 3595262315,
+        "number": 1193,
+        "title": "nginxplus_location_zone_* metrics are missing in the exported metrics",
+        "state": "closed",
+        "created_at": "2025-11-06T10:58:32Z",
+        "updated_at": "2026-02-15T02:19:19Z",
+        "closed_at": "2026-02-15T02:19:19Z",
+        "author": "haselere",
+        "comments": 3,
+        "labels": [
+            "stale",
+            "community"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "**Describe the bug**\nnginxplus_location_zone_* metrics are missing in the exported metrics calling http://localhost:9113/metrics\n\n**To reproduce**\nSteps to reproduce the behavior:\n1. Start nginx plus instance and Expose the built-in metrics in NGINX Plus:\nFor NGINX Plus, expose the [API](https://nginx.org/en/docs/http/ngx_http_api_module.html#api) at /api on port 8080.\n2. curl metrics endpoint and see all metrics (http://localhost:9113/metrics) - no nginxplus_location_zone_* are available\n\n**Expected behavior**\nnginxplus_location_zone_* should be available\n\n**Your environment**\n\n- Version of the Prometheus exporter - https://github.com/nginx/nginx-prometheus-exporter/releases/tag/v1.5.1\n- Using NGINX Plus \n",
+        "url": "https://github.com/nginx/nginx-prometheus-exporter/issues/1193"
+    },
+    {
+        "id": 3577832398,
+        "number": 1184,
+        "title": "Uninformative error message 'error getting stats'",
+        "state": "closed",
+        "created_at": "2025-11-01T10:48:33Z",
+        "updated_at": "2026-02-13T02:19:28Z",
+        "closed_at": "2026-02-13T02:19:28Z",
+        "author": "AlexKorsakov",
+        "comments": 5,
+        "labels": [
+            "stale",
+            "help wanted",
+            "community"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "**Is your feature request related to a problem? Please describe.**\nI scrape metrics from few nginx instances at the same time. Instances passes by few arguments '--nginx.scrape-uri=some_nginx/metrics'. And I get infinite messages in logs:\n```\ntime=... level=ERROR source=nginx.go:57 msg=\"error getting stats\" error=\"expected 200 response, got 502\"\ntime=... level=ERROR source=nginx.go:57 msg=\"error getting stats\" error=\"expected 200 response, got 502\"\ntime=... level=ERROR source=nginx.go:57 msg=\"error getting stats\" error=\"expected 200 response, got 502\"\ntime=... level=ERROR source=nginx.go:57 msg=\"error getting stats\" error=\"expected 200 response, got 502\"\ntime=... level=ERROR source=nginx.go:57 msg=\"error getting stats\" error=\"expected 200 response, got 502\"\ntime=... level=ERROR source=nginx.go:57 msg=\"error getting stats\" error=\"expected 200 response, got 502\"\ntime=... level=ERROR source=nginx.go:57 msg=\"error getting stats\" error=\"expected 200 response, got 502\"\n```\nLikely the cause in one or few of my nginx instances, but I don't see from log which exactly. And this is the problem. And even log level change doesn't show more information.\n\n**Describe the solution you'd like**\n`NginxCollector` contains field `nginxClient`, which contains `apiEndpoint`. And I suggest to log `apiEndpoint` to error message at error log level.\n\n**Describe alternatives you've considered**\nOr log `apiEndpoint` to error message at debug log level.\n\n**Additional context**\nFound on `nginx-prometheus-exporter:1.4.0`. Used in docker container in docker swarm.\n",
+        "url": "https://github.com/nginx/nginx-prometheus-exporter/issues/1184"
+    },
+    {
+        "id": 3543157985,
+        "number": 1183,
+        "title": "version=0.0.0 in logs when running v1.5.1 from Docker image",
+        "state": "closed",
+        "created_at": "2025-10-23T04:59:16Z",
+        "updated_at": "2026-02-12T02:19:42Z",
+        "closed_at": "2026-02-12T02:19:42Z",
+        "author": "rc5hack",
+        "comments": 5,
+        "labels": [
+            "stale",
+            "community"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "I upgraded from v1.3.0 to v1.5.1, using Docker image:\n```\n# old one\nnginx/nginx-prometheus-exporter:1.3.0\n\n#new one\nnginx/nginx-prometheus-exporter:1.5.1\n```\n\nWhen running v1.5.1, the first line in log is\n```\ntime=2025-10-23T04:53:33.971Z level=INFO source=exporter.go:126 msg=nginx-prometheus-exporter version=\"(version=0.0.0-SNAPSHOT-bae43bc, branch=main, revision=bae43bc818cd6e47a08163a7b31f355f454e9ecb)\"\n```\n\nWhen running older v1.3.0, the first line in log is\n```\nts=2025-07-28T01:08:36.828Z caller=exporter.go:124 level=info msg=\"Starting nginx-prometheus-exporter\" version=\"(version=1.3.0, branch=HEAD, revision=9522f4e39ee1aed817d7d70a89514ccc0ae1594a)\"\n```\n\nSeems like a builder issue, which prevents builder from knowing actual version on docker iamge build.",
+        "url": "https://github.com/nginx/nginx-prometheus-exporter/issues/1183"
+    },
+    {
+        "id": 3539033416,
+        "number": 1182,
+        "title": "Self-build but can not show the correct version",
+        "state": "closed",
+        "created_at": "2025-10-22T04:05:42Z",
+        "updated_at": "2025-11-03T16:15:02Z",
+        "closed_at": "2025-11-03T16:15:02Z",
+        "author": "vndroid",
+        "comments": 2,
+        "labels": [
+            "community"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "**Describe the bug**\nI clone the repo, and build it myself, but it can not show the program version info.\n\n**To reproduce**\nSteps to reproduce the behavior:\n\n```bash\ngit clone https://github.com/nginx/nginx-prometheus-exporter.git\ncd nginx-prometheus-exporter/\nmake container\n```\n\nRun it and returns:\n\n```\ndocker container run --rm -it docker.io/nginx/nginx-prometheus-exporter:1.5.1  --version\nnginx_exporter, version  (branch: , revision: unknown)\n  build user:       \n  build date:       \n  go version:       go1.25.2\n  platform:         linux/amd64\n  tags:             unknown\n```\n\nThe `version`, `branch`, `user`, and `date` info are blank.\n\n**Expected behavior**\n\nI use ghcr.io official image, which can return the correct info. Are there any mistakes in my operation steps? \n\n**Your environment**\n\n- Docker 28.5.1\n\n**Additional context**\n\nNone\n",
+        "url": "https://github.com/nginx/nginx-prometheus-exporter/issues/1182"
+    },
+    {
+        "id": 3386549075,
+        "number": 1131,
+        "title": "Tagged images versions not available after release of 1.5.0",
+        "state": "closed",
+        "created_at": "2025-09-05T07:20:34Z",
+        "updated_at": "2025-10-07T15:46:11Z",
+        "closed_at": "2025-10-07T15:46:11Z",
+        "author": "wmuizelaar",
+        "comments": 5,
+        "labels": [
+            "community"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "**Describe the bug**\nA new release, 1.5.0 was pushed (thank you!) but apparently there is an issue somewhere in the release jobs that doesn't tag the images properly - I do see a new tag 'edge', but not a tag '1.5.0' being created for all the image repositories where it's pushed into.\n\nCan you fix that?",
+        "url": "https://github.com/nginx/nginx-prometheus-exporter/issues/1131"
+    },
+    {
+        "id": 3300572040,
+        "number": 1109,
+        "title": "Issue with CVE-2025-22874 related to crypto/x509 go package used in nginx prometheus exporter",
+        "state": "closed",
+        "created_at": "2025-08-07T13:41:40Z",
+        "updated_at": "2025-09-18T12:58:22Z",
+        "closed_at": "2025-09-18T12:58:22Z",
+        "author": "sainikhil-1903",
+        "comments": 3,
+        "labels": [
+            "community"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "**Describe the bug**\nIssue with CVE-2025-22874 related to crypto/x509 go package used in nginx prometheus exporter. \nLink to the CVE : \nhttps://access.redhat.com/security/cve/cve-2025-22874\nhttps://pkg.go.dev/vuln/GO-2025-3749\n\n**Expected behavior**\nCurrently Go lang version used in 1.4.2 version is 1.24.2, CVE is fixed once Go lang version is upgraded to more than 1.24.4 \n\n**Your environment**\n\n- Version of the Prometheus exporter - 1.4.2\n- Using NGINX and NGINX Plus - both\n\n**Additional context**\nAdd any other context about the problem here. Any log files you want to share.\n",
+        "url": "https://github.com/nginx/nginx-prometheus-exporter/issues/1109"
+    },
+    {
+        "id": 3168304332,
+        "number": 1090,
+        "title": "Renovate missing update for patch version of Go",
+        "state": "closed",
+        "created_at": "2025-06-23T13:55:51Z",
+        "updated_at": "2025-07-29T21:52:54Z",
+        "closed_at": "2025-07-29T21:52:54Z",
+        "author": "LoicDaval-Amadeus",
+        "comments": 2,
+        "labels": [
+            "community"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "**Describe the bug**\nRenovate do not detect/update to latest Go version (1.24.2 --> 1.24.4)\n\n**Expected behavior**\nRenovate should propose bumps to patch version of Go used in the Dockerfile as patch version can (and do) contains security updates like 1.24.4 fixes https://pkg.go.dev/vuln/GO-2025-3751\n\n**Fix proposal\nWhy not set the source image in the FROM directive of the Dockerfile to target a version with a patch number and get renovate to propose these fixes ?\n\nIf ok for you, I'm up for creating the PR for the change (even though, it's small enough to be handled by anyone really 😄 )",
+        "url": "https://github.com/nginx/nginx-prometheus-exporter/issues/1090"
+    },
+    {
+        "id": 3038942127,
+        "number": 1057,
+        "title": "Slab metrics",
+        "state": "closed",
+        "created_at": "2025-05-05T08:19:46Z",
+        "updated_at": "2025-08-15T02:16:54Z",
+        "closed_at": "2025-08-15T02:16:54Z",
+        "author": "ghost",
+        "comments": 3,
+        "labels": [
+            "stale",
+            "community"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "Is it possible to add [/slabs/](https://nginx.org/en/docs/http/ngx_http_api_module.html#slabs_) metrics? They [exist in prometheus-njs](https://docs.nginx.com/nginx/admin-guide/dynamic-modules/prometheus-njs/), but it would be nice to have them in exporter. nginx-plus-go-client also [supports them](https://github.com/nginx/nginx-plus-go-client/blob/15904aa61ceb7593226088ac0f40c8649fd383a4/client/nginx.go#L166).",
+        "url": "https://github.com/nginx/nginx-prometheus-exporter/issues/1057"
+    },
+    {
+        "id": 3025239805,
+        "number": 1055,
+        "title": "Release 1.4.2",
+        "state": "closed",
+        "created_at": "2025-04-28T15:01:12Z",
+        "updated_at": "2025-08-07T02:17:34Z",
+        "closed_at": "2025-08-07T02:17:34Z",
+        "author": "javorszky",
+        "comments": 2,
+        "labels": [
+            "stale"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": null,
+        "url": "https://github.com/nginx/nginx-prometheus-exporter/issues/1055"
+    },
+    {
+        "id": 3025100963,
+        "number": 1053,
+        "title": "Remove references to community slack",
+        "state": "closed",
+        "created_at": "2025-04-28T14:17:41Z",
+        "updated_at": "2025-04-28T14:53:31Z",
+        "closed_at": "2025-04-28T14:53:30Z",
+        "author": "javorszky",
+        "comments": 1,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "**Describe the bug**\nNGINX Community Slack has been archived. Readme and CI should not try to route people and messages there.\n",
+        "url": "https://github.com/nginx/nginx-prometheus-exporter/issues/1053"
+    },
+    {
+        "id": 3020242404,
+        "number": 1047,
+        "title": "Update Go version to 1.24.2",
+        "state": "closed",
+        "created_at": "2025-04-25T14:33:34Z",
+        "updated_at": "2025-04-28T07:58:45Z",
+        "closed_at": "2025-04-28T07:58:45Z",
+        "author": "javorszky",
+        "comments": 1,
+        "labels": [
+            "community"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "Automated tools updated the toolchain to 1.24.2, but not the main go version in the go.mod file.\n\nThis issue is to track that task.",
+        "url": "https://github.com/nginx/nginx-prometheus-exporter/issues/1047"
+    },
+    {
+        "id": 3019824527,
+        "number": 1044,
+        "title": "Remove NGINX community slack mention",
+        "state": "closed",
+        "created_at": "2025-04-25T11:44:47Z",
+        "updated_at": "2025-04-28T07:50:09Z",
+        "closed_at": "2025-04-28T07:50:09Z",
+        "author": "javorszky",
+        "comments": 1,
+        "labels": [
+            "community"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "**Describe the bug**\nThe NGINX community slack no longer exists. The documentation still refers to it. It shouldn't.",
+        "url": "https://github.com/nginx/nginx-prometheus-exporter/issues/1044"
+    },
+    {
+        "id": 2950273677,
+        "number": 1025,
+        "title": "Be able to monitor a list of Nginx instances",
+        "state": "closed",
+        "created_at": "2025-03-26T17:01:09Z",
+        "updated_at": "2025-03-26T17:06:48Z",
+        "closed_at": "2025-03-26T17:06:47Z",
+        "author": "TomClqncy",
+        "comments": 2,
+        "labels": [
+            "community"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "**Is your feature request related to a problem? Please describe.**\nToday, the exporter can only monitor a single instance of Nginx. In the case of 1000s of instances, you would need 1000s of exporter instances. Painful ;)\n\n**Describe the solution you'd like**\nSpecify a list of Nginx instances to monitor so the exporter can monitor all of them and publish the metrics including the instance names\n\n**Describe alternatives you've considered**\nRunning 1000s of exporters, not an easy and cost effective solution \n\n**Additional context**\nLarge Kubernetes deployment with thousands of APis with a Nginx instance for each\n",
+        "url": "https://github.com/nginx/nginx-prometheus-exporter/issues/1025"
+    },
+    {
+        "id": 2949104227,
+        "number": 1024,
+        "title": "Create a new patch release",
+        "state": "closed",
+        "created_at": "2025-03-26T10:30:34Z",
+        "updated_at": "2025-05-07T16:04:45Z",
+        "closed_at": "2025-05-07T16:04:45Z",
+        "author": "jjngx",
+        "comments": 6,
+        "labels": [
+            "devops"
+        ],
+        "assignees": [
+            "javorszky"
+        ],
+        "locked": false,
+        "body": "Create a new release `v1.4.2`",
+        "url": "https://github.com/nginx/nginx-prometheus-exporter/issues/1024"
+    }
+]

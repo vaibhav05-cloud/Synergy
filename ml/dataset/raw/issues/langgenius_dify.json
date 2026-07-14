@@ -1,0 +1,397 @@
+[
+    {
+        "id": 4881300219,
+        "number": 38912,
+        "title": "API Service Hangs When Using Agent Node in Chatflow",
+        "state": "open",
+        "created_at": "2026-07-14T08:31:01Z",
+        "updated_at": "2026-07-14T08:39:33Z",
+        "closed_at": null,
+        "author": "sdkrre",
+        "comments": 1,
+        "labels": [
+            "bug",
+            "project#dify"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Self Checks\n\n- [x] I have read the [Contributing Guide](https://github.com/langgenius/dify/blob/main/CONTRIBUTING.md) and [Language Policy](https://github.com/langgenius/dify/issues/1542).\n- [x] This is only for bug report, if you would like to ask a question, please head to [Discussions](https://github.com/langgenius/dify/discussions/categories/general).\n- [x] I have searched for existing issues [search for existing issues](https://github.com/langgenius/dify/issues), including closed ones.\n- [x] I confirm that I am using English to submit this report, otherwise it will be closed.\n- [x] 【中文用户 & Non English User】请使用英语提交，否则会被关闭 ：）\n- [x] Please do not modify this template :) and fill in all the required fields.\n\n### Dify version\n\nv1.15.0\n\n### Cloud or Self Hosted\n\nSelf Hosted (Docker)\n\n### Steps to reproduce\n\nWhen I use an Agent node in a chatflow, the entire API service hangs. After the timeout, the API immediately returns to normal. Alternatively, if I restart the plugin daemon, the API reports an error and then returns to normal, as shown in the screenshot below.\n1. Use an Agent node.\n\n<img width=\"1888\" height=\"584\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/70724916-187a-4fcd-993c-c376a502cf4a\" />\n\n<img width=\"1007\" height=\"792\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/c56012e1-7f5f-4ba4-adc1-a9f74e628560\" />\n\n2. All API services hang.\n\n<img width=\"932\" height=\"579\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/01df02ab-eed3-43fe-ba32-16220667296b\" />\n\n3. After running for a while, an error occurs.\n\n<img width=\"1214\" height=\"855\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/f0d08013-be6b-4c0f-b8cd-726473fa8beb\" />\n\nError: \nFailed to transform agent message: req_id: 429eb69aa3 PluginInvokeError: {\"args\":{},\"error_type\":\"Exception\",\"message\":\"invocation exited without response\"}\n\nThe plugin being used is Agent Strategies.\n\n<img width=\"392\" height=\"341\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/bc42745a-72bb-4fe4-adf2-cddae838960f\" />\n\n### ✔️ Expected Behavior\n\nCan call MCP normally without hanging\n<img width=\"585\" height=\"411\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/2e95f2ac-e9f7-43b7-b178-6a19aa3e4a62\" />\n\n### ❌ Actual Behavior\n\nMCP is being called (logs are visible from plugin_daemon), but all services hang. The service becomes completely unresponsive with no output, and then eventually returns an error.\n\n<img width=\"1521\" height=\"150\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/09f0d8fd-4d7a-4743-98f7-db5b3287753b\" />",
+        "url": "https://github.com/langgenius/dify/issues/38912"
+    },
+    {
+        "id": 4881035051,
+        "number": 38910,
+        "title": "when knowledge rbac specific is all, need sync workspace member",
+        "state": "open",
+        "created_at": "2026-07-14T07:53:17Z",
+        "updated_at": "2026-07-14T07:53:38Z",
+        "closed_at": null,
+        "author": "fatelei",
+        "comments": 0,
+        "labels": [
+            "project#dify",
+            "enhancement"
+        ],
+        "assignees": [
+            "fatelei"
+        ],
+        "locked": false,
+        "body": "### Self Checks\n\n- [x] I have read the [Contributing Guide](https://github.com/langgenius/dify/blob/main/CONTRIBUTING.md) and [Language Policy](https://github.com/langgenius/dify/issues/1542).\n- [x] I have searched for existing issues [search for existing issues](https://github.com/langgenius/dify/issues), including closed ones.\n- [x] I confirm that I am using English to submit this report, otherwise it will be closed.\n- [x] Please do not modify this template :) and fill in all the required fields.\n\n### 1. Is this request related to a challenge you're experiencing? Tell me about your story.\n\nwhen knowledge rbac specific is all, need sync workspace member\n\n### 2. Additional context or comments\n\n_No response_\n\n### 3. Can you help us with this feature?\n\n- [x] I am interested in contributing to this feature.",
+        "url": "https://github.com/langgenius/dify/issues/38910"
+    },
+    {
+        "id": 4880523346,
+        "number": 38902,
+        "title": "allow dify-agent specific home directory",
+        "state": "closed",
+        "created_at": "2026-07-14T06:37:58Z",
+        "updated_at": "2026-07-14T08:10:14Z",
+        "closed_at": "2026-07-14T08:10:14Z",
+        "author": "fatelei",
+        "comments": 0,
+        "labels": [
+            "project#dify",
+            "enhancement"
+        ],
+        "assignees": [
+            "fatelei"
+        ],
+        "locked": false,
+        "body": "### Self Checks\n\n- [x] I have read the [Contributing Guide](https://github.com/langgenius/dify/blob/main/CONTRIBUTING.md) and [Language Policy](https://github.com/langgenius/dify/issues/1542).\n- [x] I have searched for existing issues [search for existing issues](https://github.com/langgenius/dify/issues), including closed ones.\n- [x] I confirm that I am using English to submit this report, otherwise it will be closed.\n- [x] Please do not modify this template :) and fill in all the required fields.\n\n### 1. Is this request related to a challenge you're experiencing? Tell me about your story.\n\n1. dify-agent use /home as home directory, but in macos \nls -ld /home\nlrwxr-xr-x  1 root  wheel  25 Jul  2 18:04 /home -> /System/Volumes/Data/home\n\nhome belong to root user, so dify-agent has no permission to create directory\n2. dify-agent should provide a method to specific home dir, without permission check\n\n### 2. Additional context or comments\n\n_No response_\n\n### 3. Can you help us with this feature?\n\n- [x] I am interested in contributing to this feature.",
+        "url": "https://github.com/langgenius/dify/issues/38902"
+    },
+    {
+        "id": 4880000281,
+        "number": 38895,
+        "title": "Answer node buttons ignore data-tone, and data-variant=\"warning\" is unsupported",
+        "state": "open",
+        "created_at": "2026-07-14T05:02:20Z",
+        "updated_at": "2026-07-14T05:32:52Z",
+        "closed_at": null,
+        "author": "snowmint",
+        "comments": 1,
+        "labels": [
+            "bug",
+            "project#dify"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Self Checks\n\n- [x] I have read the [Contributing Guide](https://github.com/langgenius/dify/blob/main/CONTRIBUTING.md) and [Language Policy](https://github.com/langgenius/dify/issues/1542).\n- [x] This is only for bug report, if you would like to ask a question, please head to [Discussions](https://github.com/langgenius/dify/discussions/categories/general).\n- [x] I have searched for existing issues [search for existing issues](https://github.com/langgenius/dify/issues), including closed ones.\n- [x] I confirm that I am using English to submit this report, otherwise it will be closed.\n- [x] 【中文用户 & Non English User】请使用英语提交，否则会被关闭 ：）\n- [x] Please do not modify this template :) and fill in all the required fields.\n\n### Dify version\n\n1.14.2, 1.15.0\n\n### Cloud or Self Hosted\n\nSelf Hosted (Docker)\n\n### Steps to reproduce\n\n1. Create a Chatflow or Workflow containing an Answer node.\n2. Add the following HTML to the Answer node:\n\n```html\n   <button\n     data-message=\"stop\"\n     data-variant=\"primary\"\n     data-tone=\"destructive\"\n   >\n     ❌ Stop this task\n   </button>\n   ```\nor \n\n   ```html\n   <button\n     data-message=\"stop\"\n     variant=\"primary\"\n     tone=\"destructive\"\n   >\n     ❌ Stop this task\n   </button>\n   ```\n\nor \n\n   ```html\n   <button\n     data-message=\"stop\"\n     data-variant=\"warning\"\n   >\n     ❌ Stop this task\n   </button>\n   ```\n\n3. Run the app in Preview.\n4. Observe the rendered button.\n\n\n\n### ✔️ Expected Behavior\n\nThe Answer node renderer should preserve and map:\n```html\ndata-tone=\"destructive\"\n```\n\nto:\n\n```tsx\ntone=\"destructive\"\n```\n\non the Dify UI `Button` component.\n\nThe rendered button should therefore use the existing destructive design tokens.\n\nBy the way, the supported tags documented here are outdated and no longer match the current implementation. https://docs.dify.ai/en/cloud/use-dify/nodes/template#supported-tags\n\n\n### ❌ Actual Behavior\n\nThe button is rendered using the normal default style. The `data-tone=\"destructive\"` attribute does not affect the rendered Button style.\n\n<img width=\"445\" height=\"176\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/22eddc9f-c564-4880-8382-2f4a7d479363\" />\n\n<img width=\"445\" height=\"202\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/2ac99175-c45b-4d00-a082-5c2914b60477\" />",
+        "url": "https://github.com/langgenius/dify/issues/38895"
+    },
+    {
+        "id": 4879184489,
+        "number": 38887,
+        "title": "An error occurs when using the default configuration file .env.example",
+        "state": "open",
+        "created_at": "2026-07-14T02:05:30Z",
+        "updated_at": "2026-07-14T02:06:16Z",
+        "closed_at": null,
+        "author": "qilongpingchuan",
+        "comments": 1,
+        "labels": [
+            "bug",
+            "project#dify"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Self Checks\n\n- [x] I have read the [Contributing Guide](https://github.com/langgenius/dify/blob/main/CONTRIBUTING.md) and [Language Policy](https://github.com/langgenius/dify/issues/1542).\n- [x] This is only for bug report, if you would like to ask a question, please head to [Discussions](https://github.com/langgenius/dify/discussions/categories/general).\n- [x] I have searched for existing issues [search for existing issues](https://github.com/langgenius/dify/issues), including closed ones.\n- [x] I confirm that I am using English to submit this report, otherwise it will be closed.\n- [x] 【中文用户 & Non English User】请使用英语提交，否则会被关闭 ：）\n- [x] Please do not modify this template :) and fill in all the required fields.\n\n### Dify version\n\n1.16.0-rc1、1.15.0\n\n### Cloud or Self Hosted\n\nSelf Hosted (Docker)\n\n### Steps to reproduce\n\nWhen I run cp .env.example .env to create the default configuration file and then execute docker-compose up -d, I keep getting the error message: \"services.sandbox.env_file.0 must be a string\". How can I fix this issue?\n\n### ✔️ Expected Behavior\n\n<img width=\"2354\" height=\"246\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/5d2dfe7c-03b5-41a8-853e-66af4ba90811\" />\n\n### ❌ Actual Behavior\n\n_No response_",
+        "url": "https://github.com/langgenius/dify/issues/38887"
+    },
+    {
+        "id": 4879071460,
+        "number": 38882,
+        "title": "The new version of the agent is not compatible with models deployed locally via vLLM.",
+        "state": "open",
+        "created_at": "2026-07-14T01:40:36Z",
+        "updated_at": "2026-07-14T02:06:23Z",
+        "closed_at": null,
+        "author": "suntao2015005848",
+        "comments": 3,
+        "labels": [
+            "bug",
+            "project#dify",
+            "1.16.0"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Self Checks\n\n- [x] I have read the [Contributing Guide](https://github.com/langgenius/dify/blob/main/CONTRIBUTING.md) and [Language Policy](https://github.com/langgenius/dify/issues/1542).\n- [x] This is only for bug report, if you would like to ask a question, please head to [Discussions](https://github.com/langgenius/dify/discussions/categories/general).\n- [x] I have searched for existing issues [search for existing issues](https://github.com/langgenius/dify/issues), including closed ones.\n- [x] I confirm that I am using English to submit this report, otherwise it will be closed.\n- [x] 【中文用户 & Non English User】请使用英语提交，否则会被关闭 ：）\n- [x] Please do not modify this template :) and fill in all the required fields.\n\n### Dify version\n\n1.16.0-rc1\n\n### Cloud or Self Hosted\n\nSelf Hosted (Docker)\n\n### Steps to reproduce\n\nThe new version of the agent, when using OpenAI-API-compatible version 0.0.55 and adding a private model deployed via vLLM, shows incompatibility. Which models are compatible with the new agent mode? Or do I need to configure additional parameters to make it work?\n\n<img width=\"1544\" height=\"496\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/4801fcfe-77bf-4245-b591-a8ea725ab2a3\" />\n\n\n### ✔️ Expected Behavior\n\nI hope to be able to use my own privately deployed model normally.\n\n### ❌ Actual Behavior\n\n_No response_",
+        "url": "https://github.com/langgenius/dify/issues/38882"
+    },
+    {
+        "id": 4872878079,
+        "number": 38867,
+        "title": "Answer Node not work in iteration (Also missing \"message\" event in SSE response )",
+        "state": "open",
+        "created_at": "2026-07-13T10:49:05Z",
+        "updated_at": "2026-07-14T02:04:06Z",
+        "closed_at": null,
+        "author": "guopeng1994",
+        "comments": 2,
+        "labels": [
+            "bug",
+            "project#dify",
+            "1.16.0"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Self Checks\n\n- [x] I have read the [Contributing Guide](https://github.com/langgenius/dify/blob/main/CONTRIBUTING.md) and [Language Policy](https://github.com/langgenius/dify/issues/1542).\n- [x] This is only for bug report, if you would like to ask a question, please head to [Discussions](https://github.com/langgenius/dify/discussions/categories/general).\n- [x] I have searched for existing issues [search for existing issues](https://github.com/langgenius/dify/issues), including closed ones.\n- [x] I confirm that I am using English to submit this report, otherwise it will be closed.\n- [x] 【中文用户 & Non English User】请使用英语提交，否则会被关闭 ：）\n- [x] Please do not modify this template :) and fill in all the required fields.\n\n### Dify version\n\n1.16.0-rc1\n\n### Cloud or Self Hosted\n\nSelf Hosted (Docker)\n\n### Steps to reproduce\n\n<img width=\"3580\" height=\"1296\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/c93bf887-4108-4f60-a2e6-e8df12687a7c\" />\n\n### ✔️ Expected Behavior\n\nThe answer node within the iteration outputs correctly.\n\n\nin 1.14.2, it works just fine, and /chat-messages api received \"message\" event in streaming mode, after upgrade to 1.16.0-rc1, only \"message_end\" event received which related to message\n\n### ❌ Actual Behavior\n\nlook like the flow just ignored the answer node\n\n<img width=\"776\" height=\"524\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/927760e1-acb9-4c07-8f3f-8455fc56755d\" />\n\nand \"message\" event is missing(see my chatflow events which has answer node in iteration)\n\n<img width=\"516\" height=\"759\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/01877bc5-1d39-4d7a-ae9a-b724115b1ac6\" />",
+        "url": "https://github.com/langgenius/dify/issues/38867"
+    },
+    {
+        "id": 4872531224,
+        "number": 38865,
+        "title": "[Refactor/Chore] Improve vp check performance",
+        "state": "open",
+        "created_at": "2026-07-13T10:01:50Z",
+        "updated_at": "2026-07-13T13:45:46Z",
+        "closed_at": null,
+        "author": "hyoban",
+        "comments": 1,
+        "labels": [
+            "project#dify"
+        ],
+        "assignees": [
+            "hyoban"
+        ],
+        "locked": false,
+        "body": "### Self Checks\n\n- [x] I have read the [Contributing Guide](https://github.com/langgenius/dify/blob/main/CONTRIBUTING.md) and [Language Policy](https://github.com/langgenius/dify/issues/1542).\n- [x] This is only for refactors or chores; if you would like to ask a question, please head to [Discussions](https://github.com/langgenius/dify/discussions/categories/general).\n- [x] I have searched for existing issues [search for existing issues](https://github.com/langgenius/dify/issues), including closed ones.\n- [x] I confirm that I am using English to submit this report, otherwise it will be closed.\n- [x] 【中文用户 & Non English User】请使用英语提交，否则会被关闭 ：）\n- [x] Please do not modify this template :) and fill in all the required fields.\n\n### Description\n\nImprove the end-to-end performance of the repository's Vite+ static check while keeping each lint-coverage trade-off independently reviewable.\n\nThis is a follow-up to the Vite+ migration in #38833. Profiling the migrated configuration shows that `vp check` has two material cost centers: Oxlint's JavaScript compatibility plugins and the type-aware TypeScript program used by tsgolint/type checking. Native Oxlint rules are comparatively inexpensive.\n\n#### Current profile\n\n| Scope | Wall time | Maximum RSS | Interpretation |\n| --- | ---: | ---: | --- |\n| Full configured lint | about 28.5 s | about 6.0-6.6 GB | JavaScript plugins, native rules, and type-aware work |\n| JavaScript plugins with type-aware lint disabled | 20.93 s | 2.41 GB | Dominant wall-time layer |\n| Type-aware tsgolint phase | 6.6-7.0 s | 1.42 GB live heap | Most of the remaining runtime |\n| Native rules with type-aware lint disabled | 0.16 s | 97 MB | Not the bottleneck |\n\nThese phase measurements use different entry points and may overlap in setup work, so they are directional and must not be added as exact accounting.\n\nOxlint 1.72 does not attribute JavaScript plugin time to individual rules. Temporary configurations were therefore used to keep the same files and rule baseline while removing one external plugin at a time:\n\n| Removed plugin | JavaScript-plugin-only wall-time delta |\n| --- | ---: |\n| `eslint-react` | -5.93 s |\n| `eslint-plugin-better-tailwindcss` | -5.45 s |\n| `eslint-plugin-jsdoc` | -3.00 s |\n| `eslint-plugin-regexp` | -2.77 s |\n| `@tanstack/eslint-plugin-query` | -0.54 s |\n| `eslint-plugin-perfectionist` | -0.37 s |\n\nOther measured plugins were within noise. The four high-delta plugins reproduced 19.45 seconds, or about 93% of the JavaScript-plugin-only wall time, when run together. Individual deltas are ranking signals rather than additive accounting because each run repeats AST conversion, plugin initialization, and garbage collection.\n\nThe first implementation candidate, direct removal of `eslint-plugin-better-tailwindcss`, was also measured against the complete repository configuration in the same benchmark window:\n\n| Configuration | Runs | Median wall time | Median user CPU | Registered rules | Visible warnings |\n| --- | --- | ---: | ---: | ---: | ---: |\n| Original configuration | 27.54 s, 28.30 s, 28.84 s | 28.30 s | 61.34 s | 401 | 2,599 |\n| Tailwind lint plugin removed | 22.75 s, 22.69 s, 22.95 s | 22.75 s | 54.65 s | 399 | 2,439 |\n\nThis reduced median wall time by 5.55 seconds (19.6%) and median user CPU by 6.69 CPU-seconds (10.9%). Memory was inconclusive because the run ranges overlapped and the median did not improve.\n\n#### Type-aware profile\n\nThe type-aware backend assigned 6,909 selected files to 8 TypeScript programs. Approximately 6.07 of 6.99 seconds (87%) were spent on `web/tsconfig.json`, whose program contained 11,924 source files: 6,597 under `web`, 5,160 under pnpm dependencies, and 167 under workspace packages.\n\nA tsgolint CPU profile recorded 32.33 CPU-seconds over 6.61 wall-seconds. Runtime memory clearing, scanning, syscalls, and garbage collection dominated the flat profile. The completion heap retained 1.42 GB after 7.76 GB of total allocations. This points to TypeScript program construction/checking and dependency-surface memory churn rather than one slow native lint rule.\n\n#### Proposed sequence\n\n- [ ] Remove `eslint-plugin-better-tailwindcss`, its two configured rules, dependency records, and obsolete inline suppressions.\n- [ ] Evaluate native Oxlint and React Compiler replacements before reducing the external React rule set.\n- [ ] Evaluate the coverage trade-offs of removing or replacing the JSDoc and RegExp JavaScript plugins.\n- [ ] Audit `web/tsconfig.json` and its dependency surface to reduce type-aware program construction and memory churn.\n- [ ] Evaluate an Oxlint upgrade that exposes type-aware per-rule timings, then repeat the profile.\n- [ ] Re-run same-window end-to-end benchmarks after each independently reviewable change and record lint coverage changes.\n\nEach plugin removal must explicitly document which checks are lost or replaced. The Tailwind step removes `tailwindcss/no-duplicate-classes` and `tailwindcss/no-unknown-classes` but does not change the application's Tailwind CSS build dependencies or runtime behavior.\n\n### Motivation\n\nStatic checks sit directly in the local feedback loop and CI path. The current lint phase takes roughly 28 seconds and can approach 6-7 GB maximum RSS on the measured repository state. The profile shows several concrete opportunities for large wall-time improvements, but they have different correctness and coverage trade-offs.\n\nTracking the work under one performance issue preserves the overall objective and benchmark context, while separate pull requests allow reviewers to accept, reject, or replace each lint rule group independently.\n\n### Additional Context\n\nMeasurements were collected on 2026-07-13 on an Apple M4 Pro Mac with 12 logical CPUs and 24 GiB RAM, using Node.js 22.22.3, pnpm 11.10.0, Vite+ 0.2.4, Oxlint 1.72.0, and oxlint-tsgolint 0.24.0. The full lint selected approximately 6,900 files. These are repeated engineering measurements rather than a statistically controlled benchmark; sub-second deltas should be treated as noise.\n\nThe direct end-to-end lint benchmark used:\n\n```sh\n/usr/bin/time -lp pnpm lint:oxlint --format default --silent\n```\n\nNative timing inspection used Oxlint's `--debug timings`; deeper tsgolint CPU and heap profiles used the official `OXLINT_TSGOLINT_CPU` and `OXLINT_TSGOLINT_HEAP` hooks. Oxlint 1.72's timing table covers native rules but not JavaScript plugin rules, which is why controlled plugin bisection was necessary.\n\nRelevant upstream references:\n\n- [Oxlint usage guide](https://oxc.rs/docs/guide/usage/linter.html)\n- [Oxlint rule catalog](https://oxc.rs/docs/guide/usage/linter/rules.html)\n- [React Compiler rule implementation](https://github.com/oxc-project/oxc/pull/23202)\n- [Bulk suppression support](https://github.com/oxc-project/oxc/pull/19328)\n",
+        "url": "https://github.com/langgenius/dify/issues/38865"
+    },
+    {
+        "id": 4872306583,
+        "number": 38862,
+        "title": "Batch segment import stays stuck at waiting when CSV processing fails",
+        "state": "open",
+        "created_at": "2026-07-13T09:31:27Z",
+        "updated_at": "2026-07-13T09:31:48Z",
+        "closed_at": null,
+        "author": "weijun-xia",
+        "comments": 0,
+        "labels": [
+            "project#dify"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Describe the bug\r\n\r\nWhen importing segments from a CSV, only failures during the initial setup phase mark the\r\njob as failed. If the CSV parsing or the indexing work fails afterwards, the Redis job\r\nstatus is left at `waiting` (which is written without a TTL), so the status endpoint keeps\r\nreturning `waiting` and the frontend keeps polling indefinitely. The user sees an import\r\nthat never finishes and never reports an error.\r\n\r\n### Steps to reproduce\r\n\r\n1. Create a knowledge base document and open \"Batch add segments\".\r\n2. Upload a CSV that fails during processing, for example:\r\n   - an empty CSV (header only, no rows), or\r\n   - a QA dataset with a CSV that has only one column (no answer column).\r\n3. Watch the batch import status.\r\n\r\n### Expected behavior\r\n\r\nThe job status becomes `error`, and the UI stops polling and shows the failure.\r\n\r\n### Actual behavior\r\n\r\nThe job status stays at `waiting` forever. The worker logs a traceback, but the UI never\r\nlearns about it and keeps polling every few seconds.\r\n\r\n### Root cause\r\n\r\nIn `api/tasks/batch_create_segment_to_index_task.py`, only the setup `session` block is\r\nwrapped in a try/except that sets the Redis status to `error`. The CSV parsing and the\r\nsegment/vector creation that follow are not guarded, so an exception there skips the\r\n`completed`/`error` update entirely. The initial `waiting` value is written with `setnx`\r\n(no TTL) in `api/controllers/console/datasets/datasets_segments.py`, so it never expires.\r\n\r\n### Environment\r\n\r\n- Dify version: main (self-hosted / from source)\r\n\r\nI'd like to work on this and will open a PR.\r\n",
+        "url": "https://github.com/langgenius/dify/issues/38862"
+    },
+    {
+        "id": 4872191062,
+        "number": 38860,
+        "title": "HTTP node form-data body values are truncated at the first colon after reload",
+        "state": "open",
+        "created_at": "2026-07-13T09:17:27Z",
+        "updated_at": "2026-07-13T09:17:49Z",
+        "closed_at": null,
+        "author": "weijun-xia",
+        "comments": 0,
+        "labels": [
+            "project#dify"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Describe the bug\r\n\r\nWhen an HTTP Request node stores its `form-data` / `x-www-form-urlencoded` body in the\r\nlegacy string format, values that contain a colon are cut off at the first colon when the\r\nnode is loaded. Everything after the first colon is silently dropped and then persisted\r\nback, so the request is later sent with a corrupted value.\r\n\r\n### Steps to reproduce\r\n\r\n1. Create an HTTP Request node and import this cURL command:\r\n   `curl --form \"url=https://example.com:8080/path\" https://api.example.com`\r\n2. Save the workflow and reopen the node.\r\n3. Look at the form-data value for `url`.\r\n\r\n### Expected behavior\r\n\r\n`url` = `https://example.com:8080/path`\r\n\r\n### Actual behavior\r\n\r\n`url` = `https` (everything from the first colon onward is lost)\r\n\r\n### Root cause\r\n\r\n`transformToBodyPayload` in `web/app/components/workflow/nodes/http/utils.ts` destructures\r\n`item.split(':')` into `[key, value]`, keeping only the first segment as the value. The\r\nsibling parser `use-key-value-list.ts` already handles this correctly with\r\n`[key, ...others]` + `others.join(':')`.\r\n\r\n### Environment\r\n\r\n- Dify version: main (self-hosted / from source)\r\n- Browser: any\r\n\r\nI'd like to work on this and will open a PR.\r\n",
+        "url": "https://github.com/langgenius/dify/issues/38860"
+    },
+    {
+        "id": 4872063794,
+        "number": 38859,
+        "title": "dify version 1.15.0 code node execution error",
+        "state": "closed",
+        "created_at": "2026-07-13T09:00:43Z",
+        "updated_at": "2026-07-14T03:28:47Z",
+        "closed_at": "2026-07-14T03:28:47Z",
+        "author": "wjyrun",
+        "comments": 2,
+        "labels": [
+            "bug",
+            "project#dify",
+            "1.15.0"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Self Checks\n\n- [x] I have read the [Contributing Guide](https://github.com/langgenius/dify/blob/main/CONTRIBUTING.md) and [Language Policy](https://github.com/langgenius/dify/issues/1542).\n- [x] This is only for bug report, if you would like to ask a question, please head to [Discussions](https://github.com/langgenius/dify/discussions/categories/general).\n- [x] I have searched for existing issues [search for existing issues](https://github.com/langgenius/dify/issues), including closed ones.\n- [x] I confirm that I am using English to submit this report, otherwise it will be closed.\n- [x] 【中文用户 & Non English User】请使用英语提交，否则会被关闭 ：）\n- [x] Please do not modify this template :) and fill in all the required fields.\n\n### Dify version\n\n1.15.0\n\n### Cloud or Self Hosted\n\nSelf Hosted (Docker)\n\n### Steps to reproduce\n\n@dosubot\n1.upgrade from 1.10.1.fix.1 to 1.15.0\n\n2.create a test workflow contains code\n\n3.already modify the docker/volumes/sandbox/conf/config.yaml\n[root@CQ-HM-TC-64-050 docker]# docker exec -it docker-sandbox-1 ls -la /opt/python/bin/python3\nlrwxrwxrwx 1 root root 10 Apr 23 07:17 /opt/python/bin/python3 -> python3.14\n\n4.code error:\npanic: could not create filter\n\ngoroutine 17 [running, locked to thread]:\nmain.DifySeccomp(...)\n\t/home/runner/work/dify-sandbox/dify-sandbox/cmd/lib/python/main.go:11\nerror: signal: aborted (core dumped)\n\n<img width=\"1660\" height=\"810\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/7b230a17-1b0f-4c14-8d3b-97aa9e27eb39\" />\n\n5.docker compose logs\n\n<img width=\"1683\" height=\"821\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/6a9e9b1c-728f-46fb-bb02-f4f92223a41f\" />\n\n\n\n6.Why are there two Python versions? python 3.14(/opt/python/bin/python3) and python 3.12(logs)\n\n### ✔️ Expected Behavior\n\nFix this bug.\n\n### ❌ Actual Behavior\n\npanic: could not create filter\n\ngoroutine 17 [running, locked to thread]:\nmain.DifySeccomp(...)\n\t/home/runner/work/dify-sandbox/dify-sandbox/cmd/lib/python/main.go:11\nerror: signal: aborted (core dumped)",
+        "url": "https://github.com/langgenius/dify/issues/38859"
+    },
+    {
+        "id": 4871930930,
+        "number": 38857,
+        "title": "Noticed a few patterns in your repo",
+        "state": "open",
+        "created_at": "2026-07-13T08:43:47Z",
+        "updated_at": "2026-07-13T08:44:07Z",
+        "closed_at": null,
+        "author": "joshua-trustabl",
+        "comments": 0,
+        "labels": [
+            "project#dify"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "Was checking out your repo and ran it through Trustabl. A couple of things seemed worth mentioning, the scan found 3 low findings. One pattern was that the Pydantic AI agent lacks structured output validation, and the Pydantic AI tool doesn't have a description. Just thought you'd want to know.\n\n---\nAdd Trustabl to your CI — [trustabl/trustabl-action](https://github.com/trustabl/trustabl-action):\n```yaml\n- name: Trustabl scan\n  uses: trustabl/trustabl-action@v1\n```",
+        "url": "https://github.com/langgenius/dify/issues/38857"
+    },
+    {
+        "id": 4871782227,
+        "number": 38855,
+        "title": "Service API audit: six inconsistencies in error handling and event emission",
+        "state": "open",
+        "created_at": "2026-07-13T08:22:51Z",
+        "updated_at": "2026-07-14T08:06:36Z",
+        "closed_at": null,
+        "author": "RiskeyL",
+        "comments": 2,
+        "labels": [
+            "bug",
+            "project#dify",
+            "1.15.0"
+        ],
+        "assignees": [
+            "githubbzxs"
+        ],
+        "locked": false,
+        "body": "### Self Checks\n\n- [x] I have read the [Contributing Guide](https://github.com/langgenius/dify/blob/main/CONTRIBUTING.md) and [Language Policy](https://github.com/langgenius/dify/issues/1542).\n- [x] This is only for bug report, if you would like to ask a question, please head to [Discussions](https://github.com/langgenius/dify/discussions/categories/general).\n- [x] I have searched for existing issues [search for existing issues](https://github.com/langgenius/dify/issues), including closed ones.\n- [x] I confirm that I am using English to submit this report, otherwise it will be closed.\n- [x] 【中文用户 & Non English User】请使用英语提交，否则会被关闭 ：）\n- [x] Please do not modify this template :) and fill in all the required fields.\n\n### Dify version\n\nmain (`b03385ffb0`); the same behavior was verified on 1.15.0 during the docs team's Service API audit\n\n### Cloud or Self Hosted\n\nCloud, Self Hosted (Docker)\n\n### Steps to reproduce\n\nWhile rewriting the Service API reference, the docs team code-verified every endpoint and found six backend inconsistencies. Each item below lists the trigger, the code location, and expected vs. actual. They are independent; happy to split into separate issues if that helps triage.\n\n**1. Renaming a missing metadata field returns 400 instead of 404**\n\n`PATCH /v1/datasets/{dataset_id}/metadata/{metadata_id}` with a nonexistent `metadata_id`.\n\n`MetadataService.update_metadata_name` raises a bare `ValueError(\"Metadata not found.\")` (`api/services/metadata_service.py`), which the Service API renders as `400 invalid_param`. The same request with a nonexistent `dataset_id` correctly returns `404 not_found`.\n\nExpected: `404 not_found`. Actual: `400 invalid_param` with message `Metadata not found.`\n\n**2. Built-in metadata toggle can report success without doing anything**\n\n`POST /v1/datasets/{dataset_id}/metadata/built-in/{action}` (`DatasetMetadataBuiltInFieldActionServiceApi.post`, `api/controllers/service_api/dataset/metadata.py`). Two facets:\n\n- The `action` parameter is typed `Literal[\"enable\", \"disable\"]`, but the route accepts any string and the `match` has no default case, so e.g. `POST .../built-in/Enable` returns `{\"result\": \"success\"}` having done nothing.\n- `enable_built_in_field` / `disable_built_in_field` (`api/services/metadata_service.py`) wrap their whole body in `except Exception: logger.exception(...)`, so a failed toggle (for example lock contention) also returns success.\n\nExpected: unknown actions rejected with 400; failures surfaced as errors. Actual: `200 {\"result\": \"success\"}` in both cases.\n\n**3. Rate limit surfaces as 500 on completion-messages but 429 on chat-messages**\n\nExhaust the workspace rate limit, then call `POST /v1/completion-messages`.\n\nIn `api/controllers/service_api/app/completion.py`, only `ChatApi.post` catches `InvokeRateLimitError` and maps it to 429; `CompletionApi.post` has no such handler, so the same condition falls through to `500 internal_server_error`.\n\nExpected: `429 rate_limit_error`, consistent with chat. Actual: `500 internal_server_error`.\n\n**4. Oversized upload returns 413 with an empty message**\n\n`POST /v1/files/upload` with a file over the size limit.\n\n`api/services/file_service.py:82` raises `FileTooLargeError` with no arguments, and `BaseServiceError.__init__` defaults `description=\"\"`, so the 413 response body carries `\"message\": \"\"` and clients get no size context.\n\nExpected: a message naming the limit (like the audio endpoints produce). Actual: empty `message`.\n\n**5. Citations & Attributions toggle has no effect for Agent apps**\n\nEnable Citations & Attributions in an Agent app's chat features, run a query that retrieves from knowledge.\n\nThe toggle persists to the app config, but nothing under `api/core/app/apps/agent_app/` emits `QueueRetrieverResourcesEvent` (only the advanced-chat pipeline and the workflow runner do), so `retriever_resources` never appears in `message_end` metadata for Agent apps.\n\nExpected: citations in `message_end` metadata, as for Chatbot and Chatflow. Actual: the toggle is a no-op.\n\n**6. Stream-events path variable is named `task_id` but holds the workflow run ID**\n\n`GET /v1/workflow/{task_id}/events` (`api/controllers/service_api/app/workflow_events.py:60`).\n\nThe handler treats the value as the workflow run ID (`get_workflow_run_by_id_and_tenant_id(run_id=task_id)`). The name collides with the real `task_id` concept used by the stop endpoints, which is a different identifier. Purely a naming issue, but it misleads integrators reading the route; the API docs already describe this parameter as `workflow_run_id`.\n\n### ❌ Actual Behavior\n\nSee the per-item expected vs. actual above.\n",
+        "url": "https://github.com/langgenius/dify/issues/38855"
+    },
+    {
+        "id": 4871547734,
+        "number": 38853,
+        "title": "Workflow retry details are missing from tracing and historical logs",
+        "state": "open",
+        "created_at": "2026-07-13T07:50:13Z",
+        "updated_at": "2026-07-14T02:04:12Z",
+        "closed_at": null,
+        "author": "Blackoutta",
+        "comments": 0,
+        "labels": [
+            "bug",
+            "project#dify",
+            "1.16.0"
+        ],
+        "assignees": [
+            "Blackoutta"
+        ],
+        "locked": false,
+        "body": "### Self Checks\n\n- [x] I have read the [Contributing Guide](https://github.com/langgenius/dify/blob/main/CONTRIBUTING.md) and [Language Policy](https://github.com/langgenius/dify/issues/1542).\n- [x] This is only for bug report, if you would like to ask a question, please head to [Discussions](https://github.com/langgenius/dify/discussions/categories/general).\n- [x] I have searched for existing issues [search for existing issues](https://github.com/langgenius/dify/issues), including closed ones.\n- [x] I confirm that I am using English to submit this report, otherwise it will be closed.\n- [x] 【中文用户 & Non English User】请使用英语提交，否则会被关闭 ：）\n- [x] Please do not modify this template :) and fill in all the required fields.\n\n### Dify version\n\nmain (1.16.0-rc1)\n\n### Cloud or Self Hosted\n\nSelf Hosted (Source)\n\n### Steps to reproduce\n\n1. Configure an HTTP Request workflow node to retry up to three times on failure.\n2. Call an HTTP test server that deterministically returns HTTP 500 for the first two requests and HTTP 200 for the third request.\n3. Run the workflow from a debugging surface and open the node in the **Tracing** tab.\n4. Expand the **2 Retries** entry.\n5. Open the same run from the logs area and inspect its tracing data.\n6. Repeat the check in workflow/chatflow debugging, snippet debugging, and RAG pipeline debugging.\n\n### ✔️ Expected Behavior\n\nThe tracing response preserves both failed attempts as complete retry entries. Expanding **2 Retries** displays the input, process data, output, status, error, timing, and other available execution details for each attempt. The same retry history remains available when the run is opened from logs or any other surface that displays tracing.\n\n### ❌ Actual Behavior\n\nhttps://github.com/user-attachments/assets/1b3dad16-70be-4102-ae95-53976ca13c95\n\nImmediately after a debug run, the UI can show a **2 Retries** trigger but expanding it displays no retry entries. When the same run is opened from historical logs, the retry trigger is absent entirely because retry execution details are not persisted and reconstructed for historical tracing responses.\n",
+        "url": "https://github.com/langgenius/dify/issues/38853"
+    },
+    {
+        "id": 4871531572,
+        "number": 38852,
+        "title": "[dify 1.15.0] Workflow execution is slower in this version than in the previous one.",
+        "state": "open",
+        "created_at": "2026-07-13T07:47:32Z",
+        "updated_at": "2026-07-14T02:04:14Z",
+        "closed_at": null,
+        "author": "usun1997",
+        "comments": 1,
+        "labels": [
+            "bug",
+            "project#dify",
+            "1.15.0"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Self Checks\n\n- [x] I have read the [Contributing Guide](https://github.com/langgenius/dify/blob/main/CONTRIBUTING.md) and [Language Policy](https://github.com/langgenius/dify/issues/1542).\n- [x] This is only for bug report, if you would like to ask a question, please head to [Discussions](https://github.com/langgenius/dify/discussions/categories/general).\n- [x] I have searched for existing issues [search for existing issues](https://github.com/langgenius/dify/issues), including closed ones.\n- [x] I confirm that I am using English to submit this report, otherwise it will be closed.\n- [x] 【中文用户 & Non English User】请使用英语提交，否则会被关闭 ：）\n- [x] Please do not modify this template :) and fill in all the required fields.\n\n### Dify version\n\n1.15.0\n\n### Cloud or Self Hosted\n\nSelf Hosted (Docker)\n\n### Steps to reproduce\n\nuse workflows in version 1.15.0\n\n### ✔️ Expected Behavior\n\nrun fast like before\n\n### ❌ Actual Behavior\n\nThere are two separate performance regressions after the upgrade:\n\n1. **A standalone workflow runs slower.**\n   The total execution time is now the sum of:\n\n   * the execution time of all internal nodes, **plus**\n   * an additional **~10 seconds of unexplained latency**.\n\n   This extra time does not appear in the execution trace of any node, but it is included in the workflow's total execution time.\n\n2. **Calling another workflow via the Tool mechanism is also slower.**\n   Every time one workflow invokes another workflow as a Tool, there is an additional **~6 seconds of unexplained latency** before the called workflow executes. This delay is also not reflected in the node execution times.\n\nBecause these unexplained delays accumulate across multiple workflow calls, the overall performance degradation becomes very significant. A workflow that used to complete in **about 20 seconds** on the previous version now takes **around 50 seconds** on average after upgrading, even though the execution time of the individual nodes remains almost unchanged.\n",
+        "url": "https://github.com/langgenius/dify/issues/38852"
+    },
+    {
+        "id": 4871255927,
+        "number": 38847,
+        "title": "Bug: Variables from upstream Code Node are not resolved when concatenated in the URL field of an HTTP Request Node",
+        "state": "closed",
+        "created_at": "2026-07-13T07:08:34Z",
+        "updated_at": "2026-07-13T07:51:43Z",
+        "closed_at": "2026-07-13T07:51:43Z",
+        "author": "329109444",
+        "comments": 1,
+        "labels": [
+            "bug",
+            "project#dify"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Self Checks\n\n- [x] I have read the [Contributing Guide](https://github.com/langgenius/dify/blob/main/CONTRIBUTING.md) and [Language Policy](https://github.com/langgenius/dify/issues/1542).\n- [x] This is only for bug report, if you would like to ask a question, please head to [Discussions](https://github.com/langgenius/dify/discussions/categories/general).\n- [x] I have searched for existing issues [search for existing issues](https://github.com/langgenius/dify/issues), including closed ones.\n- [x] I confirm that I am using English to submit this report, otherwise it will be closed.\n- [x] 【中文用户 & Non English User】请使用英语提交，否则会被关闭 ：）\n- [x] Please do not modify this template :) and fill in all the required fields.\n\n### Dify version\n\n1.15.0\n\n### Cloud or Self Hosted\n\nSelf Hosted (Docker)\n\n### Steps to reproduce\n\nCreate a workflow and add a Code Execution node. Configure it to output a specific variable (e.g., repo_full_name).\nAdd an HTTP Request node and connect it to the Code Execution node.\nIn the HTTP Request node's URL field, concatenate the upstream variable into the path (e.g., http://example.com/api/v1/repos/{{#code_node.repo_full_name#}}/compare).\nRun the workflow.\n\n### ✔️ Expected Behavior\n\nThe Dify engine should resolve the variable {{#code_node.repo_full_name#}} to its actual value before sending the request. For example, the final URL should be http://example.com/api/v1/repos/user/demo/compare.\n\n### ❌ Actual Behavior\n\nThe variable is not replaced. The system sends the request with the literal template string in the URL.\nObserved in logs: GET http://10.56.200.210:3000/api/v1/repos/%7B%7B#code_node.repo_full_name#}}/compare...\n(%7B%7B is the URL-encoded representation of {{). This causes the external API to return a 404 Not Found error.",
+        "url": "https://github.com/langgenius/dify/issues/38847"
+    },
+    {
+        "id": 4870675725,
+        "number": 38840,
+        "title": "`TypeError: Suspense query must be resolved before reading` thrown repeatedly on cold console login when server-side profile prefetch is skipped",
+        "state": "open",
+        "created_at": "2026-07-13T05:26:42Z",
+        "updated_at": "2026-07-13T07:11:34Z",
+        "closed_at": null,
+        "author": "GareArc",
+        "comments": 0,
+        "labels": [
+            "bug",
+            "project#dify"
+        ],
+        "assignees": [
+            "GareArc"
+        ],
+        "locked": false,
+        "body": "## Self Checks\n\n- [x] This is only for bug report, if you would like to ask a question, please head to [Discussions](https://github.com/langgenius/dify/discussions/categories/general).\n- [x] I have searched for existing issues [search for existing issues](https://github.com/langgenius/dify/issues), including closed ones.\n- [x] I confirm that I am using English to submit this report.\n- [x] Please do not modify this template :) and fill in all the required fields.\n\n## Dify version\n\nmain (any build containing #38572 / `cee88de684`)\n\n## Cloud or Self Hosted\n\nSelf Hosted (Docker)\n\n## Steps to reproduce\n\n1. Deploy web with a **relative** `API_PREFIX` (same-origin console API) and no `SERVER_CONSOLE_API_PREFIX`, so the server-side prefetch in `CommonLayoutHydrationBoundary` is skipped (`resolveServerConsoleApiUrl` returns `null`).\n2. Log in with a fresh session (no warm React Query cache for `console.account.profile.get`). Incognito + throttled network makes it easy to hit.\n3. Load any `(commonLayout)` console route.\n\n## ✔️ Expected Behavior\n\nConsole loads without errors; external-service sync effects (Amplitude / Zendesk) run once the account profile query resolves.\n\n## ❌ Actual Behavior\n\nThe console throws repeatedly until the profile query resolves:\n\n```\nTypeError: Suspense query must be resolved before reading: [[\"console\",\"account\",\"profile\",\"get\"],{\"type\":\"query\"}]\n```\n\nThe stack points at the jotai-effect scheduler (`postMessage` / `unstable_scheduleCallback` frames), not a React render frame. Non-blocking: a page refresh clears it because the query is cached by then.\n\n## Root cause\n\n`web/app/(commonLayout)/external-service-sync.tsx` (mounted in `ConsoleRuntimeProviders`, added in #38570) mounts two `jotai-effect` atoms:\n\n- `web/context/amplitude-identity-sync.ts` — `amplitudeIdentitySyncAtom`\n- `web/context/zendesk-conversation-sync.ts` — `zendeskConversationSyncAtom`\n\nBoth call `get(userProfileAtom)` unguarded. Since #38572, `userProfileAtom` (`web/context/account-state.ts`) reads `accountProfileQueryAtom`, which is built with `atomWithResolvedSuspenseQuery` (`web/utils/query-atoms.ts`). That helper intentionally throws when the underlying suspense query is still pending:\n\n```ts\nif (result instanceof Promise) {\n  throw new TypeError(\n    `Suspense query must be resolved before reading: ${JSON.stringify(getOptions(get).queryKey)}`,\n  )\n}\n```\n\n`atomEffect` callbacks run in jotai-effect's own scheduler, outside React's render/commit cycle, so there is no Suspense boundary to absorb the pending state. The \"already resolved\" invariant the helper relies on is normally guaranteed by the server-side `fetchQuery(serverUserProfileQueryOptions())` in `web/app/(commonLayout)/hydration-boundary.tsx` — but that prefetch is skipped entirely when `resolveServerConsoleApiUrl` cannot resolve an absolute console API URL (relative `API_PREFIX`, no `SERVER_CONSOLE_API_PREFIX`), which is a common self-hosted/Docker configuration. The client then fetches cold, the effect fires while the query is pending, and the helper throws. The effect re-evaluates on every query state change, so the error repeats until the query resolves.\n\n## Suggested fix\n\nDon't let a `jotai-effect` read a resolved-suspense-only atom. Give the two sync effects a non-suspense read path (e.g. a plain `atomWithQuery`-backed atom exposing `{ data, isPending }`) and bail out early while pending / no profile id. Gating the `ExternalServiceSync` mount behind a Suspense boundary is not sufficient, because the effect scheduler runs outside the render/catch cycle and the cold-cache case has nothing resolved at mount time anyway.\n\nFiles:\n\n- `web/context/account-state.ts`\n- `web/utils/query-atoms.ts`\n- `web/context/amplitude-identity-sync.ts`\n- `web/context/zendesk-conversation-sync.ts`\n- `web/app/(commonLayout)/external-service-sync.tsx`\n- `web/app/(commonLayout)/hydration-boundary.tsx`\n",
+        "url": "https://github.com/langgenius/dify/issues/38840"
+    },
+    {
+        "id": 4870446521,
+        "number": 38837,
+        "title": "Improve workflow generator accessibility and API contracts",
+        "state": "closed",
+        "created_at": "2026-07-13T04:37:39Z",
+        "updated_at": "2026-07-13T06:54:00Z",
+        "closed_at": "2026-07-13T06:54:00Z",
+        "author": "crazywoola",
+        "comments": 0,
+        "labels": [
+            "project#dify",
+            "enhancement"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Self Checks\n\n- [x] I have read the [Contributing Guide](https://github.com/langgenius/dify/blob/main/CONTRIBUTING.md) and [Language Policy](https://github.com/langgenius/dify/issues/1542).\n- [x] I have searched for existing issues [search for existing issues](https://github.com/langgenius/dify/issues), including closed ones.\n- [x] I confirm that I am using English to submit this report, otherwise it will be closed.\n- [x] Please do not modify this template :) and fill in all the required fields.\n\n### 1. Is this request related to a challenge you're experiencing? Tell me about your story.\n\nThe Cmd+K workflow generator introduced by #32130 now supports `/create`, `/refine`, plan-first streaming, generated suggestions, and applying a generated graph. Two parts of the experience still make the feature harder to maintain and less reliable for users:\n\n1. The generator dialog is missing complete dialog/form/status semantics, has several controls without the standard visible focus treatment, retains a few hardcoded user-facing fallbacks, and uses a fixed desktop width that can overflow narrower viewports.\n2. The backend documents workflow-generation responses as `unknown` through `GeneratorResponse(RootModel[Any])`. The frontend consequently maintains handwritten request/response and error-code mirrors instead of consuming an authoritative generated contract.\n\nThis creates accessibility gaps, incomplete localization guarantees, duplicated types, and weak compile-time protection when the generator response changes.\n\n### 2. Additional context or comments\n\nProposed implementation is intentionally split into two reviewable PRs.\n\n#### PR1 — Generator accessibility, responsive layout, and localization\n\n- Give the generator dialog an accessible title and description.\n- Associate the instruction label with its textarea.\n- Announce planning/building and other blocking asynchronous states with appropriate busy/status semantics.\n- Add standard visible focus treatment to native suggestion controls and mark decorative/loading icons appropriately.\n- Replace remaining user-visible hardcoded generator strings with localized resources across all supported locales.\n- Let the two-pane dialog fit narrower viewports without changing the normal desktop presentation.\n- Add focused React Testing Library coverage for dialog naming, field labeling, keyboard interaction, and async status semantics.\n\nAcceptance criteria:\n\n- The generator dialog can be discovered by role and accessible name.\n- The instruction textarea can be discovered by its label.\n- Keyboard focus is visible on every native interactive element in the touched surface.\n- Planning/building updates are announced without exposing decorative icons.\n- No new or existing user-visible generator fallback in scope remains hardcoded.\n- Generator keys pass the repository i18n check for every supported locale.\n- Focused frontend tests pass.\n\n#### PR2 — Authoritative workflow-generator API contract\n\n- Replace `GeneratorResponse(RootModel[Any])` with explicit Pydantic response models for graph nodes/edges/viewport, structured errors, plan events, suggestions, and final generation results.\n- Validate and serialize endpoint responses through the registered response schemas.\n- Regenerate the console OpenAPI/oRPC contract.\n- Consume generated request/response types in the frontend.\n- Use `consoleClient` / `consoleQuery` for non-streaming generation and suggestions; retain a narrow SSE adapter only for event framing.\n- Remove parallel handwritten response and error-code definitions once generated types cover them.\n- Add controller/schema tests proving the generated response shapes and frontend tests for the migrated clients.\n\nAcceptance criteria:\n\n- Workflow generator OpenAPI responses are concrete and contain no `unknown` root response.\n- Blocking generation, suggestions, and SSE event payloads share the same typed result/plan models.\n- The frontend does not redeclare the backend generator response or error-code union.\n- Generated contract artifacts are produced by the repository generator, not edited manually.\n- Focused backend tests, Swagger tests, frontend tests, and type checks pass.\n\nRelevant code:\n\n- `api/controllers/console/app/generator.py`\n- `api/core/workflow/generator/types.py`\n- `web/app/components/workflow/workflow-generator/`\n- `web/service/debug.ts`\n- `packages/contracts/generated/api/console/workflow-generate/`\n\nFollow-up security hardening for refine graph size limits, redaction, and server-side patch application should remain a separate enhancement so these two PRs stay focused.\n\n### 3. Can you help us with this feature?\n\n- [x] I am interested in contributing to this feature.",
+        "url": "https://github.com/langgenius/dify/issues/38837"
+    },
+    {
+        "id": 4870248909,
+        "number": 38835,
+        "title": "Improve workflow generator accessibility and API contracts",
+        "state": "closed",
+        "created_at": "2026-07-13T03:59:30Z",
+        "updated_at": "2026-07-13T09:31:09Z",
+        "closed_at": "2026-07-13T09:31:09Z",
+        "author": "crazywoola",
+        "comments": 0,
+        "labels": [
+            "💪 enhancement",
+            "project#dify"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Self Checks\n\n- [x] I have read the [Contributing Guide](https://github.com/langgenius/dify/blob/main/CONTRIBUTING.md) and [Language Policy](https://github.com/langgenius/dify/issues/1542).\n- [x] I have searched for existing issues [search for existing issues](https://github.com/langgenius/dify/issues), including closed ones.\n- [x] I confirm that I am using English to submit this report, otherwise it will be closed.\n- [x] Please do not modify this template :) and fill in all the required fields.\n\n### 1. Is this request related to a challenge you're experiencing? Tell me about your story.\n\nThe Cmd+K workflow generator introduced by #32130 now supports `/create`, `/refine`, plan-first streaming, generated suggestions, and applying a generated graph. Two parts of the experience still make the feature harder to maintain and less reliable for users:\n\n1. The generator dialog is missing complete dialog/form/status semantics, has several controls without the standard visible focus treatment, retains a few hardcoded user-facing fallbacks, and uses a fixed desktop width that can overflow narrower viewports.\n2. The backend documents workflow-generation responses as `unknown` through `GeneratorResponse(RootModel[Any])`. The frontend consequently maintains handwritten request/response and error-code mirrors instead of consuming an authoritative generated contract.\n\nThis creates accessibility gaps, incomplete localization guarantees, duplicated types, and weak compile-time protection when the generator response changes.\n\n### 2. Additional context or comments\n\nProposed implementation is intentionally split into two reviewable PRs.\n\n#### PR1 — Generator accessibility, responsive layout, and localization\n\n- Give the generator dialog an accessible title and description.\n- Associate the instruction label with its textarea.\n- Announce planning/building and other blocking asynchronous states with appropriate busy/status semantics.\n- Add standard visible focus treatment to native suggestion controls and mark decorative/loading icons appropriately.\n- Replace remaining user-visible hardcoded generator strings with localized resources across all supported locales.\n- Let the two-pane dialog fit narrower viewports without changing the normal desktop presentation.\n- Add focused React Testing Library coverage for dialog naming, field labeling, keyboard interaction, and async status semantics.\n\nAcceptance criteria:\n\n- The generator dialog can be discovered by role and accessible name.\n- The instruction textarea can be discovered by its label.\n- Keyboard focus is visible on every native interactive element in the touched surface.\n- Planning/building updates are announced without exposing decorative icons.\n- No new or existing user-visible generator fallback in scope remains hardcoded.\n- Generator keys pass the repository i18n check for every supported locale.\n- Focused frontend tests pass.\n\n#### PR2 — Authoritative workflow-generator API contract\n\n- Replace `GeneratorResponse(RootModel[Any])` with explicit Pydantic response models for graph nodes/edges/viewport, structured errors, plan events, suggestions, and final generation results.\n- Validate and serialize endpoint responses through the registered response schemas.\n- Regenerate the console OpenAPI/oRPC contract.\n- Consume generated request/response types in the frontend.\n- Use `consoleClient` / `consoleQuery` for non-streaming generation and suggestions; retain a narrow SSE adapter only for event framing.\n- Remove parallel handwritten response and error-code definitions once generated types cover them.\n- Add controller/schema tests proving the generated response shapes and frontend tests for the migrated clients.\n\nAcceptance criteria:\n\n- Workflow generator OpenAPI responses are concrete and contain no `unknown` root response.\n- Blocking generation, suggestions, and SSE event payloads share the same typed result/plan models.\n- The frontend does not redeclare the backend generator response or error-code union.\n- Generated contract artifacts are produced by the repository generator, not edited manually.\n- Focused backend tests, Swagger tests, frontend tests, and type checks pass.\n\nRelevant code:\n\n- `api/controllers/console/app/generator.py`\n- `api/core/workflow/generator/types.py`\n- `web/app/components/workflow/workflow-generator/`\n- `web/service/debug.ts`\n- `packages/contracts/generated/api/console/workflow-generate/`\n\nFollow-up security hardening for refine graph size limits, redaction, and server-side patch application should remain a separate enhancement so these two PRs stay focused.\n\n### 3. Can you help us with this feature?\n\n- [x] I am interested in contributing to this feature.\n",
+        "url": "https://github.com/langgenius/dify/issues/38835"
+    },
+    {
+        "id": 4870181888,
+        "number": 38833,
+        "title": "[Refactor/Chore] Migrate frontend linting to Vite+ with an ESLint fallback",
+        "state": "closed",
+        "created_at": "2026-07-13T03:44:28Z",
+        "updated_at": "2026-07-13T06:58:12Z",
+        "closed_at": "2026-07-13T06:58:12Z",
+        "author": "hyoban",
+        "comments": 0,
+        "labels": [
+            "project#dify"
+        ],
+        "assignees": [
+            "hyoban"
+        ],
+        "locked": false,
+        "body": "### Self Checks\n\n- [x] I have read the [Contributing Guide](https://github.com/langgenius/dify/blob/main/CONTRIBUTING.md) and [Language Policy](https://github.com/langgenius/dify/issues/1542).\n- [x] This is only for refactors or chores; if you would like to ask a question, please head to [Discussions](https://github.com/langgenius/dify/discussions/categories/general).\n- [x] I have searched for existing issues [search for existing issues](https://github.com/langgenius/dify/issues), including closed ones.\n- [x] I confirm that I am using English to submit this report, otherwise it will be closed.\n- [x] 【中文用户 & Non English User】请使用英语提交，否则会被关闭 ：）\n- [x] Please do not modify this template :) and fill in all the required fields.\n\n### Description\n\nMigrate the frontend lint workflow from ESLint-first checks to Vite+ linting backed by Oxlint, while retaining ESLint only for non-code languages that Oxlint cannot parse.\n\nThe migration should:\n\n- make `vp lint` the JavaScript and TypeScript linter;\n- translate only the rules that are actually enabled in the repository's current ESLint configurations;\n- prefer native Oxlint rules, then compatible Oxlint JavaScript plugins;\n- limit executable ESLint configuration to JSON, JSONC, JSON5, YAML, TOML, and Markdown;\n- record unsupported code-only behavior as accepted migration tradeoffs instead of keeping an ESLint code path;\n- avoid depending on `@antfu/eslint-config`;\n- preserve existing diagnostics through separate Oxlint and ESLint suppression baselines;\n- integrate the two paths with package scripts, staged fixes, CI, editor settings, and contributor documentation;\n- keep `packages/contracts/**` lint-ignored and format-only.\n\nThe accepted code-only gaps include six core fallback rules, JavaScript `dot-notation`, the former 223-rule declaration snapshot, the CLI declaration import restriction, and three Dify UI Tailwind rules.\n\n### Motivation\n\nThe existing ESLint-first workflow is slower and carries a large preset-driven configuration surface. Vite+ provides a faster integrated lint and formatting workflow, while ESLint remains useful for structured data and Markdown languages that Oxlint does not parse.\n\nKeeping ESLint away from code files makes the ownership boundary explicit: Oxlint handles code, ESLint handles non-code languages, and unsupported code checks are documented rather than silently retained as a second code linter.\n\n### Additional Context\n\nRelated prior discussions:\n\n- #22583 proposed trying Oxlint for ESLint performance.\n- #29223 proposed running Oxlint before ESLint.\n- #29903 discussed broader lint setup maintenance.\n\nThis issue scopes the concrete Vite+ migration and the minimal non-code ESLint compatibility layer.\n",
+        "url": "https://github.com/langgenius/dify/issues/38833"
+    }
+]

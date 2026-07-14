@@ -1,0 +1,130 @@
+[
+    {
+        "sha": "b62d3c6e725ca2ac2224e710b3cee765dbc35e45",
+        "author": "Matt Evans",
+        "email": "matt@ozlabs.org",
+        "date": "2025-01-01T16:21:47Z",
+        "message": "Bump external/Musashi\n\nFixes some pesky build warnings, mostly cosmetic.",
+        "url": "https://github.com/evansm7/umac/commit/b62d3c6e725ca2ac2224e710b3cee765dbc35e45"
+    },
+    {
+        "sha": "606f7f75fee8525d4735a0771bf521007115285e",
+        "author": "Matt Evans",
+        "email": "matt@ozlabs.org",
+        "date": "2024-12-16T22:52:49Z",
+        "message": "README: updates for screen resolution configuration\n\nBump to v0.22",
+        "url": "https://github.com/evansm7/umac/commit/606f7f75fee8525d4735a0771bf521007115285e"
+    },
+    {
+        "sha": "59109b5f6a9da6d912dfca1ef15ee7abcf89c420",
+        "author": "Matt Evans",
+        "email": "matt@ozlabs.org",
+        "date": "2024-12-14T17:54:10Z",
+        "message": "mem2scr: Make resolution-agnostic by reading OS X/Y resolution\n\nThis tool can now take screenshots of non-standard screen resolution builds by\nreading the screen res from OS variables.",
+        "url": "https://github.com/evansm7/umac/commit/59109b5f6a9da6d912dfca1ef15ee7abcf89c420"
+    },
+    {
+        "sha": "a9be35c7b3606b2d28b41e8c24c703da952e7726",
+        "author": "Matt Evans",
+        "email": "matt@ozlabs.org",
+        "date": "2024-07-15T21:03:09Z",
+        "message": "rom: Support variable screen res in MacPlusV3 ROM\n\nThis change adds a boatload of ROM patches to alter screen base, resolution,\nwords-per-line, and related variables so that MacOS will function correctly\nwith a framebuffer other than 512x342 (which remains the default).\n\nThe majority of the patches are actually to make ROM-drawn low-level things\n(such as disc icons, happy/sad Mac icons/crash hexadecimal info) render\nright and be positioned correctly.\n\nThis works up to about 800x600; the limiting factor is patching int16\nimmediates for certain instructions, meaning a ~64KB framebuffer size\nis the current limit without more work.\n\nThe Makefile can now take DISP_WIDTH/DISP_HEIGHT parameters to configure\na build.  There is no support for dynamic switching, or runtime-selected\nswitching.",
+        "url": "https://github.com/evansm7/umac/commit/a9be35c7b3606b2d28b41e8c24c703da952e7726"
+    },
+    {
+        "sha": "183a1472bbabbaad3de00615387f94f525a5030e",
+        "author": "Matt Evans",
+        "email": "matt@ozlabs.org",
+        "date": "2024-12-01T22:58:08Z",
+        "message": "umac.h: Calculate screen base based on resolution defines, remove hardwiring",
+        "url": "https://github.com/evansm7/umac/commit/183a1472bbabbaad3de00615387f94f525a5030e"
+    },
+    {
+        "sha": "9b3dd31d564a5273cde01581862155fd76c148a9",
+        "author": "Matt Evans",
+        "email": "matt@ozlabs.org",
+        "date": "2024-12-01T22:55:01Z",
+        "message": "unix_main: Remove hardcoded X display resolution",
+        "url": "https://github.com/evansm7/umac/commit/9b3dd31d564a5273cde01581862155fd76c148a9"
+    },
+    {
+        "sha": "83ca8a1cfef37de74bb85fb4dead5df25de6f7fc",
+        "author": "Matt Evans",
+        "email": "matt@ozlabs.org",
+        "date": "2024-12-16T23:03:40Z",
+        "message": "Clean up compilation warnings\n\nVarious functions dropped a void declaration (lazy), which is added.\nRemoved an unused variable in unix_main.",
+        "url": "https://github.com/evansm7/umac/commit/83ca8a1cfef37de74bb85fb4dead5df25de6f7fc"
+    },
+    {
+        "sha": "5d23667c8ef4534a5307fcf6c39c172484e50e30",
+        "author": "Matt Evans",
+        "email": "matt@ozlabs.org",
+        "date": "2024-08-27T00:05:09Z",
+        "message": "Update README with info on memory configs\n\nBumps to v0.21",
+        "url": "https://github.com/evansm7/umac/commit/5d23667c8ef4534a5307fcf6c39c172484e50e30"
+    },
+    {
+        "sha": "954636e9db670ea4a813fbf603f31d99c855063c",
+        "author": "Matt Evans",
+        "email": "matt@ozlabs.org",
+        "date": "2024-07-01T21:54:58Z",
+        "message": "Support 'strange' memory sizes, such as 256K, 192K\n\nAdditional ROM patches manually set the memTop variable to a given\nmemory size, and the memory test routine is skipped.  This allows\nthe Plus ROM to cope with a Mac 256K configuration, but also non-\npower-of-two sizes.  That's useful for an MCU, making a Mac 208K,\nMac 192K, etc. possible.\n\nMemory addresses are clamped such that wrapping within the RAM\nregion works, and any emulated address can be used without\noverflowing the host RAM allocation.  For a power-of-two memory\nsize this boils down (after compiler optimisation) to a plain\ntmask; for non-Po2, this involves a divide/mod in the weird ROM\nprobing \"off the end\" cases, and a simple compare in all other\nruntime cases (so shouldn't be too slow).",
+        "url": "https://github.com/evansm7/umac/commit/954636e9db670ea4a813fbf603f31d99c855063c"
+    },
+    {
+        "sha": "1ada25b956f6ea3eb706bd065a8758cd0916377a",
+        "author": "Matt Evans",
+        "email": "matt@ozlabs.org",
+        "date": "2024-08-18T16:43:57Z",
+        "message": "README: bump version/date",
+        "url": "https://github.com/evansm7/umac/commit/1ada25b956f6ea3eb706bd065a8758cd0916377a"
+    },
+    {
+        "sha": "854e89e162545f2c6b01eab947cd6d13deb3d274",
+        "author": "Matt Evans",
+        "email": "matt@ozlabs.org",
+        "date": "2024-08-18T16:39:03Z",
+        "message": "Add disc read/write callbacks\n\nInstead of relying on the disc data being directly mapped, and\naccessing blocks by memcpy'ing from it, provide op_read/op_write\ncallbacks so that the host can do disc ops itself (e.g. access SD).\n\nThe disc_descr_t describes the callbacks (and an opaque pointer\npassed as an argument when they are invoked), per-disc.",
+        "url": "https://github.com/evansm7/umac/commit/854e89e162545f2c6b01eab947cd6d13deb3d274"
+    },
+    {
+        "sha": "f0ff05081cd57e89d8b796aab2b7b1663bb1d7fb",
+        "author": "Matt Evans",
+        "email": "matt@ozlabs.org",
+        "date": "2024-08-18T16:28:46Z",
+        "message": "Add MEMSIZE build-time parameter to set memory size\n\nBy default, this is 128 (for 128KB).  Usable values are 128, 512,\n1024, 2048, 4096.",
+        "url": "https://github.com/evansm7/umac/commit/f0ff05081cd57e89d8b796aab2b7b1663bb1d7fb"
+    },
+    {
+        "sha": "5449bb9697615d2d9240fde7b419a182575baf96",
+        "author": "Matt Evans",
+        "email": "matt@ozlabs.org",
+        "date": "2024-08-10T18:55:41Z",
+        "message": "scc: Improve RR0 status bits\n\n...slightly.  This shows the sync/hunt status, and TxUnderrun, which\nare expected by system 7's startup.  (It enables SDLC mode and probes\nstuff.)\n\nWith this (and increasing memory, e.g. 4MB), umac boots 7.5.5 :)",
+        "url": "https://github.com/evansm7/umac/commit/5449bb9697615d2d9240fde7b419a182575baf96"
+    },
+    {
+        "sha": "fda1246f63aa584b490d7e5c9fe607f345234348",
+        "author": "Matt Evans",
+        "email": "matt@ozlabs.org",
+        "date": "2024-07-15T22:40:52Z",
+        "message": "Update README",
+        "url": "https://github.com/evansm7/umac/commit/fda1246f63aa584b490d7e5c9fe607f345234348"
+    },
+    {
+        "sha": "1ce7c5bc91518181b15f8880eb2d1516f60cea29",
+        "author": "Matt Evans",
+        "email": "matt@ozlabs.org",
+        "date": "2024-07-15T22:10:19Z",
+        "message": "discs: Add write support\n\nThe unix_main gets another option, -w, that enables the disc\nmapping to reflect writes back to the backing file.\n\nThe disc emulation code now handles writes, which are copied\nback to the disc data.\n\nThis still doesn't abstract read/write ops to disc, which will\nbe the next step (to support, for example, block-based storage).",
+        "url": "https://github.com/evansm7/umac/commit/1ce7c5bc91518181b15f8880eb2d1516f60cea29"
+    },
+    {
+        "sha": "563626a38273656ff08d13a4799fa5d1028b215d",
+        "author": "Matt Evans",
+        "email": "matt@ozlabs.org",
+        "date": "2024-03-31T01:29:28Z",
+        "message": "First public release\n\nSquashed for release at v0.1",
+        "url": "https://github.com/evansm7/umac/commit/563626a38273656ff08d13a4799fa5d1028b215d"
+    }
+]

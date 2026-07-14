@@ -1,0 +1,392 @@
+[
+    {
+        "id": 4101180770,
+        "number": 243,
+        "title": "Bank systems",
+        "state": "closed",
+        "created_at": "2026-03-19T11:52:58Z",
+        "updated_at": "2026-03-19T13:48:59Z",
+        "closed_at": "2026-03-19T13:48:59Z",
+        "author": "whynotlivewithoutlimits-web",
+        "comments": 0,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": null,
+        "url": "https://github.com/banksystembg/BankSystem/issues/243"
+    },
+    {
+        "id": 2155217868,
+        "number": 234,
+        "title": "Observation on Banking-System : It Cannot Register New User from Registration Interface/Page",
+        "state": "closed",
+        "created_at": "2024-02-26T21:46:35Z",
+        "updated_at": "2024-05-02T10:46:42Z",
+        "closed_at": "2024-05-02T10:46:42Z",
+        "author": "eteimopius",
+        "comments": 3,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "I would like to thank the Author of the Banking System for the wonderful and highly educative work done on the project.\r\n\r\nHowever, I observed that one is unable to register a new user into the database \"AspNetUser Table' using the Register.html interface/page. The system successfully login with the initial seeded data but one cannot register a new user into the database.\r\n\r\nThus, Recaptcha Secret keys were added to the AppSettings Json file, and ConfirmEmail was also disabled on  StartUp.cs file but it could not resolve the inability to register a new user.\r\n\r\nIt would be appreciated if you could give further steps one could explore in resolving the problem.\r\n\r\nThanks immensely\r\n\r\n",
+        "url": "https://github.com/banksystembg/BankSystem/issues/234"
+    },
+    {
+        "id": 933636930,
+        "number": 230,
+        "title": "Transaction boundary issue in InternalController.Create()",
+        "state": "open",
+        "created_at": "2021-06-30T12:07:27Z",
+        "updated_at": "2021-08-08T12:59:05Z",
+        "closed_at": null,
+        "author": "ayende",
+        "comments": 3,
+        "labels": [
+            "High priority"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "See here:\r\n\r\nhttps://github.com/banksystembg/BankSystem/blob/master/src/Web/BankSystem.Web/Areas/MoneyTransfers/Controllers/InternalController.cs#L97-L127\r\n\r\nYou have two calls to `CreateMoneyTransferAsync()`, one to withdraw the money and the other to deposit it. \r\nHowever, they are done as two separate database transactions, which means that you have the option of partial transaction.",
+        "url": "https://github.com/banksystembg/BankSystem/issues/230"
+    },
+    {
+        "id": 821422521,
+        "number": 229,
+        "title": "Add central api unit tests result in github actions workflow",
+        "state": "open",
+        "created_at": "2021-03-03T19:37:45Z",
+        "updated_at": "2021-03-03T19:37:45Z",
+        "closed_at": null,
+        "author": "melikpehlivanov",
+        "comments": 0,
+        "labels": [
+            "enhancement"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "",
+        "url": "https://github.com/banksystembg/BankSystem/issues/229"
+    },
+    {
+        "id": 614567349,
+        "number": 220,
+        "title": "Optimize ef performance by adding AsNoTracking in services where appropriate",
+        "state": "closed",
+        "created_at": "2020-05-08T07:38:16Z",
+        "updated_at": "2020-05-08T08:01:28Z",
+        "closed_at": "2020-05-08T08:01:28Z",
+        "author": "melikpehlivanov",
+        "comments": 0,
+        "labels": [
+            "enhancement"
+        ],
+        "assignees": [
+            "melikpehlivanov"
+        ],
+        "locked": false,
+        "body": "",
+        "url": "https://github.com/banksystembg/BankSystem/issues/220"
+    },
+    {
+        "id": 470653324,
+        "number": 218,
+        "title": "Optimize pagination",
+        "state": "closed",
+        "created_at": "2019-07-20T09:00:52Z",
+        "updated_at": "2019-07-20T13:13:40Z",
+        "closed_at": "2019-07-20T13:13:40Z",
+        "author": "melikpehlivanov",
+        "comments": 0,
+        "labels": [
+            "enhancement"
+        ],
+        "assignees": [
+            "melikpehlivanov"
+        ],
+        "locked": false,
+        "body": "Currently we're taking all records from db and then we're slicing it into parts which is not good for the performance",
+        "url": "https://github.com/banksystembg/BankSystem/issues/218"
+    },
+    {
+        "id": 432997269,
+        "number": 213,
+        "title": "Password field only accepts alphanumeric passwords",
+        "state": "closed",
+        "created_at": "2019-04-14T16:07:21Z",
+        "updated_at": "2019-04-14T17:24:54Z",
+        "closed_at": "2019-04-14T17:24:54Z",
+        "author": "martinmladenov",
+        "comments": 0,
+        "labels": [
+            "bug",
+            "High priority"
+        ],
+        "assignees": [
+            "martinmladenov"
+        ],
+        "locked": false,
+        "body": "",
+        "url": "https://github.com/banksystembg/BankSystem/issues/213"
+    },
+    {
+        "id": 432996313,
+        "number": 211,
+        "title": "Two-factor authentication key is null after entering an incorrect password",
+        "state": "closed",
+        "created_at": "2019-04-14T16:00:01Z",
+        "updated_at": "2019-04-14T16:08:35Z",
+        "closed_at": "2019-04-14T16:08:35Z",
+        "author": "martinmladenov",
+        "comments": 0,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [
+            "martinmladenov"
+        ],
+        "locked": false,
+        "body": "",
+        "url": "https://github.com/banksystembg/BankSystem/issues/211"
+    },
+    {
+        "id": 432979926,
+        "number": 209,
+        "title": "Remove unused ShortName column in CentralApi database",
+        "state": "closed",
+        "created_at": "2019-04-14T13:53:37Z",
+        "updated_at": "2019-04-14T14:12:14Z",
+        "closed_at": "2019-04-14T14:12:14Z",
+        "author": "martinmladenov",
+        "comments": 0,
+        "labels": [
+            "enhancement"
+        ],
+        "assignees": [
+            "martinmladenov"
+        ],
+        "locked": false,
+        "body": "",
+        "url": "https://github.com/banksystembg/BankSystem/issues/209"
+    },
+    {
+        "id": 432582345,
+        "number": 205,
+        "title": "Add unit tests for BankAccountUniqueHelper",
+        "state": "closed",
+        "created_at": "2019-04-12T14:02:36Z",
+        "updated_at": "2019-04-12T15:19:34Z",
+        "closed_at": "2019-04-12T15:19:34Z",
+        "author": "melikpehlivanov",
+        "comments": 0,
+        "labels": [
+            "enhancement"
+        ],
+        "assignees": [
+            "melikpehlivanov"
+        ],
+        "locked": false,
+        "body": "",
+        "url": "https://github.com/banksystembg/BankSystem/issues/205"
+    },
+    {
+        "id": 432578829,
+        "number": 204,
+        "title": "Improve messages",
+        "state": "closed",
+        "created_at": "2019-04-12T13:54:56Z",
+        "updated_at": "2019-04-12T15:23:22Z",
+        "closed_at": "2019-04-12T15:23:22Z",
+        "author": "martinmladenov",
+        "comments": 0,
+        "labels": [
+            "enhancement"
+        ],
+        "assignees": [
+            "martinmladenov"
+        ],
+        "locked": false,
+        "body": "",
+        "url": "https://github.com/banksystembg/BankSystem/issues/204"
+    },
+    {
+        "id": 432553922,
+        "number": 202,
+        "title": "Extend admin functionality and add reference number for money transfers",
+        "state": "closed",
+        "created_at": "2019-04-12T12:59:17Z",
+        "updated_at": "2019-04-12T13:31:01Z",
+        "closed_at": "2019-04-12T13:31:01Z",
+        "author": "melikpehlivanov",
+        "comments": 0,
+        "labels": [
+            "enhancement"
+        ],
+        "assignees": [
+            "melikpehlivanov"
+        ],
+        "locked": false,
+        "body": "",
+        "url": "https://github.com/banksystembg/BankSystem/issues/202"
+    },
+    {
+        "id": 431449051,
+        "number": 197,
+        "title": "Prevent replay attacks",
+        "state": "closed",
+        "created_at": "2019-04-10T11:24:21Z",
+        "updated_at": "2019-04-10T16:31:14Z",
+        "closed_at": "2019-04-10T16:31:14Z",
+        "author": "martinmladenov",
+        "comments": 0,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [
+            "martinmladenov"
+        ],
+        "locked": false,
+        "body": "",
+        "url": "https://github.com/banksystembg/BankSystem/issues/197"
+    },
+    {
+        "id": 430973954,
+        "number": 195,
+        "title": "Add loading screen while transferring money",
+        "state": "closed",
+        "created_at": "2019-04-09T13:40:01Z",
+        "updated_at": "2019-04-09T13:41:33Z",
+        "closed_at": "2019-04-09T13:41:33Z",
+        "author": "melikpehlivanov",
+        "comments": 0,
+        "labels": [
+            "enhancement"
+        ],
+        "assignees": [
+            "melikpehlivanov"
+        ],
+        "locked": false,
+        "body": "",
+        "url": "https://github.com/banksystembg/BankSystem/issues/195"
+    },
+    {
+        "id": 430572959,
+        "number": 193,
+        "title": "Cleanup code",
+        "state": "closed",
+        "created_at": "2019-04-08T17:34:32Z",
+        "updated_at": "2019-04-08T18:30:45Z",
+        "closed_at": "2019-04-08T18:30:45Z",
+        "author": "melikpehlivanov",
+        "comments": 0,
+        "labels": [
+            "enhancement"
+        ],
+        "assignees": [
+            "melikpehlivanov"
+        ],
+        "locked": false,
+        "body": "",
+        "url": "https://github.com/banksystembg/BankSystem/issues/193"
+    },
+    {
+        "id": 430535634,
+        "number": 191,
+        "title": "Make transfer type selection page responsive",
+        "state": "closed",
+        "created_at": "2019-04-08T16:07:19Z",
+        "updated_at": "2019-04-08T16:35:26Z",
+        "closed_at": "2019-04-08T16:35:26Z",
+        "author": "martinmladenov",
+        "comments": 0,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [
+            "martinmladenov"
+        ],
+        "locked": false,
+        "body": "",
+        "url": "https://github.com/banksystembg/BankSystem/issues/191"
+    },
+    {
+        "id": 430416242,
+        "number": 189,
+        "title": "Add DataTables and make tables responsive",
+        "state": "closed",
+        "created_at": "2019-04-08T12:13:30Z",
+        "updated_at": "2019-04-08T13:55:00Z",
+        "closed_at": "2019-04-08T13:55:00Z",
+        "author": "martinmladenov",
+        "comments": 0,
+        "labels": [
+            "enhancement"
+        ],
+        "assignees": [
+            "martinmladenov"
+        ],
+        "locked": false,
+        "body": "",
+        "url": "https://github.com/banksystembg/BankSystem/issues/189"
+    },
+    {
+        "id": 430163811,
+        "number": 187,
+        "title": "Allow purchase confirmation form resubmission after error",
+        "state": "closed",
+        "created_at": "2019-04-07T16:19:32Z",
+        "updated_at": "2019-04-07T16:20:56Z",
+        "closed_at": "2019-04-07T16:20:56Z",
+        "author": "martinmladenov",
+        "comments": 0,
+        "labels": [
+            "enhancement"
+        ],
+        "assignees": [
+            "martinmladenov"
+        ],
+        "locked": false,
+        "body": "",
+        "url": "https://github.com/banksystembg/BankSystem/issues/187"
+    },
+    {
+        "id": 429773166,
+        "number": 185,
+        "title": "Improve purchase redirect page",
+        "state": "closed",
+        "created_at": "2019-04-05T14:06:10Z",
+        "updated_at": "2019-04-07T16:01:47Z",
+        "closed_at": "2019-04-07T16:01:47Z",
+        "author": "martinmladenov",
+        "comments": 0,
+        "labels": [
+            "enhancement"
+        ],
+        "assignees": [
+            "martinmladenov"
+        ],
+        "locked": false,
+        "body": "",
+        "url": "https://github.com/banksystembg/BankSystem/issues/185"
+    },
+    {
+        "id": 429641715,
+        "number": 182,
+        "title": "Internal transfers display the recipient the same as the sender",
+        "state": "closed",
+        "created_at": "2019-04-05T08:34:14Z",
+        "updated_at": "2019-04-05T08:43:27Z",
+        "closed_at": "2019-04-05T08:41:54Z",
+        "author": "melikpehlivanov",
+        "comments": 0,
+        "labels": [
+            "bug",
+            "High priority"
+        ],
+        "assignees": [
+            "melikpehlivanov"
+        ],
+        "locked": false,
+        "body": "",
+        "url": "https://github.com/banksystembg/BankSystem/issues/182"
+    }
+]

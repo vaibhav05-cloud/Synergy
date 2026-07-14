@@ -1,0 +1,361 @@
+[
+    {
+        "id": 4880836568,
+        "number": 22323,
+        "title": "curl_easy_ssls_import: memory leak",
+        "state": "open",
+        "created_at": "2026-07-14T07:24:34Z",
+        "updated_at": "2026-07-14T07:43:31Z",
+        "closed_at": null,
+        "author": "xmoezzz",
+        "comments": 1,
+        "labels": [],
+        "assignees": [
+            "icing"
+        ],
+        "locked": false,
+        "body": "### I did this\n\nI built the current curl master (87704c4) with AddressSanitizer and LeakSanitizer enabled, then imported serialized SSL session data containing two `CURL_SPACK_TICKET` fields.\n\nThe second ticket replaces the pointer stored for the first ticket without freeing the first allocation.\n\nMinimal reproducer:\n\n```c\n#include <curl/curl.h>\n\n#include <stdio.h>\n#include <stdlib.h>\n#include <string.h>\n\n#define IMPORT_COUNT 128\n#define FIRST_TICKET_SIZE 4096\n\nstatic unsigned char *make_packet(size_t *packet_len)\n{\n  const size_t total =\n    1 +                              /* format version */\n    1 + 2 + FIRST_TICKET_SIZE +      /* first ticket */\n    1 + 2 + 1;                       /* second ticket */\n\n  unsigned char *packet = malloc(total);\n  unsigned char *p;\n\n  if(!packet)\n    return NULL;\n\n  p = packet;\n\n  /* CURL_SPACK_VERSION */\n  *p++ = 0x01;\n\n  /* First CURL_SPACK_TICKET: 4096 bytes. */\n  *p++ = 0x04;\n  *p++ = (unsigned char)(FIRST_TICKET_SIZE >> 8);\n  *p++ = (unsigned char)FIRST_TICKET_SIZE;\n  memset(p, 'A', FIRST_TICKET_SIZE);\n  p += FIRST_TICKET_SIZE;\n\n  /* Second CURL_SPACK_TICKET: one byte. */\n  *p++ = 0x04;\n  *p++ = 0x00;\n  *p++ = 0x01;\n  *p++ = 'B';\n\n  *packet_len = total;\n  return packet;\n}\n\nint main(void)\n{\n  unsigned char *packet;\n  size_t packet_len;\n  CURLSH *share;\n  CURL *easy;\n  CURLSHcode shrc;\n  CURLcode result = CURLE_OK;\n  int i;\n\n  packet = make_packet(&packet_len);\n  if(!packet)\n    return 1;\n\n  result = curl_global_init(CURL_GLOBAL_DEFAULT);\n  if(result != CURLE_OK)\n    return 1;\n\n  share = curl_share_init();\n  easy = curl_easy_init();\n\n  if(!share || !easy)\n    return 1;\n\n  shrc = curl_share_setopt(share,\n                           CURLSHOPT_SHARE,\n                           CURL_LOCK_DATA_SSL_SESSION);\n  if(shrc != CURLSHE_OK)\n    return 1;\n\n  result = curl_easy_setopt(easy, CURLOPT_SHARE, share);\n  if(result != CURLE_OK)\n    return 1;\n\n  for(i = 0; i < IMPORT_COUNT; ++i) {\n    result = curl_easy_ssls_import(easy,\n                                   \"example.test:443\",\n                                   NULL,\n                                   0,\n                                   packet,\n                                   packet_len);\n    if(result != CURLE_OK) {\n      fprintf(stderr,\n              \"import %d failed: %d (%s)\\n\",\n              i,\n              (int)result,\n              curl_easy_strerror(result));\n      break;\n    }\n  }\n\n  free(packet);\n  curl_easy_cleanup(easy);\n  curl_share_cleanup(share);\n  curl_global_cleanup();\n\n  return result == CURLE_OK ? 0 : 1;\n}\n```\n\nI configured curl on Fedora Linux with:\n\n```shell\ncmake -S . -B build-asan-linux -G Ninja \\\n  -DCMAKE_C_COMPILER=clang \\\n  -DCMAKE_BUILD_TYPE=Debug \\\n  -DBUILD_SHARED_LIBS=ON \\\n  -DBUILD_STATIC_LIBS=OFF \\\n  -DBUILD_CURL_EXE=OFF \\\n  -DBUILD_TESTING=OFF \\\n  -DBUILD_EXAMPLES=OFF \\\n  -DUSE_SSLS_EXPORT=ON \\\n  -DCURL_USE_OPENSSL=ON \\\n  -DCURL_ZLIB=OFF \\\n  -DCURL_BROTLI=OFF \\\n  -DCURL_ZSTD=OFF \\\n  -DUSE_NGHTTP2=OFF \\\n  -DUSE_LIBIDN2=OFF \\\n  -DCURL_USE_LIBPSL=OFF \\\n  -DCURL_USE_LIBSSH2=OFF \\\n  -DCURL_USE_LIBSSH=OFF \\\n  -DCURL_DISABLE_LDAP=ON \\\n  -DCURL_DISABLE_LDAPS=ON \\\n  -DCMAKE_C_FLAGS=\"-O1 -g -fsanitize=address -fno-omit-frame-pointer -fno-optimize-sibling-calls\" \\\n  -DCMAKE_SHARED_LINKER_FLAGS=\"-fsanitize=address\"\n```\n\nI then built the local shared libcurl:\n\n```shell\ncmake --build build-asan-linux \\\n  --target libcurl_shared \\\n  -j\"$(nproc)\"\n```\n\nI compiled the reproducer against the locally built libcurl:\n\n```shell\nLIBCURL_SO=\"$(\n  find \"$PWD/build-asan-linux/lib\" \\\n    -maxdepth 1 \\\n    -name 'libcurl*.so*' \\\n    -print |\n  head -1\n)\"\n\nclang \\\n  -O1 \\\n  -g \\\n  -fsanitize=address \\\n  -fno-omit-frame-pointer \\\n  -fno-optimize-sibling-calls \\\n  -I\"$PWD/include\" \\\n  ssls_import_leak.c \\\n  \"$LIBCURL_SO\" \\\n  -Wl,-rpath,\"$PWD/build-asan-linux/lib\" \\\n  -o ssls_import_leak\n```\n\nRun:\n\n```shell\nASAN_OPTIONS=detect_leaks=1:halt_on_error=0 \\\nLSAN_OPTIONS=report_objects=1 \\\n./ssls_import_leak\n```\n\nLeakSanitizer reports:\n\n```text\n==1383615==ERROR: LeakSanitizer: detected memory leaks\n\nDirect leak of 524416 byte(s) in 128 object(s) allocated from:\n    #0 0x0000004a6f98 in malloc (/omitted/curl-master/ssls_import_leak+0x4a6f98) (BuildId: d8f7c4dc12985f17896846f2707c00052f903097)\n    #1 0x7f526dd85a9f in curlx_memdup0 /omitted/curl-master/lib/curlx/strdup.c:87:37\n    #2 0x7f526dd80bfc in spack_decdata16 /omitted/curl-master/lib/vtls/vtls_spack.c:179:10\n    #3 0x7f526dd80bfc in Curl_ssl_session_unpack /omitted/curl-master/lib/vtls/vtls_spack.c:298:16\n    #4 0x7f526dd7ccd0 in Curl_ssl_session_import /omitted/curl-master/lib/vtls/vtls_scache.c:1193:12\n    #5 0x7f526dc61fe1 in curl_easy_ssls_import /omitted/curl-master/lib/easy.c:1350:10\n    #6 0x000000400a96 in main /omitted/curl-master/ssls_import_leak.c:177:14\n    #7 0x7f526d8f3680 in __libc_start_call_main (/lib64/libc.so.6+0x3680) (BuildId: 18472003bbf1c5f098a09b5016b9b8bd4c7c59f0)\n    #8 0x7f526d8f3797 in __libc_start_main@GLIBC_2.2.5 (/lib64/libc.so.6+0x3797) (BuildId: 18472003bbf1c5f098a09b5016b9b8bd4c7c59f0)\n    #9 0x000000400ee4 in _start (/omitted/curl-master/ssls_import_leak+0x400ee4) (BuildId: d8f7c4dc12985f17896846f2707c00052f903097)\n```\n\n`524416` is `128 * 4097`. Each import leaks the first 4096-byte ticket allocation plus the extra terminating byte allocated by `curlx_memdup0()`.\n\nThe relevant code is:\n\n```c\ncase CURL_SPACK_TICKET:\n  result = spack_decdata16(&pval8, &s->sdata_len, &buf, end);\n  s->sdata = pval8;\n  break;\n```\n\nWhen another `CURL_SPACK_TICKET` field is encountered, `s->sdata` is overwritten without freeing the allocation associated with the previous field.\n\n### I expected the following\n\nMalformed serialized session data containing duplicate ticket fields should either be rejected or handled without losing the previous allocation.\n\n### curl/libcurl version\n\ncurl master (87704c4)\n\n### operating system\n\nFedora Linux 44\n7.0.12-201.fc44.x86_64 #1 SMP PREEMPT_DYNAMIC Thu Jun 11 01:30:16 UTC 2026 x86_64 GNU/Linux",
+        "url": "https://github.com/curl/curl/issues/22323"
+    },
+    {
+        "id": 4880065690,
+        "number": 22320,
+        "title": "encoder_base64_size: signed integer overflow",
+        "state": "open",
+        "created_at": "2026-07-14T05:15:25Z",
+        "updated_at": "2026-07-14T06:53:21Z",
+        "closed_at": null,
+        "author": "xmoezzz",
+        "comments": 0,
+        "labels": [],
+        "assignees": [
+            "bagder"
+        ],
+        "locked": false,
+        "body": "### I did this\n\nI reproduced this with a UBSan instrumented static build of the current curl master (87704c4) on macOS arm64.\n\n#### 1. Build a UBSan instrumented static libcurl\n\nFrom the curl source directory:\n\n```shell\ncmake -S . -B build-ubsan-static \\\n  -DCMAKE_C_COMPILER=clang \\\n  -DCMAKE_BUILD_TYPE=Debug \\\n  -DBUILD_SHARED_LIBS=OFF \\\n  -DBUILD_STATIC_LIBS=ON \\\n  -DBUILD_CURL_EXE=OFF \\\n  -DBUILD_TESTING=OFF \\\n  -DBUILD_EXAMPLES=OFF \\\n  -DCMAKE_C_FLAGS=\"-O1 -g -fsanitize=undefined -fno-sanitize-recover=undefined -fno-omit-frame-pointer\"\n```\n\nBuild the static libcurl target:\n\n```shell\ncmake --build build-ubsan-static \\\n  --target libcurl_static \\\n  -j\n```\n\nThe resulting static library was:\n\n```text\nbuild-ubsan-static/lib/libcurl-d.a\n```\n\n#### 2. Create the reproducer\n\nI saved the following as `mime_ubsan.c` in the curl source directory:\n\n```c\n#include <curl/curl.h>\n#include <stdint.h>\n#include <stdio.h>\n\nstatic size_t read_cb(char *buffer, size_t size, size_t nitems, void *arg)\n{\n  (void)buffer;\n  (void)size;\n  (void)nitems;\n  (void)arg;\n  return 0;\n}\n\nint main(void)\n{\n  CURL *curl;\n  curl_mime *mime;\n  curl_mimepart *part;\n  CURLcode result;\n\n  curl_global_init(CURL_GLOBAL_DEFAULT);\n\n  curl = curl_easy_init();\n  mime = curl_mime_init(curl);\n  part = curl_mime_addpart(mime);\n\n  curl_mime_name(part, \"data\");\n  curl_mime_data_cb(part, (curl_off_t)INT64_MAX,\n                    read_cb, NULL, NULL, NULL);\n  curl_mime_encoder(part, \"base64\");\n\n  curl_easy_setopt(curl, CURLOPT_URL,\n                   \"http://127.0.0.1:18080/\");\n  curl_easy_setopt(curl, CURLOPT_MIMEPOST, mime);\n\n  result = curl_easy_perform(curl);\n  fprintf(stderr, \"curl_easy_perform: %s\\n\",\n          curl_easy_strerror(result));\n\n  curl_mime_free(mime);\n  curl_easy_cleanup(curl);\n  curl_global_cleanup();\n\n  return 0;\n}\n```\n\n#### 3. Link the reproducer against the local static libcurl\n\nI placed the build directory first in `PKG_CONFIG_PATH` so that `pkg-config` used the `libcurl.pc` generated by this curl build:\n\n```shell\nexport PKG_CONFIG_PATH=\"$PWD/build-ubsan-static:/opt/homebrew/lib/pkgconfig:/opt/homebrew/share/pkgconfig\"\n```\n\nthen:\n\n```shell\nbash <<'EOF'\nset -e\n\nclang \\\n  -O1 \\\n  -g \\\n  -fsanitize=undefined \\\n  -fno-sanitize-recover=undefined \\\n  -fno-omit-frame-pointer \\\n  -DCURL_STATICLIB \\\n  -I\"$PWD/include\" \\\n  \"$PWD/mime_ubsan.c\" \\\n  \"$PWD/build-ubsan-static/lib/libcurl-d.a\" \\\n  -L\"$(brew --prefix libunistring)/lib\" \\\n  $(pkg-config --static --libs libcurl | sed 's/-lcurl//g') \\\n  -o \"$PWD/mime_ubsan\"\nEOF\n```\n\n#### 4. Run the reproducer\n\nI started a local HTTP server:\n\n```shell\npython3 -m http.server 18080\n```\n\nIn another terminal, I ran:\n\n```shell\nUBSAN_OPTIONS=print_stacktrace=1:halt_on_error=1 \\\n  ./mime_ubsan\n```\n\nUBSan reported:\n\n```text\n/omitted/curl-master/lib/mime.c:430:12:\nruntime error: signed integer overflow:\n4 * 3074457345618258603 cannot be represented in type\n'curl_off_t' (aka 'long')\n\n    #0 encoder_base64_size mime.c:430\n    #1 mime_size mime.c:1597\n    #2 mime_size mime.c:1592\n    #3 Curl_creader_set_mime mime.c:2165\n    #4 Curl_http http.c:3091\n    #5 multi_runsingle multi.c:2813\n    #6 multi_perform multi.c:2914\n    #7 curl_easy_perform easy.c:820\n    #8 main mime_ubsan.c:36\n\nSUMMARY: UndefinedBehaviorSanitizer: undefined-behavior\nlib/mime.c:430:12\n```\n\nThe overflow occurs in:\n\n```c\nsize = 4 * (1 + ((size - 1) / 3));\n```\n\nThe MIME size is calculated before the read callback is called, so the reproducer does not allocate or transfer `INT64_MAX` bytes.\n\n### I expected the following\n\nThe Base64 encoded size calculation should detect that the encoded size cannot be represented by curl_off_t and return an unknown size or an error without performing signed overflowing arithmetic.\n\n### curl/libcurl version\n\ncurl master (87704c4)\n\n### operating system\n\nProductName:\t\tmacOS\nProductVersion:\t\t26.5.2\nBuildVersion:\t\t25F84",
+        "url": "https://github.com/curl/curl/issues/22320"
+    },
+    {
+        "id": 4879141687,
+        "number": 22316,
+        "title": "tool_cb_prg: signed integer overflow in overflow check",
+        "state": "open",
+        "created_at": "2026-07-14T01:56:36Z",
+        "updated_at": "2026-07-14T01:56:51Z",
+        "closed_at": null,
+        "author": "xmoezzz",
+        "comments": 0,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "### I did this\n\nI built the current curl master branch (87704c4) with Clang UBSan and ran curl with `--progress-bar`, a one-byte upload, and a server response containing `Content-Length: 9223372036854775807`.\n\nServer:\n\n```python\nfrom http.server import BaseHTTPRequestHandler, HTTPServer\nimport time\n\nclass Handler(BaseHTTPRequestHandler):\n    def do_POST(self):\n        self.rfile.read(int(self.headers.get(\"Content-Length\", \"0\")))\n        self.send_response(200)\n        self.send_header(\"Content-Length\", \"9223372036854775807\")\n        self.end_headers()\n        time.sleep(3)\n\n    def log_message(self, *args):\n        pass\n\nHTTPServer((\"127.0.0.1\", 18080), Handler).handle_request()\n```\n\nBuild:\n```shell\ncmake -S . -B build-ubsan -G Ninja \\\n  -DCMAKE_BUILD_TYPE=Debug \\\n  -DCMAKE_C_COMPILER=clang \\\n  -DCMAKE_C_FLAGS=\"-O1 -g -fsanitize=undefined -fno-sanitize-recover=undefined -fno-omit-frame-pointer\" \\\n  -DCMAKE_EXE_LINKER_FLAGS=\"-fsanitize=undefined\"\n\ncmake --build build-ubsan --target curl\n```\n\nCommand:\n\n```shell\nUBSAN_OPTIONS=print_stacktrace=1:halt_on_error=1 \\\n./src/curl --http1.1 --progress-bar --max-time 1 \\\n  --data-binary x http://127.0.0.1:18080/ -o /dev/null\n```\n\nUBSan reports:\n\n```text\nruntime error: signed integer overflow: 9223372036854775807 + 1 cannot be represented in type 'curl_off_t' (aka 'long')\n    #0 0x000100b6a698 in tool_progress_cb tool_cb_prg.c\n    #1 0x000100e10814 in pgrs_update progress.c:706\n    #2 0x000100e10d78 in Curl_pgrsCheck progress.c:718\n    #3 0x000100e31440 in Curl_sendrecv transfer.c:380\n    #4 0x000100e05488 in multi_runsingle multi.c:2837\n    #5 0x000100e01f30 in multi_perform multi.c:2914\n    #6 0x000100dbefec in curl_easy_perform easy.c:820\n    #7 0x000100b7800c in run_all_transfers tool_operate.c:2341\n    #8 0x000100b77d0c in operate tool_operate.c:2505\n    #9 0x000100b77534 in main tool_main.c:189\n    #10 0x000184983dfc in start+0x1b4c (dyld:arm64+0xbdfc)\n\nSUMMARY: UndefinedBehaviorSanitizer: undefined-behavior /omitted/curl-master/src/tool_cb_prg.c:143:59\n[1]    39438 abort      UBSAN_OPTIONS=print_stacktrace=1:halt_on_error=1 ./build-ubsan/src/curl    1\n```\n\nThe overflow occurs in the overflow check itself:\n\n```c\nelse if((CURL_OFF_T_MAX - bar->initial_size) < (dltotal + ultotal))\n```\n\nHere, `dltotal` is `CURL_OFF_T_MAX` from the response `Content-Length`, and `ultotal` is `1`.\n\n\n\n### I expected the following\n\nThe progress-bar size calculation should avoid signed overflow.\n\n### curl/libcurl version\n\ncurl master branch (87704c4)\n\n### operating system\n\nmacOS arm64\nProductName:\t\tmacOS\nProductVersion:\t\t26.5.2\nBuildVersion:\t\t25F84",
+        "url": "https://github.com/curl/curl/issues/22316"
+    },
+    {
+        "id": 4871190334,
+        "number": 22306,
+        "title": "libcurl 8.21.0 regression: curl_multi_socket_action leaks sockets (CLOSE_WAIT) under connection-cache eviction pressure with many hosts (8.19.0 unaffected)",
+        "state": "closed",
+        "created_at": "2026-07-13T06:58:53Z",
+        "updated_at": "2026-07-13T11:31:40Z",
+        "closed_at": "2026-07-13T11:31:40Z",
+        "author": "SergeBrick",
+        "comments": 3,
+        "labels": [
+            "memory-leak"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "## Description\n\nBetween curl 8.19.0 and 8.21.0, `curl_multi_socket_action` leaks sockets (they end up stuck in `CLOSE_WAIT`, never `close()`d) when a single multi handle talks to many distinct hosts under a small `CURLMOPT_MAXCONNECTS`. It reproduces deterministically and is **not** related to `Connection: close` handling — it reproduces just as strongly against 100% keep-alive-capable servers.\n\nIsolated with a minimal C reproducer (attached below) against a controlled Alpine Linux 3.24.1 base with **only the `curl`/`libcurl` package version swapped** (8.19.0-r0 vs 8.21.0-r0, both from Alpine's own apk repos) — everything else (Alpine base, musl, OpenSSL, kernel, container) held identical.\n\n## Reproduction results\n\n| libcurl | hosts | MAXCONNECTS | requests | CLOSE_WAIT leaked |\n|---|---|---|---|---|\n| 8.19.0 | 16 (all keep-alive) | 5 | 3000 | 2 (noise) |\n| **8.21.0** | 16 (all keep-alive) | 5 | 3000 | **~1015 (~34%)** |\n| 8.21.0 | 16 (all keep-alive) | 1000 (no eviction pressure) | 3000 | 1 (noise) |\n| 8.19.0 | 16 (2 sending `Connection: close`) | 5 | 3000 | 2 (noise) |\n| **8.21.0** | 16 (2 sending `Connection: close`) | 5 | 3000 | **~1015 (~34%)** |\n\nLeak magnitude is essentially identical whether or not any host sends `Connection: close` — the trigger is purely **connection-cache eviction pressure** (small `MAXCONNECTS` relative to the number of distinct hosts in flight), not response header handling. Removing the eviction pressure (large `MAXCONNECTS`) makes the leak disappear entirely on 8.21.0. 8.19.0 never leaks under any tested condition.\n\n## Steps to reproduce\n\n1. Build the attached `repro.c` with `gcc -O2 -o repro repro.c -lcurl` against libcurl 8.19.0 in one environment and 8.21.0 in another (identical OS/base otherwise — e.g. Alpine 3.24 with the `curl-dev` package version-pinned via `--repository` to Alpine's v3.23 apk repo for the 8.19.0 side).\n2. Run N (e.g. 16) local HTTPS servers on `127.0.0.1:19100..19115` (self-signed cert, `SSL_VERIFYPEER`/`SSL_VERIFYHOST` off in the client) — any subset can send `Connection: close`, it does not affect the result.\n3. Run: `./repro https://127.0.0.1: 16 <n_close_hosts, e.g. 0> 20 3000 5`\n   (base_url, n_hosts, close_host_count, concurrency, total_requests, `CURLMOPT_MAXCONNECTS`)\n4. After it finishes and enters its inspection sleep, check the process's sockets: `ss -tn state close-wait` (or `/proc/<pid>/fd`).\n5. Expected: near-zero `CLOSE_WAIT` sockets. Actual on 8.21.0: hundreds, growing proportionally with total requests, spread across the keep-alive hosts (not concentrated on the `Connection: close` ones).\n\n## Source-level analysis (not yet runtime-verified with a debugger — offered as a starting point, not a confirmed root cause)\n\nDiffing `lib/conncache.c` and `lib/cshutdn.c` between the two tags turned up two changes that plausibly combine to cause this:\n\n1. **The `do_close` filter-type callback was removed entirely** (`struct Curl_cftype` in `cfilters.h` no longer has a `do_close` field). The old `Curl_conn_close()` (called `cft->do_close()` on just the top filter, leaving structures allocated) was replaced everywhere by `Curl_conn_cf_discard_all()` → `Curl_conn_cf_discard_chain()`, which iterates the whole filter chain calling `.destroy()` on each filter and freeing it immediately. This is the only non-cosmetic change in `cshutdn.c`'s `Curl_cshutdn_terminate()`:\n   ```c\n   -  Curl_conn_close(admin, SECONDARYSOCKET);\n   -  Curl_conn_close(admin, FIRSTSOCKET);\n   +  Curl_conn_cf_discard_all(admin, conn, SECONDARYSOCKET);\n   +  Curl_conn_cf_discard_all(admin, conn, FIRSTSOCKET);\n   ```\n   In isolation this looks safe (`cf_socket_destroy()` in `cf-socket.c` does call `socket_close()` when `ctx->sock != CURL_SOCKET_BAD`), but it changes what happens when this path fires **while a filter (e.g. TLS) is mid-graceful-shutdown**.\n\n2. **The async graceful-shutdown queue shares its capacity with the live connection pool's `CURLMOPT_MAXCONNECTS`.** In `Curl_cshutdn_add()` (`lib/cshutdn.c`):\n   ```c\n   size_t max_total = cshutdn->multi->max_total_connections;\n   if(max_total > 0 &&\n      (max_total <= (conns_in_pool + Curl_llist_count(&cshutdn->list)))) {\n     cshutdn_destroy_oldest(cshutdn, data, NULL);  /* force-terminates the oldest shutdown-queue entry */\n   }\n   ```\n   With a small `MAXCONNECTS` and many distinct hosts (exactly the reproduction conditions above), nearly every connection handed to the shutdown queue immediately forces another queue entry to be force-terminated via `cshutdn_destroy_oldest()` → `Curl_cshutdn_terminate()`, **before its own graceful shutdown (TLS `close_notify` etc., started via `Curl_cshutdn_run_once`) has necessarily completed**.\n\nMy working hypothesis: forcing `Curl_cshutdn_terminate()` (and hence the new `discard_all`/`destroy()`-based close path) on a connection **while a lower-level filter's graceful shutdown is still in-flight** skips the final `socket_close()` in some interaction between the shutdown-in-progress state and the discard/destroy path — this is the piece I could not confirm without live tracing (gdb/strace on the actual process), so I'm flagging it as the most promising lead rather than a proven root cause.\n\n## Environment\n\n- curl/libcurl versions compared: 8.19.0-r0 vs 8.21.0-r0 (Alpine apk packages)\n- OS: Alpine Linux 3.24.1 (identical base for both sides; only the curl/libcurl apk package version differed)\n- TLS backend: OpenSSL (Alpine default)\n- `CURLMOPT_MAXCONNECTS`: 5 (reproduction), also tested at 1000 (no leak)\n- Multi API used: `curl_multi_socket_action` with `CURLMOPT_SOCKETFUNCTION`/`CURLMOPT_TIMERFUNCTION` (event-driven, `poll()`-based event loop in the reproducer)\n\n## repro.c\n\n```c\n/* Multi-host curl_multi_socket_action reproducer: cycles requests across\n * many distinct hosts sharing ONE multi handle with a small connection\n * cache (CURLMOPT_MAXCONNECTS), mimicking a monitoring/poller-style\n * application that talks to many hosts through one shared multi handle.\n *\n * Usage: repro <base_url e.g. https://127.0.0.1:> <n_hosts>\n *              <close_host_count> <concurrency> <total_requests> <maxconnects>\n * close hosts are host indices [0, close_host_count) - sending\n * \"Connection: close\"; this parameter does not affect the leak (tested\n * both 0 and 2).\n */\n#include <curl/curl.h>\n#include <poll.h>\n#include <stdio.h>\n#include <stdlib.h>\n#include <string.h>\n#include <unistd.h>\n\n#define MAX_SOCKS 256\n\ntypedef struct {\n    curl_socket_t fd;\n    int action;\n} tracked_sock_t;\n\nstatic tracked_sock_t g_socks[MAX_SOCKS];\nstatic int g_nsocks = 0;\nstatic long g_timeout_ms = -1;\n\nstatic size_t discard(void *ptr, size_t size, size_t nmemb, void *userdata) {\n    (void)ptr; (void)userdata;\n    return size * nmemb;\n}\n\nstatic int find_sock(curl_socket_t fd) {\n    for (int i = 0; i < g_nsocks; i++) if (g_socks[i].fd == fd) return i;\n    return -1;\n}\n\nstatic int sock_cb(CURL *easy, curl_socket_t s, int what, void *userp, void *socketp) {\n    (void)easy; (void)userp; (void)socketp;\n    int idx = find_sock(s);\n    if (what == CURL_POLL_REMOVE) {\n        if (idx >= 0) { g_socks[idx] = g_socks[g_nsocks - 1]; g_nsocks--; }\n        return 0;\n    }\n    if (idx < 0) {\n        if (g_nsocks >= MAX_SOCKS) return 0;\n        idx = g_nsocks++;\n        g_socks[idx].fd = s;\n    }\n    g_socks[idx].action = what;\n    return 0;\n}\n\nstatic int timer_cb(CURLM *multi, long timeout_ms, void *userp) {\n    (void)multi; (void)userp;\n    g_timeout_ms = timeout_ms;\n    return 0;\n}\n\nint g_n_hosts;\nchar g_host_url[MAX_SOCKS][128];\n\nstatic void launch(CURLM *multi, CURL *easy, int host_idx) {\n    curl_easy_setopt(easy, CURLOPT_URL, g_host_url[host_idx]);\n    curl_easy_setopt(easy, CURLOPT_WRITEFUNCTION, discard);\n    curl_easy_setopt(easy, CURLOPT_TIMEOUT, 5L);\n    curl_easy_setopt(easy, CURLOPT_NOSIGNAL, 1L);\n    curl_easy_setopt(easy, CURLOPT_SSL_VERIFYPEER, 0L);\n    curl_easy_setopt(easy, CURLOPT_SSL_VERIFYHOST, 0L);\n    curl_multi_add_handle(multi, easy);\n}\n\ntypedef struct { CURL *easy; int host_idx; } slot_t;\n\nint main(int argc, char **argv) {\n    if (argc < 7) {\n        fprintf(stderr, \"usage: %s <base_url_no_port e.g. https://127.0.0.1:> <n_hosts> <close_host_count> <concurrency> <total_requests> <maxconnects>\\n\", argv[0]);\n        return 2;\n    }\n    const char *base_url = argv[1];\n    g_n_hosts = atoi(argv[2]);\n    int close_hosts = atoi(argv[3]);\n    int concurrency = atoi(argv[4]);\n    int total = atoi(argv[5]);\n    long maxconnects = atol(argv[6]);\n    (void)close_hosts;\n\n    for (int i = 0; i < g_n_hosts; i++) {\n        snprintf(g_host_url[i], sizeof(g_host_url[i]), \"%s%d/\", base_url, 19100 + i);\n    }\n\n    curl_global_init(CURL_GLOBAL_DEFAULT);\n    CURLM *multi = curl_multi_init();\n    curl_multi_setopt(multi, CURLMOPT_SOCKETFUNCTION, sock_cb);\n    curl_multi_setopt(multi, CURLMOPT_TIMERFUNCTION, timer_cb);\n    curl_multi_setopt(multi, CURLMOPT_MAXCONNECTS, maxconnects);\n\n    slot_t *slots = calloc(concurrency, sizeof(slot_t));\n    srand(42);\n    for (int i = 0; i < concurrency; i++) {\n        slots[i].easy = curl_easy_init();\n        slots[i].host_idx = rand() % g_n_hosts;\n        launch(multi, slots[i].easy, slots[i].host_idx);\n    }\n\n    int still_running = 0;\n    int completed = 0;\n    curl_multi_socket_action(multi, CURL_SOCKET_TIMEOUT, 0, &still_running);\n\n    struct pollfd pfds[MAX_SOCKS];\n    while (completed < total) {\n        int n = 0;\n        for (int i = 0; i < g_nsocks; i++) {\n            pfds[n].fd = g_socks[i].fd;\n            pfds[n].events = 0;\n            if (g_socks[i].action == CURL_POLL_IN || g_socks[i].action == CURL_POLL_INOUT) pfds[n].events |= POLLIN;\n            if (g_socks[i].action == CURL_POLL_OUT || g_socks[i].action == CURL_POLL_INOUT) pfds[n].events |= POLLOUT;\n            n++;\n        }\n        int timeout = (g_timeout_ms < 0 || g_timeout_ms > 1000) ? 1000 : (int)g_timeout_ms;\n        int rc = poll(n ? pfds : NULL, n, timeout);\n\n        if (n == 0 || rc == 0) {\n            curl_multi_socket_action(multi, CURL_SOCKET_TIMEOUT, 0, &still_running);\n        } else {\n            for (int i = 0; i < n; i++) {\n                if (pfds[i].revents) {\n                    int ev = 0;\n                    if (pfds[i].revents & POLLIN) ev |= CURL_CSELECT_IN;\n                    if (pfds[i].revents & POLLOUT) ev |= CURL_CSELECT_OUT;\n                    if (pfds[i].revents & (POLLERR | POLLHUP)) ev |= CURL_CSELECT_ERR;\n                    curl_multi_socket_action(multi, pfds[i].fd, ev, &still_running);\n                }\n            }\n        }\n\n        int msgq = 0;\n        CURLMsg *msg;\n        while ((msg = curl_multi_info_read(multi, &msgq)) != NULL) {\n            if (msg->msg == CURLMSG_DONE) {\n                CURL *done_easy = msg->easy_handle;\n                completed++;\n                curl_multi_remove_handle(multi, done_easy);\n                int slot = -1;\n                for (int i = 0; i < concurrency; i++) if (slots[i].easy == done_easy) { slot = i; break; }\n                if (slot >= 0 && completed < total) {\n                    slots[slot].host_idx = rand() % g_n_hosts;\n                    launch(multi, done_easy, slots[slot].host_idx);\n                }\n            }\n        }\n    }\n\n    fprintf(stdout, \"done %d requests, concurrency=%d, hosts=%d, maxconnects=%ld, sleeping for inspection\\n\",\n            total, concurrency, g_n_hosts, maxconnects);\n    fflush(stdout);\n    sleep(30);\n\n    for (int i = 0; i < concurrency; i++) {\n        curl_multi_remove_handle(multi, slots[i].easy);\n        curl_easy_cleanup(slots[i].easy);\n    }\n    free(slots);\n    curl_multi_cleanup(multi);\n    curl_global_cleanup();\n    return 0;\n}\n```\n\nMock HTTPS server used for testing (any equivalent works — the key properties are: TLS, and consistent handling of `Connection: close` vs keep-alive per host):\n\n```python\n#!/usr/bin/env python3\n# spins up N HTTPS servers on 19100..19100+N-1; a configurable subset send\n# \"Connection: close\", the rest keep-alive - only used to confirm the\n# leak reproduces identically either way.\nimport http.server, socketserver, ssl, sys, os, threading\n\nBASE_PORT = int(sys.argv[1]); N_HOSTS = int(sys.argv[2])\nCLOSE_HOSTS = set(int(x) for x in sys.argv[3].split(\",\"))\n\ndef make_handler(should_close):\n    class Handler(http.server.BaseHTTPRequestHandler):\n        protocol_version = \"HTTP/1.1\"\n        def do_GET(self):\n            body = b'{\"data\":{\"ok\":true}}'\n            self.send_response(200)\n            self.send_header(\"Content-Type\", \"application/json\")\n            self.send_header(\"Content-Length\", str(len(body)))\n            if should_close:\n                self.send_header(\"Connection\", \"close\")\n            self.end_headers()\n            self.wfile.write(body)\n        def log_message(self, fmt, *args): pass\n    return Handler\n\nclass Server(socketserver.ThreadingMixIn, socketserver.TCPServer):\n    allow_reuse_address = True\n    daemon_threads = True\n\ndef serve(idx):\n    port = BASE_PORT + idx\n    httpd = Server((\"0.0.0.0\", port), make_handler(idx in CLOSE_HOSTS))\n    ctx = ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER)\n    ctx.load_cert_chain(certfile=\"server.crt\", keyfile=\"server.key\")\n    httpd.socket = ctx.wrap_socket(httpd.socket, server_side=True)\n    httpd.serve_forever()\n\nfor i in range(N_HOSTS):\n    threading.Thread(target=serve, args=(i,), daemon=True).start()\nthreading.Event().wait()\n```\n",
+        "url": "https://github.com/curl/curl/issues/22306"
+    },
+    {
+        "id": 4856299784,
+        "number": 22296,
+        "title": "CURLOPT_HEADERFUNCTION provides unfolded headers",
+        "state": "closed",
+        "created_at": "2026-07-10T15:19:19Z",
+        "updated_at": "2026-07-12T16:17:26Z",
+        "closed_at": "2026-07-12T16:08:39Z",
+        "author": "rfm",
+        "comments": 1,
+        "labels": [
+            "documentation"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### I did this\n\nUsing the Debian package of the latest release (libcurl4-gnutls-dev/unstable,now 8.21.0-2 amd64) I find that the callback function is given unfolded versions of the folded headers sent in the response from the web server.\nThis is in contradiction to the documentation (and the behavior at least in version 8.5) where the parts of folded headers are provided to the callback function separately.\n\nI think the change could be viewed as an improvement and may be intentional, but if so the documentation needs to be corrected to reflect the current state of affairs and say which version introduced the change.\n\n### I expected the following\n\nFolded header lines to be provided to the callback function as documented: a separate callback for each part of the header, with subsequent parts starting with space or tab.\n\n### curl/libcurl version\n\n8.21.0\n\n### operating system\n\nDebian amd64",
+        "url": "https://github.com/curl/curl/issues/22296"
+    },
+    {
+        "id": 4852985808,
+        "number": 22290,
+        "title": "SSLCERTS.md",
+        "state": "closed",
+        "created_at": "2026-07-10T07:27:02Z",
+        "updated_at": "2026-07-10T07:36:18Z",
+        "closed_at": "2026-07-10T07:36:18Z",
+        "author": "expedientesxero-source",
+        "comments": 0,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": null,
+        "url": "https://github.com/curl/curl/issues/22290"
+    },
+    {
+        "id": 4844493660,
+        "number": 22282,
+        "title": "socket-action API: connections in graceful TLS shutdown are never progressed since 8.21.0 (fd + memory leak)",
+        "state": "open",
+        "created_at": "2026-07-09T08:13:38Z",
+        "updated_at": "2026-07-09T11:14:54Z",
+        "closed_at": null,
+        "author": "pszemus",
+        "comments": 1,
+        "labels": [],
+        "assignees": [
+            "icing"
+        ],
+        "locked": false,
+        "body": "### I did this\n\nWe upgraded libcurl from 8.20.0 to 8.21.0 in a production image-processing service and its RSS memory started growing constantly (hundreds of MB per hour under load) until the process had to be restarted. Reverting to 8.20.0 — or applying the one-line patch suggested below — makes RSS flat again. Nothing else changed between deployments.\n\n*Production RSS chart, before/after the upgrade:*\n\n<img width=\"918\" height=\"307\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/1f682536-2e7d-4b48-ab33-024add435174\" />\n\nThe service drives one `curl_multi` with the **event/socket-action API** (`CURLMOPT_SOCKETFUNCTION`/`CURLMOPT_TIMERFUNCTION` on a libuv loop, `curl_multi_socket_action()`), downloading many HTTPS URLs with a fresh easy handle per transfer (`curl_multi_add_handle`, and `curl_multi_remove_handle` + `curl_easy_cleanup` on `CURLMSG_DONE`).\n\n### What leaks\n\nEvery **HTTPS connection whose graceful TLS shutdown does not complete on the first attempt** (`SSL_shutdown()` wants to read the peer's close_notify — with real network latency that is nearly every connection) is parked in `multi->cshutdn` and never touched again until `curl_multi_cleanup()`:\n\n- one socket fd per connection (dead socket in TCP CLOSED state — visible in `/proc/<pid>/fd`, invisible to `ss`), eventually leading to fd exhaustion, and\n- ~33 KB of heap per connection (TLS buffers, connection struct).\n\nBecause everything is still reachable from the shutdown list, valgrind reports no \"definitely lost\" bytes — RSS just grows.\n\nLocal reproduction (20,000 downloads of a 100 KB file from a local TLS server that closes the connection after each response, 8 transfers in flight, socket-action API):\n\n| libcurl | RSS growth | per download | open fds after 15 s |\n|---|---|---|---|\n| 8.20.0 | 4.4 MB, plateaus | 0.2 kB | 26 (stable) |\n| 8.21.0 | 16.4 MB, keeps growing | 0.8 kB | 86 and climbing |\n| master (`6841d59af6`, 8.21.1-DEV) | 18.9 MB, keeps growing | 0.9 kB | 106 and climbing |\n| 8.21.0 + patch below | 4.3 MB, plateaus | 0.2 kB | 26 (stable) |\n\n### Cause\n\nBisecting the 8.20.0→8.21.0 diff points at commit 5e4e62962c (\"cfilters: fix busy loop on blocked transfers\", #21671 / #21675). It added this guard to `Curl_conn_adjust_pollset()`:\n\n```c\n  if(ps->n || !Curl_conn_is_connected(conn, FIRSTSOCKET) ||\n     (conn->cfilter[SECONDARYSOCKET] &&\n      !Curl_conn_is_connected(conn, SECONDARYSOCKET))) {\n    for(i = 0; (i < 2) && !result && conn; ++i) {\n      result = Curl_conn_cf_adjust_pollset(conn->cfilter[i], data, ps);\n    }\n  }\n```\n\nA connection in graceful shutdown hits neither branch: the (admin) transfer wants no I/O (`ps->n == 0`) and the connection is still \"connected\". So when `Curl_cshutdn_add()` → `cshutdn_update_ev()` → `Curl_multi_ev_assess_conn()` asks which sockets to watch, the filters are never consulted, the SSL filter's POLLIN interest is lost, and the shutdown socket is **never registered with the application's socket callback**. No event can ever fire for it, so `cshutdn_perform()` never runs again for that connection.\n\n`CURL_DEBUG=multi,ssl,tcp` traces (DEBUGBUILD) show it directly. 8.20.0, right after a first shutdown attempt returns `done=0` — the socket gets registered and the shutdown completes on the next event:\n\n```\n* [SSL] SSL shutdown sent, want receive\n* [MULTI] [SHUTDOWN] shutdown, done=0\n* [SSL] adjust_pollset, POLLIN fd=14\n* [MULTI] ev entry fd=14, added connection #88, total=1/1 (xfer/conn)\n* [MULTI] ev update fd=14, action '' -> 'IN' (2/0 r/w)\n* [MULTI] [SHUTDOWN] added #88 to shutdowns, now 1 conns in shutdown\n...\n* [MULTI] [SHUTDOWN] perform on 1 connections\n* [SSL] shut down successfully\n```\n\n8.21.0, same situation — no pollset adjustment, no event registration, and the connection is still in the shutdown list when the multi is destroyed:\n\n```\n* [SSL] SSL shutdown sent, want receive\n* [MULTI] [SHUTDOWN] shutdown, done=0\n* [MULTI] [SHUTDOWN] added #12 to shutdowns, now 1 conns in shutdown\n    (nothing ever again for #12 ...)\n* [MULTI] [SHUTDOWN] destroy, 1 connections, timeout=0ms\n```\n\nThere is also no timer fallback: in `cshutdn_perform()`, `next_expire_ms` is initialized to `0` and only updated on `ms < next_expire_ms`, which is never true for a positive `ms` — so `Curl_expire_ex(data, next_expire_ms, EXPIRE_SHUTDOWN)` is unreachable. That looks like a separate latent bug (present in 8.20.0 too); before 5e4e62962c the socket events masked it.\n\n### Suggested fix\n\nConsult the filters also when shutdown has started on the connection (verified to restore 8.20.0 behavior in the reproduction and in production — the paused-transfer busy loop of #21671 does not come back because paused transfers never have `shutdown.start` set):\n\n```diff\n--- a/lib/cfilters.c\n+++ b/lib/cfilters.c\n@@ -760,6 +760,7 @@ CURLcode Curl_conn_adjust_pollset(struct Curl_easy *data,\n    * will not change state and POLLIN/POLLOUT events will trigger forever,\n    * making us busy loop. See #21671 */\n   if(ps->n || !Curl_conn_is_connected(conn, FIRSTSOCKET) ||\n+     Curl_shutdown_started(data, FIRSTSOCKET) ||\n      (conn->cfilter[SECONDARYSOCKET] &&\n       !Curl_conn_is_connected(conn, SECONDARYSOCKET))) {\n     for(i = 0; (i < 2) && !result && conn; ++i) {\n```\n\n(`data` is attached to the connection when `cshutdn_update_ev()` calls `Curl_multi_ev_assess_conn()`, and `Curl_cshutdn_run_once()` calls `Curl_shutdown_start()` before the first attempt, so the predicate holds exactly for connections in the shutdown list.)\n\nHappy to turn this into a PR if that helps.\n\n### I expected the following\n\nConnections entering graceful shutdown under the event-based API keep being driven (as in 8.20.0) and are closed, releasing their socket and memory.\n\n### curl/libcurl version\n\ncurl 8.21.0 (also reproduced on current master, `6841d59af6` / 8.21.1-DEV). Built via CMake, static: OpenSSL 3.6.3, c-ares 1.34.6, nghttp2 1.69.0, `HTTP_ONLY=ON`, `CURL_USE_LIBPSL=OFF`.\n\n### operating system\n\nLinux x86_64 (AlmaLinux 10 in production; reproduced on Fedora 43, kernel 7.1.3-100.fc43).\n",
+        "url": "https://github.com/curl/curl/issues/22282"
+    },
+    {
+        "id": 4844482438,
+        "number": 22281,
+        "title": "curl 8.21.0 fails to build with OPENSLL_EXTRA when using wolfssl",
+        "state": "closed",
+        "created_at": "2026-07-09T08:11:52Z",
+        "updated_at": "2026-07-13T09:52:12Z",
+        "closed_at": "2026-07-13T06:42:09Z",
+        "author": "Megamouse",
+        "comments": 5,
+        "labels": [
+            "build",
+            "TLS",
+            "not-a-curl-bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### I did this\n\nAfter updating to curl 8.21.0 our visual studio build no longer works.\nRecently this code was changed/added:\n\n```cpp\n/* wolfSSL_CTX_set1_groups_list() accepts PQC/hybrid groups (e.g.\n   X25519MLKEM768) that wolfSSL_CTX_set1_curves_list() rejects. It needs\n   OPENSSL_EXTRA, which wolfSSL's --enable-curl sets but --enable-curl=tiny\n   does not. */\n#ifdef OPENSSL_EXTRA\n#define wssl_CTX_set1_groups_list wolfSSL_CTX_set1_groups_list\n#else\n#define wssl_CTX_set1_groups_list wolfSSL_CTX_set1_curves_list\n#endif\n```\n\nBut wolfSSL_CTX_set1_groups_list is not automagically implemented if OPENSSL_EXTRA is defined.\nIt seems to need at least WOLFSSL_TLS13 with wolfssl 5.9.2.\nI'm not quite sure why we don't have this defined in our wolfssl project (maybe it's a new feature? I'm not really acquainted with this).\n\n### I expected the following\n\nUpdating to curl 8.21.0 should ideally work without having to change my wolfssl project settings.\n\n### curl/libcurl version\n\ncurl 8.21.0\n\n### operating system\n\nWindows 11",
+        "url": "https://github.com/curl/curl/issues/22281"
+    },
+    {
+        "id": 4842636851,
+        "number": 22280,
+        "title": "test1701 failed",
+        "state": "closed",
+        "created_at": "2026-07-09T02:29:01Z",
+        "updated_at": "2026-07-12T16:04:43Z",
+        "closed_at": "2026-07-12T16:04:43Z",
+        "author": "firexinghe",
+        "comments": 4,
+        "labels": [
+            "HTTP/2",
+            "tests"
+        ],
+        "assignees": [
+            "icing"
+        ],
+        "locked": false,
+        "body": "### I did this\n\ntests/data/test1701 conflicts with nghttp2 cve-2026-58055, causing the test case to fail.\n\nCVEA-2026-58055\nhttps://github.com/nghttp2/nghttp2/pull/2769\nhttps://github.com/nghttp2/nghttp2/commit/ab28105c\n\n### I expected the following\n\ntest successful.\n\n### curl/libcurl version\n\ncurl 8.21.0\n\n### operating system\n\nfedora fc45",
+        "url": "https://github.com/curl/curl/issues/22280"
+    },
+    {
+        "id": 4842636523,
+        "number": 22279,
+        "title": "non-HTTP URLs with empty authorities are incorrectly parsed",
+        "state": "open",
+        "created_at": "2026-07-09T02:28:55Z",
+        "updated_at": "2026-07-13T20:14:59Z",
+        "closed_at": null,
+        "author": "llimllib",
+        "comments": 4,
+        "labels": [
+            "URL"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### I did this\n\nCurl parses `<scheme>:///path` not as an empty authority section followed by a path, but as if the path were an authority.\n\nMy understanding (see below for motivation) is that this is correct in the case of the \"special schemes\" but not for other schemes.\n\nHere's a repro in C, please forgive the machine-written code; I did edit it but I'm not much of a C writer. (Full bot disclaimer, this issue was discovered by me poking at `trurl` following discussions about the `at` protocol, not by a robot, but I did use the robot to help me in my investigation):\n\n```c\n#include <curl/curl.h>\n#include <stdio.h>\n\nstatic void show(const char *url, unsigned int flags) {\n  CURLU *u = curl_url();\n  char *scheme = NULL, *host = NULL, *port = NULL, *path = NULL;\n  CURLUcode rc;\n\n  printf(\"== %-40s (flags=0x%x)\\n\", url, flags);\n\n  rc = curl_url_set(u, CURLUPART_URL, url, flags);\n  if (rc) {\n    printf(\"   curl_url_set rc=%d (%s)\\n\", rc, curl_url_strerror(rc));\n    curl_url_cleanup(u);\n    printf(\"\\n\");\n    return;\n  }\n\n  curl_url_get(u, CURLUPART_SCHEME, &scheme, 0);\n  curl_url_get(u, CURLUPART_HOST, &host, CURLU_GET_EMPTY);\n  curl_url_get(u, CURLUPART_PORT, &port, 0);\n  curl_url_get(u, CURLUPART_PATH, &path, 0);\n\n  printf(\"   scheme=%s host=\\\"%s\\\" port=%s path=%s\\n\",\n         scheme ? scheme : \"(null)\", host ? host : \"(null)\",\n         port ? port : \"(null)\", path ? path : \"(null)\");\n\n  curl_free(scheme);\n  curl_free(host);\n  curl_free(port);\n  curl_free(path);\n  curl_url_cleanup(u);\n  printf(\"\\n\");\n}\n\nint main(void) {\n  /* unknown scheme, trurl-style flags */\n  unsigned int f = CURLU_NON_SUPPORT_SCHEME;\n\n  printf(\"--- unknown scheme path is read as authority ---\\n\");\n  show(\"at:///foo\", f);\n  // CURLU_NO_AUTHORITY doesn't change anything here\n  show(\"at:///foo\", f | CURLU_NO_AUTHORITY);\n  show(\n      \"at:///did:plc:vwzwgnygau7ed7b7wt5ux7y2/app.bsky.feed.post/3k5nobkf2w72g\",\n      f);\n\n  printf(\"--- HTTP parses the path as an authority ---\\n\");\n  show(\"http:///foo.com/path\", 0);\n\n  return 0;\n}\n```\n\n### I expected the following\n\nI believe that per [RFC 3986](https://www.rfc-editor.org/info/rfc3986/#section-3.2), the authority section for `at:///path` ought properly to be considered empty, and `path` to be the path.\n\n- Firefox and the `whatwg` [url parser tool](https://jsdom.github.io/whatwg-url/#url=YXQ6Ly8vZXhhbXBsZS5jb20v&base=YWJvdXQ6Ymxhbms=) both parse `https:///foo` as a hostname `foo`, which matches curl's behavior\n    - I _think_ this is because of [special authority slashes state](https://url.spec.whatwg.org/#special-authority-slashes-state), which [applies to](https://url.spec.whatwg.org/#special-scheme) these url schemes: `ftp`, `file`, `http`, `https`, `ws`, and `wss` schemes, and nothing else\n- Firefox and the `whatwg` parser both parse `at:///foo` as an empty hostname followed by the _path_ `/foo`\n    - I think this is because the scheme is none of the above, so it does not enter \"special authority slashes state\"\n\nSo my expectation is the following:\n\n- If the scheme of a URL of the form `scheme:///foo` is any of {`ftp`, `file`, `http`, `https`, `ws`, and `wss`}\n    - curl already does the right thing, parsing `foo` as a hostname\n- Else\n    - curl ought to parse the URL with an empty hostname and a **path** of `/foo`\n\n## Why does this matter?\n\nThe `at` protocol accidentally specified [invalid authority names](https://bnewbold.leaflet.pub/3mph4hzvbdc2v), and they're considering using an empty authority section in their `at` URLs to remediate the situation.\n\nThat's how I noticed this issue - I wondered how `trurl` would parse the proposed URLs with an empty authority, and found that it parsed them incorrectly; cf [the issue I filed there](https://github.com/curl/trurl/issues/443)\n\nIt seems to be a minor edge case, but one that would be worth fixing. I'd be happy to do the work to submit a PR if you thought it was worth fixing.\n\n### curl/libcurl version\n\nverified on curl master branch, revision `6841d59af6`\n\n### operating system\n\nMac OS 26.5.1",
+        "url": "https://github.com/curl/curl/issues/22279"
+    },
+    {
+        "id": 4835950235,
+        "number": 22275,
+        "title": "win CI failures on digest functions?",
+        "state": "closed",
+        "created_at": "2026-07-08T09:00:54Z",
+        "updated_at": "2026-07-13T08:09:16Z",
+        "closed_at": "2026-07-13T08:09:15Z",
+        "author": "icing",
+        "comments": 2,
+        "labels": [
+            "Windows"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### I did this\n\nSuddenly, without changes, Windows CI test cases with digest/websocket keys started failing. Like in https://github.com/curl/curl/actions/runs/28929409166/job/85826641056?pr=22274\n\n\n\n### I expected the following\n\nCI to continue to pass\n\n### curl/libcurl version\n\nmaster\n\n### operating system\n\nWindows CI",
+        "url": "https://github.com/curl/curl/issues/22275"
+    },
+    {
+        "id": 4832306498,
+        "number": 22273,
+        "title": "WebSocket write callback serves multiple concatenated messages after pausing",
+        "state": "closed",
+        "created_at": "2026-07-07T21:18:19Z",
+        "updated_at": "2026-07-12T16:06:32Z",
+        "closed_at": "2026-07-12T16:06:32Z",
+        "author": "HendrikHuebner",
+        "comments": 2,
+        "labels": [],
+        "assignees": [
+            "icing"
+        ],
+        "locked": false,
+        "body": "### I did this\n\nFollow up to #22227. I'm fairly confident this is an actual bug now.\n\n### I expected the following\n\nA receiver using the `CURL_WRITEFUNC` callback API reads chunks of incoming WebSocket frames using `curl_ws_meta`, which provides the information required to reconstruct the frames. We'd expect to receive exactly one such chunk per write callback invocation, so `curl_ws_meta()->len` should be equal to `nmemb` (number of bytes in the write callback buffer).\n\nMy reproducer sends three messages to be received: `Hello 1`, `Hello 2`, `Hello 3`, so I expect three callbacks. My receiver pauses before and after receiving `Hello 1`. During the fourth callback (after pausing) I observed `nmemb == 14` and the buffer contains `Hello 2Hello 3`.  For this callback, `curl_ws_meta()->len` returns `7`, the length of the second message `Hello 2`.\n\nThere seems to be no way to handle this situation correctly, since it's impossible to get the metadata for the bytes `[7; 13]` with `curl_ws_meta`. If the write callback returns just `7`, it results in `CURLE_WRITE_ERROR` since curl seems to expect the entire buffer to be consumed. Perhaps curl appends more bytes to the receive buffer internally, after unpausing in some lower level API that isn't aware of WebSocket frame boundaries?\n\n[client.c](https://github.com/user-attachments/files/29767257/client.c)\n[server.py](https://github.com/user-attachments/files/29767258/server.py)\n\nReproducer logs:\n\n```\nhhuebner@hhuebnerMacBookPro ws-meta-repro % python3 server.py &\n[15] 90424\nhhuebner@hhuebnerMacBookPro ws-meta-repro % listening on ws://127.0.0.1:8765\n./client           \nclient from 127.0.0.1:58981\nhandshake complete\nsent frame 1: b'Hello 1'\ncallback #1 bytes=7 data='Hello 1'\nmeta age=0 flags=0x1 offset=0 bytesleft=0 len=7\nreturning CURL_WRITEFUNC_PAUSE\nsent frame 2: b'Hello 2'\nsent frame 3: b'Hello 3'\nunpause #1 with curl_easy_pause(..., CURLPAUSE_CONT)\ncallback #2 bytes=7 data='Hello 1'\nmeta age=0 flags=0x1 offset=0 bytesleft=0 len=7\naccepted callback #2\nreturning 7\ncallback #3 bytes=7 data='Hello 2'\nmeta age=0 flags=0x1 offset=0 bytesleft=0 len=7\nreturning CURL_WRITEFUNC_PAUSE\nunpause #2 with curl_easy_pause(..., CURLPAUSE_CONT)\ncallback #4 bytes=14 data='Hello 2Hello 3'\nmeta age=0 flags=0x1 offset=0 bytesleft=0 len=7\naccepted callback #4\nreturning 14\nserver done\ndone result=0 (No error)\nhhuebner@hhuebnerMacBookPro ws-meta-repro % \n[15]    done       python3 server.py\n```\n\n### curl/libcurl version\n\n8.21.0\n\n### operating system\n\nmacOS 26.3, Darwin 25.3.0 on arm64\n",
+        "url": "https://github.com/curl/curl/issues/22273"
+    },
+    {
+        "id": 4832200674,
+        "number": 22272,
+        "title": "Fix for #21547 breaks expectations of users of curl_multi_perform with curl_multi_wakeup",
+        "state": "open",
+        "created_at": "2026-07-07T21:00:56Z",
+        "updated_at": "2026-07-08T08:47:41Z",
+        "closed_at": null,
+        "author": "xokdvium",
+        "comments": 1,
+        "labels": [],
+        "assignees": [
+            "icing"
+        ],
+        "locked": false,
+        "body": "### I did this\n\nBasically, https://github.com/curl/curl/commit/2a2104f3cff44bb28bb570a093be52bbeeed8f23 has caused some unfortunate breakage in Nix and forks thereof upon update to 8.21.\n\nSince the commit linked above, `curl_multi_perform` now swallows wakeups and this leads either excessive waiting for a timeout (or in case of Lix, blocking on `curl_multi_poll` forever).\n\nSingle-threaded example:\n\n```\n#include <curl/curl.h>\n\nint main() {\n  curl_global_init(CURL_GLOBAL_ALL);\n\n  auto curlm = curl_multi_init();\n\n  int running = 0;\n  CURLMcode mc;\n\n  curl_multi_wakeup(curlm);\n  curl_multi_perform(curlm, &running);\n  curl_multi_poll(curlm, nullptr, 0, INT_MAX, nullptr);\n}\n```\n\nSince 2a2104f3cff44bb28bb570a093be52bbeeed8f23:\n\n```\neventfd2(0, EFD_CLOEXEC|EFD_NONBLOCK)   = 3\nclose(4)                                = 0\nwrite(3, \"\\1\\0\\0\\0\\0\\0\\0\\0\", 8)         = 8\nread(3, \"\\1\\0\\0\\0\\0\\0\\0\\0\", 64)         = 8\nread(3, 0x7ffcfe6afd70, 64)             = -1 EAGAIN (Resource temporarily unavailable)\npoll([{fd=3, events=POLLIN}], 1, 2147483647\n```\n\nAnd we never exit the poll.\nIn <8.21 the wakeup would not be consumed in `perform` and we'd happily exit:\n\n```\neventfd2(0, EFD_CLOEXEC|EFD_NONBLOCK)   = 3\nclose(4)                                = 0\nwrite(3, \"\\1\\0\\0\\0\\0\\0\\0\\0\", 8)         = 8\npoll([{fd=3, events=POLLIN}], 1, 2147483647) = 1 ([{fd=3, revents=POLLIN}])\n```\n\nOur use is pretty much the same as documented in https://curl.se/libcurl/c/curl_multi_wakeup.html.\n\n### I expected the following\n\nEither the new behavior is deemed to be correct, or a bug to be fixed.\nCurrently we are working around this issue (?) in https://github.com/NixOS/nix/pull/16090.\n\n### curl/libcurl version\n\ncurl 8.21.0\n\n### operating system\n\nLinux blahblah 6.18.38 #1-NixOS SMP PREEMPT_DYNAMIC .... x86_64 GNU/Linux",
+        "url": "https://github.com/curl/curl/issues/22272"
+    },
+    {
+        "id": 4830336164,
+        "number": 22270,
+        "title": "`CURLE_PARTIAL_FILE` is reported on HTTP/3 stream reset even if the entire body was received",
+        "state": "open",
+        "created_at": "2026-07-07T16:22:44Z",
+        "updated_at": "2026-07-10T11:56:03Z",
+        "closed_at": null,
+        "author": "Lubrsi",
+        "comments": 8,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "### I did this\n\nI loaded `https://cdn.7tv.app/emote/01F6MQ33FG000FFJ97ZB8MWV52/1x.webp` in [Ladybird](https://github.com/LadybirdBrowser/ladybird) with a small patch:\n```patch\ndiff --git a/Services/RequestServer/Request.cpp b/Services/RequestServer/Request.cpp\nindex 29d7ef9bb4e..5227f2ed2ac 100644\n--- a/Services/RequestServer/Request.cpp\n+++ b/Services/RequestServer/Request.cpp\n@@ -940,7 +940,7 @@ void Request::handle_fetch_state()\n \n     set_option(CURLOPT_CUSTOMREQUEST, m_method.characters());\n     set_option(CURLOPT_FOLLOWLOCATION, 0);\n-    if constexpr (CURL_DEBUG) {\n+    if constexpr (1) {\n         set_option(CURLOPT_VERBOSE, 1);\n     }\n \n@@ -1157,6 +1157,8 @@ size_t Request::on_data_received(void* buffer, size_t size, size_t nmemb, void*\n     auto total_size = size * nmemb;\n     ReadonlyBytes bytes { static_cast<u8 const*>(buffer), total_size };\n \n+    dbgln(\"received {} bytes\", total_size);\n+\n     auto result = [&] -> ErrorOr<void> {\n         TRY(request.m_response_buffer.write_some(bytes));\n         return request.write_queued_bytes_without_blocking();\n```\n\n<details>\n<summary>Which resulted in:</summary>\n* Added cdn.7tv.app:443:37.27.171.118,37.27.171.120,37.27.171.107,37.27.171.119,37.27.171.106,37.27.171.117,37.27.171.108,37.27.171.109,37.27.171.121,37.27.171.122,::ffff:37.27.171.118,::ffff:37.27.171.120,::ffff:37.27.171.107,::ffff:37.27.171.119,::ffff:37.27.171.106,::ffff:37.27.171.117,::ffff:37.27.171.108,::ffff:37.27.171.109,::ffff:37.27.171.121,::ffff:37.27.171.122 to DNS cache\n* Hostname cdn.7tv.app was found in DNS cache\n* Host cdn.7tv.app:443 was resolved.\n* IPv6: ::ffff:37.27.171.118, ::ffff:37.27.171.120, ::ffff:37.27.171.107, ::ffff:37.27.171.119, ::ffff:37.27.171.106, ::ffff:37.27.171.117, ::ffff:37.27.171.108, ::ffff:37.27.171.109, ::ffff:37.27.171.121, ::ffff:37.27.171.122\n* IPv4: 37.27.171.118, 37.27.171.120, 37.27.171.107, 37.27.171.119, 37.27.171.106, 37.27.171.117, 37.27.171.108, 37.27.171.109, 37.27.171.121, 37.27.171.122\n*   Trying [::ffff:37.27.171.118]:443...\n* SSL Trust Anchors:\n*   Native: Apple SecTrust\n*   OpenSSL default paths (fallback)\n*   Trying 37.27.171.118:443...\n*   Trying [::ffff:37.27.171.118]:443...\n* SSL Trust Anchors:\n*   Native: Apple SecTrust\n*   OpenSSL default paths (fallback)\n* ALPN: curl offers h2,http/1.1\n* SSL Trust Anchors:\n*   Native: Apple SecTrust\n*   OpenSSL default paths (fallback)\n* SSL connection using TLSv1.3 / TLS_AES_256_GCM_SHA384 / x25519 / id-ecPublicKey\n* Server certificate:\n*   subject: CN=cdn.7tv.app\n*   start date: May 14 08:00:33 2026 GMT\n*   expire date: Aug 12 08:00:32 2026 GMT\n*   issuer: C=US; O=Let's Encrypt; CN=E8\n*   Certificate level 0: Public key type EC/prime256v1 (256/128 Bits/secBits), signed using ecdsa-with-SHA384\n*   Certificate level 1: Public key type EC/secp384r1 (384/192 Bits/secBits), signed using sha256WithRSAEncryption\n*   Certificate level 2: Public key type RSA (4096/152 Bits/secBits), signed using sha256WithRSAEncryption\n*   subjectAltName: \"cdn.7tv.app\" matches cert's \"cdn.7tv.app\"\n* OpenSSL verify result: 0\n* SSL certificate verified via OpenSSL.\n* Established connection to cdn.7tv.app (37.27.171.118 port 443) from 192.168.1.105 port 65025 \n* using HTTP/3\n* [HTTP/3] [0] OPENED stream for https://cdn.7tv.app/emote/01F6MQ33FG000FFJ97ZB8MWV52/1x.webp\n* [HTTP/3] [0] [:method: GET]\n* [HTTP/3] [0] [:scheme: https]\n* [HTTP/3] [0] [:authority: cdn.7tv.app]\n* [HTTP/3] [0] [:path: /emote/01F6MQ33FG000FFJ97ZB8MWV52/1x.webp]\n* [HTTP/3] [0] [accept-encoding: deflate, gzip, br, zstd]\n* [HTTP/3] [0] [accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8]\n* [HTTP/3] [0] [accept-language: en-GB,en-US,en]\n* [HTTP/3] [0] [sec-fetch-dest: document]\n* [HTTP/3] [0] [sec-fetch-mode: navigate]\n* [HTTP/3] [0] [sec-fetch-site: cross-site]\n* [HTTP/3] [0] [user-agent: Mozilla/5.0 (macOS; AArch64) Ladybird/1.0 Chrome/146.0.0.0 AppleWebKit/537.36 Safari/537.36]\n> GET /emote/01F6MQ33FG000FFJ97ZB8MWV52/1x.webp HTTP/3\nHost: cdn.7tv.app\nAccept-Encoding: deflate, gzip, br, zstd\nAccept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8\nAccept-Language: en-GB,en-US,en\nSec-Fetch-Dest: document\nSec-Fetch-Mode: navigate\nSec-Fetch-Site: cross-site\nUser-Agent: Mozilla/5.0 (macOS; AArch64) Ladybird/1.0 Chrome/146.0.0.0 AppleWebKit/537.36 Safari/537.36\n\n* Request completely sent off\n< HTTP/3 200 \n< content-type: image/webp\n< content-length: 94822\n< x-7tv-cache-hits: 458307\n< x-7tv-cache: hit\n< age: 1649394\n< cache-control: public, max-age=31536000, s-maxage=86400, immutable\n* Added alt-svc: cdn.7tv.app:443 over h3\n< alt-svc: h3=\":443\"; ma=2592000\n< x-7tv-cdn-pod: cdn-klnfz\n< x-7tv-cdn-node: cdn-2\n< server: SevenTV\n< vary: origin, access-control-request-method, access-control-request-headers\n< access-control-allow-origin: *\n< access-control-expose-headers: *\n< \n275233.975 RequestServer(30387): received 1158 bytes\n275233.975 RequestServer(30387): received 1158 bytes\n275233.975 RequestServer(30387): received 1158 bytes\n275233.975 RequestServer(30387): received 2316 bytes\n275233.975 RequestServer(30387): received 1158 bytes\n275233.975 RequestServer(30387): received 1158 bytes\n275233.975 RequestServer(30387): received 1158 bytes\n275234.016 RequestServer(30387): received 1279 bytes\n275234.016 RequestServer(30387): received 1284 bytes\n275234.020 RequestServer(30387): received 1284 bytes\n275234.020 RequestServer(30387): received 1284 bytes\n275234.020 RequestServer(30387): received 1284 bytes\n275234.020 RequestServer(30387): received 1284 bytes\n275234.020 RequestServer(30387): received 1282 bytes\n275234.020 RequestServer(30387): received 1282 bytes\n275234.021 RequestServer(30387): received 1282 bytes\n275234.022 RequestServer(30387): received 1282 bytes\n275234.022 RequestServer(30387): received 1282 bytes\n275234.022 RequestServer(30387): received 971 bytes\n275234.022 RequestServer(30387): received 311 bytes\n275234.022 RequestServer(30387): received 1282 bytes\n275234.022 RequestServer(30387): received 1282 bytes\n275234.022 RequestServer(30387): received 1282 bytes\n275234.022 RequestServer(30387): received 1282 bytes\n275234.062 RequestServer(30387): received 1338 bytes\n275234.062 RequestServer(30387): received 1345 bytes\n275234.062 RequestServer(30387): received 1345 bytes\n275234.062 RequestServer(30387): received 4035 bytes\n275234.068 RequestServer(30387): received 1338 bytes\n275234.068 RequestServer(30387): received 1345 bytes\n275234.068 RequestServer(30387): received 199 bytes\n275234.068 RequestServer(30387): received 1146 bytes\n275234.068 RequestServer(30387): received 1345 bytes\n275234.068 RequestServer(30387): received 1345 bytes\n275234.068 RequestServer(30387): received 1345 bytes\n275234.068 RequestServer(30387): received 1345 bytes\n275234.081 RequestServer(30387): received 1345 bytes\n275234.081 RequestServer(30387): received 1345 bytes\n275234.081 RequestServer(30387): received 4035 bytes\n275234.081 RequestServer(30387): received 1345 bytes\n275234.081 RequestServer(30387): received 1788 bytes\n275234.081 RequestServer(30387): received 902 bytes\n275234.081 RequestServer(30387): received 1345 bytes\n275234.081 RequestServer(30387): received 1345 bytes\n275234.092 RequestServer(30387): received 1345 bytes\n275234.092 RequestServer(30387): received 1345 bytes\n275234.092 RequestServer(30387): received 1345 bytes\n275234.092 RequestServer(30387): received 1345 bytes\n275234.092 RequestServer(30387): received 2690 bytes\n275234.092 RequestServer(30387): received 1345 bytes\n275234.092 RequestServer(30387): received 1345 bytes\n275234.092 RequestServer(30387): received 1345 bytes\n275234.108 RequestServer(30387): received 1371 bytes\n275234.108 RequestServer(30387): received 1376 bytes\n275234.108 RequestServer(30387): received 1376 bytes\n275234.108 RequestServer(30387): received 1376 bytes\n275234.108 RequestServer(30387): received 1376 bytes\n275234.108 RequestServer(30387): received 2004 bytes\n275234.108 RequestServer(30387): received 748 bytes\n275234.108 RequestServer(30387): received 1376 bytes\n275234.108 RequestServer(30387): received 1376 bytes\n275234.108 RequestServer(30387): received 1376 bytes\n275234.114 RequestServer(30387): received 1376 bytes\n275234.114 RequestServer(30387): received 1940 bytes\n275234.114 RequestServer(30387): received 812 bytes\n275234.114 RequestServer(30387): received 1376 bytes\n275234.114 RequestServer(30387): received 1376 bytes\n275234.114 RequestServer(30387): received 1376 bytes\n275234.120 RequestServer(30387): received 2 bytes\n* HTTP/3 stream 0 reset by server (error 0x0 unknown)\n* Connection #0 to host cdn.7tv.app:443 left intact\n275234.120 WebContent(30392): ResourceLoader: Failed load of: \"https://cdn.7tv.app/emote/01F6MQ33FG000FFJ97ZB8MWV52/1x.webp\", Error: Request finished with error: Connection was closed before entire response was received, Duration: 525ms\n</details>\n\nAdding up the individual \"received N bytes\" lines, they total the reported Content-Length of `94822` and then the server is strange and resets the stream with an unknown error code. This check here turns any received body bytes into a CURLE_PARTIAL_FILE error:\nhttps://github.com/curl/curl/blob/6841d59af67345493c0a692a6200bc4d8a82c5fd/lib/vquic/cf-ngtcp2.c#L463-L466\n\n### I expected the following\n\nIf the full body (as reported by Content-Length) has been received, the check above should return CURLE_OK, even though the server had acted strangely by resetting the stream.\n\n### curl/libcurl version\n\nlibcurl/8.21.0 OpenSSL/3.5.3 zlib/1.3.1 brotli/1.2.0 zstd/1.5.7 nghttp2/1.68.0 ngtcp2/1.24.0 nghttp3/1.17.0\n\n### operating system\n\nDarwin Mac.lan 25.5.0 Darwin Kernel Version 25.5.0: Tue Jun  9 22:28:34 PDT 2026; root:xnu-12377.121.10~1/RELEASE_ARM64_T6041 arm64",
+        "url": "https://github.com/curl/curl/issues/22270"
+    },
+    {
+        "id": 4809700640,
+        "number": 22265,
+        "title": "`CURLMOPT_MAX_HOST_CONNECTIONS` is ignored with `CURL_LOCK_DATA_CONNECT`",
+        "state": "closed",
+        "created_at": "2026-07-04T16:12:52Z",
+        "updated_at": "2026-07-12T19:33:10Z",
+        "closed_at": "2026-07-12T19:33:10Z",
+        "author": "GrahamCampbell",
+        "comments": 0,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "### I did this\n\nSet `CURLMOPT_MAX_HOST_CONNECTIONS` (and/or `CURLMOPT_MAX_TOTAL_CONNECTIONS`) on a multi handle whose easy handles use a share handle with `CURL_LOCK_DATA_CONNECT`, then ran many concurrent transfers to one host.\n\n### I expected the following\n\nThe configured limits to be respected, as they were before 8.13.0. Instead they are silently not enforced at all: since df672695e5, `Curl_cpool_check_limits()` reads the limits from `cpool->idata->multi`, and a share-owned pool's admin handle is never attached to any multi, so both limits resolve to 0 and the check always passes. In 8.10 through 8.12 the limits came from the transfer's own `data->multi` and were enforced against whichever pool the transfer used.\n\nThe change looks unintentional: df672695e5 only discusses shutdown handling, and no documentation or release note mentions it. It is also untested — commit 55968fd14b added the connection limit tests but commented out `CURL_LOCK_DATA_CONNECT` in the `hx-download` test client in the same commit (still disabled via `#if 0` today), so the in-tree tests only pass with connection sharing off.\n\nReal-world impact: symfony/symfony#64040, worked around downstream by dropping connection sharing (symfony/symfony#64046).\n\n### curl/libcurl version\n\nIssue present in curl 8.13.0 through 8.21.0 (at time of writing).\n\n### operating system\n\nNot OS-dependent. Replicated on both macOS 26.5 and Ubuntu 24.04.",
+        "url": "https://github.com/curl/curl/issues/22265"
+    },
+    {
+        "id": 4808447601,
+        "number": 22262,
+        "title": "Missing DNSStamp for each URLs",
+        "state": "closed",
+        "created_at": "2026-07-04T09:33:40Z",
+        "updated_at": "2026-07-04T10:23:23Z",
+        "closed_at": "2026-07-04T10:23:23Z",
+        "author": "eernam",
+        "comments": 1,
+        "labels": [
+            "documentation"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Specify which documentation you found a problem with\n\nhttps://github.com/curl/curl/wiki/DNS-over-HTTPS#publicly-available-servers\n\n### The problem\n\nThere are updated DOH server list in this wiki - https://github.com/curl/curl/wiki/DNS-over-HTTPS#publicly-available-servers - but those are missing DNSStamp which is used by @jedisct1 's DNSCrypt-proxy. Consider adding it so people uses dnscrypt-proxy & software using DP (such as InviziblePro) can benefit from it.\n\nRelated https://github.com/DNSCrypt/dnscrypt-resolvers/issues/1059",
+        "url": "https://github.com/curl/curl/issues/22262"
+    },
+    {
+        "id": 4805976680,
+        "number": 22257,
+        "title": "CURLOPT_WRITEDATA manpage: Asterisks missing from pointer types",
+        "state": "closed",
+        "created_at": "2026-07-03T19:50:38Z",
+        "updated_at": "2026-07-03T22:33:18Z",
+        "closed_at": "2026-07-03T22:33:18Z",
+        "author": "chrullrich",
+        "comments": 1,
+        "labels": [
+            "documentation"
+        ],
+        "assignees": [
+            "bagder"
+        ],
+        "locked": false,
+        "body": "### Specify which documentation you found a problem with\n\nlibcurl/c/CURLOPT_WRITEDATA.html\n\n### The problem\n\nIn the first paragraph of the description, two asterisks in pointer types (FILE *, void *) are missing, but only on curl.se . They are present in docs/libcurl/opts/CURLOPT_WRITEDATA.md .\n\nCURLOPT_HEADERDATA has the asterisk where it mentions FILE *.",
+        "url": "https://github.com/curl/curl/issues/22257"
+    },
+    {
+        "id": 4794571142,
+        "number": 22249,
+        "title": "undefined reference to if_nametoindex and BCryptGenRandom",
+        "state": "closed",
+        "created_at": "2026-07-02T12:54:05Z",
+        "updated_at": "2026-07-02T22:46:20Z",
+        "closed_at": "2026-07-02T22:46:20Z",
+        "author": "Monsterovich",
+        "comments": 14,
+        "labels": [
+            "build",
+            "needs-info",
+            "Windows"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### I did this\n\nhttps://gitlab.com/Monsterovich/openjdk-downloader\n\n```diff\ndiff --git a/build.sh b/build.sh\nindex f84358c..aceaeb9 100755\n--- a/build.sh\n+++ b/build.sh\n@@ -16,7 +16,7 @@ NGHTTP2_LDFLAGS=\"\"\n # WolfSSL\n if ! test -f \"${current_dir}/prefix/lib/libwolfssl.a\"; then\n     echo -e \"${blue}Building wolfssl...${nocolor}\"\n-    git clone --depth 1 --branch v5.8.4-stable  https://github.com/wolfSSL/wolfssl wolfssl\n+    git clone --depth 1 --branch v5.9.2-stable https://github.com/wolfSSL/wolfssl wolfssl\n     cd wolfssl\n     autoreconf -i\n     # FIXME: remove compiler crutches\n@@ -37,7 +37,7 @@ if [[ ${ENABLE_NGHTTP2} -gt 0 ]]; then\n     NGHTTP2_LDFLAGS=\"-lnghttp2\"\n     if ! test -f \"${current_dir}/prefix/lib/libnghttp2.a\"; then\n         echo -e \"${blue}Building nghttp2...${nocolor}\"\n-        git clone --depth 1 --branch v1.68.0 https://github.com/nghttp2/nghttp2 nghttp2\n+        git clone --depth 1 --branch v1.69.0 https://github.com/nghttp2/nghttp2 nghttp2\n         cd nghttp2\n         autoreconf -i\n         ./configure --host=${host} --enable-lib-only --prefix=${current_dir}/prefix\n@@ -56,13 +56,13 @@ fi\n # Curl\n if ! test -f \"${current_dir}/prefix/lib/libcurl.a\"; then\n     echo -e \"${blue}Building curl...${nocolor}\"\n-    git clone --depth 1 --branch curl-8_18_0  https://github.com/curl/curl curl\n+    git clone --depth 1 --branch curl-8_21_0 https://github.com/curl/curl curl\n     cd curl\n     autoreconf -i\n     if [[ ${ENABLE_NGHTTP2} -gt 0 ]]; then\n         export CPPFLAGS=\"-DNGHTTP2_STATICLIB\"\n     fi\n-    ./configure --host=${host} --disable-ntlm --without-libpsl --prefix=${current_dir}/prefix --with-wolfssl=\"${current_dir}/prefix\"\n+    CFLAGS=\"-D_WIN32_WINNT=0x600\" ./configure --host=${host} --disable-ntlm --without-libpsl --prefix=${current_dir}/prefix --with-wolfssl=\"${current_dir}/prefix\"\n     make -j${threads} install\n     cd ..\n     if test -f \"${current_dir}/prefix/lib/libcurl.a\"; then\n```\n\nThe previous version worked fine.\n\n### I expected the following\n\nThe program to build\n\n### curl/libcurl version\n\ncurl-8_21_0\n\n### operating system\n\nWindows 32 bit",
+        "url": "https://github.com/curl/curl/issues/22249"
+    },
+    {
+        "id": 4792013941,
+        "number": 22243,
+        "title": "CURLOPT_SSH_PRIVATE_KEYFILE discrapencies",
+        "state": "closed",
+        "created_at": "2026-07-02T06:55:15Z",
+        "updated_at": "2026-07-02T10:37:41Z",
+        "closed_at": "2026-07-02T10:37:41Z",
+        "author": "bagder",
+        "comments": 0,
+        "labels": [
+            "SCP/SFTP"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### I did this\n\nThe man page for `CURLOPT_SSH_PRIVATE_KEYFILE` states:\n\n> If not used, libcurl defaults to $HOME/.ssh/id_rsa or $HOME/.ssh/id_dsa if the HOME environment variable is set, and in the current directory if HOME is not set. \n\nBut it turns out this is only true for the libssh2 backend. The libssh alternative makes no such attempt.\n\nRelying on the `HOME` environment variable and checking for the presence of files were always odd things for libcurl to do, but having the two backends act differently in this regard is an outright bug.\n\nI am tempted to remove the reliance of HOME and go with the libssh take for both, but I'm scared that  will break too many applications.\n\n### I expected the following\n\nBoth backends to act similarly and as documented.\n\n### curl/libcurl version\n\ngit master but since a long time back\n\n### operating system\n\nindependent",
+        "url": "https://github.com/curl/curl/issues/22243"
+    },
+    {
+        "id": 4778436106,
+        "number": 22228,
+        "title": "Potential integer overflow in dynbuf growth logic",
+        "state": "closed",
+        "created_at": "2026-06-30T16:04:51Z",
+        "updated_at": "2026-06-30T21:11:55Z",
+        "closed_at": "2026-06-30T21:11:55Z",
+        "author": "alor29",
+        "comments": 4,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "### Summary\nI observed a potential integer overflow in curl’s dynbuf growth logic.\n\n### Details\n- The guard I mentioned earlier was added in my own proof-of-concept harness, not part of standard curl.\n- This condition appears to be network-triggerable, since curl processes lengths from remote input.\n- Because this may be security-sensitive, I have reported full details privately to the curl security team.\n\n### Environment\n- curl version: 7.81.0\n- Operating system: Ubuntu 22.04, kernel 6.8.0-124-generic\n\n### Next Steps\nPlease refer to my private disclosure for PoC, sanitizer output, and suggested fix.\n",
+        "url": "https://github.com/curl/curl/issues/22228"
+    }
+]

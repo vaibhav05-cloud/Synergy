@@ -1,0 +1,242 @@
+[
+    {
+        "sha": "3081f530ca5082cfc1e3e9814084dc4ea3ce9919",
+        "author": "csoler",
+        "email": "csoler@users.sourceforge.net",
+        "date": "2026-07-08T19:33:51Z",
+        "message": "Merge pull request #3258 from csoler/v0.6-IdentityDialog3\n\nadded warning for identities using deprecated signature format",
+        "url": "https://github.com/RetroShare/RetroShare/commit/3081f530ca5082cfc1e3e9814084dc4ea3ce9919"
+    },
+    {
+        "sha": "c11ae6b0712abc22f0035b40dc28746e0f0f2689",
+        "author": "csoler",
+        "email": "csoler@users.sourceforge.net",
+        "date": "2026-07-07T19:56:38Z",
+        "message": "Merge pull request #3252 from jolavillette/FilterChatSystemMessages\n\nfilter joined/left system messages in chat rooms",
+        "url": "https://github.com/RetroShare/RetroShare/commit/c11ae6b0712abc22f0035b40dc28746e0f0f2689"
+    },
+    {
+        "sha": "711589283adefd251f434ad3a3f98ba76d99840d",
+        "author": "jolavillette",
+        "email": "jolavillette@gmail.com",
+        "date": "2026-05-11T05:48:31Z",
+        "message": "filter joined/left system messages in chat rooms",
+        "url": "https://github.com/RetroShare/RetroShare/commit/711589283adefd251f434ad3a3f98ba76d99840d"
+    },
+    {
+        "sha": "bb47e094b349aaee04aa94e8aff9bd7a0d0257c3",
+        "author": "Gioacchino Mazzurco",
+        "email": "gio@retroshare.cc",
+        "date": "2026-07-05T16:20:38Z",
+        "message": "Merge pull request #3265 from jolavillette/fix/gui-own-version-macros\n\nfix(gui): give RetroShare GUI its own version, independent from libretroshare",
+        "url": "https://github.com/RetroShare/RetroShare/commit/bb47e094b349aaee04aa94e8aff9bd7a0d0257c3"
+    },
+    {
+        "sha": "d7b9e0352883c0310f00162dd30f09522410c102",
+        "author": "csoler",
+        "email": "csoler@users.sourceforge.net",
+        "date": "2026-07-04T18:44:50Z",
+        "message": "Merge pull request #3264 from jolavillette/gxstrans-normalize-date-format\n\nGxstrans normalize date format",
+        "url": "https://github.com/RetroShare/RetroShare/commit/d7b9e0352883c0310f00162dd30f09522410c102"
+    },
+    {
+        "sha": "dd5add516e86fcd24560ba6f10a0b07a3cf2ff15",
+        "author": "jolavillette",
+        "email": "jolavillette@gmail.com",
+        "date": "2026-07-04T09:40:36Z",
+        "message": "fix(gui): give RetroShare GUI its own version, independent from libretroshare\n\nThe GUI reported RS_HUMAN_READABLE_VERSION (a libretroshare macro) as \"the\nRetroShare version\". In the CMake build libretroshare exports RS_MAJOR_VERSION\nas a PUBLIC define, so the GUI inherited the engine's version and displayed it\nas its own: About showed the same number for both.\n\nGive the GUI its own version, as discussed:\n\n- Add retroshare-gui/src/rsguiversion.h defining RS_GUI_VERSION with a built-in\n  default, so every build path (including qmake/Android) compiles even without\n  version injection.\n- Inject RS_GUI_VERSION from 'git describe' of the super-project in both CMake\n  (retroshare-gui/CMakeLists.txt) and qmake (retroshare.pri).\n- RsApplication::retroshareVersion() now returns the GUI's own version instead\n  of libretroshare's.\n- About (HelpDialog) shows the GUI version at the top; libretroshare's version\n  is listed among the other libraries, like any dependency. AboutWidget already\n  displayed both lines and is now correct automatically.\n\nlibretroshare needs no change: it already exposes its own version through\nRsInit::libRetroShareVersion() in both build systems.\n\nCo-Authored-By: Claude Opus 4.8 (1M context) <noreply@anthropic.com>",
+        "url": "https://github.com/RetroShare/RetroShare/commit/dd5add516e86fcd24560ba6f10a0b07a3cf2ff15"
+    },
+    {
+        "sha": "2b1fb920af500110862cb0538f7230caccf7574e",
+        "author": "jolavillette",
+        "email": "jolavillette@gmail.com",
+        "date": "2026-07-04T09:14:17Z",
+        "message": "gui: replace GxsTransportStatistics 4s auto-refresh with manual Refresh\n\nThe RsAutoUpdatePage(4000) base class polled getGroupStatistics() every\n4 seconds. That call issues blocking GXS token requests (up to 5s per\ngroup) and had no anti-reentrancy guard, so background refreshes piled\nup, saturated the GXS queue and froze the whole UI.\n\nRevert to MainPage and drive updates on demand instead:\n - a Refresh button\n - showEvent(), so the page refreshes when navigated to\n - settingsChanged(), kept so a date-format change re-renders\n\nDate normalization (formatDateTime) is preserved.\n\nCo-Authored-By: Claude Opus 4.8 (1M context) <noreply@anthropic.com>",
+        "url": "https://github.com/RetroShare/RetroShare/commit/2b1fb920af500110862cb0538f7230caccf7574e"
+    },
+    {
+        "sha": "6e6e1403be189c27eec2ce8047be4b868f8d7fb3",
+        "author": "jolavillette",
+        "email": "jolavillette@gmail.com",
+        "date": "2026-05-26T16:33:09Z",
+        "message": "gui: format dates in GxsTransportStatistics using DateTime and enable auto-update",
+        "url": "https://github.com/RetroShare/RetroShare/commit/6e6e1403be189c27eec2ce8047be4b868f8d7fb3"
+    },
+    {
+        "sha": "af44d4c0e60e2a05c07c5c233a2f2e6cd862c421",
+        "author": "csoler",
+        "email": "csoler@users.sourceforge.net",
+        "date": "2026-07-03T21:22:20Z",
+        "message": "Merge pull request #3261 from RetroShare/revert-3254-colored-links-v5\n\nRevert \"Added colored links feature\"",
+        "url": "https://github.com/RetroShare/RetroShare/commit/af44d4c0e60e2a05c07c5c233a2f2e6cd862c421"
+    },
+    {
+        "sha": "6ec6de5d0fa5d51b07c4efc0b86509245f015e54",
+        "author": "csoler",
+        "email": "csoler@users.sourceforge.net",
+        "date": "2026-07-03T21:13:00Z",
+        "message": "Revert \"Added colored links feature\"",
+        "url": "https://github.com/RetroShare/RetroShare/commit/6ec6de5d0fa5d51b07c4efc0b86509245f015e54"
+    },
+    {
+        "sha": "6a9c354a85d4f14f6f0ee319a217ac6f3ace84d3",
+        "author": "csoler",
+        "email": "csoler@users.sourceforge.net",
+        "date": "2026-07-03T20:51:29Z",
+        "message": "Merge pull request #3254 from defnax/colored-links-v5\n\nAdded colored links feature",
+        "url": "https://github.com/RetroShare/RetroShare/commit/6a9c354a85d4f14f6f0ee319a217ac6f3ace84d3"
+    },
+    {
+        "sha": "348c9e7e9428f5fadbca24da65313affba20aedf",
+        "author": "csoler",
+        "email": "csoler@users.sourceforge.net",
+        "date": "2026-07-03T16:25:26Z",
+        "message": "Merge pull request #3256 from jolavillette/fix/shared-files-popular-files-crash\n\nfix(SharedFiles): stop SIGSEGV when toggling \"Popular files\" after a search",
+        "url": "https://github.com/RetroShare/RetroShare/commit/348c9e7e9428f5fadbca24da65313affba20aedf"
+    },
+    {
+        "sha": "874b320ae3353c202ce3f54600902e69d8bf5b72",
+        "author": "csoler",
+        "email": "csoler@users.sourceforge.net",
+        "date": "2026-07-03T14:36:03Z",
+        "message": "added a warning for channels to be re-edited due to admin signature checking problem",
+        "url": "https://github.com/RetroShare/RetroShare/commit/874b320ae3353c202ce3f54600902e69d8bf5b72"
+    },
+    {
+        "sha": "a17464c3160ecee47e27bf01ae38e6409a1bf3e4",
+        "author": "csoler",
+        "email": "csoler@users.sourceforge.net",
+        "date": "2026-07-02T20:12:50Z",
+        "message": "added warning for identities using deprecated signature format",
+        "url": "https://github.com/RetroShare/RetroShare/commit/a17464c3160ecee47e27bf01ae38e6409a1bf3e4"
+    },
+    {
+        "sha": "874d204b85d424f45d85b499b1de527cbe4ea200",
+        "author": "jolavillette",
+        "email": "jolavillette@gmail.com",
+        "date": "2026-07-02T18:08:38Z",
+        "message": "fix(SharedFiles): stop SIGSEGV when toggling \"Popular files\" after a search\n\nSearching a keyword and then clicking \"Popular files\" crashed in\nQSortFilterProxyModel::parent() (via rowsAboutToBeRemoved).\n\nSFDSortFilterProxyModel::setUploadedOnly() called invalidateFilter(),\nwhich runs Qt's incremental filter_changed row-removal path over the\ncurrently-mapped tree. After a search the tree is fully expanded and\ncarries live persistent proxy indexes; removing an interior directory\nnode frees the child mapping structs those indexes still point at, and\nthe removal bookkeeping then dereferences freed memory -> SIGSEGV. The\nplain-search path never crashed because it is always preceded by a full\nmodel reset; the \"Popular files\" toggle was the only path that\nre-filtered without one (deliberately, to avoid a slow re-crawl).\n\nUse invalidate() instead: it rebuilds the whole proxy mapping via the\nlayoutAboutToBeChanged/layoutChanged protocol, which remaps persistent\nindexes safely and never emits rowsAboutToBeRemoved. It rebuilds only\nthe proxy mapping (lazy, near-instant) and does not re-crawl the source\nmodel, so the performance the toggle path was protecting is preserved.\n\nCo-Authored-By: Claude Opus 4.8 (1M context) <noreply@anthropic.com>",
+        "url": "https://github.com/RetroShare/RetroShare/commit/874d204b85d424f45d85b499b1de527cbe4ea200"
+    },
+    {
+        "sha": "460afb78246769a13d2021a7468c5dc1cd301bda",
+        "author": "defnax",
+        "email": "9952056+defnax@users.noreply.github.com",
+        "date": "2026-06-27T13:33:28Z",
+        "message": "fix qt6 compile",
+        "url": "https://github.com/RetroShare/RetroShare/commit/460afb78246769a13d2021a7468c5dc1cd301bda"
+    },
+    {
+        "sha": "177141a0427b78639e77a0797105ffe5b96e6892",
+        "author": "defnax",
+        "email": "9952056+defnax@users.noreply.github.com",
+        "date": "2026-06-27T13:07:34Z",
+        "message": "Fix qt6 compile",
+        "url": "https://github.com/RetroShare/RetroShare/commit/177141a0427b78639e77a0797105ffe5b96e6892"
+    },
+    {
+        "sha": "74b8ebd31a3dfa18ba33d18f3a5874a4f04bce71",
+        "author": "defnax",
+        "email": "9952056+defnax@users.noreply.github.com",
+        "date": "2026-06-27T12:42:55Z",
+        "message": "Added colored links feature\n\nFixed to not send the color, only locally",
+        "url": "https://github.com/RetroShare/RetroShare/commit/74b8ebd31a3dfa18ba33d18f3a5874a4f04bce71"
+    },
+    {
+        "sha": "d20c783769c092d2c40f4c48435ca907b86b7a31",
+        "author": "csoler",
+        "email": "csoler@users.sourceforge.net",
+        "date": "2026-06-25T11:40:22Z",
+        "message": "Merge pull request #3245 from jolavillette/fix/qt6-qdatetime-settime_t\n\nQt6: replace removed QDateTime::setTime_t() with setSecsSinceEpoch()",
+        "url": "https://github.com/RetroShare/RetroShare/commit/d20c783769c092d2c40f4c48435ca907b86b7a31"
+    },
+    {
+        "sha": "78aa3f4d14b0b826318344dd95af331e4d5cf833",
+        "author": "csoler",
+        "email": "csoler@users.sourceforge.net",
+        "date": "2026-06-24T07:25:20Z",
+        "message": "Merge pull request #3241 from jolavillette/fix/rsgraphwidget-area-fill\n\nfix(gui): RSGraphWidget area fill — close polygon on a flat baseline",
+        "url": "https://github.com/RetroShare/RetroShare/commit/78aa3f4d14b0b826318344dd95af331e4d5cf833"
+    },
+    {
+        "sha": "d788d23204035ce9f5f4192c5cffe2e470f06bd2",
+        "author": "csoler",
+        "email": "csoler@users.sourceforge.net",
+        "date": "2026-06-23T16:14:38Z",
+        "message": "Merge pull request #3231 from jolavillette/fix/macos-camera-mic-permissions\n\nfix(macos): add camera & microphone usage descriptions to Info.plist",
+        "url": "https://github.com/RetroShare/RetroShare/commit/d788d23204035ce9f5f4192c5cffe2e470f06bd2"
+    },
+    {
+        "sha": "07197c8bff21ab5b5a8767844ad9751aead6940b",
+        "author": "csoler",
+        "email": "csoler@users.sourceforge.net",
+        "date": "2026-06-22T21:12:14Z",
+        "message": "Merge pull request #3240 from csoler/v0.6-FeedItem2\n\nAdd a TLS attempt item to display connections without certificates in a separate more appropriate item.",
+        "url": "https://github.com/RetroShare/RetroShare/commit/07197c8bff21ab5b5a8767844ad9751aead6940b"
+    },
+    {
+        "sha": "0c0ad41f77fbceb53d046f3c3e2b2a4867febb1f",
+        "author": "jolavillette",
+        "email": "jolavillette@gmail.com",
+        "date": "2026-06-20T16:14:53Z",
+        "message": "fix(gui): replace QDateTime::setTime_t with setSecsSinceEpoch for Qt6\n\nQDateTime::setTime_t() was deprecated in Qt 5.8 and removed in Qt6.\nsetSecsSinceEpoch() exists since Qt 5.8 so the GUI keeps building\nagainst both Qt5 and Qt6.\n\nCo-Authored-By: Claude Opus 4.8 (1M context) <noreply@anthropic.com>",
+        "url": "https://github.com/RetroShare/RetroShare/commit/0c0ad41f77fbceb53d046f3c3e2b2a4867febb1f"
+    },
+    {
+        "sha": "5ce0460ee3c65de196405d33d68ea431f45adcea",
+        "author": "jolavillette",
+        "email": "jolavillette@gmail.com",
+        "date": "2026-06-06T11:15:05Z",
+        "message": "fix(macos): add camera & microphone usage descriptions to Info.plist\n\nmacOS 10.14+ terminates the app with SIGABRT when it accesses the camera or microphone without the matching usage-description keys in the bundle's Info.plist. Any VOIP audio/video call therefore crashes on macOS as soon as the capture device is opened (AVCaptureDeviceInput via QVideoInputDevice::start()).\n\nAdd NSCameraUsageDescription and NSMicrophoneUsageDescription so the system shows the standard permission prompt instead of aborting the process.\n\nCo-Authored-By: Claude Opus 4.8 (1M context) <noreply@anthropic.com>",
+        "url": "https://github.com/RetroShare/RetroShare/commit/5ce0460ee3c65de196405d33d68ea431f45adcea"
+    },
+    {
+        "sha": "4dca624abf5da3783ce265053507f52fb45d191f",
+        "author": "csoler",
+        "email": "csoler@users.sourceforge.net",
+        "date": "2026-06-19T07:47:10Z",
+        "message": "updated CMakeLists to TLSItem",
+        "url": "https://github.com/RetroShare/RetroShare/commit/4dca624abf5da3783ce265053507f52fb45d191f"
+    },
+    {
+        "sha": "2c8210ce29d1a0392ed4bf4b47330acb83b94a72",
+        "author": "jolavillette",
+        "email": "jolavillette@gmail.com",
+        "date": "2026-06-18T21:18:43Z",
+        "message": "fix(gui): RSGraphWidget area fill — close polygon on a flat baseline\n\nThe PLAIN (area) paint style closed the fill polygon by prepending only the\nbottom-right corner, so the polygon's closing edge ran from the bottom-right\ncorner straight to the leftmost data point. Whenever that leftmost point was\nhigh, this drew a spurious diagonal across the whole graph, with the real curve\nclipped above and/or below it.\n\nClose the area along a flat baseline instead: add a baseline point under the\nfirst (leftmost) and last (rightmost) data points, guarded on a non-empty set.\n\nThis affects every area-style RSGraph, but it is most visible in the VOIP\nplugin's config-panel \"Required bandwidth\" graph: the value swings widely\n(x264 variable bitrate) so the leftmost point is often high, making the\ndiagonal appear intermittently there.\n\nCo-Authored-By: Claude Opus 4.8 (1M context) <noreply@anthropic.com>",
+        "url": "https://github.com/RetroShare/RetroShare/commit/2c8210ce29d1a0392ed4bf4b47330acb83b94a72"
+    },
+    {
+        "sha": "09f8d90b12197a858e18a3fa939f79d1dc49b4f5",
+        "author": "csoler",
+        "email": "csoler@users.sourceforge.net",
+        "date": "2026-06-17T16:40:36Z",
+        "message": "fixed file header",
+        "url": "https://github.com/RetroShare/RetroShare/commit/09f8d90b12197a858e18a3fa939f79d1dc49b4f5"
+    },
+    {
+        "sha": "89a1f5482cb67207ce250704ecbf354977c6c1bd",
+        "author": "csoler",
+        "email": "csoler@users.sourceforge.net",
+        "date": "2026-06-17T16:39:15Z",
+        "message": "removed spurious yml file from 3213",
+        "url": "https://github.com/RetroShare/RetroShare/commit/89a1f5482cb67207ce250704ecbf354977c6c1bd"
+    },
+    {
+        "sha": "fc696f8dae1a1931af16ac286226a8a10c152639",
+        "author": "csoler",
+        "email": "csoler@users.sourceforge.net",
+        "date": "2026-06-17T16:33:04Z",
+        "message": "merging with upstream/master",
+        "url": "https://github.com/RetroShare/RetroShare/commit/fc696f8dae1a1931af16ac286226a8a10c152639"
+    },
+    {
+        "sha": "b307edc5d6bec54f91324bbb8cf4b6390369547d",
+        "author": "csoler",
+        "email": "csoler@users.sourceforge.net",
+        "date": "2026-06-17T16:27:46Z",
+        "message": "added TlsItem files",
+        "url": "https://github.com/RetroShare/RetroShare/commit/b307edc5d6bec54f91324bbb8cf4b6390369547d"
+    }
+]

@@ -1,0 +1,352 @@
+[
+    {
+        "id": 4543280413,
+        "number": 4873,
+        "title": "Adding Portuguese (Portugal) translation",
+        "state": "open",
+        "created_at": "2026-05-28T19:43:15Z",
+        "updated_at": "2026-05-29T11:10:32Z",
+        "closed_at": null,
+        "author": "RafaelPaulo12",
+        "comments": 2,
+        "labels": [
+            "feature idea"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "Hi! I'd like to contribute a Portuguese (Portugal) (`pt-PT`) translation for Coral.\n\nAs a `pt-PT` speaker, I noticed this locale is not yet available in the `locales/` directory, and I'd like to add it to make Coral more accessible to Portuguese-speaking communities in Portugal.\n\n### What I plan to do\n\n- Add `pt-PT` FTL translation files to `locales/` and `server/src/core/server/locales/`\n- Use the `./scripts/i18n/validate.ts pt-PT` script to ensure all keys are covered\n- Add `pt-PT` to `common/lib/helpers/i18n/locales.ts` once coverage is sufficient\n\n### Notes\n\n- I'm aware that strings must not be changed after being committed — new strings will use new IDs as per the contribution guidelines\n- I'll follow all the conventions described in the Contributing a Translation guide\n\nPlease let me know if there's anything specific you'd like me to address or if this is already being worked on. Happy to collaborate!",
+        "url": "https://github.com/coralproject/talk/issues/4873"
+    },
+    {
+        "id": 4269180831,
+        "number": 4864,
+        "title": "Feature idea: Delete own comments",
+        "state": "open",
+        "created_at": "2026-04-15T13:15:22Z",
+        "updated_at": "2026-04-15T13:17:14Z",
+        "closed_at": null,
+        "author": "helderdb",
+        "comments": 0,
+        "labels": [
+            "feature idea"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "## Search Terms\n\nUser delete own comments\n\n## Suggestion\n\nAs previously described in https://github.com/coralproject/talk/issues/1534, we want a user to be able to delete their own comments.\nCurrently there's no endpoints to support this.\n\n## Use Cases\nA user should be able to delete (and tombstone) their own comments.\n\nThis sums it up pretty well in the original issue:\nDELETE MY COMMENT | As a commenter, I want to delete my comment so that it doesn't show publicly anymore\n```\n- Creates a tombstone\n- The Delete button is probably in the Edit button area\n- Single default tombstone language\n- Moderator can see the text of the comment that was removed in the user drawer\n- Replies stay visible\n```\n\nMOD TOMBSTONE OPTION | As a moderator, I want the ability to tombstone comments I reject so that I can be transparent about my actions.\n```\n- Dropdown template language reject options instead of the single Reject button\n- Option chosen is shown in the comment card in the admin panel\n- Replies stay visible\n```\n\nHIDE DELETED | As a readeer, I want to hide all deleted comments and their replies so that my reading experience isn’t too cluttered by things I can’t read\n```\n- Add ‘Hide deleted comments and their replies’ to Viewing Options, like Off Topic\n```\n\nCONFIG DELETE | As an org, I want comment deletion to be configurable, so I can decide how this functions\n```\n- Add to Configure page \"Allow commenters to delete their comments\" (site-wide)\n- Add to Stream configure \"Allow commenters to delete their comments\" (stream-only)\n- Our default for these would be 'off'\n```\n\nAdditionally, I would also add the time someone can delete their own comment just like the edit timeframe",
+        "url": "https://github.com/coralproject/talk/issues/4864"
+    },
+    {
+        "id": 4103012781,
+        "number": 4860,
+        "title": "CommentCache.sortWithRedis can seriously degrade performance and seems unnecessary",
+        "state": "open",
+        "created_at": "2026-03-19T17:02:54Z",
+        "updated_at": "2026-03-19T17:04:25Z",
+        "closed_at": null,
+        "author": "fdintino",
+        "comments": 0,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "The code that [sorts comments using redis keys](https://github.com/coralproject/talk/blob/da5c0398a252339f5b727eaa795d65f9730e4482/server/src/core/server/data/cache/commentCache.ts#L491-L532) can result in what seems like an excessive number of redis calls. On a recent `AllCommentsTabQuery` for a stream with 900 comments there were a total of 1,815 ZRANGE, ORGANIZE, and EXISTS calls made.\n\nWhat's more, I'm not quite clear on what value the redis sort logic provides. If the sort cache key doesn't exist it falls back to a straightforward array sort ([`CommentCache.sortComments`](https://github.com/coralproject/talk/blob/da5c0398a252339f5b727eaa795d65f9730e4482/server/src/core/server/data/cache/commentCache.ts#L875-L898)) using data that has already been queried (so it's not as though the redis sort is taking the place of potentially slower mongo queries).\n\nI've opened this ticket to get confirmation that I'm not overlooking something with the cache-based comment sorting. If it turns out to be unnecessary I'd be happy to open a pull request removing this code.",
+        "url": "https://github.com/coralproject/talk/issues/4860"
+    },
+    {
+        "id": 4097805228,
+        "number": 4859,
+        "title": "Ability to attach files to comment posts",
+        "state": "open",
+        "created_at": "2026-03-18T21:27:54Z",
+        "updated_at": "2026-03-18T21:27:54Z",
+        "closed_at": null,
+        "author": "trumanharry",
+        "comments": 0,
+        "labels": [
+            "feature idea"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "Would be great to add a feature that allows users to attach images, files, etc. to their comments. Thanks for considering this.",
+        "url": "https://github.com/coralproject/talk/issues/4859"
+    },
+    {
+        "id": 4090900802,
+        "number": 4858,
+        "title": "Standalone /my-profile page for comment history and replies (outside embed)",
+        "state": "open",
+        "created_at": "2026-03-17T20:04:41Z",
+        "updated_at": "2026-03-17T20:04:41Z",
+        "closed_at": null,
+        "author": "SamHobbsOrg",
+        "comments": 0,
+        "labels": [
+            "feature idea"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "## Description\n\nI am a programmer but this is posted in the role of a Los Angeles Times subscriber. The LA Times uses Coral Talk.\n\nThis has been generated by Perplexity AI and I have modified the suggestion.\n\nAdd a dedicated, bookmarkable page (e.g., `/my-profile` or `/my-comments`) where logged-in users can directly view their comment history, reactions, and replies without the need to load an article's comment embed first.\n\n### Use Case\n- Users on sites like LA Times (which uses Coral Talk) currently must open an article's comments, then click the \"My Profile\" tab to see replies/notifications.\n- A standalone page would allow direct access via a URL, improving UX for checking notifications (like on mobile or via bookmark).\n\n### Current Behavior\n\"My Profile\" only exists as a tab inside the comment stream widget (per docs: https://legacy.docs.coralproject.net/talk/commenter-features/). No direct route exposed.\n\nWhat happens is that I often do not see a reply until after the time has expired for me to reply. It would be better if I had a separate page I could open every day to see replies.\n\n### Proposed Solution\n- New route `/my-profile` that loads the user's own comments stream (via existing GraphQL?).\n- Reuse the existing \"My Profile\" tab content: history, reactions, replies, email settings, ignored users.\n- Optional: Site admins could customize the path or disable it.\n\n### Benefits\n- Better notification handling (e.g., email deep-links to this page).\n- Reduces friction for active commenters.\n- Aligns with modern apps (e.g., Reddit's profile pages).\n- Enables replies to replies in a timely manner.\n\nI will be happy to provide further implementation details if possible.\n",
+        "url": "https://github.com/coralproject/talk/issues/4858"
+    },
+    {
+        "id": 4026665103,
+        "number": 4856,
+        "title": "Authenticated GraphQL responses may be cached across users when behind a CDN",
+        "state": "open",
+        "created_at": "2026-03-05T08:22:34Z",
+        "updated_at": "2026-03-09T09:21:33Z",
+        "closed_at": null,
+        "author": "sashor",
+        "comments": 1,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "<!--\nPlease note that but submitting a bug report, you agree to our Code of Conduct: http://code-of-conduct.voxmedia.com/\n\nWhen submitting a bug report, provide as much detail as possible, including a screenshot or copy-paste of any related error messages, logs, or other output that might be related. Places to look for information include your browser console, server console, and network logs. The more information you can give the better.\n\nPlease help us by doing the following steps before logging an issue:\n  * Search for other similar issues: https://github.com/coralproject/talk/search\n  * Read our docs: https://docs.coralproject.net\n\nPlease fill in the *entire* template below.\n-->\nWhen Coral is deployed behind a CDN or reverse proxy with shared caching enabled, authenticated GraphQL responses may be cached without varying by the Authorization header.\n\nThis can potentially lead to responses being reused across different authenticated users if the caching layer does not differentiate requests based on authentication context.\n\nAdditionally, if a public GraphQL request is cached first, a subsequent authenticated request may receive the cached public response depending on CDN configuration.\n\n**Expected behavior:**\nGraphQL responses should be explicitly varied based on authentication context to prevent shared caching between:\n\n- Authenticated users\n\n- Public and authenticated requests\n\nResponses should either:\n\n- Include ```Vary: Authorization```\n\n- Or be marked as ```Cache-Control: private```\n\n- Or otherwise prevent shared caching between authenticated users\n\n**Actual behavior:**\nWhen GraphQL cache headers are enabled and Coral is deployed behind a shared caching layer (CDN / reverse proxy), authenticated responses do not explicitly vary by Authorization.\n\nAs a result, responses may be stored and reused across users depending on the caching configuration.\n\nFor example, fields such as ```viewerReactionPresence``` or other user-specific fields may reflect the state of a previously cached response rather than the current authenticated user.\n\n**Related Issues:** <!-- Did you find other bugs that looked similar? -->\nNone found.\n\n**Versions:**\n\n- NodeJS: 20.18.1\n- NPM: 10.8.2\n- MongoDB: 8.0.19\n- Redis: N/A\n- Browser: N/A\n- OS: macOS\n",
+        "url": "https://github.com/coralproject/talk/issues/4856"
+    },
+    {
+        "id": 3834058510,
+        "number": 4855,
+        "title": "Coral automatically tracking internal events to our RudderStack instance",
+        "state": "open",
+        "created_at": "2026-01-20T14:48:24Z",
+        "updated_at": "2026-01-20T14:56:36Z",
+        "closed_at": null,
+        "author": "zgjimgjonbalaj",
+        "comments": 0,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "We've been trying to figure out why we were getting events like `fetch.useLiveNotificationsPollingQuery` and others sent to our RudderStack instance without luck. This was until we accidentally clicked on our Coral comments form and the XHR tab lit up like a Christmas tree.  Turns out that\n\n[https://github.com/coralproject/talk/blob/develop/client/src/core/client/stream/App/listeners/OnEventsForRudderStack.tsx#L20](https://github.com/coralproject/talk/blob/develop/client/src/core/client/stream/App/listeners/OnEventsForRudderStack.tsx#L20)\n\nis sending these internal events via the global window.rudderanalytics without any checks or configuration (that I could find). Seems like this is an easy way to clutter/pollute analytics, is there a way to disable entirely?\n\n**Expected behavior:**\n`window.rudderanalytics` is defined by RudderStack JS SDK and cannot be renamed/disabled without breaking the functionality of RudderStack. Additionally, overriding the functions and performing checks is kind of cumbersome and would like to avoid. Coral should offer a way to manually enable `window.rudderanalytics` and thus by default disable entirely.\n\n**Actual behavior:**\nCoral sends a myriad of events to our instance for all users.\n\n",
+        "url": "https://github.com/coralproject/talk/issues/4855"
+    },
+    {
+        "id": 3810884812,
+        "number": 4854,
+        "title": "gmail duplicate detection will ban regular gmail addresses with numbers & letters",
+        "state": "closed",
+        "created_at": "2026-01-13T22:53:58Z",
+        "updated_at": "2026-01-15T01:24:11Z",
+        "closed_at": "2026-01-15T01:24:11Z",
+        "author": "MrBryan",
+        "comments": 3,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "Latest version, running from docker\n\nSeveral gmail users were banned despite no obvious earlier version of the gmail  nor a + sign or period in the address.\n\nDisabled the feature... suspect it might be those with numbers in the gmail address\n\n<img width=\"1956\" height=\"948\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/9829a3cb-ee1d-4fb5-b677-fd9a1a00e21f\" />",
+        "url": "https://github.com/coralproject/talk/issues/4854"
+    },
+    {
+        "id": 3731660561,
+        "number": 4846,
+        "title": "Development Environment Set-Up | Help Needed",
+        "state": "closed",
+        "created_at": "2025-12-15T18:36:59Z",
+        "updated_at": "2025-12-18T15:25:24Z",
+        "closed_at": "2025-12-18T15:25:24Z",
+        "author": "trumanharry",
+        "comments": 0,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "Hello,\n\nI'm having tremendous difficulty setting up a dev environment so I can make code edits test them. I've tried on my machine, codesandbox and git codespaces. I've tried building from source and creating a new docker image, building with docker image but using specific codebase folders under volumes in docker-compose.yml, and running everything from codebase and starting databases manually. Nothing is working.\n\nCan someone please give me some guidance on the current (and simplest) approach to setting up a dev environment. I would really appreciate any help! Thanks. \n",
+        "url": "https://github.com/coralproject/talk/issues/4846"
+    },
+    {
+        "id": 3724534765,
+        "number": 4845,
+        "title": "Enable in-page & email notifications | Both Active at same time",
+        "state": "open",
+        "created_at": "2025-12-12T19:12:05Z",
+        "updated_at": "2025-12-12T19:12:05Z",
+        "closed_at": null,
+        "author": "trumanharry",
+        "comments": 0,
+        "labels": [
+            "feature idea"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "Hello, I've been working on a project to configure Coral to have both in-page and email notifications active for all users by default. Having a lot of trouble getting my code edits work. I've tried using a local dev with docker image and hot loading specific volumes from codebase. I've also tried creating a new docker image with changes. Hitting walls with both approaches. Has anyone else tried to do this? Thanks! \n\nSee attached plan:\n\n[12-11_notification_both_plan.md](https://github.com/user-attachments/files/24133864/12-11_notification_both_plan.md)\n",
+        "url": "https://github.com/coralproject/talk/issues/4845"
+    },
+    {
+        "id": 3647790797,
+        "number": 4834,
+        "title": "Search Bar for Comment Threads | New Feature Idea",
+        "state": "open",
+        "created_at": "2025-11-20T15:26:46Z",
+        "updated_at": "2025-11-20T15:26:46Z",
+        "closed_at": null,
+        "author": "trumanharry",
+        "comments": 0,
+        "labels": [
+            "feature idea"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "Hello, it would be great to have a search bar in comment module that would allow users to use key words to search long comment threads. Thanks for considering!",
+        "url": "https://github.com/coralproject/talk/issues/4834"
+    },
+    {
+        "id": 3617950152,
+        "number": 4831,
+        "title": "No title can be fetched",
+        "state": "open",
+        "created_at": "2025-11-12T19:39:53Z",
+        "updated_at": "2025-11-12T19:55:48Z",
+        "closed_at": null,
+        "author": "MrBryan",
+        "comments": 2,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "Hi there i found this similar issue: \n\nhttps://github.com/coralproject/talk/issues/1459\n\nI want to try to see if cloudflare is blocking the scraper and whitelist but I can't seem to filter it by user-agent containing Coral - what can I watch for?\n\n\n**Expected behavior:**\n\nEmbedded story creates thread with title fetched from <title> or meta og:title or meta name=title content=blah\n\n**Actual behavior:**\n\n\"not available\" as title of each thread\n\n**Related Issues:** <!-- Did you find other bugs that looked similar? -->\nhttps://github.com/coralproject/talk/issues/1459\n\n\n\n\n**Versions:**\n\n- NodeJS:22\n- NPM:\n- MongoDB:\n- Redis:\n- Browser: every browser\n- OS:every OS\n",
+        "url": "https://github.com/coralproject/talk/issues/4831"
+    },
+    {
+        "id": 3566800167,
+        "number": 4828,
+        "title": "New CoralProject Discord Community",
+        "state": "open",
+        "created_at": "2025-10-29T16:08:05Z",
+        "updated_at": "2025-10-29T16:08:05Z",
+        "closed_at": null,
+        "author": "trumanharry",
+        "comments": 0,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "Hi everyone, I was searching for a Coral Project developer forum but couldn't find one. So, I just created one on Discord. Hopefully, this can be a helpful community for the open source development community. Feel free to join here: https://discord.gg/u2nDH3evXY",
+        "url": "https://github.com/coralproject/talk/issues/4828"
+    },
+    {
+        "id": 3541522993,
+        "number": 4824,
+        "title": "User Bio | URL Link to User Profile Page",
+        "state": "open",
+        "created_at": "2025-10-22T16:21:22Z",
+        "updated_at": "2025-10-22T16:21:22Z",
+        "closed_at": null,
+        "author": "trumanharry",
+        "comments": 0,
+        "labels": [
+            "feature idea"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "Hello, I would like to add a URL link to the bio pop-up when a user click on the username in the comment thread. Currently, the bio field is stored and displayed as a plain text field. Please consider adding a feature to either change this field to a markdown/ rich text field or add another separate user field that stores and displays a profile page URL. Thanks!\n\n<img width=\"1132\" height=\"658\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/6acf33a2-5a78-4930-b233-06ba9a40ea13\" />",
+        "url": "https://github.com/coralproject/talk/issues/4824"
+    },
+    {
+        "id": 3457950794,
+        "number": 4820,
+        "title": "Custom username change period",
+        "state": "open",
+        "created_at": "2025-09-26T14:41:20Z",
+        "updated_at": "2025-09-26T14:41:20Z",
+        "closed_at": null,
+        "author": "atsbob",
+        "comments": 0,
+        "labels": [
+            "feature idea"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "<img width=\"671\" height=\"84\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/fe862508-ad07-4637-a57e-fb40e2dd31bf\" />\n\nHi there. I'd like to give users the option to change their names, but over a custom time period (e.g. once every 90 days). I think giving only 14 days as an option is limiting and opens up the door for more abuse. Can a custom time period box be considered in the future? Thanks! \n",
+        "url": "https://github.com/coralproject/talk/issues/4820"
+    },
+    {
+        "id": 3402425378,
+        "number": 4812,
+        "title": "Follow Stories- Notifications on comments for followed stories",
+        "state": "open",
+        "created_at": "2025-09-10T13:08:21Z",
+        "updated_at": "2025-09-10T13:08:21Z",
+        "closed_at": null,
+        "author": "trumanharry",
+        "comments": 0,
+        "labels": [
+            "feature idea"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "Hello,\n\nWould be great to have a feature that allows users to follow stories and get notifications on new comments in stories they follow or have read/ commented on before. Thanks for considering. \n\n\n<!--\n\nPlease note that but submitting a feature request, you agree to our Code of Conduct: http://code-of-conduct.voxmedia.com/\n\nPlease help us by doing the following steps before logging an issue:\n  * Search to see if there are similar requests and ideas that are already logged: https://github.com/coralproject/talk/search\n\n-->\n\n## Search Terms\n\n<!-- List of keywords you searched for before creating this issue. Write them down here so that others can find this suggestion more easily -->\n\n## Suggestion\n\n<!-- A summary of what you'd like to see added or changed -->\n\n## Use Cases\n\n<!--\nWhat do you want to use this for?\nWhat shortcomings exist with current approaches?\n-->\n",
+        "url": "https://github.com/coralproject/talk/issues/4812"
+    },
+    {
+        "id": 3343148357,
+        "number": 4805,
+        "title": "Comment moderator access issue",
+        "state": "closed",
+        "created_at": "2025-08-21T20:49:37Z",
+        "updated_at": "2025-08-21T21:33:50Z",
+        "closed_at": "2025-08-21T21:33:50Z",
+        "author": "mcahill-cpu",
+        "comments": 0,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "Hello!\n\nI'm an admin for Coral for my company (America Media) and I am trying to grant a new employee moderator access on our site. I successfully grant it to him and it works, but then a few hours later he's no longer able to moderate, and when I go into Coral his role has changed back from moderator to commenter. I'd appreciate any help fixing this issue! Thank you! ",
+        "url": "https://github.com/coralproject/talk/issues/4805"
+    },
+    {
+        "id": 3290817253,
+        "number": 4801,
+        "title": "Line height CSS?",
+        "state": "closed",
+        "created_at": "2025-08-04T21:21:13Z",
+        "updated_at": "2025-08-14T20:17:49Z",
+        "closed_at": "2025-08-14T20:17:49Z",
+        "author": "atsbob",
+        "comments": 2,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "I'm not too good with the CSS aspect of Coral. I've made a few overriding entries but what is the name of the class I'd need to modify to change the comment body line height from 1.45 to something else? Also is there an easy file or structure I can reference to figure out other class names on my own?\n\n<img width=\"658\" height=\"346\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/d5dfb645-fc33-47d3-850c-9f88bceff99e\" />",
+        "url": "https://github.com/coralproject/talk/issues/4801"
+    },
+    {
+        "id": 3252192603,
+        "number": 4799,
+        "title": "long-lived token",
+        "state": "open",
+        "created_at": "2025-07-22T10:55:44Z",
+        "updated_at": "2025-11-18T16:01:57Z",
+        "closed_at": null,
+        "author": "sofiadipace",
+        "comments": 1,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "Hi there! 😊\n\nI have a quick question regarding the tokens generated using the `coral-cli` ([Doku](https://docs.coralproject.net/cli#coral-cli-tokencreate))\n\nOur team generated some tokens internally, and we assumed they were long-lived since they didn’t include an `exp` claim. \nWhen decoding the token, we see the following claims:\n\n```\n{\n  \"pat\": true,\n  \"iat\": xxxxx,\n  \"nbf\": xxxxxxx,\n  \"iss\": \"xxx\",\n  \"sub\": \"xxxx\",\n  \"jti\": \"xxxx\"\n}\n```\nThey have been valid for a very long time. In the coral docu it stands, that they currently don't expire. However, today we encountered the following error when trying to execute a mutation against Coral:\n```\ncode: \"TOKEN_INVALID\"\ntype: \"INVALID_REQUEST_ERROR\"\n```\nSo our question is: are these tokens truly long-lived, or is there an internal expiration mechanism even without an exp claim?\n\nThanks in advance for your help!",
+        "url": "https://github.com/coralproject/talk/issues/4799"
+    },
+    {
+        "id": 3178794654,
+        "number": 4793,
+        "title": "How to log into Coral Admin with SSO?",
+        "state": "open",
+        "created_at": "2025-06-26T11:28:29Z",
+        "updated_at": "2025-06-26T12:31:22Z",
+        "closed_at": null,
+        "author": "mestru17",
+        "comments": 0,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "We have some SSO users that we have upgraded to moderators, but how do they log into the Coral Admin interface? When they visit Coral Admin, they are presented with the normal email/password login page `/admin/login`, but they don't have a password set up for Coral Admin - they only have an SSO token. Do they need to pass that token in somewhere, or do we need to somehow set up a password for them?\n\nWe somehow managed to create a password for one of the users - it is unclear how, but we hit some Coral Admin page, where it prompted the user to create password, and after that they have been able to log in with that.\n\n**Edit:** I should note that we have integrated with Coral via the GraphQL API and not with the embed.",
+        "url": "https://github.com/coralproject/talk/issues/4793"
+    }
+]

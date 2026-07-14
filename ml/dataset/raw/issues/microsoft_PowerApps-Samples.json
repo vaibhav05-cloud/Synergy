@@ -1,0 +1,350 @@
+[
+    {
+        "id": 4383918227,
+        "number": 797,
+        "title": "ConfigureCrmServerSideSync - Date comparison for checking for expired certs is not correct",
+        "state": "open",
+        "created_at": "2026-05-05T12:13:08Z",
+        "updated_at": "2026-05-16T00:42:13Z",
+        "closed_at": null,
+        "author": "AspireAlex",
+        "comments": 0,
+        "labels": [
+            "PowerShell"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "https://github.com/microsoft/PowerApps-Samples/blob/a6d30c10d17938fbeb85245e57a4a2cb435c71c8/powershell/ServerSideSync/ConfigureCrmServerSideSync.ps1#L188\n\nThe check on line 175 is not evaluated correctly as $servicePrincipalCredentials[$i].endDateTime is a string and $currentDateTime is a DateTime.",
+        "url": "https://github.com/microsoft/PowerApps-Samples/issues/797"
+    },
+    {
+        "id": 4328044248,
+        "number": 796,
+        "title": "Microsoft Power Platform Build Tools for Azure DevOps throwing error overriding the agent proxy settings in pipeline",
+        "state": "open",
+        "created_at": "2026-04-25T12:08:24Z",
+        "updated_at": "2026-05-16T00:40:43Z",
+        "closed_at": null,
+        "author": "rajib-accenture",
+        "comments": 0,
+        "labels": [
+            "Support issue"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "**Description:**\nWe are experiencing consistent failures with Microsoft Power Platform Build Tools when executed on a self-hosted Windows Azure DevOps agent behind an authenticated enterprise proxy.\n\n**Despite:**\n- Proxy tests (curl) succeeding\n- HTTP_PROXY / HTTPS_PROXY variables set at task level\n- Correct proxy credentials and allowlists\n- Identical pipelines working on Microsoft-hosted agents\n- Tried configuring pac.exe.config through power-shell code through pipeline in agent machine\n\nPAC CLI commands invoked via Power Platform Build Tools (e.g. WhoAmI, SetSolutionVersion, ImportSolution) fail with identity / endpoint resolution errors when executed on the self-hosted agent.\n\n**Observed behaviour:**\n- PAC CLI does not consistently respect proxy configuration supplied via environment variables\n- Proxy override at pipeline/task level appears ineffective\n- Authentication/token acquisition against Entra ID fails\n\n**Expected behaviour:**\nPAC CLI should respect standard proxy configuration mechanisms when executed as part of Power Platform Build Tools on self-hosted agents.\n\n**Environment:**\n- Azure DevOps: Self-hosted Windows agent\n- Extension: Power Platform Build Tools v2\n- Authentication: Service Principal\n- Network: Authenticated outbound proxy\n- Microsoft-hosted agent: Works\n- Self-hosted agent: Fails\n\n**Impact:**\nThis blocks CI/CD pipelines in enterprise environments where outbound internet access requires proxy authentication.\n\n**Request:**\n- Please confirm whether this is a known limitation\n- Provide supported guidance or workaround\n- Clarify proxy support expectations for PAC CLI in enterprise DevOps environments\n\n**Error:**\n\n2026-04-24T17:10:01.3325525Z ##[section]Starting: DIAG - Power Platform WhoAmI (service connection test)\n2026-04-24T17:10:01.3349504Z ==============================================================================\n2026-04-24T17:10:01.3349887Z Task         : Power Platform Who Am I\n2026-04-24T17:10:01.3350073Z Description  : Who Am I for quick connection testing to Power Platform org/environment instance.\n2026-04-24T17:10:01.3350401Z Version      : 2.0.132\n2026-04-24T17:10:01.3350586Z Author       : Microsoft\n2026-04-24T17:10:01.3350771Z Help         : https://aka.ms/buildtoolsdoc Ideas, feedback: https://github.com/microsoft/powerplatform-build-tools/discussions\n2026-04-24T17:10:01.3351144Z ==============================================================================\n2026-04-24T17:10:01.6758290Z Discovered environment url from explicit input parameter 'Environment': $(BuildTools.EnvironmentUrl)\n2026-04-24T17:10:01.6797293Z Discovered Azure DevOps variable expression that needs resolving: $(BuildTools.EnvironmentUrl) -> BuildTools.EnvironmentUrl\n2026-04-24T17:10:01.6798220Z Falling back to url from service connection, using: https://org405a9c51.crm11.dynamics.com/\n2026-04-24T17:10:01.6835832Z [\n2026-04-24T17:10:01.6837657Z   'authN to env. authType:SPN authScheme:None; cloudInstance: Public; envUrl: https://org405a9c51.crm11.dynamics.com/'\n2026-04-24T17:10:01.6838284Z ]\n2026-04-24T17:10:28.2365105Z [ 'Microsoft PowerPlatform CLI' ]\n2026-04-24T17:10:28.2366302Z [ 'Version: 1.52.1+gcca51f4 (.NET Framework 4.8.4795.0)' ]\n2026-04-24T17:10:28.2367296Z [ 'Online documentation: https://aka.ms/PowerPlatformCLI' ]\n2026-04-24T17:10:28.2368032Z [\n2026-04-24T17:10:28.2368761Z   'Feedback, Suggestions, Issues: https://github.com/microsoft/powerplatform-build-tools/discussions'\n2026-04-24T17:10:28.2382666Z ]\n2026-04-24T17:10:28.2391603Z [ '' ]\n2026-04-24T17:10:28.2392328Z [\n2026-04-24T17:10:28.2393441Z   \"Error: Can't resolve Entra ID/OAuth authority for https://org405a9c51.crm11.dynamics.com/api/data/v9.0. Failed to get response from: https://org405a9c51.crm11.dynamics.com/api/data/v9.0; error: An error occurred while sending the request.; details: Unable to connect to the remote server (ConnectFailure)\"\n2026-04-24T17:10:28.2396125Z ]\n2026-04-24T17:10:28.2396669Z [ '' ]\n2026-04-24T17:10:28.6071961Z ##[error]error: 1\n2026-04-24T17:10:28.6090389Z ##[error]failed: Microsoft PowerPlatform CLI\nVersion: 1.52.1+gcca51f4 (.NET Framework 4.8.4795.0)\nOnline documentation: https://aka.ms/PowerPlatformCLI\nFeedback, Suggestions, Issues: https://github.com/microsoft/powerplatform-build-tools/discussions\n\nError: Can't resolve Entra ID/OAuth authority for https://org405a9c51.crm11.dynamics.com/api/data/v9.0. Failed to get response from: https://org405a9c51.crm11.dynamics.com/api/data/v9.0; error: An error occurred while sending the request.; details: Unable to connect to the remote server (ConnectFailure)\n",
+        "url": "https://github.com/microsoft/PowerApps-Samples/issues/796"
+    },
+    {
+        "id": 4209657279,
+        "number": 789,
+        "title": "upload-code-site creates a new website every time",
+        "state": "open",
+        "created_at": "2026-04-06T05:03:39Z",
+        "updated_at": "2026-06-19T23:00:53Z",
+        "closed_at": null,
+        "author": "shashankgwl",
+        "comments": 0,
+        "labels": [
+            "Support issue"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Steps to reproduce.\n\n1. Create a react app on local machine.\n2. Use the following command to upload the code to PowerPages website.\n`pac pages upload-code-site --rootPath . --siteName northstarleadership --compiledPath ./dist`\n3. the website gets uploaded successfully.\n4. Now make any changes to the website (code, artifacts, images etc..)\n5. Run the command in step-2 again.\n\n**Result : A new inactive website gets generated instead of a updating the same website.**\n\nSee images below.\n**1. I have an active website.**\n\n<img width=\"1178\" height=\"343\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/dfb66cf9-7976-4c88-889f-6737f3743a94\" />\n\n**2.  I run below command**\n```\npac pages upload-code-site --rootPath . --siteName northstarleadership --compiledPath ./dist\nInitializing Power Pages in folder: C:\\Users\\ShashankBhide\\OneDrive - Kerv\\Shashank@Kerv\\repos\\CRMGenDev\\BlogPortalsSPA\n\nCreating Power Pages records for compiled artifacts\n\nFound 10 bundle pattern(s) to match for cleanup:\n1. main.*.js\n2. main.*.css\n3. vendor.*.js\n4. vendor.*.css\n5. chunk-*.js\n6. chunk-*.css\n7. bundle.*.js\n8. bundle.*.css\n9. index-*.js\n10. index-*.css\n\nNote: You can customize these patterns by adding 'bundleFilePatterns' array in 'powerpages.config.json' file.\n\n\nCleanup summary: Deleted 0 bundle directories\n\n\nUpdating Home page, header and footer web templates\n\nUploading changes\n-\nStarted uploading website data\nConnected to... Development\n\nLoading Power Pages website manifest...\n\nFound 130 records to process across 45 entities\n\nManifest loaded successfully.\n\nUploading - [--------------------] 2.2%  ETA: 00:43 (Events: 1/46) [Threads: 22]\n\nUploading - [###-----------------] 13.0%  ETA: 00:24 (Events: 6/46) [Threads: 18]\n\nUploading - [#####---------------] 23.9%  ETA: 00:24 (Events: 11/46) [Threads: 13]\n\nUploading - [######--------------] 30.4%  ETA: 00:22 (Events: 14/46) [Threads: 10]\n\nUploading - [########------------] 39.1%  ETA: 00:18 (Events: 18/46) [Threads: 6]\n\nUploading - [#########-----------] 45.7%  ETA: 00:17 (Events: 21/46) [Threads: 3]\n\nUploading - [##########----------] 50.0%  ETA: 00:15 (Events: 23/46) [Threads: 0]\n\nUploading - [##########----------] 52.2%  ETA: 00:20 (Events: 24/46) [Threads: 22]\n\nUploading - [###########---------] 56.5%  ETA: 00:18 (Events: 26/46) [Threads: 21]\n\nUploading - [#############-------] 67.4%  ETA: 00:14 (Events: 31/46) [Threads: 16]\n\nUploading - [################----] 78.3%  ETA: 00:09 (Events: 36/46) [Threads: 11]\n\nUploading - [##################--] 89.1%  ETA: 00:04 (Events: 41/46) [Threads: 6]\n\nUploading - [##################--] 91.3%  ETA: 00:03 (Events: 42/46) [Threads: 5]\n\nUploading - [###################-] 95.7%  ETA: 00:01 (Events: 44/46) [Threads: 3]\n\nUploading - [####################] 100.0%  ETA: calculating... (Events: 46/46) [Threads: 1]\n\nUploading - [####################] 100.0%  ETA: calculating... (Events: 46/46) [Threads: 0]\n\nUploading - [####################] 100.0%  ETA: calculating... (Events: 46/46) [Threads: 1]\n\nPower Pages website upload succeeded in 51.29 secs.\nConnected to... Development\n\nUpload complete\n```\n\n**3. I get another website with same name.**\n\n<img width=\"1252\" height=\"344\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/02b80808-15cb-4f62-8582-2cbc81e28f9c\" />",
+        "url": "https://github.com/microsoft/PowerApps-Samples/issues/789"
+    },
+    {
+        "id": 3827347265,
+        "number": 756,
+        "title": "Power App SDK for Code App - Get Full resolution image",
+        "state": "closed",
+        "created_at": "2026-01-18T21:22:08Z",
+        "updated_at": "2026-01-21T22:12:26Z",
+        "closed_at": "2026-01-21T22:12:26Z",
+        "author": "ASIEngineering",
+        "comments": 1,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "Please provide an example on how to use the PowerApp SDK (link below) to get the full-size image stored in the Image column in Dataverse.\n\nhttps://www.npmjs.com/package/@microsoft/power-apps",
+        "url": "https://github.com/microsoft/PowerApps-Samples/issues/756"
+    },
+    {
+        "id": 3619068171,
+        "number": 749,
+        "title": "Hi",
+        "state": "closed",
+        "created_at": "2025-11-13T02:26:55Z",
+        "updated_at": "2026-01-26T17:58:22Z",
+        "closed_at": "2026-01-26T17:58:22Z",
+        "author": "fabian2flie4u",
+        "comments": 0,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": null,
+        "url": "https://github.com/microsoft/PowerApps-Samples/issues/749"
+    },
+    {
+        "id": 3610799891,
+        "number": 748,
+        "title": "wix",
+        "state": "closed",
+        "created_at": "2025-11-11T05:45:47Z",
+        "updated_at": "2026-01-26T17:58:38Z",
+        "closed_at": "2026-01-26T17:58:38Z",
+        "author": "fabian2flie4u",
+        "comments": 0,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": null,
+        "url": "https://github.com/microsoft/PowerApps-Samples/issues/748"
+    },
+    {
+        "id": 3418755722,
+        "number": 736,
+        "title": "The term 'AzureLogin' is not recognized as the name of a cmdlet, function, script file, or operable program",
+        "state": "closed",
+        "created_at": "2025-09-15T16:54:32Z",
+        "updated_at": "2025-09-15T20:06:34Z",
+        "closed_at": "2025-09-15T20:06:34Z",
+        "author": "WCMV",
+        "comments": 0,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "I feel like I am missing a step, such as storing an active azure login to a variable, but the instructions on the page https://github.com/microsoft/PowerApps-Samples/blob/master/powershell/enterprisePolicies/README.md make no mention of such, so I'm a bit lost on if this is the problem or if I've missed some other step.\n\n```\nLogging In...\nAzureLogin : The term 'AzureLogin' is not recognized as the name of a cmdlet, function, script file, or operable\nprogram. Check the spelling of the name, or if a path was included, verify that the path is correct and try again.\nAt C:\\Users\\wcarter\\Downloads\\GetSubnetInjectionEnterprisePoliciesInSubscription.ps1:15 char:16\n+     $connect = AzureLogin\n+                ~~~~~~~~~~\n    + CategoryInfo          : ObjectNotFound: (AzureLogin:String) [], CommandNotFoundException\n    + FullyQualifiedErrorId : CommandNotFoundException\n```\n\nAz powershell functions were installed. I tried using PowerShell 7.5.3, latest version, still no luck.",
+        "url": "https://github.com/microsoft/PowerApps-Samples/issues/736"
+    },
+    {
+        "id": 3291172307,
+        "number": 731,
+        "title": "ManagePermissionGrant.ps1 doesnt work",
+        "state": "closed",
+        "created_at": "2025-08-05T00:50:20Z",
+        "updated_at": "2026-01-26T18:00:46Z",
+        "closed_at": "2026-01-26T18:00:46Z",
+        "author": "catmanjan",
+        "comments": 2,
+        "labels": [
+            "PowerShell"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "Trying to follow steps here https://learn.microsoft.com/en-us/connectors/webcontentsv2/#authorize-the-connector-to-act-on-behalf-of-a-signed-in-user\n\nI get this error message, permissions arent granted\n\n<img width=\"1350\" height=\"767\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/ed71388c-3b16-44c0-98ac-41eca1debe34\" />",
+        "url": "https://github.com/microsoft/PowerApps-Samples/issues/731"
+    },
+    {
+        "id": 3271671600,
+        "number": 728,
+        "title": "TwoWayListener on net core",
+        "state": "closed",
+        "created_at": "2025-07-29T01:40:04Z",
+        "updated_at": "2025-08-03T02:15:05Z",
+        "closed_at": "2025-08-01T23:12:53Z",
+        "author": "Flex-Xuan",
+        "comments": 2,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "I have one question, currently, as described here https://github.com/microsoft/PowerApps-Samples/blob/master/dataverse/orgsvc/CSharp/TwoWayListener/README.md\nOnly support net framework. is there any example or way that can work on net core?",
+        "url": "https://github.com/microsoft/PowerApps-Samples/issues/728"
+    },
+    {
+        "id": 3162257857,
+        "number": 720,
+        "title": "I am getting this error when I try the pac pages upload-code-site as part of Portals bring your own code sample",
+        "state": "open",
+        "created_at": "2025-06-20T07:43:22Z",
+        "updated_at": "2026-06-19T23:01:30Z",
+        "closed_at": null,
+        "author": "KGMunaweera",
+        "comments": 1,
+        "labels": [
+            "Support issue"
+        ],
+        "assignees": [
+            "tapanm-MSFT"
+        ],
+        "locked": false,
+        "body": "I am getting this error when I try the pac pages upload-code-site as part of Portals bring your own code sample\n\nC:\\Power Pages Bring Your Own Code React Sample\\PowerApps-Samples\\portals\\bring-your-own-code-samples\\react-sample> pac pages upload-code-site --rootPath .\nConnected as global.admin@56g45x.onmicrosoft.com\n\nPower Pages folder already initialized in : .\n\nCreating Power Pages records for compiled artifacts\n\nUpdating Home page, header and footer web templates\n\nUploading changes\n-\nThe upload path provided doesn't contain Power Pages website data, please provide the path of the directory which contains website.yml\n",
+        "url": "https://github.com/microsoft/PowerApps-Samples/issues/720"
+    },
+    {
+        "id": 3141613056,
+        "number": 719,
+        "title": "There should be at least 2 vnets configured for Subnet Injection Enterprise Policy",
+        "state": "closed",
+        "created_at": "2025-06-12T21:32:14Z",
+        "updated_at": "2025-08-09T01:29:54Z",
+        "closed_at": "2025-08-09T01:29:54Z",
+        "author": "Stephen-Wolf-NS",
+        "comments": 1,
+        "labels": [
+            "PowerShell"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "CreateSubnetInjectionEnterprisePolicy.ps1 doesn't seem to work with just 1 virtual network and N/A for the 2nd one :\n```\nNew-AzResourceGroupDeployment : 10:52:39 PM - The deployment 'EPDeployment' failed with error(s). Showing 1 out of 1\nerror(s).\nStatus Message: There should be at least 2 vnets configured for Subnet Injection Enterprise Policy with name .\n```\n\n![Image](https://github.com/user-attachments/assets/35c60ac2-fa26-400e-b79e-029ece7ce88c)",
+        "url": "https://github.com/microsoft/PowerApps-Samples/issues/719"
+    },
+    {
+        "id": 3141506972,
+        "number": 718,
+        "title": "VNET is not supported for enterprise policy location",
+        "state": "closed",
+        "created_at": "2025-06-12T20:39:42Z",
+        "updated_at": "2025-06-12T20:55:30Z",
+        "closed_at": "2025-06-12T20:55:30Z",
+        "author": "Stephen-Wolf-NS",
+        "comments": 1,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "I have a vnet which is in west europe, but I have the following message : \n\n```\nThe location  of vnet [...] is not supported for enterprise policy location europe\n\nThe supported vnet location for enterprise policy location europe are westeurope,northeurope\n```\n\n![Image](https://github.com/user-attachments/assets/ad86c790-f257-49fe-ac70-02504560029c)\n\nAny idea what could be missing?",
+        "url": "https://github.com/microsoft/PowerApps-Samples/issues/718"
+    },
+    {
+        "id": 3132291148,
+        "number": 716,
+        "title": "NewSubnetInjection.ps1 Error",
+        "state": "closed",
+        "created_at": "2025-06-10T06:21:44Z",
+        "updated_at": "2025-06-10T06:33:38Z",
+        "closed_at": "2025-06-10T06:33:37Z",
+        "author": "claudiocurti",
+        "comments": 1,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "Hello, i'm facing a rather strange issue at the end of Configuration.\nI correctly configured 2 needed VNets to inject in my Power Platform Environment (for disaster recovery), correctly created Enterprise Policy but when i try to launch final commmand NewSubnetInjection.ps1 to apply the Subnet Injection enterprise policy to environment script crashes after popping out request to log in with the following error:\n\"Await-Task: Exception calling \"GetResult\" with \"0\" argument(s): \"Could not load file or assembly 'System.Diagnostics.DiagnosticSource, Version=6.0.0.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51'. Could not find or load a specific file. (0x80131621)\".\n\nI tried to install-package from nuget.org but nothing seems to work.\nI'm working on a 7x PowerShell and Windows 11 if that infos might shed light on problem.\n\nThx for any support, best regards.\n\nC.",
+        "url": "https://github.com/microsoft/PowerApps-Samples/issues/716"
+    },
+    {
+        "id": 3084130552,
+        "number": 715,
+        "title": "End user permissions to run Power Apps Canvas app which triggers an instant Power Automate",
+        "state": "open",
+        "created_at": "2025-05-22T17:47:38Z",
+        "updated_at": "2025-08-01T23:15:25Z",
+        "closed_at": null,
+        "author": "jaganpt",
+        "comments": 0,
+        "labels": [],
+        "assignees": [
+            "tapanm-MSFT"
+        ],
+        "locked": false,
+        "body": "What are the end user prerequisites to run a Power Apps Canvas app (no Dataverse) which triggers an instant Power Automate?\n\n\n",
+        "url": "https://github.com/microsoft/PowerApps-Samples/issues/715"
+    },
+    {
+        "id": 3047461779,
+        "number": 711,
+        "title": "'Missing property: clientId' in the ManagePermissionGrant.ps1 PS script",
+        "state": "open",
+        "created_at": "2025-05-08T00:14:12Z",
+        "updated_at": "2026-02-06T01:27:02Z",
+        "closed_at": null,
+        "author": "ciodonovan-citco",
+        "comments": 2,
+        "labels": [
+            "PowerShell"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "When i run the script, you can see it outputs the $grantParams object and the clientId is in there.\nAny idea why it would then throw a 'Missing property: clientId' error on the New-MgOauth2PermissionGrant command?\nI have global admin rights on this tenant.\n\nthanks\n\n<img width=\"524\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/49964286-4e23-4996-b3ed-c79f92ae0167\" />",
+        "url": "https://github.com/microsoft/PowerApps-Samples/issues/711"
+    },
+    {
+        "id": 3042549776,
+        "number": 710,
+        "title": "Avoid default rendering in the grid before customizer is applied",
+        "state": "closed",
+        "created_at": "2025-05-06T11:43:08Z",
+        "updated_at": "2025-05-09T23:29:20Z",
+        "closed_at": "2025-05-09T23:29:19Z",
+        "author": "muskaangupta-work",
+        "comments": 1,
+        "labels": [],
+        "assignees": [
+            "JimDaly"
+        ],
+        "locked": false,
+        "body": "Hi, is there any way to control the default rendering of data in the power grid before the grid customizer pcf is applied. I have cell renderer overriding some of the values but the default renderers load before the cell renderer which is causing issues.",
+        "url": "https://github.com/microsoft/PowerApps-Samples/issues/710"
+    },
+    {
+        "id": 3023758142,
+        "number": 709,
+        "title": "The subnet injection script is not creating the network interface card in azure.",
+        "state": "closed",
+        "created_at": "2025-04-28T05:37:28Z",
+        "updated_at": "2025-08-09T01:16:45Z",
+        "closed_at": "2025-08-09T01:16:45Z",
+        "author": "Minta-Anto",
+        "comments": 1,
+        "labels": [
+            "PowerShell"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "We followed the steps mentioned here: https://learn.microsoft.com/en-us/power-platform/admin/vnet-support-setup-configure.\n\nThe script ran successfully and could see success in power platforms too. But the call from the power-platform to the azure private endpoint was still going through public internet. \nThere was no network interface card created in azure. Is that how the script works? is that what is to be expected as outcome on successful run of the [NewSubnetInjection.ps1] script?\n\n\n~Powershell",
+        "url": "https://github.com/microsoft/PowerApps-Samples/issues/709"
+    },
+    {
+        "id": 3016186961,
+        "number": 706,
+        "title": "Not able to create Ent Policy",
+        "state": "closed",
+        "created_at": "2025-04-24T06:44:42Z",
+        "updated_at": "2025-08-09T01:31:03Z",
+        "closed_at": "2025-08-09T01:31:03Z",
+        "author": "ghost",
+        "comments": 1,
+        "labels": [
+            "PowerShell"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "Enterprise policy commands are not recognized. error msg showing while running script with details \n\nGetEnterprisePoliciesInSubscription : The term 'GetEnterprisePoliciesInSubscription' is not recognized as the name of a \ncmdlet, function, script file, or operable program. Check the spelling of the name, or if a path was included, verify that \nthe path is correct and try again.",
+        "url": "https://github.com/microsoft/PowerApps-Samples/issues/706"
+    },
+    {
+        "id": 2968585005,
+        "number": 702,
+        "title": "Entra ID apps - PowerPlatform-webcontentsv2-Connector",
+        "state": "open",
+        "created_at": "2025-04-03T07:23:49Z",
+        "updated_at": "2025-05-09T22:40:01Z",
+        "closed_at": null,
+        "author": "icelava",
+        "comments": 0,
+        "labels": [
+            "PowerShell"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "After using ManagePermissionGrant.ps1 to configure permissions for PowerPlatform-webcontentsv2-Connector, why doesn't the app PowerPlatform-webcontentsv2-Connector show up in Entra ID enterprise applications?",
+        "url": "https://github.com/microsoft/PowerApps-Samples/issues/702"
+    },
+    {
+        "id": 2954773412,
+        "number": 695,
+        "title": "Cannot deploy prediction data",
+        "state": "open",
+        "created_at": "2025-03-28T01:20:02Z",
+        "updated_at": "2025-05-09T22:41:01Z",
+        "closed_at": null,
+        "author": "scottrhay",
+        "comments": 0,
+        "labels": [
+            "AI Builder"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "I've tried on multiple PCs to install the sample data set in [AIBPredictionSample_simpledeploy_v4.21.3.zip](https://github.com/microsoft/PowerApps-Samples/blob/master/ai-builder/AIBPredictionSample_simpledeploy_v4.21.3.zip) - and it fails with the message \"No import packages were found. Exiting the program...\"\n\nDoes this .zip file need to be extracted and run in any special way? I've tried running the pakcagedeployer as an admin as well with no luck. ",
+        "url": "https://github.com/microsoft/PowerApps-Samples/issues/695"
+    }
+]

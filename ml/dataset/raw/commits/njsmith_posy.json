@@ -1,0 +1,242 @@
+[
+    {
+        "sha": "dda22e6f90f5fefa339b869dd2bbe107f5b48448",
+        "author": "Nathaniel J. Smith",
+        "email": "njs@pobox.com",
+        "date": "2024-01-25T00:36:38Z",
+        "message": "Merge pull request #27 from konstin/update-trampolines\n\nUpdate trampolines code",
+        "url": "https://github.com/njsmith/posy/commit/dda22e6f90f5fefa339b869dd2bbe107f5b48448"
+    },
+    {
+        "sha": "3d067ee6c63427e5152c5a048396cc05fc78babf",
+        "author": "konstin",
+        "email": "konstin@mailbox.org",
+        "date": "2024-01-24T20:10:03Z",
+        "message": "cargo update",
+        "url": "https://github.com/njsmith/posy/commit/3d067ee6c63427e5152c5a048396cc05fc78babf"
+    },
+    {
+        "sha": "42a170319cf541e0faef22e82fe84b59321fb4b6",
+        "author": "konstin",
+        "email": "konstin@mailbox.org",
+        "date": "2024-01-24T20:02:12Z",
+        "message": "Fix clippy warnings",
+        "url": "https://github.com/njsmith/posy/commit/42a170319cf541e0faef22e82fe84b59321fb4b6"
+    },
+    {
+        "sha": "d14d2e74479cf6207f80a79d780b0523a3ae2463",
+        "author": "konstin",
+        "email": "konstin@mailbox.org",
+        "date": "2024-01-24T20:00:27Z",
+        "message": "Update trampolines to rustc nightly 2022-11-02 (1.65.0)",
+        "url": "https://github.com/njsmith/posy/commit/d14d2e74479cf6207f80a79d780b0523a3ae2463"
+    },
+    {
+        "sha": "61ff56c68a6aeff744b274170c32f59ac9ac20e1",
+        "author": "Nathaniel J. Smith",
+        "email": "njs@pobox.com",
+        "date": "2023-02-21T06:34:41Z",
+        "message": "Merge pull request #21 from figsoda/unwrap\n\nfix: actually address clippy::unnecessary_unwrap",
+        "url": "https://github.com/njsmith/posy/commit/61ff56c68a6aeff744b274170c32f59ac9ac20e1"
+    },
+    {
+        "sha": "d2962416f79b4c99eab4a20f89cd6a61f394a313",
+        "author": "Nathaniel J. Smith",
+        "email": "njs@pobox.com",
+        "date": "2023-02-21T05:46:54Z",
+        "message": "Make the match condition more explicit, for better readability",
+        "url": "https://github.com/njsmith/posy/commit/d2962416f79b4c99eab4a20f89cd6a61f394a313"
+    },
+    {
+        "sha": "b0384b2807b692b645af3f2d6deef4a535e8b19e",
+        "author": "Nathaniel J. Smith",
+        "email": "njs@pobox.com",
+        "date": "2023-02-21T05:39:27Z",
+        "message": "Merge pull request #22 from figsoda/clippy\n\napply clippy suggestions",
+        "url": "https://github.com/njsmith/posy/commit/b0384b2807b692b645af3f2d6deef4a535e8b19e"
+    },
+    {
+        "sha": "a50a93fb21c43707c7e08c25b99b42a8b6441988",
+        "author": "figsoda",
+        "email": "figsoda@pm.me",
+        "date": "2023-02-21T04:33:37Z",
+        "message": "apply clippy suggestions",
+        "url": "https://github.com/njsmith/posy/commit/a50a93fb21c43707c7e08c25b99b42a8b6441988"
+    },
+    {
+        "sha": "1193c443058385be94428abfda44032bbe3050e3",
+        "author": "figsoda",
+        "email": "figsoda@pm.me",
+        "date": "2023-02-21T04:25:26Z",
+        "message": "fix: actually address clippy::unnecessary_unwrap",
+        "url": "https://github.com/njsmith/posy/commit/1193c443058385be94428abfda44032bbe3050e3"
+    },
+    {
+        "sha": "73e9ef40d3793f5aff558769732ea5c72a31ba22",
+        "author": "Nathaniel J. Smith",
+        "email": "njs@pobox.com",
+        "date": "2023-02-06T02:20:38Z",
+        "message": "Merge pull request #20 from rockstar/fix/unnecessary-unwrap\n\nfix: address clippy::unnecessary_unwrap",
+        "url": "https://github.com/njsmith/posy/commit/73e9ef40d3793f5aff558769732ea5c72a31ba22"
+    },
+    {
+        "sha": "c731ccc1ff52442375f79dbd3c33c14b6d03e7e6",
+        "author": "Paul Hummer",
+        "email": "paul@eventuallyanyway.com",
+        "date": "2023-02-05T23:50:41Z",
+        "message": "fix: address clippy::unnecessary_unwrap\n\nThis patch addresses the `clippy::unnecessary_unwrap` in the one\ncase where it was occurring. In this case, I think just adding a\nlocal exception is the best for this issue, as the way to address\nthis lint in the current form makes the code a little less clear.",
+        "url": "https://github.com/njsmith/posy/commit/c731ccc1ff52442375f79dbd3c33c14b6d03e7e6"
+    },
+    {
+        "sha": "7bd0ac8dd8eb7fca54c05499a83db1e4f62edbeb",
+        "author": "Nathaniel J. Smith",
+        "email": "njs@pobox.com",
+        "date": "2023-02-05T04:39:14Z",
+        "message": "Merge pull request #19 from rockstar/fix/more-boring-clippy-lints\n\nfix: address the remaining \"boring\" clippy lints",
+        "url": "https://github.com/njsmith/posy/commit/7bd0ac8dd8eb7fca54c05499a83db1e4f62edbeb"
+    },
+    {
+        "sha": "c5df5400bb11190ef03126fecb200b5092c7a091",
+        "author": "Paul Hummer",
+        "email": "paul@eventuallyanyway.com",
+        "date": "2023-02-05T03:56:28Z",
+        "message": "fix: address clippy::or_fun_call",
+        "url": "https://github.com/njsmith/posy/commit/c5df5400bb11190ef03126fecb200b5092c7a091"
+    },
+    {
+        "sha": "b2adbde23e25cd5382fdd22cbe47f58ee6f95e74",
+        "author": "Paul Hummer",
+        "email": "paul@eventuallyanyway.com",
+        "date": "2023-02-05T03:48:25Z",
+        "message": "fix: address clippy::derive_partial_eq_without_eq",
+        "url": "https://github.com/njsmith/posy/commit/b2adbde23e25cd5382fdd22cbe47f58ee6f95e74"
+    },
+    {
+        "sha": "0f3913abda4bd7bd7eb41ea7add2cea6467cc4f9",
+        "author": "Paul Hummer",
+        "email": "paul@eventuallyanyway.com",
+        "date": "2023-02-05T03:47:02Z",
+        "message": "fix: address clippy::collapsible_if",
+        "url": "https://github.com/njsmith/posy/commit/0f3913abda4bd7bd7eb41ea7add2cea6467cc4f9"
+    },
+    {
+        "sha": "63890709d00233bd084efe22e5c2cb48b4a0612e",
+        "author": "Paul Hummer",
+        "email": "paul@eventuallyanyway.com",
+        "date": "2023-02-05T03:46:34Z",
+        "message": "fix: address clippy::redundant_closure",
+        "url": "https://github.com/njsmith/posy/commit/63890709d00233bd084efe22e5c2cb48b4a0612e"
+    },
+    {
+        "sha": "a195b999fb5d01a29b9bce38292154a968313f6a",
+        "author": "Paul Hummer",
+        "email": "paul@eventuallyanyway.com",
+        "date": "2023-02-05T03:44:25Z",
+        "message": "fix: address clippy::nonminimal_bool",
+        "url": "https://github.com/njsmith/posy/commit/a195b999fb5d01a29b9bce38292154a968313f6a"
+    },
+    {
+        "sha": "5d20513930aa9d150929511e5dcaa24fa9675ff4",
+        "author": "Paul Hummer",
+        "email": "paul@eventuallyanyway.com",
+        "date": "2023-02-05T03:43:28Z",
+        "message": "fix: address clippy::redundant_slicing",
+        "url": "https://github.com/njsmith/posy/commit/5d20513930aa9d150929511e5dcaa24fa9675ff4"
+    },
+    {
+        "sha": "732fbcdb11f85721bdf5f96dd3131b476ac6a0ea",
+        "author": "Paul Hummer",
+        "email": "paul@eventuallyanyway.com",
+        "date": "2023-02-05T03:42:40Z",
+        "message": "fix: address clippy::into_iter_on_ref",
+        "url": "https://github.com/njsmith/posy/commit/732fbcdb11f85721bdf5f96dd3131b476ac6a0ea"
+    },
+    {
+        "sha": "36c5287696673e03ebd4395d7c5863ddcedb97d2",
+        "author": "Paul Hummer",
+        "email": "paul@eventuallyanyway.com",
+        "date": "2023-02-05T03:42:03Z",
+        "message": "fix: address clippy::map_flatten",
+        "url": "https://github.com/njsmith/posy/commit/36c5287696673e03ebd4395d7c5863ddcedb97d2"
+    },
+    {
+        "sha": "dbc57380fcbb0dee45d554a028e29116f2cbc9e0",
+        "author": "Paul Hummer",
+        "email": "paul@eventuallyanyway.com",
+        "date": "2023-02-05T03:41:26Z",
+        "message": "fix: address clippy::comparison_to_empty",
+        "url": "https://github.com/njsmith/posy/commit/dbc57380fcbb0dee45d554a028e29116f2cbc9e0"
+    },
+    {
+        "sha": "c5d76d4df76252372d57773292b832d380d09d24",
+        "author": "Paul Hummer",
+        "email": "paul@eventuallyanyway.com",
+        "date": "2023-02-05T03:40:16Z",
+        "message": "fix: address clippy::op_ref",
+        "url": "https://github.com/njsmith/posy/commit/c5d76d4df76252372d57773292b832d380d09d24"
+    },
+    {
+        "sha": "571f266ddf7b9a10dac57360b31634fc477df080",
+        "author": "Paul Hummer",
+        "email": "paul@eventuallyanyway.com",
+        "date": "2023-02-05T03:38:45Z",
+        "message": "fix: address clippy::wildcard_in_or_patterns",
+        "url": "https://github.com/njsmith/posy/commit/571f266ddf7b9a10dac57360b31634fc477df080"
+    },
+    {
+        "sha": "d5a274802f8e965aa834389dafd63d1da693c3c5",
+        "author": "Paul Hummer",
+        "email": "paul@eventuallyanyway.com",
+        "date": "2023-02-05T03:36:59Z",
+        "message": "fix: address clippy::borrow_deref_ref",
+        "url": "https://github.com/njsmith/posy/commit/d5a274802f8e965aa834389dafd63d1da693c3c5"
+    },
+    {
+        "sha": "81ac53460abbddc481946e09d28aa278fab8d522",
+        "author": "Paul Hummer",
+        "email": "paul@eventuallyanyway.com",
+        "date": "2023-02-05T03:35:05Z",
+        "message": "fix: address clippy::cast_abs_to_unsigned",
+        "url": "https://github.com/njsmith/posy/commit/81ac53460abbddc481946e09d28aa278fab8d522"
+    },
+    {
+        "sha": "2d83331b42c486410db368f24fd5b981b0dc595e",
+        "author": "Paul Hummer",
+        "email": "paul@eventuallyanyway.com",
+        "date": "2023-02-05T03:33:28Z",
+        "message": "fix: address clippy::single_match",
+        "url": "https://github.com/njsmith/posy/commit/2d83331b42c486410db368f24fd5b981b0dc595e"
+    },
+    {
+        "sha": "15868cd45d38e0fd8d73825e4bd728bb03ba72e8",
+        "author": "Paul Hummer",
+        "email": "paul@eventuallyanyway.com",
+        "date": "2023-02-05T03:30:53Z",
+        "message": "fix: address clippy::redundant_clone",
+        "url": "https://github.com/njsmith/posy/commit/15868cd45d38e0fd8d73825e4bd728bb03ba72e8"
+    },
+    {
+        "sha": "6cf2c2661aa0382909a774312e808c3ced59526b",
+        "author": "Paul Hummer",
+        "email": "paul@eventuallyanyway.com",
+        "date": "2023-02-05T03:29:21Z",
+        "message": "fix: address clippy::needless_asref",
+        "url": "https://github.com/njsmith/posy/commit/6cf2c2661aa0382909a774312e808c3ced59526b"
+    },
+    {
+        "sha": "41a399a5e5dedf3c8887c314685d96f22d812fa7",
+        "author": "Paul Hummer",
+        "email": "paul@eventuallyanyway.com",
+        "date": "2023-02-05T03:28:25Z",
+        "message": "fix: address clippy::single_char_pattern",
+        "url": "https://github.com/njsmith/posy/commit/41a399a5e5dedf3c8887c314685d96f22d812fa7"
+    },
+    {
+        "sha": "cd4b565545fc309d3f64aaaa6db9c32332bde94f",
+        "author": "Paul Hummer",
+        "email": "paul@eventuallyanyway.com",
+        "date": "2023-02-05T03:24:47Z",
+        "message": "fix: address clippy::needless_question_mark",
+        "url": "https://github.com/njsmith/posy/commit/cd4b565545fc309d3f64aaaa6db9c32332bde94f"
+    }
+]

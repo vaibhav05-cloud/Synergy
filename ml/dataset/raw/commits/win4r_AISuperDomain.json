@@ -1,0 +1,242 @@
+[
+    {
+        "sha": "65a7f857b65b2c0118592d60be5e148286d177fb",
+        "author": "Charles Ching",
+        "email": "42172631+win4r@users.noreply.github.com",
+        "date": "2025-05-21T04:55:10Z",
+        "message": "Merge pull request #42 from win4r/feature/export-ai-response-to-markdown\n\nfeat: Implement Export to Markdown functionality",
+        "url": "https://github.com/win4r/AISuperDomain/commit/65a7f857b65b2c0118592d60be5e148286d177fb"
+    },
+    {
+        "sha": "d90d7030e3b2b8681162aeea3b8bb9635e9034f1",
+        "author": "google-labs-jules[bot]",
+        "email": "161369871+google-labs-jules[bot]@users.noreply.github.com",
+        "date": "2025-05-21T04:53:04Z",
+        "message": "feat: Implement Export to Markdown functionality\n\nThis feature allows you to export the content of the focused AI WebView to a Markdown file.\n\nKey changes:\n- Added an \"Export as MD\" button to the toolbar in `MainPage.xaml.cs`. This button becomes visible when an AI view is in full-screen mode.\n- Implemented logic in `OnExportToMarkdownClicked` to:\n  - Retrieve the full HTML content of the focused WebView using JavaScript (`document.documentElement.outerHTML`).\n  - Convert the HTML content to Markdown format using the `ReverseMarkdown` library.\n- Added the `ReverseMarkdown` NuGet package (version 3.2.0) to `Aila.csproj`.\n- Added the `CommunityToolkit.Maui` NuGet package (version 7.0.1) to `Aila.csproj` (if not already present) and updated `MauiProgram.cs` to include `.UseMauiCommunityToolkit()`.\n- Implemented file saving using `CommunityToolkit.Maui.Storage.FileSaver` to allow you to choose the save location and filename for the Markdown file.\n- Refined toolbar item management in `MainPage.xaml.cs` to accommodate the new button and handle its visibility.\n- Added helper methods for managing WebView layout information to ensure proper restoration from full-screen mode.\n\nManual testing is required to verify the end-to-end functionality across different AIs and platforms.",
+        "url": "https://github.com/win4r/AISuperDomain/commit/d90d7030e3b2b8681162aeea3b8bb9635e9034f1"
+    },
+    {
+        "sha": "4ee0b12d3f856aa4999b39506eb2ed5889658b81",
+        "author": "Charles Ching",
+        "email": "42172631+win4r@users.noreply.github.com",
+        "date": "2025-03-29T13:30:57Z",
+        "message": "Update README_ZH-TW.md",
+        "url": "https://github.com/win4r/AISuperDomain/commit/4ee0b12d3f856aa4999b39506eb2ed5889658b81"
+    },
+    {
+        "sha": "6801d73038f670a366a81980edb9081b97cbbe9e",
+        "author": "Charles Ching",
+        "email": "42172631+win4r@users.noreply.github.com",
+        "date": "2025-03-29T13:30:40Z",
+        "message": "Update README_ZH-CN.md",
+        "url": "https://github.com/win4r/AISuperDomain/commit/6801d73038f670a366a81980edb9081b97cbbe9e"
+    },
+    {
+        "sha": "8cc62b2d8c8650659cde0519bc91c8935eb04e2e",
+        "author": "Charles Ching",
+        "email": "42172631+win4r@users.noreply.github.com",
+        "date": "2025-03-29T13:30:07Z",
+        "message": "Update README.md",
+        "url": "https://github.com/win4r/AISuperDomain/commit/8cc62b2d8c8650659cde0519bc91c8935eb04e2e"
+    },
+    {
+        "sha": "033912209a5026ec4f160d575dbe08e7cfe1517d",
+        "author": "Charles Ching",
+        "email": "42172631+win4r@users.noreply.github.com",
+        "date": "2025-03-05T00:15:33Z",
+        "message": "Update config.json",
+        "url": "https://github.com/win4r/AISuperDomain/commit/033912209a5026ec4f160d575dbe08e7cfe1517d"
+    },
+    {
+        "sha": "d12575d620c4171797586380a053cc359eaf07cf",
+        "author": "Charles Ching",
+        "email": "42172631+win4r@users.noreply.github.com",
+        "date": "2024-12-28T10:31:01Z",
+        "message": "Update LICENSE",
+        "url": "https://github.com/win4r/AISuperDomain/commit/d12575d620c4171797586380a053cc359eaf07cf"
+    },
+    {
+        "sha": "30324ffb6bd351f96fa956ed24b8e13562f738db",
+        "author": "Charles Ching",
+        "email": "42172631+win4r@users.noreply.github.com",
+        "date": "2024-12-28T10:27:48Z",
+        "message": "更新代码\n\n更新代码",
+        "url": "https://github.com/win4r/AISuperDomain/commit/30324ffb6bd351f96fa956ed24b8e13562f738db"
+    },
+    {
+        "sha": "e1bbe4a5564da7c05717b254b673b1102390104c",
+        "author": "Charles Ching",
+        "email": "42172631+win4r@users.noreply.github.com",
+        "date": "2024-11-22T02:04:39Z",
+        "message": "Delete Mosleh_Fine_tune_Florence_2_DEMO.ipynb",
+        "url": "https://github.com/win4r/AISuperDomain/commit/e1bbe4a5564da7c05717b254b673b1102390104c"
+    },
+    {
+        "sha": "ecb73c15ce023b1d4ff5efa14811fa08b66df804",
+        "author": "Charles Ching",
+        "email": "42172631+win4r@users.noreply.github.com",
+        "date": "2024-11-22T02:04:17Z",
+        "message": "Delete Alpaca_+_Mistral_v3_7b_full_example.ipynb",
+        "url": "https://github.com/win4r/AISuperDomain/commit/ecb73c15ce023b1d4ff5efa14811fa08b66df804"
+    },
+    {
+        "sha": "b97c1506d47c7ffe82c779af6de789fb5dd12589",
+        "author": "Charles Ching",
+        "email": "42172631+win4r@users.noreply.github.com",
+        "date": "2024-09-10T13:41:33Z",
+        "message": "Update config.json",
+        "url": "https://github.com/win4r/AISuperDomain/commit/b97c1506d47c7ffe82c779af6de789fb5dd12589"
+    },
+    {
+        "sha": "f1c077e5e374e1ee54b8f32ac686d28429eaee8f",
+        "author": "Charles Ching",
+        "email": "42172631+win4r@users.noreply.github.com",
+        "date": "2024-07-17T12:08:50Z",
+        "message": "Update Alpaca_+_Mistral_v3_7b_full_example.ipynb",
+        "url": "https://github.com/win4r/AISuperDomain/commit/f1c077e5e374e1ee54b8f32ac686d28429eaee8f"
+    },
+    {
+        "sha": "38539a13e57629a129716cbcf20fc9b001bac8a1",
+        "author": "Charles Ching",
+        "email": "42172631+win4r@users.noreply.github.com",
+        "date": "2024-06-27T15:10:50Z",
+        "message": "Created using Colab",
+        "url": "https://github.com/win4r/AISuperDomain/commit/38539a13e57629a129716cbcf20fc9b001bac8a1"
+    },
+    {
+        "sha": "6feb49a3b0be96e0534592c6600b7de55aa68a21",
+        "author": "Charles Ching",
+        "email": "42172631+win4r@users.noreply.github.com",
+        "date": "2024-06-21T01:41:49Z",
+        "message": "Update config.json",
+        "url": "https://github.com/win4r/AISuperDomain/commit/6feb49a3b0be96e0534592c6600b7de55aa68a21"
+    },
+    {
+        "sha": "3231165fa54acca4bc26a9cf3925e98b83e3b277",
+        "author": "Charles Ching",
+        "email": "42172631+win4r@users.noreply.github.com",
+        "date": "2024-06-15T01:10:55Z",
+        "message": "Update config.json",
+        "url": "https://github.com/win4r/AISuperDomain/commit/3231165fa54acca4bc26a9cf3925e98b83e3b277"
+    },
+    {
+        "sha": "67672e5a3d109a1c8cfbf8e01818a1fa34906516",
+        "author": "Charles Ching",
+        "email": "42172631+win4r@users.noreply.github.com",
+        "date": "2024-06-05T11:15:50Z",
+        "message": "Update config.json",
+        "url": "https://github.com/win4r/AISuperDomain/commit/67672e5a3d109a1c8cfbf8e01818a1fa34906516"
+    },
+    {
+        "sha": "8335a2fef0b7baef484966eb2a64580ea70ed4a0",
+        "author": "Charles Ching",
+        "email": "42172631+win4r@users.noreply.github.com",
+        "date": "2024-05-24T14:48:00Z",
+        "message": "Created using Colab",
+        "url": "https://github.com/win4r/AISuperDomain/commit/8335a2fef0b7baef484966eb2a64580ea70ed4a0"
+    },
+    {
+        "sha": "9facf8de66025d93c11e0e2ea272ced6d89eb981",
+        "author": "Charles Ching",
+        "email": "42172631+win4r@users.noreply.github.com",
+        "date": "2024-05-17T13:17:34Z",
+        "message": "Add files via upload",
+        "url": "https://github.com/win4r/AISuperDomain/commit/9facf8de66025d93c11e0e2ea272ced6d89eb981"
+    },
+    {
+        "sha": "009b5024ddb1c07786f88ad7343923ac9e7c5602",
+        "author": "Charles Ching",
+        "email": "42172631+win4r@users.noreply.github.com",
+        "date": "2024-04-19T01:57:24Z",
+        "message": "Update config.json",
+        "url": "https://github.com/win4r/AISuperDomain/commit/009b5024ddb1c07786f88ad7343923ac9e7c5602"
+    },
+    {
+        "sha": "69b37011bf8aec438606f8460cfbb509366f101d",
+        "author": "Charles Ching",
+        "email": "42172631+win4r@users.noreply.github.com",
+        "date": "2024-04-18T15:00:05Z",
+        "message": "Update AIIntegrator.csproj",
+        "url": "https://github.com/win4r/AISuperDomain/commit/69b37011bf8aec438606f8460cfbb509366f101d"
+    },
+    {
+        "sha": "a2032360ecd8aca60f1fd0c4b8eccdd9619905ae",
+        "author": "Charles Ching",
+        "email": "42172631+win4r@users.noreply.github.com",
+        "date": "2024-04-14T06:33:30Z",
+        "message": "Update README_ZH-TW.md",
+        "url": "https://github.com/win4r/AISuperDomain/commit/a2032360ecd8aca60f1fd0c4b8eccdd9619905ae"
+    },
+    {
+        "sha": "68bb7cb093a97cd945fd77784104d946f40e0227",
+        "author": "Charles Ching",
+        "email": "42172631+win4r@users.noreply.github.com",
+        "date": "2024-04-14T06:33:09Z",
+        "message": "Update README_ZH-CN.md",
+        "url": "https://github.com/win4r/AISuperDomain/commit/68bb7cb093a97cd945fd77784104d946f40e0227"
+    },
+    {
+        "sha": "830e66261a3efeacaeba95431fd2c5aeb02ccc71",
+        "author": "Charles Ching",
+        "email": "42172631+win4r@users.noreply.github.com",
+        "date": "2024-04-14T06:31:57Z",
+        "message": "Update README.md",
+        "url": "https://github.com/win4r/AISuperDomain/commit/830e66261a3efeacaeba95431fd2c5aeb02ccc71"
+    },
+    {
+        "sha": "d77b76e736ae3be078434c7a974578d697b4dbcc",
+        "author": "Charles Ching",
+        "email": "42172631+win4r@users.noreply.github.com",
+        "date": "2024-04-09T15:21:43Z",
+        "message": "Update README.md",
+        "url": "https://github.com/win4r/AISuperDomain/commit/d77b76e736ae3be078434c7a974578d697b4dbcc"
+    },
+    {
+        "sha": "b25bbacae9bef276792d5126356a20b4931291a5",
+        "author": "Charles Ching",
+        "email": "42172631+win4r@users.noreply.github.com",
+        "date": "2024-04-09T13:56:48Z",
+        "message": "Update config.json",
+        "url": "https://github.com/win4r/AISuperDomain/commit/b25bbacae9bef276792d5126356a20b4931291a5"
+    },
+    {
+        "sha": "406e0ae7344595b7bc2d7f911d19c37ae73458d7",
+        "author": "Charles Ching",
+        "email": "42172631+win4r@users.noreply.github.com",
+        "date": "2024-04-09T10:39:38Z",
+        "message": "Update config.json",
+        "url": "https://github.com/win4r/AISuperDomain/commit/406e0ae7344595b7bc2d7f911d19c37ae73458d7"
+    },
+    {
+        "sha": "2592b3e54a8f76c67bce93639bea0d9308cb0b30",
+        "author": "Charles Ching",
+        "email": "42172631+win4r@users.noreply.github.com",
+        "date": "2024-04-08T13:54:10Z",
+        "message": "Update README.md",
+        "url": "https://github.com/win4r/AISuperDomain/commit/2592b3e54a8f76c67bce93639bea0d9308cb0b30"
+    },
+    {
+        "sha": "73334025c1f39976629448efe2fcc2f75f045290",
+        "author": "Charles Ching",
+        "email": "42172631+win4r@users.noreply.github.com",
+        "date": "2024-04-08T13:48:56Z",
+        "message": "Update config.json",
+        "url": "https://github.com/win4r/AISuperDomain/commit/73334025c1f39976629448efe2fcc2f75f045290"
+    },
+    {
+        "sha": "225518946289ee61b29083d5f738d3415e0b0898",
+        "author": "Charles Ching",
+        "email": "42172631+win4r@users.noreply.github.com",
+        "date": "2024-04-08T13:24:45Z",
+        "message": "Update README.md",
+        "url": "https://github.com/win4r/AISuperDomain/commit/225518946289ee61b29083d5f738d3415e0b0898"
+    },
+    {
+        "sha": "408739ab4faf707642c03b14867cf527617d3680",
+        "author": "Charles Ching",
+        "email": "42172631+win4r@users.noreply.github.com",
+        "date": "2024-04-08T13:13:52Z",
+        "message": "Update config.json",
+        "url": "https://github.com/win4r/AISuperDomain/commit/408739ab4faf707642c03b14867cf527617d3680"
+    }
+]

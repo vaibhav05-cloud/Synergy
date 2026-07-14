@@ -1,0 +1,352 @@
+[
+    {
+        "id": 4881363585,
+        "number": 5344,
+        "title": "可以增加记录每次请求llm接口出入参功能吗",
+        "state": "open",
+        "created_at": "2026-07-14T08:40:28Z",
+        "updated_at": "2026-07-14T08:40:28Z",
+        "closed_at": null,
+        "author": "Zevels",
+        "comments": 0,
+        "labels": [
+            "enhancement"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Self Checks / 自检\n\n- [x] I have read the [FAQ](https://github.com/farion1231/cc-switch#faq) section in README.\n我已阅读 README 中的[常见问题](https://github.com/farion1231/cc-switch#常见问题)。\n\n- [x] I have searched for [existing issues](https://github.com/farion1231/cc-switch/issues), including closed ones.\n我已搜索过[已有的 Issue](https://github.com/farion1231/cc-switch/issues)，包括已关闭的。\n\n\n### Related App / 涉及应用\n\nGeneral / 通用, OpenClaw, OpenCode, Gemini CLI, Codex, Claude Code\n\n### Problem or Motivation / 问题或动机\n\n我想看看到底调用了几次llm，每次接口的出入参是什么，方便比较使用的模型能力如何，也能学习这些编程工具的提示词到底怎么写的\n\n### Proposed Solution / 建议方案\n\n_No response_\n\n### Additional Context / 补充信息\n\n_No response_\n\n### Contribution / 参与贡献\n\n- [ ] I am interested in contributing to this feature.\n我有兴趣参与开发此功能。\n",
+        "url": "https://github.com/farion1231/cc-switch/issues/5344"
+    },
+    {
+        "id": 4881344568,
+        "number": 5343,
+        "title": "[Bug] supports_reasoning_effort() 使用 strip_prefix(\"gpt-\") 导致带前缀的自定义模型名无法触发 reasoning effort 映射",
+        "state": "open",
+        "created_at": "2026-07-14T08:37:39Z",
+        "updated_at": "2026-07-14T08:37:39Z",
+        "closed_at": null,
+        "author": "TotoroFxx",
+        "comments": 0,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Self Checks / 自检\n\n- [x] I have read the [FAQ](https://github.com/farion1231/cc-switch#faq) section in README.\n我已阅读 README 中的[常见问题](https://github.com/farion1231/cc-switch#常见问题)。\n\n- [x] I have searched for [existing issues](https://github.com/farion1231/cc-switch/issues), including closed ones.\n我已搜索过[已有的 Issue](https://github.com/farion1231/cc-switch/issues)，包括已关闭的。\n\n\n### CC Switch Version / 版本号\n\nv3.16.2 / v3.17.0\n\n### Operating System / 操作系统\n\nWindows\n\n### Related App / 涉及应用\n\nClaude Code\n\n### Steps to Reproduce / 重现步骤\n\n1. 在 CC Switch 中添加一个 Claude 供应商，apiFormat 设为 `openai_responses`\n2. 模型名设为带前缀的 GPT-5+ 模型，如 `b-gpt-5.6-sol`\n3. Claude Code 配置 `\"effortLevel\": \"high\"`\n4. 发送请求后检查 debug 日志，发现没有任何 reasoning/effort 相关日志\n5. 上游收到的请求体中不包含 `reasoning.effort` 字段\n\n### Expected Behavior / 期望行为\n\n当 Claude Code 通过 CC Switch 代理转发请求到 GPT-5+ 系列模型时，如果模型名带有自定义前缀（如 `b-gpt-5.6-sol`），`effortLevel: \"high\"` 配置应该被正确转换为 OpenAI Responses API 的 `reasoning.effort: \"high\"` 参数，使模型推理深度可控。\n\n所有 GPT-5+ 系列模型（无论是否带有自定义前缀）都应被 `supports_reasoning_effort()` 正确识别。\n\n| 模型名 | 预期结果 |\n|--------|--------|\n| `gpt-5` | true |\n| `gpt-5.4` | true |\n| `b-gpt-5.6-sol` | true |\n| `x-gpt-5.4` | true |\n| `B-GPT-5.6-SOL` | true |\n| `gpt-4o` | false |\n| `b-gpt-4o` | false |\n\n### Actual Behavior / 实际行为\n\n`supports_reasoning_effort()` 函数使用 `strip_prefix(\"gpt-\")` 匹配模型名，要求模型名必须以 `gpt-` 开头。但很多第三方代理商使用带自定义前缀的模型名（如 `b-gpt-5.6-sol`、`x-gpt-5.4`），导致这些模型无法被识别为 GPT-5+ 系列，reasoning effort 映射被完全跳过。\n\n`strip_prefix(\"gpt-\")` 对 `b-gpt-5.6-sol` 返回 `None`，因为字符串以 `b-` 开头。\n\n实际测试：\n| 模型名 | 实际结果 |\n|--------|--------|\n| `gpt-5` | ✅ true |\n| `gpt-5.4` | ✅ true |\n| `b-gpt-5.6-sol` | ❌ false |\n| `x-gpt-5.4` | ❌ false |\n| `B-GPT-5.6-SOL` | ❌ false |\n\n### Additional Context / 补充信息\n\n## 根因定位\n\n文件：`src-tauri/src/proxy/providers/transform.rs`\n\n当前实现：\n```rust\npub fn supports_reasoning_effort(model: &str) -> bool {\n    is_openai_o_series(model)\n        || model\n            .to_lowercase()\n            .strip_prefix(\"gpt-\")  // ← 必须以 \"gpt-\" 开头\n            .and_then(|rest| rest.chars().next())\n            .is_some_and(|c| c.is_ascii_digit() && c >= '5')\n}\n```\n\n## 建议修复\n\n将 `strip_prefix` 改为 `find` 子串匹配，在模型名的任意位置查找 `gpt-`：\n\n```rust\npub fn supports_reasoning_effort(model: &str) -> bool {\n    if is_openai_o_series(model) {\n        return true;\n    }\n    let lower = model.to_lowercase();\n    if let Some(pos) = lower.find(\"gpt-\") {\n        let after_prefix = &lower[pos + 4..];\n        return after_prefix\n            .chars()\n            .next()\n            .is_some_and(|c| c.is_ascii_digit() && c >= '5');\n    }\n    false\n}\n```\n\n## 已验证的测试用例\n\n| 模型名 | 修改前 | 修改后 | 预期 |\n|--------|--------|--------|------|\n| `gpt-5` | ✅ | ✅ | true |\n| `gpt-5.4` | ✅ | ✅ | true |\n| `b-gpt-5.6-sol` | ❌ | ✅ | true |\n| `x-gpt-5.4` | ❌ | ✅ | true |\n| `B-GPT-5.6-SOL` | ❌ | ✅ | true |\n| `gpt-4o` | ✅ | ✅ | false |\n| `b-gpt-4o` | ✅ | ✅ | false |\n\n## 环境信息\n\n- CC Switch 版本：v3.16.2 / v3.17.0\n- 模型：b-gpt-5.6-sol（第三方代理商自定义前缀）\n- 协议：openai_responses (Responses API)",
+        "url": "https://github.com/farion1231/cc-switch/issues/5343"
+    },
+    {
+        "id": 4881332198,
+        "number": 5342,
+        "title": "codex与chatgpt合并的更新后似乎请求字段与ccswitch不匹配了",
+        "state": "open",
+        "created_at": "2026-07-14T08:35:50Z",
+        "updated_at": "2026-07-14T08:35:50Z",
+        "closed_at": null,
+        "author": "NoooobOne",
+        "comments": 0,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Self Checks / 自检\n\n- [x] I have read the [FAQ](https://github.com/farion1231/cc-switch#faq) section in README.\n我已阅读 README 中的[常见问题](https://github.com/farion1231/cc-switch#常见问题)。\n\n- [x] I have searched for [existing issues](https://github.com/farion1231/cc-switch/issues), including closed ones.\n我已搜索过[已有的 Issue](https://github.com/farion1231/cc-switch/issues)，包括已关闭的。\n\n\n### CC Switch Version / 版本号\n\n3.17.0\n\n### Operating System / 操作系统\n\nmacOS\n\n### Related App / 涉及应用\n\nCodex\n\n### Steps to Reproduce / 重现步骤\n\nCC Switch local proxy failed while handling Codex endpoint /responses. Provider: Freemodel; model: gpt-5.5; upstream_status: HTTP 400; cause: Invalid 'input[230].id': 'item_a4c19d67812a5fd4a0e88c64'. Expected an ID that begins with 'rs'.\n\n### Expected Behavior / 期望行为\n\n对话后就会出现上述错误\n\n### Actual Behavior / 实际行为\n\n_No response_\n\n### Additional Context / 补充信息\n\n_No response_",
+        "url": "https://github.com/farion1231/cc-switch/issues/5342"
+    },
+    {
+        "id": 4881238526,
+        "number": 5340,
+        "title": "有报错",
+        "state": "open",
+        "created_at": "2026-07-14T08:22:35Z",
+        "updated_at": "2026-07-14T08:22:35Z",
+        "closed_at": null,
+        "author": "suaigu",
+        "comments": 0,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Self Checks / 自检\n\n- [x] I have read the [FAQ](https://github.com/farion1231/cc-switch#faq) section in README.\n我已阅读 README 中的[常见问题](https://github.com/farion1231/cc-switch#常见问题)。\n\n- [x] I have searched for [existing issues](https://github.com/farion1231/cc-switch/issues), including closed ones.\n我已搜索过[已有的 Issue](https://github.com/farion1231/cc-switch/issues)，包括已关闭的。\n\n\n### CC Switch Version / 版本号\n\n3.17\n\n### Operating System / 操作系统\n\nWindows\n\n### Related App / 涉及应用\n\nCodex\n\n### Steps to Reproduce / 重现步骤\n\n当我要求codex使用deepseek模型创建网页应用时出现错误：CC Switch local proxy failed while handling Codex endpoint /responses. Provider: DeepSeek; model: deepseek-v4-flash; upstream_status: HTTP 400; cause: Invalid schema for function 'codex_app__automation_update': schema must be a JSON Schema of 'type: \"object\"', got 'type: null'.\n\n### Expected Behavior / 期望行为\n\n期望成功创建应用\n\n### Actual Behavior / 实际行为\n\n发生错误CC Switch local proxy failed while handling Codex endpoint /responses. Provider: DeepSeek; model: deepseek-v4-flash; upstream_status: HTTP 400; cause: Invalid schema for function 'codex_app__automation_update': schema must be a JSON Schema of 'type: \"object\"', got 'type: null'.\n\n### Additional Context / 补充信息\n\n_No response_",
+        "url": "https://github.com/farion1231/cc-switch/issues/5340"
+    },
+    {
+        "id": 4880875802,
+        "number": 5338,
+        "title": "Expected an ID that begins with 'msg'.",
+        "state": "closed",
+        "created_at": "2026-07-14T07:29:55Z",
+        "updated_at": "2026-07-14T08:02:19Z",
+        "closed_at": "2026-07-14T08:02:18Z",
+        "author": "percyjie",
+        "comments": 1,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Self Checks / 自检\n\n- [x] I have read the [FAQ](https://github.com/farion1231/cc-switch#faq) section in README.\n我已阅读 README 中的[常见问题](https://github.com/farion1231/cc-switch#常见问题)。\n\n- [x] I have searched for [existing issues](https://github.com/farion1231/cc-switch/issues), including closed ones.\n我已搜索过[已有的 Issue](https://github.com/farion1231/cc-switch/issues)，包括已关闭的。\n\n\n### CC Switch Version / 版本号\n\n3.17.0\n\n### Operating System / 操作系统\n\nmacOS\n\n### Related App / 涉及应用\n\nCodex\n\n### Steps to Reproduce / 重现步骤\n\n更新到最新版本就一直报错了\n\nInvalid 'input[177].id': '25fdab0e-8ec3-413c-8703-7ce5668ec990'. Expected an ID that begins with 'msg'.\n\n回退到上一个版本也不行了\n\n### Expected Behavior / 期望行为\n\n正常使用\n\n### Actual Behavior / 实际行为\n\n_No response_\n\n### Additional Context / 补充信息\n\n_No response_",
+        "url": "https://github.com/farion1231/cc-switch/issues/5338"
+    },
+    {
+        "id": 4880797721,
+        "number": 5337,
+        "title": "每次切换模型之后发现配置的mcp没有同步，可以增加一个一键保存的功能吗",
+        "state": "open",
+        "created_at": "2026-07-14T07:19:14Z",
+        "updated_at": "2026-07-14T07:19:14Z",
+        "closed_at": null,
+        "author": "sqsec",
+        "comments": 0,
+        "labels": [
+            "enhancement"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Self Checks / 自检\n\n- [x] I have read the [FAQ](https://github.com/farion1231/cc-switch#faq) section in README.\n我已阅读 README 中的[常见问题](https://github.com/farion1231/cc-switch#常见问题)。\n\n- [x] I have searched for [existing issues](https://github.com/farion1231/cc-switch/issues), including closed ones.\n我已搜索过[已有的 Issue](https://github.com/farion1231/cc-switch/issues)，包括已关闭的。\n\n\n### Related App / 涉及应用\n\nCodex, Claude Code\n\n### Problem or Motivation / 问题或动机\n\n正常切换了供应商之后启动cli如下\n<img width=\"1446\" height=\"903\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/f8515e1a-6a79-4925-9d87-c2ef8fdfbdcd\" />\n然后每个都需要进去点击保存，才能识别到mcp服务\n<img width=\"1482\" height=\"1074\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/df28ce31-db70-4952-bba2-f9fe8db86663\" />\n\n### Proposed Solution / 建议方案\n\n_No response_\n\n### Additional Context / 补充信息\n\n_No response_\n\n### Contribution / 参与贡献\n\n- [ ] I am interested in contributing to this feature.\n我有兴趣参与开发此功能。\n",
+        "url": "https://github.com/farion1231/cc-switch/issues/5337"
+    },
+    {
+        "id": 4880501477,
+        "number": 5335,
+        "title": "用量统计问题",
+        "state": "open",
+        "created_at": "2026-07-14T06:34:09Z",
+        "updated_at": "2026-07-14T07:01:12Z",
+        "closed_at": null,
+        "author": "yaowangmx",
+        "comments": 0,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Self Checks / 自检\n\n- [x] I have read the [FAQ](https://github.com/farion1231/cc-switch#faq) section in README.\n我已阅读 README 中的[常见问题](https://github.com/farion1231/cc-switch#常见问题)。\n\n- [x] I have searched for [existing issues](https://github.com/farion1231/cc-switch/issues), including closed ones.\n我已搜索过[已有的 Issue](https://github.com/farion1231/cc-switch/issues)，包括已关闭的。\n\n\n### CC Switch Version / 版本号\n\n3.17.0\n\n### Operating System / 操作系统\n\nWindows\n\n### Related App / 涉及应用\n\nCodex\n\n### Steps to Reproduce / 重现步骤\n\n原先版本统计早上用了6千万token，中午由3.16.5更新版本到3.17.0，然后跑了个任务，结果显示用了16亿。模型由5.6 sol切换为5.6terra开始执行任务，然后触发压缩上下文，用量统计那里从16亿肉眼可见的飙升到19亿，暂停任务后，发现请求日志里面才4条对应的任务日志\nsub2api后台统计整天总量为2.2亿\n\n经过测试，将模型由5.6 terra切换为5.6 sol，token统计由19亿变为26亿，该问题大概率是由模型切换引起\n\n### Expected Behavior / 期望行为\n\ntoken用量正确\n\n### Actual Behavior / 实际行为\n\ntoken用量差过大\n\n### Additional Context / 补充信息\n\n不知道是否是由于切换模型导致",
+        "url": "https://github.com/farion1231/cc-switch/issues/5335"
+    },
+    {
+        "id": 4880418404,
+        "number": 5334,
+        "title": "能否实现在Codex（Claude）内部切换模型，而不是在CC-Switch里切换",
+        "state": "open",
+        "created_at": "2026-07-14T06:19:29Z",
+        "updated_at": "2026-07-14T08:21:40Z",
+        "closed_at": null,
+        "author": "small32",
+        "comments": 1,
+        "labels": [
+            "enhancement"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Self Checks / 自检\n\n- [x] I have read the [FAQ](https://github.com/farion1231/cc-switch#faq) section in README.\n我已阅读 README 中的[常见问题](https://github.com/farion1231/cc-switch#常见问题)。\n\n- [x] I have searched for [existing issues](https://github.com/farion1231/cc-switch/issues), including closed ones.\n我已搜索过[已有的 Issue](https://github.com/farion1231/cc-switch/issues)，包括已关闭的。\n\n\n### Related App / 涉及应用\n\nCodex\n\n### Problem or Motivation / 问题或动机\n\n比如我现在同时用OpenAI官方的模型和DeepSeek的API\n\n目前切换模型必须在CC-Switch里切换\n\n能否实现直接在Codex的模型切换界面里切换DeepSeek和GPT的模型\n\n### Proposed Solution / 建议方案\n\n_No response_\n\n### Additional Context / 补充信息\n\n_No response_\n\n### Contribution / 参与贡献\n\n- [ ] I am interested in contributing to this feature.\n我有兴趣参与开发此功能。\n",
+        "url": "https://github.com/farion1231/cc-switch/issues/5334"
+    },
+    {
+        "id": 4880245346,
+        "number": 5333,
+        "title": "新版本不支持多个openai官方供应商配置",
+        "state": "open",
+        "created_at": "2026-07-14T05:50:42Z",
+        "updated_at": "2026-07-14T07:17:59Z",
+        "closed_at": null,
+        "author": "shendepuren",
+        "comments": 0,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Self Checks / 自检\n\n- [x] I have read the [FAQ](https://github.com/farion1231/cc-switch#faq) section in README.\n我已阅读 README 中的[常见问题](https://github.com/farion1231/cc-switch#常见问题)。\n\n- [x] I have searched for [existing issues](https://github.com/farion1231/cc-switch/issues), including closed ones.\n我已搜索过[已有的 Issue](https://github.com/farion1231/cc-switch/issues)，包括已关闭的。\n\n\n### CC Switch Version / 版本号\n\nv3.17.0\n\n### Operating System / 操作系统\n\nmacOS\n\n### Related App / 涉及应用\n\nCodex\n\n### Steps to Reproduce / 重现步骤\n\n配置多个openai官方供应商，只会显示第一个\n\n### Expected Behavior / 期望行为\n\n配置多个openai官方供应商，会有多个\n\n### Actual Behavior / 实际行为\n\n_No response_\n\n### Additional Context / 补充信息\n\n_No response_",
+        "url": "https://github.com/farion1231/cc-switch/issues/5333"
+    },
+    {
+        "id": 4880179389,
+        "number": 5332,
+        "title": "codex使用cc Switch接入deepseek报错",
+        "state": "open",
+        "created_at": "2026-07-14T05:37:29Z",
+        "updated_at": "2026-07-14T07:07:26Z",
+        "closed_at": null,
+        "author": "506058115-cmd",
+        "comments": 0,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Self Checks / 自检\n\n- [x] I have read the [FAQ](https://github.com/farion1231/cc-switch#faq) section in README.\n我已阅读 README 中的[常见问题](https://github.com/farion1231/cc-switch#常见问题)。\n\n- [x] I have searched for [existing issues](https://github.com/farion1231/cc-switch/issues), including closed ones.\n我已搜索过[已有的 Issue](https://github.com/farion1231/cc-switch/issues)，包括已关闭的。\n\n\n### CC Switch Version / 版本号\n\nv3.17.0\n\n### Operating System / 操作系统\n\nWindows\n\n### Related App / 涉及应用\n\nCodex\n\n### Steps to Reproduce / 重现步骤\n\n问题诊断\n\n  根本原因：Codex 的 codex_app__automation_update 这个工具函数的 inputSchema 顶层使用了 oneOf，但没有 \"type\": \"object\"：\n\n  {\n    \"$schema\": \"https://json-schema.org/draft/2020-12/schema\",\n    \"oneOf\": [ ... ],\n    \"$defs\": { ... }\n  }\n\n  这在 JSON Schema 2020-12 规范中是合法的，但 DeepSeek API 要求函数参数 schema 的顶层必须有 \"type\": \"object\"（这是\n  OpenAI 函数调用的标准格式）。CC Switch 把 Codex 的 /responses 请求转成 OpenAI chat completions 格式发给 DeepSeek\n  时，缺失的 type 字段到了 DeepSeek 那边就是 null，直接被拒。\n\n  本质上是 CC Switch 的 bug —— 代理层应该在转发前，对顶层用 oneOf/anyOf 但没有 type 的 schema 自动包一层 \"type\":\n  \"object\"。\n\n### Expected Behavior / 期望行为\n\n尽快修复\n\n### Actual Behavior / 实际行为\n\n_No response_\n\n### Additional Context / 补充信息\n\nCC Switch local proxy failed while handling Codex endpoint /responses. Provider:\n    DeepSeek; model: deepseek-v4-pro; upstream_status: HTTP 400; cause: Invalid schema for function\n    'codex_app__automation_update': schema must be a JSON Schema of 'type: \"object\"', got 'type: null'.”",
+        "url": "https://github.com/farion1231/cc-switch/issues/5332"
+    },
+    {
+        "id": 4879896393,
+        "number": 5330,
+        "title": "本地环境检查可以不显示没有安装的agent应用吗?",
+        "state": "open",
+        "created_at": "2026-07-14T04:39:44Z",
+        "updated_at": "2026-07-14T04:41:04Z",
+        "closed_at": null,
+        "author": "ZHOUHENGG",
+        "comments": 0,
+        "labels": [
+            "enhancement"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Self Checks / 自检\n\n- [x] I have read the [FAQ](https://github.com/farion1231/cc-switch#faq) section in README.\n我已阅读 README 中的[常见问题](https://github.com/farion1231/cc-switch#常见问题)。\n\n- [x] I have searched for [existing issues](https://github.com/farion1231/cc-switch/issues), including closed ones.\n我已搜索过[已有的 Issue](https://github.com/farion1231/cc-switch/issues)，包括已关闭的。\n\n\n### Related App / 涉及应用\n\nGeneral / 通用\n\n### Problem or Motivation / 问题或动机\n\n这些没有安装的应用可以设置不要显示吗? 就像可以自由选择在主页面显示的应用一样\n<img width=\"1838\" height=\"496\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/32b2b287-36a8-4be4-b0d2-05709d2c5466\" />\n\n### Proposed Solution / 建议方案\n\n_No response_\n\n### Additional Context / 补充信息\n\n_No response_\n\n### Contribution / 参与贡献\n\n- [ ] I am interested in contributing to this feature.\n我有兴趣参与开发此功能。\n",
+        "url": "https://github.com/farion1231/cc-switch/issues/5330"
+    },
+    {
+        "id": 4879544620,
+        "number": 5326,
+        "title": "允许禁用 ClaudeCode 的 Auto mode 下 classifer 的思考模式(thinking)",
+        "state": "open",
+        "created_at": "2026-07-14T03:21:19Z",
+        "updated_at": "2026-07-14T03:22:05Z",
+        "closed_at": null,
+        "author": "yi-Xu-0100",
+        "comments": 0,
+        "labels": [
+            "enhancement"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Self Checks / 自检\n\n- [x] I have read the [FAQ](https://github.com/farion1231/cc-switch#faq) section in README.\n我已阅读 README 中的[常见问题](https://github.com/farion1231/cc-switch#常见问题)。\n\n- [x] I have searched for [existing issues](https://github.com/farion1231/cc-switch/issues), including closed ones.\n我已搜索过[已有的 Issue](https://github.com/farion1231/cc-switch/issues)，包括已关闭的。\n\n\n### Related App / 涉及应用\n\nClaude Code\n\n### Problem or Motivation / 问题或动机\n\n出现类似问题，见 https://github.com/deepseek-ai/awesome-deepseek-agent/issues/284\n\n其中 https://github.com/dashxio/deepseek-claude-proxy 的介绍说明了可能的原因\n\n> Claude Code 的 Auto Mode 在执行 Bash 命令前，会向 API 发送一个「安全分类请求」，由模型判断该命令是否安全。这个分类请求有大约 30 秒的内部超时。\n>\n> DeepSeek V4 Pro 默认开启了「思考模式」(thinking)，导致安全分类请求的响应时间达到 28～32 秒，非常接近超时阈值，经常触发超时而被 Claude Code 拒绝执行。\n\n### Proposed Solution / 建议方案\n\n补充配置项，用于禁用分类器的思考模式\n\n### Additional Context / 补充信息\n\n最好能同时自定义分类器的模型，可以使用更简单的模型, 见 #4689 \n\n### Contribution / 参与贡献\n\n- [x] I am interested in contributing to this feature.\n我有兴趣参与开发此功能。\n",
+        "url": "https://github.com/farion1231/cc-switch/issues/5326"
+    },
+    {
+        "id": 4879426047,
+        "number": 5325,
+        "title": "OpenRouter provider: model validation fails despite healthy API key (direct connection works)",
+        "state": "open",
+        "created_at": "2026-07-14T02:57:01Z",
+        "updated_at": "2026-07-14T02:57:01Z",
+        "closed_at": null,
+        "author": "Archbishopovo-ux",
+        "comments": 0,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "## Problem\n\nSwitching Claude Code provider from DeepSeek to OpenRouter fails with error:\n\n> There's an issue with the selected model (x-ai/grok-4.5). It may not exist or you may not have access to it.\n\n## Verified working\n\n1. **API key is valid** - curl directly to OpenRouter /v1/chat/completions with the same key and model x-ai/grok-4.5 returns HTTP 200 and correct response\n2. **Model exists on OpenRouter** - confirmed via GET /api/v1/models\n3. **Health checks pass** - CC Switch stream_check_logs table shows HTTP 200 for the OpenRouter provider (4 consecutive successes)\n4. **Zero actual proxy requests** - proxy_request_logs table has 0 entries for the OpenRouter provider ID. The error happens during CC Switch model validation step, before any request reaches the proxy layer\n5. **DeepSeek provider works fine** - normal switching and operation\n\n## Steps to reproduce\n\n1. Windows 10, CC Switch latest version (2026-07-14)\n2. Add OpenRouter provider with valid API key, model set to x-ai/grok-4.5\n3. Set ANTHROPIC_BASE_URL to https://openrouter.ai/api/v1\n4. Switch Claude Code provider from DeepSeek to OpenRouter\n5. Observe: health check passes (HTTP 200 recorded in DB) but switch fails with model access error\n6. Verify: same API key + same model works via direct curl to OpenRouter API\n\n## Environment\n\n- OS: Windows 10 Pro 22H2\n- CC Switch proxy: 127.0.0.1:15721 (enabled, enableLocalProxy: true)\n- Global proxy: 127.0.0.1:10808 (tried both enabled and disabled - same result)\n- Claude Code: latest\n\n## Additional context\n\nThe CC Switch database (cc-switch.db) shows the provider is properly configured. The stream_check_logs table records successful HTTP 200 health checks for the OpenRouter provider. However, proxy_request_logs has zero entries for this provider - meaning the model validation fails before any real request is made. The error appears to originate from CC Switch internal model validation, not from OpenRouter itself.",
+        "url": "https://github.com/farion1231/cc-switch/issues/5325"
+    },
+    {
+        "id": 4879357635,
+        "number": 5323,
+        "title": "Codex桌面端路由与非路由模式的会话记录不同步",
+        "state": "open",
+        "created_at": "2026-07-14T02:43:18Z",
+        "updated_at": "2026-07-14T07:02:14Z",
+        "closed_at": null,
+        "author": "Fishquito7",
+        "comments": 1,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Self Checks / 自检\n\n- [x] I have read the [FAQ](https://github.com/farion1231/cc-switch#faq) section in README.\n我已阅读 README 中的[常见问题](https://github.com/farion1231/cc-switch#常见问题)。\n\n- [x] I have searched for [existing issues](https://github.com/farion1231/cc-switch/issues), including closed ones.\n我已搜索过[已有的 Issue](https://github.com/farion1231/cc-switch/issues)，包括已关闭的。\n\n\n### CC Switch Version / 版本号\n\n3.17.0\n\n### Operating System / 操作系统\n\nWindows\n\n### Related App / 涉及应用\n\nCodex\n\n### Steps to Reproduce / 重现步骤\n\n未开启路由进行对话后，切换至路由模式，会话记录丢失，侧边栏看不到，但本地会话文件完好。切换回未开启路由模式时恢复正常\n\n反之，开启路由后进行对话，路由关闭时，未开启路由时的会话丢失\n\n### Expected Behavior / 期望行为\n\n实现路由/非路由会话的统一\n\n### Actual Behavior / 实际行为\n\n会话丢失\n\n### Additional Context / 补充信息\n\n**CC Switch 3.17.0 把会话分进了不同的抽屉**\n\n<img width=\"512\" height=\"135\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/a759ae42-3fbc-4d14-8616-09d9623c6bf3\" />\n\nCodex 侧边栏会按当前 model_provider 精确过滤，因此切换路由时另一组会话会“消失”，但 JSONL 文件没有丢失。这是 CC Switch 3.17.0 中“统一会话历史”和“官方账号代理路由”的兼容性问题",
+        "url": "https://github.com/farion1231/cc-switch/issues/5323"
+    },
+    {
+        "id": 4879312197,
+        "number": 5322,
+        "title": "[Bug] v3.16.5–v3.17.0: Windows Terminal ignores the default profile and hardcodes cmd",
+        "state": "open",
+        "created_at": "2026-07-14T02:33:36Z",
+        "updated_at": "2026-07-14T02:54:54Z",
+        "closed_at": null,
+        "author": "ygttygtt",
+        "comments": 1,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "> **Update — reproduced on v3.17.0 (2026-07-14):** The v3.17.0 release tag still contains the same two `wt cmd /K` launch paths. The issue therefore affects both v3.16.5 and v3.17.0. A separate `0x80070002` launch failure observed on v3.17.0 is documented in the latest comment below without assuming that v3.17.0 introduced it.\n### Self Checks / 自检\n\n- [x] I searched existing open and closed issues.\n- [x] I verified the behavior against the v3.16.5 tag and current `main` source.\n\n### CC Switch Version / 版本号\n\nv3.16.5 and v3.17.0 and v3.17.0\n\n### Operating System / 操作系统\n\nWindows 11, build 26200.8655\n\n### Related App / 涉及应用\n\nClaude Code\n\n### Summary / 问题摘要\n\nThe problem reported in #2830 still exists in the latest release.\n\nWhen **Preferred Terminal** is set to **Windows Terminal**, CC Switch always opens a Windows Terminal tab running `cmd.exe`, even when the user's Windows Terminal default profile is PowerShell 7.\n\n在 CC Switch 中选择 Windows Terminal 后，程序仍然固定启动 CMD，而不是使用 Windows Terminal 中设置的默认 Profile（本机为 PowerShell 7）。\n\n### Steps to Reproduce / 复现步骤\n\n1. Install CC Switch v3.16.5 on Windows.\n2. Set the Windows Terminal default profile to PowerShell 7.\n3. In CC Switch, set **Preferred Terminal** to **Windows Terminal**.\n4. Click **Open in Terminal** on a Claude provider card.\n5. Exit Claude Code or inspect the process tree/shell.\n\n### Expected Behavior / 预期行为\n\nWindows Terminal should start its configured default profile.\n\nWith PowerShell 7 configured as the default profile, the process chain should be equivalent to:\n\n```text\nWindowsTerminal.exe -> pwsh.exe -> claude\n```\n\nIf CC Switch itself is elevated, the separate Windows Terminal window and its PowerShell/Claude child processes should inherit that elevated token. If CC Switch is not elevated, they should remain unelevated.\n\n### Actual Behavior / 实际行为\n\nThe process chain is effectively:\n\n```text\nWindowsTerminal.exe -> cmd.exe -> claude\n```\n\nThe Windows Terminal default profile setting is ignored.\n\n### Source-level Cause / 源码原因\n\nThe v3.16.5 tag, v3.17.0 tag, and current `main` still explicitly pass `cmd /K` to `wt`:\n\n```rust\n\"wt\" => run_windows_start_command(\n    &[\"wt\", \"cmd\", \"/K\", &bat_path],\n    \"Windows Terminal\",\n),\n```\n\nThe same behavior appears in two launch paths:\n\n- https://github.com/farion1231/cc-switch/blob/v3.17.0/src-tauri/src/commands/misc.rs#L3238\n- https://github.com/farion1231/cc-switch/blob/v3.17.0/src-tauri/src/commands/misc.rs#L3475\n\nBecause `cmd` is explicitly supplied as the Windows Terminal commandline, `defaultProfile` cannot select the user's configured shell.\n\n### Acceptance Detail / 验收注意事项\n\nSimply changing the command to:\n\n```text\nwt new-tab -- claude --settings ...\n```\n\nis not fully equivalent to launching the default profile shell. Passing `claude` as the tab commandline replaces the profile's shell executable, so PowerShell profile initialization and the actual `pwsh.exe -> claude` process relationship are lost.\n\nThe fix should either:\n\n1. genuinely start the selected/default Windows Terminal profile shell and execute Claude within it; or\n2. add explicit Windows Terminal profile selection, such as the approach proposed in #1599.\n\n### Related / 相关记录\n\n- #2830 was closed as completed, but the code remains present in v3.16.5 and current `main`.\n- #2831 contains an unmerged proposed fix.\n- #1599 proposes explicit Windows Terminal profile selection and is also still unmerged.",
+        "url": "https://github.com/farion1231/cc-switch/issues/5322"
+    },
+    {
+        "id": 4879050423,
+        "number": 5320,
+        "title": "设置上游格式为 Chat Completions格式并开启本地路由后，上下文压缩会失败，是否能提供临时方案",
+        "state": "open",
+        "created_at": "2026-07-14T01:35:14Z",
+        "updated_at": "2026-07-14T01:35:14Z",
+        "closed_at": null,
+        "author": "hichenym",
+        "comments": 0,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Self Checks / 自检\n\n- [x] I have read the [FAQ](https://github.com/farion1231/cc-switch#faq) section in README.\n我已阅读 README 中的[常见问题](https://github.com/farion1231/cc-switch#常见问题)。\n\n- [x] I have searched for [existing issues](https://github.com/farion1231/cc-switch/issues), including closed ones.\n我已搜索过[已有的 Issue](https://github.com/farion1231/cc-switch/issues)，包括已关闭的。\n\n\n### CC Switch Version / 版本号\n\n3.16.5\n\n### Operating System / 操作系统\n\nWindows\n\n### Related App / 涉及应用\n\nCodex\n\n### Steps to Reproduce / 重现步骤\n\n1.第三方供应商格式设置为需要开启路由的Chat Completions，并开启本地路由\n2.对话能正常，缓冲满了触发上下文压缩时，会报以下的错误，貌似不太兼容：\nError running remote compact task: Fatal error: remote compaction v2 expected exactly one compaction output item, got 0 from 1 output items\n\n<img width=\"771\" height=\"443\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/67ff62bb-1796-41df-9f6b-66e5764f92e1\" />\n\n<img width=\"792\" height=\"708\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/de5f603c-e431-4a01-a89f-1cb2f0d2c0c8\" />\n\n### Expected Behavior / 期望行为\n\n上下文压缩正常\n\n### Actual Behavior / 实际行为\n\n上下文压缩失败\n\n### Additional Context / 补充信息\n\n_No response_",
+        "url": "https://github.com/farion1231/cc-switch/issues/5320"
+    },
+    {
+        "id": 4879042852,
+        "number": 5319,
+        "title": "Add TokenRouter as a provider preset",
+        "state": "open",
+        "created_at": "2026-07-14T01:33:21Z",
+        "updated_at": "2026-07-14T07:07:08Z",
+        "closed_at": null,
+        "author": "mileszheng-hash",
+        "comments": 0,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "## Problem or Motivation / 问题或动机\n\n[TokenRouter](https://tokenrouter.com) (API at `https://api.tokenrouter.com`) is an LLM aggregator that exposes both an Anthropic-compatible surface and an OpenAI-compatible surface at `https://api.tokenrouter.com` (root) / `https://api.tokenrouter.com/v1`. There is currently no built-in preset for it, so users have to fill in the base URL and model envs by hand across every target (Claude Code, Claude Desktop, Codex, OpenCode, OpenClaw, Hermes).\n\ncc-switch already ships first-class presets for comparable aggregators (OpenRouter, TheRouter, etc.), so adding TokenRouter would be consistent with the existing pattern and remove manual setup.\n\n## Proposed Solution / 建议方案\n\nAdd a `TokenRouter` preset across the supported targets:\n\n| Target | Mode | Endpoint | Model(s) |\n| --- | --- | --- | --- |\n| Claude Code | Anthropic-native env | `https://api.tokenrouter.com` (root) | `anthropic/claude-sonnet-5` / `anthropic/claude-opus-4.8` / `anthropic/claude-haiku-4.5` |\n| Claude Desktop | proxy / anthropic | `https://api.tokenrouter.com` (root) | mapped sonnet/opus/haiku routes |\n| Codex | Responses (`wire_api = \"responses\"`) | `https://api.tokenrouter.com/v1` | `gpt-5.5` |\n| OpenCode | `@ai-sdk/openai-compatible` | `https://api.tokenrouter.com/v1` | `gpt-5.5` |\n| Hermes | `chat_completions` | `https://api.tokenrouter.com/v1` | `gpt-5.5` |\n| OpenClaw | `openai-completions` | `https://api.tokenrouter.com/v1` | `gpt-5.5` |\n\nGemini would intentionally get **no** preset: although a native `v1beta` Gemini surface exists, it requires a `google/`-prefixed model id and its stability for the Gemini CLI path could not be fully verified, so it is omitted for now.\n\n## Related App / 涉及应用\n\nClaude Code, Codex, OpenCode, OpenClaw, Hermes, General\n\n## Self Checks / 自检\n\n- [x] I have read the [FAQ](https://github.com/farion1231/cc-switch#faq) section in README.\n- [x] I have searched for [existing issues](https://github.com/farion1231/cc-switch/issues), including closed ones.\n\nA draft PR implementing this is open at #5317 for reference (happy to adjust based on maintainer feedback before merging).\n",
+        "url": "https://github.com/farion1231/cc-switch/issues/5319"
+    },
+    {
+        "id": 4878082755,
+        "number": 5314,
+        "title": "[Feature Request] Add GrokGo (RongleCat/grok-go) as an official / recommended OpenAI-compatible provider (see also #5313)",
+        "state": "open",
+        "created_at": "2026-07-13T22:17:36Z",
+        "updated_at": "2026-07-14T06:54:51Z",
+        "closed_at": null,
+        "author": "evan188199-tech",
+        "comments": 1,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "> **Related: #5313** — 同一主题（Grok 接入 CC Switch）的更简略请求，标题和正文都只有\"请添加Grok Build CLI\"9 个字，没有具体场景描述。本 issue 是该请求的完整工程化展开：明确了具体项目（`RongleCat/grok-go`）、协议对齐分析、迁移成本、PR 路径。建议维护者将两个 issue 关联/合并讨论。\n\n---\n\n## 背景 / Background\n\n最近发现社区有个项目 [RongleCat/grok-go](https://github.com/RongleCat/grok-go)（v0.1.5，MIT 协议），副标题为 *\"Local multi-account Grok gateway for Codex (API + MCP). 本地多账号 Grok 网关，面向 Codex\"*，跟 CC Switch 的使用场景非常对位。\n\n它把 xAI Grok / SuperGrok 的多账号、OAuth、本地代理、配额追踪、媒体生成都收成一个本地桌面网关（Tauri 2 + Rust），并提供：\n\n- `POST /v1/responses`（Codex 默认协议）\n- `POST /v1/chat/completions`（OpenAI Chat 兼容）\n- `GET  /v1/models`\n- `POST /v1/images/generations`、`/v1/images/edits`\n- `GET  /mcp`（MCP 工具：`x_search`、图片/视频生成/编辑）\n- 多账号 OAuth + 加权负载均衡 + 自动 refresh\n- 本地 bearer token（局域网访问可选）\n- SuperGrok 周额度 + API 限额可视化\n\n`Base URL` 默认 `http://127.0.0.1:<port>/v1`，Auth 头走 `Authorization: Bearer <localToken>`，跟 CC Switch 现有的\"自定义 OpenAI 兼容 Provider\"协议完全匹配。\n\n## 动机 / Motivation\n\n我目前的工作流拓扑（**CC Switch 实际支持的客户端是 Claude Code / Claude Desktop / Codex / Gemini CLI / OpenCode / OpenClaw / Hermes，Cursor 不在支持列表**）：\n\n```\nClaude Code / Codex  (CC Switch 主要接管这两个)\n            │\n            ▼\n       CC Switch  （Provider Router + Config Manager）\n            │\n            ├── OpenAI\n            ├── Anthropic\n            ├── Gemini\n            ├── DeepSeek\n            └── grok-go  (本地 Grok 多账号网关)\n```\n\n**理由：**\n\n1. **Codex 默认只认 OpenAI Responses API**。CC Switch 最近版本已经实现了 Responses ⇄ Chat Completions 双向转换，正好让 grok-go 这种 OpenAI 兼容的本地网关能挂在 Codex 后面。\n2. **xAI 官方 API 计费对个人开发者不友好**。grok-go 提供多账号 OAuth 聚合 + SuperGrok 周额度追踪，是目前最干净的本地方案，避免每个账号都手动管理 token。\n3. **grok-go 这边已经在\"集成\"页有\"CC Switch provider 导入\"按钮**（见 [README 功能特性表](https://github.com/RongleCat/grok-go#%E5%8A%9F%E8%83%BD%E7%89%B9%E6%80%A7)），目前是导出一段 JSON；希望反向也打通——CC Switch 官方 provider 列表里能识别/收纳它，避免两端 schema 漂移。\n\n## 建议 / Proposal\n\n可以分两种实现深度：\n\n### 方案 A：最小改动（建议先做）\n\n- 在 CC Switch 的\"添加 Provider\"向导里，把 `grok-go` 作为一个**官方推荐/模板**出现在 provider 选择列表（或 Custom 列表的\"快速填充\"按钮里）。\n- 模型列表默认包含 `grok-4`、`grok-4-fast`、`grok-3`、`grok-3-mini`，并通过 `GET /v1/models` 自动同步用户实际可用模型。\n- 端口默认 `8787`（grok-go 默认），Auth header 走 `Bearer <localToken>`，跟 OpenAI Custom provider 行为一致。\n- 改动量预估：~50 行 Rust + UI 文案。\n\n### 方案 B：深入集成（可选，下一阶段）\n\n- grok-go 在\"集成\"页导出的 CC Switch provider JSON，可被 CC Switch 端\"导入 provider\"功能直接识别（双方对齐 schema）。\n- 用量统计双端打通：CC Switch 这边调用 grok-go 的统计端点（如果暴露），或读取 `~/.grok-go/data.db`（如果用户授权）。\n- 双方维护一份共享的\"provider 描述文件\"（OpenAI-Compatible + localToken / port / 多账号 等元信息），放在某个双方都引用的仓库或 npm 包里。\n\n## 兼容性核对 / Compatibility matrix\n\n| 能力 | grok-go | CC Switch 现状 | 是否需要新增 |\n|---|---|---|---|\n| Chat Completions | ✅ | ✅ | 无 |\n| Responses API | ✅ | ✅（自带 Chat ⇄ Responses 转换） | 无 |\n| Streaming (SSE) | ✅ | ✅ | 无 |\n| Tool Calls | ✅ | ✅ | 无 |\n| `/v1/models` 拉取 | ✅ | ✅ | 无 |\n| MCP 端点（`/mcp`） | ✅ | ❌ | **新维度，可作为下一阶段单独 RFC** |\n| 多账号 / 配额 | grok-go 内部完成 | 不需要 CC Switch 管 | 无 |\n\n结论：**Chat Completions + Responses + Streaming + Tool Calls 这一层零代码改动**，CC Switch 端只是把它当作\"自定义 OpenAI 兼容 Provider\"加进去就能跑通。\n\n## 接入成本估算 / Effort estimate\n\n- 协议层：grok-go 已是 OpenAI 兼容，CC Switch 端**0 行协议代码**。\n- 模型同步：复用现有 `/v1/models` 拉取逻辑，**0 行**。\n- Provider 模板/UI：~50 行 Rust + 文案（如果只做方案 A）。\n- 文档：~200 字 + 截图（grok-go 端我可以提供截图授权）。\n\n## 我能 / 不能 / 不承诺（先说清楚边界）\n\n之前列的\"愿意承担以下工作\"写得太满，拆成实话：\n\n**可以独立交付的（不需要别人配合）**\n- 一套测试 fixture：curl 脚本、Codex `~/.codex/config.toml` 样例、CC Switch provider JSON 样例\n- 第三方对接指南草稿（中英双语），先发到独立仓库或 PR 到 CC Switch docs 站等审\n\n**需要先调研 + 配合才能交付的**\n- 把 grok-go 端\"CC Switch provider 导出\"的 JSON schema 对齐 CC Switch 官方 import schema——要 clone 两边读 provider 序列化/导入代码，不是一眼能定的活\n- 把文档合并到 `ccswitch.io`——取决于维护者是否接受 PR\n\n**我没法承诺的（不应该写进 issue）**\n- 直接在 `farion1231/cc-switch` 提实施方案 A 或 B 的 PR——我对 CC Switch 的 Provider 抽象、模块组织、CI 标准都不熟，强行写大概率是低质量 PR，反而给维护者增加 review 负担。**建议由维护者或更熟悉代码的贡献者来做**，我可以在兼容性验证、测试覆盖、文档审阅这些层面配合。\n\n## 相关仓库\n- grok-go: https://github.com/RongleCat/grok-go\n- 集成页 README 段落：https://github.com/RongleCat/grok-go#%E6%8E%A5%E5%85%A5-codex--%E5%AE%A2%E6%88%B7%E7%AB%AF\n\n## 附：端到端连通验证草图\n\n```text\n# 1. 启动 grok-go（端口默认 8787），登录/导入账号\n# 2. 在 CC Switch 添加自定义 OpenAI 兼容 Provider：\n#      Name:       grok-go\n#      Base URL:   http://127.0.0.1:8787/v1\n#      API Key:    <localToken from grok-go overview page>\n#      Models:     自动从 /v1/models 拉取，或手动填 grok-4 / grok-3 等\n# 3. Codex base_url 指向 CC Switch 本地代理\n# 4. Codex 调 gpt-4 走 OpenAI provider；调 grok-4 走 grok-go provider\n```\n\n### Contribution / 参与贡献\n\n- [ ] I am interested in contributing to this feature.\n      我有兴趣参与开发此功能。\n",
+        "url": "https://github.com/farion1231/cc-switch/issues/5314"
+    },
+    {
+        "id": 4877695443,
+        "number": 5313,
+        "title": "请添加Grok Build CLI",
+        "state": "open",
+        "created_at": "2026-07-13T21:20:23Z",
+        "updated_at": "2026-07-14T06:50:54Z",
+        "closed_at": null,
+        "author": "taiguguai",
+        "comments": 3,
+        "labels": [
+            "enhancement"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Self Checks / 自检\n\n- [x] I have read the [FAQ](https://github.com/farion1231/cc-switch#faq) section in README.\n我已阅读 README 中的[常见问题](https://github.com/farion1231/cc-switch#常见问题)。\n\n- [x] I have searched for [existing issues](https://github.com/farion1231/cc-switch/issues), including closed ones.\n我已搜索过[已有的 Issue](https://github.com/farion1231/cc-switch/issues)，包括已关闭的。\n\n\n### Related App / 涉及应用\n\nGeneral / 通用\n\n### Problem or Motivation / 问题或动机\n\n请添加Grok Build CLI\n\n\n### Proposed Solution / 建议方案\n\n请添加Grok Build CLI\n\n\n### Additional Context / 补充信息\n\n_No response_\n\n### Contribution / 参与贡献\n\n- [ ] I am interested in contributing to this feature.\n我有兴趣参与开发此功能。\n",
+        "url": "https://github.com/farion1231/cc-switch/issues/5313"
+    },
+    {
+        "id": 4877140688,
+        "number": 5312,
+        "title": "Model name mapping silently dropped after skill re-import, causing 400 errors from upstream",
+        "state": "open",
+        "created_at": "2026-07-13T19:57:08Z",
+        "updated_at": "2026-07-13T19:57:56Z",
+        "closed_at": null,
+        "author": "OUENMING",
+        "comments": 1,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "# Model name mapping silently dropped after skill re-import, causing 400 errors from upstream\n\n## Description\n\nBetween 02:07 and 02:12 on 2026-07-14, all Claude Code requests routed through the cc-switch proxy returned **400 `invalid_request_error`** from OpenCode. Investigation of the `proxy_request_logs` table reveals that the proxy was running and forwarding requests the entire time, but **model name mapping was silently skipped** — raw Claude model names (`claude-sonnet-4-6`, `claude-opus-4-8`) were sent to OpenCode instead of the configured mappings (`deepseek-v4-pro`, `deepseek-v4-flash`).\n\nThe trigger appears to be a **skill re-import operation** that occurred ~2 minutes before the first 400 error.\n\n## Environment\n\n- cc-switch version: 3.16.5 (latest)\n- Provider: OpenCode Go (`b74b6c54-446d-4093-8e16-405af478a259`)\n- API format: `openai_chat`\n- Model mapping config:\n  - Sonnet → `deepseek-v4-pro[1M]`\n  - Opus → `deepseek-v4-flash[1M]`\n  - Haiku → `glm-5.2`\n\n## Timeline (all times UTC+8)\n\n| Time | Event | Evidence |\n|------|-------|----------|\n| 02:02:02 | Skill re-import: 6 skills loaded from agents lock file | cc-switch.log L861-864 |\n| 02:02:07 | Skill re-import: 4 skills loaded (second pass) | cc-switch.log L865-866 |\n| 02:04:59 | **Last successful request** — mapping works normally | DB: `model=deepseek-v4-pro`, `request_model=claude-sonnet-4-6`, status 200 |\n| 02:07:05 | **First 400 error** — mapping missing | DB: `model=claude-sonnet-4-6`, `request_model=claude-sonnet-4-6`, status 400 |\n| 02:07:35 | 400 error | Same pattern |\n| 02:07:54 | Proxy detects issue, restores Live config, stops SRV-002 | cc-switch.log L876-879 |\n| 02:07:59 | Proxy restarts SRV-001, re-takes over Live config | cc-switch.log L880-884 |\n| 02:08:15 | 400 error (after restart) | DB: `model=claude-opus-4-8`, status 400 |\n| 02:08:33 | Stream health check: OpenCode \"operational\" (404 Reachable) | stream_check_logs |\n| 02:12:12 | Last 400 error | DB: `model=claude-opus-4-8`, status 400 |\n| 02:12:22 | Proxy stops again, restores Live config | cc-switch.log L887-890 |\n| 02:13:14 | **Requests recover** — now using mapped model names directly | DB: `model=deepseek-v4-pro`, `request_model=deepseek-v4-pro`, status 200 |\n\n## Key Evidence: `request_id` Pattern\n\nThe `proxy_request_logs` table shows a clear correlation between **session context** and model mapping:\n\n**Before 02:07 (working):**\n```\nrequest_id: session:e99164f2-7b31-4f89-bf5d-d60f63c0f866\nmodel:      deepseek-v4-pro          ← mapped\nrequest_model: claude-sonnet-4-6     ← original\n```\n\n**02:07–02:12 (400 errors):**\n```\nrequest_id: 3fc7d1d2-c219-4045-9523-bb34c8891850   ← NO \"session:\" prefix\nmodel:      claude-sonnet-4-6          ← NOT mapped (raw passthrough)\nrequest_model: claude-sonnet-4-6       ← original\n```\n\n**After 02:13 (recovered):**\n```\nrequest_id: session:3ae30e7b-7711-4d21-9528-56d2bd3f0310\nmodel:      deepseek-v4-pro            ← mapped\nrequest_model: deepseek-v4-pro         ← client now using mapped name\n```\n\nAll successful proxied requests have `session:`-prefixed request IDs. All failed requests have plain UUID request IDs with no session prefix. This strongly suggests the model mapping logic is **tied to session context** — when the session association is lost, mapping is silently skipped and raw model names are forwarded upstream.\n\n## Root Cause Analysis\n\n1. The skill re-import operation at 02:02 likely triggered an internal state reload in the proxy\n2. During the reload, active session-to-provider associations were cleared\n3. The proxy continued running and forwarding requests, but without session context it could not determine which model mapping rules to apply\n4. Raw Claude model names were sent to OpenCode, which rejected them with `invalid_request_error`\n5. The stream health check at 02:08:33 reported \"operational\" because it only tested endpoint reachability (HTTP 404 = Reachable), not whether model mapping was functioning\n\n## Suggested Fixes\n\n1. **Decouple model mapping from session context** — the provider's model mapping table should be a global lookup that doesn't depend on active session associations. As long as a provider is selected, its mapping rules should apply to all requests.\n\n2. **Enhance health checks to validate mapping** — the stream health check should send a test request with a Claude model name and verify it gets mapped correctly, not just check if the upstream endpoint is reachable.\n\n3. **Log a warning when mapping is skipped** — if a request is forwarded without model name translation, this should be logged at WARN/ERROR level so the issue is immediately visible rather than silently producing 400s upstream.\n\n## Error Response (for reference)\n\n```json\n{\n  \"error\": {\n    \"message\": \"Error from provider (Console Go): Upstream request failed\",\n    \"type\": \"invalid_request_error\",\n    \"param\": null,\n    \"code\": \"invalid_request_error\"\n  }\n}\n```",
+        "url": "https://github.com/farion1231/cc-switch/issues/5312"
+    }
+]

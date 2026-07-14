@@ -1,0 +1,400 @@
+[
+    {
+        "id": 4869753389,
+        "number": 20169,
+        "title": "Bug: Scrollbar clips rounded corners when using stickyModalHeader() and stickyModalFooter()",
+        "state": "open",
+        "created_at": "2026-07-13T02:03:56Z",
+        "updated_at": "2026-07-13T02:03:56Z",
+        "closed_at": null,
+        "author": "NgYueHong",
+        "comments": 0,
+        "labels": [
+            "bug",
+            "unconfirmed",
+            "medium priority"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Package\n\nfilament/filament\n\n### Package Version\n\n5.6.8\n\n### Laravel Version\n\n12\n\n### Livewire Version\n\n_No response_\n\n### PHP Version\n\n8.3\n\n### Problem description\n\nWhen using `stickyModalHeader()` and `stickyModalFooter()` on a modal that requires scrolling, the scrollbar arrows overlap and clip the rounded corners of the modal container. This creates an unpolished UI glitch where the native scrollbar track ignores the border-radius of the parent modal.\n\n<img width=\"927\" height=\"532\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/55701144-701c-457f-95a5-06d44b33e9bf\" />\n\n### Expected behavior\n\nThe modal container should maintain its rounded corners (border-radius), and the scrollbar should either be clipped properly inside the container or padded so it does not break the visual layout.\n\n<img width=\"1366\" height=\"784\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/c7c17db2-8fed-43a4-aa29-c1087fcaf6dc\" />\n\n### Steps to reproduce\n\n1. Create a fresh clean Filament 4 project.\n2. Create user resource.\n3. Remove the edit URL route.\n4. Add sticky header and footer to edit action.\n```\n                EditAction::make()\n                    ->stickyModalFooter()\n                    ->stickyModalHeader(),\n```\n\n### Reproduction repository (issue will be closed if this is not valid)\n\nhttps://github.com/NgYueHong/FilamentBug\n\n### Relevant log output\n\n```shell\n\n```",
+        "url": "https://github.com/filamentphp/filament/issues/20169"
+    },
+    {
+        "id": 4862499083,
+        "number": 20140,
+        "title": "Table toolbar configuration API",
+        "state": "open",
+        "created_at": "2026-07-11T13:42:27Z",
+        "updated_at": "2026-07-11T13:43:35Z",
+        "closed_at": null,
+        "author": "danharrin",
+        "comments": 0,
+        "labels": [
+            "enhancement"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "Note: I am not looking for a community member to build this feature, it will be handled by myself or another member of the Filament core team when we have availability.",
+        "url": "https://github.com/filamentphp/filament/issues/20140"
+    },
+    {
+        "id": 4854441095,
+        "number": 20129,
+        "title": "Badge text columns are rendered with 100% width",
+        "state": "closed",
+        "created_at": "2026-07-10T11:07:14Z",
+        "updated_at": "2026-07-10T11:53:56Z",
+        "closed_at": "2026-07-10T11:53:56Z",
+        "author": "omeyer6",
+        "comments": 1,
+        "labels": [
+            "bug",
+            "unconfirmed",
+            "medium priority"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Package\n\nfilament/filament\n\n### Package Version\n\nv5.6.8\n\n### Laravel Version\n\nv13.19.0\n\n### Livewire Version\n\nv4.3.3\n\n### PHP Version\n\nPHP 8.5.7\n\n### Problem description\n\nSince one of the most recent releases - I can't say which one - text columns in tables that are supposed to be displayed as badges are rendered with a width of 100%. \n\nPreviously, the badges were only as wide as their content (+padding), just as described in the documentation [here](https://filamentphp.com/docs/5.x/tables/columns/text#displaying-as-a-%E2%80%9Cbadge%E2%80%9D).\n\nThis looks especially terrible when, for example, you only have two (very wide) columns:\n\n<img width=\"1826\" height=\"161\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/9c6b4473-6959-440f-9199-ad019ea2553a\" />\n\n### Expected behavior\n\nText columns defined as badge should be rendered as before, with a width depending on their content.\n\n### Steps to reproduce\n\nOpen the Demo and have a look at Blog -> Posts - doesn't look too bad there, because the column is very small. Or create a simple table with two columns and configure one of the as text column with badge configuration.\n\n### Reproduction repository (issue will be closed if this is not valid)\n\nhttps://github.com/filamentphp/demo\n\n### Relevant log output\n\n```shell\n\n```",
+        "url": "https://github.com/filamentphp/filament/issues/20129"
+    },
+    {
+        "id": 4835842449,
+        "number": 20122,
+        "title": "FileUpload multiple(): removing a completed file while another upload is in flight wipes the in-flight upload",
+        "state": "closed",
+        "created_at": "2026-07-08T08:46:13Z",
+        "updated_at": "2026-07-08T14:17:56Z",
+        "closed_at": "2026-07-08T14:17:56Z",
+        "author": "Bramvzw",
+        "comments": 2,
+        "labels": [
+            "bug",
+            "unconfirmed",
+            "medium priority"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Package\n\nfilament/filament\n\n### Package Version\n\nv4.11.8\n\n### Laravel Version\n\nv13.18.1\n\n### Livewire Version\n\nv3.8.2\n\n### PHP Version\n\n8.4.19\n\n### Problem description\n\nWith `FileUpload::make()->multiple()` and the default `maxParallelUploads: 2`, removing an already-completed file with its ✕ (\"tap to undo\") button while another file is still uploading also discards the file that is still in flight: it disappears from the list mid-upload and is never stored.\n\nRoot cause: `shouldUpdateState` flips back to `true` as soon as the *first* upload finishes, while other uploads are still in flight. Removing the completed file then deletes its temporary `livewire-file:` value from the state, so the resulting state update passes the guard in the `$watch('state')` handler, which rebuilds the FilePond list from server-confirmed uploads only — wiping the in-flight file. On any real-world connection where uploads take more than an instant, this is trivially hit.\n\nThe race is also verified present on v3.3.54. Related to #13306: same underlying race and the same symptom (\"files missing when uploading multiple files\"). The poll-based path reported there did not reproduce for me on current 4.x, current 3.3, or the originally reported Filament 3.2.93 + Livewire 3.5.2. A fix is proposed in #20121; happy to backport to 3.x once the approach is approved.\n\n### Expected behavior\n\nOnly the file whose ✕ button was clicked is removed; the in-flight upload continues and completes.\n\n### Steps to reproduce\n\n1. Throttle your upload speed (Chrome DevTools → Network → custom throttling profile, ~100 kbit/s up) — or use any real slow connection. On an unthrottled localhost the race window is only milliseconds wide, which is why this class of issue is hard to reproduce there.\n2. Open a form with `FileUpload::make()->multiple()` and select a 1.5 MB and a 300 KB file together.\n3. When the small file shows \"Upload complete\" while the big one is still uploading, click the small file's ✕ (\"tap to undo\") button.\n4. The big file vanishes from the list too and is never stored.\n\n### Reproduction repository (issue will be closed if this is not valid)\n\nhttps://github.com/Bramvzw/filament-13306-repro\n\n### Relevant log output\n\n_No response_",
+        "url": "https://github.com/filamentphp/filament/issues/20122"
+    },
+    {
+        "id": 4799515797,
+        "number": 20103,
+        "title": "The StatOverview widget's chart flickers when it refreshes",
+        "state": "closed",
+        "created_at": "2026-07-03T01:52:58Z",
+        "updated_at": "2026-07-03T08:11:06Z",
+        "closed_at": "2026-07-03T08:11:01Z",
+        "author": "robinmiau",
+        "comments": 1,
+        "labels": [
+            "bug",
+            "unconfirmed",
+            "medium priority"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Package\n\nfilament/filament\n\n### Package Version\n\nv5.6.8\n\n### Laravel Version\n\nv13.18.1\n\n### Livewire Version\n\nv4.3.3\n\n### PHP Version\n\nPHP 8.5.8\n\n### Problem description\n\nThe chart flickers briefly every time the StatOverview widget refreshes.\n\n<img width=\"313\" height=\"35\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/7f996dab-8e03-4c1e-9eb8-da30a9ba06c3\" />\n\n### Expected behavior\n\nIt shouldn't flicker.\n\n### Steps to reproduce\n\n1. Log in at https://demo.filamentphp.com/\n2. Go to the Shop Dashboard\n3. The Stat Overview widget chart flickers, though not as much as in the GIF\n\n<img width=\"307\" height=\"153\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/a3e3e366-8c4b-4d86-948d-0523a5a09b2b\" />\n\n### Reproduction repository (issue will be closed if this is not valid)\n\nhttps://github.com/filamentphp/demo\n\n### Relevant log output\n\n```shell\n\n```",
+        "url": "https://github.com/filamentphp/filament/issues/20103"
+    },
+    {
+        "id": 4785626617,
+        "number": 20098,
+        "title": "Badges stretch to full width in Chrome 150",
+        "state": "closed",
+        "created_at": "2026-07-01T12:43:36Z",
+        "updated_at": "2026-07-08T08:55:57Z",
+        "closed_at": "2026-07-08T08:55:57Z",
+        "author": "VAT-DIGITAL-ED",
+        "comments": 12,
+        "labels": [
+            "bug",
+            "unconfirmed",
+            "medium priority"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Package\n\nfilament/filament\n\n### Package Version\n\nv5.6.7\n\n### Laravel Version\n\nv13.18.0\n\n### Livewire Version\n\nv4.3.3\n\n### PHP Version\n\n8.3.31\n\n### Problem description\n\nThe latest Chrome update (v150) causes the badge component to stretch to the full width.\n\n<img width=\"1238\" height=\"401\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/10bb5f81-5597-4ae8-82bf-96f237136535\" />\n\n### Expected behavior\n\nThe badge should only be as wide as its content.\n\n### Steps to reproduce\n\n1. Open Chrome, ensure your chrome version is updated to 150.\n2. Navigate to https://demo.filamentphp.com/hr/leave-requests/17\n3. Observe the `Type` and `Status` fields - the badges span the full width.\n\n### Reproduction repository (issue will be closed if this is not valid)\n\nhttps://github.com/VAT-DIGITAL-ED/app-filament-issue-4.x\n\n### Relevant log output\n\n```shell\n\n```",
+        "url": "https://github.com/filamentphp/filament/issues/20098"
+    },
+    {
+        "id": 4778511432,
+        "number": 20095,
+        "title": "setting the length for the component `OneTimeCodeInput`",
+        "state": "closed",
+        "created_at": "2026-06-30T16:14:54Z",
+        "updated_at": "2026-06-30T20:40:37Z",
+        "closed_at": "2026-06-30T20:24:34Z",
+        "author": "atmonshi",
+        "comments": 2,
+        "labels": [
+            "bug",
+            "unconfirmed",
+            "medium priority"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Package\n\nfilament/filament\n\n### Package Version\n\nv4.11.7\n\n### Laravel Version\n\nv13.18.0\n\n### Livewire Version\n\nv3.8.2\n\n### PHP Version\n\nv8.4.11\n\n### Problem description\n\nthe `OneTimeCodeInput` component shows only 6 inputs, the `$length` has not effect to the view.\n\n<img width=\"622\" height=\"671\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/2addff8c-25d5-489a-8edd-f03b461cb07d\" />\n\nexample code:\n```php\nOneTimeCodeInput::make('otp_code')->length(8),\n```\n\n### Expected behavior\n\nexpected to see 8 inputs instead of always seeing 6 inputs only.\n\n### Steps to reproduce\n\nin the Reproduction repository, using the branch `onetimecodeinput-length`:\nnavigate to `/admin/otp`\n\nusing the code:\n```php\nOneTimeCodeInput::make('otp_code')->length(8),\n```\n\n### Reproduction repository (issue will be closed if this is not valid)\n\nhttps://github.com/atmonshi/filament-issues/tree/onetimecodeinput-length\n\n### Relevant log output\n\n```shell\nAI explanation, \"maybe\" helpful :)\n\n\nThe issue was that length() updated validation, but the digit count in the UI comes from the Blade component’s $length prop, which defaults to 6.\nAfter the recent multi-input refactor, length must reach the support component as a component prop (:length). In older wiring it was only passed on the input slot attributes, which the new template ignores — so you always got 6 boxes.\n```",
+        "url": "https://github.com/filamentphp/filament/issues/20095"
+    },
+    {
+        "id": 4707669750,
+        "number": 20063,
+        "title": "createOptionForm() resets parent modal scroll position to top",
+        "state": "closed",
+        "created_at": "2026-06-20T17:09:25Z",
+        "updated_at": "2026-07-01T05:11:41Z",
+        "closed_at": "2026-07-01T05:11:41Z",
+        "author": "AchmadFathoni",
+        "comments": 1,
+        "labels": [
+            "bug",
+            "unconfirmed",
+            "medium priority"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Package\n\nfilament/filament\n\n### Package Version\n\nv5.6.7\n\n### Laravel Version\n\nv13.16.1\n\n### Livewire Version\n\nv4.3.1\n\n### PHP Version\n\nPHP 8.4.22\n\n### Problem description\n\nWhen using `createOptionForm()` on a `Select` inside a form rendered in a modal, creating **or canceling** the nested action modal resets the parent modal's scroll position to the top.\n\nEven clicking **Cancel** triggers the reset — despite Cancel generating zero Livewire requests and being intended as a no-op. After the nested modal closes, the parent modal DOM is visibly torn down and re-built (causing a brief flick), and the scroll container is a brand-new DOM node with `scrollTop = 0`.\n\nChrome also logs a scroll anchoring failure during the morph:\n\n```\nScroll anchoring was disabled in a scroll container because of too many\nconsecutive adjustments (10) with too little total distance\n(0.928 px average, 9.283 px total).\n```\n\n\n### Expected behavior\n\nThe parent modal's scroll position should be preserved after the nested `createOptionForm` modal closes — both on Create and on Cancel.\n\n### Steps to reproduce\n\n1. Clone the reproduction repository and set it up:\n\n```bash\ngit clone https://github.com/AchmadFathoni/issue-reproduction-template\ncd issue-reproduction-template\ncomposer setup\nphp artisan serve\n```\n\n2. Log in at `http://127.0.0.1:8000/admin` with `test@example.com` / `password`.\n3. Navigate to **Items** in the sidebar.\n4. Click the edit button on \"Test Item\" — opens a `4xl` modal.\n5. **Scroll to the bottom** — the `Category` Select with the `+` button is the last field, beneath 16 other fields (text inputs and textareas that force overflow).\n6. Click the `+` button on the Category Select to open the create-option modal.\n7. Click **Cancel**.\n8. **Observe:** the parent modal scrolls back to the top.\n\nSame result if you fill in the form and click **Create**.\n\nThe reproduction form (`ItemForm::configure()`) looks like:\n\n```php\nreturn $schema\n    ->columns(1)\n    ->components([\n        TextInput::make('name')->required(),\n        Textarea::make('description')->nullable()->rows(4),\n        TextInput::make('price')->numeric()->nullable()->prefix('$'),\n        TextInput::make('quantity')->numeric()->nullable(),\n        TextInput::make('sku')->nullable(),\n        TextInput::make('status')->nullable(),\n        Textarea::make('notes')->nullable()->rows(4),\n        // 8 padding textareas (3 rows each) to force modal scroll overflow\n        Textarea::make('field_a')->nullable()->rows(3),\n        // ...\n        Textarea::make('field_h')->nullable()->rows(3),\n        // Category Select at the VERY BOTTOM — user must scroll to reach it\n        Select::make('category_id')\n            ->label('Category')\n            ->relationship('category', 'name')\n            ->createOptionForm([\n                TextInput::make('name')->label('Category Name')->required(),\n            ])\n            ->searchable()\n            ->preload(),\n    ]);\n```\n\nThe `EditAction` in the table:\n\n```php\nEditAction::make()\n    ->modal()\n    ->modalWidth('4xl'),\n```\n\n\n### Reproduction repository (issue will be closed if this is not valid)\n\nhttps://github.com/AchmadFathoni/issue-reproduction-template\n\n### Relevant log output",
+        "url": "https://github.com/filamentphp/filament/issues/20063"
+    },
+    {
+        "id": 4703322004,
+        "number": 20060,
+        "title": "Keyboard shortcuts defined with x-mousetrap are not triggered in Filament forms",
+        "state": "closed",
+        "created_at": "2026-06-19T20:12:45Z",
+        "updated_at": "2026-06-30T14:35:25Z",
+        "closed_at": "2026-06-30T14:35:24Z",
+        "author": "somaromero",
+        "comments": 3,
+        "labels": [
+            "bug",
+            "unconfirmed",
+            "medium priority"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Package\n\nfilament/filament\n\n### Package Version\n\nv3.3.54\n\n### Laravel Version\n\nv11.54.0\n\n### Livewire Version\n\nv3.8.1\n\n### PHP Version\n\nPHP 8.2\n\n### Problem description\n\nAfter updating the filamentphp packages, Ctrl + S no longer works to save the form. Now it only saves the web page.\n\n### Expected behavior\n\nI hope that pressing Ctrl + S will save the form without having to look for the “Create” or “Save” button.\n\n### Steps to reproduce\n\n1. Open a Resource\n2. Push the create button\n3. Fillout the form\n4. Press the keys `Ctrl + S`\n\n### Reproduction repository (issue will be closed if this is not valid)\nhttps://github.com/somaromero/filament-save-shortcut-issue/tree/3.x\n\n### Relevant log output\n\n```shell\n\n```",
+        "url": "https://github.com/filamentphp/filament/issues/20060"
+    },
+    {
+        "id": 4689991796,
+        "number": 20054,
+        "title": "NavigationGroup::fromEnum doesn't use Collapsible interface correctly",
+        "state": "closed",
+        "created_at": "2026-06-18T07:00:13Z",
+        "updated_at": "2026-06-30T11:22:30Z",
+        "closed_at": "2026-06-30T11:22:30Z",
+        "author": "mattzuba",
+        "comments": 0,
+        "labels": [
+            "bug",
+            "unconfirmed",
+            "medium priority"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Package\n\nfilament/filament\n\n### Package Version\n\nv5.6.7\n\n### Laravel Version\n\nv13.15.0\n\n### Livewire Version\n\nv4.3.1\n\n### PHP Version\n\nv8.4.22\n\n### Problem description\n\nWhen `\\Filament\\Navigation\\NavigationGroup::fromEnum` is checking if the Enum implements `Collapsible`, the order of operations appears wrong within the `if` statement.\n\nhttps://github.com/filamentphp/filament/blob/5.x/packages/panels/src/Navigation/NavigationGroup.php#L143-L146\n\nThe NavigationGroup::collapsed() method also sets collapsible to whatever value collapsed is.  But because the `fromEnum` method calls `collapsible` first, then `collapsed`, you can never set a navigation group to be collapsible, but NOT collapsed initially.\n\nI believe the order of the calls in `fromEnum` should be flipped, so that `collapsed` is called first, and then `collapsible`.\n\n### Expected behavior\n\nHere's an enum example that I would expect to result in a Navigation group that is collapsible, but not initially collapsed.  But what actually happens it that the group is not collapsible at all.\n\n### Steps to reproduce\n\nExample Enum:\n\n```php\n<?php\n\nnamespace App\\Enums;\n\nuse Filament\\Support\\Contracts\\Collapsible;\nuse Filament\\Support\\Contracts\\HasLabel;\nuse Illuminate\\Contracts\\Support\\Htmlable;\n\nenum AppNavigationGroups implements HasLabel, Collapsible\n{\n    case GROUP;\n\n    public function getLabel(): Htmlable|string|null\n    {\n        return match ($this) {\n            self::GROUP => 'Group',\n        };\n    }\n\n    public function isCollapsible(): bool\n    {\n        return match ($this) {\n            default => true,\n        };\n    }\n\n    public function isCollapsed(): bool\n    {\n        return match ($this) {\n            default => false,\n        };\n    }\n}\n```\n\nWithin a Panel, use it:\n\n```php\n$panel->navigationGroups(\\App\\Enums\\AppNavigationGroups::class)\n```\n\n### Reproduction repository (issue will be closed if this is not valid)\n\nhttps://github.com/mattzuba/filament-navigation-group-issue\n\n### Relevant log output\n\n```shell\n\n```",
+        "url": "https://github.com/filamentphp/filament/issues/20054"
+    },
+    {
+        "id": 4685461519,
+        "number": 20050,
+        "title": "Bulk actions execute on non-selectable records when using 'Select all matching'",
+        "state": "closed",
+        "created_at": "2026-06-17T17:11:36Z",
+        "updated_at": "2026-06-27T20:59:38Z",
+        "closed_at": "2026-06-27T20:59:38Z",
+        "author": "hamdyelbatal122",
+        "comments": 2,
+        "labels": [
+            "bug",
+            "unconfirmed",
+            "medium priority"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Description\n\nWhen configuring custom selectability on a table using `checkIfRecordIsSelectableUsing()`, the checkboxes for non-selectable records are correctly disabled in the UI. \n\nHowever, if a user selects all records on the page and then clicks the banner link to **\"Select all matching records\"** (which switches Livewire to track deselected records), the bulk action ends up executing on the non-selectable records as well. \n\nThis happens because the backend database query has no awareness of the PHP closure defined in `checkIfRecordIsSelectableUsing()`. \n\nTo prevent this, Filament currently disables deselection tracking entirely when custom selectability is active (`canTrackDeselectedRecords()` returns `false`), forcing the client to download all individual IDs. But this workaround causes severe performance issues/memory limits on large datasets, and doesn't actually prevent the backend from resolving non-selectable records if deselection tracking is somehow active or simulated.\n\n---\n\n### Reproduction Repository\n\nhttps://github.com/hamdyelbatal122/filament-reproduction-20050\n\n### Steps to Reproduce\n\n1. Clone the reproduction repository and install dependencies:\n   ```bash\n   composer install\n   ```\n2. Setup database, migrations, and seed the demo data:\n   ```bash\n   composer setup\n   ```\n3. Start the server:\n   ```bash\n   php artisan serve\n   ```\n4. Log in at `http://127.0.0.1:8000/login` with:\n   * **Email:** `admin@filamentphp.com`\n   * **Password:** `password`\n5. Navigate to the posts page: `http://127.0.0.1:8000/blog/posts`\n6. Notice that the checkbox for \"Draft\" posts is disabled (configured using `checkIfRecordIsSelectableUsing` in `PostsTable.php`).\n7. Check the master checkbox in the header to select all posts on the page, then click the banner link **\"Select all 83 posts matching...\"**.\n8. Click the bulk actions dropdown and trigger the **\"Test Select All\"** action.\n9. You will see an notification saying:\n   > **Executed on 101 records. Drafts included: 18**\n   \n   *(This shows that the bulk action executed on all records, including the 18 draft posts that are non-selectable).*\n",
+        "url": "https://github.com/filamentphp/filament/issues/20050"
+    },
+    {
+        "id": 4647356201,
+        "number": 20027,
+        "title": "419 error in a polling component causes massive livewire/update loop",
+        "state": "closed",
+        "created_at": "2026-06-12T07:39:38Z",
+        "updated_at": "2026-06-15T08:24:19Z",
+        "closed_at": "2026-06-15T08:24:19Z",
+        "author": "siegerhansma",
+        "comments": 1,
+        "labels": [
+            "bug",
+            "unconfirmed",
+            "medium priority"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Package\n\nfilament/filament\n\n### Package Version\n\nv5.6.6\n\n### Laravel Version\n\nv12.61.0\n\n### Livewire Version\n\n_No response_\n\n### PHP Version\n\n8.3\n\n### Problem description\n\nWhen on a page with a polling component, like a dashboard, an expired session causes a loop of livewire/update requests to be sent to the server. The server responds with 419 but the client keeps trying the connection without stopping. \n\n\n\n### Expected behavior\n\nThe \"This page has expired\" modal should show and the client should pause requests until there is a confirmation OR automatically redirect to login. \n\n### Steps to reproduce\n\nI have encountered this locally and was able to reproduce on the demo.filamentphp.com instance. \n\n* Login as usual\n* Go to a page with a polling component, like this: https://demo.filamentphp.com/shop\n* Remove your session via the database or clearing all cookies, but keeping the page active. \n* Wait until the next poll appears\n* Watch your network tab in developer tools spam the `/livewire-<random>/update` endpoint. We saw up to 20 requests per second for one single user.\n\n### Reproduction repository (issue will be closed if this is not valid)\n\nhttps://github.com/filamentphp/demo/\n\n### Relevant log output\n\n```shell\n\n```",
+        "url": "https://github.com/filamentphp/filament/issues/20027"
+    },
+    {
+        "id": 4641305518,
+        "number": 20025,
+        "title": "make:filament-user --panel=id crashes when no default panel is set",
+        "state": "closed",
+        "created_at": "2026-06-11T14:15:22Z",
+        "updated_at": "2026-06-14T20:56:18Z",
+        "closed_at": "2026-06-14T20:56:18Z",
+        "author": "ashraful19",
+        "comments": 1,
+        "labels": [
+            "bug",
+            "unconfirmed",
+            "medium priority"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Package\n\nfilament/filament\n\n### Package Version\n\nv4.x and v5.x\n\n### Laravel Version\n\nv11.0.0 / v12.0.0\n\n### Livewire Version\n\nv3.0.0\n\n### PHP Version\n\nPHP 8.3\n\n### Problem description\n\nRunning `php artisan make:filament-user --panel=seller` crashes with `NoDefaultPanelSetException` when no panel provider has `->default()` set. \n`configurePanel()` via `HasPanel` correctly resolves the `--panel` option and stores the panel in `$this->panel`. But `MakeUserCommand:84` ignores it and calls `Filament::getCurrentOrDefaultPanel()` which only works during HTTP requests. In CLI, `getCurrentPanel()` returns null, so it falls to `getDefaultPanel()` → throws because no panel is marked default.\nThe `$this->panel` was already correctly resolved. Line 84's check is a stale leftover from before `HasPanel` and `--panel` existed (PR #\n\n<img width=\"1435\" height=\"324\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/dd013eda-7971-4f89-803e-9ad781d79c8e\" />\n\n18661 added `HasPanel` but never touched line 84).\n\n### Expected behavior\n\n`php artisan make:filament-user --panel=seller` should work without requiring any panel to have `->default()` set.\n\n### Steps to reproduce\n\n1. Register two panel providers, neither with `->default()`.\n2. Run `php artisan make:filament-user --panel=<panel id>`.\n\n### Reproduction repository (issue will be closed if this is not valid)\n\nhttps://github.com/ashraful19/filament-demo/tree/5x-bug-makefilament-user-default-panel\n\n### Relevant log output\n\n```shell\nNoDefaultPanelSetException: No default Filament panel is set.\n\nat Filament\\PanelRegistry::getDefault()\nat Filament\\Facades\\Filament::getCurrentOrDefaultPanel()\nat Filament\\Commands\\MakeUserCommand::handle()  ← line 84\nRoot cause: packages/panels/src/Commands/MakeUserCommand.php:84 should check $this->panel instead of Filament::getCurrentOrDefaultPanel().\n```",
+        "url": "https://github.com/filamentphp/filament/issues/20025"
+    },
+    {
+        "id": 4611855124,
+        "number": 20017,
+        "title": "Filament v5 does not restore the previous scroll position when navigating back in SPA mode",
+        "state": "closed",
+        "created_at": "2026-06-08T09:58:12Z",
+        "updated_at": "2026-06-17T13:56:34Z",
+        "closed_at": "2026-06-15T08:05:17Z",
+        "author": "webard",
+        "comments": 2,
+        "labels": [
+            "unconfirmed",
+            "bug in dependency",
+            "medium priority"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Package\n\nfilament/filament\n\n### Package Version\n\n v5.6.7\n\n### Laravel Version\n\nv13.14.0\n\n### Livewire Version\n\nv4.3.1\n\n### PHP Version\n\n8.5.7\n\n### Problem description\n\nIn Filament v5, when I click the browser’s Back button, the page scrolls to the top instead of returning to the position from which I clicked the link. This issue only occurs in SPA mode.\n\nImportantly, this issue does not occur in Filament v4. In fact, Filament v4 seems to be more responsive in this regard overall.\n\n\nFilament v5 (bad):\n\nhttps://github.com/user-attachments/assets/b6550234-c156-4f45-b7ae-1cd765603722\n\nFilament v4 (good):\n\nhttps://github.com/user-attachments/assets/8e8083a8-3b2b-4c1f-8da0-d50977eb4d98\n\n### Expected behavior\n\nThe scroll position should return to the point from which I clicked the link. This is the natural behavior of web browsers, so it should be replicated in SPA mode.\n\n### Steps to reproduce\n\n1. Clone repo\n2. Run `artisan db:seed`\n3. Display more rows (e.g. 50)\n4. Go to \"view\" on some bottom rows\n5. Press \"back\" button in your browser\n\n### Reproduction repository (issue will be closed if this is not valid)\n\nhttps://github.com/webard/filament-scroll-problem\n\n### Relevant log output\n\n```shell\n\n```",
+        "url": "https://github.com/filamentphp/filament/issues/20017"
+    },
+    {
+        "id": 4591295444,
+        "number": 20006,
+        "title": "scrolling horizontal subnavigations",
+        "state": "closed",
+        "created_at": "2026-06-04T18:42:04Z",
+        "updated_at": "2026-06-07T11:22:39Z",
+        "closed_at": "2026-06-07T11:22:39Z",
+        "author": "vitalijalbu",
+        "comments": 0,
+        "labels": [
+            "bug",
+            "unconfirmed",
+            "medium priority"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Package\n\nfilament/filament\n\n### Package Version\n\nv5\n\n### Laravel Version\n\n13\n\n### Livewire Version\n\n_No response_\n\n### PHP Version\n\n8.4\n\n### Problem description\n\nBasically I've setted on provider `->subNavigationPosition(SubNavigationPosition::Top)` and the scrolling eats the last button tab\n\nhttps://github.com/user-attachments/assets/baecdbd2-f7c4-4a50-8ed2-e1c065443865\n\n### Expected behavior\n\nScrolling must work even if sidebar is opened\n\n### Steps to reproduce\n\n- create like 10 relationsmanagar\n- add top align subnavigations on provider\n- see issue\n\n### Reproduction repository (issue will be closed if this is not valid)\n\nhttps://github.com/user-attachments/assets/baecdbd2-f7c4-4a50-8ed2-e1c065443865\n\n### Relevant log output\n\n```shell\n\n```",
+        "url": "https://github.com/filamentphp/filament/issues/20006"
+    },
+    {
+        "id": 4591084539,
+        "number": 20005,
+        "title": "Bug Report: Select::make()->multiple() state not syncing before form validation",
+        "state": "closed",
+        "created_at": "2026-06-04T18:08:06Z",
+        "updated_at": "2026-06-18T11:00:58Z",
+        "closed_at": "2026-06-10T12:27:49Z",
+        "author": "Elliot-fsc2",
+        "comments": 2,
+        "labels": [
+            "bug",
+            "unconfirmed",
+            "medium priority"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Package\n\nfilament/filament\n\n### Package Version\n\n5.6.6\n\n### Laravel Version\n\n12.61.1\n\n### Livewire Version\n\n4.3.1\n\n### PHP Version\n\n8.3.30\n\n### Problem description\n\nWhen using Select::make('field')->multiple()->searchable(), the selected values are not reliably flushed from Tom Select's internal JS state to the Livewire component property before form validation runs on wire:submit. This results in a validation error (e.g., The field is required) even though items are selected in the UI.\n\nRoot Cause Investigation:\nIn vendor/filament/forms/resources/views/components/select.blade.php:\n\nPHP\n$isNative = (! ($isSearchable  $isMultiple \n $isHtmlAllowed) && $isNative());\nBecause $isMultiple forces $isNative to false, it always renders the Tom Select Alpine component. The deferred $wire.$entangle() binding isn't flushing before the form submission action triggers validation.\n\nAttempted Fixes (All Failed):\n\nPlain ->multiple()->required()\n\nAdding ->live() or ->live(onBlur: true)\n\nExplicit statePath() targeting an isolated array property\n\nWhat Works:\n\nBypassing Filament with a raw Blade <select wire:model.live=\"...\" multiple> works perfectly, confirming it's an entangle/lifecycle sync issue with the custom component wrapper.\n\nUsing CheckboxList::make() works as a temporary UI workaround.\n\nHas anyone else run into this synchronization race condition with multi-selects on v5, or found a clean way to force the state flush on submit?\n\n\n### Expected behavior\n\nWhen the user selects options in the UI and submits the form, those selected values should reliably sync to the component's state (e.g., $this->data['section_ids']) so that validation passes and the data can be processed.\n\n### Steps to reproduce\n\n1. Create a Filament form with a multiple, searchable, and required select component:\n\n   ```php\n   Select::make('section_ids')\n       ->multiple()\n       ->searchable()\n       ->required()\n       ->options([...])\n\n2. Open the form in the browser, click the dropdown, and select one or more options.\n3. Immediately click the form's submit button.\n4. Observe the validation error indicating the field is required, and note that the backend state remains empty.\n\n### Reproduction repository (issue will be closed if this is not valid)\n\nhttps://github.com/Elliot-fsc2/drdi/blob/main/resources/views/rdo/announcement/%E2%9A%A1section-create.blade.php\n\n### Relevant log output\n\n```shell\n\n```",
+        "url": "https://github.com/filamentphp/filament/issues/20005"
+    },
+    {
+        "id": 4579151529,
+        "number": 20003,
+        "title": "Database notifications not marked as read when using Filament internal resource URLs",
+        "state": "closed",
+        "created_at": "2026-06-03T10:51:13Z",
+        "updated_at": "2026-06-15T12:14:15Z",
+        "closed_at": "2026-06-15T12:14:15Z",
+        "author": "VAT-DIGITAL-ED",
+        "comments": 2,
+        "labels": [
+            "bug",
+            "unconfirmed",
+            "medium priority"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Package\n\nfilament/notifications\n\n### Package Version\n\nv4.11.6\n\n### Laravel Version\n\nv12.61.0\n\n### Livewire Version\n\nv3.8.1\n\n### PHP Version\n\n8.3.31\n\n### Problem description\nWhen using Filament internal resource URLs inside a database notification action, clicking the \"View\" button correctly redirects the user, but does not mark the notification as read or remove it from the notification list.\n\nExternal URLs behave correctly and mark the notification as read and closes it.\n\n### Expected behavior\n\n**Expected behaviour**\n- Send database notification\n- Receive database notification\n- Click notification action\n- Notification is marked as read and closed\n- User is redirected to the URL\n\n**Actual behaviour**\n- External URLs: fully working (mark as read + close + redirect)\n- Filament resource URLs:\n  - Redirect works\n  - markAsRead() is not applied\n  - close() is not applied\n\n**Note**\nI have **not** tested this with open in new tab functionality. \n\n### Steps to reproduce\n\n**Steps to reproduce**\n1. Send a database notification _(See case A and B down below)_\n2. Receive the notification\n\nThe notification appears in the UI.\n\n3. Click \"View\" action\n\n**Case A: External URL (works correctly)**\n```\nNotification::make()\n    ->title('Works correctly')\n    ->success()\n    ->actions([\n        Action::make('view')\n            ->label('View')\n            ->url('https://filamentphp.com')\n            ->button()\n            ->markAsRead()\n            ->close(),\n    ])\n    ->sendToDatabase($user);\n```\n\n**Result**\n- Notification is marked as read\n- Notification is removed from the list\n- Redirect works correctly\n\n**Case B: Filament internal URL (broken behaviour)**\n```\nNotification::make()\n    ->title('Does not work correctly')\n    ->success()\n    ->actions([\n        Action::make('view')\n            ->url(CustomerResource::getUrl('edit', [\n                'record' => $record,\n            ]))\n            ->button()\n            ->markAsRead()\n            ->close(),\n    ])\n    ->sendToDatabase($user);\n```\n\n**Result**\n- Redirect works correctly\n- Notification is not marked as read\n- Notification remains in the list\n\n### Reproduction repository (issue will be closed if this is not valid)\n\nhttps://github.com/VAT-DIGITAL-ED/app-filament-issue-4.x/tree/mark-as-read-issue\n\n### Relevant log output\n\n```shell\n\n```",
+        "url": "https://github.com/filamentphp/filament/issues/20003"
+    },
+    {
+        "id": 4578800412,
+        "number": 20002,
+        "title": "Documentation update",
+        "state": "closed",
+        "created_at": "2026-06-03T10:02:44Z",
+        "updated_at": "2026-06-08T09:00:08Z",
+        "closed_at": "2026-06-08T09:00:08Z",
+        "author": "VAT-DIGITAL-ED",
+        "comments": 2,
+        "labels": [
+            "bug",
+            "unconfirmed",
+            "medium priority"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Package\n\nfilament/notifications\n\n### Package Version\n\nv4.11.6\n\n### Laravel Version\n\nv12.61.0\n\n### Livewire Version\n\nv3.8.1\n\n### PHP Version\n\n8.3.31\n\n### Problem description\n\nFollowing this URL: https://filamentphp.com/docs/5.x/notifications/database-notifications#marking-database-notifications-as-read\n\nThe following code snippet example is shown:\n\n<img width=\"598\" height=\"426\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/cdb70c97-72af-4659-be9b-6648a1850451\" />\n\nWhen implementing the example as guided in the documentation using `->send()`, the notification does appear - but it is not stored in the database (as we used `->send()`).\n\n<img width=\"365\" height=\"133\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/2ba7ca38-edc2-459a-8054-a867ed279559\" />\n\nClicking the \"View\" action causes the following issue:\n\n<img width=\"1083\" height=\"678\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/02fd09e8-ecf9-47fa-a528-b33168ac8fe6\" />\n\n### Expected behavior\n\nI believe the documentation may need to be corrected from `->send()` to `->sendToDatabase()`.\n\nWith this change, everything behaves as expected, and the \"View\" action works correctly:\n\n**Before click**\n<img width=\"389\" height=\"233\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/ce5c7b1e-79e8-4b3e-b241-96cd9d2fc30b\" />\n\n**After click**\n<img width=\"367\" height=\"227\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/5d5ebc24-618d-47f0-806b-5b8858e912a7\" />\n\nHappy to correct it once confirmed this can be altered\n\n### Steps to reproduce\n\n**Before**\n```\nNotification::make()\n    ->title('Saved successfully')\n    ->success()\n    ->body('Changes to the post have been saved.')\n    ->actions([\n        Action::make('view')\n            ->button()\n            ->markAsRead(),\n    ])\n    ->send();\n```\n\n**After**\n```\n$user = auth()->user();\n\nNotification::make()\n    ->title('Saved successfully')\n    ->success()\n    ->body('Changes to the post have been saved.')\n    ->actions([\n        Action::make('view')\n            ->button()\n            ->markAsRead(),\n    ])\n    ->sendToDatabase($user);\n```\n\n### Reproduction repository (issue will be closed if this is not valid)\n\nhttps://github.com/VAT-DIGITAL-ED/app-filament-issue-4.x/tree/documentation-correction-1\n\n### Relevant log output\n\n```shell\n\n```",
+        "url": "https://github.com/filamentphp/filament/issues/20002"
+    },
+    {
+        "id": 4571612783,
+        "number": 19997,
+        "title": "Repeater with `itemLabel()` crashes with \"Call to a member function getStateSnapshot() on null\"",
+        "state": "closed",
+        "created_at": "2026-06-02T12:58:22Z",
+        "updated_at": "2026-06-14T17:41:16Z",
+        "closed_at": "2026-06-14T17:41:16Z",
+        "author": "MadBox-99",
+        "comments": 5,
+        "labels": [
+            "bug",
+            "unconfirmed",
+            "medium priority"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Package\n\nfilament/forms\n\n### Package version\n\nv5.6.6\n\n### Laravel version\n\nv13.12.0\n\n### Livewire version\n\nv4.3.0\n\n### PHP version\n\n8.4.21\n\n### Problem description\n\nA `Repeater` configured with `->itemLabel()` can fatally crash during a Livewire re-render with:\n\n```\nCall to a member function getStateSnapshot() on null\nvendor/filament/forms/src/Components/Repeater.php:1239\n```\n\nThe crash is in `Repeater::getItemLabel()`:\n\n```php\npublic function getItemLabel(string $key, ?int $index = null): string | Htmlable | null\n{\n    $container = $this->getChildSchema($key); // can return null\n\n    return $this->evaluate($this->itemLabel, [\n        // ...\n        'state' => $container->getStateSnapshot(), // line 1239 -> null deref\n        // ...\n    ]);\n}\n```\n\n`getChildSchema($key)` (in `HasChildComponents`) returns the schema only if `$key` exists in the\nlazily-built `cachedDefaultChildSchemas` (which for a Repeater is `getItems()`, keyed by the current\nraw-state item keys). For any other key it falls through and returns `null`.\n\nThe blade view (`repeater/index.blade.php`) iterates `$getItems()` (recomputed fresh) and calls\n`$getItemLabel($itemKey)` per item. If `cachedDefaultChildSchemas` was warmed earlier in the same\nrequest with a **different** set of keys than the current raw state (e.g. the raw state was changed\nafter the cache was populated, via a cross-component `$set()` into the repeater's path, a partial\nrender, or overlapping Livewire requests) and the cache is not cleared, `getChildSchema($key)`\nreturns `null` and `getItemLabel()` fatally crashes the whole render.\n\nOnly repeaters that use `->itemLabel()` are affected, since `getItemLabel()` is the only caller that\ndereferences the child schema without a null check.\n\n### Expected behavior\n\n`getItemLabel()` should not fatally crash when the cached child schemas are stale relative to the\ncurrent raw state. It can re-resolve the child schema from the current raw state (clear the stale\ncache) or null-guard the snapshot, e.g.:\n\n```php\npublic function getItemLabel(string $key, ?int $index = null): string | Htmlable | null\n{\n    $container = $this->getChildSchema($key);\n\n    return $this->evaluate($this->itemLabel, [\n        'container' => $container,\n        'item' => $container,\n        'key' => $key,\n        'schema' => $container,\n        'state' => $container?->getStateSnapshot(),\n        'uuid' => $key,\n        'index' => $index,\n    ]);\n}\n```\n\n### Steps to reproduce\n\nWith a top-level (non-relationship, array-cast) `Repeater` that uses `->itemLabel()`:\n\n1. Render a form once so the repeater warms its child-schema cache (`getChildSchema($existingKey)`).\n2. Mutate the repeater's raw state so it contains a key that is **not** in the warmed cache —\n   for example a sibling field's `afterStateUpdated` calling `$set('the_repeater_path', $newArray)`,\n   or a modal action that writes the parent array via `$set()`/`fillForm()`.\n3. On the following render the blade iterates the new key and calls `getItemLabel($newKey)`,\n   where `getChildSchema($newKey)` is `null` -> fatal error.\n\nMinimal programmatic reproduction of the failing code path (inside a Livewire/schema context):\n\n```php\n$repeater->getChildSchema($existingKey);                 // warm cache with current keys\n\n$raw = $repeater->getRawState();\n$raw['new-key'] = $raw[$existingKey];                    // key not present in the warmed cache\ndata_set($livewire, $repeater->getStatePath(), $raw);    // change raw state without clearing cache\n\n$repeater->getItemLabel('new-key');                      // Error: getStateSnapshot() on null\n```\n\n### Reproduction repository\n\nhttps://github.com/MadBox-99/filament-repeater-itemlabel-crash\n",
+        "url": "https://github.com/filamentphp/filament/issues/19997"
+    },
+    {
+        "id": 4571545838,
+        "number": 19996,
+        "title": "Using null as an array offset is deprecated, use empty string instead",
+        "state": "closed",
+        "created_at": "2026-06-02T12:48:24Z",
+        "updated_at": "2026-06-06T15:51:11Z",
+        "closed_at": "2026-06-06T15:51:11Z",
+        "author": "Jacotheron",
+        "comments": 0,
+        "labels": [
+            "bug",
+            "unconfirmed",
+            "medium priority"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Package\n\nfilament/filament\n\n### Package Version\n\nv5.6.6\n\n### Laravel Version\n\nv13.12.0\n\n### Livewire Version\n\n_No response_\n\n### PHP Version\n\nPHP 8.5\n\n### Problem description\n\nI am getting deprecation notices in my logs stating the above. The file it is located on is vendor/filament/forms/resources/views/components/builder/block-picker.blade.php\n\nThe lines in question is the blade line 32, where `$actionAlignment` is used as both the array key and array value; only check is to determine if it is a Alignment Enum, and if not, the fissue can occur.\n\nIn addition even if addActionAlignment is set, there is no way to set it for the BetweenActions (when more than 1 builder block is picked), thus also causing this issue.\n\n### Expected behavior\n\nWhen the \"addActionAlignment\" is not set, it should fallback to a value other than null, so we do not trigger deprecation notices.\n\n### Steps to reproduce\n\nCreate a form with the Builder Component, not specifying the addActionAlignment; when loading the form on any page, and deprecated notices is to be shown, it will have the notice.\n\nNote the PHP 8.5 requirement.\n\nFor added simplicity, I have Laravel Debugbar as a dependency - it shows the error in the Messages Tab.\n\nIn my Test Repo, install it like you typically would (running the seed for a user), visit the site, it should prefill the login for the test user. Once iside I have a \"Issue Page\" which contains only the Builder with a couple of options. \n\nWhen loading the page, you would see the \"Log:warning: ...\" and when you add items to the Builder, it will also appear for the Between Actions.\n\n### Reproduction repository (issue will be closed if this is not valid)\n\nhttps://github.com/Jacotheron/filament-issue-reproduction\n\n### Relevant log output\n\n```shell\nproduction.WARNING: Using null as an array offset is deprecated, use an empty string instead in /home/forge/<sitename>/storage/framework/views/6de6b2e29bf07914fc7332021f64b2e2.php on line 87\n```",
+        "url": "https://github.com/filamentphp/filament/issues/19996"
+    }
+]

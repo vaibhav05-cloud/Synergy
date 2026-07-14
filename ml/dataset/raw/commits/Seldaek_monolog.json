@@ -1,0 +1,242 @@
+[
+    {
+        "sha": "57eb1028342134e701e77c617565d51b6e5a2a53",
+        "author": "Andrey Tkachenko",
+        "email": "andrey.tkachenko@spryker.com",
+        "date": "2026-07-02T08:46:14Z",
+        "message": "Still dump the scalars, when the depth level is reached (#2042)\n\n* NormalizerFormatter: return scalar data even when depth level is reached\n\n* JsonFormatter: return scalar data even when depth is reached\n\n* Update tests to reflect change in logic\n\n* Covered the new use case",
+        "url": "https://github.com/Seldaek/monolog/commit/57eb1028342134e701e77c617565d51b6e5a2a53"
+    },
+    {
+        "sha": "0fc1d3b076da5ac49dd0a42ae4387d8563a15511",
+        "author": "dependabot[bot]",
+        "email": "49699333+dependabot[bot]@users.noreply.github.com",
+        "date": "2026-07-02T08:39:03Z",
+        "message": "Bump zizmorcore/zizmor-action from 0.5.6 to 0.5.7 (#2045)\n\nBumps [zizmorcore/zizmor-action](https://github.com/zizmorcore/zizmor-action) from 0.5.6 to 0.5.7.\n- [Release notes](https://github.com/zizmorcore/zizmor-action/releases)\n- [Commits](https://github.com/zizmorcore/zizmor-action/compare/5f14fd08f7cf1cb1609c1e344975f152c7ee938d...192e21d79ab29983730a13d1382995c2307fbcaa)\n\n---\nupdated-dependencies:\n- dependency-name: zizmorcore/zizmor-action\n  dependency-version: 0.5.7\n  dependency-type: direct:production\n  update-type: version-update:semver-patch\n...\n\nSigned-off-by: dependabot[bot] <support@github.com>\nCo-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>",
+        "url": "https://github.com/Seldaek/monolog/commit/0fc1d3b076da5ac49dd0a42ae4387d8563a15511"
+    },
+    {
+        "sha": "37929ec4731ca4af433f8930a009150b7781a235",
+        "author": "dependabot[bot]",
+        "email": "49699333+dependabot[bot]@users.noreply.github.com",
+        "date": "2026-07-02T08:15:38Z",
+        "message": "Bump actions/checkout from 6.0.2 to 7.0.0 (#2044)\n\nBumps [actions/checkout](https://github.com/actions/checkout) from 6.0.2 to 7.0.0.\n- [Release notes](https://github.com/actions/checkout/releases)\n- [Changelog](https://github.com/actions/checkout/blob/main/CHANGELOG.md)\n- [Commits](https://github.com/actions/checkout/compare/de0fac2e4500dabe0009e67214ff5f5447ce83dd...9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0)\n\n---\nupdated-dependencies:\n- dependency-name: actions/checkout\n  dependency-version: 7.0.0\n  dependency-type: direct:production\n  update-type: version-update:semver-major\n...\n\nSigned-off-by: dependabot[bot] <support@github.com>\nCo-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>",
+        "url": "https://github.com/Seldaek/monolog/commit/37929ec4731ca4af433f8930a009150b7781a235"
+    },
+    {
+        "sha": "d142fa8f857c8b13de07d44a701f610f657a2844",
+        "author": "dependabot[bot]",
+        "email": "49699333+dependabot[bot]@users.noreply.github.com",
+        "date": "2026-07-02T08:15:14Z",
+        "message": "Bump shivammathur/setup-php from 2.37.1 to 2.37.2 (#2043)\n\nBumps [shivammathur/setup-php](https://github.com/shivammathur/setup-php) from 2.37.1 to 2.37.2.\n- [Release notes](https://github.com/shivammathur/setup-php/releases)\n- [Commits](https://github.com/shivammathur/setup-php/compare/7c071dfe9dc99bdf297fa79cb49ea005b9fcadbc...f3e473d116dcccaddc5834248c87452386958240)\n\n---\nupdated-dependencies:\n- dependency-name: shivammathur/setup-php\n  dependency-version: 2.37.2\n  dependency-type: direct:production\n  update-type: version-update:semver-patch\n...\n\nSigned-off-by: dependabot[bot] <support@github.com>\nCo-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>",
+        "url": "https://github.com/Seldaek/monolog/commit/d142fa8f857c8b13de07d44a701f610f657a2844"
+    },
+    {
+        "sha": "04c3499db98d7471abd9261dc83232f8fe1a252d",
+        "author": "Jordi Boggiano",
+        "email": "j.boggiano@seld.be",
+        "date": "2026-05-30T19:16:07Z",
+        "message": "Add file rotation by hour (FILE_PER_HOUR) (#2040)\n\nRebased version of #2001 with the date-format validation regex fixed so\nmonth-only formats (FILE_PER_MONTH etc.) still validate, plus test\ncoverage for the new FILE_PER_HOUR mode.\n\nCo-authored-by: Baks Dev <71670884+baks-dev@users.noreply.github.com>",
+        "url": "https://github.com/Seldaek/monolog/commit/04c3499db98d7471abd9261dc83232f8fe1a252d"
+    },
+    {
+        "sha": "f3d2d3a3f51df9aac659af11b581c428c6a350e9",
+        "author": "Jordi Boggiano",
+        "email": "j.boggiano@seld.be",
+        "date": "2026-05-30T12:16:29Z",
+        "message": "Close file handle after acquiring lock\n\nFixes #2025",
+        "url": "https://github.com/Seldaek/monolog/commit/f3d2d3a3f51df9aac659af11b581c428c6a350e9"
+    },
+    {
+        "sha": "f502a4530523467d99551f532451fb2c00a688b5",
+        "author": "Rushikesh Kulkarni",
+        "email": "112326805+rushik2204@users.noreply.github.com",
+        "date": "2026-05-30T12:13:07Z",
+        "message": "Fix StreamHandler truncating writes on non-blocking streams (#2016)\n\nfwrite() may perform a partial write on a non-blocking stream, so\nStreamHandler::streamWrite() now loops until the whole record is written,\nwaiting via stream_select() when the stream's buffer is momentarily full\nrather than dropping the rest of the record.\n\nFixes #2011\n\nCo-authored-by: Claude Opus 4.8 (1M context) <noreply@anthropic.com>",
+        "url": "https://github.com/Seldaek/monolog/commit/f502a4530523467d99551f532451fb2c00a688b5"
+    },
+    {
+        "sha": "dd461a161be1be4fcf6ebde03b6686fbc48f1dfa",
+        "author": "Egor Gruzdev",
+        "email": "egorgruzdev@gmail.com",
+        "date": "2026-05-30T12:03:17Z",
+        "message": "Add extension hooks to TelegramBotHandler for URL and curl headers (#2029)",
+        "url": "https://github.com/Seldaek/monolog/commit/dd461a161be1be4fcf6ebde03b6686fbc48f1dfa"
+    },
+    {
+        "sha": "21e39b64958e6ff4eed11f99d0abec6e2c70add8",
+        "author": "Pablo Gustavo",
+        "email": "34045117+Pablo1Gustavo@users.noreply.github.com",
+        "date": "2026-05-30T11:44:09Z",
+        "message": "Fix TelegramBotHandler swallowing errors on non-JSON responses (#2026) (#2030)",
+        "url": "https://github.com/Seldaek/monolog/commit/21e39b64958e6ff4eed11f99d0abec6e2c70add8"
+    },
+    {
+        "sha": "0d52b20661334b139e98b85935d997ed0e5bef9c",
+        "author": "Jordi Boggiano",
+        "email": "j.boggiano@seld.be",
+        "date": "2026-05-30T11:29:09Z",
+        "message": "Fix phpstan build",
+        "url": "https://github.com/Seldaek/monolog/commit/0d52b20661334b139e98b85935d997ed0e5bef9c"
+    },
+    {
+        "sha": "5097342c9c4009e486f5b351a76ce8496b24d172",
+        "author": "Phil Bates",
+        "email": "philbates35@gmail.com",
+        "date": "2026-05-30T11:20:22Z",
+        "message": "Fix AbstractProcessingHandler::handle() to call getBubble() instead of reading \\$bubble directly (#2031)",
+        "url": "https://github.com/Seldaek/monolog/commit/5097342c9c4009e486f5b351a76ce8496b24d172"
+    },
+    {
+        "sha": "9cee4661adfaa46d93dfcdc550988a9c1133b0a5",
+        "author": "Jordi Boggiano",
+        "email": "j.boggiano@seld.be",
+        "date": "2026-05-30T10:51:47Z",
+        "message": "Fix Elasticsearch CI: runner JDK for cgroup-v2 startup, Elastica 8 test compat (#2038)",
+        "url": "https://github.com/Seldaek/monolog/commit/9cee4661adfaa46d93dfcdc550988a9c1133b0a5"
+    },
+    {
+        "sha": "7ad8efdf1fd64409122919a29c93da3f629ded72",
+        "author": "Jordi Boggiano",
+        "email": "j.boggiano@seld.be",
+        "date": "2026-05-29T14:31:33Z",
+        "message": "Add zizmor security analysis + dependabot cooldown (#2032)\n\n* Add zizmor GitHub Actions security analysis + dependabot cooldown\n\n* Harden existing workflows to pass zizmor (pedantic)\n\nPin actions to commit SHAs (latest releases), add concurrency limits, and set persist-credentials: false on read-only checkouts.",
+        "url": "https://github.com/Seldaek/monolog/commit/7ad8efdf1fd64409122919a29c93da3f629ded72"
+    },
+    {
+        "sha": "1c92005a66349fa29b140b367bfe2d63d3108e11",
+        "author": "Jordi Boggiano",
+        "email": "j.boggiano@seld.be",
+        "date": "2026-05-29T12:49:38Z",
+        "message": "Update GHA for 2.x and main",
+        "url": "https://github.com/Seldaek/monolog/commit/1c92005a66349fa29b140b367bfe2d63d3108e11"
+    },
+    {
+        "sha": "68b974809baff3f071893de61447212e9e688ee7",
+        "author": "Jordi Boggiano",
+        "email": "j.boggiano@seld.be",
+        "date": "2026-04-09T13:04:03Z",
+        "message": "More ES fixes",
+        "url": "https://github.com/Seldaek/monolog/commit/68b974809baff3f071893de61447212e9e688ee7"
+    },
+    {
+        "sha": "9c101d331965cd6bdd58feb17c1cefe8c7dd19e0",
+        "author": "Jordi Boggiano",
+        "email": "j.boggiano@seld.be",
+        "date": "2026-04-09T12:56:32Z",
+        "message": "Try to fix ES tests",
+        "url": "https://github.com/Seldaek/monolog/commit/9c101d331965cd6bdd58feb17c1cefe8c7dd19e0"
+    },
+    {
+        "sha": "8a119d6b373041a3fcfb6126c1d9b446e54570b4",
+        "author": "omniError",
+        "email": "omniError@users.noreply.github.com",
+        "date": "2026-04-08T20:26:13Z",
+        "message": "Fix missing timezone support in rotation date calculations (#2022)",
+        "url": "https://github.com/Seldaek/monolog/commit/8a119d6b373041a3fcfb6126c1d9b446e54570b4"
+    },
+    {
+        "sha": "5530e2a2d9807d320c1e72201094d2521a97cd43",
+        "author": "Jordi Boggiano",
+        "email": "j.boggiano@seld.be",
+        "date": "2026-04-08T20:24:59Z",
+        "message": "Update baseline",
+        "url": "https://github.com/Seldaek/monolog/commit/5530e2a2d9807d320c1e72201094d2521a97cd43"
+    },
+    {
+        "sha": "718fe2e1e10414be7602ab609dc5b887ed90e7f8",
+        "author": "dependabot[bot]",
+        "email": "49699333+dependabot[bot]@users.noreply.github.com",
+        "date": "2026-04-08T19:01:24Z",
+        "message": "Bump shivammathur/setup-php from 2.36.0 to 2.37.0 (#2024)\n\nBumps [shivammathur/setup-php](https://github.com/shivammathur/setup-php) from 2.36.0 to 2.37.0.\n- [Release notes](https://github.com/shivammathur/setup-php/releases)\n- [Commits](https://github.com/shivammathur/setup-php/compare/44454db4f0199b8b9685a5d763dc37cbf79108e1...accd6127cb78bee3e8082180cb391013d204ef9f)\n\n---\nupdated-dependencies:\n- dependency-name: shivammathur/setup-php\n  dependency-version: 2.37.0\n  dependency-type: direct:production\n  update-type: version-update:semver-minor\n...\n\nSigned-off-by: dependabot[bot] <support@github.com>\nCo-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>",
+        "url": "https://github.com/Seldaek/monolog/commit/718fe2e1e10414be7602ab609dc5b887ed90e7f8"
+    },
+    {
+        "sha": "493d646eac7c7ca1c621e92639b2341bd0c31c76",
+        "author": "dependabot[bot]",
+        "email": "49699333+dependabot[bot]@users.noreply.github.com",
+        "date": "2026-04-08T17:29:14Z",
+        "message": "Bump ramsey/composer-install from 3.1.1 to 4.0.0 (#2023)\n\nBumps [ramsey/composer-install](https://github.com/ramsey/composer-install) from 3.1.1 to 4.0.0.\n- [Release notes](https://github.com/ramsey/composer-install/releases)\n- [Commits](https://github.com/ramsey/composer-install/compare/3cf229dc2919194e9e36783941438d17239e8520...65e4f84970763564f46a70b8a54b90d033b3bdda)\n\n---\nupdated-dependencies:\n- dependency-name: ramsey/composer-install\n  dependency-version: 4.0.0\n  dependency-type: direct:production\n  update-type: version-update:semver-major\n...\n\nSigned-off-by: dependabot[bot] <support@github.com>\nCo-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>",
+        "url": "https://github.com/Seldaek/monolog/commit/493d646eac7c7ca1c621e92639b2341bd0c31c76"
+    },
+    {
+        "sha": "6db20ca029219dd8de378cea8e32ee149399ef1b",
+        "author": "Denis",
+        "email": "a@bigf.at",
+        "date": "2026-02-23T16:52:20Z",
+        "message": "Fix undefined array key in DeduplicationHandler with concurrent access (#2020)\n\nWhen multiple requests write to the deduplication store file simultaneously,\npartially written lines can be read by concurrent processes. This causes\n'Undefined array key' errors when trying to destructure incomplete lines.\n\nChanges:\n- Skip incomplete/invalid lines in isDuplicate() instead of crashing\n- Add LOCK_EX flag to file_put_contents() for atomic writes\n\nFixes #1950",
+        "url": "https://github.com/Seldaek/monolog/commit/6db20ca029219dd8de378cea8e32ee149399ef1b"
+    },
+    {
+        "sha": "922bacec877b686bfc7b5f3a9f2543f619e6fdf1",
+        "author": "dependabot[bot]",
+        "email": "49699333+dependabot[bot]@users.noreply.github.com",
+        "date": "2026-02-23T15:16:41Z",
+        "message": "Bump actions/checkout from 6.0.1 to 6.0.2 (#2019)\n\nBumps [actions/checkout](https://github.com/actions/checkout) from 6.0.1 to 6.0.2.\n- [Release notes](https://github.com/actions/checkout/releases)\n- [Changelog](https://github.com/actions/checkout/blob/main/CHANGELOG.md)\n- [Commits](https://github.com/actions/checkout/compare/8e8c483db84b4bee98b60c0593521ed34d9990e8...de0fac2e4500dabe0009e67214ff5f5447ce83dd)\n\n---\nupdated-dependencies:\n- dependency-name: actions/checkout\n  dependency-version: 6.0.2\n  dependency-type: direct:production\n  update-type: version-update:semver-patch\n...\n\nSigned-off-by: dependabot[bot] <support@github.com>\nCo-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>",
+        "url": "https://github.com/Seldaek/monolog/commit/922bacec877b686bfc7b5f3a9f2543f619e6fdf1"
+    },
+    {
+        "sha": "cb44e4a2eb355ded395275551d32d63a4ed393f2",
+        "author": "Tom Molloy",
+        "email": "56634451+cobbles@users.noreply.github.com",
+        "date": "2026-01-09T14:05:10Z",
+        "message": "feat(formatter): add maxTraceLength config option to NormalizerFormatter (#2015)\n\nAdd maxTraceLength property to NormalizerFormatter to limit the number\nof stack trace frames included when normalizing exceptions.\n\nAllows users who need control over their log length to avoid\ntruncating the log and causing invalid json syntax",
+        "url": "https://github.com/Seldaek/monolog/commit/cb44e4a2eb355ded395275551d32d63a4ed393f2"
+    },
+    {
+        "sha": "b321dd6749f0bf7189444158a3ce785cc16d69b0",
+        "author": "Jordi Boggiano",
+        "email": "j.boggiano@seld.be",
+        "date": "2026-01-02T08:55:42Z",
+        "message": "Update changelog",
+        "url": "https://github.com/Seldaek/monolog/commit/b321dd6749f0bf7189444158a3ce785cc16d69b0"
+    },
+    {
+        "sha": "3715fcc965782c344d7cff75ffd6e2088098a487",
+        "author": "dependabot[bot]",
+        "email": "49699333+dependabot[bot]@users.noreply.github.com",
+        "date": "2026-01-02T08:56:02Z",
+        "message": "Bump actions/checkout from 6.0.0 to 6.0.1 (#2014)\n\nBumps [actions/checkout](https://github.com/actions/checkout) from 6.0.0 to 6.0.1.\n- [Release notes](https://github.com/actions/checkout/releases)\n- [Changelog](https://github.com/actions/checkout/blob/main/CHANGELOG.md)\n- [Commits](https://github.com/actions/checkout/compare/1af3b93b6815bc44a9784bd300feb67ff0d1eeb3...8e8c483db84b4bee98b60c0593521ed34d9990e8)\n\n---\nupdated-dependencies:\n- dependency-name: actions/checkout\n  dependency-version: 6.0.1\n  dependency-type: direct:production\n  update-type: version-update:semver-patch\n...\n\nSigned-off-by: dependabot[bot] <support@github.com>\nCo-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>",
+        "url": "https://github.com/Seldaek/monolog/commit/3715fcc965782c344d7cff75ffd6e2088098a487"
+    },
+    {
+        "sha": "edf9cb618bd437196ea9ce91fafbf9576df784ce",
+        "author": "Jordi Boggiano",
+        "email": "j.boggiano@seld.be",
+        "date": "2026-01-01T12:07:38Z",
+        "message": "Add NoDiscard attr, fixes #2012 (#2013)",
+        "url": "https://github.com/Seldaek/monolog/commit/edf9cb618bd437196ea9ce91fafbf9576df784ce"
+    },
+    {
+        "sha": "5991e41f28273cd23e531393f26e0b6069a08aba",
+        "author": "Jordi Boggiano",
+        "email": "j.boggiano@seld.be",
+        "date": "2025-12-30T18:42:51Z",
+        "message": "Fix build",
+        "url": "https://github.com/Seldaek/monolog/commit/5991e41f28273cd23e531393f26e0b6069a08aba"
+    },
+    {
+        "sha": "0219dfd9fcb69c6a2ec4373a243d34166ff85210",
+        "author": "dependabot[bot]",
+        "email": "49699333+dependabot[bot]@users.noreply.github.com",
+        "date": "2025-12-30T16:36:58Z",
+        "message": "Bump ramsey/composer-install from 3.1.0 to 3.1.1 (#1971)\n\nBumps [ramsey/composer-install](https://github.com/ramsey/composer-install) from 3.1.0 to 3.1.1.\n- [Release notes](https://github.com/ramsey/composer-install/releases)\n- [Commits](https://github.com/ramsey/composer-install/compare/a2636af0004d1c0499ffca16ac0b4cc94df70565...3cf229dc2919194e9e36783941438d17239e8520)\n\n---\nupdated-dependencies:\n- dependency-name: ramsey/composer-install\n  dependency-version: 3.1.1\n  dependency-type: direct:production\n  update-type: version-update:semver-patch\n...\n\nSigned-off-by: dependabot[bot] <support@github.com>\nCo-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>",
+        "url": "https://github.com/Seldaek/monolog/commit/0219dfd9fcb69c6a2ec4373a243d34166ff85210"
+    },
+    {
+        "sha": "05c6b188963c47b961d75a071c34e00a4b05c023",
+        "author": "Adrien SIMON",
+        "email": "43916731+adrien914@users.noreply.github.com",
+        "date": "2025-12-30T16:20:54Z",
+        "message": "Fix json formatter does not catch to string exceptions (#1968)\n\n* fix: JsonFormatter does not catch toString exceptions\n\n* test: test JsonFormatter toString handling\n\n---------\n\nCo-authored-by: Adrien SIMON <asimon@worldia.com>",
+        "url": "https://github.com/Seldaek/monolog/commit/05c6b188963c47b961d75a071c34e00a4b05c023"
+    },
+    {
+        "sha": "daa0acaec23ef0a6e2c39422362cb505a5167ab3",
+        "author": "Louis-Arnaud",
+        "email": "la.catoire@gmail.com",
+        "date": "2025-12-30T16:14:08Z",
+        "message": "Remove deprecated curl_close() calls for PHP 8.5 compatibility (#2009)\n\nCo-authored-by: lacatoire <louis-arnaud.catoire@external.drivalia.com>",
+        "url": "https://github.com/Seldaek/monolog/commit/daa0acaec23ef0a6e2c39422362cb505a5167ab3"
+    }
+]

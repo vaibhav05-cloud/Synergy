@@ -1,0 +1,382 @@
+[
+    {
+        "id": 4816544079,
+        "number": 14138,
+        "title": "[Proposal] HeartFlow - Cognitive Engine for Semantic Kernel",
+        "state": "open",
+        "created_at": "2026-07-06T06:27:15Z",
+        "updated_at": "2026-07-06T09:20:07Z",
+        "closed_at": null,
+        "author": "yun520-1",
+        "comments": 1,
+        "labels": [
+            "triage"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "## Proposal: HeartFlow × Semantic Kernel\n\n### Vision\n\nSemantic Kernel provides *AI orchestration*. HeartFlow adds *cognitive intelligence* to AI workflows.\n\n### What is HeartFlow?\n\nHeartFlow is an **AI cognitive engine** (68 modules) that enhances any AI workflow with judgment:\n\n```\n├── Three-Layer Memory    # Context persistence\n├── Decision Routing      # 34 rules → 8 strategies\n├── U/D/A/H Field        # Cognitive health monitoring\n├── Self-Healing RL      # Q-learning improvement\n└── Shield Module        # Security guardrails\n```\n\n### U/D/A/H Cognitive Framework\n\nReal-time cognitive health monitoring for AI workflows:\n\n```\nH = 0.4·U + 0.3·D - 0.3·A\n\nU (Unity): Response consistency across workflow steps\nD (Development): Logical progression of workflow\nA (Adversity): Error/resistance detection\nH (Harmony): Overall workflow quality\n```\n\n### Benchmarks\n\n| Task | Baseline | +HeartFlow |\n|------|----------|------------|\n| Logical Reasoning | 67% | **100%** |\n| Decision Making | 50% | **100%** |\n\n### Semantic Kernel × HeartFlow\n\n1. **Workflow Memory**: Three-layer persistence for complex orchestrations\n2. **Skill Quality**: U/D/A/H cognitive metrics for AI skills\n3. **Memory Plugin**: Enhanced memory capabilities\n4. **Safety**: Shield module for secure plugin execution\n\n### Links\n\n- GitHub: https://github.com/yun520-1/mark-heartflow-skill\n\n---\n*HeartFlow v5.5.1 — AI Orchestration with Judgment*",
+        "url": "https://github.com/microsoft/semantic-kernel/issues/14138"
+    },
+    {
+        "id": 4798953011,
+        "number": 14134,
+        "title": "Agent eval datasets",
+        "state": "closed",
+        "created_at": "2026-07-02T23:50:55Z",
+        "updated_at": "2026-07-03T04:08:01Z",
+        "closed_at": "2026-07-03T04:08:01Z",
+        "author": "connerlambden",
+        "comments": 1,
+        "labels": [
+            "triage"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "Helium Model Worldview: 304 cue-swap prompts. https://huggingface.co/datasets/HeliumTrades/helium-model-worldview-benchmark | https://heliumtrades.com/benchmarks/",
+        "url": "https://github.com/microsoft/semantic-kernel/issues/14134"
+    },
+    {
+        "id": 4783831376,
+        "number": 14130,
+        "title": "Feature: DakeraMemoryStore — decay-weighted persistent memory backend for SK Memory",
+        "state": "open",
+        "created_at": "2026-07-01T08:28:39Z",
+        "updated_at": "2026-07-01T08:28:39Z",
+        "closed_at": null,
+        "author": "ferhimedamine",
+        "comments": 0,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "## Summary\n\nSemantic Kernel's memory system accepts pluggable `IMemoryStore` implementations (Python: `MemoryStoreBase`). This issue proposes a **DakeraMemoryStore** that brings decay-weighted, cross-session persistence to SK agents without requiring Weaviate, Azure AI Search, or other heavy vector database deployments.\n\n## Problem\n\nSK's built-in memory stores (volatile in-process, SQLite) lose all data on restart. Connecting to Azure AI Search or Weaviate adds cost and infrastructure complexity for teams that want persistent agent memory. None of the existing backends implement **relevance decay** — a stale memory from 3 months ago ranks as high as one from yesterday.\n\n## Proposed Solution\n\nA `DakeraMemoryStore` implementing SK's memory interface:\n\n```python\nfrom semantic_kernel.memory.memory_store_base import MemoryStoreBase\nfrom semantic_kernel.memory.memory_record import MemoryRecord\nfrom dakera import DakeraClient\n\nclass DakeraMemoryStore(MemoryStoreBase):\n    \"\"\"Dakera-backed SK memory store with decay-weighted recall.\n    \n    Setup: docker run -d -p 3300:3300 -e DAKERA_API_KEY=demo ghcr.io/dakera-ai/dakera:latest\n    \"\"\"\n    \n    def __init__(self, base_url: str = \"http://localhost:3300\", api_key: str = \"\"):\n        self._client = DakeraClient(base_url=base_url, api_key=api_key)\n    \n    async def get_nearest_matches_async(\n        self,\n        collection_name: str,\n        embedding: ndarray,\n        limit: int,\n        min_relevance_score: float = 0.0,\n        with_embeddings: bool = False,\n    ) -> List[Tuple[MemoryRecord, float]]:\n        response = await self._client.recall_async(\n            agent_id=collection_name,\n            query=embedding.tolist(),\n            top_k=limit,\n        )\n        return [\n            (self._to_memory_record(m), m.score)\n            for m in (response.memories if response else [])\n            if m.score >= min_relevance_score\n        ]\n    \n    async def upsert_async(self, collection_name: str, record: MemoryRecord) -> str:\n        return await self._client.store_memory_async(\n            agent_id=collection_name,\n            content=record.text,\n            metadata={\"id\": record.id, **record.additional_metadata},\n        )\n    \n    # ... get_async, remove_async, get_collections_async\n```\n\nUsage with the SK kernel:\n\n```python\nimport semantic_kernel as sk\n\nkernel = sk.Kernel()\nkernel.add_memory_store(DakeraMemoryStore(\n    base_url=\"http://localhost:3300\",\n    api_key=\"demo\",\n))\n\n# Store and recall work as normal\nawait kernel.memory.save_information_async(\"user-profile\", id=\"pref1\", text=\"prefers concise answers\")\nresults = await kernel.memory.search_async(\"user-profile\", \"response style\", limit=3)\n```\n\n## Why Dakera vs Azure AI Search / Weaviate\n\n| | Azure AI Search | Weaviate | Dakera |\n|---|---|---|---|\n| Decay weighting | ❌ | ❌ | ✅ |\n| Self-hosted | ❌ (cloud) | ✅ (complex) | ✅ (1 container) |\n| Cost | Per-query billing | Infrastructure | Free self-hosted |\n| Session isolation | Manual | Manual | Built-in |\n| Setup complexity | High (portal + keys) | Medium | Low (single Docker cmd) |\n\n## Key Differentiator: Decay Weighting\n\nDakera assigns time-based and access-frequency decay weights to each memory. When SK agents search memory, results ranked by recency and access patterns — not just semantic similarity. Stale context from months ago won't pollute current task context.\n\n## Setup\n\n```bash\ndocker run -d -p 3300:3300 -e DAKERA_API_KEY=demo ghcr.io/dakera-ai/dakera:latest\npip install dakera\n```\n\n## Relevant Files\n\n- `python/semantic_kernel/memory/memory_store_base.py` — abstract interface\n- `python/semantic_kernel/memory/volatile_memory_store.py` — reference implementation\n- `python/semantic_kernel/connectors/memory/` — existing third-party connectors\n\nHappy to open a PR with the full implementation across Python and optionally C# (.NET) variants.",
+        "url": "https://github.com/microsoft/semantic-kernel/issues/14130"
+    },
+    {
+        "id": 4729418374,
+        "number": 14115,
+        "title": ".Net: Optional: add an HVTracker trust badge to the README",
+        "state": "open",
+        "created_at": "2026-06-23T20:45:05Z",
+        "updated_at": "2026-06-23T20:45:27Z",
+        "closed_at": null,
+        "author": "YugantM",
+        "comments": 0,
+        "labels": [
+            ".NET",
+            "triage"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "Hi Semantic Kernel maintainers,\n\nI maintain [HVTracker](https://hvtracker.net), an independent, open registry that scores open-source AI agents on public supply-chain signals — OSSF Scorecard, signed commits, build provenance, license clarity, maintenance, and adoption.\n\nSemantic Kernel is already tracked, currently at **HVTrust 71.6/100 (evidence grade B)**:\nhttps://hvtracker.net/agents/semantic-kernel/\n\nWould you be open to adding an optional trust badge to your README? Three projects already have — deepset's Haystack, Composio, and AIPass. The badge links to your live, externally-computed score so visitors can audit it directly:\n\n```markdown\n[![HVTrust](https://hvtracker.net/badge/semantic-kernel.svg)](https://hvtracker.net/agents/semantic-kernel/)\n```\n\nGuide: https://hvtracker.net/badges/ · Methodology: https://hvtracker.net/methodology/\n\nThis is entirely optional and opt-in. If it's easier, I'm happy to open the one-line README PR for you to review. And if you'd prefer that we correct any of your data or stop tracking the project, just let me know here and I'll take care of it — closing this issue is a perfectly fine \"no thanks,\" and I won't follow up.\n\nThanks for your work on Semantic Kernel.\n",
+        "url": "https://github.com/microsoft/semantic-kernel/issues/14115"
+    },
+    {
+        "id": 4722555789,
+        "number": 14111,
+        "title": ".Net: [.NET] TimePlugin: add TimeProvider injection for testability",
+        "state": "open",
+        "created_at": "2026-06-23T04:12:08Z",
+        "updated_at": "2026-06-23T04:12:30Z",
+        "closed_at": null,
+        "author": "grvnmttl",
+        "comments": 0,
+        "labels": [
+            ".NET",
+            "triage"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "`TimePlugin` currently calls `DateTimeOffset.Now` directly in all methods, making unit tests depend on the real clock. The test file already has a `// TODO: allow clock injection and test all functions` comment acknowledging this gap.\n\n**Proposed fix:** accept a `TimeProvider` constructor parameter (defaulting to `TimeProvider.System`), which is the standard .NET pattern for clock abstraction since .NET 8.\n\nI have an implementation ready and will submit a PR shortly.",
+        "url": "https://github.com/microsoft/semantic-kernel/issues/14111"
+    },
+    {
+        "id": 4710021545,
+        "number": 14104,
+        "title": "Python: Bug: Cosmos DB for MongoDB vector index uses the similarity code as the index kind",
+        "state": "open",
+        "created_at": "2026-06-21T09:32:42Z",
+        "updated_at": "2026-06-25T10:12:48Z",
+        "closed_at": null,
+        "author": "EsraaKamel11",
+        "comments": 2,
+        "labels": [
+            "bug",
+            "python",
+            "triage"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "\n  **Describe the bug**\n  `CosmosMongoCollection._get_index_definitions` (`python/semantic_kernel/connectors/azure_cosmos_db.py`, line 401) sets\n  `cosmosSearchOptions[\"kind\"]` from `DISTANCE_FUNCTION_MAP_MONGODB` — a *similarity* code (`\"COS\"`/`\"IP\"`/`\"L2\"`) —\n  instead of `INDEX_KIND_MAP_MONGODB` (the index kind: `\"vector-ivf\"`/`\"vector-hnsw\"`/`\"vector-diskann\"`).\n\n  This causes three problems:\n  1. The `createIndexes` command sends an invalid `kind` — Cosmos DB for MongoDB vCore requires `kind` to be one of\n  `vector-ivf`/`vector-hnsw`/`vector-diskann`, so vector-index creation fails against a live account.\n  2. `kind` ends up equal to `similarity`.\n  3. The `match index_kind` block (line 411) can never match a `vector-*` case, so the HNSW/IVF/DiskANN tuning options\n  (`m`, `efConstruction`, `numList`, `maxDegree`, `lBuild`) are silently dropped.\n\n  The mapped value of `INDEX_KIND_MAP_MONGODB` is never read (it's only used for a membership check at line 392) — the\n  tell. The sibling NoSQL path does it correctly at line 149: `\"type\": INDEX_KIND_MAP_NOSQL[field.index_kind]`.\n\n  **To Reproduce**\n  Deterministic unit-level repro (no live account needed):\n\n  ```python\n  import asyncio\n  from unittest.mock import AsyncMock, MagicMock\n  from pymongo import AsyncMongoClient\n  from semantic_kernel.connectors.azure_cosmos_db import CosmosMongoCollection\n  from semantic_kernel.data.vector import VectorStoreCollectionDefinition, VectorStoreField\n\n  definition = VectorStoreCollectionDefinition(fields=[\n      VectorStoreField(\"key\", name=\"id\"),\n      VectorStoreField(\"data\", name=\"content\"),\n      VectorStoreField(\"vector\", name=\"vector\", dimensions=5,\n                       index_kind=\"hnsw\", distance_function=\"cosine_similarity\"),\n  ])\n  db = AsyncMock(); db.create_collection = AsyncMock(); db.command = AsyncMock()\n  client = AsyncMock(spec=AsyncMongoClient); client.get_database = MagicMock(return_value=db)\n  col = CosmosMongoCollection(collection_name=\"c\", record_type=dict,\n                              definition=definition, mongo_client=client, database_name=\"d\")\n\n  asyncio.run(col.ensure_collection_exists(m=16, efConstruction=64))\n  opts = db.command.call_args.kwargs[\"command\"][\"indexes\"][1][\"cosmosSearchOptions\"]\n  print(opts)\n  # Actual:   {'kind': 'COS', 'similarity': 'COS', 'dimensions': 5}\n  #           -> invalid kind, and m / efConstruction were silently dropped\n  ```\n\n  Against a live Cosmos DB for MongoDB vCore account, `ensure_collection_exists()` fails because `kind=\"COS\"` is   not a valid vector index kind.\n\n  **Expected behavior**\n  `cosmosSearchOptions[\"kind\"] == \"vector-hnsw\"` and `cosmosSearchOptions[\"similarity\"] == \"COS\"` (the two must be distinct), and the HNSW tuning options (`m`, `efConstruction`) appear in `cosmosSearchOptions`.\n\n  **Screenshots**\n  N/A\n\n  **Platform**\n   - Language: Python\n   - Source: main branch of repository (also affects current pip releases)\n   - AI model: N/A\n   - IDE: VS Code\n   - OS: Windows\n\n  **Additional context**\n  Root cause is a single wrong map lookup at line 401 (should be `INDEX_KIND_MAP_MONGODB[field.index_kind]`). I have a fix + tests ready and will open a PR shortly. I'll take this — PR incoming.",
+        "url": "https://github.com/microsoft/semantic-kernel/issues/14104"
+    },
+    {
+        "id": 4697903266,
+        "number": 14099,
+        "title": "Docs: add enterprise agent deployment-readiness guidance for contributors",
+        "state": "open",
+        "created_at": "2026-06-19T04:26:27Z",
+        "updated_at": "2026-07-04T08:49:46Z",
+        "closed_at": null,
+        "author": "kmishra1204",
+        "comments": 2,
+        "labels": [
+            "triage"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "## Proposal\\nAdd a short section in CONTRIBUTING.md for production-oriented docs contributions (agent deployment readiness).\\n\\n### Suggested checklist themes\\n- secrets and credential boundaries\\n- tool execution controls / approval boundaries\\n- tracing and observability expectations\\n- rollback strategy for prompt/config changes\\n\\n## Why this helps\\nSemantic Kernel is used in enterprise environments where deployment reliability and auditability matter. A concise contribution shape can improve docs quality and review speed.\\n\\nIf this aligns with maintainers' direction, I can send a docs PR draft.",
+        "url": "https://github.com/microsoft/semantic-kernel/issues/14099"
+    },
+    {
+        "id": 4697803709,
+        "number": 14098,
+        "title": ".Net: Feature: Mimir as a Semantic Kernel memory connector (offline, encrypted, single-binary, cross-platform)",
+        "state": "open",
+        "created_at": "2026-06-19T04:01:40Z",
+        "updated_at": "2026-06-19T04:16:54Z",
+        "closed_at": null,
+        "author": "tcconnally",
+        "comments": 1,
+        "labels": [
+            ".NET",
+            "python",
+            "triage"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "## Feature request: Mimir as a Semantic Kernel memory connector\n\n### Problem\nSemantic Kernel's memory system (`ISemanticTextMemory`, `IMemoryStore`) currently supports vector DBs (Azure AI Search, Chroma, Pinecone, Qdrant, etc.) but lacks an **offline, single-binary, zero-infrastructure option** for local development, desktop apps, and edge deployments.\n\n### Proposed solution\nAdd [Mimir](https://github.com/Perseus-Computing-LLC/mimir) as an `IMemoryStore` implementation — a single Rust binary (~8MB) with embedded SQLite + FTS5 + vector search + AES-256 encryption.\n\n\n[Mimir](https://github.com/Perseus-Computing-LLC/mimir) is an MIT-licensed, MCP-native persistent memory engine for AI agents. Single Rust binary (~8MB), zero runtime dependencies.\n\n**Key features:**\n- **29 MCP tools** — full memory lifecycle: remember, recall (FTS5), search (semantic), forget, decay, embed, cohere, vault export/import, journal, timeline\n- **Hybrid search** — BM25 (FTS5) + dense embeddings + Reciprocal Rank Fusion\n- **AES-256-GCM encryption** at rest\n- **Confidence decay** — Ebbinghaus-based, auto-archives stale memories\n- **Web dashboard** for browsing/editing memories\n- **Single binary** — no Docker, Postgres, or cloud required\n- **MIT licensed** — no restrictions\n\n\n### Why Mimir for Semantic Kernel\n1. **IMemoryStore interface** maps cleanly to Mimir's CRUD operations\n2. **Hybrid search** (BM25 + vectors) gives better retrieval than pure vector search alone\n3. **Offline-first** — no Azure/AWS/GCP dependency. Works on dev laptops, factory floors, IoT\n4. **Encryption at rest** — enterprise requirement that most other memory stores don't meet\n5. **MCP-native** — Semantic Kernel supports MCP plugins; Mimir tools are immediately available\n6. **.NET-friendly** — Mimir is invoked as a subprocess via MCP stdio, language-agnostic\n\n### Integration (Python example)\n```python\nfrom semantic_kernel.memory import SemanticTextMemory\nfrom mimir_memory_store import MimirMemoryStore  # IMemoryStore implementation\n\nstore = MimirMemoryStore(db_path=\"./kernel_memory.db\")\nmemory = SemanticTextMemory(storage=store, embeddings_generator=embedding_service)\n\nawait memory.save_information(\"user\", \"prefers dark mode\", \"pref-001\")\nresults = await memory.search(\"user\", \"mode preference\")  # Survives restarts\n```\n\n### Status\n- Repo: [Perseus-Computing-LLC/mimir](https://github.com/Perseus-Computing-LLC/mimir)\n- License: MIT\n- Cross-platform Rust binary (Linux, macOS, Windows)\n\nWould a PR implementing Mimir as an `IMemoryStore` connector be welcome?\n",
+        "url": "https://github.com/microsoft/semantic-kernel/issues/14098"
+    },
+    {
+        "id": 4677997844,
+        "number": 14087,
+        "title": "Graduate XXX feature",
+        "state": "open",
+        "created_at": "2026-06-16T21:22:50Z",
+        "updated_at": "2026-06-16T21:23:14Z",
+        "closed_at": null,
+        "author": "alfqyh",
+        "comments": 0,
+        "labels": [
+            "triage",
+            "feature_graduation"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "---\nname: Feature graduation\nabout: Plan the graduation of an experimental feature\n\n---\n\nChecklist to be completed when graduating an experimental feature\n\n- [ ] Notify PM's and EM's that feature is ready for graduation\n- [ ] Contact PM for list of sample use cases\n- [ ] Verify there are sample implementations​ for each of the use cases\n- [ ] Verify telemetry and logging are complete\n- [ ] ​Verify API docs are complete and arrange to have them published\n- [ ] Make appropriate updates to Learn docs​\n- [ ] Make appropriate updates to Concept samples\n- [ ] Make appropriate updates to Blog posts\n- [ ] Verify there are no serious open Issues​​\n- [ ] Update table in EXPERIMENTS.md\n- [ ] Remove SKEXP​ flag from the experimental code\n",
+        "url": "https://github.com/microsoft/semantic-kernel/issues/14087"
+    },
+    {
+        "id": 4672983907,
+        "number": 14085,
+        "title": "Python: OpenAPI plugin: encoded dot-segment path canonicalization bypasses operation selection (.NET and Python)",
+        "state": "closed",
+        "created_at": "2026-06-16T09:42:17Z",
+        "updated_at": "2026-06-16T18:02:42Z",
+        "closed_at": "2026-06-16T18:02:42Z",
+        "author": "rogerbarreto",
+        "comments": 0,
+        "labels": [
+            ".NET",
+            "python"
+        ],
+        "assignees": [
+            "rogerbarreto"
+        ],
+        "locked": false,
+        "body": "### Summary\n\nThe .NET and Python OpenAPI plugins select operations using the raw OpenAPI path, but build the runtime request URL from a canonicalized path. Encoded dot-segments (for example `/resources/%2e%2e/admin`) pass an `OperationSelectionPredicate` path check, yet `System.Uri` (.NET) / `urljoin` (Python) collapse them to a different route at request time. The selected path and the actual request target can therefore diverge.\n\n### Affected\n\n- .NET: `Functions.OpenApi` — `RestApiOperation.ValidatePathSegments` only rejects literal `.`/`..` segments; encoded forms are not decoded before URI build.\n- Python: `connectors/openapi_plugin` — no dot-segment validation; `urljoin` resolves `..` traversal.\n\n### Expected\n\nOperation selection, path-segment validation, and request building should use one consistent canonical path interpretation. Encoded dot-segment paths should be rejected before a request can be built.\n\n### Plan\n\n- Decode-then-reject dot-segment validation (handle `%2e%2e`, mixed case, encoded slashes, double-encoding).\n- Validate at import/parse time and at URL build time.\n- Defense-in-depth check that the built URL still matches the selected operation path.\n- Regression tests on both .NET and Python that go red then green (test harness covering the failing cases).",
+        "url": "https://github.com/microsoft/semantic-kernel/issues/14085"
+    },
+    {
+        "id": 4665502182,
+        "number": 14078,
+        "title": ".Net: Bug: kernel.InvokeAsync returns empty result for thinking-enabled models (Qwen3.5) via SK's Ollama connector",
+        "state": "closed",
+        "created_at": "2026-06-15T13:26:34Z",
+        "updated_at": "2026-07-09T13:59:51Z",
+        "closed_at": "2026-07-09T13:59:51Z",
+        "author": "ralmutaweh",
+        "comments": 0,
+        "labels": [
+            "bug",
+            ".NET",
+            "triage"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "**Describe the bug**\nWhen invoking a prompt function via _**kernel.InvokeAsync(function, ...)**_ with the Ollama connecter and a thinking-enabled model, in my case Qwen3.5, the result is an empty string.\n\nThe model generates a correct response, but it lands in Ollama's thinking stream rather than message.content, and **OllamaPromptExecutionSettings** provides no way to set **think=false** to prevent this. **FunctionResult** therefore returns empty.\n\n**To Reproduce**\nSteps to reproduce the behavior:\n1. Configure a kernel with the Ollama connector pointing to a thinking-enabled model (e.g. qwen3.5:9b)\n3. Create a prompt function: **var function = kernel.CreateFunctionFromPrompt(promptTemplate);**\n4. Invoke it with no execution settings: **var response = await kernel.InvokeAsync(function, new KernelArguments { [\"extractedText\"] = extractedText });**\n5. Call **response.ToString()** — result is an empty string, despite the function completing successfully and the model taking the full generation time (~70s in our case)\n\n**Expected behavior**\n**response.ToString()** should return the model's generated content. Either **OllamaPromptExecutionSettings** should expose a Think property (mapping to Ollama's top-level think request filed) so users can set **think=false**, or **ChatMessageContent** should surface the thinking field content as fallback or separate property so it isn't silently dropped.\n\n**Platform**\n- Language: C#\n- Source: NuGet package Microsoft.SemanticKernel.Connectors.Ollama 1.77.0-alpha (latest available)\n- AI model: Ollama: qwen3.5:9b (local)\n- IDE: Visual Studio Code\n- OS: macOS (client), Windows (Ollama host)\n\n**Additional context**\nThe root cause has been confirmed by checking OllamaPromptExecutionSettings and saw that is exposes NumPredict, Temperature, TopK, TopP, Stop but no **Think** property and ExtensionData does not map to Ollama's top-level think request field.\n\nLog output from broken path (kernel.InvokeAsync, no execution settings):\n<img width=\"703\" height=\"81\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/a863b22f-da27-418d-9f12-86ea614a3295\" />\n\n\nBut a working fix has been done by bypassing the _**kernel.InvokeAsync**_ and calling OllamaApiClient.ChatAsync directly with Think = false, Stream = false:\n\n<img width=\"707\" height=\"387\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/c5b02491-75ce-4f5d-ac10-15a09ed31291\" />\n\nResulting in the following (in 23.4s): \n\n<img width=\"707\" height=\"148\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/ae258bd8-363a-4ed6-9b63-a819b3bff125\" />\n\n\nFinally, workarounds for this issue are done by accessing raw response payloads / custom handlers, which appears to be the norm for reasoning models generally, not specific to Ollama — see #13889 and related discussion.\n",
+        "url": "https://github.com/microsoft/semantic-kernel/issues/14078"
+    },
+    {
+        "id": 4658011165,
+        "number": 14076,
+        "title": "Python: Integration idea: BGPT evidence retrieval tool",
+        "state": "open",
+        "created_at": "2026-06-14T05:16:52Z",
+        "updated_at": "2026-06-14T22:18:18Z",
+        "closed_at": null,
+        "author": "connerlambden",
+        "comments": 0,
+        "labels": [
+            "python",
+            "triage"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "Integration idea: BGPT structured literature evidence for `microsoft/semantic-kernel`.\n\nBGPT could be wired as an MCP/HTTP tool that gives agents structured literature evidence with limitations and falsifiability before report generation.\n\nBGPT is a REST, Python, OpenAPI, Postman, and MCP API returning study-level evidence fields, not just titles or abstracts.\n\nLinks:\n- Docs: https://bgpt.pro/mcp/\n- GitHub: https://github.com/connerlambden/bgpt-mcp\n- OpenAPI: https://raw.githubusercontent.com/connerlambden/bgpt-mcp/main/openapi.yaml\n- Postman: https://www.postman.com/connerlambden-5212589/bgpt-scientific-paper-search-api/overview\n- bio.tools: https://bio.tools/bgpt\n\nUseful fields: methods, sample size, limitations, COI, data/code availability, blind spots, quality scores, `how_to_falsify`.",
+        "url": "https://github.com/microsoft/semantic-kernel/issues/14076"
+    },
+    {
+        "id": 4655824686,
+        "number": 14073,
+        "title": ".Net: Python: Bedrock connector rejects parallel tool calls (toolResult blocks not merged into one Converse message)",
+        "state": "open",
+        "created_at": "2026-06-13T14:32:06Z",
+        "updated_at": "2026-07-09T14:57:27Z",
+        "closed_at": null,
+        "author": "kimnamu",
+        "comments": 2,
+        "labels": [
+            ".NET",
+            "python",
+            "triage"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Describe the bug\n\nUsing the Python Bedrock chat completion connector with a model that calls multiple tools in one turn (e.g. Claude Sonnet 4.5), the follow-up Converse request is rejected:\n\n```\nExpected toolResult blocks at messages.X.content for the following Ids: ... but found: ...\n```\n\n### Root cause\n\nThe function-calling loop (`kernel.py` `invoke_function_call`) appends one `ChatMessageContent` per tool call and one per tool result. `BedrockChatCompletion._prepare_chat_history_for_request` (`connectors/ai/bedrock/services/bedrock_chat_completion.py:173-180`) maps each `ChatMessageContent` 1:1 to a Converse message, so N parallel tool results become N separate `role:\"user\"` messages, each with a single `toolResult`. Converse requires all `toolResult` blocks for an assistant turn in a single user message (and all `toolUse` blocks in a single assistant message).\n\n### Expected behavior\n\nChat history with parallel tool calls is usable in follow-up requests without manual merging.\n\n### Note\n\nThis is the Python counterpart of #13647 (reported for .NET). The sibling **Anthropic** connector already merges consecutive parallel tool messages (`anthropic_chat_completion.py`: `formatted_messages[-1][content_key] += ...`); the Bedrock connector does not. I have a minimal fix + network-free regression test ready and would be happy to open a PR.\n\n### Platform\nPython, `semantic_kernel.connectors.ai.bedrock`.\n",
+        "url": "https://github.com/microsoft/semantic-kernel/issues/14073"
+    },
+    {
+        "id": 4654518330,
+        "number": 14072,
+        "title": "Python: Lack of Runtime Access Control (RBAC/Approval Mechanism) in Auto Function Invocation Leads to Unauthorized Execution via Indirect Prompt Injection",
+        "state": "open",
+        "created_at": "2026-06-13T05:48:36Z",
+        "updated_at": "2026-07-05T16:29:42Z",
+        "closed_at": null,
+        "author": "QiuYucheng2003",
+        "comments": 9,
+        "labels": [
+            "bug",
+            "python",
+            "triage"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "**Describe the bug**\nSemantic Kernel (Python) lacks declarative security controls and runtime mid-execution interception/approval mechanisms for Native Functions during Auto Function Invocation.\n\nThe specific security flaw lies in the \"blind trust\" of the execution chain:\n1. Missing security attributes at the metadata layer: The @kernel_function decorator (kernel_function_decorator.py) is solely responsible for extracting the function signature for LLM consumption. It does not provide any declarative interfaces for permission level classification or approval requirements (e.g., requires_approval).\n\n2. Unconditional execution at the execution layer: In the invoke_function_call logic of kernel.py, when parsing the FunctionCallContent returned by the LLM, the framework only validates the presence or absence of parameters. Subsequently, it directly invokes the native method (await context.function.invoke) within _inner_auto_function_invoke_handler.\n\nAs a result, when the system is subjected to Prompt Injection (such as reverse psychology attacks), if the LLM is deceived into orchestrating high-risk native skills (e.g., sensitive file writing, data deletion), the SK framework will execute these underlying destructive operations directly and without any hindrance.\n\n\n**To Reproduce**\nSteps to reproduce the behavior:\n\n1. Register a native function involving sensitive operations (e.g., WriteAsync for writing files to the system) and mount it using the @kernel_function decorator.\n\n2. Load this Plugin into the Kernel and configure it to enable Auto Function Invocation.\n\n3. As an external user, submit a malicious Prompt containing \"unauthorized/reverse psychology\" instructions (e.g., construct a specific context to induce the LLM to ignore original system settings and force the invocation of the aforementioned write function).\n\n4. Tracing the execution stack will reveal: Upon receiving the Tool Call request planned by the LLM, the Kernel directly invokes the underlying write operation without triggering any security interceptors or Human-in-the-Loop (HITL) confirmation mechanisms.\n\n**Expected behavior**\n1. Declarative Security: The @kernel_function decorator should support security attribute tags (e.g., requires_approval=True, risk_level=\"High\").\n\n2. Mid-execution Approval: Built-in permission interceptors or checkpoints should be present in the Kernel.invoke execution stack. When a high-risk function is about to be executed, the system should be able to suspend the task pending authorization based on configurations, or refuse indiscriminate execution, thereby enforcing a Zero Trust architecture.\n\n\n**Screenshots**\nNo runtime logs are provided. This report's conclusions are derived from a static source code security audit of the execution chains in kernel_function_decorator.py, kernel.py, and kernel_function.py.\n\n**Platform**\n - Language: Python\n - Source: main branch of repository\n - AI model: Any (Mainstream models supporting Tool Calling are affected by this architectural flaw)\n - IDE: VS Code\n - OS: Mac\n\n**Additional context**\nLarge Language Models (LLMs) are inherently highly susceptible to Prompt Injection attacks. Directly and seamlessly mapping untrusted LLM planning results to a high-privilege physical function execution chain poses severe security risks. It is strongly recommended to introduce fine-grained authorization and standard Human-in-the-Loop (HITL) paradigms at the FilterTypes.AUTO_FUNCTION_INVOCATION level as soon as possible.",
+        "url": "https://github.com/microsoft/semantic-kernel/issues/14072"
+    },
+    {
+        "id": 4648365097,
+        "number": 14067,
+        "title": "Feature Proposal: Add FunASR as Self-Hosted STT Connector",
+        "state": "open",
+        "created_at": "2026-06-12T10:16:33Z",
+        "updated_at": "2026-06-17T10:11:25Z",
+        "closed_at": null,
+        "author": "LauraGPT",
+        "comments": 1,
+        "labels": [
+            "triage"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "Semantic Kernel enables AI orchestration across multiple models and services. Adding speech-to-text as a native skill would enable voice-enabled AI agents and applications. FunASR (17.8K+ stars, https://github.com/modelscope/FunASR) provides:\n\n- **SenseVoice**: Ultra-fast multilingual ASR (50x faster than Whisper-large)\n- **Paraformer**: Production-grade ASR with timestamps and punctuation\n- **Fun-ASR-Nano**: Lightweight streaming ASR for edge deployment\n- **OpenAI-compatible API**: POST /v1/audio/transcriptions — drop-in Whisper API replacement\n\nSince FunASR exposes an OpenAI-compatible endpoint, it can serve as a self-hosted STT backend in Semantic Kernel. Developers would configure a local FunASR server URL as their audio transcription endpoint, enabling fully self-hosted voice-to-text-to-response AI pipelines without external API dependencies.\n\nThis aligns with Semantic Kernels goal of flexible AI orchestration — FunASR adds another modality (audio) that can be combined with existing text generation skills.\n\nWould adding FunASR as an STT connector be useful for Semantic Kernel users?\n",
+        "url": "https://github.com/microsoft/semantic-kernel/issues/14067"
+    },
+    {
+        "id": 4619372791,
+        "number": 14062,
+        "title": "Python: [Feature] Memory validation layer to protect against memory poisoning attacks (OWASP AMG integration)",
+        "state": "open",
+        "created_at": "2026-06-09T06:13:05Z",
+        "updated_at": "2026-06-12T08:17:04Z",
+        "closed_at": null,
+        "author": "vgudur-dev",
+        "comments": 1,
+        "labels": [
+            "python",
+            "triage"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "## Scenario\n\nSemantic Kernel's memory features (TextMemoryPlugin, VolatileMemoryStore, connectors) allow agents to store and retrieve information across interactions. However, there's currently no built-in validation to prevent **memory poisoning attacks** — where adversarial content gets stored in memory and alters agent behavior in subsequent sessions.\n\nThis is now a documented attack class: [Memory Poisoning Attacks in LLM Agents (arxiv, June 2026)](https://arxiv.org/abs/2606.04329)\n\n## Proposal\n\nAdd an optional memory validation layer that scans entries before they're persisted to any IMemoryStore implementation. This could be implemented as:\n1. A middleware/decorator pattern for IMemoryStore\n2. A configurable validation step in the memory pipeline\n\nThere's an existing open-source solution that already supports Semantic Kernel: **[OWASP Agent Memory Guard](https://github.com/OWASP/www-project-agent-memory-guard)**\n\n### What it detects:\n- Prompt injection hidden in memory entries\n- Instruction override attempts (\"ignore previous instructions...\")\n- Persona/identity manipulation\n- Cross-session persistence attacks\n- Encoding-based obfuscation (base64, hex, rot13)\n\n### Integration example (Python SK):\n\n```python\nfrom agent_memory_guard import MemoryGuard\nfrom semantic_kernel.memory import SemanticTextMemory\n\nguard = MemoryGuard()\n\n# Validate before saving to memory\nasync def save_with_validation(memory: SemanticTextMemory, collection, text, id):\n    result = guard.scan(text)\n    if result.is_safe:\n        await memory.save_information(collection, text, id)\n    else:\n        raise MemoryPoisoningError(f\"Blocked: {result.threat_type}\")\n```\n\n### Key details:\n- `pip install agent-memory-guard`\n- 98.7% detection rate, <2ms latency per validation\n- OWASP Incubator project (Apache 2.0)\n- Already has integrations for CrewAI, AutoGen, LangChain, and Semantic Kernel\n\n## Benefits\n- Protects SK agents from having their behavior silently altered via poisoned memories\n- Complements existing SK security practices\n- Minimal performance impact (<2ms per memory operation)\n- Could be opt-in via configuration",
+        "url": "https://github.com/microsoft/semantic-kernel/issues/14062"
+    },
+    {
+        "id": 4595455989,
+        "number": 14056,
+        "title": "Python: feat: governance filter for function calls — deterministic policy evaluation, cost tracking, audit (TealTiger)",
+        "state": "open",
+        "created_at": "2026-06-05T08:22:45Z",
+        "updated_at": "2026-06-30T14:11:17Z",
+        "closed_at": null,
+        "author": "nagasatish007",
+        "comments": 4,
+        "labels": [
+            ".NET",
+            "python",
+            "triage"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "## Is your feature request related to a problem? Please describe.\n\nSemantic Kernel's Filter system (`IFunctionInvocationFilter`, `IAutoFunctionInvocationFilter`) provides the right interception points for governance, but there's no built-in or community governance filter that:\n- Evaluates deterministic policies before function/plugin execution\n- Enforces per-agent cost budgets (block calls that would exceed daily/session limits)\n- Tracks and attributes LLM cost per agent, per plugin, per session\n- Produces structured audit records for compliance (EU AI Act Article 12)\n- Provides per-provider circuit breaking to prevent cascading failures\n\nToday you'd need to implement custom `IFunctionInvocationFilter` logic in every project, which doesn't scale.\n\n## Describe the solution you'd like\n\nA governance filter that plugs into SK's existing filter pipeline:\n\n**Python:**\n```python\nfrom semantic_kernel import Kernel\nfrom sk_tealtiger import TealTigerFilter\n\nkernel = Kernel()\n\n# Zero-config: observe all function calls, track cost, detect PII\nkernel.add_filter(\"function_invocation\", TealTigerFilter())\n\n# With policies\nfrom tealtiger import TealEngine\nengine = TealEngine(policies=company_policies, mode=\"ENFORCE\")\nkernel.add_filter(\"function_invocation\", TealTigerFilter(engine=engine))\n```\n\n**C# (if community demand exists):**\n```csharp\nvar kernel = Kernel.CreateBuilder()\n    .AddFilter<TealTigerGovernanceFilter>()\n    .Build();\n```\n\nThe filter would:\n- Intercept `FunctionInvocationContext` before execution\n- Evaluate policy against the function name, arguments, and caller context\n- Return ALLOW (proceed), DENY (throw), or REVISE (modify args)\n- Track token cost after execution and check against budget limits\n- Emit structured audit entries with correlation IDs\n- Circuit-break on repeated provider failures\n\n## Describe alternatives you've considered\n\n- Custom `IFunctionInvocationFilter` per project — works but verbose, no reuse across projects\n- External proxy/sidecar — adds network latency, incompatible with offline/in-process constraint\n- Azure Content Safety service — cloud-dependent, LLM-based (non-deterministic), doesn't handle cost/budget/tool-restriction\n\n## Additional context\n\n- [TealTiger](https://github.com/agentguard-ai/tealtiger) — open-source AI agent security platform (Apache-2.0, NVIDIA Inception)\n- Published on PyPI (`tealtiger` v1.3.0) and npm (`tealtiger-ai-sdk` v0.1.0)\n- Covers 8/10 OWASP Agentic Security Index categories\n- All governance is deterministic and in-process — no external service, <5ms overhead, works offline\n- Already integrated with LangChain, Vercel AI SDK, CrewAI, and proposals open for LlamaIndex, AG2, Haystack, Pydantic AI, Mastra\n- SK's existing Filter system (per [blog post](https://devblogs.microsoft.com/agent-framework/filters-in-semantic-kernel/)) is the natural integration point\n- EU AI Act compliance angle: structured audit records with `retention_until`, input/output traceability\n\n**References:**\n- https://github.com/agentguard-ai/tealtiger — TealTiger source (Apache-2.0)\n- https://pypi.org/project/tealtiger/ — TealTiger on PyPI (v1.3.0)\n- https://www.npmjs.com/package/tealtiger-ai-sdk — Vercel AI SDK middleware (v0.1.0)\n- https://devblogs.microsoft.com/agent-framework/filters-in-semantic-kernel/ — SK Filters blog post\n- https://owasp.org/www-project-top-10-for-large-language-model-applications/ — OWASP Agentic Security Index\n\n**Contribution plan:** Happy to contribute a Python `IFunctionInvocationFilter` implementation as a community sample or standalone pip package. Would this be welcome as a sample in the repo or as an external community integration?\n",
+        "url": "https://github.com/microsoft/semantic-kernel/issues/14056"
+    },
+    {
+        "id": 4560424366,
+        "number": 14047,
+        "title": "Python: [Feature Request] Memory Poisoning Protection for Semantic Kernel via OWASP Agent Memory Guard",
+        "state": "open",
+        "created_at": "2026-06-01T04:47:21Z",
+        "updated_at": "2026-06-12T02:26:30Z",
+        "closed_at": null,
+        "author": "vgudur-dev",
+        "comments": 5,
+        "labels": [
+            "python",
+            "triage"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "## Problem\n\nSemantic Kernel agents with persistent memory (ChatHistory, VolatileMemoryStore, or custom stores) are vulnerable to **memory poisoning attacks**. Adversarial inputs stored in memory can cause agents to leak secrets, ignore instructions, or produce corrupted outputs. OWASP identifies this as a top risk for LLM applications.\n\n## Proposed Solution\n\n**OWASP Agent Memory Guard (AMG)** is an open-source Python library that wraps any memory store as a transparent security layer:\n\n- `pip install agent-memory-guard`\n- Scans every memory write for prompt injection, PII leakage, and tampering\n- 92.5% detection rate on AgentThreatBench\n- <5ms latency per scan\n\n## Links\n\n- GitHub: https://github.com/OWASP/www-project-agent-memory-guard\n- PyPI: https://pypi.org/project/agent-memory-guard/\n- Benchmark: https://pypi.org/project/agent-threat-bench/\n\nWould the Semantic Kernel team consider integrating AMG as a security layer for agent memory? Happy to contribute a PR.",
+        "url": "https://github.com/microsoft/semantic-kernel/issues/14047"
+    },
+    {
+        "id": 4527536972,
+        "number": 14038,
+        "title": "Python: Add CLIENT SETNAME to Valkey/Redis connector for connection identification",
+        "state": "closed",
+        "created_at": "2026-05-26T21:12:36Z",
+        "updated_at": "2026-05-28T19:36:38Z",
+        "closed_at": "2026-05-28T19:36:38Z",
+        "author": "atao2004",
+        "comments": 1,
+        "labels": [
+            "python",
+            "triage"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "## Summary\n\nThe Semantic Kernel Valkey connector uses `redis-py` (`Redis from redis.asyncio.client`) without setting a `client_name`. This means connections appear anonymous in monitoring tools like `CLIENT LIST` and Valkey Admin.\n\n## Suggested Fix\n\nIn [`python/semantic_kernel/connectors/redis.py` (line ~16)](https://github.com/microsoft/semantic-kernel/blob/42590d83f6d061fbfa9c46651a199aa6de6aa27e/python/semantic_kernel/connectors/redis.py#L16), add `client_name` when creating the Redis client:\n\n```python\nclient = Redis(host=host, port=port, client_name=\"semantic_kernel_vector_store_client\")\n```\n\n## Why This Matters\n\nWhen monitoring a Valkey server with multiple connected applications, `CLIENT LIST` shows each connection's name. Without a client name, operators cannot distinguish Semantic Kernel connections from other anonymous clients. This is especially important in production environments with ElastiCache where multiple services share the same Valkey cluster.\n\nSetting `client_name` sends a `CLIENT SETNAME` command on connection, making the connection identifiable in:\n- `CLIENT LIST` output\n- Monitoring dashboards (e.g., Valkey Admin)\n- CloudWatch metrics (ElastiCache)\n\n## Naming Convention\n\nSuggested client name: `semantic_kernel_vector_store_client`\n\nPattern: `{project}_{purpose}_client`\n- `semantic_kernel` = project name\n- `vector_store` = purpose (vector store connector)\n- `_client` = convention (matches Valkey Admin naming pattern)",
+        "url": "https://github.com/microsoft/semantic-kernel/issues/14038"
+    },
+    {
+        "id": 4517391386,
+        "number": 14034,
+        "title": "AgentAudit AI — EU AI Act compliance layer for Semantic Kernel agents",
+        "state": "open",
+        "created_at": "2026-05-25T13:52:16Z",
+        "updated_at": "2026-06-02T03:36:25Z",
+        "closed_at": null,
+        "author": "agentauditAI",
+        "comments": 1,
+        "labels": [
+            "triage"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "Native EU AI Act compliance integration via AgentAudit AI — an on-chain audit handler that automatically anchors every Semantic Kernel agent action to an immutable blockchain log.\nImplementation: AgentAuditHandler as a Semantic Kernel middleware — 2 lines of code, zero workflow changes. Every agent action gets a tamper-proof audit trail, ZK-proof layer, and auto-generated EU AI Act compliance report.\nEU AI Act full enforcement hits August 2, 2026. Semantic Kernel agents deployed in the EU need immutable audit logs (Article 12), incident reporting (Article 73), and risk documentation (Articles 9, 11) — or face fines up to 7% of global revenue.\nThis would make Semantic Kernel the first Microsoft AI framework with built-in EU AI Act compliance — major differentiator for EU enterprise adoption.\nGitHub: github.com/agentauditAI/AgentAudit\n— Piotr / AgentAudit AI — a RunLockAI product",
+        "url": "https://github.com/microsoft/semantic-kernel/issues/14034"
+    }
+]

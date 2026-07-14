@@ -1,0 +1,242 @@
+[
+    {
+        "sha": "27ca7a9534ca1dca4c9a775edac31c4accb759dd",
+        "author": "Reilly Wood",
+        "email": "reilly.wood@icloud.com",
+        "date": "2026-07-14T03:22:56Z",
+        "message": "Bump version to 0.6.1",
+        "url": "https://github.com/rgwood/systemctl-tui/commit/27ca7a9534ca1dca4c9a775edac31c4accb759dd"
+    },
+    {
+        "sha": "6a294089f561c33e046c4ac86ab8bf2914047134",
+        "author": "Reilly Wood",
+        "email": "26268125+rgwood@users.noreply.github.com",
+        "date": "2026-07-14T03:15:09Z",
+        "message": "Merge pull request #97 from rgwood/reilly.wood/unit-descriptions\n\nExplain common systemd units",
+        "url": "https://github.com/rgwood/systemctl-tui/commit/6a294089f561c33e046c4ac86ab8bf2914047134"
+    },
+    {
+        "sha": "0dd01b41fadd738825b5e3e221594e9c49410f18",
+        "author": "Reilly Wood",
+        "email": "reilly.wood@icloud.com",
+        "date": "2026-07-14T03:11:27Z",
+        "message": "Keep description text clickable for copying",
+        "url": "https://github.com/rgwood/systemctl-tui/commit/0dd01b41fadd738825b5e3e221594e9c49410f18"
+    },
+    {
+        "sha": "8bf78ead048cbf89cc0b661b61b931e19f80c9d2",
+        "author": "Reilly Wood",
+        "email": "reilly.wood@icloud.com",
+        "date": "2026-07-14T02:47:16Z",
+        "message": "Expand and revise unit descriptions",
+        "url": "https://github.com/rgwood/systemctl-tui/commit/8bf78ead048cbf89cc0b661b61b931e19f80c9d2"
+    },
+    {
+        "sha": "6114519baa73664cd7789b897975b02d1e679626",
+        "author": "Reilly Wood",
+        "email": "26268125+rgwood@users.noreply.github.com",
+        "date": "2026-07-14T02:22:32Z",
+        "message": "Merge pull request #98 from rgwood/reilly.wood/fix-service-list-scroll\n\nKeep the service list viewport stable across refreshes",
+        "url": "https://github.com/rgwood/systemctl-tui/commit/6114519baa73664cd7789b897975b02d1e679626"
+    },
+    {
+        "sha": "5ec0b54572f57b8b134e88e94f920fae0eb60246",
+        "author": "Reilly Wood",
+        "email": "reilly.wood@icloud.com",
+        "date": "2026-07-14T02:12:52Z",
+        "message": "Preserve service list viewport across refreshes",
+        "url": "https://github.com/rgwood/systemctl-tui/commit/5ec0b54572f57b8b134e88e94f920fae0eb60246"
+    },
+    {
+        "sha": "023465f758ed131c6f333f2cd6808e31ff821521",
+        "author": "Reilly Wood",
+        "email": "reilly.wood@icloud.com",
+        "date": "2026-07-14T02:04:21Z",
+        "message": "Explain common systemd units",
+        "url": "https://github.com/rgwood/systemctl-tui/commit/023465f758ed131c6f333f2cd6808e31ff821521"
+    },
+    {
+        "sha": "a83e3b1b3e93f69eb89d2012012dd04413e7b124",
+        "author": "Reilly Wood",
+        "email": "26268125+rgwood@users.noreply.github.com",
+        "date": "2026-07-12T20:19:58Z",
+        "message": "Merge pull request #96 from rgwood/claude/zealous-goldwasser-648e2c\n\nHide masked and not-found units by default",
+        "url": "https://github.com/rgwood/systemctl-tui/commit/a83e3b1b3e93f69eb89d2012012dd04413e7b124"
+    },
+    {
+        "sha": "0b300e3584850f347391d8d1d70dc17d4ea6558c",
+        "author": "Reilly Wood",
+        "email": "reilly.wood@icloud.com",
+        "date": "2026-07-12T19:20:35Z",
+        "message": "Hide masked and not-found units by default\n\nnot-found units are dangling references that can't be started, and masked\nunits are deliberately disabled; together they were 10-19% of the default\nlist on machines I checked. The services panel title now shows how many\nunits the status filter is hiding, e.g. \"Services (44 hidden)\".",
+        "url": "https://github.com/rgwood/systemctl-tui/commit/0b300e3584850f347391d8d1d70dc17d4ea6558c"
+    },
+    {
+        "sha": "9dfe6cccc7d63e5a619591f57bacab8d6dd038ef",
+        "author": "Reilly Wood",
+        "email": "26268125+rgwood@users.noreply.github.com",
+        "date": "2026-07-12T18:09:44Z",
+        "message": "Merge pull request #95 from rgwood/reilly.wood/bump-0.6.0\n\nRelease v0.6.0: remote hosts, mouse support, status filter",
+        "url": "https://github.com/rgwood/systemctl-tui/commit/9dfe6cccc7d63e5a619591f57bacab8d6dd038ef"
+    },
+    {
+        "sha": "bca0f5f11763124f898765700f629b593f335cb5",
+        "author": "Reilly Wood",
+        "email": "reilly.wood@icloud.com",
+        "date": "2026-07-12T16:47:17Z",
+        "message": "Bump version to 0.6.0",
+        "url": "https://github.com/rgwood/systemctl-tui/commit/bca0f5f11763124f898765700f629b593f335cb5"
+    },
+    {
+        "sha": "fa7215ad778d1f2616e497613b384cc6c7f38212",
+        "author": "Reilly Wood",
+        "email": "26268125+rgwood@users.noreply.github.com",
+        "date": "2026-07-12T16:31:20Z",
+        "message": "Merge pull request #87 from nilsherzig/add-interactive-polkit\n\nfix: enable interactive polkit authorization for unit operations",
+        "url": "https://github.com/rgwood/systemctl-tui/commit/fa7215ad778d1f2616e497613b384cc6c7f38212"
+    },
+    {
+        "sha": "3a6398c34cef1a3aed094588214a54d9aeef2753",
+        "author": "Reilly Wood",
+        "email": "26268125+rgwood@users.noreply.github.com",
+        "date": "2026-07-12T16:20:05Z",
+        "message": "Merge pull request #94 from rgwood/reilly.wood/fix-click-test-flake\n\nFix flaky click-to-select check in remote mode",
+        "url": "https://github.com/rgwood/systemctl-tui/commit/3a6398c34cef1a3aed094588214a54d9aeef2753"
+    },
+    {
+        "sha": "bb2cc125006e5ae3f39daa8d7696d6d97843ed18",
+        "author": "Reilly Wood",
+        "email": "reilly.wood@icloud.com",
+        "date": "2026-07-12T16:16:50Z",
+        "message": "Fix flaky click-to-select check in remote mode\n\nThe remote (ssh localhost) integration run failed on master: the click\nselected the right unit, but the services list was still loading and\nre-sorted before the assertion, moving the selected unit to a different\nrow (before=4 target=5 after=9). Compare the unit name under the\nhighlight instead of the row number.",
+        "url": "https://github.com/rgwood/systemctl-tui/commit/bb2cc125006e5ae3f39daa8d7696d6d97843ed18"
+    },
+    {
+        "sha": "b1d69ea8df6704010629085b27f44595c67f3ad7",
+        "author": "Reilly Wood",
+        "email": "26268125+rgwood@users.noreply.github.com",
+        "date": "2026-07-12T16:02:51Z",
+        "message": "Merge pull request #93 from rgwood/reilly.wood/mouse-support\n\nAdd mouse support",
+        "url": "https://github.com/rgwood/systemctl-tui/commit/b1d69ea8df6704010629085b27f44595c67f3ad7"
+    },
+    {
+        "sha": "1323337dfbd9820e588d36f161953e0f6544c90a",
+        "author": "Reilly Wood",
+        "email": "reilly.wood@icloud.com",
+        "date": "2026-07-12T15:57:30Z",
+        "message": "Merge remote-tracking branch 'origin/master' into reilly.wood/pr-87-update",
+        "url": "https://github.com/rgwood/systemctl-tui/commit/1323337dfbd9820e588d36f161953e0f6544c90a"
+    },
+    {
+        "sha": "687d38d4e8dc8d10789332937bd03ced37d19663",
+        "author": "Reilly Wood",
+        "email": "reilly.wood@icloud.com",
+        "date": "2026-07-12T15:57:30Z",
+        "message": "Keep interactive D-Bus calls type-safe",
+        "url": "https://github.com/rgwood/systemctl-tui/commit/687d38d4e8dc8d10789332937bd03ced37d19663"
+    },
+    {
+        "sha": "8ed49f2db81b160962955b3570387e267d328af4",
+        "author": "Reilly Wood",
+        "email": "26268125+rgwood@users.noreply.github.com",
+        "date": "2026-07-12T15:48:44Z",
+        "message": "Merge pull request #83 from pamarcos/fix/filter-shows-only-selected-unit\n\nFix filtered list hiding top matches after clearing and retyping search",
+        "url": "https://github.com/rgwood/systemctl-tui/commit/8ed49f2db81b160962955b3570387e267d328af4"
+    },
+    {
+        "sha": "66dfe9002a5f63af1ee51bdccd80fc00d455f58e",
+        "author": "Reilly Wood",
+        "email": "reilly.wood@icloud.com",
+        "date": "2026-07-12T15:42:02Z",
+        "message": "Compare only the logs pane in the wheel-scroll test\n\nThe whole-screen comparison was unstable: the details pane shows\nrelative timestamps like '(17s ago)' that tick between captures, which\nmade it look like End had scrolled on the slower container runs.",
+        "url": "https://github.com/rgwood/systemctl-tui/commit/66dfe9002a5f63af1ee51bdccd80fc00d455f58e"
+    },
+    {
+        "sha": "5dbba29e31c8ab164382e8d8af777b0589514ef9",
+        "author": "Reilly Wood",
+        "email": "reilly.wood@icloud.com",
+        "date": "2026-07-12T15:35:23Z",
+        "message": "Fix flaky mouse tests in CI\n\nTwo problems, both in the tests rather than the app:\n\n1. The 'select systemd-journald' step took the first fuzzy-search match,\n   which on several distros was the systemd-journald@ template unit\n   (empty description, no logs), breaking every check after it. Now it\n   clicks the exact-match row and waits for real journald log lines to\n   appear before continuing.\n2. The wheel-scroll check asserted content changed, but on freshly\n   booted CI runners journald's logs fit entirely in the pane, so the\n   clamped scroll offset correctly stays at 0. When the wheel does\n   nothing, the test now verifies End can't scroll either.",
+        "url": "https://github.com/rgwood/systemctl-tui/commit/5dbba29e31c8ab164382e8d8af777b0589514ef9"
+    },
+    {
+        "sha": "2401ff4f1f68f83b4c9d4af1e00fd5944ce60ce5",
+        "author": "Reilly Wood",
+        "email": "reilly.wood@icloud.com",
+        "date": "2026-07-12T15:17:16Z",
+        "message": "Fix TUI corruption from native clipboard writes\n\nCopying via mouse could print an arboard warning over the TUI:\n'Clipboard was dropped very quickly after writing...'. The warning was\nright - on X11/Wayland the writing process must stay alive to serve the\npaste, so clipboard_anywhere's write-and-drop call could never work\nreliably (a latent bug in the existing 'Copy unit file path' action\ntoo, which shared it).\n\nCopies now always emit OSC 52, plus best-effort pipe the text to a\nsystem clipboard utility (wl-copy/xclip/xsel/pbcopy) with output\nnulled. Those tools fork and keep serving the selection themselves.\nThis drops the clipboard-anywhere dependency, and the toast now just\nsays 'Copied N chars' since OSC 52 isn't necessarily the only path.",
+        "url": "https://github.com/rgwood/systemctl-tui/commit/2401ff4f1f68f83b4c9d4af1e00fd5944ce60ce5"
+    },
+    {
+        "sha": "9f9dc937e45f39173ef867ca8901ae5937e92563",
+        "author": "Reilly Wood",
+        "email": "reilly.wood@icloud.com",
+        "date": "2026-07-12T15:06:11Z",
+        "message": "Add mouse interaction coverage to the integration tests\n\nInjects raw SGR mouse escape sequences through tmux send-keys to test:\nclick-to-select in the services list, click-to-copy details fields (via\nthe toast), wheel scrolling and drag-selection in the logs pane, and\nclick behavior of the action menu and status filter popups. Rows are\nlocated by scanning captured output rather than hardcoding coordinates.",
+        "url": "https://github.com/rgwood/systemctl-tui/commit/9f9dc937e45f39173ef867ca8901ae5937e92563"
+    },
+    {
+        "sha": "7a5363db653d4f2540b54aa0119aede3a3584a07",
+        "author": "Reilly Wood",
+        "email": "reilly.wood@icloud.com",
+        "date": "2026-07-12T15:06:11Z",
+        "message": "Complete mouse support: action/signal menus, help and error popups\n\nEvery interactive surface now handles the mouse: menu popups get\nhover-to-highlight, click-to-execute, wheel navigation, and\nclick-outside-to-close; the help and error popups dismiss on click.\nOnly the Processing overlay still swallows mouse input (intentionally).\n\nAlso unified the two clipboard paths: the 'Copy unit file path' menu\naction used clipboard_anywhere (native, fails over SSH) while mouse\ncopies used OSC 52 (works over SSH, unsupported in some old terminals).\nAll copies now do both, and all show the toast.",
+        "url": "https://github.com/rgwood/systemctl-tui/commit/7a5363db653d4f2540b54aa0119aede3a3584a07"
+    },
+    {
+        "sha": "a981dbb0c16ce2c72cbbdfa49f6b04eaa3740ff2",
+        "author": "Reilly Wood",
+        "email": "reilly.wood@icloud.com",
+        "date": "2026-07-12T08:17:47Z",
+        "message": "Make the status filter popup mouse-interactive\n\nThe status filter arrived on master while the mouse work was in flight,\nso it had no mouse support at all - worse, clicks leaked through the\npopup to the service list underneath. Now: click a filter to toggle it,\nhover moves the cursor, wheel scrolls through entries, and clicking\noutside the popup closes it.",
+        "url": "https://github.com/rgwood/systemctl-tui/commit/a981dbb0c16ce2c72cbbdfa49f6b04eaa3740ff2"
+    },
+    {
+        "sha": "ae69b6c0ea8c1bbdad62e677c90bc5c0854c2473",
+        "author": "Reilly Wood",
+        "email": "reilly.wood@icloud.com",
+        "date": "2026-07-12T07:58:25Z",
+        "message": "Polish mouse copy: all details fields clickable, better toast\n\n- Every details field (description, enablement, scope, load/active\n  state, unit file path) is now hover-highlighted and click-to-copy,\n  not just the path\n- Hover is bold only (no underline)\n- Toast says how many chars were copied and that it went via OSC 52\n- Toast moved to the very bottom row, flush right, and drawn last so\n  the help line no longer paints over it",
+        "url": "https://github.com/rgwood/systemctl-tui/commit/ae69b6c0ea8c1bbdad62e677c90bc5c0854c2473"
+    },
+    {
+        "sha": "6cef52db8ef2023e2036345973c9a24acbf88f39",
+        "author": "Reilly Wood",
+        "email": "reilly.wood@icloud.com",
+        "date": "2026-07-12T07:45:28Z",
+        "message": "Make services list and search bar clickable\n\nClicking a service selects it (and hands focus back to the list when\nsearching), clicking the search bar focuses search, and mouse input is\nignored while modal dialogs are open. Also swapped our hand-rolled\nrect-contains helper and inner-rect math for ratatui's built-in\nRect::contains and Rect::inner.",
+        "url": "https://github.com/rgwood/systemctl-tui/commit/6cef52db8ef2023e2036345973c9a24acbf88f39"
+    },
+    {
+        "sha": "5cc6313b48364bf9c4aceb3f293383e6dc15382a",
+        "author": "Reilly Wood",
+        "email": "reilly.wood@icloud.com",
+        "date": "2026-07-12T07:27:34Z",
+        "message": "Add hover+click-to-copy for unit file path, and a copy toast\n\nThe unit file path in the details pane now goes bold+underlined on\nmouseover, and a single click copies the full path (from the unit data,\nnot the possibly-truncated screen text). Both copy paths - this and log\ntext selection - now show a transient 'Copied to clipboard' toast in\nthe bottom right for 2 seconds.",
+        "url": "https://github.com/rgwood/systemctl-tui/commit/5cc6313b48364bf9c4aceb3f293383e6dc15382a"
+    },
+    {
+        "sha": "dbe9c188b742188a1154adc9b539428bf2671345",
+        "author": "Reilly Wood",
+        "email": "reilly.wood@icloud.com",
+        "date": "2026-07-12T07:16:58Z",
+        "message": "Add mouse support: text selection + copy in logs pane, wheel scrolling\n\nDrag in the logs pane to select text (highlighted with reverse video)\nand copy it to the clipboard on release via OSC 52, which works both\nlocally and over SSH. The wheel scrolls the logs, or moves the service\nselection when over the list.\n\nSelection reads text straight out of the render buffer rather than\nmapping screen cells back through paragraph wrapping, so it only covers\nvisible text - same as native terminal selection, which mouse capture\notherwise takes away.",
+        "url": "https://github.com/rgwood/systemctl-tui/commit/dbe9c188b742188a1154adc9b539428bf2671345"
+    },
+    {
+        "sha": "63dea0752e4f3702634a705cf59db4b27dfc6e37",
+        "author": "Reilly Wood",
+        "email": "reilly.wood@icloud.com",
+        "date": "2026-07-12T07:02:55Z",
+        "message": "Fix scroll-to-bottom in logs pane using Paragraph::line_count\n\nThe wrapped height of the logs paragraph is now computed at render time\nvia ratatui's unstable-rendered-line-info feature, and the scroll offset\nis clamped to it. This fixes End scrolling past the logs into blank\nspace, and PageDown/ctrl+d overshooting the end.",
+        "url": "https://github.com/rgwood/systemctl-tui/commit/63dea0752e4f3702634a705cf59db4b27dfc6e37"
+    },
+    {
+        "sha": "008c7f6205f94afd94d7035ed5ed4a19dbff6551",
+        "author": "Reilly Wood",
+        "email": "26268125+rgwood@users.noreply.github.com",
+        "date": "2026-07-12T07:13:22Z",
+        "message": "Merge pull request #92 from rgwood/reilly.wood/details-pane-runtime-info\n\nShow runtime info in the details pane",
+        "url": "https://github.com/rgwood/systemctl-tui/commit/008c7f6205f94afd94d7035ed5ed4a19dbff6551"
+    }
+]

@@ -1,0 +1,114 @@
+[
+    {
+        "sha": "0bed389a3f6e3b60725fccf57a5857f887e944e1",
+        "author": "Danil Ovchinnikov",
+        "email": "danil42worker@gmail.com",
+        "date": "2026-01-19T13:58:20Z",
+        "message": "changed copyright to `VK LLC` (#31)",
+        "url": "https://github.com/VKCOM/nocc/commit/0bed389a3f6e3b60725fccf57a5857f887e944e1"
+    },
+    {
+        "sha": "7abb80e52348a20ea50547db3cbdba275f89850d",
+        "author": "Danil Ovchinnikov",
+        "email": "danil42worker@gmail.com",
+        "date": "2025-07-30T12:16:38Z",
+        "message": "added support for overriding timeouts (#28)",
+        "url": "https://github.com/VKCOM/nocc/commit/7abb80e52348a20ea50547db3cbdba275f89850d"
+    },
+    {
+        "sha": "1599d368c6f402f8d8349bd119c0218040e6f11b",
+        "author": "Vladislav Senin",
+        "email": "troy4eg@users.noreply.github.com",
+        "date": "2024-11-20T14:30:19Z",
+        "message": "Added support for -ffile-prefix-map compiler option (#24)",
+        "url": "https://github.com/VKCOM/nocc/commit/1599d368c6f402f8d8349bd119c0218040e6f11b"
+    },
+    {
+        "sha": "b1f7bb3903322fab16412d2d332358264ce2a290",
+        "author": "Vladislav Senin",
+        "email": "troy4eg@users.noreply.github.com",
+        "date": "2024-08-27T16:13:30Z",
+        "message": "improvement clang support: normalization of paths for isystem (#23)",
+        "url": "https://github.com/VKCOM/nocc/commit/b1f7bb3903322fab16412d2d332358264ce2a290"
+    },
+    {
+        "sha": "f7fabddcfa0c5895af9154445d1236908fa5b208",
+        "author": "pale-emperor",
+        "email": "46090986+pale-emperor@users.noreply.github.com",
+        "date": "2024-06-26T11:46:53Z",
+        "message": "Create CODEOWNERS",
+        "url": "https://github.com/VKCOM/nocc/commit/f7fabddcfa0c5895af9154445d1236908fa5b208"
+    },
+    {
+        "sha": "7510928743d96ab02b4ef00b45aef99ff3420878",
+        "author": "Aleksandr Kirsanov",
+        "email": "unserialize.alias@gmail.com",
+        "date": "2023-10-03T15:29:30Z",
+        "message": "update Go version to 1.20 (#19)",
+        "url": "https://github.com/VKCOM/nocc/commit/7510928743d96ab02b4ef00b45aef99ff3420878"
+    },
+    {
+        "sha": "73b26e5fcb0dd3f08fbf1a63318deedec5cc6cee",
+        "author": "Aleksandr Kirsanov",
+        "email": "unserialize.alias@gmail.com",
+        "date": "2023-04-26T15:28:39Z",
+        "message": "Support tmpfs and a server queue for C++ compilers (#10)\n\nThis PR drops an option -working-dir, adding two new instead:\r\n* -cpp-dir {string}, Directory for incoming C++ files and src cache\r\n* -obj-dir {string}, Directory for resulting obj files and obj cache\r\nThe directory passed as -cpp-dir can be placed in tmpfs.\r\n\r\nAlso, nocc-server now managers C++ compiler launches with a waiting queue. \r\nThe purpose of a waiting queue is not to over-utilize server resources at peak times.",
+        "url": "https://github.com/VKCOM/nocc/commit/73b26e5fcb0dd3f08fbf1a63318deedec5cc6cee"
+    },
+    {
+        "sha": "edc04d3cdd82c50568ae6433754a2d1293d3f580",
+        "author": "Aleksandr Kirsanov",
+        "email": "unserialize.alias@gmail.com",
+        "date": "2023-03-22T14:44:14Z",
+        "message": "correctly expand __FILE__ on a server-side by using relative paths (#6)\n\nBefore, a client send cppInFile as an abs file name, and a server launched\r\n> g++ /{clientWorkingDir}/{cppInFile}\r\nNow, a client sends cppInFile exactly the same as it was specified in cmd line,\r\nand besides, it sends cwd.\r\nOn a server, we launch g++ in a dir {clientWorkingDir}/{cwd} and pass\r\n> g++ {cppInFile}\r\ndirectly, as a relative one, which leads to __FILE__\r\nexpanded equally to client launch.",
+        "url": "https://github.com/VKCOM/nocc/commit/edc04d3cdd82c50568ae6433754a2d1293d3f580"
+    },
+    {
+        "sha": "ab52095b760785fe106c8935a16bfd0096b95e63",
+        "author": "Aleksandr Kirsanov",
+        "email": "unserialize.alias@gmail.com",
+        "date": "2023-02-07T15:59:26Z",
+        "message": "allow to compile non-uploaded files in /usr folder (#3)",
+        "url": "https://github.com/VKCOM/nocc/commit/ab52095b760785fe106c8935a16bfd0096b95e63"
+    },
+    {
+        "sha": "45562250a6ff21e5b0b9cf45eb2af361468bc7f4",
+        "author": "Aleksandr Kirsanov",
+        "email": "unserialize.alias@gmail.com",
+        "date": "2023-01-30T11:43:23Z",
+        "message": "support depfiles generation: -MF -MT -MQ -MD -MMD -MP (#1)\n\nThese flags are used in CMake/make projects to generate .o.d files \r\nalong with an object file (\"as a side effect of the compilation\")",
+        "url": "https://github.com/VKCOM/nocc/commit/45562250a6ff21e5b0b9cf45eb2af361468bc7f4"
+    },
+    {
+        "sha": "ad18c41f980f953ea5dc7900fbb95f5f1e358237",
+        "author": "Aleksandr Kirsanov",
+        "email": "unserialize.alias@gmail.com",
+        "date": "2022-05-11T11:48:34Z",
+        "message": "added docs",
+        "url": "https://github.com/VKCOM/nocc/commit/ad18c41f980f953ea5dc7900fbb95f5f1e358237"
+    },
+    {
+        "sha": "a234fb6a2128f7481d4e3131c5a0c6961ba9cd97",
+        "author": "Aleksandr Kirsanov",
+        "email": "unserialize.alias@gmail.com",
+        "date": "2022-05-11T11:48:24Z",
+        "message": "added MIT license",
+        "url": "https://github.com/VKCOM/nocc/commit/a234fb6a2128f7481d4e3131c5a0c6961ba9cd97"
+    },
+    {
+        "sha": "c9e23e6baaf0976058c557b6a9270cdb735a7a09",
+        "author": "Aleksandr Kirsanov",
+        "email": "unserialize.alias@gmail.com",
+        "date": "2022-05-11T11:48:12Z",
+        "message": "added cpp-example",
+        "url": "https://github.com/VKCOM/nocc/commit/c9e23e6baaf0976058c557b6a9270cdb735a7a09"
+    },
+    {
+        "sha": "c4d253f51981823c515ced8cd0546ba2ea3b48da",
+        "author": "Aleksandr Kirsanov",
+        "email": "unserialize.alias@gmail.com",
+        "date": "2022-05-11T11:47:42Z",
+        "message": "nocc v1.0",
+        "url": "https://github.com/VKCOM/nocc/commit/c4d253f51981823c515ced8cd0546ba2ea3b48da"
+    }
+]

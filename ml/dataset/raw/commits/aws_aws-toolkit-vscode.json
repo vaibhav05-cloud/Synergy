@@ -1,0 +1,242 @@
+[
+    {
+        "sha": "4aad7aa14c934901817a1b802aaab758d74906cc",
+        "author": "sindhusidda",
+        "email": "sisindhu@amazon.com",
+        "date": "2026-07-09T18:01:04Z",
+        "message": "Merge pull request #8826 from aws/release/rc-20260709\n\nbuild(amazonq): merge release candidate version rc-20260709",
+        "url": "https://github.com/aws/aws-toolkit-vscode/commit/4aad7aa14c934901817a1b802aaab758d74906cc"
+    },
+    {
+        "sha": "953bbe30e8004dcf79ea49a9f0b069dc4c1c77be",
+        "author": "aws-toolkit-automation",
+        "email": "",
+        "date": "2026-07-09T17:02:31Z",
+        "message": "Update version to snapshot version: 4.11.0-SNAPSHOT",
+        "url": "https://github.com/aws/aws-toolkit-vscode/commit/953bbe30e8004dcf79ea49a9f0b069dc4c1c77be"
+    },
+    {
+        "sha": "69370e2dee52e3c6577b4b7d2882492855c90453",
+        "author": "aws-toolkit-automation",
+        "email": "",
+        "date": "2026-07-09T16:42:13Z",
+        "message": "Release 4.10.0",
+        "url": "https://github.com/aws/aws-toolkit-vscode/commit/69370e2dee52e3c6577b4b7d2882492855c90453"
+    },
+    {
+        "sha": "1ef0e70afa290beaf7b56a2274ee2324a82b3c76",
+        "author": "Trevor Mitchell",
+        "email": "66496832+TrevorM314@users.noreply.github.com",
+        "date": "2026-07-08T19:59:59Z",
+        "message": "Merge pull request #8825 from satyakigh/changelog-update\n\nfix(cloudformation): Update changelog",
+        "url": "https://github.com/aws/aws-toolkit-vscode/commit/1ef0e70afa290beaf7b56a2274ee2324a82b3c76"
+    },
+    {
+        "sha": "c2bc2b440ba2614f4d395fbd10027ea33ed5d9bb",
+        "author": "Satyaki Ghosh",
+        "email": "satyakig@amazon.com",
+        "date": "2026-07-08T19:32:18Z",
+        "message": "fix(cloudformation): Update changelog",
+        "url": "https://github.com/aws/aws-toolkit-vscode/commit/c2bc2b440ba2614f4d395fbd10027ea33ed5d9bb"
+    },
+    {
+        "sha": "67d9c811623bb46fc176883383819cacd0eada28",
+        "author": "afida23",
+        "email": "afida@amazon.com",
+        "date": "2026-07-08T16:19:11Z",
+        "message": "docs: Add changelog entry for bearer token permissions fix (#8824)\n\n## Problem\n\n\n## Solution\n\n\n---\n\n- Treat all work as PUBLIC. Private `feature/x` branches will not be\nsquash-merged at release time.\n- Your code changes must meet the guidelines in\n[CONTRIBUTING.md](https://github.com/aws/aws-toolkit-vscode/blob/master/CONTRIBUTING.md#guidelines).\n- License: I confirm that my contribution is made under the terms of the\nApache 2.0 license.",
+        "url": "https://github.com/aws/aws-toolkit-vscode/commit/67d9c811623bb46fc176883383819cacd0eada28"
+    },
+    {
+        "sha": "c6fe7dbc28073e75ec5d496eaca19859b715af11",
+        "author": "afida23",
+        "email": "afida@amazon.com",
+        "date": "2026-07-08T15:40:59Z",
+        "message": "fix(codecatalyst): Restrict bearer token file permissions to owner-only (#8821)\n\nSet mode 0o600 and atomic write on cached Dev Environment bearer token\nto prevent world-readable credentials on disk. Add cleanup to delete the\ntoken file when the Dev Environment is stopped.\n\nPreviously the token was written with default 0644 permissions and\npersisted indefinitely after session disconnect.\n\nsim: https://t.corp.amazon.com/P465138201\n\n## Problem\n\n\n## Solution\n\n\n---\n\n- Treat all work as PUBLIC. Private `feature/x` branches will not be\nsquash-merged at release time.\n- Your code changes must meet the guidelines in\n[CONTRIBUTING.md](https://github.com/aws/aws-toolkit-vscode/blob/master/CONTRIBUTING.md#guidelines).\n- License: I confirm that my contribution is made under the terms of the\nApache 2.0 license.",
+        "url": "https://github.com/aws/aws-toolkit-vscode/commit/c6fe7dbc28073e75ec5d496eaca19859b715af11"
+    },
+    {
+        "sha": "6cf61e7ebaf4047948c240ed48e98890e758e304",
+        "author": "Trevor Mitchell",
+        "email": "66496832+TrevorM314@users.noreply.github.com",
+        "date": "2026-07-06T16:29:11Z",
+        "message": "Merge pull request #8820 from satyakigh/cfn-clientid\n\nfeat(cloudformation): Update how cloudformation lsp determines clientId",
+        "url": "https://github.com/aws/aws-toolkit-vscode/commit/6cf61e7ebaf4047948c240ed48e98890e758e304"
+    },
+    {
+        "sha": "d225f2060fcd14843967eb37a3e3ca70df6edcd2",
+        "author": "Satyaki Ghosh",
+        "email": "satyakig@amazon.com",
+        "date": "2026-07-06T15:11:23Z",
+        "message": "Fix codeowner",
+        "url": "https://github.com/aws/aws-toolkit-vscode/commit/d225f2060fcd14843967eb37a3e3ca70df6edcd2"
+    },
+    {
+        "sha": "7fab11bc5fd6cd9297042c1f2f6c6e748bd426cf",
+        "author": "Satyaki Ghosh",
+        "email": "satyakig@amazon.com",
+        "date": "2026-07-06T15:06:41Z",
+        "message": "Fix cfn tests on Mac",
+        "url": "https://github.com/aws/aws-toolkit-vscode/commit/7fab11bc5fd6cd9297042c1f2f6c6e748bd426cf"
+    },
+    {
+        "sha": "346248089d03523232a003c6de089adb3e388fdf",
+        "author": "Satyaki Ghosh",
+        "email": "satyakig@amazon.com",
+        "date": "2026-07-02T21:19:35Z",
+        "message": "feat(cloudformation): Update how cloudformation lsp determines clientId",
+        "url": "https://github.com/aws/aws-toolkit-vscode/commit/346248089d03523232a003c6de089adb3e388fdf"
+    },
+    {
+        "sha": "1a0101bafd5f2cdd2ba39aceb409f9f15597da9c",
+        "author": "David Evans",
+        "email": "drevan@amazon.com",
+        "date": "2026-07-02T14:59:34Z",
+        "message": "Merge pull request #8819 from aws/release/rc-20260701\n\nbuild(amazonq): merge release candidate version rc-20260701",
+        "url": "https://github.com/aws/aws-toolkit-vscode/commit/1a0101bafd5f2cdd2ba39aceb409f9f15597da9c"
+    },
+    {
+        "sha": "66bf100f2330210f8e7d99af7ce55090f8ebb238",
+        "author": "aws-toolkit-automation",
+        "email": "",
+        "date": "2026-07-02T14:42:47Z",
+        "message": "Update version to snapshot version: 4.10.0-SNAPSHOT",
+        "url": "https://github.com/aws/aws-toolkit-vscode/commit/66bf100f2330210f8e7d99af7ce55090f8ebb238"
+    },
+    {
+        "sha": "a9c44cbe56f53aec78102ad0fc5f7de3fd94d658",
+        "author": "aws-toolkit-automation",
+        "email": "",
+        "date": "2026-07-02T14:25:58Z",
+        "message": "Release 4.9.0",
+        "url": "https://github.com/aws/aws-toolkit-vscode/commit/a9c44cbe56f53aec78102ad0fc5f7de3fd94d658"
+    },
+    {
+        "sha": "7f9890927220faec67ca4ed26ea03ad2737ae6b8",
+        "author": "David Evans",
+        "email": "drevan@amazon.com",
+        "date": "2026-06-30T22:17:49Z",
+        "message": "Merge pull request #8806 from msgupta-amazon/refreshUrl-validation\n\nfeat(sagemaker): Added the validation for refresh url and updated the uri handler",
+        "url": "https://github.com/aws/aws-toolkit-vscode/commit/7f9890927220faec67ca4ed26ea03ad2737ae6b8"
+    },
+    {
+        "sha": "f174a0b6257eaad05b0c80704d4948305ff26dd9",
+        "author": "msgupta-amazon",
+        "email": "msgupta@amazon.com",
+        "date": "2026-06-29T19:09:31Z",
+        "message": "Merge branch 'master' into refreshUrl-validation",
+        "url": "https://github.com/aws/aws-toolkit-vscode/commit/f174a0b6257eaad05b0c80704d4948305ff26dd9"
+    },
+    {
+        "sha": "b18dcb598ce96f04eb238868dbd3d5199a7141a0",
+        "author": "David Evans",
+        "email": "drevan@amazon.com",
+        "date": "2026-06-29T18:53:54Z",
+        "message": "Merge pull request #8818 from aws/fix/threatcomposer-type-casing\n\nfix(threatcomposer): fix ConfigurationChangeEvent type casing",
+        "url": "https://github.com/aws/aws-toolkit-vscode/commit/b18dcb598ce96f04eb238868dbd3d5199a7141a0"
+    },
+    {
+        "sha": "81e48eb8781d2542a7a9cf0d5c1b6f9096d3d8c5",
+        "author": "David Evans",
+        "email": "drevan@amazon.com",
+        "date": "2026-06-29T18:01:48Z",
+        "message": "fix(threatcomposer): fix ConfigurationChangeEvent type casing\n\nThe type annotation used 'configurationChangeEvent' (lowercase c) instead\nof the correct 'ConfigurationChangeEvent' (uppercase C), causing TS2724\ncompilation errors across all CI checks. Also fixes prettier formatting\nissues introduced in the same commit.",
+        "url": "https://github.com/aws/aws-toolkit-vscode/commit/81e48eb8781d2542a7a9cf0d5c1b6f9096d3d8c5"
+    },
+    {
+        "sha": "be2201004321ec372b43499a104d586394d7b34d",
+        "author": "ellgregs",
+        "email": "34191462+ellgregs@users.noreply.github.com",
+        "date": "2026-06-29T14:32:14Z",
+        "message": "feat(threatComposer): make cdn configurable via VS Code settings (#8762)\n\n## Problem\n\nUsers are unable to utilise a customised self-hosted ide-specific threat\ncomposer deployment within vs-code unless within a private network with\ncustomised dns resolution, due to the hardcoded URL for the\nide-threat-composer editor resources.\n\nBenefit of leveraging a self-hosted deployment of threat composer is\nusers can include customised threat/mitigation packs - outlined\n[here](https://github.com/awslabs/threat-composer/blob/main/docs/WEB-APP.md#customising-reference-data-in-your-build).\n\n## Solution\n\nAdded a configurable VS-Code setting `aws.threatComposer.cdn` that\nallows users to override the default `cdn` value\n'https://ide-toolkits.threat-composer.aws.dev'.\n\n## Testing\n\nChange is minimal: 2 files changed\n\n## Caveats\n\nDoes require the users self-hosted version to update the content\nsecurity policy in their deployment of the ide variant of\n[threat-composesr](https://github.com/awslabs/threat-composer) but that\nseems a reasonable expectation.\n\n```bash\nsed -i -e `s|https://ide-toolkits.threat-composer.aws.dev|<cdn>/|g` ./threat-composer/packages/threat-composer/public/index.html\nsed -i -e `s|data:|data: <cdn>/|g` ./threat-composer/packages/threat-composer/public/index.html\n```\n\n---\n\n- Treat all work as PUBLIC. Private `feature/x` branches will not be\nsquash-merged at release time.\n- Your code changes must meet the guidelines in\n[CONTRIBUTING.md](https://github.com/aws/aws-toolkit-vscode/blob/master/CONTRIBUTING.md#guidelines).\n- License: I confirm that my contribution is made under the terms of the\nApache 2.0 license.",
+        "url": "https://github.com/aws/aws-toolkit-vscode/commit/be2201004321ec372b43499a104d586394d7b34d"
+    },
+    {
+        "sha": "2e2c1c26b1ec973be4560a2f711e912ccc153a2f",
+        "author": "Trevor Mitchell",
+        "email": "66496832+TrevorM314@users.noreply.github.com",
+        "date": "2026-06-25T15:18:12Z",
+        "message": "Merge pull request #8816 from aws/release/rc-20260624\n\nbuild(amazonq): merge release candidate version rc-20260624",
+        "url": "https://github.com/aws/aws-toolkit-vscode/commit/2e2c1c26b1ec973be4560a2f711e912ccc153a2f"
+    },
+    {
+        "sha": "1b96eae139817193b5325ed5625895e9d1d6c9e3",
+        "author": "aws-toolkit-automation",
+        "email": "",
+        "date": "2026-06-25T14:32:24Z",
+        "message": "Update version to snapshot version: 4.9.0-SNAPSHOT",
+        "url": "https://github.com/aws/aws-toolkit-vscode/commit/1b96eae139817193b5325ed5625895e9d1d6c9e3"
+    },
+    {
+        "sha": "7d79da55a6f4a8ec84878d51f4c6a6b20a6f2bf1",
+        "author": "aws-toolkit-automation",
+        "email": "",
+        "date": "2026-06-25T13:52:38Z",
+        "message": "Release 4.8.0",
+        "url": "https://github.com/aws/aws-toolkit-vscode/commit/7d79da55a6f4a8ec84878d51f4c6a6b20a6f2bf1"
+    },
+    {
+        "sha": "c52f12f55f7040f458d584fe544e0230a5f45c39",
+        "author": "Trevor Mitchell",
+        "email": "66496832+TrevorM314@users.noreply.github.com",
+        "date": "2026-06-24T20:12:34Z",
+        "message": "Merge pull request #8807 from aws-ajangg/feat/sagemaker-studio-telemetry-account-id\n\nfix(sagemaker): update metrics for Jorus dashboard",
+        "url": "https://github.com/aws/aws-toolkit-vscode/commit/c52f12f55f7040f458d584fe544e0230a5f45c39"
+    },
+    {
+        "sha": "f937f667fa624a5d4fafff8663eae88da020e164",
+        "author": "Trevor Mitchell",
+        "email": "66496832+TrevorM314@users.noreply.github.com",
+        "date": "2026-06-24T16:36:11Z",
+        "message": "Merge pull request #8815 from aws/changelog/path-traversal-fix\n\nAdd changelog entry for path traversal validation fix",
+        "url": "https://github.com/aws/aws-toolkit-vscode/commit/f937f667fa624a5d4fafff8663eae88da020e164"
+    },
+    {
+        "sha": "10105c0d4c320a449d57a8df082716bb7e661c47",
+        "author": "Trevor Mitchell",
+        "email": "trevorgm@amazon.com",
+        "date": "2026-06-24T16:11:25Z",
+        "message": "Add changelog entry for path traversal validation fix",
+        "url": "https://github.com/aws/aws-toolkit-vscode/commit/10105c0d4c320a449d57a8df082716bb7e661c47"
+    },
+    {
+        "sha": "04c3ee148e7f7d9a6477435b4facbb1f71dd1d29",
+        "author": "Brandon Rinderle",
+        "email": "branrin@amazon.com",
+        "date": "2026-06-24T15:42:03Z",
+        "message": "Merge pull request #8813 from aws/windows-node-gyp\n\nci: fix Windows build by upgrading node-gyp for Visual Studio 2026",
+        "url": "https://github.com/aws/aws-toolkit-vscode/commit/04c3ee148e7f7d9a6477435b4facbb1f71dd1d29"
+    },
+    {
+        "sha": "165fbe5b406f51ea7298ed2d950452ec9aa45360",
+        "author": "Brandon Rinderle",
+        "email": "branrin@amazon.com",
+        "date": "2026-06-24T14:20:27Z",
+        "message": "ci: exclude lsp-server bundle from coverage",
+        "url": "https://github.com/aws/aws-toolkit-vscode/commit/165fbe5b406f51ea7298ed2d950452ec9aa45360"
+    },
+    {
+        "sha": "abd260e37677daf97ce0e2778cf1cbdc58498b17",
+        "author": "Brandon Rinderle",
+        "email": "branrin@amazon.com",
+        "date": "2026-06-24T13:42:23Z",
+        "message": "ci: fix Windows CloudFormation LSP by upgrading node-gyp",
+        "url": "https://github.com/aws/aws-toolkit-vscode/commit/abd260e37677daf97ce0e2778cf1cbdc58498b17"
+    },
+    {
+        "sha": "3110c9b41cc389a17f37bb02c5460ce42c73f8fb",
+        "author": "Brandon Rinderle",
+        "email": "branrin@amazon.com",
+        "date": "2026-06-24T13:20:53Z",
+        "message": "ci: fix Windows build by upgrading node-gyp for Visual Studio 2026",
+        "url": "https://github.com/aws/aws-toolkit-vscode/commit/3110c9b41cc389a17f37bb02c5460ce42c73f8fb"
+    },
+    {
+        "sha": "d2e77af5c8943f4d93119796c22b8f8856584422",
+        "author": "Brandon Rinderle",
+        "email": "branrin@amazon.com",
+        "date": "2026-06-24T13:52:56Z",
+        "message": "Merge pull request #8814 from aws/fix/file-path-traversal-sanitization\n\nfix: Audit codebase and fix uses of path.join with unsanitized user input",
+        "url": "https://github.com/aws/aws-toolkit-vscode/commit/d2e77af5c8943f4d93119796c22b8f8856584422"
+    }
+]

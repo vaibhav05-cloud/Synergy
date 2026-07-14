@@ -1,0 +1,242 @@
+[
+    {
+        "sha": "b80a0a919081d251a40b07004c7e20a765f16a34",
+        "author": "Kasim Ridwan",
+        "email": "kasimsheyi20@gmail.com",
+        "date": "2026-06-11T12:29:09Z",
+        "message": "fix: changed alignment from middle to center",
+        "url": "https://github.com/laravolt/avatar/commit/b80a0a919081d251a40b07004c7e20a765f16a34"
+    },
+    {
+        "sha": "7202e7bd2b4d9f24b415c9200a92b6aa88988888",
+        "author": "Oliver Vogel",
+        "email": "oliver@olivervogel.com",
+        "date": "2026-06-10T18:00:52Z",
+        "message": "Migrate to Intervention Image v4 (#181)",
+        "url": "https://github.com/laravolt/avatar/commit/7202e7bd2b4d9f24b415c9200a92b6aa88988888"
+    },
+    {
+        "sha": "fbe1a25ef9eee8daf4e43f29d0bc62bd34442b08",
+        "author": "Laravel Shift",
+        "email": "shift@laravelshift.com",
+        "date": "2026-03-06T19:35:59Z",
+        "message": "Bump dependencies for Laravel 13 (#179)",
+        "url": "https://github.com/laravolt/avatar/commit/fbe1a25ef9eee8daf4e43f29d0bc62bd34442b08"
+    },
+    {
+        "sha": "dea77b6fbff08f38e744a9e23855369c8270f2aa",
+        "author": "Qisthi Ramadhani",
+        "email": "rama@qisthi.dev",
+        "date": "2025-08-27T08:20:27Z",
+        "message": "fix: 6.3.0 (#175)\n\n* Add HD avatar generation with storage optimization and export features\n\nCo-authored-by: dizzy.leaps_0f <dizzy.leaps_0f@icloud.com>\n\n* fix: test\n\n* fix: styleci\n\n* fix: configurable\n\n* fix: pint\n\n---------\n\nCo-authored-by: Cursor Agent <cursoragent@cursor.com>",
+        "url": "https://github.com/laravolt/avatar/commit/dea77b6fbff08f38e744a9e23855369c8270f2aa"
+    },
+    {
+        "sha": "083fcbbf621d56f74f2498f1eb0bd462d71d3a7e",
+        "author": "Qisthi Ramadhani",
+        "email": "rama@qisthi.dev",
+        "date": "2025-08-27T07:42:59Z",
+        "message": "feat: export HD avatar as image for storage (#172)\n\n* Add HD avatar generation with storage optimization and export features\n\nCo-authored-by: dizzy.leaps_0f <dizzy.leaps_0f@icloud.com>\n\n* fix: test\n\n* fix: styleci\n\n---------\n\nCo-authored-by: Cursor Agent <cursoragent@cursor.com>",
+        "url": "https://github.com/laravolt/avatar/commit/083fcbbf621d56f74f2498f1eb0bd462d71d3a7e"
+    },
+    {
+        "sha": "d0941f19aa2375b98333a80c1b272137bdd0a18b",
+        "author": "Qisthi Ramadhani",
+        "email": "rama@qisthi.dev",
+        "date": "2025-04-16T14:21:06Z",
+        "message": "feat: implement configurable avatar caching (#170)\n\n- Add option to enable/disable caching\n- Add configurable cache duration (default: 24 hours)\n- Add cache key prefix to avoid conflicts\n- Update toBase64() method to respect cache configuration\n- Document cache options in config file\n\nThis fixes the issue where avatars were cached forever with no way to\nconfigure or disable the cache, making it difficult to see setting changes.",
+        "url": "https://github.com/laravolt/avatar/commit/d0941f19aa2375b98333a80c1b272137bdd0a18b"
+    },
+    {
+        "sha": "9d8a56898773287deb68b7bfd9233fc48962cbff",
+        "author": "Qisthi Ramadhani",
+        "email": "rama@qisthi.dev",
+        "date": "2025-04-16T14:11:04Z",
+        "message": "fix/upgrading phpunit to 11 (#169)\n\n* fix: phpunit upgrade\n\n* Update PHPUnit tests to use attributes instead of doc-comments\n\n- Replace @test annotations with #[Test] attributes in all test files\n- Fix deprecated metadata in test methods\n- Ensure compatibility with PHPUnit 11.5.3\n- Prepare codebase for PHPUnit 12 compatibility\n\n* fix: remove unused file\n\n* fix: runner image\n\n* fix: dropping php 8.1\n\n* fix: platform requirements\n\n* Update Mockery dependency to fix type declaration error\n\n- Update mockery/mockery from ~1.3 to ^1.6.7\n- Fix \"Type declaration 'mixed' must be unqualified\" error\n- Ensure compatibility with PHPUnit 11.5.3 and PHP 8.2+",
+        "url": "https://github.com/laravolt/avatar/commit/9d8a56898773287deb68b7bfd9233fc48962cbff"
+    },
+    {
+        "sha": "e7b7d182e7f1fab60555a4a69f5e77d591c2b836",
+        "author": "Javad Shafique",
+        "email": "javadshafique@hotmail.com",
+        "date": "2025-04-16T13:45:35Z",
+        "message": "Fix `parameter.implicitlyNullable` for PHP 8.4 compatibility. (#168)",
+        "url": "https://github.com/laravolt/avatar/commit/e7b7d182e7f1fab60555a4a69f5e77d591c2b836"
+    },
+    {
+        "sha": "e2c552a8d7322cec883ec4889bfaba41a063cb0e",
+        "author": "Leo Lutz",
+        "email": "skeemer@gmail.com",
+        "date": "2025-02-28T10:37:15Z",
+        "message": "Add responsive property to help with SVG generation (#163)\n\n* Add responsive property to help with SVG generation\n\n* Add missing Laravel code",
+        "url": "https://github.com/laravolt/avatar/commit/e2c552a8d7322cec883ec4889bfaba41a063cb0e"
+    },
+    {
+        "sha": "e7717f1f6bf3f8b0116fea03fc9a264fae9c0bf8",
+        "author": "Qisthi Ramadhani",
+        "email": "rama@qisthi.dev",
+        "date": "2025-02-28T10:35:59Z",
+        "message": "Merge pull request #164 from laravel-shift/l12-compatibility\n\nLaravel 12.x Compatibility",
+        "url": "https://github.com/laravolt/avatar/commit/e7717f1f6bf3f8b0116fea03fc9a264fae9c0bf8"
+    },
+    {
+        "sha": "41647a2ae5e5c5420aa991f712cf26fcdbf4586d",
+        "author": "Shift",
+        "email": "shift@laravelshift.com",
+        "date": "2025-02-15T18:59:52Z",
+        "message": "Bump dependencies for Laravel 12",
+        "url": "https://github.com/laravolt/avatar/commit/41647a2ae5e5c5420aa991f712cf26fcdbf4586d"
+    },
+    {
+        "sha": "bc29a53da72da31bfcdffd2a85c8f1a44ff3b064",
+        "author": "Jake Morrison",
+        "email": "s+github@jom.im",
+        "date": "2024-10-07T15:18:06Z",
+        "message": "Update hash used for Gravatar tests",
+        "url": "https://github.com/laravolt/avatar/commit/bc29a53da72da31bfcdffd2a85c8f1a44ff3b064"
+    },
+    {
+        "sha": "9d084c0835887033e713b23859cdee7af656c6b6",
+        "author": "Andrei Demian",
+        "email": "undemian@gmail.com",
+        "date": "2024-09-27T08:49:19Z",
+        "message": "Fix linting",
+        "url": "https://github.com/laravolt/avatar/commit/9d084c0835887033e713b23859cdee7af656c6b6"
+    },
+    {
+        "sha": "343724d251a5e4ad8c670a110f3fcfbb9589ff9a",
+        "author": "Andrei Demian",
+        "email": "undemian@gmail.com",
+        "date": "2024-09-27T08:45:18Z",
+        "message": "Update Gravatar hashing to use sha256",
+        "url": "https://github.com/laravolt/avatar/commit/343724d251a5e4ad8c670a110f3fcfbb9589ff9a"
+    },
+    {
+        "sha": "60673413db93f1491c2eb556e1c2050de14fba5c",
+        "author": "Bayu Hendra Winata",
+        "email": "uyab.exe@gmail.com",
+        "date": "2024-09-20T17:07:45Z",
+        "message": "chore",
+        "url": "https://github.com/laravolt/avatar/commit/60673413db93f1491c2eb556e1c2050de14fba5c"
+    },
+    {
+        "sha": "98d3364fa17a49d41dd6472ded313015f55d5ae2",
+        "author": "Bayu Hendra Winata",
+        "email": "uyab.exe@gmail.com",
+        "date": "2024-09-20T17:04:40Z",
+        "message": "Update README.md",
+        "url": "https://github.com/laravolt/avatar/commit/98d3364fa17a49d41dd6472ded313015f55d5ae2"
+    },
+    {
+        "sha": "f0534bd7216742523942fd88fd016bb98c12e2d0",
+        "author": "Bayu Hendra Winata",
+        "email": "uyab.exe@gmail.com",
+        "date": "2024-09-20T16:52:29Z",
+        "message": "apply strong type",
+        "url": "https://github.com/laravolt/avatar/commit/f0534bd7216742523942fd88fd016bb98c12e2d0"
+    },
+    {
+        "sha": "b9b1c2069740c36a3893cf827c25e1bf8c750ea4",
+        "author": "Bayu Hendra Winata",
+        "email": "uyab.exe@gmail.com",
+        "date": "2024-09-20T16:12:57Z",
+        "message": "test html entity",
+        "url": "https://github.com/laravolt/avatar/commit/b9b1c2069740c36a3893cf827c25e1bf8c750ea4"
+    },
+    {
+        "sha": "f97b179e5107326b3d03f13a476758f646c92c56",
+        "author": "Bayu Hendra Winata",
+        "email": "uyab.exe@gmail.com",
+        "date": "2024-09-20T16:03:31Z",
+        "message": "refactor circle drawing",
+        "url": "https://github.com/laravolt/avatar/commit/f97b179e5107326b3d03f13a476758f646c92c56"
+    },
+    {
+        "sha": "d60592007c4a8c05235e375bfe589f8c169f8e5c",
+        "author": "Bayu Hendra Winata",
+        "email": "uyab.exe@gmail.com",
+        "date": "2024-09-20T16:00:45Z",
+        "message": "fix circle drawing using imagic",
+        "url": "https://github.com/laravolt/avatar/commit/d60592007c4a8c05235e375bfe589f8c169f8e5c"
+    },
+    {
+        "sha": "0a50392ea469176de9f32218a7b1a0ebef725c05",
+        "author": "Bayu Hendra Winata",
+        "email": "uyab.exe@gmail.com",
+        "date": "2024-04-05T04:06:22Z",
+        "message": "Merge branch 'master' of https://github.com/laravolt/avatar",
+        "url": "https://github.com/laravolt/avatar/commit/0a50392ea469176de9f32218a7b1a0ebef725c05"
+    },
+    {
+        "sha": "746e5b3e8c62fdfaa60618a6c1f76e913dd1f064",
+        "author": "Bayu Hendra Winata",
+        "email": "uyab.exe@gmail.com",
+        "date": "2024-04-05T04:06:05Z",
+        "message": "fix coverage in github action",
+        "url": "https://github.com/laravolt/avatar/commit/746e5b3e8c62fdfaa60618a6c1f76e913dd1f064"
+    },
+    {
+        "sha": "369afa033dd1f01ee7acb6dacee9918ffbcb19aa",
+        "author": "StyleCI Bot",
+        "email": "bot@styleci.io",
+        "date": "2024-04-05T03:47:54Z",
+        "message": "Apply fixes from StyleCI",
+        "url": "https://github.com/laravolt/avatar/commit/369afa033dd1f01ee7acb6dacee9918ffbcb19aa"
+    },
+    {
+        "sha": "e87e6465a48613477e5cfb511185558eef48c80d",
+        "author": "Bayu Hendra Winata",
+        "email": "uyab.exe@gmail.com",
+        "date": "2024-04-05T03:47:37Z",
+        "message": "wip: initial migration to intervention/image 3",
+        "url": "https://github.com/laravolt/avatar/commit/e87e6465a48613477e5cfb511185558eef48c80d"
+    },
+    {
+        "sha": "e01beadcd0a98a08cce10cb71e7acaf4e52062cd",
+        "author": "Bayu Hendra Winata",
+        "email": "uyab.exe@gmail.com",
+        "date": "2024-04-05T02:43:25Z",
+        "message": "add roave/security-advisories",
+        "url": "https://github.com/laravolt/avatar/commit/e01beadcd0a98a08cce10cb71e7acaf4e52062cd"
+    },
+    {
+        "sha": "8d1a54eac2da45f0a201c9da59006431f4c92cf8",
+        "author": "neoteknic",
+        "email": "neoteknic@gmail.com",
+        "date": "2024-03-12T16:08:57Z",
+        "message": "Update composer.json\n\nAdd Laravel 11 support",
+        "url": "https://github.com/laravolt/avatar/commit/8d1a54eac2da45f0a201c9da59006431f4c92cf8"
+    },
+    {
+        "sha": "544851f5089fa337ca1b52d363dbb5ce5b0670d1",
+        "author": "Shailesh Ladumor",
+        "email": "shaileshmladumor@gmail.com",
+        "date": "2023-09-02T04:24:45Z",
+        "message": "doc: add video tutorial in readme (#147)",
+        "url": "https://github.com/laravolt/avatar/commit/544851f5089fa337ca1b52d363dbb5ce5b0670d1"
+    },
+    {
+        "sha": "a4d533521191449fdb5efc8d9ed015bd639c2307",
+        "author": "Bayu Hendra Winata",
+        "email": "uyab.exe@gmail.com",
+        "date": "2023-02-25T02:57:48Z",
+        "message": "Update run-tests.yml",
+        "url": "https://github.com/laravolt/avatar/commit/a4d533521191449fdb5efc8d9ed015bd639c2307"
+    },
+    {
+        "sha": "e2f8ed2cbc22d55fed914c3a28c81f9b32401e20",
+        "author": "Bayu Hendra Winata",
+        "email": "uyab.exe@gmail.com",
+        "date": "2023-02-25T02:52:44Z",
+        "message": "Update run-tests.yml",
+        "url": "https://github.com/laravolt/avatar/commit/e2f8ed2cbc22d55fed914c3a28c81f9b32401e20"
+    },
+    {
+        "sha": "3fcb2f366dc6c3de3f7485732035f96529fc9f9b",
+        "author": "Bayu Hendra Winata",
+        "email": "uyab.exe@gmail.com",
+        "date": "2023-02-25T02:33:46Z",
+        "message": "Update run-tests.yml",
+        "url": "https://github.com/laravolt/avatar/commit/3fcb2f366dc6c3de3f7485732035f96529fc9f9b"
+    }
+]

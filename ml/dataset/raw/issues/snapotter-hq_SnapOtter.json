@@ -1,0 +1,374 @@
+[
+    {
+        "id": 4872434609,
+        "number": 515,
+        "title": "[Bug] activated MFA for admin users, now unable to login anymore",
+        "state": "open",
+        "created_at": "2026-07-13T09:48:49Z",
+        "updated_at": "2026-07-13T09:48:49Z",
+        "closed_at": null,
+        "author": "TomErnst1972",
+        "comments": 0,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Before submitting\n\n- [x] I searched existing issues and didn't find a duplicate\n- [x] I've tried the latest version to confirm it isn't already fixed\n\n### What happened?\n\nHi,\nI use the docker version, and activated MFA support for admin users as \"required\". Before logout I searched to find a menu to onboard MFA. Did not find. Logged out. not able to login anymore... (auth failed)\n\nany suggestions?\n\n```\nname: snapotter\nservices:\n  snapotter:\n    container_name: snapotter\n    ports:\n      - 1349:1349\n    volumes:\n      - ./snapotter-data:/data\n    image: snapotter/snapotter:latest\n    networks:\n      - tomsnet\n    restart: always\n\nnetworks:\n  tomsnet:\n    external: true\n```\nError:\n\n```\nsnapotter  | {\"level\":30,\"time\":1783935497194,\"pid\":209,\"hostname\":\"f1555bf69831\",\"reqId\":\"f7c229e4-629e-4709-a335-d3f1811f00bb\",\"audit\":true,\"event\":\"LOGIN_FAILED\",\"ip\":\"87.79.200.128\",\"requestId\":\"f7c229e4-629e-4709-a335-d3f1811f00bb\",\"username\":\"admin\",\"reason\":\"bad_password\",\"msg\":\"[AUDIT] LOGIN_FAILED\"}\n```\n\n\n### Expected behavior\n\nsome way to onboard a MFA app and use it.\n\n### Steps to reproduce\n\n1. create container\n2. set MFA to \"required for admins\"\n3. logout\n\n\n### Affected area\n\nAccount / login\n\n### Specific tool\n\n_No response_\n\n### How are you running SnapOtter?\n\nDocker Compose\n\n### Version\n\nlatest\n\n### Deployment details\n\n```shell\n\n```\n\n### Host architecture\n\nAMD64 (Intel/AMD)\n\n### Host OS\n\nLinux (native)\n\n### Browser\n\n_No response_\n\n### Logs\n\n```shell\n\n```\n\n### Screenshots\n\n_No response_\n\n### Would you like to contribute a fix?\n\nNo, just reporting",
+        "url": "https://github.com/snapotter-hq/SnapOtter/issues/515"
+    },
+    {
+        "id": 4865543848,
+        "number": 505,
+        "title": "[Bug] Extract Text from Image (OCR) Fails to install",
+        "state": "open",
+        "created_at": "2026-07-12T05:25:49Z",
+        "updated_at": "2026-07-13T07:57:56Z",
+        "closed_at": null,
+        "author": "hell-toupee",
+        "comments": 4,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Before submitting\n\n- [x] I searched existing issues and didn't find a duplicate\n- [x] I've tried the latest version to confirm it isn't already fixed\n\n### What happened?\n\nWhen I attempt to install Extract Text from Image (OCR), I get the following message. This is the only AI package that fails for me.\n\nInstallation verification failed: the bundle installed but its libraries could not be loaded, so the tool would not work. File \"/data/ai/venv/lib/python3.12/site-packages/paddle/base/backward.py\", line 28, in <module> from . import core, framework, log_helper, unique_name File \"/data/ai/venv/lib/python3.12/site-packages/paddle/base/core.py\", line 388, in <module> if not avx_supported() and libpaddle.is_compiled_with_avx(): ^^^^^^^^^ NameError: name 'libpaddle' is not defined This usually means an interrupted or corrupted install. Retry the install; if it keeps failing, use Settings > AI Features > Reset AI Environment, then reinstall.\n\nI've tried repairing and also resetting the environment without success. \n\n### Expected behavior\n\nI expect the OCR module to download like all the rest of the AI features\n\n### Steps to reproduce\n\nDownload the Extract Text from Image (OCR) \n\nTagging sakinak from Reddit\n\n### Affected area\n\nImage tools\n\n### Specific tool\n\nExtract Text from Image (OCR) \n\n### How are you running SnapOtter?\n\nDocker Compose\n\n### Version\n\n2.1.0\n\n### Deployment details\n\n```shell\nservices:\n  snapotter:\n    image: snapotter/snapotter:latest\n    ports: [\"1349:1349\"]\n    environment:\n      DATABASE_URL: postgres://snapotter:snapotter@postgres:5432/snapotter\n      REDIS_URL: redis://redis:6379\n    volumes:\n      - SnapOtter-data:/data\n    depends_on: [postgres, redis]\n    restart: unless-stopped\n  postgres:\n    image: postgres:17-alpine\n    environment:\n      POSTGRES_USER: user\n      POSTGRES_PASSWORD: pass\n      POSTGRES_DB: snapotter\n    volumes: [\"SnapOtter-pgdata:/var/lib/postgresql/data\"]\n    restart: unless-stopped\n  redis:\n    image: redis:8-alpine\n    volumes: [\"SnapOtter-redisdata:/data\"]\n    restart: unless-stopped\nvolumes:\n  SnapOtter-data:\n  SnapOtter-pgdata:\n  SnapOtter-redisdata:\n```\n\n### Host architecture\n\nAMD64 (Intel/AMD)\n\n### Host OS\n\nLinux (native)\n\n### Browser\n\nBrave 1.92.139\n\n### Logs\n\n```shell\n\n```\n\n### Screenshots\n\n<img width=\"1017\" height=\"727\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/a1ba6726-53a0-4760-ae21-0cfc521ed4d7\" />\n\n### Would you like to contribute a fix?\n\nNo, just reporting",
+        "url": "https://github.com/snapotter-hq/SnapOtter/issues/505"
+    },
+    {
+        "id": 4861156073,
+        "number": 497,
+        "title": "Docs: add low-resource deployment guidance (Raspberry Pi, older laptops)",
+        "state": "open",
+        "created_at": "2026-07-11T07:26:37Z",
+        "updated_at": "2026-07-11T16:56:44Z",
+        "closed_at": null,
+        "author": "snapotter-hq",
+        "comments": 1,
+        "labels": [
+            "documentation",
+            "community-request"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Before submitting\n\n- [x] Filed by a maintainer from community feedback\n- [x] Searched existing issues and didn't find a duplicate\n\n### Issue type\n\nMissing documentation.\n\n### What's wrong / missing?\n\nUsers on low-resource systems (older laptops, Raspberry Pi and similar single-board computers) want guidance and configuration options to run SnapOtter well on constrained hardware, and a discoverable place to find it.\n\nOriginal request: *\"Please give us more options to optimize for low-resource systems like old laptops or Raspberry Pi. In case such support exists, please provide relevant sections under deployment or config doc pages, or dedicated pages in the official docs, so people with low-powered systems can easily refer to them, making it more beginner-friendly.\"*\n\n### Suggested fix\n\nAdd a \"Low-resource / minimal hardware\" section (or a dedicated page) under the deployment/configuration docs covering:\n\n- Realistic memory/CPU expectations, and which tiers of functionality are viable on small hardware.\n- Which heavy features to disable or avoid on constrained hosts (AI/ML tools, video processing).\n- Environment variables to cap concurrency and resource limits.\n- The 64-bit requirement and any architecture constraints.\n- A short \"getting started on a Raspberry Pi / old laptop\" walkthrough.\n\nMake it easy to find (linked from getting-started and the deployment overview) so beginners land on it quickly.\n\n### Additional context\n\nRelated community interest: #96 (unRaid Community App). Several install-time comments came from self-hosters on modest hardware, so this guidance would help a real segment of users.\n\n---\n_Filed by a maintainer from community feedback. Reporter contact details intentionally omitted._\n",
+        "url": "https://github.com/snapotter-hq/SnapOtter/issues/497"
+    },
+    {
+        "id": 4861156013,
+        "number": 496,
+        "title": "Remove background from animated GIFs",
+        "state": "closed",
+        "created_at": "2026-07-11T07:26:35Z",
+        "updated_at": "2026-07-11T11:53:02Z",
+        "closed_at": "2026-07-11T11:53:02Z",
+        "author": "snapotter-hq",
+        "comments": 0,
+        "labels": [
+            "enhancement",
+            "community-request"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Problem\n\nA user searched in-app for a way to **remove the background from an animated GIF** and found no matching tool (surfaced through the search-miss feedback prompt). The existing remove-background tool targets still images, so animated GIFs aren't covered.\n\n### Proposed solution\n\nSupport background removal on animated GIFs: split the GIF into frames, run background removal per frame, and reassemble, outputting a transparent animation in an appropriate format (transparent GIF, APNG, or WebP, whichever preserves alpha best).\n\nConsiderations:\n\n- Per-frame consistency (avoid flicker in the matte between frames).\n- Preserve frame timing/loop metadata.\n- Performance: many frames on CPU could be slow (relates to the GPU-acceleration work).\n\n### Alternatives considered\n\n- Document a pipeline recipe (extract frames -> remove-background per frame -> reassemble) if that is achievable with today's tools, as an interim answer.\n- Limit to short GIFs / frame caps initially.\n\n### Additional context\n\nSurfaced as a \"no results\" search, which is a signal of latent demand: users expect this and can't find it.\n\n---\n_Filed by a maintainer from community feedback._\n",
+        "url": "https://github.com/snapotter-hq/SnapOtter/issues/496"
+    },
+    {
+        "id": 4861155963,
+        "number": 495,
+        "title": "Non-destructive editing: choose to save edited output as a new file instead of overwriting the original",
+        "state": "open",
+        "created_at": "2026-07-11T07:26:34Z",
+        "updated_at": "2026-07-11T07:26:34Z",
+        "closed_at": null,
+        "author": "snapotter-hq",
+        "comments": 0,
+        "labels": [
+            "enhancement",
+            "area: frontend",
+            "community-request"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Problem\n\nWhen editing an uploaded file, a user wants control over whether the **original** file gets modified or the edited result is saved as a **new** file. Today it is not clear (or not possible) to keep the original untouched.\n\nOriginal request: *\"Would it be possible to edit an uploaded file without necessarily modifying the original? I would find it great if one could choose whether the original file selected from the list should be overwritten after editing, or whether the edited file should be saved as a new file.\"*\n\n### Proposed solution\n\nOffer an explicit choice when saving/applying an edit:\n\n- **Save as new file** (non-destructive), keep the original as-is and add the edited result as a separate entry.\n- **Overwrite original**, replace the selected file with the edited version.\n\nDefault to non-destructive (save as new) so users never lose an original by accident.\n\n### Alternatives considered\n\n- Always save as new (no overwrite option), simpler but removes a workflow some users want.\n- Version history per file (heavier; could be a later enhancement that subsumes this).\n\n### Additional context\n\nRelevant to the file library (`/files`) and the tool result save flow. The core ask is a clear, per-edit choice between overwrite and save-as-new.\n\n---\n_Filed by a maintainer from community feedback. Reporter contact details intentionally omitted._\n",
+        "url": "https://github.com/snapotter-hq/SnapOtter/issues/495"
+    },
+    {
+        "id": 4861155896,
+        "number": 494,
+        "title": "remove-background job times out and produces no result",
+        "state": "open",
+        "created_at": "2026-07-11T07:26:32Z",
+        "updated_at": "2026-07-14T07:13:15Z",
+        "closed_at": null,
+        "author": "snapotter-hq",
+        "comments": 2,
+        "labels": [
+            "bug",
+            "community-request"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Before submitting\n\n- [x] Filed by a maintainer from community feedback\n- [x] Searched existing issues and didn't find a duplicate\n\n### What happened?\n\nA **remove-background** job timed out and produced no result. Reporter's words: *\"Timed out and did not work.\"* (Submitted from the failed-job feedback prompt, so the job ended in a failed state.)\n\n### Expected behavior\n\nThe job should either complete and return a result, or fail fast with a clear, actionable message (for example: model still downloading, input too large, worker unavailable) rather than silently timing out.\n\n### Factors to investigate\n\n- **First-run cold start:** initial model/bundle download or first-inference warm-up exceeding the sync window / SSE timeout.\n- **CPU-only inference on a large image:** heavy input on CPU exceeding time limits. Note this can be aggravated by the GPU-fallback bug where ONNX Runtime silently drops to CPU (see the ONNX/onnxruntime-gpu conflict issue), which would make remove-background much slower and more prone to timing out.\n- **Worker availability / queue backpressure.**\n\n### Steps to reproduce\n\nNot fully specified by the reporter. To reproduce/triage we need: input image size and format, host CPU/RAM (and whether a GPU is present), and whether this was the first remove-background run on the instance.\n\n### Affected area\n\nremove-background (rembg sidecar); job timeout and async-fallback handling.\n\n### Additional context\n\nOnly a single sentence of detail was provided. Capturing input size, host resources, and first-run vs. warm would help pin down whether this is a cold-start, a large-input CPU timeout, or a worker issue.\n\n---\n_Filed by a maintainer from community feedback. Reporter contact details intentionally omitted._\n",
+        "url": "https://github.com/snapotter-hq/SnapOtter/issues/494"
+    },
+    {
+        "id": 4861155520,
+        "number": 493,
+        "title": "pdf-to-word: text in colored background blocks overflows, splits into two blocks, and overlaps",
+        "state": "closed",
+        "created_at": "2026-07-11T07:26:24Z",
+        "updated_at": "2026-07-11T11:20:33Z",
+        "closed_at": "2026-07-11T11:20:33Z",
+        "author": "snapotter-hq",
+        "comments": 0,
+        "labels": [
+            "bug",
+            "community-request"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Before submitting\n\n- [x] Filed by a maintainer from community feedback\n- [x] Searched existing issues and didn't find a duplicate\n\n### What happened?\n\nWhen converting a PDF to Word with **pdf-to-word**, text that sits inside a colored background block (text on a colored fill, such as a highlighted box or callout) is converted incorrectly:\n\n- Part of the text does not fit inside the block (overflow).\n- A single block gets split into two blocks.\n- The two resulting blocks overlap each other.\n\nOriginal report (translated from Russian): *\"Text that had a colored background, i.e. that was inside a colored block, converts incorrectly. Part of the text doesn't fit inside the block, one block is split into two, and they overlap each other.\"*\n\n### Expected behavior\n\nText inside colored/filled blocks should keep correct sizing and layout in the resulting `.docx`: the block should not split, the two halves should not overlap, and the text should remain contained within its block.\n\n### Steps to reproduce\n\n1. Take a PDF containing text set inside colored background blocks (highlighted boxes, callouts, filled table cells).\n2. Convert it via pdf-to-word.\n3. Open the resulting `.docx` and inspect the colored blocks: text overflows, blocks split, and split halves overlap.\n\n### Affected area\n\npdf-to-word (doc-engine conversion path).\n\n### Additional context\n\nThe reporter did not attach a sample. A minimal PDF that reproduces the colored-block behavior would speed up triage; if anyone hitting this can share one (with no sensitive content), please attach it.\n\n---\n_Filed by a maintainer from community feedback. Reporter contact details intentionally omitted._\n",
+        "url": "https://github.com/snapotter-hq/SnapOtter/issues/493"
+    },
+    {
+        "id": 4861155461,
+        "number": 492,
+        "title": "erase-object: add lasso / freeform region selection (select around a subject instead of painting over it)",
+        "state": "closed",
+        "created_at": "2026-07-11T07:26:23Z",
+        "updated_at": "2026-07-11T14:27:52Z",
+        "closed_at": "2026-07-11T14:27:52Z",
+        "author": "snapotter-hq",
+        "comments": 1,
+        "labels": [
+            "enhancement",
+            "area: frontend",
+            "community-request"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Problem\n\nThe **erase-object** tool currently requires painting/brushing directly over the object you want to remove. For large or irregularly shaped subjects (a whole person, a complex silhouette), brushing over every pixel is tedious, slow, and easy to get wrong, you either miss edges or spill onto areas you want to keep.\n\nA user asked for a way to **select around** a subject instead of painting over it.\n\n### Proposed solution\n\nAdd a lasso / freeform region-selection mode to erase-object so the user can draw an outline around a subject and have the enclosed region erased and inpainted. This would complement (not replace) the existing brush. Reasonable variants to consider:\n\n- Freeform lasso (draw a loop around the subject)\n- Polygon lasso (click vertices)\n- Rectangle marquee for quick box selections\n\n### Alternatives considered\n\n- Subject auto-detect / \"magic wand\" selection (heavier; could be a follow-up).\n- Keep brush-only and improve brush ergonomics (larger sizes, edge snapping), which does not fully solve selecting around a large subject.\n\n### Additional context\n\nRequested alongside a ghosting bug in the same tool (tracked separately). Broader inpainting-quality work is in #141.\n\n---\n_Filed by a maintainer from community feedback. Reporter contact details intentionally omitted._\n",
+        "url": "https://github.com/snapotter-hq/SnapOtter/issues/492"
+    },
+    {
+        "id": 4861155386,
+        "number": 491,
+        "title": "erase-object leaves faint \"ghost\" remnants of the removed object",
+        "state": "closed",
+        "created_at": "2026-07-11T07:26:21Z",
+        "updated_at": "2026-07-11T14:27:36Z",
+        "closed_at": "2026-07-11T14:27:36Z",
+        "author": "snapotter-hq",
+        "comments": 1,
+        "labels": [
+            "bug",
+            "community-request"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Before submitting\n\n- [x] Filed by a maintainer from community feedback\n- [x] Searched existing issues (related to #141, but a distinct symptom, see below)\n\n### What happened?\n\nAfter erasing an object with the **erase-object** tool, a faint residual \"ghost\" of the removed object remains in the output, a visible outline or silhouette where the object used to be. The object is not cleanly gone; its trace is still perceptible in the filled region.\n\n### Expected behavior\n\nThe erased region should be filled with plausible surrounding background, leaving **no visible remnant, outline, or silhouette** of the original object.\n\n### Steps to reproduce\n\n1. Open the erase-object tool.\n2. Paint over an object to remove it.\n3. Run the erase.\n4. Inspect the result: a ghost/outline of the removed object is still visible in the filled area.\n\n### Affected area\n\nerase-object (LaMa inpainting via the AI sidecar).\n\n### Relationship to #141\n\n#141 reports that inpainting output is **blurry / mushy / low-resolution**. This report is about **residual ghosting** (the removed object's outline persists), which is a different, separately-reproducible symptom. They likely share a root cause in inpainting quality, so the maintainer may choose to consolidate; filing separately so the ghosting symptom is captured explicitly.\n\n### Additional context\n\nThe same reporter also asked for a lasso / region-selection input for this tool (tracked separately). A before/after sample would help; the reporter did not attach one.\n\n---\n_Filed by a maintainer from community feedback. Reporter contact details intentionally omitted._\n",
+        "url": "https://github.com/snapotter-hq/SnapOtter/issues/491"
+    },
+    {
+        "id": 4861155333,
+        "number": 490,
+        "title": "AI GPU acceleration silently falls back to CPU: onnxruntime (CPU) overwrites onnxruntime-gpu in the AI venv",
+        "state": "open",
+        "created_at": "2026-07-11T07:26:19Z",
+        "updated_at": "2026-07-11T07:26:19Z",
+        "closed_at": null,
+        "author": "snapotter-hq",
+        "comments": 0,
+        "labels": [
+            "bug",
+            "python",
+            "priority: high",
+            "community-request"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Before submitting\n\n- [x] Filed by a maintainer from community feedback\n- [x] Searched existing issues (related but distinct from the iGPU/AMD requests #190, #126, #171, #124, #120)\n\n### What happened?\n\nOn a working NVIDIA + CUDA host (reported running under Unraid with `--gpus all` and the NVIDIA Container Toolkit installed), AI tools run on **CPU instead of GPU**. The sidecar logs the fallback:\n\n```\n[python] GPU detected by torch but CUDAExecutionProvider not available in onnxruntime -- install onnxruntime-gpu for GPU acceleration\n[python] No GPU detected, processing on CPU\n```\n\nThis matches the code path in `packages/ai/python/gpu.py`: `torch.cuda.is_available()` succeeds, but `_try_onnx_cuda()` finds that `onnxruntime.get_available_providers()` does not contain `CUDAExecutionProvider`, so ONNX-based tools drop to CPU.\n\n### Root cause (diagnosed by the reporter, and consistent with our code)\n\nTwo conflicting ONNX Runtime packages end up installed in the same AI venv (`/data/ai/venv`):\n\n- `onnxruntime` (CPU-only), pulled in transitively as a dependency of **faster-whisper** (the transcription bundle)\n- `onnxruntime-gpu` (e.g. `1.20.1`), installed for GPU acceleration\n\nBoth packages install into the **same directory**, `site-packages/onnxruntime/`. When the CPU `onnxruntime` is installed *after* `onnxruntime-gpu` (which happens because faster-whisper's dependency resolution adds `onnxruntime` during AI bundle install), it **overwrites the GPU build's files**. The pip metadata for `onnxruntime-gpu` survives, so `pip show onnxruntime-gpu` still lists it, but the module actually imported at runtime is the CPU build. Consequently `get_available_providers()` resolves to something like `['AzureExecutionProvider', 'CPUExecutionProvider']` and never `CUDAExecutionProvider`.\n\nIn short: installing the transcription bundle alongside GPU tools silently downgrades ONNX Runtime to CPU-only.\n\n### Workaround (confirmed working by the reporter)\n\nReinstall the GPU build last, inside the running container:\n\n```bash\ndocker exec -it SnapOtter /data/ai/venv/bin/pip uninstall onnxruntime onnxruntime-gpu -y\ndocker exec -it SnapOtter /data/ai/venv/bin/pip install onnxruntime-gpu==1.20.1\n```\n\nAfter this the GPU is used correctly.\n\n### Expected behavior\n\nWhen a CUDA-capable GPU is present and the transcription bundle (faster-whisper) is installed alongside ONNX-based GPU tools, `onnxruntime` should resolve to the GPU build and `CUDAExecutionProvider` should be available. Installing one bundle should not silently break another's GPU acceleration.\n\n### Suggested directions\n\n- Reconcile ONNX Runtime after installing bundles so a transitively-pulled CPU `onnxruntime` cannot clobber `onnxruntime-gpu`. Options: never let both coexist, install/repair `onnxruntime-gpu` **last**, or pin/constrain the transcription bundle so it doesn't drag in the CPU `onnxruntime`.\n- Add a post-install verification: when a GPU is present, assert `onnxruntime.get_available_providers()` contains `CUDAExecutionProvider`, and self-heal (reinstall `onnxruntime-gpu`) or emit a loud, actionable warning if not.\n- Extend the existing cross-bundle install safeguards to cover this ONNX CPU-vs-GPU conflict, the same way ABI conflicts are already guarded.\n\n### Affected area\n\nAI sidecar / on-demand bundle install pipeline (`packages/ai`, `install_feature.py`, `/data/ai/venv`). Impacts any ONNX-backed GPU tool (for example `remove-background` via rembg) once the transcription bundle is also installed.\n\n### How are you running SnapOtter?\n\nDocker on Unraid, NVIDIA GPU, `--gpus all`, NVIDIA Container Toolkit installed.\n\n### Version\n\nNot specified by reporter (reported early July 2026).\n\n### Additional context\n\nThe reporter was very positive about the project and offered this diagnosis to help improve the Docker image.\n\n---\n_Filed by a maintainer from community feedback. Reporter contact details intentionally omitted._\n",
+        "url": "https://github.com/snapotter-hq/SnapOtter/issues/490"
+    },
+    {
+        "id": 4857039724,
+        "number": 478,
+        "title": "Telemetry follow-ups from the 2.1.0 overhaul",
+        "state": "open",
+        "created_at": "2026-07-10T16:57:28Z",
+        "updated_at": "2026-07-10T16:57:28Z",
+        "closed_at": null,
+        "author": "snapotter-hq",
+        "comments": 0,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "Small residuals from the Sentry telemetry overhaul (#476), none urgent:\n\n1. error_code tag: reportError reads err.code from the top-level error only, so wrapped errors (drizzle-wrapped pg failures) carry the code in the title but not the tag. One-liner: walk the cause chain like the sanitizer does.\n2. First organic 2.1.0 browser event should be checked once for resolved source-mapped frames in the web Sentry project (release 2.1.0 exists there and the upload pipeline ran; this is the last confirmation).\n3. PostHog pageviews are captured unsampled fleet-wide (capture_pageview: true). Same class of quota risk the Sentry side just had; worth a look before the fleet grows.\n4. Sign PDF: a genuine PDF load failure leaves a blank canvas with no user feedback (pre-existing; teardown rejections were the dominant noise and are fixed).",
+        "url": "https://github.com/snapotter-hq/SnapOtter/issues/478"
+    },
+    {
+        "id": 4747709867,
+        "number": 352,
+        "title": "[Bug] AI Background Removal download fails",
+        "state": "closed",
+        "created_at": "2026-06-25T22:03:53Z",
+        "updated_at": "2026-07-01T15:08:33Z",
+        "closed_at": "2026-07-01T15:08:33Z",
+        "author": "Aloe-recite",
+        "comments": 11,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Before submitting\n\n- [x] I searched existing issues and didn't find a duplicate\n- [x] I've tried the latest version to confirm it isn't already fixed\n\n### What happened?\n\nHi. Just installed using community-scripts.org\nAll AI tools downloaded fine, Background removal fail in around 2seconds:\n`Failed to download 8 model(s): rembg-isnet-general-use, rembg-bria-rmbg, rembg-u2net, rembg-birefnet-portrait, rembg-birefnet-general-lite, rembg-birefnet-matting, rembg-birefnet-hr-matting, rembg-birefnet-general. This is usually caused by network issues (timeouts, DNS, or rate limiting). Check your internet connection and retry the installation.`\n\nConnection works on my LXC, the other tools installed just fine altough for a few I had to start multiple times before succeding.\n\n### Expected behavior\n\nBackground removal tool is downloaded\n\n### Steps to reproduce\n\n1. Go to Settings - AI tools\n2. try to download the first one (\"Background removal\")\n3 see error after just 2s duwing which the download goes from 0% to 100%: Failed to download 8 model(s): rembg-isnet-general-use, rembg-bria-rmbg, rembg-u2net, rembg-birefnet-portrait, rembg-birefnet-general-lite, rembg-birefnet-matting, rembg-birefnet-hr-matting, rembg-birefnet-general. This is usually caused by network issues (timeouts, DNS, or rate limiting). Check your internet connection and retry the installation.\n\n### Affected area\n\nImage tools\n\n### Specific tool\n\nbackground-remover\n\n### How are you running SnapOtter?\n\nOther (describe in deployment details)\n\n### Version\n\n1.17.2\n\n### Deployment details\n\n```shell\nProxmox LXC 4-cores, 4GB Ram (3.4 free), 20GB storage (11.5 free)\n```\n\n### Host architecture\n\nAMD64 (Intel/AMD)\n\n### Host OS\n\nLinux (native)\n\n### Browser\n\n_No response_\n\n### Logs\n\n```shell\nroot@snapotter:~# journalctl -u snapotter -f\nJun 25 23:48:07 snapotter pnpm[313]: {\"level\":30,\"time\":1782424087230,\"pid\":313,\"hostname\":\"snapotter\",\"reqId\":\"req-4g\",\"req\":{\"method\":\"GET\",\"url\":\"/api/v1/config/auth\",\"host\":\"snapotter.privatezone.org\",\"remoteAddress\":\"10.0.10.10\",\"remotePort\":36132},\"msg\":\"incoming request\"}\nJun 25 23:48:07 snapotter pnpm[313]: {\"level\":30,\"time\":1782424087230,\"pid\":313,\"hostname\":\"snapotter\",\"reqId\":\"req-4g\",\"res\":{\"statusCode\":200},\"responseTime\":0.23918098211288452,\"msg\":\"request completed\"}\nJun 25 23:48:07 snapotter pnpm[313]: {\"level\":30,\"time\":1782424087254,\"pid\":313,\"hostname\":\"snapotter\",\"reqId\":\"req-4h\",\"req\":{\"method\":\"GET\",\"url\":\"/api/auth/session\",\"host\":\"snapotter.privatezone.org\",\"remoteAddress\":\"10.0.10.10\",\"remotePort\":36132},\"msg\":\"incoming request\"}\nJun 25 23:48:07 snapotter pnpm[313]: {\"level\":30,\"time\":1782424087255,\"pid\":313,\"hostname\":\"snapotter\",\"reqId\":\"req-4h\",\"res\":{\"statusCode\":200},\"responseTime\":0.987695038318634,\"msg\":\"request completed\"}\nJun 25 23:48:07 snapotter pnpm[313]: {\"level\":30,\"time\":1782424087259,\"pid\":313,\"hostname\":\"snapotter\",\"reqId\":\"req-4i\",\"req\":{\"method\":\"GET\",\"url\":\"/api/auth/session\",\"host\":\"snapotter.privatezone.org\",\"remoteAddress\":\"10.0.10.10\",\"remotePort\":36132},\"msg\":\"incoming request\"}\nJun 25 23:48:07 snapotter pnpm[313]: {\"level\":30,\"time\":1782424087260,\"pid\":313,\"hostname\":\"snapotter\",\"reqId\":\"req-4i\",\"res\":{\"statusCode\":200},\"responseTime\":0.8325889706611633,\"msg\":\"request completed\"}\nJun 25 23:48:21 snapotter pnpm[313]: {\"level\":30,\"time\":1782424101164,\"pid\":313,\"hostname\":\"snapotter\",\"reqId\":\"req-4j\",\"req\":{\"method\":\"POST\",\"url\":\"/api/v1/admin/features/background-removal/install\",\"host\":\"snapotter.privatezone.org\",\"remoteAddress\":\"10.0.10.10\",\"remotePort\":36132},\"msg\":\"incoming request\"}\nJun 25 23:48:21 snapotter pnpm[313]: {\"level\":30,\"time\":1782424101169,\"pid\":313,\"hostname\":\"snapotter\",\"reqId\":\"req-4j\",\"res\":{\"statusCode\":202},\"responseTime\":4.376484990119934,\"msg\":\"request completed\"}\nJun 25 23:48:21 snapotter pnpm[313]: {\"level\":30,\"time\":1782424101181,\"pid\":313,\"hostname\":\"snapotter\",\"reqId\":\"req-4k\",\"req\":{\"method\":\"GET\",\"url\":\"/api/v1/jobs/65b16388-0c79-4528-959a-51344917140e/progress\",\"host\":\"snapotter.privatezone.org\",\"remoteAddress\":\"10.0.10.10\",\"remotePort\":36132},\"msg\":\"incoming request\"}\nJun 25 23:48:22 snapotter pnpm[313]: {\"level\":30,\"time\":1782424102772,\"pid\":313,\"hostname\":\"snapotter\",\"reqId\":\"req-4k\",\"res\":{\"statusCode\":200},\"responseTime\":1590.6487330198288,\"msg\":\"request completed\"}\nJun 25 23:49:30 snapotter pnpm[313]: {\"level\":30,\"time\":1782424170120,\"pid\":313,\"hostname\":\"snapotter\",\"reqId\":\"req-4l\",\"req\":{\"method\":\"POST\",\"url\":\"/api/v1/admin/features/background-removal/install\",\"host\":\"snapotter.privatezone.org\",\"remoteAddress\":\"10.0.10.10\",\"remotePort\":36132},\"msg\":\"incoming request\"}\nJun 25 23:49:30 snapotter pnpm[313]: {\"level\":30,\"time\":1782424170161,\"pid\":313,\"hostname\":\"snapotter\",\"reqId\":\"req-4l\",\"res\":{\"statusCode\":202},\"responseTime\":40.102371990680695,\"msg\":\"request completed\"}\nJun 25 23:49:30 snapotter pnpm[313]: {\"level\":30,\"time\":1782424170171,\"pid\":313,\"hostname\":\"snapotter\",\"reqId\":\"req-4m\",\"req\":{\"method\":\"GET\",\"url\":\"/api/v1/jobs/d1977291-8e08-4dc6-8779-e68244599436/progress\",\"host\":\"snapotter.privatezone.org\",\"remoteAddress\":\"10.0.10.10\",\"remotePort\":36132},\"msg\":\"incoming request\"}\nJun 25 23:49:31 snapotter pnpm[313]: {\"level\":30,\"time\":1782424171776,\"pid\":313,\"hostname\":\"snapotter\",\"reqId\":\"req-4m\",\"res\":{\"statusCode\":200},\"responseTime\":1604.9383080005646,\"msg\":\"request completed\"}\n```\n\n### Screenshots\n\n_No response_\n\n### Would you like to contribute a fix?\n\nNo, just reporting",
+        "url": "https://github.com/snapotter-hq/SnapOtter/issues/352"
+    },
+    {
+        "id": 4717520214,
+        "number": 327,
+        "title": "Passport Photo errors with feature_not_installed unless the Face Detection bundle is also installed",
+        "state": "closed",
+        "created_at": "2026-06-22T14:21:36Z",
+        "updated_at": "2026-07-07T07:46:50Z",
+        "closed_at": "2026-06-22T15:49:43Z",
+        "author": "snapotter-hq",
+        "comments": 1,
+        "labels": [
+            "released"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "## Summary\n\nPassport Photo fails its analyze step with `feature_not_installed` even when the **Background Removal** feature bundle is installed. The tool also depends on the **Face Detection** bundle (for face-landmark detection), but it neither declares that dependency nor prompts the user to install it. The user just sees a red `feature_not_installed` with no clear path forward.\n\nReported on Reddit by a self-hoster running **v1.17.2** (Debian x64, Docker Compose). Confirmed against the v1.17.2 source; the same dependency structure exists on current `main`.\n\n## Steps to reproduce\n\n1. Fresh install. Install only the **Background Removal** AI feature from the web console.\n2. Open Passport Photo, select a country, upload a clear front-facing photo.\n3. The analyze step fails with `feature_not_installed` (red text at the bottom of the page).\n\n## Expected\n\nThe tool installs or prompts for every bundle it needs (Background Removal **and** Face Detection), or the pre-flight guard blocks with a clear \"install Face Detection\" prompt.\n\n## Actual\n\n`feature_not_installed`, with this server log:\n\n```\n{\"level\":50,\"time\":1782126260682,\"pid\":48,\"reqId\":\"req-7c\",\"err\":{\"type\":\"Error\",\"message\":\"feature_not_installed\",\"stack\":\"Error: feature_not_installed\\n    at Socket.<anonymous> (/app/packages/ai/src/bridge.ts:241:30)\\n...\"},\"toolId\":\"passport-photo\",\"msg\":\"Passport photo analysis failed\"}\n```\n\n## Root cause\n\n**1. Undeclared bundle dependency (primary).**\n\n`passport-photo`'s analyze route runs face-landmark detection first, then background removal:\n\n- `apps/api/src/routes/tools/passport-photo.ts` calls `detectFaceLandmarks(...)` (Step 1), then `removeBackground(...)` (Step 2).\n- `detectFaceLandmarks` runs `face_landmarks.py`, which the Python dispatcher gates behind the `face-detection` bundle (`TOOL_BUNDLE_MAP[\"face_landmarks\"] = \"face-detection\"` in `packages/ai/python/dispatcher.py`). The MediaPipe landmark model ships only in that bundle (`docker/feature-manifest.json`).\n- But `passport-photo` maps to a single bundle in `packages/shared/src/features.ts`: it is listed only under `background-removal.enablesTools`, so `TOOL_BUNDLE_MAP[\"passport-photo\"] = \"background-removal\"`. The pre-flight guard `isToolInstalled(\"passport-photo\")` therefore only checks Background Removal, lets the request through, and it dies at the dispatcher gate for `face-detection`. The user is never told Face Detection is required.\n\n**2. Per-request fallback bypasses the feature gate (secondary; explains the confusing \"repair fixes it once\" symptom).**\n\nThe feature gate lives only in the long-lived dispatcher (`_run_script_main` in `dispatcher.py`). When the dispatcher is unavailable (for example, restarting right after a bundle repair or install), `runPythonWithProgress` in `packages/ai/src/bridge.ts` falls back to `runPythonPerRequest`, which spawns the script directly and skips the gate. So immediately after a repair the next analyze succeeds, and once the dispatcher is back up the gate blocks it again. That is the \"works once after a repair, fails on the next upload\" behavior the reporter saw.\n\n## Suggested fix\n\n- Allow a tool to declare **multiple** required bundles (the current `TOOL_BUNDLE_MAP` is one-tool-to-one-bundle). Add `face-detection` as a required bundle for `passport-photo` alongside `background-removal`.\n- Make the pre-flight guard and the frontend install prompt check and show **all** required bundles, so the user is asked to install both up front.\n- Consider applying the same feature gate in the per-request fallback path (Bug 2) so behavior is consistent whether or not the dispatcher is running.\n\n## Workaround\n\nInstall the **Face Detection** feature bundle in addition to Background Removal. With both installed, Passport Photo runs without any repairs, fully offline once the models are downloaded.\n",
+        "url": "https://github.com/snapotter-hq/SnapOtter/issues/327"
+    },
+    {
+        "id": 4717441883,
+        "number": 325,
+        "title": "Adopt sharp 0.35.2+ (sharp.FormatEnum namespace-as-type break)",
+        "state": "closed",
+        "created_at": "2026-06-22T14:12:41Z",
+        "updated_at": "2026-07-02T16:05:42Z",
+        "closed_at": "2026-07-02T16:05:42Z",
+        "author": "snapotter-hq",
+        "comments": 3,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "## Context\nDependabot's production-deps bump (originally #296) proposed `sharp ^0.35.1 -> ^0.35.2`. We held sharp at `0.35.1` in that PR because 0.35.2's bundled TypeScript types break the way we consume sharp's type namespace, and the fix is non-trivial.\n\n## Problem\nsharp 0.35.2 breaks the `sharp.FormatEnum` / `sharp.Sharp` namespace-as-type pattern. Both `import sharp from \"sharp\"` (value) and `import type sharp from \"sharp\"` consumers fail with `TS2503: Cannot find namespace 'sharp'` when accessing `sharp.X` in type position.\n\nSwitching to `import type * as sharp from \"sharp\"` resolves the namespace, but then `keyof sharp.FormatEnum` is **not assignable** to sharp's own `toFormat()` parameter (`keyof FormatEnum | AvailableFormatInfo | \"avif\"`), which suggests 0.35.2's exported `FormatEnum` and the internal one used in method signatures may be inconsistent. Worth re-checking against a newer patch (0.35.3+) before investing in a workaround.\n\n## Affected files\n- `packages/image-engine/src/types.ts` (`sharp.Sharp`)\n- `packages/image-engine/src/operations/convert.ts` (`keyof sharp.FormatEnum`)\n- `packages/image-engine/src/operations/compress.ts` (`keyof sharp.FormatEnum` x3)\n- `packages/image-engine/src/engine.ts:112`\n- `packages/image-engine/src/operations/auto-enhance.ts:126-128,203`\n- `apps/api/src/routes/tools/{text-overlay,upscale,vignette,watermark-text}.ts`\n\n## Suggested approach\n1. Check whether a newer sharp patch fixes the `FormatEnum` type inconsistency.\n2. If so, bump + centralize the format-key type in `image-engine/src/types.ts` (e.g. `export type SharpFormat = keyof sharp.FormatEnum`) via a `import type * as sharp` namespace import, and reuse it across image-engine + the api routes.\n3. Verify `pnpm typecheck` is green.",
+        "url": "https://github.com/snapotter-hq/SnapOtter/issues/325"
+    },
+    {
+        "id": 4710828184,
+        "number": 289,
+        "title": "[Bug] RAW (DNG) decoding fails with ufraw-batch error",
+        "state": "closed",
+        "created_at": "2026-06-21T14:33:44Z",
+        "updated_at": "2026-07-07T07:46:44Z",
+        "closed_at": "2026-06-22T01:54:05Z",
+        "author": "feelugly",
+        "comments": 2,
+        "labels": [
+            "bug",
+            "released"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Before submitting\n\n- [x] I searched existing issues and didn't find a duplicate\n- [x] I've tried the latest version to confirm it isn't already fixed\n\n### What happened?\n\nWhen trying to process a DNG (RAW) file through a pipeline (e.g. Compress tool), the job fails with a raw decoding error. The file loads fine for preview in the browser, but processing on the backend fails.\n\n### Expected behavior\n\nDNG files should be processed successfully, just like other image formats (JPEG, PNG, TIFF).\n\n### Steps to reproduce\n\n1. Open Pipeline builder\n2. Add a DNG (RAW) file shot on iPhone 17 Pro ProRAW\n3. Add a Compress step (Quality mode, 90)\n4. Click Process\n5. Job fails with a raw decoding error \n\n### Affected area\n\nImage tools\n\n### Specific tool\n\ncompress\n\n### How are you running SnapOtter?\n\nOther (describe in deployment details)\n\n### Version\n\nlatest (pulled 2026-06-21)\n\n### Deployment details\n\n```shell\ndocker run -d --name SnapOtter -p 1349:1349 -v SnapOtter-data:/data snapotter/snapotter:latest\n```\n\n### Host architecture\n\nARM64 (Apple Silicon, Raspberry Pi)\n\n### Host OS\n\nmacOS (Docker Desktop)\n\n### Browser\n\nSafari 26.5\n\n### Logs\n\n```shell\nFailed to decode raw file: Command failed: convert /tmp/raw-in-ee58d93c-854c-4789-84e9-fdeb63153add.dng -colorspace sRGB -auto-orient png:/tmp/raw-out-ee58d93c-854c-4789-84e9-fdeb63153add.png convert-im6.q16: delegate failed `'ufraw-batch' --silent --create-id=also --out-type=png --out-depth=16 --output='%u.png' '%i'' @ error/delegate.c/InvokeDelegate/1966. convert-im6.q16: unable to open image `/tmp/magick-uujN9VyuttfNLnYlfINC39M1jXdDqDdq.ppm': No such file or directory @ error/blob.c/OpenBlob/3029. convert-im6.q16: no images defined `png:/tmp/raw-out-ee58d93c-854c-4789-84e9-fdeb63153add.png' @ error/convert.c/ConvertImageCommand/3229.\n```\n\n### Screenshots\n\n<img width=\"1709\" height=\"984\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/3e89f8e8-46db-4498-af93-87ad5d64e502\" />\n\n<img width=\"1710\" height=\"981\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/9bc7b5ee-c49f-42f5-8dbc-7fdc0a09ac19\" />\n\n### Would you like to contribute a fix?\n\nNo, just reporting",
+        "url": "https://github.com/snapotter-hq/SnapOtter/issues/289"
+    },
+    {
+        "id": 4685062989,
+        "number": 271,
+        "title": "[Bug] RATE_LIMIT_PER_MIN=0 does not disable rate limiting for /api/v1/tools/* endpoints",
+        "state": "closed",
+        "created_at": "2026-06-17T16:16:13Z",
+        "updated_at": "2026-07-07T07:46:47Z",
+        "closed_at": "2026-06-21T15:39:57Z",
+        "author": "EnanoFurtivo",
+        "comments": 1,
+        "labels": [
+            "bug",
+            "released"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Before submitting\n\n- [x] I searched existing issues and didn't find a duplicate\n- [x] I've tried the latest version to confirm it isn't already fixed\n\n### What happened?\n\n## Description\n\nThe documentation states that:\n\n```env\nRATE_LIMIT_PER_MIN=0\n```\n\ndisables API rate limiting.\n\nHowever, tool endpoints such as:\n\n```text\nPOST /api/v1/tools/convert\nPOST /api/v1/tools/compress\n```\n\nare still hard-limited to 60 requests per minute.\n\nAfter some debugging, I found that `RATE_LIMIT_PER_MIN` only affects the global rate limiter, while `createToolRoute()` @ /main/apps/api/src/routes/tool-factory.ts applies its own hardcoded per-route limit:\n\n```ts\napp.post(\n  `/api/v1/tools/${config.toolId}`,\n  { config: { rateLimit: { max: 60, timeWindow: \"1 minute\" } } },\n  ...\n)\n```\n\nThis means that even with:\n\n```env\nRATE_LIMIT_PER_MIN=0\n```\n\ntool endpoints continue to return HTTP 429 responses after 60 requests.\n\n## Why this is a problem for me\n\nI'm using SnapOtter from an n8n workflow to keep an image library synchronized with another system.\n\nThe workflow runs automatically every 12 hours and processes any new or changed images. As part of the synchronization process, all images need to be converted from WebP to PNG before they can be imported into the destination system.\n\nNormally I would use the /batch endpoints, but n8n currently has a limitation when sending a dynamic number of multipart files in a single request (especially when the files arrive as individual items in a workflow), so I have to call the single-file endpoint repeatedly.\n\nBecause this synchronization runs continuously and new files may appear at any time, there isn't really a practical workaround on my side. I can't simply perform a one-time conversion or manually pre-process the images.\n\nAt the moment my workaround is to throttle the workflow and process files in batches of 60 requests every 60 seconds to avoid hitting the rate limit. When synchronizing 1200+ files, this makes the process take significantly longer than necessary.\n\nThis is a fully self-hosted deployment running on fairly powerful hardware, so handling a burst of 1200+ requests is not a resource issue for the server itself. The only bottleneck is the hardcoded per-tool rate limit that cannot currently be configured or disabled via environment variables.\n\n### Expected behavior\n\nI would expect `RATE_LIMIT_PER_MIN=0` to disable rate limiting entirely, including `/api/v1/tools/*` endpoints.\n\n### Steps to reproduce\n\n1. Set:\n\n```env\nRATE_LIMIT_PER_MIN=0\n```\n\n2. Restart SnapOtter.\n3. Send more than 60 requests within one minute to any tool endpoint, for example:\n\n```text\nPOST /api/v1/tools/convert\n```\n\n4. Receive this response after 60 requests:\n\n```text\n429 Too Many Requests\n```\n\nServer logs after 60 requests:\n\n```text\nRate limit exceeded\n```\n\n### Affected area\n\nOther / not sure\n\n### Specific tool\n\n_No response_\n\n### How are you running SnapOtter?\n\nOther (describe in deployment details)\n\n### Version\n\n1.17.2\n\n### Deployment details\n\n```shell\n* Deployment: TrueNAS Apps (Kubernetes)\n* Installation type: Self-hosted\n```\n\n### Host architecture\n\nAMD64 (Intel/AMD)\n\n### Host OS\n\nLinux (native)\n\n### Browser\n\n_No response_\n\n### Logs\n\n```shell\n\n```\n\n### Screenshots\n\nHere is the test with RATE_LIMIT_PER_MIN set to 0 and the amount of request limited to exactly 61, and the logs show exactly the last query (number 61) failing because of the rate limit.\n\n<img width=\"655\" height=\"268\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/b60757ab-9043-4d21-9289-c5c2fd3b9986\" />\n\n<img width=\"161\" height=\"70\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/5f7b3a88-1cc7-4107-81a8-565ad91ef810\" />\n\n<img width=\"1614\" height=\"167\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/f27187a2-c192-4059-9057-936c9ab2f790\" />\n\n### Would you like to contribute a fix?\n\nYes, I'd like to submit a PR",
+        "url": "https://github.com/snapotter-hq/SnapOtter/issues/271"
+    },
+    {
+        "id": 4676327916,
+        "number": 259,
+        "title": "Editor: rulers render as black bars and Paint Bucket/Fill behaves incorrectly",
+        "state": "closed",
+        "created_at": "2026-06-16T17:07:18Z",
+        "updated_at": "2026-06-17T05:49:24Z",
+        "closed_at": "2026-06-17T05:49:23Z",
+        "author": "shrisha108",
+        "comments": 1,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Before submitting\n\n- [x] I searched existing issues and didn't find a duplicate\n- [x] I'm running the latest version of SnapOtter\n\n### Description\n\nThe image editor appears to have multiple rendering/tool-coordinate problems.\n\n### Steps to reproduce\n\n1. Rulers do not render ticks/labels; they appear as solid black bars on top/left.\n2. Paint Bucket / Fill tool behaves incorrectly. Instead of filling the selected contiguous region, it creates an unexpected black rectangular fill area.\n3. Several editor tools appear unreliable, suggesting a shared canvas coordinate/layer/rendering issue rather than a single tool bug.\n\nExpected:\n- Rulers should show normal ruler marks/labels.\n- Paint Bucket should flood-fill the clicked region according to tolerance/contiguous settings.\n- Tools should operate at the correct canvas coordinates.\n\nActual:\n- Rulers render as black bars.\n- Fill creates unexpected rectangular artifacts / wrong fill behavior.\n\nNotes:\nThis reproduces in a clean Docker container and also when running from source, so it does not seem to be caused by local patches or deployment mode.\n\n### Docker setup\n\n```shell\nTested both Docker and source.\n\nDocker:\nsnapotter/snapotter:latest\n\nAlso reproduced from source:\nrunning from source via pnpm dev\n\nAnd also reproduced with source production build:\npnpm --filter @snapotter/web build\nNODE_ENV=production PORT=1351 DATA_DIR=/home/shrisha/SnapOtter/data pnpm --filter @snapotter/api run start\n```\n\n### Image tag\n\nlatest\n\n### Platform\n\nAMD64 (Intel/AMD)\n\n### Browser\n\nLatest Firefox and Chrome was tried\n\n### Logs\n\n```shell\n\n```\n\n### Screenshots\n\n<img width=\"2626\" height=\"1852\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/55ad16b0-55a0-43aa-8bbf-80ffaf776c72\" />\n\n### Would you like to contribute a fix?\n\nNone",
+        "url": "https://github.com/snapotter-hq/SnapOtter/issues/259"
+    },
+    {
+        "id": 4676311517,
+        "number": 258,
+        "title": "Editor layout: right sidebar is clipped and canvas workspace uses only part of the browser viewport",
+        "state": "closed",
+        "created_at": "2026-06-16T17:04:57Z",
+        "updated_at": "2026-06-17T05:50:13Z",
+        "closed_at": "2026-06-17T05:50:13Z",
+        "author": "shrisha108",
+        "comments": 1,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Before submitting\n\n- [x] I searched existing issues and didn't find a duplicate\n- [x] I'm running the latest version of SnapOtter\n\n### Description\n\nSymptoms:\n\nExpected:\n- Right sidebar should fit within the browser viewport and scroll internally where needed.\n- Sidebar should ideally be resizable or at least not consume a fixed excessive percentage.\n- Canvas/workspace should use the full available editor area.\n- The open document should remain interactive across the visible canvas/workspace.\n\nActual:\n- Sidebar content clips under the browser window.\n- Workspace/canvas active area is limited.\n- Large parts of the browser viewport are visually present but not effectively usable.\n\n### Steps to reproduce\n\n1. The right editor panel is clipped below the browser window; controls continue under the visible viewport and are hard/impossible to access.\n2. The right panel has a fixed/default width and cannot be resized.\n3. The active/open document workspace does not use the full available browser area. The editable/canvas area appears constrained, leaving a large inactive region.\n4. This reproduces in clean Docker and in source production build.\n\n\n### Docker setup\n\n```shell\nTested both Docker and source.\n\nDocker:\nsnapotter/snapotter:latest\n\nAlso reproduced from source:\nrunning from source via pnpm dev\n\nAnd also reproduced with source production build:\npnpm --filter @snapotter/web build\nNODE_ENV=production PORT=1351 DATA_DIR=/home/shrisha/SnapOtter/data pnpm --filter @snapotter/api run start\n```\n\n### Image tag\n\nlatest\n\n### Platform\n\nAMD64 (Intel/AMD)\n\n### Browser\n\nLatest Firefox and Chrome tried\n\n### Logs\n\n```shell\n\n```\n\n### Screenshots\n\n<img width=\"2626\" height=\"1852\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/bed5dffd-1d34-4038-9c25-eeb2d5ddad91\" />\n\n### Would you like to contribute a fix?\n\nNone",
+        "url": "https://github.com/snapotter-hq/SnapOtter/issues/258"
+    },
+    {
+        "id": 4660685477,
+        "number": 231,
+        "title": "Update Italian translation",
+        "state": "closed",
+        "created_at": "2026-06-14T21:27:22Z",
+        "updated_at": "2026-07-07T07:46:41Z",
+        "closed_at": "2026-06-22T08:43:20Z",
+        "author": "albanobattistella",
+        "comments": 2,
+        "labels": [
+            "enhancement",
+            "released"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Before submitting\n\n- [x] I searched existing issues and didn't find a duplicate\n\n### Problem\n\nUpdated Italian Translation \n\n\n\n### Proposed solution\n\n[https://github.com/albanobattistella/stirling-image/blob/main/packages/shared/src/i18n/it.ts](url)\n\n### Alternatives considered\n\n_No response_\n\n### Additional context\n\n_No response_\n\n### Would you like to implement this?\n\nNone",
+        "url": "https://github.com/snapotter-hq/SnapOtter/issues/231"
+    },
+    {
+        "id": 4659160500,
+        "number": 230,
+        "title": "\"Workspace folder is not writable\" - Snapotter under Truenas",
+        "state": "closed",
+        "created_at": "2026-06-14T12:53:59Z",
+        "updated_at": "2026-07-07T07:46:38Z",
+        "closed_at": "2026-06-22T08:04:35Z",
+        "author": "spaganini",
+        "comments": 4,
+        "labels": [
+            "bug",
+            "released"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Before submitting\n\n- [x] I searched existing issues and didn't find a duplicate\n- [x] I'm running the latest version of SnapOtter\n\n### Description\n\nInstalled Snapotter app on Trunas Scale 25.10.\nAfter downloading the needed tools for AI features (any), I can't get past an error \"Workspace folder not writable\".\nI.e.: after uploading a jpg, I tried to blur faces or remove background but any feature gets stuck at this error.\nDirectory 'workspace' is under /tmp/workspace within the app and has owner a user 'snapotter' which is not the usual 568 (app user); moreover the directory is r-x to user and group.\nTried to run the app both from ix and a dataset/share to no avail.\nAny clue, please?\n\n### Steps to reproduce\n\n1) install and run snapotter under truenas scale 25.x\n2) run the web ui\n3) install the needed AI files (any function, OCR/blur/remove background)\n4) upload an image\n5) apply function -> get the error\n\n### Docker setup\n\n```shell\n[default truenas install]\n```\n\n### Image tag\n\nTruenas\n\n### Platform\n\nAMD64 (Intel/AMD)\n\n### Browser\n\n_No response_\n\n### Logs\n\n```shell\n\n```\n\n### Screenshots\n\n_No response_\n\n### Would you like to contribute a fix?\n\nNone",
+        "url": "https://github.com/snapotter-hq/SnapOtter/issues/230"
+    }
+]

@@ -1,0 +1,353 @@
+[
+    {
+        "id": 4722900559,
+        "number": 4902,
+        "title": "Development has moved to github-stats-extended.",
+        "state": "open",
+        "created_at": "2026-06-23T05:26:59Z",
+        "updated_at": "2026-06-23T08:10:58Z",
+        "closed_at": null,
+        "author": "martin-mfg",
+        "comments": 1,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "Hi everyone,\n\nmaintenance activity in this project has been limited for some time. To keep the project usable and to add new features, active development has moved to [github-stats-extended](https://github.com/stats-organization/github-stats-extended). This extended version of github-readme-stats is being maintained by @marcalexiei and me, with help from the community and from @rickstaa, one of the maintainers of github-readme-stats.\n\nWe want to keep this great project alive, but since the current maintainers in the github-readme-stats repository have only limited access rights, adding contributors here and keeping the original Vercel deployment stable has become impossible.\n\n**We encourage everyone to switch to [github-stats-extended](https://github.com/stats-organization/github-stats-extended) for new features, fixes and a stable Vercel deployment.**\n\nTo quickly migrate to github-stats-extended, see [here](https://github.com/stats-organization/github-stats-extended#migration-from-github-readme-stats). For a list of new features in github-stats-extended see [here](https://github.com/stats-organization/github-stats-extended/blob/master/docs/fork.md). We also maintain [github-readme-stats-action](https://github.com/stats-organization/github-readme-stats-action), a GitHub Action which creates your stats cards in a GitHub workflow instead of fetching them from a Vercel server.\n\nFinally, we want to thank @anuraghazra and everyone else who worked on github-readme-stats over the years!",
+        "url": "https://github.com/anuraghazra/github-readme-stats/issues/4902"
+    },
+    {
+        "id": 4635952539,
+        "number": 4898,
+        "title": "Private contributions not being counted",
+        "state": "open",
+        "created_at": "2026-06-10T23:57:06Z",
+        "updated_at": "2026-06-28T16:26:36Z",
+        "closed_at": null,
+        "author": "xxshubhamxx",
+        "comments": 1,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Describe the bug\n\nThe numbers mentioned in this link are very much lower than the numbers in the user's profile\n\nhttps://github-readme-stats.vercel.app/api?username=xxshubhamxx&show_icons=true&theme=radical&count_private=true\n\ngithub.com/xxshubhamxx\n\n### Expected behavior\n\nThe number of private commits / PRs / contributions should be updated in the count here: https://github-readme-stats.vercel.app/api?username=xxshubhamxx&show_icons=true&theme=radical&count_private=true\n\nThis one shows correct data: https://camo.githubusercontent.com/cab836d5e7fbedcef832da26943f12207e9f1a318bd5e409bc381db236c5a26b/68747470733a2f2f6769746875622d726561646d652d73747265616b2d73746174732e6865726f6b756170702e636f6d2f3f757365723d78787368756268616d78782673686f775f69636f6e733d74727565267468656d653d7261646963616c\n\n### Screenshots / Live demo link\n\nThe number of private commits / PRs / contributions should be updated in the count here: https://github-readme-stats.vercel.app/api?username=xxshubhamxx&show_icons=true&theme=radical&count_private=true\n\nThis one shows correct data: https://camo.githubusercontent.com/cab836d5e7fbedcef832da26943f12207e9f1a318bd5e409bc381db236c5a26b/68747470733a2f2f6769746875622d726561646d652d73747265616b2d73746174732e6865726f6b756170702e636f6d2f3f757365723d78787368756268616d78782673686f775f69636f6e733d74727565267468656d653d7261646963616c\n\n### Additional context\n\n_No response_",
+        "url": "https://github.com/anuraghazra/github-readme-stats/issues/4898"
+    },
+    {
+        "id": 4574879785,
+        "number": 4892,
+        "title": "Potential license attribution issue in derivative repository",
+        "state": "open",
+        "created_at": "2026-06-02T20:49:05Z",
+        "updated_at": "2026-06-03T10:33:07Z",
+        "closed_at": null,
+        "author": "Linvin-1233",
+        "comments": 2,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "Hi, thanks for maintaining this project — it's widely used and very well designed.\n\nWhile exploring GitHub stats implementations, I noticed a repository that appears to be \nsubstantially derived from this project:\n\nhttps://github.com/ishandutta2007/beautiful-github-homepage\n\n**Observations:**\n\n1. **Core Algorithm** - `calculateRank.js` appears identical, including:\n   - Same mathematical formulas (exponential_cdf, log_normal_cdf)\n   - Identical weight coefficients\n   - Same rank level system\n\n2. **Type Definitions** - TypeScript interfaces in `src/cards/types.d.ts` \n   and `src/fetchers/types.d.ts` match exactly\n\n3. **Project Architecture** - Largely mirrors this repository:\n   - Similar directory structure (src/cards, src/fetchers, src/common)\n   - Renamed but functionally equivalent files (e.g., repo.js → repo-card.js)\n   - Identical theme configurations\n\n4. **License Concern** ⚠️\n   - Original repo has: `Copyright (c) 2020 Anurag Hazra`\n   - Other repo has: `Copyright (c) 2020 Ishan`\n   - MIT license requires attribution preservation\n\n**The question:**\n\nRather than assuming intent, I wanted to ask: Are you aware of this repository? \nAnd if so, is the copyright notice removal something you're concerned about from a \nlicensing perspective?\n\nIf this is indeed derived work, would you want the original attribution \nrestored to comply with MIT license requirements?\n\nThanks for your consideration.",
+        "url": "https://github.com/anuraghazra/github-readme-stats/issues/4892"
+    },
+    {
+        "id": 4490363261,
+        "number": 4886,
+        "title": "Vercel Deployment failing",
+        "state": "closed",
+        "created_at": "2026-05-20T22:36:58Z",
+        "updated_at": "2026-05-25T09:34:56Z",
+        "closed_at": "2026-05-25T09:34:56Z",
+        "author": "The-LukeZ",
+        "comments": 2,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Describe the bug\n\nWhen deploying on vercel, the deployment building fails. Note that this happend just after I update the github token.\n\n### Expected behavior\n\nShould build.\n\n### Screenshots / Live demo link\n\n-\n\n### Additional context\n\nLogs:\n```\n00:35:34.711 Running build in Washington, D.C., USA (East) – iad1\n00:35:34.712 Build machine configuration: 2 cores, 8 GB\n00:35:34.740 Cloning github.com/The-LukeZ/github-readme-stats (Branch: master, Commit: 5df91f9)\n00:35:34.742 Skipping build cache, deployment was triggered without cache.\n00:35:35.247 Cloning completed: 506.000ms\n00:35:35.326 Found .vercelignore\n00:35:35.344 Removed 77 ignored files defined in .vercelignore\n00:35:35.344   /.devcontainer/devcontainer.json\n00:35:35.345   /.eslintrc.json\n00:35:35.345   /.github/CODEOWNERS\n00:35:35.345   /.github/dependabot.yml\n00:35:35.346   /.github/FUNDING.yml\n00:35:35.346   /.github/ISSUE_TEMPLATE/bug_report.yml\n00:35:35.346   /.github/ISSUE_TEMPLATE/config.yml\n00:35:35.347   /.github/ISSUE_TEMPLATE/feature_request.yml\n00:35:35.347   /.github/labeler.yml\n00:35:35.347   /.github/stale.yml\n00:35:37.422 Running \"vercel build\"\n00:35:37.457 Vercel CLI 54.2.0\n00:35:38.386 Warning: Detected \"engines\": { \"node\": \">=22\" } in your `package.json` that will automatically upgrade when a new major Node.js Version is released. Learn More: https://vercel.link/node-version\n00:35:38.407 Installing dependencies...\n00:35:41.637 npm warn deprecated inflight@1.0.6: This module is not supported, and leaks memory. Do not use it. Check out lru-cache if you want a good and tested way to coalesce async requests by a key value, which is much more comprehensive and powerful.\n00:35:42.897 npm warn deprecated glob@7.2.3: Glob versions prior to v9 are no longer supported\n00:35:45.029 \n00:35:45.030 > github-readme-stats@1.0.0 prepare\n00:35:45.030 > husky\n00:35:45.030 \n00:35:45.102 \n00:35:45.102 added 609 packages in 6s\n00:35:45.103 \n00:35:45.103 117 packages are looking for funding\n00:35:45.103   run `npm fund` for details\n00:35:45.176 Error: No entrypoint found which imports express. Found possible entrypoint: src/index.js\n```",
+        "url": "https://github.com/anuraghazra/github-readme-stats/issues/4886"
+    },
+    {
+        "id": 4379642094,
+        "number": 4879,
+        "title": "link does not work :/",
+        "state": "open",
+        "created_at": "2026-05-04T21:01:06Z",
+        "updated_at": "2026-05-20T15:48:44Z",
+        "closed_at": null,
+        "author": "Rinkoff",
+        "comments": 9,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Describe the bug\n\nThe API responsible for fetching GitHub user statistics is not returning data\n\n### Expected behavior\n\n_No response_\n\n### Screenshots / Live demo link\n\n_No response_\n\n### Additional context\n\n_No response_",
+        "url": "https://github.com/anuraghazra/github-readme-stats/issues/4879"
+    },
+    {
+        "id": 4373101269,
+        "number": 4876,
+        "title": "This Deployment is paused by the owner.",
+        "state": "closed",
+        "created_at": "2026-05-03T21:59:41Z",
+        "updated_at": "2026-05-03T23:40:56Z",
+        "closed_at": "2026-05-03T23:40:56Z",
+        "author": "abdosorour7",
+        "comments": 3,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Describe the bug\n\nThe stats section has not been showing due to a deployment issue, and this has been the case for 2 days now. The stats section of the commits number with the account rating \n\n### Expected behavior\n\nExpected the section to be working as normal nothing more\n\n### Screenshots / Live demo link\n\n<img width=\"1226\" height=\"878\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/0e14665c-9805-4622-884e-e135e3262418\" />\n\n### Additional context\n\n_No response_",
+        "url": "https://github.com/anuraghazra/github-readme-stats/issues/4876"
+    },
+    {
+        "id": 4368809376,
+        "number": 4874,
+        "title": "'Total PRs Reviewed' is only counting reviews in the past year.",
+        "state": "open",
+        "created_at": "2026-05-02T11:46:20Z",
+        "updated_at": "2026-05-27T06:06:13Z",
+        "closed_at": null,
+        "author": "Andrej123456789",
+        "comments": 15,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Describe the bug\n\nThis is a continuation of my discussion from 2023 (https://github.com/anuraghazra/github-readme-stats/discussions/3237). There I said my review count was zero, and in that year I had 0 pull requests reviewed. However, currently, in the past year, I have reviewed 2 pull requests and my count of 'Total PRs Reviewed' is two (see picture). I have fetched data from GraphQL, and there it says that in total I have 22 pull requests reviewed. I am using my private Vercel instance.\n\n### Expected behavior\n\nTo have 22 pull requests reviewed as that is my total. 2 is only in the past year.\n\n### Screenshots / Live demo link\n\n<img width=\"462\" height=\"227\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/e9c289c1-b13d-4cd8-a29a-e33a0ac080a9\" />\n\n### Additional context\n\n_No response_",
+        "url": "https://github.com/anuraghazra/github-readme-stats/issues/4874"
+    },
+    {
+        "id": 4365346344,
+        "number": 4871,
+        "title": "Card not showing",
+        "state": "open",
+        "created_at": "2026-05-01T16:04:18Z",
+        "updated_at": "2026-05-21T18:16:00Z",
+        "closed_at": null,
+        "author": "sarang-cmd",
+        "comments": 9,
+        "labels": [
+            "bug",
+            ":star: top bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Describe the bug\n\nThe card is not showing and displaying the alt text only\n\n### Expected behavior\n\nSupposed to show the stats as demonstrated in this repo.\n\n### Screenshots / Live demo link\n\n<img width=\"179\" height=\"120\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/5d2b4820-518c-44bf-8554-023d0b1a1234\" />\n\n### Additional context\n\n_No response_",
+        "url": "https://github.com/anuraghazra/github-readme-stats/issues/4871"
+    },
+    {
+        "id": 4290960365,
+        "number": 4867,
+        "title": "Public Vercel deployment paused - 503 DEPLOYMENT_PAUSED",
+        "state": "open",
+        "created_at": "2026-04-19T13:35:42Z",
+        "updated_at": "2026-06-07T10:34:07Z",
+        "closed_at": null,
+        "author": "kaushikswarn-alt",
+        "comments": 1,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "### Describe the error\nPublic Vercel deployment is showing this error:\n\n\"This Deployment is paused by the owner.\"\n503: SERVICE_UNAVAILABLE\nCode: `DEPLOYMENT_PAUSED`\n\nDeployment ID: `bom1::zv59r-1776589646223-ad9bb9c6058c`\n\n(Screenshot attached)\n\n### Expected behavior\nGitHub README stats cards should load normally.\n\n### Additional context\nYeh issue already multiple times repeat ho chuka hai (#3851, #4737, #4864 etc.). Kya public deployment ko redeploy kiya ja sakta hai?\n\nThanks!",
+        "url": "https://github.com/anuraghazra/github-readme-stats/issues/4867"
+    },
+    {
+        "id": 4227068865,
+        "number": 4864,
+        "title": "DEPLOYMENT_PAUSED Error",
+        "state": "closed",
+        "created_at": "2026-04-08T19:21:12Z",
+        "updated_at": "2026-04-15T11:54:24Z",
+        "closed_at": "2026-04-13T18:01:14Z",
+        "author": "FabianMontoya",
+        "comments": 5,
+        "labels": [
+            "bug",
+            ":star: top bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Describe the bug\n\nThe app is broken, the Vercel error said that the owner paused the deployment:\n\n<img width=\"977\" height=\"824\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/02d5e94b-0992-4fca-99df-667bb89f69ac\" />\n\n### Expected behavior\n\nApp should work as spected\n\n### Screenshots / Live demo link\n\n_No response_\n\n### Additional context\n\n_No response_",
+        "url": "https://github.com/anuraghazra/github-readme-stats/issues/4864"
+    },
+    {
+        "id": 4218304990,
+        "number": 4862,
+        "title": "Repository Pin/Gist Card Description Overflow",
+        "state": "closed",
+        "created_at": "2026-04-07T14:17:41Z",
+        "updated_at": "2026-05-07T13:03:46Z",
+        "closed_at": "2026-05-07T13:03:46Z",
+        "author": "hyperfinitism",
+        "comments": 2,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Describe the bug\n\nThe repo/gist pin card's description text may overflow because:\n\n1. Server-side line wrapping is character-count-based — `wrapTextMultiline()` in `src/common/fmt.js` wraps at 59 characters using the wrap library\n2. The result is rendered as static SVG `<text>` + `<tspan>` — no browser-side reflow\n3. Font fallback varies by OS — the CSS specifies `'Segoe UI', Ubuntu, Sans-Serif`, which resolves to:\n   - Windows: Segoe UI\n   - Linux: Ubuntu\n   - macOS Chrome: Helvetica Neue (wider glyphs than the other fonts)\n   - iOS Safari: San Francisco\n4. The 59-character assumption does not fit Helvetica Neue, causing overflow on macOS frequently\n5. If there are many wide characters (such as `O`), overflow is likely to occur. Conversely, if there are too many narrow characters (such as `i`), the actual text width per line becomes smaller, which doesn’t look good.\n\n### Expected behavior\n\n_No response_\n\n### Screenshots / Live demo link\n\n_No response_\n\n### Additional context\n\n### Root cause\n\n`wrapTextMultiline()` wrapped text by character count (59 chars), not by the actual line width.\n\n### Proposed fix\n\nPixel-width-based word wrapping using the existing `measureText()` function and change line-break positions according to the font.\n\n### Related PR\n\n#4863 (introducing pixed-width-based word wrapping)\n",
+        "url": "https://github.com/anuraghazra/github-readme-stats/issues/4862"
+    },
+    {
+        "id": 4212857874,
+        "number": 4859,
+        "title": "fix: SSRF vulnerability and error handling bugs in wakatime and stats fetchers",
+        "state": "open",
+        "created_at": "2026-04-06T16:45:11Z",
+        "updated_at": "2026-04-06T16:55:03Z",
+        "closed_at": null,
+        "author": "joaopedroplinta",
+        "comments": 1,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "### Describe the bug\n\nThree bugs were found in the fetcher modules that affect security and reliability:\n\n**Bug 1 — SSRF via unvalidated `api_domain` in `src/fetchers/wakatime.js`**\n\nThe `api_domain` query parameter is user-controlled and inserted directly into the outgoing URL without any domain validation:\n\n```js\nconst { data } = await axios.get(\n  `https://${\n    api_domain ? api_domain.replace(/\\/$/gi, \"\") : \"wakatime.com\"\n  }/api/v1/users/${username}/stats?is_including_today=true`,\n);\n```\n\nA malicious actor can supply `api_domain=evil.com` and the server will make an outgoing HTTP request to `https://evil.com/api/v1/users/...` — a **Server-Side Request Forgery (SSRF)** vulnerability.\n\n---\n\n**Bug 2 — Unsafe `err.response.status` access in `src/fetchers/wakatime.js:26`**\n\n```js\n} catch (err) {\n  if (err.response.status < 200 || err.response.status > 299) {\n```\n\nIf `err.response` is `undefined` (network timeout, DNS failure), this throws an uncaught `TypeError`, swallowing the original error and crashing the handler.\n\n---\n\n**Bug 3 — `throw new Error(err)` loses original stack trace in `src/fetchers/stats.js:202`**\n\n```js\n} catch (err) {\n  logger.log(err);\n  throw new Error(err);\n}\n```\n\nWrapping the caught error in `new Error(err)` coerces it to a string, losing the original stack trace and error type.\n\n---\n\n### Expected behavior\n\n- **Bug 1:** `api_domain` should be validated against an allowlist of trusted domains. Invalid domains should return a clear error instead of making an outbound request.\n- **Bug 2:** A network error in the WakaTime fetcher should be handled gracefully without throwing a `TypeError`. Optional chaining (`err.response?.status`) prevents the crash.\n- **Bug 3:** The original error should be rethrown directly (`throw err`) to preserve its stack trace and type for debugging.\n\n### Additional context\n\nA fix for all three bugs is proposed in the linked pull request, with all existing tests passing.",
+        "url": "https://github.com/anuraghazra/github-readme-stats/issues/4859"
+    },
+    {
+        "id": 4209211914,
+        "number": 4858,
+        "title": "stat cards are not working.",
+        "state": "open",
+        "created_at": "2026-04-06T02:47:59Z",
+        "updated_at": "2026-04-16T00:58:19Z",
+        "closed_at": null,
+        "author": "Akitha-Chanupama",
+        "comments": 3,
+        "labels": [
+            "bug",
+            ":star: top bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Describe the bug\n\nseems like there is a deployment issue or something. not working for anyone\n\n\n### Expected behavior\n\n_No response_\n\n### Screenshots / Live demo link\n\n_No response_\n\n### Additional context\n\n_No response_",
+        "url": "https://github.com/anuraghazra/github-readme-stats/issues/4858"
+    },
+    {
+        "id": 4206735833,
+        "number": 4856,
+        "title": "Stats Not Getting Loaded",
+        "state": "closed",
+        "created_at": "2026-04-05T06:36:01Z",
+        "updated_at": "2026-04-12T22:29:08Z",
+        "closed_at": "2026-04-12T22:29:08Z",
+        "author": "Sathiyapramod",
+        "comments": 5,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Describe the bug\n\nThe Stats are not getting Loaded on the README.md file \n\n### Expected behavior\n\n_No response_\n\n### Screenshots / Live demo link\n\n<img width=\"659\" height=\"344\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/6a3af433-3e5c-45d0-925a-6bd8e36ee298\" />\n\n<img width=\"803\" height=\"131\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/a747a501-5d1a-49f5-839f-5983bac8d3b3\" />\n\n### Additional context\n\n_No response_",
+        "url": "https://github.com/anuraghazra/github-readme-stats/issues/4856"
+    },
+    {
+        "id": 4201109713,
+        "number": 4853,
+        "title": "Option to count all \"Contributed to\"",
+        "state": "open",
+        "created_at": "2026-04-03T15:43:22Z",
+        "updated_at": "2026-07-11T01:22:13Z",
+        "closed_at": null,
+        "author": "rtritto",
+        "comments": 1,
+        "labels": [
+            "enhancement"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Is your feature request related to a problem? Please describe.\n\n<img width=\"715\" height=\"310\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/2d6c0630-259b-443b-b9fb-0d1610c6ab82\" />\n\n\"Contributed to (last year)\" counts only contributions related to the last year.\n\n### Describe the solution you'd like\n\nAdd an option to count all contributions (from start including all years).\n\nE.g.:\n`&include_all_contributed=true`\n\nWith the option enabled:\n- the label will be \"Contributed to\"\n- the stats of all contributions will be calculated in the rank\n\n### Describe alternatives you've considered\n\n_No response_\n\n### Additional context\n\n_No response_",
+        "url": "https://github.com/anuraghazra/github-readme-stats/issues/4853"
+    },
+    {
+        "id": 4176128659,
+        "number": 4848,
+        "title": "Dependency alert: axios compromised versions may be resolved via ^1.13.1",
+        "state": "open",
+        "created_at": "2026-03-31T06:05:55Z",
+        "updated_at": "2026-03-31T06:05:55Z",
+        "closed_at": null,
+        "author": "hyperfinitism",
+        "comments": 0,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "There is an ongoing public supply-chain compromise affecting `axios@1.14.1` and `axios@0.30.4` on npm.\n\nhttps://github.com/axios/axios/issues/10604\n\nThis repository currently declares:\n\n```json\n\"axios\": \"^1.13.1\"\n```\n\nSo even if the current lockfile is still safe, future lockfile refreshes / fresh installs that re-resolve dependencies may pick up a compromised Axios release.\n\nWould you consider urgently:\n\n1. pinning Axios to a known-good version,\n2. checking that neither `axios@1.14.1` / `0.30.4` nor `plain-crypto-js` appears in the dependency tree? \n\nThis seems worth addressing quickly because many users self-host or fork this project and may run fresh installs.\n",
+        "url": "https://github.com/anuraghazra/github-readme-stats/issues/4848"
+    },
+    {
+        "id": 4101774499,
+        "number": 4839,
+        "title": "Missing license attribution for Primer Octicons SVG paths in `src/common/icons.js",
+        "state": "closed",
+        "created_at": "2026-03-19T13:41:48Z",
+        "updated_at": "2026-05-09T14:41:51Z",
+        "closed_at": "2026-05-09T14:41:51Z",
+        "author": "hyperfinitism",
+        "comments": 2,
+        "labels": [
+            "enhancement"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Is your feature request related to a problem? Please describe.\n\nThe SVG path data in [icons.js](https://github.com/anuraghazra/github-readme-stats/blob/5df91f9bfa89c356a55cbb3c2bbc164fdbf94a86/src/common/icons.js#L3-L17) appears to be sourced from [Primer Octicons](https://github.com/primer/octicons). I could not find a corresponding copyright notice or license attribution in the repository. Primer Octicons is distributed under the [MIT License](https://github.com/primer/octicons/blob/main/LICENSE), which requires:\n\n> The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.\n\n### Describe the solution you'd like\n\nEither:\n\n- Adding a `NOTICE` file with the Octicons copyright notice and Octicons `LICENSE.txt`\n- Adding the Octicons copyright notice and license text to the repository `LICENSE` file\n\n### Describe alternatives you've considered\n\n_No response_\n\n### Additional context\n\n_No response_",
+        "url": "https://github.com/anuraghazra/github-readme-stats/issues/4839"
+    },
+    {
+        "id": 4081060230,
+        "number": 4837,
+        "title": "Private commits not counting",
+        "state": "closed",
+        "created_at": "2026-03-16T08:43:24Z",
+        "updated_at": "2026-03-25T10:39:58Z",
+        "closed_at": "2026-03-25T10:39:58Z",
+        "author": "381sm016",
+        "comments": 2,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Describe the bug\n\nWhen I turn on `include_all_commits=true` and `count_private=true `i t displays I have made 38 commits, even though I have well over 400 this year.\n\n### Expected behavior\n\nShow 486 commits like I have\n\n### Screenshots / Live demo link\n\n <img height=\"165\" src=\"https://github-readme-stats.vercel.app/api?username=381sm016&show_icons=true&include_all_commits=true&count_private=true&hide_rank=false&theme=dark\" alt=\"GitHub stats for 381sm016\" />\n\n### Additional context\n\n_No response_",
+        "url": "https://github.com/anuraghazra/github-readme-stats/issues/4837"
+    },
+    {
+        "id": 4061769547,
+        "number": 4836,
+        "title": "Top Languages doesn't show Rust",
+        "state": "open",
+        "created_at": "2026-03-12T02:54:33Z",
+        "updated_at": "2026-03-12T02:59:49Z",
+        "closed_at": null,
+        "author": "shubhamg13",
+        "comments": 0,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Describe the bug\n\nRust should also be supported in Top Languages where I'm not owner.\n\n### Expected behavior\n\n_No response_\n\n### Screenshots / Live demo link\n\n_No response_\n\n### Additional context\n\n_No response_",
+        "url": "https://github.com/anuraghazra/github-readme-stats/issues/4836"
+    },
+    {
+        "id": 4034707886,
+        "number": 4832,
+        "title": "Security: Server-Side Request Forgery (SSRF) via user-controlled api_domain parameter in Wakatime endpoint",
+        "state": "closed",
+        "created_at": "2026-03-06T15:09:37Z",
+        "updated_at": "2026-03-06T16:51:30Z",
+        "closed_at": "2026-03-06T16:32:26Z",
+        "author": "Vext-Labs",
+        "comments": 1,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "This issue was filed in error and has been withdrawn. We apologize for the noise.",
+        "url": "https://github.com/anuraghazra/github-readme-stats/issues/4832"
+    }
+]

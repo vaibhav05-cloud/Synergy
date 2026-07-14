@@ -1,0 +1,242 @@
+[
+    {
+        "sha": "cef90efd2e36f2452821bdc2c67e11bad896715a",
+        "author": "Pan wenjie",
+        "email": "1119229691@qq.com",
+        "date": "2026-04-13T10:58:34Z",
+        "message": "feat: v1.4.3 absorb 3 Session 41 lessons (plan-first / delegation / dimension-check)\n\nThree protocols added to Key Rules + researcher role, all in team-lead\nread-once paths (zero cost to spawn prompts).\n\nSKILL.md Key Rules (+2 bullets, EN+CN):\n- Large task plan-first: 3+ agents or 5+ tool calls requires\n  session-<N>-<topic>-plan.md before any SendMessage; dispatch only\n  references plan sections, no re-explaining inline\n- Delegate everything delegable: team-lead must NOT self-execute\n  commits/push/SSH/cleanup/deploy — these go to backend-dev. team-lead\n  keeps decisions, cross-repo coordination, un-delegatable local actions\n\nroles.md researcher (+1 bullet, EN+CN):\n- First-round dimension check: team-lead MUST challenge\n  \"zero side-effect / feasible\" conclusions with missed-scenario /\n  side-effect-category / usage-dimension questions before accepting\n\nRejected (too project-specific): cross-repo git remote rule,\nnohup/disown startup rule. Already covered: agent message queue\nsemantics (v1.4.1). User may opt into rejected items via CLAUDE.md\nKnown Pitfalls per-project.\n\nNet +6 lines across source files; onboarding.md (the per-spawn cost\npath) untouched.",
+        "url": "https://github.com/jessepwj/CCteam-creator/commit/cef90efd2e36f2452821bdc2c67e11bad896715a"
+    },
+    {
+        "sha": "7af6eabe00e491e18c9e8ca2c81811f7c4dd331d",
+        "author": "Pan wenjie",
+        "email": "1119229691@qq.com",
+        "date": "2026-04-13T09:14:53Z",
+        "message": "refactor: v1.4.2 — compress v1.4.0/v1.4.1 protocols, cut prose without losing rules\n\nRoot cause / Motivation:\n  User concern: spawn prompt was growing too large from v1.4.0 additions\n  (~45 lines in onboarding.md common template + role sections). Audit\n  revealed most of the growth was explanatory prose — rationale, \"why\",\n  elaborations — not action language. LLMs follow tight imperative rules\n  better than verbose discursive ones. This pass compresses without\n  changing any protocol or removing any rule.\n\nChanges (all files, EN + CN mirror):\n  - onboarding.md F2 Reality Check: 10 → 4 lines\n  - onboarding.md F3 Multi-Part Recognition: 3 → 1 line\n  - onboarding.md F4 Idle ≠ completion report: 10 → 3 lines\n  - onboarding.md F6 Contract-First (dev): 17 → 5 lines\n  - onboarding.md F1 Anti-Phantom (reviewer): 25 → 8 lines\n  - onboarding.md F7 env side effects bullet: tightened\n  - roles.md dev Contract-First + env + Doc-Code Sync: 15 → 3 bullets\n  - roles.md frontend-dev duplicated block: collapsed\n  - roles.md e2e Explore-Then-Codify: 7 → 2 lines\n  - roles.md reviewer Anti-Phantom summary: 6 → 1 line (points to full)\n  - SKILL.md v1.4.1 Message Delivery Timing: 37 → 18 lines\n  - templates.md CLAUDE.md dispatch quick-ref: 12 → 4 lines\n\nPreserved without change:\n  - All protocol names, trigger conditions, and actions\n  - Memorable anchors (73% phantom rate, file-is-live phrase, etc.)\n  - All tag formats ([AUTOMATE], [CLOSED verified], [NOT-FOUND])\n  - Templates (api-contracts field table, Known Pitfalls examples)\n\nNumeric results:\n  - onboarding.md: 806 → 781 (net v1.4.x growth cut from +45 to +20)\n  - roles.md: 350 → 329 (back to v1.3.x baseline)\n  - SKILL.md: 569 → 559\n  - templates.md: 1047 → 1038\n\nValidation: scripts/validate-release.py → [OK] All checks passed\n\nCo-Authored-By: Claude Opus 4.6 (1M context) <noreply@anthropic.com>",
+        "url": "https://github.com/jessepwj/CCteam-creator/commit/7af6eabe00e491e18c9e8ca2c81811f7c4dd331d"
+    },
+    {
+        "sha": "34575ed57b6ebc7247db13ee744516a720cc63bd",
+        "author": "Pan wenjie",
+        "email": "1119229691@qq.com",
+        "date": "2026-04-13T09:00:04Z",
+        "message": "docs: v1.4.1 — document Message Delivery Timing Constraint\n\nRoot cause / Motivation:\n  Empirically verified by user: SendMessage to a spawned teammate is\n  NOT delivered mid-turn. The recipient only picks up new messages\n  when idle (between turns). You cannot interrupt an agent while it\n  is actively working. This is a hard constraint of the spawn/message\n  system, not documented in the SendMessage tool description. Team-lead\n  dispatch strategy depends on understanding this — without it, leads\n  waste time trying to \"ping for status\", \"urgent broadcast stops\",\n  or \"add oh-also-do-X mid-task\", all of which silently queue until\n  the next idle.\n\nChanges (SKILL.md + templates.md CLAUDE.md section, EN + CN):\n  - SKILL.md § Team-Lead Operations Guide: new subsection \"Message\n    Delivery Timing Constraint\" with 6 dispatch consequences and the\n    core corollary \"files are live, messages are not — read progress.md\n    for live state, do not message\".\n  - templates.md CLAUDE.md Task Dispatch Protocol: short quick-reference\n    note pointing to the full guide.\n\nZero impact on agent spawn prompt size:\n  - onboarding.md untouched (spawn prompt source)\n  - SKILL.md is read once by team-lead at skill invoke, not in prompts\n  - CLAUDE.md template adds ~12 lines to team-lead's main-session\n    context; no agent sees this\n\nExpected post-update behavior:\n  New teams created via /CCteam-creator will have the timing-constraint\n  note in their generated CLAUDE.md. Existing team-leads will benefit\n  on their next Step 0 Update Check notification.\n\nValidation: scripts/validate-release.py → [OK] All checks passed\n\nCo-Authored-By: Claude Opus 4.6 (1M context) <noreply@anthropic.com>",
+        "url": "https://github.com/jessepwj/CCteam-creator/commit/34575ed57b6ebc7247db13ee744516a720cc63bd"
+    },
+    {
+        "sha": "7559ced46c258d5ba762469d1b1e2061bde52f72",
+        "author": "Pan wenjie",
+        "email": "1119229691@qq.com",
+        "date": "2026-04-13T02:21:55Z",
+        "message": "feat: v1.4.0 — Anti-Phantom, Reality Check, Contract-First, env side effects\n\nRoot cause / Motivation:\n  Session 39 retrospective surfaced 10 team-execution lessons. After\n  deduping project-specific noise, 7 are universal enough to absorb into\n  the skill templates. Key pain points: reviewer phantom findings (73%\n  rate observed), stale recall after context recovery, multi-part tasks\n  silently dropped, field-name drift between parallel devs, missing\n  service-restart declarations, empty idle notifications.\n\nChanges (onboarding.md / roles.md / templates.md / SKILL.md, EN + CN):\n  1. Reviewer Anti-Phantom Finding Protocol — revive-check open\n     findings, require current-commit evidence, forbid \"can't find it\"\n     skips, escalate recurring phantoms via [AUTOMATE]\n  2. Reality Check After Recovery — wc/grep/git log before touching\n     or reporting on files modified in prior sessions\n  3. Multi-Part Task Recognition — acknowledgement must enumerate\n     every bundled deliverable; no \"done\" for partial completion\n  4. Idle is not a completion report — every task ends with an\n     outbound SendMessage, not a file write\n  5. Contract-First for cross-agent interfaces — field tables defined\n     in docs/api-contracts.md before either side codes, with unit\n     annotations for ambiguity-prone fields\n  6. Environmental side effects in completion reports — mandatory\n     declaration: none / done-by-me / needs-lead-action\n  7. E2E Explore-Then-Codify (soft recommendation in roles.md) —\n     interactive MCP exploration before writing specs for unknown UI\n  8. SKILL.md phase pre-flight check bullet\n  9. templates.md docs/api-contracts.md now ships an example field\n     table with unit annotations\n  10. templates.md CLAUDE.md Known Pitfalls ships with KP-1/KP-2\n      example entries (stateful-service-restart, DEV_MODE bypass)\n\nExpected post-update behavior:\n  New teams created via /CCteam-creator will inherit these protocols\n  in their onboarding prompts. Existing teams are unaffected until\n  rebuild at a phase boundary.\n\nValidation: scripts/validate-release.py → [OK] All checks passed\n\nCo-Authored-By: Claude Opus 4.6 (1M context) <noreply@anthropic.com>",
+        "url": "https://github.com/jessepwj/CCteam-creator/commit/7559ced46c258d5ba762469d1b1e2061bde52f72"
+    },
+    {
+        "sha": "a3a2c0cf6b558b0f66a1ad3bee2c64c269ae9de4",
+        "author": "Pan wenjie",
+        "email": "1119229691@qq.com",
+        "date": "2026-04-10T04:39:53Z",
+        "message": "docs: v1.3.3 — release guide + validation script + manual-install doc fixes\n\nInfrastructure improvements to prevent regressions like v1.3.0/v1.3.1/v1.3.2.\n\nAdded:\n- docs/release-guide.md: comprehensive pre-release checklist, common pitfalls\n  from actual debugging (frontmatter bugs, name mismatches, CN directory rename,\n  version sync), post-release verification, rollback procedure, known upstream\n  bugs (#31462, #37590)\n- scripts/validate-release.py: automated pre-push validation checking\n  1. Version sync across 3 files (plugin.json x2 + marketplace.json)\n  2. SKILL.md frontmatter parseability (catches \"## name:\" Markdown heading\n     and missing closing --- that broke v1.3.0 CN)\n  3. Three-name alignment (plugin == directory == frontmatter name)\n  4. EN/CN parallel file structure\n  Tested with version-mismatch injection: correctly fails and exits 1.\n\nFixed:\n- README Option 2 (Manual Install): CN path updated from cn/skills/CCteam-creator\n  to cn/skills/CCteam-creator-cn (matches the 1.3.2 directory rename). Added\n  explicit guidance on how to invoke (/CCteam-creator) and update (git pull + cp -r).\n  Clarified that manual install does NOT require /reload-plugins -- skill appears\n  directly in ~/.claude/skills/.\n- README Option 3 (Project-level): same CN path fix + added EN option\n- README Updating section: same CN path fix\n\nBoth README.md and README_CN.md updated in parallel.\n\nVersion bump: 1.3.2 -> 1.3.3 (patch, user-visible README path fixes)\n\nPre-push validation: python scripts/validate-release.py -> [OK] All checks passed.\n\nCo-Authored-By: Claude Opus 4.6 (1M context) <noreply@anthropic.com>",
+        "url": "https://github.com/jessepwj/CCteam-creator/commit/a3a2c0cf6b558b0f66a1ad3bee2c64c269ae9de4"
+    },
+    {
+        "sha": "72c347867ca7fe28871b5e8ece81a915a60c8042",
+        "author": "Pan wenjie",
+        "email": "1119229691@qq.com",
+        "date": "2026-04-10T04:29:48Z",
+        "message": "fix: v1.3.2 — align skill name with plugin name for correct namespacing\n\nRoot cause (user-discovered):\nClaude Code namespaces plugin skills as \"plugin-name:skill-directory-name\".\nOur plugin had mismatched naming:\n  - Plugin name:          CCteam-creator\n  - Skill directory:      skills/CCteam-creator/\n  - Frontmatter name:     setup   ← mismatch (used to be ## name: setup, even worse)\n\nSymptom: Skill(CCteam-creator) → \"Unknown skill\"\n(only Skill(CCteam-creator:CCteam-creator) worked — per-namespace lookup)\n\nFixes:\n1. EN SKILL.md: name: setup → name: CCteam-creator (matches plugin + directory)\n2. CN SKILL.md: name: setup → name: CCteam-creator-cn (matches plugin name)\n3. Rename cn/skills/CCteam-creator/ → cn/skills/CCteam-creator-cn/\n   (CN skill directory now matches plugin name — previously mismatched)\n4. Update README slash command examples:\n   - /CCteam-creator:setup → /CCteam-creator\n   - /CCteam-creator-cn:setup → /CCteam-creator-cn\n5. Document Skill(plugin:skill) namespace format for direct tool calls\n\nAfter this fix, all three identifiers align (like planning-with-files):\n  Plugin name == Skill directory name == Frontmatter name field\n\nExpected post-update behavior:\n  /CCteam-creator                           → works (slash command)\n  Skill(CCteam-creator:CCteam-creator)      → works (explicit namespace)\n  \"set up a team\" (natural language)        → works (description match)\n\nCo-Authored-By: Claude Opus 4.6 (1M context) <noreply@anthropic.com>",
+        "url": "https://github.com/jessepwj/CCteam-creator/commit/72c347867ca7fe28871b5e8ece81a915a60c8042"
+    },
+    {
+        "sha": "a2aa524e2903f8767bc789bfca59e96da38c9e62",
+        "author": "Pan wenjie",
+        "email": "1119229691@qq.com",
+        "date": "2026-04-10T03:53:30Z",
+        "message": "fix: v1.3.1 — CN SKILL.md frontmatter (unparseable YAML)\n\nThe CN skills/CCteam-creator/SKILL.md had a broken frontmatter that\nClaude Code's skill loader could not parse:\n  - Line 3 was \"## name: setup\" (Markdown H2 heading) instead of \"name: setup\"\n  - No closing \"---\" — frontmatter block was never terminated\n\nResult: /plugin install CCteam-creator-cn@ccteam appeared to succeed\nbut the skill was never registered/discovered by Claude Code.\n\nEN version was already correct (name: setup + closing ---).\nThis commit aligns CN with EN.\n\nVersion bump: 1.3.0 → 1.3.1 (patch, bug fix only)\n\nCo-Authored-By: Claude Opus 4.6 (1M context) <noreply@anthropic.com>",
+        "url": "https://github.com/jessepwj/CCteam-creator/commit/a2aa524e2903f8767bc789bfca59e96da38c9e62"
+    },
+    {
+        "sha": "9a2b55758b33a92239baece5e635843c5198654e",
+        "author": "Pan wenjie",
+        "email": "1119229691@qq.com",
+        "date": "2026-04-10T03:33:52Z",
+        "message": "feat: v1.3.0 — Step 0 update check + bidirectional communication protocol\n\nMajor changes:\n\n1. Step 0 Update Check (new, automatic, ~2s)\n   - Every skill trigger silently fetches remote plugin.json via WebFetch\n   - Compares with local installed version (marketplace cache or ~/.claude/skills/)\n   - Prints one-line notification if newer version exists, then immediately continues\n   - Zero blocking, zero user confirmation, silent failure on network error\n\n2. Bidirectional communication protocol in common onboarding template\n   - \"Receive task → confirm understanding\" (one-line ack before starting)\n   - \"Complete report → bring evidence\" (grep/diff/test output, not just \"done\")\n   - \"Between-task checkpoint\" (proactive status before claiming next task)\n   - Promoted from dev-only to universal across all roles\n\n3. Universal Escalation Judgment section\n   - Moved from dev-only (roles.md) to common onboarding template\n   - Added \"priority/sequencing unclear\" as new must-ask condition\n   - Replaced \"no options, no ask\" anti-pattern with \"describe confusion directly\"\n   - Non-dev roles (researcher/e2e-tester/reviewer/custodian) now have escalation protocol\n\n4. Compact amnesia warning in Step 5\n   - Skill proactively warns user before /compact about team-lead memory loss\n   - Provides one-sentence rescue command: \"Read .plans/<project>/team-snapshot.md\"\n\n5. Documentation\n   - README Updating section: how to manually update third-party marketplaces\n   - README Known Limitation: team-lead amnesia after /compact + rescue command\n\n6. CN golden_rules.py translated to Chinese (cn/ variant consistency)\n\nVersion bump: 1.2.0 → 1.3.0 (minor, new protocols + behavioral changes)\n\nCo-Authored-By: Claude Opus 4.6 (1M context) <noreply@anthropic.com>",
+        "url": "https://github.com/jessepwj/CCteam-creator/commit/9a2b55758b33a92239baece5e635843c5198654e"
+    },
+    {
+        "sha": "ebd4405cb6e28fe9281ae31b0e6cb31683048dbb",
+        "author": "Pan wenjie",
+        "email": "1119229691@qq.com",
+        "date": "2026-04-03T09:03:53Z",
+        "message": "feat: sync all recent EN features to CN version\n\nSynced 18 items to CN skill files:\n- Review Calibration Protocol (anti-leniency, dimensions, anchors)\n- Assumption Audit in Harness Checklist\n- Escalation Judgment + Task Confirmation for dev roles\n- Team Snapshot template for fast resume\n- Large Tasks \"STOP AND CHECK\" strengthening\n- Quality priorities in Step 1.2\n- Updated Key Protocols, File Structure, Status Check\n\nCN version now fully matches EN feature set.\n\nCo-Authored-By: Claude Haiku 4.5 <noreply@anthropic.com>",
+        "url": "https://github.com/jessepwj/CCteam-creator/commit/ebd4405cb6e28fe9281ae31b0e6cb31683048dbb"
+    },
+    {
+        "sha": "d6e57204a10ee8a186768aa4649b1a85d611b7bb",
+        "author": "Pan wenjie",
+        "email": "1119229691@qq.com",
+        "date": "2026-04-03T08:52:00Z",
+        "message": "feat: add custodian audit reminder to CN reviewer onboarding\n\nSyncs the reviewer custodian reminder from EN to CN version.\nCN e2e-tester already had this; reviewer was missing it.\n\nCo-Authored-By: Claude Opus 4.6 (1M context) <noreply@anthropic.com>",
+        "url": "https://github.com/jessepwj/CCteam-creator/commit/d6e57204a10ee8a186768aa4649b1a85d611b7bb"
+    },
+    {
+        "sha": "dac1393bbb11487efd74c8f200d564f7b3818a3f",
+        "author": "Pan wenjie",
+        "email": "1119229691@qq.com",
+        "date": "2026-04-03T08:45:43Z",
+        "message": "feat: add custodian audit reminder to reviewer onboarding\n\nReviewer now includes a neutral \"custodian audit available if needed\"\nnote when reporting [OK] verdicts to team-lead, matching the existing\npattern in e2e-tester. Helps team-lead remember to trigger custodian\nwithout being pushy.\n\nCo-Authored-By: Claude Opus 4.6 (1M context) <noreply@anthropic.com>",
+        "url": "https://github.com/jessepwj/CCteam-creator/commit/dac1393bbb11487efd74c8f200d564f7b3818a3f"
+    },
+    {
+        "sha": "d9212a491898bfc26e5926fcb6d13203dc9ff6d2",
+        "author": "Pan wenjie",
+        "email": "1119229691@qq.com",
+        "date": "2026-04-02T10:26:04Z",
+        "message": "docs: add full lifecycle workflow and enforce snapshot completeness\n\nSnapshot template now explicitly requires COMPLETE, UNABRIDGED onboarding\nprompts — no summarization or truncation allowed.\n\nBoth READMEs now include a detailed \"How It Works — Full Lifecycle\"\nsection with ASCII diagrams covering setup, collaboration, resume,\nand phase boundary checks. Placed before the screenshots section\nfor better discoverability.\n\nCo-Authored-By: Claude Opus 4.6 (1M context) <noreply@anthropic.com>",
+        "url": "https://github.com/jessepwj/CCteam-creator/commit/d9212a491898bfc26e5926fcb6d13203dc9ff6d2"
+    },
+    {
+        "sha": "31faf55117bc1b5f3cd76042bd1b820d1101a191",
+        "author": "Pan wenjie",
+        "email": "1119229691@qq.com",
+        "date": "2026-04-02T10:22:34Z",
+        "message": "feat: add team snapshot for fast resume without re-reading skill files\n\nOn first team creation, saves rendered onboarding prompts to\n.plans/<project>/team-snapshot.md with skill source file timestamps.\n\nOn resume: if skill files unchanged, spawn agents directly from cached\nprompts (~2500 lines skipped). If skill files updated, inform lead\nand let them choose fast resume vs full re-read.\n\nUpdated Step 0 (resume detection), Step 4 (snapshot generation),\ntemplates (snapshot template + file structure), and both READMEs.\n\nCo-Authored-By: Claude Opus 4.6 (1M context) <noreply@anthropic.com>",
+        "url": "https://github.com/jessepwj/CCteam-creator/commit/31faf55117bc1b5f3cd76042bd1b820d1101a191"
+    },
+    {
+        "sha": "b4aa06cb37a1e2b56de34352a1062e1e04d78e3f",
+        "author": "Pan wenjie",
+        "email": "1119229691@qq.com",
+        "date": "2026-04-01T02:52:54Z",
+        "message": "docs: update READMEs with Anthropic harness design insights and new features\n\nAdded Anthropic Harness Design to Standing on Shoulders with detailed\nexplanation of three absorbed lessons: evaluator calibration, assumption\nauditing, and generator-evaluator separation.\n\nNew feature sections: Review Dimensions with calibrated scoring,\nAssumption Audit, Dev Escalation Judgment, Task Confirmation.\nUpdated Built-in Agent Protocols table with 4 new entries.\n\nBoth EN and CN READMEs updated in sync.\n\nCo-Authored-By: Claude Opus 4.6 (1M context) <noreply@anthropic.com>",
+        "url": "https://github.com/jessepwj/CCteam-creator/commit/b4aa06cb37a1e2b56de34352a1062e1e04d78e3f"
+    },
+    {
+        "sha": "7b1ccf557ce98b4ef134e39d7047a114e5dd27c0",
+        "author": "Pan wenjie",
+        "email": "1119229691@qq.com",
+        "date": "2026-04-01T02:43:39Z",
+        "message": "feat: strengthen task dispatch checklist and add agent-side reminder\n\nLead-side: Large task dispatch section now says \"STOP AND CHECK\" with\nexplicit instruction to verify all 4 items before sending.\n\nAgent-side: Task Confirmation now includes reminding lead if task folder\nsetup info is missing from the dispatch message.\n\nCo-Authored-By: Claude Opus 4.6 (1M context) <noreply@anthropic.com>",
+        "url": "https://github.com/jessepwj/CCteam-creator/commit/7b1ccf557ce98b4ef134e39d7047a114e5dd27c0"
+    },
+    {
+        "sha": "388a1f8a60dce020a920357d69defa357145ca72",
+        "author": "Pan wenjie",
+        "email": "1119229691@qq.com",
+        "date": "2026-04-01T02:38:23Z",
+        "message": "feat: add task confirmation for dev roles, remove unused AFK/HITL markers\n\nDev agents now confirm understanding with team-lead before starting large\ntasks — read context, then summarize approach for lead approval.\n\nRemoved AFK/HITL markers that were mentioned but never defined or implemented.\n\nCo-Authored-By: Claude Opus 4.6 (1M context) <noreply@anthropic.com>",
+        "url": "https://github.com/jessepwj/CCteam-creator/commit/388a1f8a60dce020a920357d69defa357145ca72"
+    },
+    {
+        "sha": "d1a28170f793a8f08a6c7227e32dd3fbea0e5c92",
+        "author": "Pan wenjie",
+        "email": "1119229691@qq.com",
+        "date": "2026-03-31T09:20:50Z",
+        "message": "feat: add escalation judgment protocol for dev roles\n\nDev agents now have clear guidance on when to decide autonomously vs\nwhen to ask team-lead (ambiguous requirements, scope explosion,\narchitecture impact, irreversible choices). Must ask with options +\nrecommendation, never bare questions.\n\nCo-Authored-By: Claude Opus 4.6 (1M context) <noreply@anthropic.com>",
+        "url": "https://github.com/jessepwj/CCteam-creator/commit/d1a28170f793a8f08a6c7227e32dd3fbea0e5c92"
+    },
+    {
+        "sha": "3d2efab8b7e9a85398aa81bff9e72907e7af856e",
+        "author": "Pan wenjie",
+        "email": "1119229691@qq.com",
+        "date": "2026-03-30T07:18:14Z",
+        "message": "feat: add reviewer calibration protocol and assumption audit mechanism\n\nReviewer now scores project-specific dimensions (STRONG/ADEQUATE/WEAK) with\nanti-leniency rules and calibration anchors. Harness Checklist expanded with\nAssumption Audit table for periodic review of load-bearing components.\n\nInspired by Anthropic's harness design research on evaluator calibration\nand the principle that every harness component encodes a model limitation\nassumption worth stress-testing.\n\nCo-Authored-By: Claude Opus 4.6 (1M context) <noreply@anthropic.com>",
+        "url": "https://github.com/jessepwj/CCteam-creator/commit/3d2efab8b7e9a85398aa81bff9e72907e7af856e"
+    },
+    {
+        "sha": "ad908f4a1cb60538553d152df0f32e4e5631f10a",
+        "author": "Pan wenjie",
+        "email": "1119229691@qq.com",
+        "date": "2026-03-29T03:52:17Z",
+        "message": "feat: add golden rules CI checks and taste feedback loop\n\nAdd pre-installed golden_rules.py with 5 universal code health checks\n(file size, secrets, console.log, doc freshness, invariant coverage).\nAdd taste feedback loop: user preferences captured in Style Decisions,\nencoded into automated checks after 3+ occurrences.\n\nChanges across all template files (EN + CN):\n- New scripts/golden_rules.py bundled with skill\n- SKILL.md Step 3.6: copy golden_rules to project\n- templates.md: Style Decisions section, taste capture protocols\n- roles.md: team-lead taste loop, reviewer style awareness, custodian golden rules maintenance\n- onboarding.md: dev CI gate includes golden rules\n- README: vision statement, new features documentation\n\nCo-Authored-By: Claude Opus 4.6 (1M context) <noreply@anthropic.com>",
+        "url": "https://github.com/jessepwj/CCteam-creator/commit/ad908f4a1cb60538553d152df0f32e4e5631f10a"
+    },
+    {
+        "sha": "05c5689c8f8f31745642b0a64bd4c4dfd97b5bb9",
+        "author": "Pan wenjie",
+        "email": "1119229691@qq.com",
+        "date": "2026-03-27T08:23:38Z",
+        "message": "fix: revert custodian reminder to neutral style\n\nReverts manual changes from 6c109cc and 428019d back to the\n\"Note: custodian audit available if needed.\" neutral reminder style.\n\nCo-Authored-By: Claude Opus 4.6 (1M context) <noreply@anthropic.com>",
+        "url": "https://github.com/jessepwj/CCteam-creator/commit/05c5689c8f8f31745642b0a64bd4c4dfd97b5bb9"
+    },
+    {
+        "sha": "428019d0a618e7b6c08fcf819d85a14ea3380200",
+        "author": "Pan wenjie",
+        "email": "1119229691@qq.com",
+        "date": "2026-03-27T07:41:24Z",
+        "message": "fix: make custodian reminder purely factual, not suggestive\n\nChange from \"audit available if needed\" to reporting last audit date.\nPure information — team-lead draws own conclusions.",
+        "url": "https://github.com/jessepwj/CCteam-creator/commit/428019d0a618e7b6c08fcf819d85a14ea3380200"
+    },
+    {
+        "sha": "6c109cc31f9bec62bd44fe8cbc6597533bdaa30e",
+        "author": "Pan wenjie",
+        "email": "1119229691@qq.com",
+        "date": "2026-03-27T07:40:08Z",
+        "message": "fix: make custodian reminder purely factual — timestamp only, no suggestion\n\nChanged from \"audit available if needed\" (still suggestive) to a plain\ntimestamp \"(custodian last audit: <date>)\". Team-lead draws own conclusions.",
+        "url": "https://github.com/jessepwj/CCteam-creator/commit/6c109cc31f9bec62bd44fe8cbc6597533bdaa30e"
+    },
+    {
+        "sha": "b38217675305db23e1d465ac6948928ff581ef8d",
+        "author": "Pan wenjie",
+        "email": "1119229691@qq.com",
+        "date": "2026-03-27T07:39:09Z",
+        "message": "feat: e2e-tester reminds team-lead about custodian audit on test pass\n\nNeutral, non-directive reminder at the end of test completion reports.\nTeam-lead decides whether to activate custodian based on project state.",
+        "url": "https://github.com/jessepwj/CCteam-creator/commit/b38217675305db23e1d465ac6948928ff581ef8d"
+    },
+    {
+        "sha": "93ed2af2021edd7266974223d5cae2bea750278f",
+        "author": "Pan wenjie",
+        "email": "1119229691@qq.com",
+        "date": "2026-03-27T07:30:04Z",
+        "message": "feat: replace cleaner with custodian role — constraint engineering upgrade\n\n- Rename cleaner → custodian (管家) with 4 responsibility modules:\n  1. Constraint compliance auditing (proactive, not reactive)\n  2. Documentation governance (docs/index.md navigation map)\n  3. Pattern → Automation pipeline (reviewer [AUTOMATE] → check scripts)\n  4. Code cleanup (retained from cleaner)\n- Add docs/index.md as dynamic navigation map with section-level line ranges\n  (CLAUDE.md is not hot-loaded, so dynamic nav info lives in docs/index.md)\n- Add incremental audit awareness — custodian maintains own records,\n  does delta checks instead of full scans on every initialization\n- Add processing protocol: index/navigation self-fix, content issues report to lead\n- Add check script error message standard ([WHAT] + [WHERE] + [HOW TO FIX])\n- Expand Step 3.6 from CI skeleton to full Harness Setup\n- Add reviewer [AUTOMATE] tag for pattern → automation handoff\n- Custodian recommended for 4+ agent teams or long-running projects\n- Sync all changes across EN + CN (10 files modified)",
+        "url": "https://github.com/jessepwj/CCteam-creator/commit/93ed2af2021edd7266974223d5cae2bea750278f"
+    },
+    {
+        "sha": "cba3cf7b92d4bc3179b2c526610bac695332c688",
+        "author": "Pan wenjie",
+        "email": "1119229691@qq.com",
+        "date": "2026-03-27T04:38:06Z",
+        "message": "feat: auto-detect existing project and offer resume before setup\n\nAdd Step 0: check if .plans/ exists before starting fresh setup.\nIf found, read CLAUDE.md roster, offer resume vs new project.\nNo new slash command needed — works with existing triggers.\nCloses #1",
+        "url": "https://github.com/jessepwj/CCteam-creator/commit/cba3cf7b92d4bc3179b2c526610bac695332c688"
+    },
+    {
+        "sha": "7d169f0fae3f9dd440e590b7d91b3e8887e67401",
+        "author": "Pan wenjie",
+        "email": "1119229691@qq.com",
+        "date": "2026-03-27T04:35:43Z",
+        "message": "feat: default all roles to sonnet, opus only when justified\n\nAll roles now default to sonnet. Upgrade to opus only when: user requests it,\ncost is not a concern, or role handles critical/complex logic. Updated across\nSKILL.md, roles.md, templates.md, and both READMEs.",
+        "url": "https://github.com/jessepwj/CCteam-creator/commit/7d169f0fae3f9dd440e590b7d91b3e8887e67401"
+    },
+    {
+        "sha": "fa28019a10bb8ac1cbeb2909edbe85b7b75d13b8",
+        "author": "Pan wenjie",
+        "email": "1119229691@qq.com",
+        "date": "2026-03-27T03:24:44Z",
+        "message": "fix: reframe completion report rule — about lead decision quality, not compression",
+        "url": "https://github.com/jessepwj/CCteam-creator/commit/fa28019a10bb8ac1cbeb2909edbe85b7b75d13b8"
+    },
+    {
+        "sha": "f57cfa3aaba12bba550348f159e3bd35eefbed01",
+        "author": "Pan wenjie",
+        "email": "1119229691@qq.com",
+        "date": "2026-03-27T03:13:13Z",
+        "message": "feat: require self-contained completion reports from teammates\n\nTeammates must include what they did, where docs are (path + line range),\nand key decisions — not just \"done\". Lead's context gets compressed,\nso vague messages lose all value after compaction.",
+        "url": "https://github.com/jessepwj/CCteam-creator/commit/f57cfa3aaba12bba550348f159e3bd35eefbed01"
+    },
+    {
+        "sha": "87992d6f03440d4a505dbcfc240d6d0dd8477b99",
+        "author": "Pan wenjie",
+        "email": "1119229691@qq.com",
+        "date": "2026-03-26T10:19:34Z",
+        "message": "docs: clarify 200k vs 1M context behavior for teammates\n\n200k (default) auto-compacts fine. 1M cannot auto-compact, costs more,\nand performance degrades. Recommend 200k for team projects.",
+        "url": "https://github.com/jessepwj/CCteam-creator/commit/87992d6f03440d4a505dbcfc240d6d0dd8477b99"
+    },
+    {
+        "sha": "b1e5a66c3f6b875349ac0dc850343cffd17e04ae",
+        "author": "Pan wenjie",
+        "email": "1119229691@qq.com",
+        "date": "2026-03-26T10:18:33Z",
+        "message": "docs: document teammate context compaction limitation and workaround\n\nTeammates cannot /compact their context. Recommended: exit + claude --continue,\nthen re-spawn teammates with clean context. All progress safe in .plans/ files.",
+        "url": "https://github.com/jessepwj/CCteam-creator/commit/b1e5a66c3f6b875349ac0dc850343cffd17e04ae"
+    }
+]

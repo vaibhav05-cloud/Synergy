@@ -1,0 +1,242 @@
+[
+    {
+        "sha": "405a6218bb8bf3af7ddf7fe007608f7197d59772",
+        "author": "Takaya Saeki",
+        "email": "abc.tkys+pub@gmail.com",
+        "date": "2025-10-05T14:06:36Z",
+        "message": "Remove feature under development section from README\n\nThe feature is no longer developed.",
+        "url": "https://github.com/nullpo-head/wsl-distrod/commit/405a6218bb8bf3af7ddf7fe007608f7197d59772"
+    },
+    {
+        "sha": "c3181f4e49566a1d92988b71487716f0dceddd1e",
+        "author": "github-actions[bot]",
+        "email": "41898282+github-actions[bot]@users.noreply.github.com",
+        "date": "2022-07-07T17:54:43Z",
+        "message": "chore(release): v0.1.7",
+        "url": "https://github.com/nullpo-head/wsl-distrod/commit/c3181f4e49566a1d92988b71487716f0dceddd1e"
+    },
+    {
+        "sha": "921bc3c2262aae4cd4656be800371bbbde5770eb",
+        "author": "Locietta",
+        "email": "locietta@qq.com",
+        "date": "2022-07-07T17:53:42Z",
+        "message": "fix: Bind mount `/tmp/.X11-unix` for newer version of WSL2 (#57)\n\nFix #56.\r\n\r\nAfter WSL 0.60.0 release, microsoft switched to bind mount the /tmp/.X11-unix rather than symlink it as they previously do. This breaks wslg in Distrod for latest WSL on MS Store.\r\n\r\nDistrod should bind mount for WSL 0.60.0, and keep the symlink strategy for older versions of WSL.",
+        "url": "https://github.com/nullpo-head/wsl-distrod/commit/921bc3c2262aae4cd4656be800371bbbde5770eb"
+    },
+    {
+        "sha": "4320147cdb31f1cad31950b03447cdd9e9f40a4b",
+        "author": "github-actions[bot]",
+        "email": "41898282+github-actions[bot]@users.noreply.github.com",
+        "date": "2022-07-06T14:59:07Z",
+        "message": "chore(release): v0.1.6",
+        "url": "https://github.com/nullpo-head/wsl-distrod/commit/4320147cdb31f1cad31950b03447cdd9e9f40a4b"
+    },
+    {
+        "sha": "a273d95e494905914a8cc36a6d2b1291306756e1",
+        "author": "Takaya Saeki",
+        "email": "abc.tkys+pub@gmail.com",
+        "date": "2022-07-05T17:22:33Z",
+        "message": "ci: fix version command which was not solved by #58 (#61)\n\nThe fix introduced by #58 was not sufficient. This PR indeed makes cargo build for the latest updated version.",
+        "url": "https://github.com/nullpo-head/wsl-distrod/commit/a273d95e494905914a8cc36a6d2b1291306756e1"
+    },
+    {
+        "sha": "099b526d775da64d49123ee0b5a48d3609f2fbf0",
+        "author": "Takaya Saeki",
+        "email": "abc.tkys+pub@gmail.com",
+        "date": "2022-07-04T14:34:06Z",
+        "message": "installer: Fix the error which occurred when RELEASE_FILE is the same as the destination (#59)\n\nThis PR fixes the installer crashing when RELEASE_FILE is the same location as opt_distrod.tar.gz",
+        "url": "https://github.com/nullpo-head/wsl-distrod/commit/099b526d775da64d49123ee0b5a48d3609f2fbf0"
+    },
+    {
+        "sha": "fd9bbdcce953b2660207aad2b59ec91ab210a621",
+        "author": "Takaya Saeki",
+        "email": "abc.tkys+pub@gmail.com",
+        "date": "2022-07-03T17:05:17Z",
+        "message": "fix: ci: Fix version command reported wrong version (#58)\n\nCurrently, Conventional Changelog Action runs after the packaging the release assets, the assets are built without the bumped version, thus distrod version reports the old wrong version instead of the bumped version. In addition, the action commits the built assets, which is unintended.\r\n\r\nThis PR fixes that problem by fixing the execution order of Conventional Changelog Action.",
+        "url": "https://github.com/nullpo-head/wsl-distrod/commit/fd9bbdcce953b2660207aad2b59ec91ab210a621"
+    },
+    {
+        "sha": "e4aa1ea1a149d4027c7ca6a7fc4454455ebb7504",
+        "author": "Takaya Saeki",
+        "email": "abc.tkys+pub@gmail.com",
+        "date": "2022-01-20T13:20:53Z",
+        "message": "doc: Restore the instruction of /etc/environment clean up for users of versions prior to 1.5",
+        "url": "https://github.com/nullpo-head/wsl-distrod/commit/e4aa1ea1a149d4027c7ca6a7fc4454455ebb7504"
+    },
+    {
+        "sha": "2ca1b7ec24c313ac96331ba7e6077b8e9d2a48b6",
+        "author": "github-actions[bot]",
+        "email": "41898282+github-actions[bot]@users.noreply.github.com",
+        "date": "2022-01-17T17:14:42Z",
+        "message": "chore(release): v0.1.5",
+        "url": "https://github.com/nullpo-head/wsl-distrod/commit/2ca1b7ec24c313ac96331ba7e6077b8e9d2a48b6"
+    },
+    {
+        "sha": "4bbb8d601e5be7e417d2d1925f973db96690bc16",
+        "author": "Agampreet Singh",
+        "email": "68941022+agam778@users.noreply.github.com",
+        "date": "2022-01-17T16:39:19Z",
+        "message": "misc: Fix typo in options (#30)\n\nFix a typo in options. It was written \"linxcontainers.org\" but the correct one is \"linuxcontainers.org\"",
+        "url": "https://github.com/nullpo-head/wsl-distrod/commit/4bbb8d601e5be7e417d2d1925f973db96690bc16"
+    },
+    {
+        "sha": "fc281789900c561eb933d460e6b39483191fbca2",
+        "author": "Takaya Saeki",
+        "email": "abc.tkys+pub@gmail.com",
+        "date": "2022-01-17T16:38:37Z",
+        "message": "fix: Clean up /etc/environment when distrod is disabled. (#32)\n\n* Implement removal interfaces in EnvFile\r\n\r\n* fix: Clean up /etc/environment when distrod is disabled\r\n\r\n* doc: remove the instruction of manual clean up of /etc/environment\r\n\r\n* ci: disable fail-fast on the integration test matrix",
+        "url": "https://github.com/nullpo-head/wsl-distrod/commit/fc281789900c561eb933d460e6b39483191fbca2"
+    },
+    {
+        "sha": "ab297aab2921143c90618df7265084e488ce8e17",
+        "author": "Takaya Saeki",
+        "email": "abc.tkys+pub@gmail.com",
+        "date": "2022-01-17T16:38:08Z",
+        "message": "ci: automate the release (#35)",
+        "url": "https://github.com/nullpo-head/wsl-distrod/commit/ab297aab2921143c90618df7265084e488ce8e17"
+    },
+    {
+        "sha": "533ee3f942d31f205755c65f6ca934b2086f66c3",
+        "author": "Takaya Saeki",
+        "email": "abc.tkys+pub@gmail.com",
+        "date": "2022-01-17T15:46:43Z",
+        "message": "fix: Fix SystemdUnitDisabler followed absolute symbolic links (#34)\n\n* fix: Fix SystemdUnitDisabler followed absolute symbolic links\r\n\r\n* fix how to follow a symbolic link",
+        "url": "https://github.com/nullpo-head/wsl-distrod/commit/533ee3f942d31f205755c65f6ca934b2086f66c3"
+    },
+    {
+        "sha": "973f9e9406de7d84e6aa763e7fa7f367c9f282f0",
+        "author": "Takaya Saeki",
+        "email": "abc.tkys+pub@gmail.com",
+        "date": "2022-01-17T13:54:18Z",
+        "message": "fix: Update hostname in hosts (#33)\n\n* ci: disable fail-fast on the integration test matrix\r\n\r\n* fix: Update the naem in /etc/hosts in the initilization process",
+        "url": "https://github.com/nullpo-head/wsl-distrod/commit/973f9e9406de7d84e6aa763e7fa7f367c9f282f0"
+    },
+    {
+        "sha": "f919f5497515cc44ca53b79598af426d2c4d830a",
+        "author": "Takaya Saeki",
+        "email": "abc.tkys+pub@gmail.com",
+        "date": "2021-11-29T15:06:38Z",
+        "message": "misc: Improve bug_report.yml",
+        "url": "https://github.com/nullpo-head/wsl-distrod/commit/f919f5497515cc44ca53b79598af426d2c4d830a"
+    },
+    {
+        "sha": "5ae8432e6159d7c5c1d0cecb1827bf66f92677ef",
+        "author": "Takaya Saeki",
+        "email": "abc.tkys+pub@gmail.com",
+        "date": "2021-11-29T14:54:46Z",
+        "message": "misc: Update bug_report.yml",
+        "url": "https://github.com/nullpo-head/wsl-distrod/commit/5ae8432e6159d7c5c1d0cecb1827bf66f92677ef"
+    },
+    {
+        "sha": "7145b255eec01a079e6a8d414a53110de525b4b8",
+        "author": "Takaya Saeki",
+        "email": "abc.tkys+pub@gmail.com",
+        "date": "2021-11-29T14:54:10Z",
+        "message": "misc: Update bug_repot.yml",
+        "url": "https://github.com/nullpo-head/wsl-distrod/commit/7145b255eec01a079e6a8d414a53110de525b4b8"
+    },
+    {
+        "sha": "c224b4e3d91811eec9119131f7b7f63f9ba0dccb",
+        "author": "Takaya Saeki",
+        "email": "abc.tkys+pub@gmail.com",
+        "date": "2021-11-29T14:51:23Z",
+        "message": "misc: Update but_report.yml",
+        "url": "https://github.com/nullpo-head/wsl-distrod/commit/c224b4e3d91811eec9119131f7b7f63f9ba0dccb"
+    },
+    {
+        "sha": "486c805d3a07dbe59b648b69be53d493f35d538f",
+        "author": "Takaya Saeki",
+        "email": "abc.tkys+pub@gmail.com",
+        "date": "2021-11-29T11:12:57Z",
+        "message": "misc: Update bug_repot.yml",
+        "url": "https://github.com/nullpo-head/wsl-distrod/commit/486c805d3a07dbe59b648b69be53d493f35d538f"
+    },
+    {
+        "sha": "ac8dcc3d3c62bd5669ea1f16b243a32c7abed006",
+        "author": "Takaya Saeki",
+        "email": "abc.tkys+pub@gmail.com",
+        "date": "2021-11-25T16:35:11Z",
+        "message": "misc: Use form template for bug reports",
+        "url": "https://github.com/nullpo-head/wsl-distrod/commit/ac8dcc3d3c62bd5669ea1f16b243a32c7abed006"
+    },
+    {
+        "sha": "7104e1279a3fb2c03f8c9ee02416efe5ddd89b66",
+        "author": "Takaya Saeki",
+        "email": "abc.tkys+pub@gmail.com",
+        "date": "2021-11-23T15:56:26Z",
+        "message": "misc: Update issue templates",
+        "url": "https://github.com/nullpo-head/wsl-distrod/commit/7104e1279a3fb2c03f8c9ee02416efe5ddd89b66"
+    },
+    {
+        "sha": "dce16e38faf9155a9c6c989556e93ae3673b5567",
+        "author": "Takaya Saeki",
+        "email": "abc.tkys+pub@gmail.com",
+        "date": "2021-11-20T06:02:13Z",
+        "message": "Release v0.1.4\n\n## Improvements\n\n- Add a little more debug logging\n\n## Bug Fixes\n\n- Fix mount argument, which caused undocumented behavior",
+        "url": "https://github.com/nullpo-head/wsl-distrod/commit/dce16e38faf9155a9c6c989556e93ae3673b5567"
+    },
+    {
+        "sha": "0e5d13dccca008b05d30792ba2a32742342a8089",
+        "author": "Takaya Saeki",
+        "email": "abc.tkys+pub@gmail.com",
+        "date": "2021-11-20T06:01:30Z",
+        "message": "improvement: Add a little more debug logging",
+        "url": "https://github.com/nullpo-head/wsl-distrod/commit/0e5d13dccca008b05d30792ba2a32742342a8089"
+    },
+    {
+        "sha": "b59c6f698e5310e7361402a37fce0c8f9f369f57",
+        "author": "Takaya Saeki",
+        "email": "abc.tkys+pub@gmail.com",
+        "date": "2021-11-20T05:54:46Z",
+        "message": "fix: Fix mount argument, which caused undocumented behavior",
+        "url": "https://github.com/nullpo-head/wsl-distrod/commit/b59c6f698e5310e7361402a37fce0c8f9f369f57"
+    },
+    {
+        "sha": "3a5124dcd1156a8c728434e3ef077057da382707",
+        "author": "Takaya Saeki",
+        "email": "abc.tkys+pub@gmail.com",
+        "date": "2021-11-19T05:42:38Z",
+        "message": "doc: update the reference to disable Distrod.",
+        "url": "https://github.com/nullpo-head/wsl-distrod/commit/3a5124dcd1156a8c728434e3ef077057da382707"
+    },
+    {
+        "sha": "0920262c8087bccd478306059a760ef8f661352c",
+        "author": "Takaya Saeki",
+        "email": "abc.tkys+pub@gmail.com",
+        "date": "2021-11-14T17:06:51Z",
+        "message": "Release v0.1.3\n\n## Bug Fixes\n\n- Fix a tar archive containing files with log path/linkname was not handled correctly (Fix #6)",
+        "url": "https://github.com/nullpo-head/wsl-distrod/commit/0920262c8087bccd478306059a760ef8f661352c"
+    },
+    {
+        "sha": "aeb96fd3fc5a01eac88ca858d3c246ee13cf0e18",
+        "author": "Takaya Saeki",
+        "email": "abc.tkys+pub@gmail.com",
+        "date": "2021-11-14T17:05:59Z",
+        "message": "fix: Fix a tar archive containing files with log path/linkname was not handled correctly (Fix #6)",
+        "url": "https://github.com/nullpo-head/wsl-distrod/commit/aeb96fd3fc5a01eac88ca858d3c246ee13cf0e18"
+    },
+    {
+        "sha": "2fe6aef8453a89e86483d4f4414c34b00d2f9aaf",
+        "author": "Takaya Saeki",
+        "email": "abc.tkys+pub@gmail.com",
+        "date": "2021-11-09T16:19:35Z",
+        "message": "Release v0.1.2\n\n## Bug Fixes\n\n- Fix scheduling task was not working on Windows of non-English locale. (Fix #4)",
+        "url": "https://github.com/nullpo-head/wsl-distrod/commit/2fe6aef8453a89e86483d4f4414c34b00d2f9aaf"
+    },
+    {
+        "sha": "b5ded6fba0e6d43fd0f719efa9ed7e314dd178d7",
+        "author": "Takaya Saeki",
+        "email": "abc.tkys+pub@gmail.com",
+        "date": "2021-11-09T16:17:37Z",
+        "message": "fix: Fix scheduling task was not working on Windows of non-English locale. (Fix #4)",
+        "url": "https://github.com/nullpo-head/wsl-distrod/commit/b5ded6fba0e6d43fd0f719efa9ed7e314dd178d7"
+    },
+    {
+        "sha": "734805502853de9eaf80f3625324592872985ec8",
+        "author": "Takaya Saeki",
+        "email": "abc.tkys+pub@gmail.com",
+        "date": "2021-11-08T20:32:12Z",
+        "message": "doc: Remove the old instruction and fix a link",
+        "url": "https://github.com/nullpo-head/wsl-distrod/commit/734805502853de9eaf80f3625324592872985ec8"
+    }
+]

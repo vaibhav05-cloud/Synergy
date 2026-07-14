@@ -1,0 +1,356 @@
+[
+    {
+        "id": 2341453674,
+        "number": 44,
+        "title": "Public or personal use?",
+        "state": "closed",
+        "created_at": "2024-06-08T04:30:14Z",
+        "updated_at": "2024-06-18T11:47:22Z",
+        "closed_at": "2024-06-18T11:47:22Z",
+        "author": "anoduck",
+        "comments": 3,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "Is this repo for public or private use? Is this being maintained anymore?\r\n\r\nTried running it several times, and there are several dependencies that are not mentioned in the docs. For example: nmcli, and a working resolv.systemd configuration. \r\n\r\nWere you aware that it overwrites `/etc/resolve.conf` with a symbolic link to `/etc/systemd/resolv.conf` or some reasonable facsimile there of? ",
+        "url": "https://github.com/InfamousSYN/rogue/issues/44"
+    },
+    {
+        "id": 2339363640,
+        "number": 43,
+        "title": "Feature Request: Configuration file && Network Options",
+        "state": "closed",
+        "created_at": "2024-06-07T00:35:45Z",
+        "updated_at": "2024-06-07T06:04:27Z",
+        "closed_at": "2024-06-07T06:04:27Z",
+        "author": "anoduck",
+        "comments": 1,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "As a matter of convenience and to provide a way for Rogue to run as a system service, Rogue needs the ability to be configured with a configuration file. Also, Rogue needs the ability to allow users to manage some of the network configuration parameters in order to prevent remote users from being booted off during startup. \r\n\r\nI can implement configobj to manage the configuration of Rogue, it would be tedious but very doable. Implementing some network configuration parameters would be slightly more difficult, but still no biggie. I am more than likely going to have to make these modifications. I don't know how involved you are in the upkeep of this project, and wanted to see if you would like for me to submit a pull request once those changes are made?",
+        "url": "https://github.com/InfamousSYN/rogue/issues/43"
+    },
+    {
+        "id": 1899534991,
+        "number": 40,
+        "title": "Modlishka Fails to start with certification generation error.",
+        "state": "closed",
+        "created_at": "2023-09-16T18:52:04Z",
+        "updated_at": "2023-09-18T05:37:17Z",
+        "closed_at": "2023-09-18T05:37:17Z",
+        "author": "anoduck",
+        "comments": 1,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "Error encountered with generation of Modlishka certificate on a fresh and updated installation of Kali linux. \r\n\r\n```bash\r\nwlan0: ACS-STARTED \r\n[Sun Sep 17 00:07:10 2023]  INF  Enabling plugin: autocert v0.1\r\n[Sun Sep 17 00:07:10 2023]  INF  Autocert plugin: Auto-generating my-host.com domain TLS certificate\r\n[Sun Sep 17 00:07:11 2023]  ERR  Error creating certificate: x509: serial number must be positive\r\n[Sun Sep 17 00:07:11 2023]  INF  Enabling plugin: control_panel v0.1\r\n[Sun Sep 17 00:07:11 2023]  INF  Enabling plugin: hijack v0.1\r\n[Sun Sep 17 00:07:11 2023]  INF  Enabling plugin: template v0.1\r\n[Sun Sep 17 00:07:11 2023]  INF  Control Panel: modlishka.example.com handler registered\r\n[Sun Sep 17 00:07:11 2023]  INF  Control Panel URL: my-host.com/modlishka.example.com\r\n[Sun Sep 17 00:07:11 2023]  INF  \r\n\r\n _______           __ __ __         __     __          \r\n|   |   |.-----.--|  |  |__|.-----.|  |--.|  |--.---.-.\r\n|       ||  _  |  _  |  |  ||__ --||     ||    <|  _  |\r\n|__|_|__||_____|_____|__|__||_____||__|__||__|__|___._|\r\n\r\n>>>> \"Modlishka\" Reverse Proxy started - v.1.1 <<<<\r\nAuthor: Piotr Duszynski @drk1wi  \r\n\r\nListening on [192.168.xxx.xxx:443]\r\nProxying HTTPS [somesite.com] via [https://my-host.com]\r\nListening on [192.168.xxx.xxx:80]\r\nProxying HTTP [somesite.com] via [http://my-host.com]\r\n[Sun Sep 17 00:07:11 2023]  !!!  x509: malformed certificate . Terminating.\r\n```",
+        "url": "https://github.com/InfamousSYN/rogue/issues/40"
+    },
+    {
+        "id": 1531577629,
+        "number": 38,
+        "title": "Invalid country_code value when no argument is supplied",
+        "state": "closed",
+        "created_at": "2023-01-13T01:34:13Z",
+        "updated_at": "2023-12-18T00:37:09Z",
+        "closed_at": "2023-12-18T00:37:08Z",
+        "author": "InfamousSYN",
+        "comments": 3,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "When deploying an AP using the following command, an exception is raised reporting an invalid country_code value.\r\n```\r\nsudo python3 /opt/rogue/rogue.py -i wlan0 --auth wpa-personal --wpa 2 --wpa-passphrase \"test test\" --internet --preset-profile wifi4 --channel-randomiser\r\n```\r\n\r\nThe full stack trace below:\r\n```\r\n──(kali㉿kali)-[/opt/rogue]\r\n└─$ sudo python3 /opt/rogue/rogue.py -i wlan0 --auth wpa-personal --wpa 2 --wpa-passphrase \"test test\" --internet --preset-profile wifi4 --channel-randomiser\r\n[sudo] password for kali: \r\n[*] Launching the rogue toolkit v3.0.3\r\n[-]\r\n[-] Randomised channel selection is superseding ACS\r\n[-]   Channel 1 was selected\r\n[-] Launching rogue at: 2023-01-12 20:30:51.615436\r\n\r\n[*] Reticulating radio frequency splines...\r\n\r\n100%|█████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 1/1 [00:01<00:00,  1.00s/it]\r\n\r\n[+] Creating hostapd-wpe.confg file: /opt/rogue/tmp/hostapd-wpe.conf\r\n[+] Creating /etc/default/isc-dhcp-server file: /etc/default/isc-dhcp-server\r\n[+] Creating dhcpd.conf file: /etc/dhcp/dhcpd.conf\r\n\r\n[*] Starting isc-dhcp-server service.\r\n\r\n100%|█████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 4/4 [00:04<00:00,  1.00s/it]\r\n\r\n[*] Launching hostapd-wpe\r\nLine 104: Invalid country_code '0'\r\n1 errors found in configuration file '/opt/rogue/tmp/hostapd-wpe.conf'\r\nFailed to set up interface with /opt/rogue/tmp/hostapd-wpe.conf\r\nFailed to initialize interface\r\n[*] Enabling IP forwarding\r\nPress enter to quit...\r\n```",
+        "url": "https://github.com/InfamousSYN/rogue/issues/38"
+    },
+    {
+        "id": 1168997948,
+        "number": 33,
+        "title": "Certificate artifact existence exception not raised",
+        "state": "closed",
+        "created_at": "2022-03-14T22:59:26Z",
+        "updated_at": "2022-03-14T23:07:37Z",
+        "closed_at": "2022-03-14T23:07:37Z",
+        "author": "InfamousSYN",
+        "comments": 0,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [
+            "InfamousSYN"
+        ],
+        "locked": false,
+        "body": "If a file is not located, an exception is meant to be raised to alert the user to run `--cert-wizard` and exit cleanly. Currently the check silently fails and continues. \r\n\r\nhttps://github.com/InfamousSYN/rogue/blob/3b2bd79f2d1d06a7a5e9e75ad339212fee1d8a42/rogue.py#L120-L137",
+        "url": "https://github.com/InfamousSYN/rogue/issues/33"
+    },
+    {
+        "id": 1011468437,
+        "number": 31,
+        "title": "802.11ac WPA2-Personal Issue",
+        "state": "open",
+        "created_at": "2021-09-29T21:37:59Z",
+        "updated_at": "2021-09-29T21:42:55Z",
+        "closed_at": null,
+        "author": "InfamousSYN",
+        "comments": 0,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "When deploying a WPA2-Personal network that uses the 802.11AC protocol, `hostapd-wpe` returns the error after reporting it could not set the channel for the kernel driver:\r\n```\r\nhostapd_free_hapd_data\r\n```\r\n\r\nCommand being used:\r\n```\r\nsudo python3 rogue.py -i wlan0 -h ac -c 36 --auth wpa-personal --wpa 2 --wpa-passphrase '[[PSK]]'\r\n```\r\n\r\nThe changing to `-h n -c 11` allowed the network to be provisioned as expected.",
+        "url": "https://github.com/InfamousSYN/rogue/issues/31"
+    },
+    {
+        "id": 877279471,
+        "number": 29,
+        "title": "Disable IPv6 Support in freeradius-wpe",
+        "state": "closed",
+        "created_at": "2021-05-06T09:11:57Z",
+        "updated_at": "2021-05-07T12:18:31Z",
+        "closed_at": "2021-05-07T12:18:31Z",
+        "author": "InfamousSYN",
+        "comments": 0,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "Fresh install of freeradius results in a config error due to support an IPv6 listener - disable in template\r\n```\r\nFailed opening auth address :: port 1812 bound to server default: Address family not supported by protocol\r\n/etc/freeradius-wpe/3.0/sites-enabled/default[245]: Error binding to port for :: port 1812\r\n```",
+        "url": "https://github.com/InfamousSYN/rogue/issues/29"
+    },
+    {
+        "id": 877273754,
+        "number": 28,
+        "title": "dependency: iw",
+        "state": "open",
+        "created_at": "2021-05-06T09:05:45Z",
+        "updated_at": "2021-05-06T09:05:45Z",
+        "closed_at": null,
+        "author": "InfamousSYN",
+        "comments": 0,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "add `iw` to apt installed tools",
+        "url": "https://github.com/InfamousSYN/rogue/issues/28"
+    },
+    {
+        "id": 849781017,
+        "number": 27,
+        "title": "clear existing certificates when generatering new certs",
+        "state": "open",
+        "created_at": "2021-04-04T02:22:17Z",
+        "updated_at": "2021-04-04T02:22:37Z",
+        "closed_at": null,
+        "author": "InfamousSYN",
+        "comments": 0,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "`cert-wizard` can't currently overwrite existing server.pem files. Solution is to remove any previously generated certificates at the start of the `cert-wizard` process. \r\n",
+        "url": "https://github.com/InfamousSYN/rogue/issues/27"
+    },
+    {
+        "id": 470264384,
+        "number": 24,
+        "title": "wlan1: interface state UNINITIALIZED->DISABLED",
+        "state": "closed",
+        "created_at": "2019-07-19T10:53:01Z",
+        "updated_at": "2021-05-07T12:41:11Z",
+        "closed_at": "2021-05-07T12:41:11Z",
+        "author": "jepunband",
+        "comments": 1,
+        "labels": [
+            "question"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "Hi, i'm using a supported wireless card that supports Monitor and AP mode , don't have issues with this card using other wireless tools that requires AP mode.\r\nBut i get error with this tool : \r\n\r\nConfiguration file: /home/gill/rogue/tmp/hostapd-wpe.conf\r\nACS: Automatic channel selection started, this may take a bit\r\nwlan1: interface state UNINITIALIZED->ACS\r\nwlan1: ACS-STARTED \r\nConfiguration file: /home/gill/rogue/tmp/hostapd-wpe.conf\r\nwlan1: INTERFACE-DISABLED \r\nnl80211: Could not configure driver mode\r\nnl80211: deinit ifname=wlan1 disabled_11b_rates=0\r\nnl80211 driver initialization failed.\r\nwlan1: interface state UNINITIALIZED->DISABLED\r\nwlan1: AP-DISABLED \r\nwlan1: CTRL-EVENT-TERMINATING \r\nhostapd_free_hapd_data: Interface wlan1 wasn't started\r\nACS: Failed to request initial scan\r\nACS: Failed to request scan\r\nInterface initialization failed\r\nwlan1: interface state ACS->DISABLED\r\nwlan1: AP-DISABLED \r\nACS: Failed to start\r\nwlan1: AP-DISABLED \r\nhostapd_free_hapd_data: Interface wlan1 wasn't started\r\nnl80211: deinit ifname=wlan1 disabled_11b_rates=0\r\nwlan1: interface state DISABLED->DISABLED\r\nwlan1: interface state DISABLED->DISABLED\r\nwlan1: AP-DISABLED \r\nwlan1: CTRL-EVENT-TERMINATING \r\nhostapd_free_hapd_data: Interface wlan1 wasn't started\r\n ",
+        "url": "https://github.com/InfamousSYN/rogue/issues/24"
+    },
+    {
+        "id": 446923445,
+        "number": 23,
+        "title": "karma preventing wpa-enterprise evil twin",
+        "state": "closed",
+        "created_at": "2019-05-22T04:07:32Z",
+        "updated_at": "2019-05-22T23:03:01Z",
+        "closed_at": "2019-05-22T23:03:00Z",
+        "author": "InfamousSYN",
+        "comments": 0,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "When the `--karma` flag is used, hostapd-wpe is launched twice, resulting in the user never being able to provide 802.1x authentication. Put in exception handling so that `--karma` can only be used with `--auth open`.",
+        "url": "https://github.com/InfamousSYN/rogue/issues/23"
+    },
+    {
+        "id": 442011219,
+        "number": 22,
+        "title": "Addressing unnesscary launching of radius server",
+        "state": "open",
+        "created_at": "2019-05-09T01:38:40Z",
+        "updated_at": "2019-05-09T01:38:40Z",
+        "closed_at": null,
+        "author": "InfamousSYN",
+        "comments": 0,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "Due to incorrect tab alignments between rogue.py:339 and rogue.py:416, the radius server is launched for all authentication types rather than just wpa-enterprise. ",
+        "url": "https://github.com/InfamousSYN/rogue/issues/22"
+    },
+    {
+        "id": 424671724,
+        "number": 21,
+        "title": "Isn't the deafult eap mode is selected by the client only ?!!",
+        "state": "closed",
+        "created_at": "2019-03-24T23:04:19Z",
+        "updated_at": "2019-05-09T23:06:19Z",
+        "closed_at": "2019-05-08T23:44:53Z",
+        "author": "minanagehsalalma",
+        "comments": 1,
+        "labels": [
+            "question"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "And is there an option to receive the password in plaintext ?!\r\nAs android default settings are peap  !!",
+        "url": "https://github.com/InfamousSYN/rogue/issues/21"
+    },
+    {
+        "id": 398716992,
+        "number": 19,
+        "title": "support for manual loading of hostapd-wpe config file",
+        "state": "closed",
+        "created_at": "2019-01-14T00:23:30Z",
+        "updated_at": "2019-01-14T23:06:26Z",
+        "closed_at": "2019-01-14T23:06:26Z",
+        "author": "InfamousSYN",
+        "comments": 1,
+        "labels": [
+            "enhancement"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "Add the functionality to optionally load a manually crafted hostapd-wpe config file instead of dynamically generating one with rogue. ",
+        "url": "https://github.com/InfamousSYN/rogue/issues/19"
+    },
+    {
+        "id": 396310169,
+        "number": 18,
+        "title": "add dnsspoofing capability",
+        "state": "open",
+        "created_at": "2019-01-07T00:15:38Z",
+        "updated_at": "2020-06-23T11:43:35Z",
+        "closed_at": null,
+        "author": "InfamousSYN",
+        "comments": 1,
+        "labels": [
+            "enhancement"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "Using dnsmasq, rogue can then perform hostile portal attacks by redirecting users traffic based using a DNS spoofing attack.",
+        "url": "https://github.com/InfamousSYN/rogue/issues/18"
+    },
+    {
+        "id": 385476645,
+        "number": 15,
+        "title": "increase the supported --country list options",
+        "state": "closed",
+        "created_at": "2018-11-28T22:05:09Z",
+        "updated_at": "2018-12-09T03:18:26Z",
+        "closed_at": "2018-12-09T03:18:26Z",
+        "author": "InfamousSYN",
+        "comments": 1,
+        "labels": [
+            "enhancement"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "",
+        "url": "https://github.com/InfamousSYN/rogue/issues/15"
+    },
+    {
+        "id": 384125767,
+        "number": 14,
+        "title": "move all default values out of options.py and into config.py",
+        "state": "closed",
+        "created_at": "2018-11-25T22:25:25Z",
+        "updated_at": "2018-12-09T22:27:24Z",
+        "closed_at": "2018-12-09T22:27:24Z",
+        "author": "InfamousSYN",
+        "comments": 1,
+        "labels": [
+            "enhancement"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "",
+        "url": "https://github.com/InfamousSYN/rogue/issues/14"
+    },
+    {
+        "id": 382060870,
+        "number": 12,
+        "title": "change wpa2-enterprise password log to always on",
+        "state": "closed",
+        "created_at": "2018-11-19T05:19:09Z",
+        "updated_at": "2019-01-08T02:33:20Z",
+        "closed_at": "2019-01-08T02:33:20Z",
+        "author": "InfamousSYN",
+        "comments": 1,
+        "labels": [
+            "enhancement"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "Currently rogue is set to when doing a WPA2-Enterprise the `--log-goodpass` and `--log-badpass` set for freeradius to record the credentials. It should be changed to automatically enabled and if set, then disable the corresponding behaviour.",
+        "url": "https://github.com/InfamousSYN/rogue/issues/12"
+    },
+    {
+        "id": 381922808,
+        "number": 11,
+        "title": "add control of macaddr_acl files",
+        "state": "closed",
+        "created_at": "2018-11-18T02:54:02Z",
+        "updated_at": "2018-11-20T00:50:36Z",
+        "closed_at": "2018-11-20T00:50:35Z",
+        "author": "InfamousSYN",
+        "comments": 1,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "Currently when the `macaddr-acl` switch is enabled, the rogue does not automatically manage the MAC address files for hostapd-wpe.\r\n\r\n> \\# Accept/deny lists are read from separate files (containing list of\r\n\\# MAC addresses, one per line). Use absolute path name to make sure that the\r\n\\# files can be read on SIGHUP configuration reloads.\r\n\\#accept_mac_file=/etc/hostapd.accept\r\n\\#deny_mac_file=/etc/hostapd.deny\r\n",
+        "url": "https://github.com/InfamousSYN/rogue/issues/11"
+    },
+    {
+        "id": 381444487,
+        "number": 10,
+        "title": "check length requirements of wep key",
+        "state": "closed",
+        "created_at": "2018-11-16T04:43:34Z",
+        "updated_at": "2019-01-14T03:10:32Z",
+        "closed_at": "2019-01-14T03:10:32Z",
+        "author": "mstiles-shearwater",
+        "comments": 1,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "Currently the WEP key has no length checks which result in errors when the expected lengths are not met.\r\n\r\n> \\# A key may be a quoted string or unquoted hexadecimal digits.  \r\n\\# The key length should be 5, 13, or 16 characters, or 10, 26, or 32  \r\n\\# digits, depending on whether 40-bit (64-bit), 104-bit (128-bit), or\r\n\\# 128-bit (152-bit) WEP is used.",
+        "url": "https://github.com/InfamousSYN/rogue/issues/10"
+    }
+]

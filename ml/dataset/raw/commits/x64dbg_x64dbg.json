@@ -1,0 +1,242 @@
+[
+    {
+        "sha": "77a7ed00b81e0d614c53712ff2f0236920949c2e",
+        "author": "Duncan Ogilvie",
+        "email": "mr.exodia.tpodt@gmail.com",
+        "date": "2026-07-13T20:40:29Z",
+        "message": "Merge pull request #3903 from justanotheranonymoususer/patch-1\n\nFix crash in RegistersView::accessibilityValueChanged",
+        "url": "https://github.com/x64dbg/x64dbg/commit/77a7ed00b81e0d614c53712ff2f0236920949c2e"
+    },
+    {
+        "sha": "29a178777b124ef90f12d5f88204e1438a5ed26d",
+        "author": "justanotheranonymoususer",
+        "email": "justanotheranonymoususer@users.noreply.github.com",
+        "date": "2026-07-13T20:14:03Z",
+        "message": "Fix crash in RegistersView::accessibilityValueChanged",
+        "url": "https://github.com/x64dbg/x64dbg/commit/29a178777b124ef90f12d5f88204e1438a5ed26d"
+    },
+    {
+        "sha": "18438f7a1ea3edfe51e5b81289c1363315731127",
+        "author": "Duncan Ogilvie",
+        "email": "mr.exodia.tpodt@gmail.com",
+        "date": "2026-07-10T16:55:58Z",
+        "message": "Merge pull request #3900 from Alligator-1/patch-1\n\nstr.streq - that doesn't exist, there is streq",
+        "url": "https://github.com/x64dbg/x64dbg/commit/18438f7a1ea3edfe51e5b81289c1363315731127"
+    },
+    {
+        "sha": "5e2036c4a0b02f896a91d2c0bfdcd8c4ac2cdd53",
+        "author": "Alligator-1",
+        "email": "alligator.ak@gmail.com",
+        "date": "2026-07-10T15:41:25Z",
+        "message": "str.streq - that doesn't exist, there is streq",
+        "url": "https://github.com/x64dbg/x64dbg/commit/5e2036c4a0b02f896a91d2c0bfdcd8c4ac2cdd53"
+    },
+    {
+        "sha": "ac70d947124bf1802cf2b86eee483e5ef2d38c48",
+        "author": "Duncan Ogilvie",
+        "email": "mr.exodia.tpodt@gmail.com",
+        "date": "2026-07-08T12:54:02Z",
+        "message": "Re-enable crash dumps",
+        "url": "https://github.com/x64dbg/x64dbg/commit/ac70d947124bf1802cf2b86eee483e5ef2d38c48"
+    },
+    {
+        "sha": "931f3be64d91b89023924c83512d2b83449c6008",
+        "author": "Duncan Ogilvie",
+        "email": "mr.exodia.tpodt@gmail.com",
+        "date": "2026-07-04T10:08:27Z",
+        "message": "Merge pull request #3898 from m417z/remove-second-manifest\n\nDisable linker manifest generation for exe and launcher",
+        "url": "https://github.com/x64dbg/x64dbg/commit/931f3be64d91b89023924c83512d2b83449c6008"
+    },
+    {
+        "sha": "f0f756dfd5541f37861b0415d80332920eaa556a",
+        "author": "Michael Maltsev",
+        "email": "4129781+m417z@users.noreply.github.com",
+        "date": "2026-06-23T17:26:22Z",
+        "message": "Disable linker manifest generation for exe and launcher\n\nresource.rc already embeds manifest.xml as an RT_MANIFEST resource. With\nthe MSVC linker's default manifest generation left on, the linker embeds\nits own minimal manifest too, producing two RT_MANIFEST resources in the\nPE (the rich rc one at language 0 and the linker default at language\n1033). They coexist because resource identity is (type, name, language).\n\nThe old Visual Studio projects suppressed this via GenerateManifest=false\n(commit a339dd2d), but that setting was lost when the projects were\nremoved in favor of CMake (commit df110dc0). Restore it by adding\n/MANIFEST:NO to the link options of the two targets that embed the\nmanifest, so only the resource.rc manifest is kept.\n\nCo-Authored-By: Claude Opus 4.8 (1M context) <noreply@anthropic.com>",
+        "url": "https://github.com/x64dbg/x64dbg/commit/f0f756dfd5541f37861b0415d80332920eaa556a"
+    },
+    {
+        "sha": "4dd56d03b3ba56101e72abedd83fa8d9eaec20ab",
+        "author": "Duncan Ogilvie",
+        "email": "mr.exodia.tpodt@gmail.com",
+        "date": "2026-07-03T10:55:33Z",
+        "message": "Merge pull request #3885 from m417z/datainst-improvements\n\nImprove db/dw/dd/dq instructions",
+        "url": "https://github.com/x64dbg/x64dbg/commit/4dd56d03b3ba56101e72abedd83fa8d9eaec20ab"
+    },
+    {
+        "sha": "78ea8b1c85af61f83639287b1c75b7e8188a4e89",
+        "author": "Duncan Ogilvie",
+        "email": "mr.exodia.tpodt@gmail.com",
+        "date": "2026-07-01T11:18:54Z",
+        "message": "Merge pull request #3895 from 0x355/fix/issue-2575-fill-patch-tracking\n\nFix #2575: Track patches from Fill/memset command",
+        "url": "https://github.com/x64dbg/x64dbg/commit/78ea8b1c85af61f83639287b1c75b7e8188a4e89"
+    },
+    {
+        "sha": "9104fd025f89137c36001899fd2a7dae98424d65",
+        "author": "0x355",
+        "email": "gh@black.com",
+        "date": "2026-06-30T11:00:45Z",
+        "message": "Fix #2575: Track patches from Fill/memset command",
+        "url": "https://github.com/x64dbg/x64dbg/commit/9104fd025f89137c36001899fd2a7dae98424d65"
+    },
+    {
+        "sha": "ec18680690e007603d9100ed61a452ea7c54236f",
+        "author": "Duncan Ogilvie",
+        "email": "mr.exodia.tpodt@gmail.com",
+        "date": "2026-06-25T23:07:29Z",
+        "message": "Add AI policy",
+        "url": "https://github.com/x64dbg/x64dbg/commit/ec18680690e007603d9100ed61a452ea7c54236f"
+    },
+    {
+        "sha": "19bdf259067a36ea8a13e54f963808695cf30c8f",
+        "author": "Duncan Ogilvie",
+        "email": "mr.exodia.tpodt@gmail.com",
+        "date": "2026-06-24T13:47:11Z",
+        "message": "Make exe target depend on third_party target to build TitanEngine\n\nCloses #3880",
+        "url": "https://github.com/x64dbg/x64dbg/commit/19bdf259067a36ea8a13e54f963808695cf30c8f"
+    },
+    {
+        "sha": "ca6b2fa0ef3b24e43239aba2a1c32322207e885a",
+        "author": "Michael Maltsev",
+        "email": "4129781+m417z@users.noreply.github.com",
+        "date": "2026-06-23T16:10:35Z",
+        "message": "Improve db/dw/dd/dq instructions\n\nAllow multiple values, negative values, and packed bytes.\n\nPreviously implemented:\ndb 12 ; single 0x12 byte\ndw 1234 ; single 0x1234 word\n\nThis PR implements:\ndb -2 ; one byte: 0xFE\ndb 12 34 ; two bytes: 0x12 0x34\ndw 1234 56 ; two words: 0x1234 0x0056\ndb 123456 ; three bytes: 0x12 0x34 0x56\ndb 123 ; two bytes: 0x01 0x23\n\nThe packed syntax (no spaces) is only implemented for db.",
+        "url": "https://github.com/x64dbg/x64dbg/commit/ca6b2fa0ef3b24e43239aba2a1c32322207e885a"
+    },
+    {
+        "sha": "f2a33dded7c403cddeb420bc1210a5354e030798",
+        "author": "Duncan Ogilvie",
+        "email": "mr.exodia.tpodt@gmail.com",
+        "date": "2026-06-22T15:02:50Z",
+        "message": "Merge pull request #3883 from winstonwolfrce/cmdline\n\nDon't overwrite explicit command line with DB-loaded one on launch",
+        "url": "https://github.com/x64dbg/x64dbg/commit/f2a33dded7c403cddeb420bc1210a5354e030798"
+    },
+    {
+        "sha": "c655ecc30b680d092cc7f6c89d7346818611848a",
+        "author": "Winston Wolf",
+        "email": "winston.wolf.rce@proton.me",
+        "date": "2026-06-21T08:26:21Z",
+        "message": "Don't overwrite explicit command line with DB-loaded one on launch\n\nWhen a command line is explicitly provided at startup, skip loading\nthe saved command line from the database so the explicit one is used.",
+        "url": "https://github.com/x64dbg/x64dbg/commit/c655ecc30b680d092cc7f6c89d7346818611848a"
+    },
+    {
+        "sha": "6373153bf1b27c1a52e6dd0031881b80a9dbfc18",
+        "author": "Duncan Ogilvie",
+        "email": "mr.exodia.tpodt@gmail.com",
+        "date": "2026-06-01T13:30:52Z",
+        "message": "Fix trace memory pattern match indexes",
+        "url": "https://github.com/x64dbg/x64dbg/commit/6373153bf1b27c1a52e6dd0031881b80a9dbfc18"
+    },
+    {
+        "sha": "6745f23802d0cc55d4ea26cee925b463ac1a0ebf",
+        "author": "Duncan Ogilvie",
+        "email": "mr.exodia.tpodt@gmail.com",
+        "date": "2026-05-31T16:07:53Z",
+        "message": "Fix trace xref where all memory reads/writes were pointer size",
+        "url": "https://github.com/x64dbg/x64dbg/commit/6745f23802d0cc55d4ea26cee925b463ac1a0ebf"
+    },
+    {
+        "sha": "a8de10f4226248a20e012a51b997766a10d8b162",
+        "author": "Duncan Ogilvie",
+        "email": "mr.exodia.tpodt@gmail.com",
+        "date": "2026-05-31T16:07:07Z",
+        "message": "Flush trace recording when an exception is hit to not lose data",
+        "url": "https://github.com/x64dbg/x64dbg/commit/a8de10f4226248a20e012a51b997766a10d8b162"
+    },
+    {
+        "sha": "1ad18f19858f792ee439c16278197bc9f2deb2e7",
+        "author": "Duncan Ogilvie",
+        "email": "mr.exodia.tpodt@gmail.com",
+        "date": "2026-05-30T00:08:34Z",
+        "message": "Properly show data in disassembly popup",
+        "url": "https://github.com/x64dbg/x64dbg/commit/1ad18f19858f792ee439c16278197bc9f2deb2e7"
+    },
+    {
+        "sha": "edfd86f84fb47f0830ebfc95d2da27ada66e422a",
+        "author": "Duncan Ogilvie",
+        "email": "mr.exodia.tpodt@gmail.com",
+        "date": "2026-05-30T00:00:04Z",
+        "message": "Fix EncodeMap buffer management and delRange",
+        "url": "https://github.com/x64dbg/x64dbg/commit/edfd86f84fb47f0830ebfc95d2da27ada66e422a"
+    },
+    {
+        "sha": "39a12000c979dd3d6eca40f6e5baaeba11687afd",
+        "author": "Duncan Ogilvie",
+        "email": "mr.exodia.tpodt@gmail.com",
+        "date": "2026-05-29T20:54:10Z",
+        "message": "Skip data when iterating references",
+        "url": "https://github.com/x64dbg/x64dbg/commit/39a12000c979dd3d6eca40f6e5baaeba11687afd"
+    },
+    {
+        "sha": "353e3a21b7cec411d31698063a87fbce1f4e7e62",
+        "author": "Duncan Ogilvie",
+        "email": "mr.exodia.tpodt@gmail.com",
+        "date": "2026-05-29T20:53:18Z",
+        "message": "Fix missing zmmword in a few places",
+        "url": "https://github.com/x64dbg/x64dbg/commit/353e3a21b7cec411d31698063a87fbce1f4e7e62"
+    },
+    {
+        "sha": "2245da87352345d81dae572aecc272f6ee45b75c",
+        "author": "Duncan Ogilvie",
+        "email": "mr.exodia.tpodt@gmail.com",
+        "date": "2026-05-29T20:52:56Z",
+        "message": "Return success from data commands correctly",
+        "url": "https://github.com/x64dbg/x64dbg/commit/2245da87352345d81dae572aecc272f6ee45b75c"
+    },
+    {
+        "sha": "01bbfc0bd7679d21f5a7c592f7815979bb8b036c",
+        "author": "Duncan Ogilvie",
+        "email": "mr.exodia.tpodt@gmail.com",
+        "date": "2026-05-27T18:13:29Z",
+        "message": "Do not show register view when not debugging",
+        "url": "https://github.com/x64dbg/x64dbg/commit/01bbfc0bd7679d21f5a7c592f7815979bb8b036c"
+    },
+    {
+        "sha": "9c8ca1cae0b6d56cc44f31fddcb10e3b02ffbb87",
+        "author": "Duncan Ogilvie",
+        "email": "mr.exodia.tpodt@gmail.com",
+        "date": "2026-05-26T22:54:13Z",
+        "message": "Allow passing absolute path to -cf\n\nCloses #3865",
+        "url": "https://github.com/x64dbg/x64dbg/commit/9c8ca1cae0b6d56cc44f31fddcb10e3b02ffbb87"
+    },
+    {
+        "sha": "9bb33a858ea39c80b8e7dcf92562680d69b51360",
+        "author": "Xander Steyn",
+        "email": "xandersteyn.dev@gmail.com",
+        "date": "2026-05-26T22:01:46Z",
+        "message": "Show hotkeys in toolbar tooltips (#3864)\n\n* gui: show hotkeys in toolbar tooltips\n\n* format code",
+        "url": "https://github.com/x64dbg/x64dbg/commit/9bb33a858ea39c80b8e7dcf92562680d69b51360"
+    },
+    {
+        "sha": "eb413ad364aeda6dc78fd45e702491009305280d",
+        "author": "Duncan Ogilvie",
+        "email": "mr.exodia.tpodt@gmail.com",
+        "date": "2026-05-26T11:04:39Z",
+        "message": "Merge pull request #3842 from x64dbg/feature/pageupdown-move-selection\n\nFeature/pageupdown move selection",
+        "url": "https://github.com/x64dbg/x64dbg/commit/eb413ad364aeda6dc78fd45e702491009305280d"
+    },
+    {
+        "sha": "086f733d70a3197140b6f0a7470e7cd40c283cf5",
+        "author": "Duncan Ogilvie",
+        "email": "mr.exodia.tpodt@gmail.com",
+        "date": "2026-05-26T11:04:19Z",
+        "message": "Merge pull request #3860 from XanderSteyn/move-fpu-button\n\nMove toggle FPU button into menu",
+        "url": "https://github.com/x64dbg/x64dbg/commit/086f733d70a3197140b6f0a7470e7cd40c283cf5"
+    },
+    {
+        "sha": "7492c7324e8c9ebcb1eaecaaea38f299b116b910",
+        "author": "Duncan Ogilvie",
+        "email": "mr.exodia.tpodt@gmail.com",
+        "date": "2026-05-26T11:03:11Z",
+        "message": "Merge pull request #3863 from torusrxxx/torusrxxx-patch-1\n\nFix memory fault in trace reader when memory status change",
+        "url": "https://github.com/x64dbg/x64dbg/commit/7492c7324e8c9ebcb1eaecaaea38f299b116b910"
+    },
+    {
+        "sha": "d2cd4a73bc9d3cdd4bcda40e1fd324b11b2a0ae1",
+        "author": "Torusrxxx",
+        "email": "torusrxxx@users.noreply.github.com",
+        "date": "2026-05-26T10:16:37Z",
+        "message": "Fix memory fault in trace reader when memory status change",
+        "url": "https://github.com/x64dbg/x64dbg/commit/d2cd4a73bc9d3cdd4bcda40e1fd324b11b2a0ae1"
+    }
+]

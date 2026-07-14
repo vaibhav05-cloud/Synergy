@@ -1,0 +1,242 @@
+[
+    {
+        "sha": "130bfd5d745c6286fe7ec769710c399ea31e50b1",
+        "author": "Saurav Mohapatra",
+        "email": "mohaps@gmail.com",
+        "date": "2024-09-11T08:05:37Z",
+        "message": "Merge pull request #25 from ligazetom/master\n\nAdd missing argument to getCopy",
+        "url": "https://github.com/mohaps/lrucache11/commit/130bfd5d745c6286fe7ec769710c399ea31e50b1"
+    },
+    {
+        "sha": "bab74eb3dfe2d24e7a3fc6c7f3c64ce7ae96d0c4",
+        "author": "Saurav Mohapatra",
+        "email": "mohaps@gmail.com",
+        "date": "2024-09-11T08:04:08Z",
+        "message": "Merge pull request #26 from malcolm-vivosa/master\n\nImplement an emplace method",
+        "url": "https://github.com/mohaps/lrucache11/commit/bab74eb3dfe2d24e7a3fc6c7f3c64ce7ae96d0c4"
+    },
+    {
+        "sha": "90d6986ed4c8b3b3470bac688bf21360740928dd",
+        "author": "Malcolm MacLeod",
+        "email": "malcolm@vivosa.co.za",
+        "date": "2024-07-24T11:35:08Z",
+        "message": "Implement an emplace method\n\nIn cases where we already know in advance that the value is not in the cache we can avoid the overhead of an additional cache lookup as well as an allocation and copy and just emplace straight into the cache",
+        "url": "https://github.com/mohaps/lrucache11/commit/90d6986ed4c8b3b3470bac688bf21360740928dd"
+    },
+    {
+        "sha": "ae1a94ec961b91933adf1a24260d29df770b78d9",
+        "author": "ligazetom",
+        "email": "krasnanskyjuraj@gmail.com",
+        "date": "2023-12-14T07:31:02Z",
+        "message": "Add missing argument to getCopy",
+        "url": "https://github.com/mohaps/lrucache11/commit/ae1a94ec961b91933adf1a24260d29df770b78d9"
+    },
+    {
+        "sha": "ab288eee4d7148a93e467eb2782bad852b95da6b",
+        "author": "Saurav Mohapatra",
+        "email": "mohaps@gmail.com",
+        "date": "2022-12-28T19:07:38Z",
+        "message": "[lrucache11] fixed the get/tryGet sync window to return a copy. getXXX is redircts to getCopyXXX for backward compatibility. original renamed to getRef",
+        "url": "https://github.com/mohaps/lrucache11/commit/ab288eee4d7148a93e467eb2782bad852b95da6b"
+    },
+    {
+        "sha": "4d9e92266dce3ce373a389d36241c1fcbe12a5cd",
+        "author": "Saurav Mohapatra",
+        "email": "mohaps@gmail.com",
+        "date": "2022-12-28T19:03:09Z",
+        "message": "[lrucache11] fixed the get/tryGet sync window to return a copy. getXXX is redircts to getCopyXXX for backward compatibility. original renamed to getRef",
+        "url": "https://github.com/mohaps/lrucache11/commit/4d9e92266dce3ce373a389d36241c1fcbe12a5cd"
+    },
+    {
+        "sha": "fb961f798bd04fdee62f4d43763916f3b3d409af",
+        "author": "Saurav Mohapatra",
+        "email": "mohaps@gmail.com",
+        "date": "2020-05-12T15:17:11Z",
+        "message": "Merge pull request #17 from dermojo/master\n\nmove value on insert, fix comment typo",
+        "url": "https://github.com/mohaps/lrucache11/commit/fb961f798bd04fdee62f4d43763916f3b3d409af"
+    },
+    {
+        "sha": "d48ac0bd0d62de2271a29e6e48fe56983949b3d7",
+        "author": "Daniel Evers",
+        "email": "dermojo@gmail.com",
+        "date": "2018-07-09T19:32:02Z",
+        "message": "move value on insert, fix comment typo",
+        "url": "https://github.com/mohaps/lrucache11/commit/d48ac0bd0d62de2271a29e6e48fe56983949b3d7"
+    },
+    {
+        "sha": "fc0a9423e83443c8887fede6349c6fa2d3e145f6",
+        "author": "Saurav Mohapatra",
+        "email": "mohaps@gmail.com",
+        "date": "2018-04-28T22:25:38Z",
+        "message": "Merge pull request #15 from orestonce/master\n\nfix some comment, set Contains() const",
+        "url": "https://github.com/mohaps/lrucache11/commit/fc0a9423e83443c8887fede6349c6fa2d3e145f6"
+    },
+    {
+        "sha": "1a71720c5febf24af5a171dcf073ebf2c1cb8ea2",
+        "author": "orestonce",
+        "email": "orestonce@163.com",
+        "date": "2018-04-20T13:38:35Z",
+        "message": "fix some comment",
+        "url": "https://github.com/mohaps/lrucache11/commit/1a71720c5febf24af5a171dcf073ebf2c1cb8ea2"
+    },
+    {
+        "sha": "9cadce5bac55ccfdf219a9e715e9a418a58606ff",
+        "author": "Saurav Mohapatra",
+        "email": "mohaps@gmail.com",
+        "date": "2017-10-15T01:46:25Z",
+        "message": "added sample_main to gitignore",
+        "url": "https://github.com/mohaps/lrucache11/commit/9cadce5bac55ccfdf219a9e715e9a418a58606ff"
+    },
+    {
+        "sha": "afe7512df726fb5e4498b5c300f7cd05261878f8",
+        "author": "Saurav Mohapatra",
+        "email": "mohaps@gmail.com",
+        "date": "2017-10-15T01:45:34Z",
+        "message": "added getCopy() and validity comment to get()",
+        "url": "https://github.com/mohaps/lrucache11/commit/afe7512df726fb5e4498b5c300f7cd05261878f8"
+    },
+    {
+        "sha": "296b029305ea38da0c769666565e5fb197b0036b",
+        "author": "Saurav Mohapatra",
+        "email": "mohaps@gmail.com",
+        "date": "2017-10-03T18:00:43Z",
+        "message": "Merge pull request #13 from Quinny/master\n\nremoved no copy base class",
+        "url": "https://github.com/mohaps/lrucache11/commit/296b029305ea38da0c769666565e5fb197b0036b"
+    },
+    {
+        "sha": "6565ec4fd6ba62a5bf43f3abd01983af468b1b0a",
+        "author": "Quinn Perfetto",
+        "email": "thequinnftw@gmail.com",
+        "date": "2017-10-03T01:33:41Z",
+        "message": "removed no copy base class",
+        "url": "https://github.com/mohaps/lrucache11/commit/6565ec4fd6ba62a5bf43f3abd01983af468b1b0a"
+    },
+    {
+        "sha": "c48558917b8a7e5478cf20f6b6bd1ee2d0304ce5",
+        "author": "Saurav Mohapatra",
+        "email": "mohaps@gmail.com",
+        "date": "2017-07-25T15:21:04Z",
+        "message": "Merge pull request #10 from breznak/vector_key\n\n[WIP] add example for using vector<> as key in Cache",
+        "url": "https://github.com/mohaps/lrucache11/commit/c48558917b8a7e5478cf20f6b6bd1ee2d0304ce5"
+    },
+    {
+        "sha": "ccd1f9dcfc7b6f4b10d82d27f2a1bbb6cc3b28a6",
+        "author": "Saurav Mohapatra",
+        "email": "mohaps@gmail.com",
+        "date": "2017-07-25T15:20:46Z",
+        "message": "Merge pull request #12 from fawkes74/master\n\nAdded missing CMakeLists.txt for cmake support.",
+        "url": "https://github.com/mohaps/lrucache11/commit/ccd1f9dcfc7b6f4b10d82d27f2a1bbb6cc3b28a6"
+    },
+    {
+        "sha": "d9c740c281b324b1926f91c78da21e541c582334",
+        "author": "Saurav Mohapatra",
+        "email": "mohaps@gmail.com",
+        "date": "2017-02-19T21:13:21Z",
+        "message": "Merge pull request #7 from breznak/add_example\n\nAdd example",
+        "url": "https://github.com/mohaps/lrucache11/commit/d9c740c281b324b1926f91c78da21e541c582334"
+    },
+    {
+        "sha": "c12874b47ba6100865c2f937b17b1cb0d679ab08",
+        "author": "Henning Becker",
+        "email": "h.becker@oedenstockach.de",
+        "date": "2017-02-12T15:28:41Z",
+        "message": "Added missing CMakeLists.txt for cmake support.",
+        "url": "https://github.com/mohaps/lrucache11/commit/c12874b47ba6100865c2f937b17b1cb0d679ab08"
+    },
+    {
+        "sha": "1600e7b48189c31429472e503f9218be00823c73",
+        "author": "Marek Otahal",
+        "email": "markotahal@gmail.com",
+        "date": "2016-10-23T09:26:57Z",
+        "message": "add example for using vector<> as key in Cache",
+        "url": "https://github.com/mohaps/lrucache11/commit/1600e7b48189c31429472e503f9218be00823c73"
+    },
+    {
+        "sha": "2a635ddd87c0a527d2b8180101afcb1d4861e269",
+        "author": "Marek Otahal",
+        "email": "markotahal@gmail.com",
+        "date": "2016-10-05T21:22:03Z",
+        "message": "fix Sample\n\ninclude <iostream> for std::cout",
+        "url": "https://github.com/mohaps/lrucache11/commit/2a635ddd87c0a527d2b8180101afcb1d4861e269"
+    },
+    {
+        "sha": "cf65e64d4d6dc9dbd09a75f5635894ed729ffc50",
+        "author": "Marek Otahal",
+        "email": "markotahal@gmail.com",
+        "date": "2016-10-05T21:18:53Z",
+        "message": "add the example from Readme as SampleMain.cpp",
+        "url": "https://github.com/mohaps/lrucache11/commit/cf65e64d4d6dc9dbd09a75f5635894ed729ffc50"
+    },
+    {
+        "sha": "8d1a778f61748df196766059bb64fbfa1ba3b9fd",
+        "author": "Marek Otahal",
+        "email": "markotahal@gmail.com",
+        "date": "2016-10-05T21:17:22Z",
+        "message": "rename test to LRUCache11Test.cpp\n\nfrom SampleMain.cpp",
+        "url": "https://github.com/mohaps/lrucache11/commit/8d1a778f61748df196766059bb64fbfa1ba3b9fd"
+    },
+    {
+        "sha": "8a00b8d97efd03800274d186960c9598bc25c349",
+        "author": "Saurav Mohapatra",
+        "email": "mohaps@gmail.com",
+        "date": "2016-10-18T19:43:24Z",
+        "message": "Update README.md",
+        "url": "https://github.com/mohaps/lrucache11/commit/8a00b8d97efd03800274d186960c9598bc25c349"
+    },
+    {
+        "sha": "b6009c3b8c4b207e74719242d5852670862f139b",
+        "author": "Saurav Mohapatra",
+        "email": "mohaps@gmail.com",
+        "date": "2016-10-18T19:41:00Z",
+        "message": "Update README.md",
+        "url": "https://github.com/mohaps/lrucache11/commit/b6009c3b8c4b207e74719242d5852670862f139b"
+    },
+    {
+        "sha": "7a13bc99c86ff86487cc0ca4e999ea1df4d66826",
+        "author": "Saurav Mohapatra",
+        "email": "mohaps@gmail.com",
+        "date": "2016-10-18T19:37:04Z",
+        "message": "Merge pull request #9 from Quinny/master\n\nrewrote using std::list instead of custom linked list implementation",
+        "url": "https://github.com/mohaps/lrucache11/commit/7a13bc99c86ff86487cc0ca4e999ea1df4d66826"
+    },
+    {
+        "sha": "739b536dbf646499ba354d4189e539fbe140d873",
+        "author": "Quinn Perfetto",
+        "email": "thequinnftw@gmail.com",
+        "date": "2016-10-14T21:06:27Z",
+        "message": "rewrote using std::list instead of custom linked list implementation",
+        "url": "https://github.com/mohaps/lrucache11/commit/739b536dbf646499ba354d4189e539fbe140d873"
+    },
+    {
+        "sha": "e12cf17813a3634c40d9ae9f01f4ea9a05a6f762",
+        "author": "Saurav Mohapatra",
+        "email": "mohaps@gmail.com",
+        "date": "2016-10-02T12:08:20Z",
+        "message": "Merge pull request #4 from danpat/master\n\nSet prev link properly when adding to a 1-item list.",
+        "url": "https://github.com/mohaps/lrucache11/commit/e12cf17813a3634c40d9ae9f01f4ea9a05a6f762"
+    },
+    {
+        "sha": "271b33ffa066dc4244257b0b608f176cf12ecadd",
+        "author": "Daniel Patterson",
+        "email": "danpat@danpat.net",
+        "date": "2016-10-02T05:18:16Z",
+        "message": "Need to set prev link when adding a new item to a 1-item list.",
+        "url": "https://github.com/mohaps/lrucache11/commit/271b33ffa066dc4244257b0b608f176cf12ecadd"
+    },
+    {
+        "sha": "2fb95a1c3f09a79d812898b12b12f95878167fc6",
+        "author": "Saurav Mohapatra",
+        "email": "mohaps@gmail.com",
+        "date": "2016-08-31T17:48:52Z",
+        "message": "Update README.md",
+        "url": "https://github.com/mohaps/lrucache11/commit/2fb95a1c3f09a79d812898b12b12f95878167fc6"
+    },
+    {
+        "sha": "b4c2df85be8525abb42918a65ef91cd80320d0f9",
+        "author": "Saurav Mohapatra",
+        "email": "mohaps@gmail.com",
+        "date": "2016-08-30T18:50:03Z",
+        "message": "Merge pull request #1 from dakerfp/patch-3\n\nRemove check for nullptr before deleting.",
+        "url": "https://github.com/mohaps/lrucache11/commit/b4c2df85be8525abb42918a65ef91cd80320d0f9"
+    }
+]

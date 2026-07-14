@@ -1,0 +1,242 @@
+[
+    {
+        "sha": "2fa1a742d8c20cd3394d60f1c54dcbcd27b39ded",
+        "author": "Rémy Coutable",
+        "email": "remy@rymai.me",
+        "date": "2026-01-16T11:21:05Z",
+        "message": "Bump VERSION to 3.10.0\n\nSigned-off-by: Rémy Coutable <remy@rymai.me>",
+        "url": "https://github.com/guard/listen/commit/2fa1a742d8c20cd3394d60f1c54dcbcd27b39ded"
+    },
+    {
+        "sha": "7c6d39e17d4ca8aef8cf72890176cc56fa90b236",
+        "author": "Rémy Coutable",
+        "email": "rymai@users.noreply.github.com",
+        "date": "2026-01-07T10:24:44Z",
+        "message": "Merge pull request #596 from y-yagi/ci_against_ruby40\n\nCI against Ruby 4.0",
+        "url": "https://github.com/guard/listen/commit/7c6d39e17d4ca8aef8cf72890176cc56fa90b236"
+    },
+    {
+        "sha": "62255c0b8b98d11fb41d46ade59bded5fbca7326",
+        "author": "Yuji Yaginuma",
+        "email": "yuuji.yaginuma@gmail.com",
+        "date": "2026-01-05T09:42:31Z",
+        "message": "CI against Ruby 4.0",
+        "url": "https://github.com/guard/listen/commit/62255c0b8b98d11fb41d46ade59bded5fbca7326"
+    },
+    {
+        "sha": "43cb09c859c6bae41fb9ad78eef6d10613fc57e0",
+        "author": "Rémy Coutable",
+        "email": "rymai@users.noreply.github.com",
+        "date": "2025-10-27T16:22:14Z",
+        "message": "Merge pull request #595 from y-yagi/mention_memory_allocation_about_max_user_watches\n\nMention the relation with `fs.inotify.max_user_watches` and  the memory allocation",
+        "url": "https://github.com/guard/listen/commit/43cb09c859c6bae41fb9ad78eef6d10613fc57e0"
+    },
+    {
+        "sha": "030aff8fe461b6ca30d4ca554eecff8508c832ad",
+        "author": "Rémy Coutable",
+        "email": "rymai@users.noreply.github.com",
+        "date": "2025-10-27T16:21:59Z",
+        "message": "Merge pull request #594 from y-yagi/remove_unused_require\n\nRemove unused require",
+        "url": "https://github.com/guard/listen/commit/030aff8fe461b6ca30d4ca554eecff8508c832ad"
+    },
+    {
+        "sha": "4317b2169286b8a5b970942020f1a615ebcea321",
+        "author": "Yuji Yaginuma",
+        "email": "yuuji.yaginuma@gmail.com",
+        "date": "2025-10-19T02:07:21Z",
+        "message": "Mention the relation with `fs.inotify.max_user_watches` and  the memory allocation\n\nWhen `fs.inotify.max_user_watches` is increased, memory allocation\nis also increased. This change adds a relation between them.\n\nThis change was made based on the Visual Studio Code documentation.\nhttps://github.com/microsoft/vscode-docs/blob/1dc6fb1089cba238fb78a2e37ca3a4f4e68bdbdb/docs/setup/linux.md?plain=1#L290\n\nFixes #568.",
+        "url": "https://github.com/guard/listen/commit/4317b2169286b8a5b970942020f1a615ebcea321"
+    },
+    {
+        "sha": "5883c5edbe9d5413655d0df6de0ef72ce56dff36",
+        "author": "Yuji Yaginuma",
+        "email": "yuuji.yaginuma@gmail.com",
+        "date": "2025-10-19T00:35:27Z",
+        "message": "Remove unused require\n\n`listen` uses the original thread class(listen/thread.rb) and\ndon't use the standard libraries one.",
+        "url": "https://github.com/guard/listen/commit/5883c5edbe9d5413655d0df6de0ef72ce56dff36"
+    },
+    {
+        "sha": "cde3720010b5c3dd11fac17d249924c9920d495e",
+        "author": "Rémy Coutable",
+        "email": "rymai@users.noreply.github.com",
+        "date": "2025-10-13T13:34:34Z",
+        "message": "Merge pull request #592 from y-yagi/fix_rubocop\n\nUse `Naming/PredicatePrefix` instead of deprecated `Naming/PredicateName` cop",
+        "url": "https://github.com/guard/listen/commit/cde3720010b5c3dd11fac17d249924c9920d495e"
+    },
+    {
+        "sha": "8e9388541e6cac76add7d0c62276af32fd9893fe",
+        "author": "Rémy Coutable",
+        "email": "rymai@users.noreply.github.com",
+        "date": "2025-10-13T13:34:13Z",
+        "message": "Merge pull request #593 from y-yagi/remove_link_to_travis\n\nRemove link to Travis CI",
+        "url": "https://github.com/guard/listen/commit/8e9388541e6cac76add7d0c62276af32fd9893fe"
+    },
+    {
+        "sha": "2f07a8147e97730c568bb00c775826b082fac401",
+        "author": "Yuji Yaginuma",
+        "email": "yuuji.yaginuma@gmail.com",
+        "date": "2025-10-12T00:48:14Z",
+        "message": "Remove link to Travis CI\n\nThis project uses GitHub Actions now.",
+        "url": "https://github.com/guard/listen/commit/2f07a8147e97730c568bb00c775826b082fac401"
+    },
+    {
+        "sha": "81c3de895c166e16df42813a4397a6ea15b53ad7",
+        "author": "Yuji Yaginuma",
+        "email": "yuuji.yaginuma@gmail.com",
+        "date": "2025-10-12T00:19:15Z",
+        "message": "Use `Naming/PredicatePrefix` instead of deprecated `Naming/PredicateName` cop\n\nThis fixes the following warning.\n\n```\nWarning: The `Naming/PredicateName` cop has been renamed to `Naming/PredicatePrefix`.\n```\n\nRef: https://github.com/rubocop/rubocop/pull/14001",
+        "url": "https://github.com/guard/listen/commit/81c3de895c166e16df42813a4397a6ea15b53ad7"
+    },
+    {
+        "sha": "9c21ea7ae71c3c56495763f3ecef1bf2150c5b7a",
+        "author": "Rémy Coutable",
+        "email": "rymai@users.noreply.github.com",
+        "date": "2025-08-11T14:33:31Z",
+        "message": "Merge pull request #590 from y-yagi/ci_against_ruby34\n\nCI against Ruby 3.4",
+        "url": "https://github.com/guard/listen/commit/9c21ea7ae71c3c56495763f3ecef1bf2150c5b7a"
+    },
+    {
+        "sha": "411c84d6447f038b701acbc063985a23e3673676",
+        "author": "Yuji Yaginuma",
+        "email": "yuuji.yaginuma@gmail.com",
+        "date": "2025-08-06T09:40:22Z",
+        "message": "CI against Ruby 3.4",
+        "url": "https://github.com/guard/listen/commit/411c84d6447f038b701acbc063985a23e3673676"
+    },
+    {
+        "sha": "06fe819410462adb7e1ec4be0fbb10aaabfd24d2",
+        "author": "Rémy Coutable",
+        "email": "rymai@users.noreply.github.com",
+        "date": "2025-03-03T09:12:24Z",
+        "message": "Merge pull request #584 from larskanis/gem-conditions\n\nRemove conditions from gem declarations in Gemfile",
+        "url": "https://github.com/guard/listen/commit/06fe819410462adb7e1ec4be0fbb10aaabfd24d2"
+    },
+    {
+        "sha": "f6cceaa2e509cb39010d1a1db6b692e6937ab3af",
+        "author": "Rémy Coutable",
+        "email": "rymai@users.noreply.github.com",
+        "date": "2025-01-24T17:29:09Z",
+        "message": "Merge pull request #587 from y-yagi/add_logger_as_dependency\n\nAdd `logger` gem as a runtime dependency",
+        "url": "https://github.com/guard/listen/commit/f6cceaa2e509cb39010d1a1db6b692e6937ab3af"
+    },
+    {
+        "sha": "3b4722b860b694f6e0bd2e31da8feded298f9da6",
+        "author": "yuuji.yaginuma",
+        "email": "yuuji.yaginuma@gmail.com",
+        "date": "2025-01-19T05:02:15Z",
+        "message": "Add `logger` gem as a runtime dependency\n\n`logger` will be a bundled gem from Ruby 3.5.\nhttps://bugs.ruby-lang.org/issues/20309\n\nSo if we use `logger` as the standard library, Bundler shows the\nfollowing warning.\n\n```\n/home/y-yagi/.rbenv/versions/3.4.1/lib/ruby/gems/3.4.0/gems/listen-3.9.0/lib/listen.rb:3: warning: logger was loaded from the standard library, but will no longer be part of the default gems starting from Ruby 3.5.0.\n```\n\nThis PR adds the `logger` to runtime dependency to fix the warning.",
+        "url": "https://github.com/guard/listen/commit/3b4722b860b694f6e0bd2e31da8feded298f9da6"
+    },
+    {
+        "sha": "20df8e4c2bf95b081902ca0c03a761fba157aed0",
+        "author": "Rémy Coutable",
+        "email": "rymai@users.noreply.github.com",
+        "date": "2025-01-24T11:47:21Z",
+        "message": "Merge pull request #588 from y-yagi/fix_rubocop_offenses\n\nFix the Rubocop offence",
+        "url": "https://github.com/guard/listen/commit/20df8e4c2bf95b081902ca0c03a761fba157aed0"
+    },
+    {
+        "sha": "b514b8790a0494f6dfd9446cdbf0a9cd03c62a23",
+        "author": "yuuji.yaginuma",
+        "email": "yuuji.yaginuma@gmail.com",
+        "date": "2025-01-19T05:06:47Z",
+        "message": "Fix the Rubocop offence\n\nThis PR fixes the following offence.\n\n```\nlib/listen/event/config.rb:15:1: C: [Correctable] Layout/EmptyLinesAroundMethodBody: Extra empty line detected at method body beginning.\n```\n\nRef: https://github.com/guard/listen/actions/runs/12850558185/job/35830361327?pr=587",
+        "url": "https://github.com/guard/listen/commit/b514b8790a0494f6dfd9446cdbf0a9cd03c62a23"
+    },
+    {
+        "sha": "067d2775dca7465c69ab583aff1320c100c5dee0",
+        "author": "Lars Kanis",
+        "email": "lars.kanis@sincnovation.com",
+        "date": "2024-08-05T11:09:08Z",
+        "message": "Remove conditions from gem declarations in Gemfile\n\nBoth gems 'wdm' and 'rb-kqueue' can be installed on any platform.\nThey fail when require 'wdm' or 'rb-kqueue' is called.\nSo the conditions in the Gemfile can be removed and should not be recommended.\n\nHaving conditions in the Gemfile is generally bad practice, since this leads to changed Gemfile.lock, whenever the bundler is executed on a different platform.\nAlso \"bundle package --all-platforms\" doesn't work properly, when gems are declared conditionally.",
+        "url": "https://github.com/guard/listen/commit/067d2775dca7465c69ab583aff1320c100c5dee0"
+    },
+    {
+        "sha": "f186b2fa159a2458f3ff7e8680c3a4fcbdc636d1",
+        "author": "Colin Kelley",
+        "email": "colin@invoca.com",
+        "date": "2024-02-28T01:27:17Z",
+        "message": "rubocop -a; rubocop -A",
+        "url": "https://github.com/guard/listen/commit/f186b2fa159a2458f3ff7e8680c3a4fcbdc636d1"
+    },
+    {
+        "sha": "e84df097f960b6fc45b328a674ca66d5500202dc",
+        "author": "Alexandre Barret",
+        "email": "AlexB52@users.noreply.github.com",
+        "date": "2024-02-28T01:01:50Z",
+        "message": "Rubocop workflow with GitHub actions (#573)\n\n* Remove .hound.yml\r\n\r\n* Update Rubocop configuration and CI\r\n\r\n* Fix Style/MixinUsage cop\r\n\r\ninclude is used at the top level. Use inside class or module.\r\n\r\n* Fix Style/RedundantFreeze cop\r\n\r\n* Fix Lint/RedundantCopDisableDirective cop\r\n\r\n* Fix Style/CommentAnnotation cop\r\n\r\nAnnotation keywords like Note should be all upper case, followed by a colon, and a space, then a note describing the problem.\r\n\r\n* Fix Style/MutableConstant cop\r\n\r\nFreeze mutable objects assigned to constants\r\n\r\n* Fix Style/MultipleComparison cop\r\n\r\nAvoid comparing a variable with multiple items in a conditional, use Array#include? instead.\r\n\r\n* Fix Naming/MemoizedInstanceVariableName cop\r\n\r\nMemoized variable @_remember_time_of_first_unprocessed_event does not match method name _wait_until_events. Use @_wait_until_events instead.",
+        "url": "https://github.com/guard/listen/commit/e84df097f960b6fc45b328a674ca66d5500202dc"
+    },
+    {
+        "sha": "7b7a2f586d4363ec6e2e82c72732df92a1476d6e",
+        "author": "Colin Kelley",
+        "email": "colin@invoca.com",
+        "date": "2024-02-23T18:44:02Z",
+        "message": "issue #572: switch Kernel.warn and warn to adapter_warn",
+        "url": "https://github.com/guard/listen/commit/7b7a2f586d4363ec6e2e82c72732df92a1476d6e"
+    },
+    {
+        "sha": "4d682d3f7805afe66753ef870899d33d9831ef76",
+        "author": "Colin Kelley",
+        "email": "colin@invoca.com",
+        "date": "2024-02-23T04:13:02Z",
+        "message": "issue #572: add support for LISTEN_GEM_ADAPTER_WARN_BEHAVIOR=warn|log|silent",
+        "url": "https://github.com/guard/listen/commit/4d682d3f7805afe66753ef870899d33d9831ef76"
+    },
+    {
+        "sha": "2a34596185f076e00083fbd10aba3563e16df5df",
+        "author": "Colin Kelley",
+        "email": "colin@invoca.com",
+        "date": "2024-02-22T21:11:56Z",
+        "message": "issue #572: bump version to v3.9",
+        "url": "https://github.com/guard/listen/commit/2a34596185f076e00083fbd10aba3563e16df5df"
+    },
+    {
+        "sha": "eea28914d1b193849d0bc903fdea9361e1febde9",
+        "author": "Colin Kelley",
+        "email": "colin@invoca.com",
+        "date": "2024-02-22T21:09:49Z",
+        "message": "issue #572: add Listen.adapter_warn_behavior =",
+        "url": "https://github.com/guard/listen/commit/eea28914d1b193849d0bc903fdea9361e1febde9"
+    },
+    {
+        "sha": "0f600f3e2c079d7cadada2d577b820afba762347",
+        "author": "Colin Kelley",
+        "email": "colin@invoca.com",
+        "date": "2024-02-22T16:59:39Z",
+        "message": "drop ruby 2.6 and add ruby 3.3 to the test matrix",
+        "url": "https://github.com/guard/listen/commit/0f600f3e2c079d7cadada2d577b820afba762347"
+    },
+    {
+        "sha": "4fc1d068a5b908757fe7c4fc1106b61c485eb165",
+        "author": "hotoolong",
+        "email": "hotoolong.hogehoge+github@gmail.com",
+        "date": "2024-02-15T03:42:30Z",
+        "message": "fix github workflows link",
+        "url": "https://github.com/guard/listen/commit/4fc1d068a5b908757fe7c4fc1106b61c485eb165"
+    },
+    {
+        "sha": "fd85e1cb2375767e3cbc4b5743ff50061e8a6c75",
+        "author": "Colin Kelley",
+        "email": "colindkelley@gmail.com",
+        "date": "2023-01-09T18:14:43Z",
+        "message": "release v3.8",
+        "url": "https://github.com/guard/listen/commit/fd85e1cb2375767e3cbc4b5743ff50061e8a6c75"
+    },
+    {
+        "sha": "bac8015f98d751d9cf38173edcee13602f1a66d0",
+        "author": "yuuji.yaginuma",
+        "email": "yuuji.yaginuma@gmail.com",
+        "date": "2023-01-05T08:00:19Z",
+        "message": "Use the defined type to the default value of `directory`\n\nCurrently, you will get Thor's deprecated message when starting the `Listen::CLI`.\n\n```\nDeprecation warning: Expected array default value for '--directory'; got \".\" (string).\nThis will be rejected in the future unless you explicitly pass the options `check_default_type: false` or call `allow_incompatible_default_type!` in your code\nYou can silence deprecations warning by setting the environment variable THOR_SILENCE_DEPRECATION.\n```\n\nThis is due to the incorrect default value(`directory` is defined as an `array`,\nbut the default value is a `string`).\n\nThis fixed to use the correct default value and correctly pass to the `directory`\nto `Listen.to`.",
+        "url": "https://github.com/guard/listen/commit/bac8015f98d751d9cf38173edcee13602f1a66d0"
+    },
+    {
+        "sha": "ec5c88a1f2f1d685b0362fd7e2477ac59c0b2c1e",
+        "author": "Colin Kelley",
+        "email": "colindkelley@gmail.com",
+        "date": "2023-01-06T17:44:45Z",
+        "message": "update ruby version matrix to drop 2.4, 2.5 and add 3.2",
+        "url": "https://github.com/guard/listen/commit/ec5c88a1f2f1d685b0362fd7e2477ac59c0b2c1e"
+    }
+]

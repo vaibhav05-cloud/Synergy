@@ -1,0 +1,353 @@
+[
+    {
+        "id": 4087449975,
+        "number": 562,
+        "title": "ActiveRecordTransition: serialize :metadata raises ColumnNotSerializableError on Rails 8.1 with jsonb column",
+        "state": "closed",
+        "created_at": "2026-03-17T09:59:26Z",
+        "updated_at": "2026-03-20T14:58:16Z",
+        "closed_at": "2026-03-20T14:58:16Z",
+        "author": "jndrkmllh",
+        "comments": 1,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "## Summary\n\nWhen using `ActiveRecordTransition` with a PostgreSQL `jsonb` column for `metadata` on Rails 8.1, the following error is raised when the model is loaded:\n\n```\nColumn `metadata` of type ActiveRecord::ConnectionAdapters::PostgreSQL::OID::Jsonb does not support `serialize` feature. (ActiveRecord::AttributeMethods::Serialization::ColumnNotSerializableError)\nUsually it means that you are trying to use `serialize` on a column that already implements serialization natively.\n```\n\n## Root cause\n\n`ActiveRecordTransition` unconditionally calls `serialize :metadata, coder: JSON` in its `included` block:\n\n```ruby\nincluded do\n  if ::ActiveRecord.gem_version >= Gem::Version.new(\"7.1\")\n    serialize :metadata, coder: JSON\n  else\n    serialize :metadata, JSON\n  end\n  ...\nend\n```\n\nRails 8.1 now raises `ColumnNotSerializableError` when `serialize` is called on a column type that already handles serialization natively — which includes `jsonb`.\n\nThis is inconsistent because **Statesman's own generator creates a `jsonb` column for `metadata`** on PostgreSQL, yet the concern immediately breaks with that column type on Rails 8.1.\n\n## Environment\n\n- Statesman: 13.1.0\n- Rails: 8.1.2\n- Database: PostgreSQL\n- Ruby: 4.0.1\n\n## Workaround\n\nOverride `serialize` before the include to skip the `metadata` column:\n\n```ruby\nclass MyTransition < ApplicationRecord\n  def self.serialize(attr, **)\n    super unless attr.to_s == \"metadata\"\n  end\n\n  include Statesman::Adapters::ActiveRecordTransition\nend\n```\n\n## Expected fix\n\n`ActiveRecordTransition` should detect the column type (once the schema is loaded) and skip the `serialize` call for `json`/`jsonb` columns, since they serialize natively. Alternatively, the generator could emit a `text` column instead of `jsonb` to stay consistent with the concern's assumptions.",
+        "url": "https://github.com/gocardless/statesman/issues/562"
+    },
+    {
+        "id": 3953090178,
+        "number": 561,
+        "title": "Clarify purpose of `initial_state` option",
+        "state": "open",
+        "created_at": "2026-02-17T14:37:52Z",
+        "updated_at": "2026-02-17T14:42:34Z",
+        "closed_at": null,
+        "author": "nilcolor",
+        "comments": 1,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "The README shows that I need to include the following in a model:\n\n```ruby\ninclude Statesman::Adapters::ActiveRecordQueries[\n  transition_class: OrderTransition,\n  initial_state: :pending\n]\n```\n\nAnd build the machine itself like:\n\n```ruby\nclass OrderStateMachine\n  include Statesman::Machine\n\n  state :pending, initial: true\n  state :checking_out\nend\n```\n\nAt some point, I was thinking that `initial_state` option allow to set different initial state for a model that is using the same state machine. But it doesn't. This option also doesn't (right?) work if `initial: true` is not set. So, why this option is even added? This looks like a constant that can be taken from machine like `initial_state: OrderStateMachine.initial_state` during initialisation and cannot be changed by a user anyway.\nAm I missing something?",
+        "url": "https://github.com/gocardless/statesman/issues/561"
+    },
+    {
+        "id": 3309298441,
+        "number": 549,
+        "title": "Project Maintenance and Future Plans",
+        "state": "open",
+        "created_at": "2025-08-11T09:55:57Z",
+        "updated_at": "2025-09-05T11:38:20Z",
+        "closed_at": null,
+        "author": "simmerz",
+        "comments": 2,
+        "labels": [
+            "question",
+            "blocked"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "Hello,\n\nI’ve noticed there hasn’t been much recent activity on the Statesman gem, including several open PRs that haven’t yet been reviewed or merged, and I wanted to check in on its current status.\n\nA few questions that might help the community plan ahead:\n* Is Statesman still actively maintained?\n* Are there plans to review and action the existing PRs?\n* Would you benefit from additional maintainers to help share the workload?\n* If it is no longer a priority for GoCardless, would you consider transferring it to a community-owned namespace so it can continue to grow?\n\nI ask because Statesman is widely used, including in production systems I work on, and clarity on its future would help people decide whether to keep building on it or plan for alternatives.\n\nThank you for all the work that has gone into the gem so far. It is a valuable tool and I would like to see it continue to thrive.",
+        "url": "https://github.com/gocardless/statesman/issues/549"
+    },
+    {
+        "id": 2722799781,
+        "number": 547,
+        "title": "Initial transition not created/callbacks not fired unless `state_machine` is touched",
+        "state": "open",
+        "created_at": "2024-12-06T11:30:16Z",
+        "updated_at": "2026-07-02T01:38:54Z",
+        "closed_at": null,
+        "author": "mikebaldry",
+        "comments": 3,
+        "labels": [
+            "needs triage"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "The documentation suggests implementing like:\r\n```ruby\r\ndef state_machine\r\n  @state_machine ||= OrderStateMachine.new(self, transition_class: OrderTransition,\r\n                                                 association_name: :transitions,\r\n                                                 initial_transition: true)\r\nend\r\n```\r\n\r\nthe initial transition is created and the callbacks then fired from this initializer, so if the `state_machine` isn't called after create of a model, this doesn't fire.\r\n\r\nI'm not exactly sure of the scenarios `state_machine` isn't touched, if something happens internally with Statesman but not always or if it mostly happens that our code touches it in most cases, but we've had sporadic issues that has led me to add \r\n```ruby\r\nafter_create { state_machine }\r\n```\r\nto the models using Statesman, which appears to fix. \r\n\r\nShould we need to do this, if so, could it be added to the documentation, if not, any ideas where we're going wrong? \r\n\r\nMany thanks!",
+        "url": "https://github.com/gocardless/statesman/issues/547"
+    },
+    {
+        "id": 2510316988,
+        "number": 546,
+        "title": "Transition migration generator doesn't run because model doesn't exist",
+        "state": "open",
+        "created_at": "2024-09-06T12:25:02Z",
+        "updated_at": "2025-09-05T11:38:00Z",
+        "closed_at": null,
+        "author": "simmerz",
+        "comments": 2,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "When running `bin/rails g statesman:active_record_transition DirectDebitMandate DirectDebitMandateTransition` (yes, I'm making a model to hold a DD mandate using Statesman - very meta), the `DirectDebitMandate` model file already exists, but the `DirectDebitMandateTransition` one is due to be created.\r\n\r\nHowever, the in the migration that creates the table (which happens *before* the model file is created), there is [this line](https://github.com/gocardless/statesman/blob/master/lib/generators/statesman/templates/create_migration.rb.erb#L8) which requires the model file to already exist.\r\n\r\nMy proposal would be to switch the order of the migration and model template lines in the [generator file](https://github.com/gocardless/statesman/blob/master/lib/generators/statesman/active_record_transition_generator.rb#L18) so that the file does exist when the migration is being created.\r\n\r\nEDIT: A quick test of this suggests that the class isn't loaded in so the migration still fails to generate.\r\n\r\nEDIT 2: Is there a reason why https://github.com/gocardless/statesman/blob/master/lib/statesman/adapters/active_record.rb#L10 doesn't just use `ApplicationRecord.connection.respond_to?(:supports_partial_index?)` rather than going from the model?",
+        "url": "https://github.com/gocardless/statesman/issues/546"
+    },
+    {
+        "id": 2043680552,
+        "number": 527,
+        "title": "Rescue from failed transition to another state",
+        "state": "open",
+        "created_at": "2023-12-15T12:54:01Z",
+        "updated_at": "2025-09-05T11:39:12Z",
+        "closed_at": null,
+        "author": "ingemar",
+        "comments": 1,
+        "labels": [
+            "needs triage",
+            "feature request"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "Hello,\r\n\r\nFirst off, thank you for the excellent work on this state machine!\r\n\r\nI have a feature suggestion. Would it be possible to incorporate a mechanism that allows rescuing failed transitions by enabling a transition to an alternate state? \r\n\r\nConceptually, I envision something along these lines:\r\n```ruby\r\nclass MyStatesMachine\r\n  include Statesman::Machine\r\n\r\n  state :draft, initial: true\r\n  state :created\r\n  state :published\r\n  state :failed\r\n\r\n  rescue_from_failed_transition_to :published, with: :failed\r\n\r\n  # ...\r\nend\r\n```\r\nIf you think this feature is a good fit and it makes sense for future plans, I'd be stoked to help out by submitting a pull request. Please let me know if you would be open to reviewing and considering it. \r\n\r\nLooking forward to your feedback.\r\n",
+        "url": "https://github.com/gocardless/statesman/issues/527"
+    },
+    {
+        "id": 2015991451,
+        "number": 523,
+        "title": "How do you name, and where do you put your state machine and transition files in a Rails app?",
+        "state": "closed",
+        "created_at": "2023-11-29T07:36:52Z",
+        "updated_at": "2024-01-18T03:55:40Z",
+        "closed_at": "2024-01-18T03:55:40Z",
+        "author": "aaronkelton",
+        "comments": 3,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "I ran into some errors and gotchas while setting up Statesman for the first time. I followed the readme in a top-down approach: first creating the `OrderStateMachine` class in a file named `order_state_machine.rb`. I just put it under the \"models\" directory, right next to `order.rb`. After linking it to my model, I created the `OrderTransition` class, but made the mistake of naming my file `order_transitions.rb`. At this point in time I was told I could start working with my state machine, but because I made _transitions_ plural, I got an error that took longer than I care to admit discovering.\r\n\r\n```\r\nuninitialized constant OrderTransition (NameError)\r\n\r\nmachine = OrderStateMachine.new(order, transition_class: OrderTransition)\r\n                                                         ^^^^^^^^^^^^^^^\r\nDid you mean?  OrderTransitions\r\n```\r\n\r\nPutting these two new files right next to my model felt wrong, like I should have put it in a directory structure under **models > statesman > order** or similar.\r\n\r\nBack to the error above. After renaming the file to the singular _order_transition.rb_ I was indeed able to start working with my state machine... until `Order.in_state(:cancelled)`\r\n```\r\nAn error occurred when inspecting the object: #<ActiveRecord::StatementInvalid:\"PG::UndefinedTable: ERROR:  relation \\\"order_transitions\\\" does not exist\\nLINE 1: SELECT \\\"orders\\\".* FROM \\\"orders\\\" LEFT OUTER JOIN order_tran...\\n\r\n```\r\n\r\nI glanced back at the transitions file and noticed the class inherits from `ActiveRecord::Base`, so of course I needed a migration. But it isn't until the [Persistence](https://github.com/gocardless/statesman#persistence) section later on that we generate the transition model _and_ the migration.\r\n\r\n## Ok, so what's your point?\r\n\r\nSharing my experience, I feel like the readme should start with the migration and model generation. This would answer the question to the title of this issue.\r\n\r\nOne place I've seen this done well is rspec-rails, where they mention Installation and [Usage](https://github.com/rspec/rspec-rails#usage) first before the DSL.\r\n\r\nSorry I don't have a PR with a suggested change. I just wanted to share my first impression going through the setup.",
+        "url": "https://github.com/gocardless/statesman/issues/523"
+    },
+    {
+        "id": 1937355484,
+        "number": 518,
+        "title": "Add update_most_recent as part of the Transition adapter module",
+        "state": "open",
+        "created_at": "2023-10-11T09:57:19Z",
+        "updated_at": "2025-09-05T11:39:27Z",
+        "closed_at": null,
+        "author": "dmitry",
+        "comments": 0,
+        "labels": [
+            "needs triage",
+            "feature request"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "I propose adding the update_most_recent method to the Transition adapter module. This enhancement will help eliminate duplicated code and improve maintainability by providing a standard way to update the most recent transition on destruction.\r\n\r\nMotivation:\r\n\r\nCurrently, users need to implement this logic themselves, resulting in duplicated code and potential errors. By adding this method to the core, we can ensure consistency and improve code quality.\r\n\r\nAt present, there are only two modules, `ActiveRecordTransition` and `MemoryTransition`. The proposed update is to add code duplication to the `ActiveRecordTransition` module.\r\n\r\n```ruby\r\n  after_destroy :update_most_recent, if: :most_recent?\r\n\r\n  private\r\n\r\n  def update_most_recent\r\n    last_transition = parent.send(transition_name).order(:sort_key).last\r\n    return unless last_transition.present?\r\n    last_transition.update_column(:most_recent, true)\r\n  end\r\n```\r\n\r\nThe following code demonstrates how to use this method in a transition model:\r\n\r\n```ruby\r\n  include Statesman::Adapters::ActiveRecordTransition[transition_name: :transitions]\r\n```",
+        "url": "https://github.com/gocardless/statesman/issues/518"
+    },
+    {
+        "id": 1781221293,
+        "number": 513,
+        "title": "Feature proposal: Allow accessing states as state machine constant",
+        "state": "closed",
+        "created_at": "2023-06-29T17:12:35Z",
+        "updated_at": "2025-09-03T14:12:32Z",
+        "closed_at": "2025-09-03T14:12:32Z",
+        "author": "stephannv",
+        "comments": 2,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "Would be nice if `.state` method defined a constant using the state name. eg.:\r\n```ruby\r\nclass OrderStateMachine\r\n  include Statesman::Machine\r\n  \r\n  state :pending\r\n  state :failed\r\nend\r\n\r\nOrderStateMachine::PENDING # => \"pending\"\r\nOrderStateMachine::FAILED # => \"failed\"\r\n```\r\n\r\nThis way we can detect typos and changed states early:\r\n```\r\nOrder.new(state: :peding) # ok\r\nOrder.in_state(:peding) # ok\r\n\r\nOrder.new(state: OrderStateMachine::PEDING) # uninitialized constant OrderStateMachine::PEDING (NameError)\r\nOrder.in_state(OrderStateMachine::PEDING) # uninitialized constant OrderStateMachine::PEDING (NameError)\r\n```\r\n\r\nWhat do you think? Would this be useful for more people?",
+        "url": "https://github.com/gocardless/statesman/issues/513"
+    },
+    {
+        "id": 1654618308,
+        "number": 509,
+        "title": "Update from 10.1.0 to 10.2.1 causing failures",
+        "state": "closed",
+        "created_at": "2023-04-04T21:41:18Z",
+        "updated_at": "2024-01-05T11:47:59Z",
+        "closed_at": "2024-01-05T11:47:59Z",
+        "author": "marclennox",
+        "comments": 2,
+        "labels": [],
+        "assignees": [
+            "zerc"
+        ],
+        "locked": false,
+        "body": "I recently tried updating our project and noticed a lot of test failures in our code as a direct result.  I've debugged into the gem code and can't understand what is going on, but the following debug calls illustrate the issue.\r\n\r\n```\r\n[4] pry(#<RSpec::ExampleGroups::MonitoringSession::Callbacks::OnTerminate>)> subject.monitoring_state\r\n=> \"ready\"\r\n[5] pry(#<RSpec::ExampleGroups::MonitoringSession::Callbacks::OnTerminate>)> subject.monitoring_session_state_machine.current_state\r\n=> \"incomplete\"\r\n```\r\n\r\nSo basically when the state machine object is initialized in the subject class, it's not setting it to the object's current state (ActiveRecord adapter).  Instead, it's setting the current state to the state machines's defined default initial_state.\r\n\r\nThis only happens with 10.2.1, works fine with 10.1.0\r\n\r\nHas something changed that requires us to make changes to our use of the gem?\r\n\r\nThanks.",
+        "url": "https://github.com/gocardless/statesman/issues/509"
+    },
+    {
+        "id": 1647326182,
+        "number": 504,
+        "title": "last_transition cache doesn't work for newly created objects",
+        "state": "closed",
+        "created_at": "2023-03-30T10:17:28Z",
+        "updated_at": "2023-04-03T09:01:54Z",
+        "closed_at": "2023-04-03T09:01:54Z",
+        "author": "zerc",
+        "comments": 1,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [
+            "zerc"
+        ],
+        "locked": false,
+        "body": "Hi there,\r\n\r\nI was poking around and stumbled upon an interesting bug (as I think).\r\n\r\n### Steps to reproduce\r\n\r\n1. Pick up an active record model with `Statesman::Adapters::ActiveRecordQueries` enabled\r\n2. Create a fresh instance\r\n3. Call `obj.last_transition` multiple times\r\n\r\n**Expected behaviour:** the database is only queried on the first call\r\n**Actual behaviour:** the database will be queried on every call\r\n\r\nIt only affects the newly created objects i.e. if you try the same with the object that has transitions already - it would work as expected.\r\n\r\n### Root cause\r\n\r\nLooks like [this line](https://github.com/gocardless/statesman/blob/bb9283e58cd8fd152a50b52ab7ddc7ec16b936ef/lib/statesman/adapters/active_record.rb#LL73C11-L73C44) does not account for empty results and the `history.last` will always be evaluated and hitting the database (unless the transitions are preloaded).\r\n\r\n### Impact\r\n\r\nIf the object has multiple guards on the initial transition they will cause unneeded queries to the database on the initial transition.",
+        "url": "https://github.com/gocardless/statesman/issues/504"
+    },
+    {
+        "id": 1622466072,
+        "number": 500,
+        "title": "`most_recent` is falsey when model has multiple state machines",
+        "state": "closed",
+        "created_at": "2023-03-13T23:38:20Z",
+        "updated_at": "2023-07-07T10:16:04Z",
+        "closed_at": "2023-07-07T10:16:04Z",
+        "author": "pedro-pedrosa",
+        "comments": 2,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "Defining my state machines as\r\n\r\n```rb\r\nclass StateMachineA\r\n  include Statesman::Machine\r\n\r\n  state :a, initial: true\r\n  state :b\r\n  state :c\r\n\r\n  transition from: :a, to: :b\r\n  transition from: :b, to: :c\r\nend\r\n\r\nclass StateMachineB\r\n  include Statesman::Machine\r\n\r\n  state :a, initial: true\r\n  state :b\r\n  state :c\r\n\r\n  transition from: :a, to: :b\r\n  transition from: :b, to: :c\r\nend\r\n```\r\n\r\nand my model as:\r\n\r\n```rb\r\nclass MyModel < ActiveRecord::Base\r\n  has_many :a_transitions, autosave: false\r\n  has_many :b_transitions, autosave: false\r\n\r\n  def state_machine_a\r\n    @state_machine_a ||= StateMachineA.new(self, transition_class: ATransition)\r\n  end\r\n\r\n  def state_machine_b\r\n    @state_machine_b ||= StateMachineA.new(self, transition_class: BTransition)\r\n  end\r\nend\r\n```\r\n\r\nThen when one of these state machines transitions to a different state, the `most_recent` column is set to a falsey value on the other state machine:\r\n\r\n```rb\r\nMyModel.first.state_machine_a.transition_to!(:b)\r\nMyModel.first.a_transitions.order(sort_key: :desc).first.most_recent # true\r\nMyModel.first.state_machine_b.transition_to!(:b)\r\nMyModel.first.a_transitions.order(sort_key: :desc).first.most_recent # nil\r\nMyModel.first.b_transitions.order(sort_key: :desc).first.most_recent # true\r\nMyModel.first.state_machine_a.transition_to!(:c)\r\nMyModel.first.a_transitions.order(sort_key: :desc).first.most_recent # true\r\nMyModel.first.b_transitions.order(sort_key: :desc).first.most_recent # nil\r\n```\r\n\r\nDoes this gem not support multiple state machines on a single model? From the usage of `Statesman::Adapters::ActiveRecordQueries` this seems to be the case since at least there can only be one `in_state` defined per model, however this used to work in an earlier version (4.0.0) but doesn't work anymore on 10.1.0",
+        "url": "https://github.com/gocardless/statesman/issues/500"
+    },
+    {
+        "id": 1530504583,
+        "number": 487,
+        "title": "Calling `reload` on an object should reload its state as well",
+        "state": "closed",
+        "created_at": "2023-01-12T10:53:22Z",
+        "updated_at": "2023-04-21T15:49:39Z",
+        "closed_at": "2023-04-21T15:49:39Z",
+        "author": "jcollins-gc",
+        "comments": 2,
+        "labels": [],
+        "assignees": [
+            "zerc"
+        ],
+        "locked": false,
+        "body": "Given a Statesman-managed object, I would like to have the state reload by default if `reload` is called on the object.\r\n\r\nFor instance, say I have this object in memory in process A:\r\n```\r\nthing = ThingWithStateMachine.find(1)\r\nstate = thing.current_state # :new\r\n```\r\n\r\nAnd process B transitions it:\r\n`ThingWithStateMachine.transition_to(:started)`\r\n\r\nI should be able to reload it in process A and get the new state:\r\n`thing.reload.current_state # is :new, should be :started`",
+        "url": "https://github.com/gocardless/statesman/issues/487"
+    },
+    {
+        "id": 1519124856,
+        "number": 486,
+        "title": "Feature: Allow easy 3rd party library tracing of statesman gem",
+        "state": "open",
+        "created_at": "2023-01-04T15:00:23Z",
+        "updated_at": "2025-09-05T11:40:05Z",
+        "closed_at": null,
+        "author": "theaxel",
+        "comments": 1,
+        "labels": [
+            "feature request"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "We utilize tracing heavily for our application observability via Datadog.\r\n\r\nThere is currently no easy way to hook into the state machine lifecycle to generate spans for a trace.\r\nWe added this feature via ActiveSupport ::Notifications which is used in many other gems for that same purpose.\r\n\r\nCurrently it is a monkey patch in our code and would like to integrate it directly into the gem.\r\n\r\nDoes that align with your vision?",
+        "url": "https://github.com/gocardless/statesman/issues/486"
+    },
+    {
+        "id": 1232864244,
+        "number": 463,
+        "title": "Apparent bug resulting in multiple `most_recent = true` rows",
+        "state": "open",
+        "created_at": "2022-05-11T15:51:14Z",
+        "updated_at": "2025-09-05T11:39:52Z",
+        "closed_at": null,
+        "author": "Tabby",
+        "comments": 1,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "Seems like it's occasionally possible for concurrent updates to leave a transitions table in a state where two identical transitions are added (differing only in modification time) but with different primary keys and with the `most_recent` column set to true for both.\r\n\r\nNot really sure how this is possible :S\r\n\r\nSlack thread where the issue has been seen a couple of times: https://gocardless.slack.com/archives/C02AU55J6R4/p1652169426426829?thread_ts=1650356440.633239&cid=C02AU55J6R4\r\n\r\nSlack thread asking about this issue and potential causes/solutions before reporting this issue: https://gocardless.slack.com/archives/C031GKFNK6J/p1652280367772639",
+        "url": "https://github.com/gocardless/statesman/issues/463"
+    },
+    {
+        "id": 1178873113,
+        "number": 460,
+        "title": "Generator migration file name inconsistent with class name",
+        "state": "closed",
+        "created_at": "2022-03-24T02:47:58Z",
+        "updated_at": "2025-09-05T12:15:24Z",
+        "closed_at": "2025-09-05T12:15:24Z",
+        "author": "davelooi",
+        "comments": 0,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "# Description\r\n\r\nRunning the generator for a model under module results in inconsistent filename.\r\n\r\n# Reproduction Instruction\r\n\r\n`bundle exec rails g statesman:active_record_transition Game::Chess Game::ChessTransition`\r\n\r\n# The error\r\n\r\nThe resulting filename would be `20220324024427_create_chess_transitions.rb`\r\nAnd the resulting class name would be `class CreateGameChessTransitions < ActiveRecord::Migration[6.1]`\r\n\r\nRunning this migration results in error:\r\n```\r\nrails aborted!\r\nNameError: uninitialized constant CreateChessTransitions\r\nDid you mean?  CreateGameChessTransitions\r\n\r\n\r\nCaused by:\r\nNameError: uninitialized constant CreateChessTransitions\r\nDid you mean?  CreateGameChessTransitions\r\n```\r\n\r\n# Expected outcome\r\n\r\nThe generated filename should be consistent with the classname.\r\n\r\n`20220324024427_create_game_chess_transitions.rb`",
+        "url": "https://github.com/gocardless/statesman/issues/460"
+    },
+    {
+        "id": 1171287293,
+        "number": 459,
+        "title": "[Question] Is there an easy way to rollback a transition?",
+        "state": "closed",
+        "created_at": "2022-03-16T16:51:50Z",
+        "updated_at": "2025-09-05T11:21:32Z",
+        "closed_at": "2025-09-05T11:21:32Z",
+        "author": "leandrofinger",
+        "comments": 1,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "Hi guys!\r\n\r\nAfter transitioning and depending on the record I should run an integration call and depending on this response I need rollback the last transition. Is there an easy way to do that, or should I  allow the transition backward and transition it again?",
+        "url": "https://github.com/gocardless/statesman/issues/459"
+    },
+    {
+        "id": 848536322,
+        "number": 436,
+        "title": "State Machine after transition fails if used on initial state with DB persistence",
+        "state": "closed",
+        "created_at": "2021-04-01T14:48:49Z",
+        "updated_at": "2021-04-09T19:34:13Z",
+        "closed_at": "2021-04-09T13:45:28Z",
+        "author": "nacengineer",
+        "comments": 5,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "If you try to hook into the after transition callback for the initial state you will trigger the error \r\n\r\nCannot transition to initial state 'name of your initial state' (Statesman::InvalidTransitionError)\r\n\r\nThis is with transitions persisted to the database. \r\n\r\nOnce I realized what the error is basically telling me. \r\n\r\n\"Hey dummy, this thing doesn't exactly exist yet and now you've created a race condition around this transition\" \r\n\r\nIt made sense, but the error raise didn't really help me TBH. \r\n\r\nNot sure if it's possible to add a check on the after transition for the initial transition and maybe raise something indicating this is the issue. I know this is a weird corner case and is I'm assuming it's solved with the \"after_commit: true\" setting but it still took me a little while to figure out. Maybe this will help the next person to come along, which will probably be a future me but I digress. \r\n\r\nThanks for the awesome gem. 🙂\r\n\r\n",
+        "url": "https://github.com/gocardless/statesman/issues/436"
+    },
+    {
+        "id": 805354437,
+        "number": 432,
+        "title": "Rails master is breaking builds",
+        "state": "closed",
+        "created_at": "2021-02-10T09:53:15Z",
+        "updated_at": "2021-03-30T10:02:37Z",
+        "closed_at": "2021-03-30T10:02:37Z",
+        "author": "thom-oman",
+        "comments": 1,
+        "labels": [
+            "dependencies"
+        ],
+        "assignees": [
+            "thom-oman"
+        ],
+        "locked": false,
+        "body": "When running CI with Rails version set to master.\r\n```\r\nactivesupport-7.0.0.alpha requires ruby version >= 2.7.0, which is incompatible\r\n```",
+        "url": "https://github.com/gocardless/statesman/issues/432"
+    },
+    {
+        "id": 788148093,
+        "number": 425,
+        "title": "Incorrect current_state when using Timecop in tests?",
+        "state": "closed",
+        "created_at": "2021-01-18T10:38:13Z",
+        "updated_at": "2021-01-18T14:27:08Z",
+        "closed_at": "2021-01-18T14:27:07Z",
+        "author": "NicoSa",
+        "comments": 6,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "Hi there,\r\n\r\nI have the following scenario. I want to change the state of my items from `ready` to `failed` if their storage days are post a certain time. Now, this seems to be working. However in my test scenario, the `current_state` of my state machine is wrong. Despite adding the expected transition to failed after the ready transition. Here's the test, I think the issue is that for some reason `last_transition` remains ready. No idea why, if I just test whether the `current_state` changes without Timecop, there are no issues and the current_state changes to `failed` as expected.\r\n\r\n```ruby\r\nshould 'set expired item to state failed' do\r\n\ttime = Time.parse('2020-01-02 09:00:00 UTC') \r\n\tfour_days_later = Time.parse('2020-01-06 09:00:00 UTC')\r\n\t\r\n\tTimecop.freeze(time) do\r\n\t\t@item = create(:ready_item, storage_days: 2)\r\n\t\t@another_item = create(:ready_item, storage_days: 10)\t\t\t\r\n\t\t\r\n\t\tassert_equal 'ready', @item.state\r\n\t\tassert_equal 'ready', @another_item.state\r\n\r\n\t\tTimecop.travel(four_days_later)\r\n\t\t\r\n\t\tCron::SetToFailedWhereDue.perform\r\n\r\n\t\tassert_equal 1, @item.transitions.where(to_state: 'failed').count\r\n\t\tassert_equal 'failed', @item.state #this is where it fails! The state remains in ready for some reason.\r\n\t\tassert_equal 0, @another_item.transitions.where(to_state: 'failed').count\r\n\t\tassert_equal 'ready', @another_item.state\r\n\tend\r\nend\r\n```",
+        "url": "https://github.com/gocardless/statesman/issues/425"
+    }
+]

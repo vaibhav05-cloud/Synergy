@@ -1,0 +1,424 @@
+[
+    {
+        "id": 4880263651,
+        "number": 159268,
+        "title": "autodiff: silent gradient corruption (dx: 0) when differentiating through coroutines/generators",
+        "state": "open",
+        "created_at": "2026-07-14T05:53:56Z",
+        "updated_at": "2026-07-14T05:53:59Z",
+        "closed_at": null,
+        "author": "sangmorg1-debug",
+        "comments": 0,
+        "labels": [
+            "needs-triage"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Code\n\n```rust\n#![feature(coroutines, coroutine_trait, autodiff, stmt_expr_attributes)]\nuse std::ops::{Coroutine, CoroutineState};\nuse std::pin::Pin;\nuse std::autodiff::autodiff_reverse;\n\n#[autodiff_reverse(df, Active, Active)]\nfn f(x: f32) -> f32 {\n    let mut coroutine = #[coroutine] move || {\n        let val = x;\n        yield val;\n        yield val * 3.0;\n    };\n\n    let mut pin = Pin::new(&mut coroutine);\n    let mut sum = 0.0;\n    match pin.as_mut().resume(()) {\n        CoroutineState::Yielded(v) => sum += v,\n        CoroutineState::Complete(_) => {}\n    }\n    match pin.as_mut().resume(()) {\n        CoroutineState::Yielded(v) => sum += v,\n        CoroutineState::Complete(_) => {}\n    }\n    sum\n}\n\nfn main() {\n    let (val, dx) = df(3.0, 1.0);\n    // f(x) = x + 3x = 4x\n    // Expected dx: 4.0\n    // Actual dx: 0.0\n    println!(\"val: {}, dx: {}\", val, dx);\n}\n```\n\nBuild/run:\n```\nrustc -Z autodiff=Enable -C lto=fat test_coroutine.rs\n./test_coroutine\n```\n\n### What happened\n\nThe code compiles **without any errors or warnings**, runs without panicking, but the returned gradient is silently wrong:\n\n```\nval: 12, dx: 0\n```\n\nExpected `dx: 4.0` (for `f(x) = x + 3x = 4x`); actual `dx: 0.0`. This reproduces with both self-referential and non-self-referential coroutines (i.e. it does not appear to depend on the self-referential-generator/`noalias` issue tracked in #63818 — a plain, non-self-referential `#[coroutine]` closure with no internal borrows reproduces the same silent `dx: 0`).\n\nMy working hypothesis (not confirmed against the generated LLVM IR): the compiler does not emit type-tree/activity metadata for the compiler-generated coroutine state struct, so Enzyme's activity analysis treats the struct's fields as inactive and drops gradient tracking through it entirely, without that being surfaced as an error.\n\nBecause this produces no diagnostic of any kind, it's a silent-correctness issue rather than a crash — code using `#[coroutine]`/generators/`async` blocks inside a differentiated function will currently get plausible-looking but wrong gradients.\n\n### Meta\n\n`rustc --version --verbose`:\n```\nrustc 1.99.0-nightly (daf2e5e18 2026-07-13)\nhost: x86_64-unknown-linux-gnu (WSL2 Ubuntu)\n```\nBuilt with `rustup component add rustc-dev llvm-tools-preview enzyme` on the same nightly, `-Z autodiff=Enable -C lto=fat`.\n\n### Suggested fix direction\n\nAt minimum, reject (with a diagnostic) differentiation through functions whose MIR references a coroutine/generator state type, until type-tree/activity metadata propagation for these types is implemented — silent wrong answers seem strictly worse than a compile error here.\n\nI wrote a small third-party static checker (`ad-safety`, MIR-level `rustc_private` lint) that currently rejects this pattern at compile time as a stopgap, in case the reproducer is useful: https://github.com/sangmorg1-debug/ad-safety\n",
+        "url": "https://github.com/rust-lang/rust/issues/159268"
+    },
+    {
+        "id": 4880261979,
+        "number": 159267,
+        "title": "ICE: autodiff_reverse crashes in Enzyme's invertPointerM on Active reference/pointer parameters",
+        "state": "open",
+        "created_at": "2026-07-14T05:53:40Z",
+        "updated_at": "2026-07-14T05:53:43Z",
+        "closed_at": null,
+        "author": "sangmorg1-debug",
+        "comments": 0,
+        "labels": [
+            "needs-triage"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "<!--\nThank you for finding an Internal Compiler Error! 🧊\n-->\n\n### Code\n\n```rust\n#![feature(autodiff)]\nuse std::autodiff::autodiff_reverse;\n\n#[autodiff_reverse(df, Active, Active, Active)]\nfn f<'a>(x: &'a f32, y: &'a f32) -> f32 {\n    *x * *y\n}\n\nfn main() {\n    let x = 3.0;\n    let y = 4.0;\n    let (val, dx, dy) = df(&x, &y, 1.0);\n    println!(\"val: {}, dx: {}, dy: {}\", val, *dx, *dy);\n}\n```\n\nBuild command:\n```\nrustc -Z autodiff=Enable -C lto=fat test_references.rs\n```\n\nDifferentiating a function that takes reference (`&f32`) or pointer (`*mut f32`/`*const f32`) parameters marked `Active` in reverse mode crashes the compiler during LLVM/Enzyme codegen, rather than producing a diagnostic. The activity model appears to expect `Duplicated` (a caller-provided shadow pointer) for reference/pointer-typed parameters rather than `Active` (gradient returned by value) — using `Duplicated` instead of `Active` for the same function compiles and runs correctly, producing the right gradient. So this looks like a case where an unsupported-but-plausible activity choice should produce a clean error rather than an ICE.\n\n### Meta\n\n`rustc --version --verbose`:\n```\nrustc 1.99.0-nightly (daf2e5e18 2026-07-13)\nhost: x86_64-unknown-linux-gnu (WSL2 Ubuntu)\n```\nBuilt with `rustup component add rustc-dev llvm-tools-preview enzyme` on the same nightly, `-Z autodiff=Enable -C lto=fat`.\n\n### Error output\n\n```\nrustc: /checkout/src/tools/enzyme/enzyme/Enzyme/GradientUtils.cpp:6654: Value *GradientUtils::invertPointerM(Value *const, IRBuilder<> &, TypeTree): Assertion `0 && \"cannot find deal with ptr that isnt arg\"' failed.\n```\n\n<details><summary>Full crash context</summary>\n\n```\noval=ptr %1 icv=0\nrustc: /checkout/src/tools/enzyme/enzyme/Enzyme/GradientUtils.cpp:6654: Value *GradientUtils::invertPointerM(Value *const, IRBuilder<> &, TypeTree): Assertion `0 && \"cannot find deal with ptr that isnt arg\"' failed.\n```\n\n</details>\n\n### Suggested fix direction\n\nDetect `Active` activity on reference/pointer-typed parameters in reverse mode before reaching the Enzyme/LLVM codegen boundary, and emit a diagnostic suggesting `Duplicated` instead (with a shadow-parameter example), rather than asserting inside Enzyme's `GradientUtils::invertPointerM`.\n\nI wrote a small third-party static checker (`ad-safety`, MIR-level `rustc_private` lint) that catches this pattern at compile time with a suggestion to use `Duplicated`, in case the reproducer or approach is useful: https://github.com/sangmorg1-debug/ad-safety\n",
+        "url": "https://github.com/rust-lang/rust/issues/159267"
+    },
+    {
+        "id": 4879967433,
+        "number": 159264,
+        "title": "[ICE]: impl of `Unpin` for a non-adt type (LTA)",
+        "state": "open",
+        "created_at": "2026-07-14T04:55:28Z",
+        "updated_at": "2026-07-14T04:55:33Z",
+        "closed_at": null,
+        "author": "matthiaskrgr",
+        "comments": 0,
+        "labels": [
+            "I-ICE",
+            "T-compiler",
+            "C-bug",
+            "needs-triage",
+            "F-lazy_type_alias",
+            "F-pin_ergonomics"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "<!--\n\u001b[31mICE\u001b[0m: Rustc ./a.rs '' 'error: internal compiler error: impl of `Unpin` for a non-adt type', 'error: internal compiler error: impl of `Unpin` for a non-adt type'\nFile: /tmp/im/lta/a.rs\n-->\n\nsnippet:\n````rust\n#![feature(pin_ergonomics)]\n#![feature(lazy_type_alias)]\nstruct Foo;\n\ntype Identity<T> = T;\nimpl Unpin for Identity<Foo> {}\n\nfn main() {}\n\n````\n\nVersion information\n````\nrustc 1.99.0-nightly (225e91c03 2026-07-13)\nbinary: rustc\ncommit-hash: 225e91c03da22cd4b9792b83c1cfc97967101614\ncommit-date: 2026-07-13\nhost: x86_64-unknown-linux-gnu\nrelease: 1.99.0-nightly\nLLVM version: 22.1.8\n\n````\n\n\n\nCommand:\n`/home/matthias/.rustup/toolchains/master/bin/rustc `\n\n<details><summary><strong>Program output</strong></summary>\n<p>\n\n```\nwarning: the feature `pin_ergonomics` is incomplete and may not be safe to use and/or cause compiler crashes\n --> /tmp/icemaker_global_tempdir.k4jRf6yiottf/rustc_testrunner_tmpdir_reporting.Gd7pJiMBMzg3/mvce.rs:1:12\n  |\n1 | #![feature(pin_ergonomics)]\n  |            ^^^^^^^^^^^^^^\n  |\n  = note: see issue #130494 <https://github.com/rust-lang/rust/issues/130494> for more information\n  = note: `#[warn(incomplete_features)]` on by default\n\nwarning: the feature `lazy_type_alias` is incomplete and may not be safe to use and/or cause compiler crashes\n --> /tmp/icemaker_global_tempdir.k4jRf6yiottf/rustc_testrunner_tmpdir_reporting.Gd7pJiMBMzg3/mvce.rs:2:12\n  |\n2 | #![feature(lazy_type_alias)]\n  |            ^^^^^^^^^^^^^^^\n  |\n  = note: see issue #112792 <https://github.com/rust-lang/rust/issues/112792> for more information\n\nwarning: 2 warnings emitted\n\nnote: no errors encountered even though delayed bugs were created\n\nnote: those delayed bugs will now be shown as internal compiler errors\n\nerror: internal compiler error: impl of `Unpin` for a non-adt type\n --> /tmp/icemaker_global_tempdir.k4jRf6yiottf/rustc_testrunner_tmpdir_reporting.Gd7pJiMBMzg3/mvce.rs:6:1\n  |\n6 | impl Unpin for Identity<Foo> {}\n  | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  |\nnote: delayed at /rustc-dev/225e91c03da22cd4b9792b83c1cfc97967101614/compiler/rustc_hir_analysis/src/coherence/builtin.rs:156:38\n         0: <rustc_errors::DiagCtxtInner>::emit_diagnostic\n         1: <rustc_errors::DiagCtxtHandle>::emit_diagnostic\n         2: <rustc_span::ErrorGuaranteed as rustc_errors::diagnostic::EmissionGuarantee>::emit_producing_guarantee\n         3: <rustc_errors::DiagCtxtHandle>::span_delayed_bug::<rustc_span::span_encoding::Span, &str>\n         4: rustc_hir_analysis::coherence::builtin::check_trait\n         5: rustc_hir_analysis::coherence::coherent_trait\n         6: rustc_query_impl::query_impl::coherent_trait::invoke_provider_fn::__rust_begin_short_backtrace\n         7: rustc_query_impl::execution::try_execute_query::<rustc_middle::query::caches::DefIdCache<rustc_middle::query::erase::ErasedData<[u8; 1]>>, false>\n         8: rustc_query_impl::query_impl::coherent_trait::execute_query_non_incr::__rust_end_short_backtrace\n         9: rustc_hir_analysis::check::check::check_item_type\n        10: rustc_hir_analysis::check::wfcheck::check_well_formed\n        11: rustc_query_impl::query_impl::check_well_formed::invoke_provider_fn::__rust_begin_short_backtrace\n        12: rustc_query_impl::execution::try_execute_query::<rustc_data_structures::vec_cache::VecCache<rustc_span::def_id::LocalDefId, rustc_middle::query::erase::ErasedData<[u8; 1]>, rustc_middle::dep_graph::graph::DepNodeIndex>, false>\n        13: rustc_query_impl::query_impl::check_well_formed::execute_query_non_incr::__rust_end_short_backtrace\n        14: rustc_hir_analysis::check::wfcheck::check_type_wf\n        15: rustc_query_impl::query_impl::check_type_wf::invoke_provider_fn::__rust_begin_short_backtrace\n        16: rustc_query_impl::execution::try_execute_query::<rustc_middle::query::caches::SingleCache<rustc_middle::query::erase::ErasedData<[u8; 1]>>, false>\n        17: rustc_query_impl::query_impl::check_type_wf::execute_query_non_incr::__rust_end_short_backtrace\n        18: rustc_hir_analysis::check_crate\n        19: rustc_interface::passes::analysis\n        20: rustc_query_impl::execution::try_execute_query::<rustc_middle::query::caches::SingleCache<rustc_middle::query::erase::ErasedData<[u8; 0]>>, false>\n        21: rustc_query_impl::query_impl::analysis::execute_query_non_incr::__rust_end_short_backtrace\n        22: rustc_interface::interface::run_compiler::<(), rustc_driver_impl::run_compiler::{closure#0}>::{closure#1}\n        23: std::sys::backtrace::__rust_begin_short_backtrace::<rustc_interface::util::run_in_thread_with_globals<rustc_interface::util::run_in_thread_pool_with_globals<rustc_interface::interface::run_compiler<(), rustc_driver_impl::run_compiler::{closure#0}>::{closure#1}, ()>::{closure#0}, ()>::{closure#0}::{closure#0}, ()>\n        24: <std::thread::lifecycle::spawn_unchecked<rustc_interface::util::run_in_thread_with_globals<rustc_interface::util::run_in_thread_pool_with_globals<rustc_interface::interface::run_compiler<(), rustc_driver_impl::run_compiler::{closure#0}>::{closure#1}, ()>::{closure#0}, ()>::{closure#0}::{closure#0}, ()>::{closure#1} as core::ops::function::FnOnce<()>>::call_once::{shim:vtable#0}\n        25: <std::sys::thread::unix::Thread>::new::thread_start\n        26: <unknown>\n        27: <unknown>\n      \n --> /tmp/icemaker_global_tempdir.k4jRf6yiottf/rustc_testrunner_tmpdir_reporting.Gd7pJiMBMzg3/mvce.rs:6:1\n  |\n6 | impl Unpin for Identity<Foo> {}\n  | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n\nnote: we would appreciate a bug report: https://github.com/rust-lang/rust/issues/new?labels=C-bug%2C+I-ICE%2C+T-compiler&template=ice.md\n\nnote: please make sure that you have updated to the latest nightly\n\nnote: rustc 1.99.0-nightly (225e91c03 2026-07-13) running on x86_64-unknown-linux-gnu\n\nquery stack during panic:\nend of query stack\n\n```\n\n</p>\n</details>\n\n<!--\nquery stack:\n\n-->\n@rustbot label +F-pin_ergonomics +F-lazy_type_alias \n",
+        "url": "https://github.com/rust-lang/rust/issues/159264"
+    },
+    {
+        "id": 4879469496,
+        "number": 159261,
+        "title": "[ICE]: \"attribute is missing tokens\" on `#[test] #[procmacro]`",
+        "state": "open",
+        "created_at": "2026-07-14T03:05:08Z",
+        "updated_at": "2026-07-14T06:05:40Z",
+        "closed_at": null,
+        "author": "dtolnay",
+        "comments": 1,
+        "labels": [
+            "A-attributes",
+            "I-ICE",
+            "regression-from-stable-to-nightly",
+            "T-compiler",
+            "A-libtest",
+            "C-bug",
+            "I-prioritize",
+            "A-proc-macros",
+            "S-has-bisection"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "Since https://github.com/rust-lang/rust/pull/158854, the following causes ICE. Minimized from https://github.com/dtolnay/remain.\n\n```toml\n# Cargo.toml\n\n[package]\nname = \"repro\"\nedition = \"2024\"\npublish = false\n\n[lib]\nproc-macro = true\n```\n\n```rust\n// src/lib.rs\n\nuse proc_macro::TokenStream;\n\n#[proc_macro_attribute]\npub fn repro(_args: TokenStream, input: TokenStream) -> TokenStream {\n    input\n}\n```\n\n```rust\n// src/main.rs\n\nfn main() {}\n\n#[test]\n#[repro::repro]\nfn test() {}\n```\n\n```console\n$ cargo check --tests\n\nthread 'rustc' (2173850) panicked at /rustc-dev/daf2e5e18b3abc4311d9da3d96fd64138f43d508/compiler/rustc_ast/src/attr/mod.rs:307:36:\nattribute is missing tokens: Attribute { kind: Normal(NormalAttr { item: AttrItem { unsafety: Default, path: Path { span: src/main.rs:3:1: 3:8 (#4), segments: [PathSegment { ident: rustc_test_entrypoint_marker#4, id: NodeId(4294967040), args: None }] }, args: Unparsed(Empty) }, tokens: None }), id: AttrId(7), style: Outer, span: src/main.rs:3:1: 3:8 (#4) }\nstack backtrace:\n   0:     0x792d51a0a6b6 - <<std[ce10694b78262c54]::sys::backtrace::BacktraceLock>::print::DisplayBacktrace as core[da78e946a5d06d53]::fmt::Display>::fmt\n   1:     0x792d5200ec88 - core[da78e946a5d06d53]::fmt::write\n   2:     0x792d51a1fb2c - <std[ce10694b78262c54]::sys::stdio::unix::Stderr as core[da78e946a5d06d53]::io::write::Write>::write_fmt\n   3:     0x792d519dea3a - std[ce10694b78262c54]::panicking::default_hook::{closure#0}\n   4:     0x792d519fcdd3 - std[ce10694b78262c54]::panicking::default_hook\n   5:     0x792d509ca65b - std[ce10694b78262c54]::panicking::update_hook::<alloc[655ffa9be629a963]::boxed::Box<rustc_driver_impl[b7363d31c325300f]::install_ice_hook::{closure#1}>>::{closure#0}\n   6:     0x792d519fd272 - std[ce10694b78262c54]::panicking::panic_with_hook\n   7:     0x792d519deaf2 - std[ce10694b78262c54]::panicking::panic_handler::{closure#0}\n   8:     0x792d519d57b9 - std[ce10694b78262c54]::sys::backtrace::__rust_end_short_backtrace::<std[ce10694b78262c54]::panicking::panic_handler::{closure#0}, !>\n   9:     0x792d519e044d - __rustc[4c31565a732afefe]::rust_begin_unwind\n  10:     0x792d4e7446cc - core[da78e946a5d06d53]::panicking::panic_fmt\n  11:     0x792d52bb6b56 - <rustc_ast[bf92cb4a89c1d262]::ast::Attribute>::token_trees\n  12:     0x792d536bcc62 - <rustc_expand[4c42811765bd8a03]::expand::MacroExpander>::fully_expand_fragment\n  13:     0x792d5368bfd4 - <rustc_expand[4c42811765bd8a03]::expand::MacroExpander>::expand_crate\n  14:     0x792d5278e711 - rustc_interface[2fb4e3f9120b3398]::passes::resolver_for_lowering_raw\n  15:     0x792d5278df26 - rustc_query_impl[2043934c093d5d4c]::query_impl::resolver_for_lowering_raw::invoke_provider_fn::__rust_begin_short_backtrace\n  16:     0x792d5350c161 - rustc_query_impl[2043934c093d5d4c]::execution::try_execute_query::<rustc_middle[e97f70cd95bc576c]::query::caches::SingleCache<rustc_middle[e97f70cd95bc576c]::query::erase::ErasedData<[u8; 24usize]>>, true>\n  17:     0x792d5350bc10 - rustc_query_impl[2043934c093d5d4c]::query_impl::resolver_for_lowering_raw::execute_query_incr::__rust_end_short_backtrace\n  18:     0x792d531032c0 - rustc_interface[2fb4e3f9120b3398]::interface::run_compiler::<(), rustc_driver_impl[b7363d31c325300f]::run_compiler::{closure#0}>::{closure#1}\n  19:     0x792d5316b73a - std[ce10694b78262c54]::sys::backtrace::__rust_begin_short_backtrace::<rustc_interface[2fb4e3f9120b3398]::util::run_in_thread_with_globals<rustc_interface[2fb4e3f9120b3398]::util::run_in_thread_pool_with_globals<rustc_interface[2fb4e3f9120b3398]::interface::run_compiler<(), rustc_driver_impl[b7363d31c325300f]::run_compiler::{closure#0}>::{closure#1}, ()>::{closure#0}, ()>::{closure#0}::{closure#0}, ()>\n  20:     0x792d5316b4ed - <std[ce10694b78262c54]::thread::lifecycle::spawn_unchecked<rustc_interface[2fb4e3f9120b3398]::util::run_in_thread_with_globals<rustc_interface[2fb4e3f9120b3398]::util::run_in_thread_pool_with_globals<rustc_interface[2fb4e3f9120b3398]::interface::run_compiler<(), rustc_driver_impl[b7363d31c325300f]::run_compiler::{closure#0}>::{closure#1}, ()>::{closure#0}, ()>::{closure#0}::{closure#0}, ()>::{closure#1} as core[da78e946a5d06d53]::ops::function::FnOnce<()>>::call_once::{shim:vtable#0}\n  21:     0x792d5316f910 - <std[ce10694b78262c54]::sys::thread::unix::Thread>::new::thread_start\n  22:     0x792d4caa3d64 - start_thread\n                               at ./nptl/pthread_create.c:448:8\n  23:     0x792d4cb373fc - __GI___clone3\n                               at ./misc/../sysdeps/unix/sysv/linux/x86_64/clone3.S:78:0\n  24:                0x0 - <unknown>\n\nerror: the compiler unexpectedly panicked. This is a bug\n\nnote: we would appreciate a bug report: https://github.com/rust-lang/rust/issues/new?labels=C-bug%2C+I-ICE%2C+T-compiler&template=ice.md\n\nnote: please make sure that you have updated to the latest nightly\n\nnote: please attach the file at `/git/repro/rustc-ice-2026-07-14T03_03_04-2173848.txt` to your bug report\n\nnote: rustc 1.99.0-nightly (daf2e5e18 2026-07-13) running on x86_64-unknown-linux-gnu\n\nnote: compiler flags: -C embed-bitcode=no -C debuginfo=2 -C incremental=[REDACTED]\n\nnote: some of the compiler flags provided by cargo are hidden\n\nquery stack during panic:\n#0 [resolver_for_lowering_raw] getting the resolver for lowering\nend of query stack\nerror: could not compile `repro` (bin \"repro\" test)\n\nCaused by:\n  process didn't exit successfully: `/home/david/.rustup/toolchains/nightly-x86_64-unknown-linux-gnu/bin/rustc --crate-name repro --edition=2024 src/main.rs --error-format=json --json=diagnostic-rendered-ansi,artifacts,future-incompat --diagnostic-width=118 --emit=dep-info,metadata -C embed-bitcode=no -C debuginfo=2 --test --check-cfg 'cfg(docsrs,test)' --check-cfg 'cfg(feature, values())' -C metadata=27b1a61dcdf6880e -C extra-filename=-9e67cf72997e0fed --out-dir /git/repro/target/debug/deps -C incremental=/git/repro/target/debug/incremental -L dependency=/git/repro/target/debug/deps --extern repro=/git/repro/target/debug/deps/librepro-17a7318b6b244c7c.so` (exit status: 101)\n```\n\n@jdonszelmann @JonathanBrouwer",
+        "url": "https://github.com/rust-lang/rust/issues/159261"
+    },
+    {
+        "id": 4879296435,
+        "number": 159258,
+        "title": "`arm-maintainers` ping group is not configured properly",
+        "state": "open",
+        "created_at": "2026-07-14T02:30:07Z",
+        "updated_at": "2026-07-14T08:42:29Z",
+        "closed_at": null,
+        "author": "jieyouxu",
+        "comments": 1,
+        "labels": [
+            "T-compiler",
+            "C-bug",
+            "O-AArch64"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "Looks like `arm-maintainers` does not have a corresponding `triagebot.toml` entry here, not to be confused with the `arm` ping group",
+        "url": "https://github.com/rust-lang/rust/issues/159258"
+    },
+    {
+        "id": 4877500030,
+        "number": 159252,
+        "title": "[ICE]: diagnostic::on_unimplemented `start byte index 10 is not a char boundary`",
+        "state": "open",
+        "created_at": "2026-07-13T20:49:46Z",
+        "updated_at": "2026-07-13T20:49:48Z",
+        "closed_at": null,
+        "author": "matthiaskrgr",
+        "comments": 0,
+        "labels": [
+            "I-ICE",
+            "T-compiler",
+            "C-bug",
+            "needs-triage"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "<!--\n\u001b[31mICE\u001b[0m: Rustc ./a.rs '' 'thread 'rustc' ($TID) panicked at compiler/rustc_parse_format/src/lib.rs:513:39: 'start byte index 10 is not a char boundary; it is inside '넣' (bytes 8..11 of string)'', 'thread 'rustc' ($TID) panicked at compiler/rustc_parse_format/src/lib.rs:513:39: 'start byte index 10 is not a char boundary; it is inside '넣' (bytes 8..11 of string)''\nFile: /tmp/diag/a.rs\n-->\n\nsince #156161\n\nauto-reduced (treereduce-rust):\n````rust\n#[diagnostic::on_unimplemented(message = \" \\x00 \\u{b123} \\\\\\u{b123} {:?}\")]\n\nfn main() {}\n\n````\n\noriginal:\n````rust\n#[diagnostic::on_unimplemented(message = \" \\x00 \\u{b123} \\\\\\u{b123} {:?}\")]\ntrait Foo {}\nfn main() {}\n\n````\n\nVersion information\n````\nrustc 1.99.0-nightly (225e91c03 2026-07-13)\nbinary: rustc\ncommit-hash: 225e91c03da22cd4b9792b83c1cfc97967101614\ncommit-date: 2026-07-13\nhost: x86_64-unknown-linux-gnu\nrelease: 1.99.0-nightly\nLLVM version: 22.1.8\n\n````\n\nPossibly related line of code:\nhttps://github.com/rust-lang/rust/blob/225e91c03da22cd4b9792b83c1cfc97967101614/compiler/rustc_parse_format/src/lib.rs#L507-L519\n\nCommand:\n`/home/matthias/.rustup/toolchains/master/bin/rustc `\n\n<details><summary><strong>Program output</strong></summary>\n<p>\n\n```\n\nthread 'rustc' (363693) panicked at /rustc-dev/225e91c03da22cd4b9792b83c1cfc97967101614/compiler/rustc_parse_format/src/lib.rs:513:39:\nstart byte index 10 is not a char boundary; it is inside '넣' (bytes 8..11 of string)\nstack backtrace:\n   0:     0x7f7eeb00aa06 - <<std[f815c803b8bda7b3]::sys::backtrace::BacktraceLock>::print::DisplayBacktrace as core[a425eebf46758491]::fmt::Display>::fmt\n   1:     0x7f7eeb610dc8 - core[a425eebf46758491]::fmt::write\n   2:     0x7f7eeb01fe7c - <std[f815c803b8bda7b3]::sys::stdio::unix::Stderr as core[a425eebf46758491]::io::write::Write>::write_fmt\n   3:     0x7f7eeafded8a - std[f815c803b8bda7b3]::panicking::default_hook::{closure#0}\n   4:     0x7f7eeaffd123 - std[f815c803b8bda7b3]::panicking::default_hook\n   5:     0x7f7ee9fd4a2b - std[f815c803b8bda7b3]::panicking::update_hook::<alloc[2f076b677b3e1a3b]::boxed::Box<rustc_driver_impl[f6b68445f387381]::install_ice_hook::{closure#1}>>::{closure#0}\n   6:     0x7f7eeaffd5c2 - std[f815c803b8bda7b3]::panicking::panic_with_hook\n   7:     0x7f7eeafdee42 - std[f815c803b8bda7b3]::panicking::panic_handler::{closure#0}\n   8:     0x7f7eeafd5b09 - std[f815c803b8bda7b3]::sys::backtrace::__rust_end_short_backtrace::<std[f815c803b8bda7b3]::panicking::panic_handler::{closure#0}, !>\n   9:     0x7f7eeafe079d - __rustc[17bcef32ef66a019]::rust_begin_unwind\n  10:     0x7f7ee7d5157c - core[a425eebf46758491]::panicking::panic_fmt\n  11:     0x7f7ee997497d - core[a425eebf46758491]::str::slice_error_fail_rt\n  12:     0x7f7ee974b83a - core[a425eebf46758491]::str::slice_error_fail\n  13:     0x7f7eed42b825 - <rustc_parse_format[f1c09d163e9b9eea]::Parser>::string.cold\n  14:     0x7f7eec1da1c8 - <rustc_parse_format[f1c09d163e9b9eea]::Parser>::argument\n  15:     0x7f7eec1dc2e8 - <rustc_parse_format[f1c09d163e9b9eea]::Parser as core[a425eebf46758491]::iter::traits::iterator::Iterator>::next\n  16:     0x7f7eecae17f4 - rustc_attr_parsing[986f0cc2418a25a7]::attributes::diagnostic::parse_format_string\n  17:     0x7f7eecae139f - rustc_attr_parsing[986f0cc2418a25a7]::attributes::diagnostic::parse_directive_items::<core[a425eebf46758491]::slice::iter::Iter<rustc_attr_parsing[986f0cc2418a25a7]::parser::MetaItemOrLitParser>>::{closure#0}\n  18:     0x7f7eecae0ac2 - rustc_attr_parsing[986f0cc2418a25a7]::attributes::diagnostic::parse_directive_items::<core[a425eebf46758491]::slice::iter::Iter<rustc_attr_parsing[986f0cc2418a25a7]::parser::MetaItemOrLitParser>>\n  19:     0x7f7eecae05bb - <<rustc_attr_parsing[986f0cc2418a25a7]::attributes::diagnostic::on_unimplemented::OnUnimplementedParser as rustc_attr_parsing[986f0cc2418a25a7]::attributes::AttributeParser>::ATTRIBUTES::{closure#0} as core[a425eebf46758491]::ops::function::FnOnce<(&mut rustc_attr_parsing[986f0cc2418a25a7]::attributes::diagnostic::on_unimplemented::OnUnimplementedParser, &mut rustc_attr_parsing[986f0cc2418a25a7]::context::AcceptContext, &rustc_attr_parsing[986f0cc2418a25a7]::parser::ArgParser)>>::call_once\n  20:     0x7f7eecae04c1 - rustc_attr_parsing[986f0cc2418a25a7]::context::ATTRIBUTE_PARSERS::{closure#0}::{closure#18}\n  21:     0x7f7eebf76b3e - <rustc_ast_lowering[778953a3457ff41f]::LoweringContext>::lower_attrs_vec\n  22:     0x7f7eeb949241 - rustc_ast_lowering[778953a3457ff41f]::lower_to_hir\n  23:     0x7f7eeb94619d - rustc_query_impl[68a2f365f9927c9b]::query_impl::lower_to_hir::invoke_provider_fn::__rust_begin_short_backtrace\n  24:     0x7f7eeb944e0a - rustc_query_impl[68a2f365f9927c9b]::execution::try_execute_query::<rustc_data_structures[d208358c53517434]::vec_cache::VecCache<rustc_span[5e6c73db80a2ecda]::def_id::LocalDefId, rustc_middle[83d6f6fa2ecd6292]::query::erase::ErasedData<[u8; 16usize]>, rustc_middle[83d6f6fa2ecd6292]::dep_graph::graph::DepNodeIndex>, false>\n  25:     0x7f7eeb944b45 - rustc_query_impl[68a2f365f9927c9b]::query_impl::lower_to_hir::execute_query_non_incr::__rust_end_short_backtrace\n  26:     0x7f7eeb944671 - rustc_query_impl[68a2f365f9927c9b]::query_impl::hir_owner::invoke_provider_fn::__rust_begin_short_backtrace\n  27:     0x7f7eeb943a12 - rustc_query_impl[68a2f365f9927c9b]::execution::try_execute_query::<rustc_data_structures[d208358c53517434]::vec_cache::VecCache<rustc_span[5e6c73db80a2ecda]::def_id::LocalDefId, rustc_middle[83d6f6fa2ecd6292]::query::erase::ErasedData<[u8; 32usize]>, rustc_middle[83d6f6fa2ecd6292]::dep_graph::graph::DepNodeIndex>, false>\n  28:     0x7f7eeb943748 - rustc_query_impl[68a2f365f9927c9b]::query_impl::hir_owner::execute_query_non_incr::__rust_end_short_backtrace\n  29:     0x7f7eec418bce - <rustc_middle[83d6f6fa2ecd6292]::hir::map::ItemCollector as rustc_hir[a0947a8222fbe6e0]::intravisit::Visitor>::visit_nested_item\n  30:     0x7f7eec4168e5 - rustc_middle[83d6f6fa2ecd6292]::hir::map::hir_crate_items\n  31:     0x7f7eec7eed77 - rustc_query_impl[68a2f365f9927c9b]::query_impl::hir_crate_items::invoke_provider_fn::__rust_begin_short_backtrace\n  32:     0x7f7eec7f2fda - rustc_query_impl[68a2f365f9927c9b]::execution::try_execute_query::<rustc_middle[83d6f6fa2ecd6292]::query::caches::SingleCache<rustc_middle[83d6f6fa2ecd6292]::query::erase::ErasedData<[u8; 8usize]>>, false>\n  33:     0x7f7eec7f20f9 - rustc_query_impl[68a2f365f9927c9b]::query_impl::hir_crate_items::execute_query_non_incr::__rust_end_short_backtrace\n  34:     0x7f7eebc6baee - rustc_interface[daa1f9eccb307e6d]::passes::analysis\n  35:     0x7f7eec7f2687 - rustc_query_impl[68a2f365f9927c9b]::execution::try_execute_query::<rustc_middle[83d6f6fa2ecd6292]::query::caches::SingleCache<rustc_middle[83d6f6fa2ecd6292]::query::erase::ErasedData<[u8; 0usize]>>, false>\n  36:     0x7f7eec7f2369 - rustc_query_impl[68a2f365f9927c9b]::query_impl::analysis::execute_query_non_incr::__rust_end_short_backtrace\n  37:     0x7f7eec785d1b - rustc_interface[daa1f9eccb307e6d]::interface::run_compiler::<(), rustc_driver_impl[f6b68445f387381]::run_compiler::{closure#0}>::{closure#1}\n  38:     0x7f7eec7dd0ba - std[f815c803b8bda7b3]::sys::backtrace::__rust_begin_short_backtrace::<rustc_interface[daa1f9eccb307e6d]::util::run_in_thread_with_globals<rustc_interface[daa1f9eccb307e6d]::util::run_in_thread_pool_with_globals<rustc_interface[daa1f9eccb307e6d]::interface::run_compiler<(), rustc_driver_impl[f6b68445f387381]::run_compiler::{closure#0}>::{closure#1}, ()>::{closure#0}, ()>::{closure#0}::{closure#0}, ()>\n  39:     0x7f7eec7dce6d - <std[f815c803b8bda7b3]::thread::lifecycle::spawn_unchecked<rustc_interface[daa1f9eccb307e6d]::util::run_in_thread_with_globals<rustc_interface[daa1f9eccb307e6d]::util::run_in_thread_pool_with_globals<rustc_interface[daa1f9eccb307e6d]::interface::run_compiler<(), rustc_driver_impl[f6b68445f387381]::run_compiler::{closure#0}>::{closure#1}, ()>::{closure#0}, ()>::{closure#0}::{closure#0}, ()>::{closure#1} as core[a425eebf46758491]::ops::function::FnOnce<()>>::call_once::{shim:vtable#0}\n  40:     0x7f7eec7e1290 - <std[f815c803b8bda7b3]::sys::thread::unix::Thread>::new::thread_start\n  41:     0x7f7ee6097739 - <unknown>\n  42:     0x7f7ee611bedc - <unknown>\n  43:                0x0 - <unknown>\n\nerror: the compiler unexpectedly panicked. This is a bug\n\nnote: we would appreciate a bug report: https://github.com/rust-lang/rust/issues/new?labels=C-bug%2C+I-ICE%2C+T-compiler&template=ice.md\n\nnote: please make sure that you have updated to the latest nightly\n\nnote: rustc 1.99.0-nightly (225e91c03 2026-07-13) running on x86_64-unknown-linux-gnu\n\nquery stack during panic:\n#0 [lower_to_hir] lowering HIR for `main`\n#1 [hir_owner] getting owner for `main`\n#2 [hir_crate_items] getting HIR crate items\n#3 [analysis] running analysis passes on crate `mvce`\nend of query stack\n\n```\n\n</p>\n</details>\n\n<!--\nquery stack:\n#0 [lower_to_hir] lowering HIR for `main`\n#1 [hir_owner] getting owner for `main`\n#2 [hir_crate_items] getting HIR crate items\n#3 [analysis] running analysis passes on crate `mvce`\n\n-->\n\n",
+        "url": "https://github.com/rust-lang/rust/issues/159252"
+    },
+    {
+        "id": 4876441710,
+        "number": 159247,
+        "title": "\"warning: `#[link_name]` attribute cannot be used on statics\" warning/error should mention `#[export_name]`",
+        "state": "open",
+        "created_at": "2026-07-13T18:21:32Z",
+        "updated_at": "2026-07-14T07:59:33Z",
+        "closed_at": null,
+        "author": "zachs18",
+        "comments": 3,
+        "labels": [
+            "A-diagnostics",
+            "T-compiler"
+        ],
+        "assignees": [
+            "asuto15"
+        ],
+        "locked": false,
+        "body": "### Code\n\n```Rust\n#[link_name = \"VALUE\"]\nstatic VALUE_DEFINITION: u8 = 0;\n```\n\n### Current output\n\n```Shell\nwarning: `#[link_name]` attribute cannot be used on statics\n --> src/lib.rs:1:1\n  |\n1 | #[link_name = \"VALUE\"]\n  | ^^^^^^^^^^^^^^^^^^^^^^\n  |\n  = warning: this was previously accepted by the compiler but is being phased out; it will become a hard error in a future release!\n  = help: `#[link_name]` can be applied to foreign functions and foreign statics\n  = note: `#[warn(unused_attributes)]` (part of `#[warn(unused)]`) on by default\n```\n\n### Desired output\n\n```Shell\nwarning: `#[link_name]` attribute cannot be used on statics\n --> src/lib.rs:1:1\n  |\n1 | #[link_name = \"VALUE\"]\n  | ^^^^^^^^^^^^^^^^^^^^^^\n  |\n  = warning: this was previously accepted by the compiler but is being phased out; it will become a hard error in a future release!\n  = help: `#[link_name]` can be applied to foreign functions and foreign statics\n  = note: `#[warn(unused_attributes)]` (part of `#[warn(unused)]`) on by default\nhelp: did you mean to use `#[export_name]`?\n  |\n1 - #[link_name = \"VALUE\"]\n1 + #[unsafe(export_name = \"VALUE\")]\n```\n\n### Rationale and extra context\n\ncc https://github.com/rust-lang/rust/issues/47179\n\n`#[link_name]` is for items in `extern` blocks, to tell the compiler what symbol to *import*; `#[export_name]` is for Rust-defined items to tell the compiler what symbol to *export*. But `link_name` doesn't say in the name which \"direction\" it goes, so it's easy to confuse it for the other direction.\n\n### Other cases\n\n```Rust\n\n```\n\n### Rust Version\n\n```Shell\nrustc 1.99.0-nightly (375b1431b 2026-07-10)\nbinary: rustc\ncommit-hash: 375b1431b7d89d1c2e2bc168c011848ae12b7d14\ncommit-date: 2026-07-10\nhost: x86_64-unknown-linux-gnu\nrelease: 1.99.0-nightly\nLLVM version: 22.1.8\n```\n\n### Anything else?\n\n_No response_\n\n<!-- TRIAGEBOT_START -->\n\n<!-- TRIAGEBOT_ASSIGN_START -->\n\n<!-- TRIAGEBOT_ASSIGN_END -->\n<!-- TRIAGEBOT_END -->",
+        "url": "https://github.com/rust-lang/rust/issues/159247"
+    },
+    {
+        "id": 4876294350,
+        "number": 159244,
+        "title": "Miscompilation with FFI `bool` return type on AArch64",
+        "state": "open",
+        "created_at": "2026-07-13T18:01:21Z",
+        "updated_at": "2026-07-14T02:28:29Z",
+        "closed_at": null,
+        "author": "Timbals",
+        "comments": 23,
+        "labels": [
+            "A-LLVM",
+            "A-FFI",
+            "T-compiler",
+            "I-unsound",
+            "C-bug",
+            "P-critical",
+            "O-AArch64",
+            "A-ABI",
+            "I-miscompile"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "<!-- homu-ignore:start -->\n*[View all comments](https://triagebot.infra.rust-lang.org/gh-comments/rust-lang/rust/issues/159244)*\n<!-- homu-ignore:end -->\n\nI tried this C and Rust code:\n\n```c\nstruct Bools {\n    _Bool a;\n    _Bool b;\n};\n\n_Bool get_a(struct Bools bools) {\n    return bools.a;\n}\n```\n\n```rust\n#[repr(C)]\nstruct Bools {\n    a: bool,\n    b: bool,\n}\n\n#[link(name = \"get_a\")]\nunsafe extern \"C\" {\n    safe fn get_a(bools: Bools) -> bool;\n}\n\npub fn broken() -> i32 {\n    let bools = Bools { a: false, b: true };\n    if get_a(bools) {\n        123\n    } else {\n        321\n    }\n}\n\npub fn main() {\n    if broken() == 123 {\n        unreachable!();\n    }\n}\n```\n\nwith `gcc -c get_a.c -o get_a.o -O1 && ar rcs libget_a.a get_a.o && rustc main.rs -L . -C opt-level=1 && ./main`.\n\nI expected to see this happen: clean program exit, because the value of `a` should get round-tripped and `broken` should return `321`.\n\nInstead, this happened:\n```\nthread 'main' (17324) panicked at main.rs:23:9:\ninternal error: entered unreachable code\n```\n\nThis is caused by `rustc` emitting the `bool` return type as `i1 zeroext` to LLVM, but that is incorrect, because the AArch64 call ABI does not guarantee that the unused bits of the register are zeroed ([\"any unused bits in the register have unspecified value\"](https://github.com/ARM-software/abi-aa/blob/4374257ab4c35c91a91f8dfa71ce0c824e188cec/aapcs64/aapcs64.rst?plain=1#L2013)).\n\n`bools` is passed in a single register. The `get_a` function is a single `ret` instruction and doesn't touch the registers at all.\nThe `if` gets turned into a `cmp w0, #0` which compares the lower 32 bits of register, including the value of `b`, to `0`.\n\nThis is similar to https://github.com/rust-lang/rust/issues/97463 which was fixed in https://github.com/rust-lang/rust/pull/97800, but only covered integer types.\n\nI originally encountered this as spurious Java exception because the `jni-rs` [ExceptionCheck](https://github.com/jni-rs/jni-sys/blob/809b4c4939a2a581b84aa17018a5033b71c6d435/jni-sys/src/lib.rs#L1292) has a [`bool`](https://github.com/jni-rs/jni-sys/blob/809b4c4939a2a581b84aa17018a5033b71c6d435/jni-sys/src/lib.rs#L17) return type.\n\n### LLM disclosure\nI used LLMs to help find the cause of my initial issue, and discover resources for areas I wasn't familiar enough with (rustc internals, JNI, LLVM, AArch64 calling convention).\nThis issue and the reproducer were written and verified by me (a human).\n\n### Meta\n`rustc --version --verbose`:\n```\nrustc 1.99.0-nightly (77cf889bc 2026-07-12)\nbinary: rustc\ncommit-hash: 77cf889bc178ddb44d6a1c78e5a820b5abb31d8d\ncommit-date: 2026-07-12\nhost: aarch64-unknown-linux-gnu\nrelease: 1.99.0-nightly\nLLVM version: 22.1.8\n```\n\n`gcc --version`:\n```\ngcc (Debian 14.2.0-19) 14.2.0\nCopyright (C) 2024 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n```\n\n<details><summary>Backtrace</summary>\n<p>\n\n```\nthread 'main' (17324) panicked at main.rs:23:9:\ninternal error: entered unreachable code\nstack backtrace:\n   0: __rustc::rust_begin_unwind\n             at /rustc/77cf889bc178ddb44d6a1c78e5a820b5abb31d8d/library/std/src/panicking.rs:679:5\n   1: core::panicking::panic_fmt\n             at /rustc/77cf889bc178ddb44d6a1c78e5a820b5abb31d8d/library/core/src/panicking.rs:80:14\n   2: core::panicking::panic\n             at /rustc/77cf889bc178ddb44d6a1c78e5a820b5abb31d8d/library/core/src/panicking.rs:150:5\n   3: main::main\nnote: Some details are omitted, run with `RUST_BACKTRACE=full` for a verbose backtrace.\n```\n\n</p>\n</details>\n",
+        "url": "https://github.com/rust-lang/rust/issues/159244"
+    },
+    {
+        "id": 4875613865,
+        "number": 159238,
+        "title": "`isolate_highest_one` should mention `next_power_of_two`",
+        "state": "open",
+        "created_at": "2026-07-13T16:31:39Z",
+        "updated_at": "2026-07-13T16:31:41Z",
+        "closed_at": null,
+        "author": "Rudxain",
+        "comments": 0,
+        "labels": [
+            "A-docs",
+            "needs-triage"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Location (URL)\n\nhttps://doc.rust-lang.org/1.97.0/std/primitive.u32.html#method.isolate_highest_one\n\n### Summary\n\n`isolate_highest_one` behaves like a hypothetical `prev_power_of_two` (for unsigned ints), so it should have a \"see also\" linking to `next_power_of_two`, and vice-versa\n\nThe method was added in this PR: #136910",
+        "url": "https://github.com/rust-lang/rust/issues/159238"
+    },
+    {
+        "id": 4875486079,
+        "number": 159237,
+        "title": "[ICE]: `Invalid MIR: bad LHS type for binop`",
+        "state": "open",
+        "created_at": "2026-07-13T16:14:58Z",
+        "updated_at": "2026-07-13T16:15:02Z",
+        "closed_at": null,
+        "author": "matthiaskrgr",
+        "comments": 0,
+        "labels": [
+            "I-ICE",
+            "T-compiler",
+            "C-bug",
+            "F-generic_const_exprs",
+            "needs-triage",
+            "F-min_generic_const_args"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "<!--\n\u001b[31mICE\u001b[0m: Rustc ./a.rs '' 'error: internal compiler error: compiler/rustc_const_eval/src/interpret/operator.rs:423:18: Invalid MIR: bad LHS type for binop: Foo', 'error: internal compiler error: compiler/rustc_const_eval/src/interpret/operator.rs:423:18: Invalid MIR: bad LHS type for binop: Foo'\nFile: /tmp/im/r/rr/a.rs\n-->\n\nauto-reduced (treereduce-rust):\n````rust\n#![feature(generic_const_exprs, min_generic_const_args)]\nstruct Foo {\n    field: isize,\n}\nfn foo<const N: usize, const M: usize = { N + 1 }>() {\n    foo::<{ Foo { field: 1 } }>()\n}\n\n````\n\noriginal:\n````rust\n#![feature(generic_const_exprs, min_generic_const_args)]\nstruct Foo {\n    field: isize,\n}\nfn foo<const N: usize, const M: usize = { N + 1 }>() {\n    foo::<{ Foo { field: 1 } }>()\n}\n\nfn main() {}\n\n````\n\nVersion information\n````\nrustc 1.99.0-nightly (225e91c03 2026-07-13)\nbinary: rustc\ncommit-hash: 225e91c03da22cd4b9792b83c1cfc97967101614\ncommit-date: 2026-07-13\nhost: x86_64-unknown-linux-gnu\nrelease: 1.99.0-nightly\nLLVM version: 22.1.8\n\n````\n\nPossibly related line of code:\nhttps://github.com/rust-lang/rust/blob/225e91c03da22cd4b9792b83c1cfc97967101614/compiler/rustc_const_eval/src/interpret/operator.rs#L417-L429\n\nCommand:\n`/home/matthias/.rustup/toolchains/master/bin/rustc `\n\n<details><summary><strong>Program output</strong></summary>\n<p>\n\n```\nwarning: the feature `generic_const_exprs` is incomplete and may not be safe to use and/or cause compiler crashes\n --> /tmp/icemaker_global_tempdir.t2HbistEZJBr/rustc_testrunner_tmpdir_reporting.hutxlaBp0SfX/mvce.rs:1:12\n  |\n1 | #![feature(generic_const_exprs, min_generic_const_args)]\n  |            ^^^^^^^^^^^^^^^^^^^\n  |\n  = note: see issue #76560 <https://github.com/rust-lang/rust/issues/76560> for more information\n  = note: `#[warn(incomplete_features)]` on by default\n\nwarning: the feature `min_generic_const_args` is incomplete and may not be safe to use and/or cause compiler crashes\n --> /tmp/icemaker_global_tempdir.t2HbistEZJBr/rustc_testrunner_tmpdir_reporting.hutxlaBp0SfX/mvce.rs:1:33\n  |\n1 | #![feature(generic_const_exprs, min_generic_const_args)]\n  |                                 ^^^^^^^^^^^^^^^^^^^^^^\n  |\n  = note: see issue #132980 <https://github.com/rust-lang/rust/issues/132980> for more information\n\nerror[E0601]: `main` function not found in crate `mvce`\n --> /tmp/icemaker_global_tempdir.t2HbistEZJBr/rustc_testrunner_tmpdir_reporting.hutxlaBp0SfX/mvce.rs:7:2\n  |\n7 | }\n  |  ^ consider adding a `main` function to `/tmp/icemaker_global_tempdir.t2HbistEZJBr/rustc_testrunner_tmpdir_reporting.hutxlaBp0SfX/mvce.rs`\n\nerror: defaults for generic parameters are not allowed here\n --> /tmp/icemaker_global_tempdir.t2HbistEZJBr/rustc_testrunner_tmpdir_reporting.hutxlaBp0SfX/mvce.rs:5:24\n  |\n5 | fn foo<const N: usize, const M: usize = { N + 1 }>() {\n  |                        ^^^^^^^^^^^^^^^^^^^^^^^^^^\n\nerror: internal compiler error: /rustc-dev/225e91c03da22cd4b9792b83c1cfc97967101614/compiler/rustc_const_eval/src/interpret/operator.rs:423:18: Invalid MIR: bad LHS type for binop: Foo\n --> /tmp/icemaker_global_tempdir.t2HbistEZJBr/rustc_testrunner_tmpdir_reporting.hutxlaBp0SfX/mvce.rs:5:43\n  |\n5 | fn foo<const N: usize, const M: usize = { N + 1 }>() {\n  |                                           ^^^^^\n\n\nthread 'rustc' (207135) panicked at /rustc-dev/225e91c03da22cd4b9792b83c1cfc97967101614/compiler/rustc_const_eval/src/interpret/operator.rs:423:18:\nBox<dyn Any>\nstack backtrace:\n   0:     0x7fa06b60aa06 - <<std[f815c803b8bda7b3]::sys::backtrace::BacktraceLock>::print::DisplayBacktrace as core[a425eebf46758491]::fmt::Display>::fmt\n   1:     0x7fa06bc10dc8 - core[a425eebf46758491]::fmt::write\n   2:     0x7fa06b61fe7c - <std[f815c803b8bda7b3]::sys::stdio::unix::Stderr as core[a425eebf46758491]::io::write::Write>::write_fmt\n   3:     0x7fa06b5ded8a - std[f815c803b8bda7b3]::panicking::default_hook::{closure#0}\n   4:     0x7fa06b5fd123 - std[f815c803b8bda7b3]::panicking::default_hook\n   5:     0x7fa06a5d4a2b - std[f815c803b8bda7b3]::panicking::update_hook::<alloc[2f076b677b3e1a3b]::boxed::Box<rustc_driver_impl[f6b68445f387381]::install_ice_hook::{closure#1}>>::{closure#0}\n   6:     0x7fa06b5fd5c2 - std[f815c803b8bda7b3]::panicking::panic_with_hook\n   7:     0x7fa06a601a81 - std[f815c803b8bda7b3]::panicking::begin_panic::<rustc_errors[17885d358a472364]::ExplicitBug>::{closure#0}\n   8:     0x7fa06a5faa76 - std[f815c803b8bda7b3]::sys::backtrace::__rust_end_short_backtrace::<std[f815c803b8bda7b3]::panicking::begin_panic<rustc_errors[17885d358a472364]::ExplicitBug>::{closure#0}, !>\n   9:     0x7fa06a5fa7db - std[f815c803b8bda7b3]::panicking::begin_panic::<rustc_errors[17885d358a472364]::ExplicitBug>\n  10:     0x7fa06a60cc11 - <rustc_errors[17885d358a472364]::diagnostic::BugAbort as rustc_errors[17885d358a472364]::diagnostic::EmissionGuarantee>::emit_producing_guarantee\n  11:     0x7fa06ab64cfc - <rustc_errors[17885d358a472364]::DiagCtxtHandle>::span_bug::<rustc_span[5e6c73db80a2ecda]::span_encoding::Span, alloc[2f076b677b3e1a3b]::string::String>\n  12:     0x7fa06ab93916 - rustc_middle[83d6f6fa2ecd6292]::util::bug::opt_span_bug_fmt::<rustc_span[5e6c73db80a2ecda]::span_encoding::Span>::{closure#0}\n  13:     0x7fa06ab93aa2 - rustc_middle[83d6f6fa2ecd6292]::ty::context::tls::with_opt::<rustc_middle[83d6f6fa2ecd6292]::util::bug::opt_span_bug_fmt<rustc_span[5e6c73db80a2ecda]::span_encoding::Span>::{closure#0}, !>::{closure#0}\n  14:     0x7fa06ab7f27b - rustc_middle[83d6f6fa2ecd6292]::ty::context::tls::with_context_opt::<rustc_middle[83d6f6fa2ecd6292]::ty::context::tls::with_opt<rustc_middle[83d6f6fa2ecd6292]::util::bug::opt_span_bug_fmt<rustc_span[5e6c73db80a2ecda]::span_encoding::Span>::{closure#0}, !>::{closure#0}, !>\n  15:     0x7fa068c20608 - rustc_middle[83d6f6fa2ecd6292]::util::bug::span_bug_fmt::<rustc_span[5e6c73db80a2ecda]::span_encoding::Span>\n  16:     0x7fa06be73e48 - <rustc_const_eval[61e3780497d06163]::interpret::eval_context::InterpCx<rustc_const_eval[61e3780497d06163]::const_eval::machine::CompileTimeMachine>>::binary_op\n  17:     0x7fa06cc2cafe - <rustc_const_eval[61e3780497d06163]::interpret::eval_context::InterpCx<rustc_const_eval[61e3780497d06163]::const_eval::machine::CompileTimeMachine>>::eval_rvalue_into_place\n  18:     0x7fa06cc26510 - rustc_const_eval[61e3780497d06163]::const_eval::eval_queries::eval_to_allocation_raw_provider\n  19:     0x7fa06cc24b96 - rustc_query_impl[68a2f365f9927c9b]::query_impl::eval_to_allocation_raw::invoke_provider_fn::__rust_begin_short_backtrace\n  20:     0x7fa06cc205ac - rustc_query_impl[68a2f365f9927c9b]::execution::try_execute_query::<rustc_middle[83d6f6fa2ecd6292]::query::caches::DefaultCache<rustc_middle[83d6f6fa2ecd6292]::ty::PseudoCanonicalInput<rustc_middle[83d6f6fa2ecd6292]::mir::interpret::GlobalId>, rustc_middle[83d6f6fa2ecd6292]::query::erase::ErasedData<[u8; 24usize]>>, false>\n  21:     0x7fa06cc1f9ff - rustc_query_impl[68a2f365f9927c9b]::query_impl::eval_to_allocation_raw::execute_query_non_incr::__rust_end_short_backtrace\n  22:     0x7fa06cc1d76d - rustc_const_eval[61e3780497d06163]::const_eval::valtrees::eval_to_valtree\n  23:     0x7fa06cc1d526 - <rustc_const_eval[61e3780497d06163]::provide::{closure#0} as core[a425eebf46758491]::ops::function::FnOnce<(rustc_middle[83d6f6fa2ecd6292]::ty::context::TyCtxt, rustc_middle[83d6f6fa2ecd6292]::ty::PseudoCanonicalInput<rustc_middle[83d6f6fa2ecd6292]::mir::interpret::GlobalId>)>>::call_once\n  24:     0x7fa06cc1d4d8 - rustc_query_impl[68a2f365f9927c9b]::query_impl::eval_to_valtree::invoke_provider_fn::__rust_begin_short_backtrace\n  25:     0x7fa06cc16460 - rustc_query_impl[68a2f365f9927c9b]::execution::try_execute_query::<rustc_middle[83d6f6fa2ecd6292]::query::caches::DefaultCache<rustc_middle[83d6f6fa2ecd6292]::ty::PseudoCanonicalInput<rustc_middle[83d6f6fa2ecd6292]::mir::interpret::GlobalId>, rustc_middle[83d6f6fa2ecd6292]::query::erase::ErasedData<[u8; 16usize]>>, false>\n  26:     0x7fa06cc16108 - rustc_query_impl[68a2f365f9927c9b]::query_impl::eval_to_valtree::execute_query_non_incr::__rust_end_short_backtrace\n  27:     0x7fa06c946818 - <rustc_middle[83d6f6fa2ecd6292]::ty::context::TyCtxt>::const_eval_resolve_for_typeck\n  28:     0x7fa06c945a67 - rustc_trait_selection[9953319ec50c4b70]::traits::try_evaluate_const\n  29:     0x7fa06d53bd53 - rustc_trait_selection[9953319ec50c4b70]::traits::const_evaluatable::is_const_evaluatable.cold\n  30:     0x7fa06c2e70bc - <rustc_trait_selection[9953319ec50c4b70]::traits::fulfill::FulfillProcessor as rustc_data_structures[d208358c53517434]::obligation_forest::ObligationProcessor>::process_obligation\n  31:     0x7fa06bc05c51 - <rustc_data_structures[d208358c53517434]::obligation_forest::ObligationForest<rustc_trait_selection[9953319ec50c4b70]::traits::fulfill::PendingPredicateObligation>>::process_obligations::<rustc_trait_selection[9953319ec50c4b70]::traits::fulfill::FulfillProcessor>\n  32:     0x7fa06bedc227 - <rustc_hir_typeck[f0e17d0ac8b05531]::fn_ctxt::FnCtxt>::check_expr_call\n  33:     0x7fa06bf03d19 - <rustc_hir_typeck[f0e17d0ac8b05531]::fn_ctxt::FnCtxt>::check_expr_with_expectation_and_args\n  34:     0x7fa06bf0e4b0 - <rustc_hir_typeck[f0e17d0ac8b05531]::fn_ctxt::FnCtxt>::check_expr_block\n  35:     0x7fa06bf03cc4 - <rustc_hir_typeck[f0e17d0ac8b05531]::fn_ctxt::FnCtxt>::check_expr_with_expectation_and_args\n  36:     0x7fa06bf30818 - rustc_hir_typeck[f0e17d0ac8b05531]::check::check_fn\n  37:     0x7fa06ce60cd2 - rustc_hir_typeck[f0e17d0ac8b05531]::typeck_with_inspect::{closure#0}\n  38:     0x7fa06ce5f5f0 - rustc_query_impl[68a2f365f9927c9b]::query_impl::typeck_root::invoke_provider_fn::__rust_begin_short_backtrace\n  39:     0x7fa06c26f4e9 - rustc_query_impl[68a2f365f9927c9b]::execution::try_execute_query::<rustc_data_structures[d208358c53517434]::vec_cache::VecCache<rustc_span[5e6c73db80a2ecda]::def_id::LocalDefId, rustc_middle[83d6f6fa2ecd6292]::query::erase::ErasedData<[u8; 8usize]>, rustc_middle[83d6f6fa2ecd6292]::dep_graph::graph::DepNodeIndex>, false>\n  40:     0x7fa06c26ef43 - rustc_query_impl[68a2f365f9927c9b]::query_impl::typeck_root::execute_query_non_incr::__rust_end_short_backtrace\n  41:     0x7fa06c271629 - <rustc_middle[83d6f6fa2ecd6292]::ty::context::TyCtxt>::par_hir_body_owners::<rustc_hir_analysis[d14ae22442f42ae1]::check_crate::{closure#1}>::{closure#0}\n  42:     0x7fa06c270f30 - rustc_hir_analysis[d14ae22442f42ae1]::check_crate\n  43:     0x7fa06c26bc0b - rustc_interface[daa1f9eccb307e6d]::passes::analysis\n  44:     0x7fa06cdf2687 - rustc_query_impl[68a2f365f9927c9b]::execution::try_execute_query::<rustc_middle[83d6f6fa2ecd6292]::query::caches::SingleCache<rustc_middle[83d6f6fa2ecd6292]::query::erase::ErasedData<[u8; 0usize]>>, false>\n  45:     0x7fa06cdf2369 - rustc_query_impl[68a2f365f9927c9b]::query_impl::analysis::execute_query_non_incr::__rust_end_short_backtrace\n  46:     0x7fa06cd85d1b - rustc_interface[daa1f9eccb307e6d]::interface::run_compiler::<(), rustc_driver_impl[f6b68445f387381]::run_compiler::{closure#0}>::{closure#1}\n  47:     0x7fa06cddd0ba - std[f815c803b8bda7b3]::sys::backtrace::__rust_begin_short_backtrace::<rustc_interface[daa1f9eccb307e6d]::util::run_in_thread_with_globals<rustc_interface[daa1f9eccb307e6d]::util::run_in_thread_pool_with_globals<rustc_interface[daa1f9eccb307e6d]::interface::run_compiler<(), rustc_driver_impl[f6b68445f387381]::run_compiler::{closure#0}>::{closure#1}, ()>::{closure#0}, ()>::{closure#0}::{closure#0}, ()>\n  48:     0x7fa06cddce6d - <std[f815c803b8bda7b3]::thread::lifecycle::spawn_unchecked<rustc_interface[daa1f9eccb307e6d]::util::run_in_thread_with_globals<rustc_interface[daa1f9eccb307e6d]::util::run_in_thread_pool_with_globals<rustc_interface[daa1f9eccb307e6d]::interface::run_compiler<(), rustc_driver_impl[f6b68445f387381]::run_compiler::{closure#0}>::{closure#1}, ()>::{closure#0}, ()>::{closure#0}::{closure#0}, ()>::{closure#1} as core[a425eebf46758491]::ops::function::FnOnce<()>>::call_once::{shim:vtable#0}\n  49:     0x7fa06cde1290 - <std[f815c803b8bda7b3]::sys::thread::unix::Thread>::new::thread_start\n  50:     0x7fa066697739 - <unknown>\n  51:     0x7fa06671bedc - <unknown>\n  52:                0x0 - <unknown>\n\nnote: we would appreciate a bug report: https://github.com/rust-lang/rust/issues/new?labels=C-bug%2C+I-ICE%2C+T-compiler&template=ice.md\n\nnote: please make sure that you have updated to the latest nightly\n\nnote: rustc 1.99.0-nightly (225e91c03 2026-07-13) running on x86_64-unknown-linux-gnu\n\nquery stack during panic:\n#0 [eval_to_allocation_raw] const-evaluating + checking `foo::{constant#0}`\n#1 [eval_to_valtree] evaluating type-level constant\n#2 [typeck_root] type-checking `foo`\n#3 [analysis] running analysis passes on crate `mvce`\nend of query stack\nerror: aborting due to 3 previous errors; 2 warnings emitted\n\nFor more information about this error, try `rustc --explain E0601`.\n\n```\n\n</p>\n</details>\n\n<!--\nquery stack:\n#0 [eval_to_allocation_raw] const-evaluating + checking `foo::{constant#0}`\n#1 [eval_to_valtree] evaluating type-level constant\n#2 [typeck_root] type-checking `foo`\n#3 [analysis] running analysis passes on crate `mvce`\n\n-->\n@rustbot label +F-generic_const_exprs +F-min_generic_const_args \n",
+        "url": "https://github.com/rust-lang/rust/issues/159237"
+    },
+    {
+        "id": 4875181600,
+        "number": 159234,
+        "title": "Rustdoc: table stripes hide inline code span background color",
+        "state": "open",
+        "created_at": "2026-07-13T15:36:44Z",
+        "updated_at": "2026-07-13T18:23:08Z",
+        "closed_at": null,
+        "author": "laundmo",
+        "comments": 0,
+        "labels": [
+            "T-rustdoc",
+            "C-bug",
+            "A-rustdoc-ui",
+            "needs-triage",
+            "T-rustdoc-frontend"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "# Code\nI ran into this in Bevy, tho the effect is noticeable in any rustdoc docs which uses a table containing inline code spans.\n\n```rust\n/// | Examples                          | Explanation                    |\n/// | --------------------------------- | ------------------------------ |\n/// | `CompA`                           | A unit or default component... |\n/// | `CompA(val)`<br>`CompA(val, val)` | Tuple Component with some...   |\n```\n\n# Reproduction Steps\n1. Write a doc comment with a table which has an inline code span `like this` i the second row\n2. generate rustdoc\n3. view with dark or ayu themes\n4. notice how inline code span background disappears into alternating table color\n\n# Expected Outcome\n\nInline code spans background to stand out inside tables, making it easy to understand whats supposed to be code and what text.  \n\n# Actual Output\n\nExample here: https://docs.rs/bevy_scene/latest/bevy_scene/macro.bsn.html\n\nhttps://github.com/user-attachments/assets/afeacf4c-75b5-4451-8080-f329f68b227e\n\nIts especially bad on the non-ayu dark theme, where the text color for inline spans is white as well, which means the only factor to distinguish inline code from text is the monospace font.\n\n# Version\nrustdoc 1.98.0-nightly (57d06900f 2026-05-27)\n\nBut the css still exists on main as of posting this.\n\n# Additional Details\nIntroduced by https://github.com/rust-lang/rust/pull/105486 best i can tell",
+        "url": "https://github.com/rust-lang/rust/issues/159234"
+    },
+    {
+        "id": 4875115876,
+        "number": 159233,
+        "title": "[ICE]: resolve: `no entry found for key`",
+        "state": "open",
+        "created_at": "2026-07-13T15:28:48Z",
+        "updated_at": "2026-07-13T15:29:12Z",
+        "closed_at": null,
+        "author": "matthiaskrgr",
+        "comments": 0,
+        "labels": [
+            "A-resolve",
+            "I-ICE",
+            "T-compiler",
+            "C-bug",
+            "needs-triage",
+            "F-fn_delegation"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "<!--\n\u001b[31mICE\u001b[0m: Rustc ./a.rs '--edition=2024 -ooutputfile -Zdump-mir-dir=dir' 'thread 'rustc' ($TID) panicked at compiler/rustc_resolve/src/macros.rs:164:32: 'no entry found for key'', 'thread 'rustc' ($TID) panicked at compiler/rustc_resolve/src/macros.rs:164:32: 'no entry found for key''\nFile: /tmp/im/u/a.rs\n-->\n\nsnippet:\n````rust\n//@compile-flags: --edition=2024\nstatic REGEX: () = format!(|| async move { reuse impl Trait for S2 { $x } });\n\n````\n\nVersion information\n````\nrustc 1.99.0-nightly (77cf889bc 2026-07-12)\nbinary: rustc\ncommit-hash: 77cf889bc178ddb44d6a1c78e5a820b5abb31d8d\ncommit-date: 2026-07-12\nhost: x86_64-unknown-linux-gnu\nrelease: 1.99.0-nightly\nLLVM version: 22.1.8\n\n````\n\nPossibly related line of code:\nhttps://github.com/rust-lang/rust/blob/77cf889bc178ddb44d6a1c78e5a820b5abb31d8d/compiler/rustc_resolve/src/macros.rs#L158-L170\n\nCommand:\n`/home/matthias/.rustup/toolchains/master/bin/rustc --edition=2024`\n\n<details><summary><strong>Program output</strong></summary>\n<p>\n\n```\nerror: expected expression, found `$`\n --> /tmp/icemaker_global_tempdir.XuIwICfk97tD/rustc_testrunner_tmpdir_reporting.EntH3x6ljXRV/mvce.rs:1:70\n  |\n1 | static REGEX: () = format!(|| async move { reuse impl Trait for S2 { $x } });\n  |                                                                      ^ expected expression\n\n\nthread 'rustc' (50860) panicked at /rustc-dev/77cf889bc178ddb44d6a1c78e5a820b5abb31d8d/compiler/rustc_resolve/src/macros.rs:164:32:\nno entry found for key\nstack backtrace:\n   0:     0x7fc593bf1ff6 - <<std[9eda52036cb1db6b]::sys::backtrace::BacktraceLock>::print::DisplayBacktrace as core[2ff53be78585266f]::fmt::Display>::fmt\n   1:     0x7fc59420ec88 - core[2ff53be78585266f]::fmt::write\n   2:     0x7fc593c0746c - <std[9eda52036cb1db6b]::sys::stdio::unix::Stderr as core[2ff53be78585266f]::io::write::Write>::write_fmt\n   3:     0x7fc593bc637a - std[9eda52036cb1db6b]::panicking::default_hook::{closure#0}\n   4:     0x7fc593be4713 - std[9eda52036cb1db6b]::panicking::default_hook\n   5:     0x7fc592bbc3cb - std[9eda52036cb1db6b]::panicking::update_hook::<alloc[d2bfd98fd5ef7b90]::boxed::Box<rustc_driver_impl[2fa0c13d259555aa]::install_ice_hook::{closure#1}>>::{closure#0}\n   6:     0x7fc593be4bb2 - std[9eda52036cb1db6b]::panicking::panic_with_hook\n   7:     0x7fc593bc6432 - std[9eda52036cb1db6b]::panicking::panic_handler::{closure#0}\n   8:     0x7fc593bbd0f9 - std[9eda52036cb1db6b]::sys::backtrace::__rust_end_short_backtrace::<std[9eda52036cb1db6b]::panicking::panic_handler::{closure#0}, !>\n   9:     0x7fc593bc7d8d - __rustc[3a1348ea94f84ccb]::rust_begin_unwind\n  10:     0x7fc59095070c - core[2ff53be78585266f]::panicking::panic_fmt\n  11:     0x7fc5919cd8a4 - core[2ff53be78585266f]::option::expect_failed\n  12:     0x7fc59377a9dd - <rustc_resolve[53d9ea867dc44edc]::Resolver as rustc_expand[6b3017429006d1f5]::base::ResolverExpand>::invocation_parent\n  13:     0x7fc594723ebc - <rustc_resolve[53d9ea867dc44edc]::Resolver as rustc_expand[6b3017429006d1f5]::base::ResolverExpand>::resolve_macro_invocation\n  14:     0x7fc595899169 - <rustc_expand[6b3017429006d1f5]::expand::MacroExpander>::fully_expand_fragment\n  15:     0x7fc594de3da7 - rustc_builtin_macros[c16f3e467a91077b]::util::expr_to_spanned_string\n  16:     0x7fc594de60ed - rustc_builtin_macros[c16f3e467a91077b]::format::make_format_args\n  17:     0x7fc594ddb4c8 - rustc_builtin_macros[c16f3e467a91077b]::format::expand_format_args_impl\n  18:     0x7fc595897aaf - <rustc_expand[6b3017429006d1f5]::expand::MacroExpander>::fully_expand_fragment\n  19:     0x7fc595890e94 - <rustc_expand[6b3017429006d1f5]::expand::MacroExpander>::expand_crate\n  20:     0x7fc5949d6d11 - rustc_interface[6c4f4a5fe08534b6]::passes::resolver_for_lowering_raw\n  21:     0x7fc5949d6516 - rustc_query_impl[dfb0cc289539bd44]::query_impl::resolver_for_lowering_raw::invoke_provider_fn::__rust_begin_short_backtrace\n  22:     0x7fc59530ad01 - rustc_query_impl[dfb0cc289539bd44]::execution::try_execute_query::<rustc_middle[a6f0f0cf12fc39f8]::query::caches::SingleCache<rustc_middle[a6f0f0cf12fc39f8]::query::erase::ErasedData<[u8; 24usize]>>, false>\n  23:     0x7fc59530aa78 - rustc_query_impl[dfb0cc289539bd44]::query_impl::resolver_for_lowering_raw::execute_query_non_incr::__rust_end_short_backtrace\n  24:     0x7fc5952e7fc0 - rustc_interface[6c4f4a5fe08534b6]::interface::run_compiler::<(), rustc_driver_impl[2fa0c13d259555aa]::run_compiler::{closure#0}>::{closure#1}\n  25:     0x7fc59534c47a - std[9eda52036cb1db6b]::sys::backtrace::__rust_begin_short_backtrace::<rustc_interface[6c4f4a5fe08534b6]::util::run_in_thread_with_globals<rustc_interface[6c4f4a5fe08534b6]::util::run_in_thread_pool_with_globals<rustc_interface[6c4f4a5fe08534b6]::interface::run_compiler<(), rustc_driver_impl[2fa0c13d259555aa]::run_compiler::{closure#0}>::{closure#1}, ()>::{closure#0}, ()>::{closure#0}::{closure#0}, ()>\n  26:     0x7fc59534c22d - <std[9eda52036cb1db6b]::thread::lifecycle::spawn_unchecked<rustc_interface[6c4f4a5fe08534b6]::util::run_in_thread_with_globals<rustc_interface[6c4f4a5fe08534b6]::util::run_in_thread_pool_with_globals<rustc_interface[6c4f4a5fe08534b6]::interface::run_compiler<(), rustc_driver_impl[2fa0c13d259555aa]::run_compiler::{closure#0}>::{closure#1}, ()>::{closure#0}, ()>::{closure#0}::{closure#0}, ()>::{closure#1} as core[2ff53be78585266f]::ops::function::FnOnce<()>>::call_once::{shim:vtable#0}\n  27:     0x7fc595350650 - <std[9eda52036cb1db6b]::sys::thread::unix::Thread>::new::thread_start\n  28:     0x7fc58ec97739 - <unknown>\n  29:     0x7fc58ed1bedc - <unknown>\n  30:                0x0 - <unknown>\n\nerror: the compiler unexpectedly panicked. This is a bug\n\nnote: we would appreciate a bug report: https://github.com/rust-lang/rust/issues/new?labels=C-bug%2C+I-ICE%2C+T-compiler&template=ice.md\n\nnote: please make sure that you have updated to the latest nightly\n\nnote: rustc 1.99.0-nightly (77cf889bc 2026-07-12) running on x86_64-unknown-linux-gnu\n\nnote: compiler flags: -Z dump-mir-dir=dir\n\nquery stack during panic:\n#0 [resolver_for_lowering_raw] getting the resolver for lowering\nend of query stack\nerror: aborting due to 1 previous error\n\n\n```\n\n</p>\n</details>\n\n<!--\nquery stack:\n#0 [resolver_for_lowering_raw] getting the resolver for lowering\n\n-->\n\n",
+        "url": "https://github.com/rust-lang/rust/issues/159233"
+    },
+    {
+        "id": 4874839331,
+        "number": 159230,
+        "title": "Experiment: Crater with `--release` for 1.98",
+        "state": "open",
+        "created_at": "2026-07-13T14:55:07Z",
+        "updated_at": "2026-07-13T14:58:21Z",
+        "closed_at": null,
+        "author": "theemathas",
+        "comments": 4,
+        "labels": [
+            "S-waiting-on-crater",
+            "C-crater"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "As per [#t-release > Should we do crater runs with optimization on?](https://rust-lang.zulipchat.com/#narrow/channel/241545-t-release/topic/Should.20we.20do.20crater.20runs.20with.20optimization.20on.3F/with/609586400), I am starting a crater run with optimizations turned on, in hopes to catch miscompilations before they land on stable.\n\nDepending on the amount of regressed crates (and therefore the workload), this crater run might or might not end up being properly triaged.",
+        "url": "https://github.com/rust-lang/rust/issues/159230"
+    },
+    {
+        "id": 4874441278,
+        "number": 159228,
+        "title": "The old solver doesn't record required depth on cache",
+        "state": "open",
+        "created_at": "2026-07-13T14:09:39Z",
+        "updated_at": "2026-07-13T14:13:45Z",
+        "closed_at": null,
+        "author": "adwinwhite",
+        "comments": 0,
+        "labels": [
+            "T-compiler",
+            "T-types",
+            "WG-trait-system-refactor"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "\n```rust\n#![recursion_limit = \"8\"]\n\n// The field order matters 😂\nstruct Foo<T> {\n    t: T,\n    opt_t: Option<T>,\n}\n\nfn require_sync<T: Sync>() {}\n\nfn main() {\n    require_sync::<Foo<Foo<Foo<Foo<Foo<Foo<()>>>>>>>();\n}\n```\nThe above code compiles with the old solver, while it requires `recursion_limit = \"12\"` for the next solver.\nTo prove `Foo^N: Sync`, we have to prove constituent nested goals `Foo^N-1: Sync` and `Option<Foo^N-1>: Sync`.\nIf we require depth `d` to prove the former, the next solver requires the depth `d + 1` for the later, because we goes down one depth from `Option<Foo^N-1>: Sync` to its constituent goal `Foo^N-1: Sync`, and we hit the cache with required depth d for this nested goal.\nSo, the total required depth for the root goal is proportional to `N` with slope `2`.\nBut for the old solver, we check the recursion limit when we actually consider the obligation and don't record/lookup the required depth for its deeply nested goals.\nTherefore, the total required depth for the root goal is proportional to `N` with slope `1` and the next-solver requires twice more recursion limits as `N` grows.\n\nThis affects `wgpu = \"25.0.2\"`.\n\nThis is investigated and explained by @ShoyuVanilla. [zulip discussion](https://rust-lang.zulipchat.com/#narrow/channel/364551-t-types.2Ftrait-system-refactor/topic/The.20old.20solver.20don.27t.20record.20required.20depth.20on.20cache/with/604756008)\n\nIt's planned to add a FCW for this.  #159224",
+        "url": "https://github.com/rust-lang/rust/issues/159228"
+    },
+    {
+        "id": 4874300932,
+        "number": 159227,
+        "title": "macOS + lld: false positive output from the linker: ld64.lld: <some path in a shared library>.o) has version 26.0.0, which is newer than target minimum of 11.0.0",
+        "state": "open",
+        "created_at": "2026-07-13T13:53:51Z",
+        "updated_at": "2026-07-13T15:23:14Z",
+        "closed_at": null,
+        "author": "keltia",
+        "comments": 0,
+        "labels": [
+            "O-macos",
+            "A-diagnostics",
+            "T-compiler",
+            "L-linker_messages"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Code\n\n```Rust\nAny code that is bindings to a C/C++/ObjC library on macOS, when linking with `lld` at least.\n```\n\n### Current output\n\n```Shell\nwarning: linker stderr: ld64.lld: /Users/roberto/Src/Rust/src/fetiche-ch/target/debug/deps/libblake3-0113f41d938ccb07.rlib(a1edd97dd51cd48d-blake3_neon.o) has version 26.0.0, which is newer than target minimum of 11.0.0\n...\n[repeat lots of these]\n```\n\n### Desired output\n\n```Shell\nThis should be masked by rustc, like many other messages already.\n```\n\n### Rationale and extra context\n\nTaken from https://blog.rust-lang.org/2026/07/09/Rust-1.97.0/\n```text\nNote that currently, linker_messages is a special lint that is not affected by the warnings lint group. This is intentional as rustc generally doesn't control linker output as precisely, and it's not uncommon for output to only appear on some platforms. If you are seeing what you think is a false positive output from the linker, please [file an issue](https://github.com/rust-lang/rust/issues/new/choose).\n```\n\n### Other cases\n\n```Rust\n\n```\n\n### Rust Version\n\n```Shell\nrustc 1.97.0 (2d8144b78 2026-07-07)\nbinary: rustc\ncommit-hash: 2d8144b7880597b6e6d3dfd63a9a9efae3f533d3\ncommit-date: 2026-07-07\nhost: aarch64-apple-darwin\nrelease: 1.97.0\nLLVM version: 22.1.6\n```\n\n### Anything else?\n\n_No response_",
+        "url": "https://github.com/rust-lang/rust/issues/159227"
+    },
+    {
+        "id": 4874100572,
+        "number": 159223,
+        "title": "Tracking issue for release notes of #159222: semicolon_in_expressions_from_macros: Lint on non-local macros too",
+        "state": "open",
+        "created_at": "2026-07-13T13:29:36Z",
+        "updated_at": "2026-07-13T13:29:38Z",
+        "closed_at": null,
+        "author": "rustbot",
+        "comments": 0,
+        "labels": [
+            "A-macros",
+            "T-lang",
+            "T-compiler",
+            "relnotes",
+            "needs-triage",
+            "L-semicolon_in_expressions_from_macros",
+            "relnotes-tracking-issue"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "\nThis issue tracks the release notes text for #159222.\n\ncc @joshtriplett, @petrochenkov -- original issue/PR authors and assignees for drafting text\n\nSee the forge.rust-lang.org chapter about [release notes](https://forge.rust-lang.org/release/release-notes.html#preparing-release-notes) for an overview of how the release team makes use of these tracking issues.\n\n### Release notes text\n\nThis section should be edited to specify the correct category(s) for the change, with succinct description(s) of what changed. Some things worth considering:\n- Does this need an additional compat notes section?\n- Was this a libs stabilization that should have additional headers to list new APIs under `Stabilized APIs` and `Const Stabilized APIs`?\n\n\n````markdown\n# Language/Compiler/Libraries/Stabilized APIs/Const Stabilized APIs/Rustdoc/Compatibility Notes/Internal Changes/Other\n- [semicolon_in_expressions_from_macros: Lint on non-local macros too](https://github.com/rust-lang/rust/pull/159222)\n````\n\n> [!TIP]\n> Use the [previous releases](https://doc.rust-lang.org/nightly/releases.html) for inspiration on how to write the release notes text and which categories to pick.\n\n### Release blog section\n\nIf this change is notable enough for inclusion in the blog post then this section should be edited to contain a draft for the blog post. *Otherwise leave it empty.*\n\n\n````markdown\n````\n\n> [!NOTE]\n>\n> If a blog post section is required the `release-blog-post` label should be added (`@rustbot label +release-blog-post`) to this issue as otherwise it may be missed by the release team.\n",
+        "url": "https://github.com/rust-lang/rust/issues/159223"
+    },
+    {
+        "id": 4872729631,
+        "number": 159217,
+        "title": "Provide static toolchains for each supported architecture (fallback)",
+        "state": "open",
+        "created_at": "2026-07-13T10:29:08Z",
+        "updated_at": "2026-07-13T12:19:54Z",
+        "closed_at": null,
+        "author": "peppergrayxyz",
+        "comments": 1,
+        "labels": [
+            "needs-triage"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "Whilst it is understandable that you cannot provide a gazillion number of binaries for any combination of host triplets possible, it is however quite an effort for users to bootstrap Rust for a target without a pre-compiled binary (e.g. if there are none for this architecture, your libc is not supported, you are using libcxx, etc.). With Rust becoming ever more integral to the Linux ecosystem, having a working Rust tool chain is not a nice to have, but a necessity. \n\nIt would therefore be great to have something to work with, regardless of which architecture, libc and libcxx is being used. This can be achieved by providing:\n- a static tool chain\n- for the basic features set (no CPU extensions)\n- for each supported architecture\n\nSince you cannot bootstrap Rust without Rust, this would make the process significantly easier for users, because it would remove the necessity to bootstrap Rust yourself altogether.",
+        "url": "https://github.com/rust-lang/rust/issues/159217"
+    },
+    {
+        "id": 4869421837,
+        "number": 159199,
+        "title": "Import associated item of generic trait and confusing \"type annotations needed\"",
+        "state": "open",
+        "created_at": "2026-07-13T00:34:43Z",
+        "updated_at": "2026-07-13T00:59:00Z",
+        "closed_at": null,
+        "author": "camsteffen",
+        "comments": 1,
+        "labels": [
+            "A-diagnostics",
+            "T-compiler",
+            "F-import_trait_associated_functions"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Code\n\n```Rust\n#![feature(import_trait_associated_functions)]\n\ntrait X<Y> {\n    fn foo() -> String;\n}\n\nuse X::foo;\n\nfn test() {\n    let _ = foo();\n}\n```\n\n### Current output\n\n```Shell\nerror[E0283]: type annotations needed\n  --> src/lib.rs:10:13\n   |\n10 |     let _ = foo();\n   |             ^^^^^ cannot infer type\n   |\n   = note: the type must implement `X<_>`\n\nFor more information about this error, try `rustc --explain E0283`.\n```\n\n### Desired output\n\nEither the import should be disallowed, or the error should suggest using a trait-qualified function name.\n\n### Rationale and extra context\n\nI don't know if there is any way to use an imported associated item of a generic trait?\n\n[Tracking issue](https://github.com/rust-lang/rust/issues/134691)\n\n### Other cases\n\n```Rust\n\n```\n\n### Rust Version\n\n```Shell\nNightly channel\nBuild using the Nightly version: 1.99.0-nightly\n\n(2026-07-11 be8e82435eb04fbe75ed)\n```\n\n### Anything else?\n\n_No response_",
+        "url": "https://github.com/rust-lang/rust/issues/159199"
+    },
+    {
+        "id": 4869275108,
+        "number": 159198,
+        "title": "Tracking issue for release notes of #158325: Document NonNull layout guarantees",
+        "state": "closed",
+        "created_at": "2026-07-12T23:52:40Z",
+        "updated_at": "2026-07-13T14:57:29Z",
+        "closed_at": "2026-07-13T06:47:44Z",
+        "author": "rustbot",
+        "comments": 1,
+        "labels": [
+            "relnotes",
+            "T-libs",
+            "relnotes-tracking-issue"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "\nThis issue tracks the release notes text for #158325.\n\ncc @0xEgao, @RalfJung -- original issue/PR authors and assignees for drafting text\n\nSee the forge.rust-lang.org chapter about [release notes](https://forge.rust-lang.org/release/release-notes.html#preparing-release-notes) for an overview of how the release team makes use of these tracking issues.\n\n### Release notes text\n\nThis section should be edited to specify the correct category(s) for the change, with succinct description(s) of what changed. Some things worth considering:\n- Does this need an additional compat notes section?\n- Was this a libs stabilization that should have additional headers to list new APIs under `Stabilized APIs` and `Const Stabilized APIs`?\n\n\n````markdown\n# Language/Compiler/Libraries/Stabilized APIs/Const Stabilized APIs/Rustdoc/Compatibility Notes/Internal Changes/Other\n- [Document NonNull layout guarantees](https://github.com/rust-lang/rust/pull/158325)\n````\n\n> [!TIP]\n> Use the [previous releases](https://doc.rust-lang.org/nightly/releases.html) for inspiration on how to write the release notes text and which categories to pick.\n\n### Release blog section\n\nIf this change is notable enough for inclusion in the blog post then this section should be edited to contain a draft for the blog post. *Otherwise leave it empty.*\n\n\n````markdown\n````\n\n> [!NOTE]\n>\n> If a blog post section is required the `release-blog-post` label should be added (`@rustbot label +release-blog-post`) to this issue as otherwise it may be missed by the release team.\n",
+        "url": "https://github.com/rust-lang/rust/issues/159198"
+    },
+    {
+        "id": 4868093024,
+        "number": 159186,
+        "title": "Markdown tables can silently discard content containing `|`",
+        "state": "open",
+        "created_at": "2026-07-12T17:44:49Z",
+        "updated_at": "2026-07-13T05:59:09Z",
+        "closed_at": null,
+        "author": "kpreid",
+        "comments": 1,
+        "labels": [
+            "T-rustdoc",
+            "C-bug",
+            "needs-triage"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "# Code\n```rust\n//! This is a table with some columns:\n//!\n//! | col1 | col2 | col3 | col4 |\n//! | ---- | ---- | ---- | ---- |\n//! | `one` | `two` | three | four |\n//! | `code_with(|arg| arg)` |  `code_with(|arg| arg)` | three | four |\n```\n\n# Reproduction Steps\n`cargo doc`\n\n# Expected Outcome\nTable should contain all the text I wrote, or an error or warning should be reported.\n\n# Actual Output\nThe table entries are split on pipes disregarding the code backticks, and the resulting \"extra columns\" are silently discarded:\n\n<img width=\"383\" height=\"196\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/f0e41f1e-a882-4887-a348-85cc5fea4ba3\" />\n\nThis is apparently the specified behavior of GitHub-Flavored-Markdown tables, but it is certainly surprising. There should be at least a warning that content is being discarded.",
+        "url": "https://github.com/rust-lang/rust/issues/159186"
+    }
+]

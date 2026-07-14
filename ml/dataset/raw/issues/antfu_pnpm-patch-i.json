@@ -1,0 +1,39 @@
+[
+    {
+        "id": 2956225125,
+        "number": 6,
+        "title": "Amend existing patch",
+        "state": "closed",
+        "created_at": "2025-03-28T13:45:11Z",
+        "updated_at": "2025-04-28T05:22:27Z",
+        "closed_at": "2025-04-28T05:22:25Z",
+        "author": "IlyaSemenov",
+        "comments": 2,
+        "labels": [
+            "enhancement",
+            "pr welcome"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Clear and concise description of the problem\n\nAs a developer, I want to update my previous patch with new amendments. However, running `pnpx pnpm-patch-i mypackage` always starts with the clean unpatched version and I have to reapply my past changes prior to doing the actual work.\n\n### Suggested solution\n\n`pnpx pnpm-patch-i mypackage` could accept a flag like `--amend` and pre-apply the already-existing patch (and to be honest, I don't see why should this ever **not** used).\n\n### Alternative\n\n_No response_\n\n### Additional context\n\n_No response_\n\n### Validations\n\n- [x] Follow our [Code of Conduct](https://github.com/antfu/.github/blob/main/CODE_OF_CONDUCT.md)\n- [x] Read the [Contributing Guide](https://github.com/antfu/contribute).\n- [x] Check that there isn't already an issue that request the same feature to avoid creating a duplicate.",
+        "url": "https://github.com/antfu/pnpm-patch-i/issues/6"
+    },
+    {
+        "id": 2066616634,
+        "number": 2,
+        "title": "Does not work on Windows if project not on same drive as temp drive",
+        "state": "open",
+        "created_at": "2024-01-05T02:10:14Z",
+        "updated_at": "2024-01-08T12:04:50Z",
+        "closed_at": null,
+        "author": "JustinGrote",
+        "comments": 1,
+        "labels": [
+            "help wanted"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Describe the bug\r\n\r\nPut project on diff drive as TEMP and try to patch\r\n\r\n### Reproduction\r\n\r\nPut project on diff drive as TEMP and try to patch\r\n\r\n### System Info\r\n\r\n```Shell\r\nCommiting patch...\r\n EXDEV  EXDEV: cross-device link not permitted, link 'D:\\vscode-pester\\node_modules\\.patch-edits\\patch_edit_@vscode+test-cli_c27a5ebff9\\out\\bin.d.mts' -> 'C:\\Users\\JGrote\\AppData\\Local\\Temp\\61730dd1cff77d604a6bef9951d06dcb\\out\\bin.d.mts'\r\n\r\npnpm: EXDEV: cross-device link not permitted, link 'D:\\vscode-pester\\node_modules\\.patch-edits\\patch_edit_@vscode+test-cli_c27a5ebff9\\out\\bin.d.mts' -> 'C:\\Users\\JGrote\\AppData\\Local\\Temp\\61730dd1cff77d604a6bef9951d06dcb\\out\\bin.d.mts'\r\nfile:///D:/.pnpm/store/v3/tmp/dlx-9704/node_modules/.pnpm/execa@7.2.0/node_modules/execa/lib/error.js:60\r\n                error = new Error(message);\r\n\r\n```\r\n\r\n\r\n### Used Package Manager\r\n\r\npnpm\r\n\r\n### Validations\r\n\r\n- [X] Follow our [Code of Conduct](https://github.com/antfu/.github/blob/main/CODE_OF_CONDUCT.md)\r\n- [X] Read the [Contributing Guide](https://github.com/antfu/contribute).\r\n- [X] Check that there isn't already an issue that reports the same bug to avoid creating a duplicate.\r\n- [X] Check that this is a concrete bug. For Q&A, please open a GitHub Discussion instead.\r\n- [X] The provided reproduction is a [minimal reproducible](https://stackoverflow.com/help/minimal-reproducible-example) of the bug.",
+        "url": "https://github.com/antfu/pnpm-patch-i/issues/2"
+    }
+]

@@ -1,0 +1,242 @@
+[
+    {
+        "sha": "b99671589ad0c18f7ccb0878d08e05bcb9cb15c6",
+        "author": "cedrozor",
+        "email": "cedrozor@gmail.com",
+        "date": "2021-07-23T13:26:58Z",
+        "message": "see changelog",
+        "url": "https://github.com/myrtille-rdp/myrtille/commit/b99671589ad0c18f7ccb0878d08e05bcb9cb15c6"
+    },
+    {
+        "sha": "43f1125124f6bbbf857d58632ab24b4bc57a6896",
+        "author": "cedrozor",
+        "email": "cedrozor@gmail.com",
+        "date": "2021-05-30T13:58:29Z",
+        "message": "Merge pull request #298 from comradekingu/patch-1\n\nREADME reworked",
+        "url": "https://github.com/myrtille-rdp/myrtille/commit/43f1125124f6bbbf857d58632ab24b4bc57a6896"
+    },
+    {
+        "sha": "668997bcaa80fea6f99769481986953abeb9d42f",
+        "author": "Allan Nordhøy",
+        "email": "epost@anotheragency.no",
+        "date": "2021-05-27T16:37:09Z",
+        "message": "README reworked",
+        "url": "https://github.com/myrtille-rdp/myrtille/commit/668997bcaa80fea6f99769481986953abeb9d42f"
+    },
+    {
+        "sha": "2cdc915a7050148691fa0960c0f31562426b121c",
+        "author": "cedrozor",
+        "email": "cedrozor@gmail.com",
+        "date": "2021-04-22T15:29:41Z",
+        "message": "removed postinstall for simple keyboard layouts nodejs module",
+        "url": "https://github.com/myrtille-rdp/myrtille/commit/2cdc915a7050148691fa0960c0f31562426b121c"
+    },
+    {
+        "sha": "8db6a9eb3ac775c37dc1fb23deab88ce9d5f57cd",
+        "author": "cedrozor",
+        "email": "cedrozor@gmail.com",
+        "date": "2021-04-22T14:13:44Z",
+        "message": "fixed corrupted .gitignore file so that nodejs modules APIs are no longer ignored",
+        "url": "https://github.com/myrtille-rdp/myrtille/commit/8db6a9eb3ac775c37dc1fb23deab88ce9d5f57cd"
+    },
+    {
+        "sha": "7393ace7c84dda2ddbc68005cd2e0b4561ed40af",
+        "author": "cedrozor",
+        "email": "cedrozor@gmail.com",
+        "date": "2021-03-07T18:21:25Z",
+        "message": "updated assemblies version to 2.9.2",
+        "url": "https://github.com/myrtille-rdp/myrtille/commit/7393ace7c84dda2ddbc68005cd2e0b4561ed40af"
+    },
+    {
+        "sha": "6f209f8d2ac4b4d130235fddbb963a74c59a217e",
+        "author": "cedrozor",
+        "email": "cedrozor@gmail.com",
+        "date": "2021-03-07T16:07:45Z",
+        "message": "FreeRDP is now built as a dll instead of an executable for better modularity and to reduce the risk of false positive detection of wfreerdp.exe by some antiviruses (mostly cloud based)\nembedded interact.js and simple-keyboard (nodejs modules) into myrtille in order to remove dependencies on external CDNs (ans thus allow myrtille to be used standalone and not subject to external changes)",
+        "url": "https://github.com/myrtille-rdp/myrtille/commit/6f209f8d2ac4b4d130235fddbb963a74c59a217e"
+    },
+    {
+        "sha": "b89e372e3cc6967acd6d48557796b62f3d822636",
+        "author": "cedrozor",
+        "email": "cedrozor@gmail.com",
+        "date": "2021-02-21T16:58:04Z",
+        "message": "fixed a problem with the creation of the self-signed certificate that prevented Myrtille from installing correctly on Windows Server 2012 R2 (thanks camjcorley)",
+        "url": "https://github.com/myrtille-rdp/myrtille/commit/b89e372e3cc6967acd6d48557796b62f3d822636"
+    },
+    {
+        "sha": "defab47c672cd26f315e0242848d4ae87ed7ba6b",
+        "author": "cedrozor",
+        "email": "cedrozor@gmail.com",
+        "date": "2021-02-21T16:21:23Z",
+        "message": "Merge pull request #274 from camjcorley/master\n\nServer 2012 R2 Compatibility",
+        "url": "https://github.com/myrtille-rdp/myrtille/commit/defab47c672cd26f315e0242848d4ae87ed7ba6b"
+    },
+    {
+        "sha": "058ed822a7de051c9db14df7623357896f437209",
+        "author": "cedrozor",
+        "email": "cedrozor@gmail.com",
+        "date": "2021-02-20T17:19:24Z",
+        "message": "a session can now be shared directly by url (simply copy & paste the page url then share it), with owner rights (web.config, can be disabled for anti-spoofing protection)\nregion updates are now dropped by the gateway if the client latency is above the image cache duration (1 sec); only fullscreen updates are sent\ndisplay updates can now be distributed across concurrent websockets (round robin load balancing) to reduce lag in case of network issues (config.js, default 5 websockets: 1 up 4 down). CAUTION! IIS on Windows client OSes (7, 8, 10) is limited to 10 simultaneous connections only - across all http sessions - and will hang after that! use Windows Server editions for production environments\nthe mouse move sampling rate is now decreased automatically in case of low bandwidth (default 100%, config.js)\nrefactoring",
+        "url": "https://github.com/myrtille-rdp/myrtille/commit/058ed822a7de051c9db14df7623357896f437209"
+    },
+    {
+        "sha": "e3e7c3d97ba69867d6f18b71b5d1364cb6f300d4",
+        "author": "Cameron Corley",
+        "email": "cameron.corley@netapp.com",
+        "date": "2021-02-09T19:35:27Z",
+        "message": "Server 2012 R2 Compatibility",
+        "url": "https://github.com/myrtille-rdp/myrtille/commit/e3e7c3d97ba69867d6f18b71b5d1364cb6f300d4"
+    },
+    {
+        "sha": "1838f1dc89ed95929a56ccca41cc0f2140be300a",
+        "author": "cedrozor",
+        "email": "cedrozor@gmail.com",
+        "date": "2021-01-08T14:01:48Z",
+        "message": "fixed a minor regression which prevented myrtille to work on old IE browsers",
+        "url": "https://github.com/myrtille-rdp/myrtille/commit/1838f1dc89ed95929a56ccca41cc0f2140be300a"
+    },
+    {
+        "sha": "43f8a8cd1fdff822efd88deeadc2960ea7923a9c",
+        "author": "cedrozor",
+        "email": "cedrozor@gmail.com",
+        "date": "2020-12-06T17:48:08Z",
+        "message": "added dockerfile comment",
+        "url": "https://github.com/myrtille-rdp/myrtille/commit/43f8a8cd1fdff822efd88deeadc2960ea7923a9c"
+    },
+    {
+        "sha": "5254ecb4b74b151f079d8c00644b8af5c9b591f0",
+        "author": "cedrozor",
+        "email": "cedrozor@gmail.com",
+        "date": "2020-12-06T16:26:26Z",
+        "message": "Myrtille 2.9.1 (see changelog)",
+        "url": "https://github.com/myrtille-rdp/myrtille/commit/5254ecb4b74b151f079d8c00644b8af5c9b591f0"
+    },
+    {
+        "sha": "86c6d9ce6cc1cd360ae706bfd5e9673407b9b6e1",
+        "author": "cedrozor",
+        "email": "cedrozor@gmail.com",
+        "date": "2020-11-13T15:02:15Z",
+        "message": "fixed a regression when hiding the toolbar from web.config",
+        "url": "https://github.com/myrtille-rdp/myrtille/commit/86c6d9ce6cc1cd360ae706bfd5e9673407b9b6e1"
+    },
+    {
+        "sha": "87534d15c0ce288c103537db783e2d7d7b26326b",
+        "author": "cedrozor",
+        "email": "cedrozor@gmail.com",
+        "date": "2020-10-23T14:28:33Z",
+        "message": "fixed an issue into FreeRDP with a special copy&paste logic into MS Office applications which disconnected the session after a special paste when pressing the enter key\nthe protocol scheme when sharing a session or creating a session URL is now determined by the HTTP_X_FORWARDED_PROTO http header if available, instead of the current http request, so that https is correctly detected after a redirection by a reverse proxy or a load-balancer",
+        "url": "https://github.com/myrtille-rdp/myrtille/commit/87534d15c0ce288c103537db783e2d7d7b26326b"
+    },
+    {
+        "sha": "b39025e89cd41acce9205a050b6ad368c134c127",
+        "author": "cedrozor",
+        "email": "cedrozor@gmail.com",
+        "date": "2020-09-26T16:15:59Z",
+        "message": "fixed an issue with file transfer and user profiles containing unicode characters\nif no domain is defined into the domain input field, myrtille now tries to retrieve the domain from the username (using the standard UPN syntax: DOMAIN\\username or username@domain.com)",
+        "url": "https://github.com/myrtille-rdp/myrtille/commit/b39025e89cd41acce9205a050b6ad368c134c127"
+    },
+    {
+        "sha": "c290d7767b6b3be31f785de4b9741a73e828b962",
+        "author": "cedrozor",
+        "email": "cedrozor@gmail.com",
+        "date": "2020-09-24T15:43:46Z",
+        "message": "installer product code = 2.9.0",
+        "url": "https://github.com/myrtille-rdp/myrtille/commit/c290d7767b6b3be31f785de4b9741a73e828b962"
+    },
+    {
+        "sha": "3b393e228ce2d6ff3ef01859126fbf52650a7ae1",
+        "author": "cedrozor",
+        "email": "cedrozor@gmail.com",
+        "date": "2020-09-24T15:19:09Z",
+        "message": "fixed an issue with the change password popup (enterprise mode / local admin), which wasn't displayed correctly\nupdated the myrtille project url",
+        "url": "https://github.com/myrtille-rdp/myrtille/commit/3b393e228ce2d6ff3ef01859126fbf52650a7ae1"
+    },
+    {
+        "sha": "47c9795cd4b5f5a99d0dbe992b8408f0e6e8fa1c",
+        "author": "cedrozor",
+        "email": "cedrozor@gmail.com",
+        "date": "2020-09-20T16:41:19Z",
+        "message": "Myrtille 2.9.0 (stable)",
+        "url": "https://github.com/myrtille-rdp/myrtille/commit/47c9795cd4b5f5a99d0dbe992b8408f0e6e8fa1c"
+    },
+    {
+        "sha": "9c6697bd3a9c340c61c5105b20ba9c3735c8ca1a",
+        "author": "cedrozor",
+        "email": "cedrozor@gmail.com",
+        "date": "2020-06-24T16:22:29Z",
+        "message": "myrtille 2.9.0 (beta)",
+        "url": "https://github.com/myrtille-rdp/myrtille/commit/9c6697bd3a9c340c61c5105b20ba9c3735c8ca1a"
+    },
+    {
+        "sha": "2ee55e5e63fca89f39fb339ca8c1a4a689dd2a15",
+        "author": "cedrozor",
+        "email": "cedrozor@gmail.com",
+        "date": "2020-04-26T14:40:36Z",
+        "message": "updated readme",
+        "url": "https://github.com/myrtille-rdp/myrtille/commit/2ee55e5e63fca89f39fb339ca8c1a4a689dd2a15"
+    },
+    {
+        "sha": "3b3ee8a9e2bc5e3402bebfca04b9601721a31a4d",
+        "author": "cedrozor",
+        "email": "cedrozor@gmail.com",
+        "date": "2020-04-26T14:37:19Z",
+        "message": "new Myrtille website",
+        "url": "https://github.com/myrtille-rdp/myrtille/commit/3b3ee8a9e2bc5e3402bebfca04b9601721a31a4d"
+    },
+    {
+        "sha": "e2d96e2f6cc1376294547539ce66bcbedcd82d9c",
+        "author": "cedrozor",
+        "email": "cedrozor@gmail.com",
+        "date": "2020-04-20T21:59:17Z",
+        "message": "version 2.8.1",
+        "url": "https://github.com/myrtille-rdp/myrtille/commit/e2d96e2f6cc1376294547539ce66bcbedcd82d9c"
+    },
+    {
+        "sha": "8e5100ba880c9287502f79d42825ddfcca18d197",
+        "author": "cedrozor",
+        "email": "cedrozor@gmail.com",
+        "date": "2020-01-26T02:30:57Z",
+        "message": "updated myrtille prerequisites\nfine tuned installation scripts\nany uninstall failure is now logged but the uninstall continues, so that it can complete and re-install be possible!",
+        "url": "https://github.com/myrtille-rdp/myrtille/commit/8e5100ba880c9287502f79d42825ddfcca18d197"
+    },
+    {
+        "sha": "e15a36dff6d0dd1829e62fcbeb2f77b4ea824668",
+        "author": "cedrozor",
+        "email": "cedrozor@gmail.com",
+        "date": "2020-01-25T04:39:24Z",
+        "message": "added Dockerfile to the installer",
+        "url": "https://github.com/myrtille-rdp/myrtille/commit/e15a36dff6d0dd1829e62fcbeb2f77b4ea824668"
+    },
+    {
+        "sha": "005d4487e94ada45d37e9d11c7ede4ff5d53cc27",
+        "author": "cedrozor",
+        "email": "cedrozor@gmail.com",
+        "date": "2020-01-25T03:04:49Z",
+        "message": "PDF printer checked by default",
+        "url": "https://github.com/myrtille-rdp/myrtille/commit/005d4487e94ada45d37e9d11c7ede4ff5d53cc27"
+    },
+    {
+        "sha": "c39a1fbbe28c907ad278e8d4c6f7e8371e824922",
+        "author": "cedrozor",
+        "email": "cedrozor@gmail.com",
+        "date": "2020-01-25T02:25:07Z",
+        "message": "updated markdown",
+        "url": "https://github.com/myrtille-rdp/myrtille/commit/c39a1fbbe28c907ad278e8d4c6f7e8371e824922"
+    },
+    {
+        "sha": "83539e311b840067848e676a2df95b3fb7d4f539",
+        "author": "cedrozor",
+        "email": "cedrozor@gmail.com",
+        "date": "2020-01-25T01:53:01Z",
+        "message": "version 2.8.0",
+        "url": "https://github.com/myrtille-rdp/myrtille/commit/83539e311b840067848e676a2df95b3fb7d4f539"
+    },
+    {
+        "sha": "5f92ee3f3783c42749baf26bd6992fa4374971c3",
+        "author": "cedrozor",
+        "email": "cedrozor@gmail.com",
+        "date": "2019-11-27T16:16:59Z",
+        "message": "* HOTFIX * fixed a potential crash of myrtille services when sending a disconnect notification (https://github.com/cedrozor/myrtille/issues/187, thanks gtmsew)\nthe automatic application pool recycling is now disabled by default, and is not applicable if using the enterprise mode (this prevents enterprise sessions to be dropped unexpectedly!)\nif recycling is enabled, a new http session is now acquired on disconnect; this prevents a subsequent login failure (due to the old http session being invalid) without any error message",
+        "url": "https://github.com/myrtille-rdp/myrtille/commit/5f92ee3f3783c42749baf26bd6992fa4374971c3"
+    }
+]

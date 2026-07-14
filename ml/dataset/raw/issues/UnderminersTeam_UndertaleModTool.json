@@ -1,0 +1,362 @@
+[
+    {
+        "id": 4880578330,
+        "number": 2429,
+        "title": "Global #macros in projects",
+        "state": "open",
+        "created_at": "2026-07-14T06:47:29Z",
+        "updated_at": "2026-07-14T06:47:29Z",
+        "closed_at": null,
+        "author": "vrad-exe",
+        "comments": 0,
+        "labels": [
+            "enhancement"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Which component should be improved?\n\nCompiler\n\n### Describe your feature suggestion in more detail\n\nI noticed that UMT's compiler supports the GMS2 `#macro` syntax, but macros only seem to be usable within the scope of the code entry where they're defined which limits their usefulness, as opposed to actual GMS2 where they are global. It would be nice if when using the project system, defined macros would be available in all code entries which are being saved into the project.",
+        "url": "https://github.com/UnderminersTeam/UndertaleModTool/issues/2429"
+    },
+    {
+        "id": 4871075136,
+        "number": 2425,
+        "title": "Debug.csx crashing on newest Deltarune Chapter 5 version",
+        "state": "closed",
+        "created_at": "2026-07-13T06:41:15Z",
+        "updated_at": "2026-07-13T12:15:38Z",
+        "closed_at": "2026-07-13T12:15:38Z",
+        "author": "JadeJuno",
+        "comments": 0,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Describe the bug\n\nWhen trying to run the UTDR Script `Debug.csx` on Deltarune Chapter 5 version 0.0.247, it doesn't work, instead showing the following error popup:\n\n<img width=\"385\" height=\"185\" alt=\"Error popup: Script error. System.Exception: No-op find and replace perfomed on gml_GlobalScript_scr_get_room_by_id. The current stacktrace: Line 157 in script Debug.csx: importGroup.Import();\" src=\"https://github.com/user-attachments/assets/e0a1ebb5-a239-42e7-85fa-c0f3b5384ee6\" />\n\nThis error did not occur on Deltarune Chapter 5 version 0.0.243.\n\nChecking the error message and the code for the `Debug.csx` script, it seems to be caused by [this line](https://github.com/UnderminersTeam/UndertaleModTool/blob/3faad3b8f33ffad03eab1baf8cb892e90f3aa9db/UndertaleModTool/Scripts/UTDR%20Scripts/Debug.csx#L139) specifically added by commit c3dbb2b8ba2c5cde7fc185e4bc3db9e742dd0728. Seems like whatever issue occured when running the script on Chapter 5 before 0.0.247 was resolved on this version, so that line is unneeded.\n\n### Reproducing steps\n\n1. Open Deltarune Chapter 5's version 0.0.247 `data.win`\n2. Try running `Debug.csx` (Scripts > UTDR Scripts > Debug.csx)\n3. See error message\n\n### Setup Details\n\nUndertaleModTool version: 0.9.1.1\nOperating System: Windows 10\nGameMaker Game: [DELTARUNE](https://store.steampowered.com/app/1671210/DELTARUNE/) (Chapter 5)",
+        "url": "https://github.com/UnderminersTeam/UndertaleModTool/issues/2425"
+    },
+    {
+        "id": 4863799154,
+        "number": 2423,
+        "title": "UMT automatically removing the \"$\" accessor from my code.",
+        "state": "closed",
+        "created_at": "2026-07-11T19:17:12Z",
+        "updated_at": "2026-07-13T12:45:44Z",
+        "closed_at": "2026-07-13T12:45:44Z",
+        "author": "wand-am",
+        "comments": 7,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Describe the bug\n\nim working on a translation mod for the first chapter of deltarune and i wrote a small function which takes in a string and declines/conjugates certain verbs and nouns found inside of it. since i have access to the character and enemy names, i figured the most efficient way to find the right words to alter in would be via a struct, such as:\n```\nstruct_darowalx = \n{\n    Kris: \"darowało\",\n    Susie: \"darowała\",\n    Ralsei: \"darował\"\n};\n```\nwhich associates each character name with a different verb form. from the gml documentation (specifically: https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Accessors.htm#) i understood that it should be possible to access every value inside the struct with the following syntax:\n```\nstruct_darowalx[$ name]\n```\nwhere `name` is `global.charname[global.char[caster]]`, a string containing the name of the character doing the action. however, UMT automatically removes the accessor when cleaning up the code, leaving behind `struct_darowalx[name]`. this results in a code error when the function is called, which reads `unable to convert string \"Ralsei\" to int64` (if ralsei was the one performing the action, with the exact string changing accordingly). im not particularly experienced with gamemaker, but, based on what ive read, i don't think this behavior is intended, and the accessor shouldn't be disappearing from the final code\n\n### Reproducing steps\n\n1. open data.win file\n2. write `struct[$ string]` anywhere\n3. UMT removes the dollar sign and space alongside all other code cleanup\n\n### Setup Details\n\n1. UMT version: 0.9.1.1\n2. OS: endeavourOS (Arch-based Linux distribution)\n3. game: DELTARUNE Chapter 1",
+        "url": "https://github.com/UnderminersTeam/UndertaleModTool/issues/2423"
+    },
+    {
+        "id": 4843407170,
+        "number": 2422,
+        "title": "Weird font-related behavior?",
+        "state": "open",
+        "created_at": "2026-07-09T05:15:33Z",
+        "updated_at": "2026-07-09T05:15:33Z",
+        "closed_at": null,
+        "author": "Diskette-Guy",
+        "comments": 0,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Describe the bug\n\nI was trying to import proportional (non-monospace) font to use with DELTARUNE. I modified `obj_writer` to fit my need (see the codes at reproducing steps)\nThis does some what worked, but the line on the first page of dialogue always overflows for some reason.\n\nThe first page of dialogue:\n<img width=\"1375\" height=\"220\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/460553f6-bb33-44ed-a653-606041e50cd7\" />\n\nThe second page of dialogue:\n<img width=\"1235\" height=\"340\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/2b4a729b-2148-49ca-8623-d91ecec27bd7\" />\n\nBut however, if I do these following specific thing in the reproducing steps, the first page does not overflow anymore.\n<img width=\"1357\" height=\"420\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/eda5f4f5-b0fb-404a-a8bc-e54e1c21df43\" />\n(This is a different dialogue but take my word for it)\n\n### Reproducing steps\n\nThe bug:\n1. Import the .YY gamemaker font files\n2. Make use of the font in the fontmap in init_localization\n3. Edit `obj_writer` to these following:\nfrom:\n```\nelse\n                {\n                charpos += 1;\n            }\n```\nto:\n```\nelse if (global.lang == \"th\") //this if for the Thai language which requires proportional font \n            {\n                charpos += (string_width(thischar) / hspace); //To make it so that the current character is a fraction of the hspace so that newline does not end prematurely \n            }\n            else\n            {\n                charpos += 1; //compatibility with other languages that do not use proportional font\n            }\n```\n\nand\n```\nwx += hspace;\n```\nto\n```\nif (global.lang == \"th\")\n        {\n            if (ord(mychar) == 32 || ord(mychar) == 42)\n            {\n                wx += hspace; //Because the space and asterisk is monospace\n            }\n            else\n            {\n                wx += string_width(mychar);\n            }\n        }\n        else\n        {\n            wx += hspace; //compatibility with other languages that do not use proportional font\n        }\n```\n4. Run the game\n\nTo fix this\n1. Import the font files and modify the init_localization in UndertaleModTool (under WINE)\n2. Use the Avalonia fork of UndertaleModTool and modified the code\n\nHowever, if I modified the font data using Avalonia fork, the bug would appear again, which made me suspect that it's actually the base UndertaleModTool bug\n\n### Setup Details\n\n1. undertalemodtool-0.9.1.0 under wine-11.12 and Avalonia fork which dates undertalemodtool-avalonia-2026.07.08 (native Linux)\n2. Arch GNU/Linux\n3. DELTARUNE",
+        "url": "https://github.com/UnderminersTeam/UndertaleModTool/issues/2422"
+    },
+    {
+        "id": 4840456390,
+        "number": 2419,
+        "title": "Issue while importing sounds",
+        "state": "open",
+        "created_at": "2026-07-08T19:21:33Z",
+        "updated_at": "2026-07-08T21:11:01Z",
+        "closed_at": null,
+        "author": "zcrbla",
+        "comments": 3,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Describe the bug\n\nI used the sound exporting script to export all sounds, when importing them post-edit several issues arose; this error message was spammed.\n\n<img width=\"379\" height=\"246\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/11e6b945-73ef-4fee-b688-e0bc46ba21f6\" />\n\nApologies if this is something simple that I'm just missing.\n\n### Reproducing steps\n\n1. Open a fresh data.win file\n2. use the resource exporter script for sounds\n3. import all sounds that were just exported\n\n### Setup Details\n\nMost recent version of UMT, windows 11",
+        "url": "https://github.com/UnderminersTeam/UndertaleModTool/issues/2419"
+    },
+    {
+        "id": 4832024166,
+        "number": 2416,
+        "title": "Can you please add an option to dump audio/sound effects in UndertaleModCli?",
+        "state": "open",
+        "created_at": "2026-07-07T20:33:30Z",
+        "updated_at": "2026-07-07T20:33:30Z",
+        "closed_at": null,
+        "author": "qwertyad1",
+        "comments": 0,
+        "labels": [
+            "enhancement"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Which component should be improved?\n\nCLI\n\n### Describe your feature suggestion in more detail\n\nPretty much I just want a --audio option for the dump command in the cli that just dumps all the sound effects to an audio folder or something similar.",
+        "url": "https://github.com/UnderminersTeam/UndertaleModTool/issues/2416"
+    },
+    {
+        "id": 4797581520,
+        "number": 2413,
+        "title": "opening code crashes",
+        "state": "open",
+        "created_at": "2026-07-02T19:25:03Z",
+        "updated_at": "2026-07-02T19:25:03Z",
+        "closed_at": null,
+        "author": "totallynota1",
+        "comments": 0,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Describe the bug\n\nwhenever running the tool via wine (linux mint 22.3) if i open a code part on any of the deltarune chapters the tool just crashes\n\n### Reproducing steps\n\n1. open tool via wine\n2. select data.win file\n3. double click on any code part thing\n\n### Setup Details\n\n1.9.1.1 GUI\nlinux mint 22.3\ndeltarune chapters 1-5",
+        "url": "https://github.com/UnderminersTeam/UndertaleModTool/issues/2413"
+    },
+    {
+        "id": 4763314685,
+        "number": 2410,
+        "title": "Estimated object pool size differs from actual size, warning",
+        "state": "open",
+        "created_at": "2026-06-28T19:08:54Z",
+        "updated_at": "2026-06-29T18:27:45Z",
+        "closed_at": null,
+        "author": "lobotamby",
+        "comments": 2,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Describe the bug\n\nLoaded a data.win and there was a popup, it said to report to here:\n<img width=\"581\" height=\"233\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/bad9d9fe-13c5-4ecc-b0b4-8be2f0a7fca6\" />\nTo be entirely honest I'm not sure what this means, just doing as it says, so I hope this report is okay.\n\n### Reproducing steps\n\nI loaded in the data.win from a game \"Myths are 100% True\", error displays as it loads\n\n### Setup Details\n\nUMT: v:0.9.1.0\nOS: Windows 11 (and last updated yesterday)\nGame: [Myths are 100% True](https://store.steampowered.com/app/3047510/Myths_are_100_True/)",
+        "url": "https://github.com/UnderminersTeam/UndertaleModTool/issues/2410"
+    },
+    {
+        "id": 4739482406,
+        "number": 2407,
+        "title": "modtool spits out two types of errors upon loading and running a game",
+        "state": "open",
+        "created_at": "2026-06-25T00:20:38Z",
+        "updated_at": "2026-06-25T00:20:38Z",
+        "closed_at": null,
+        "author": "CT-Himself",
+        "comments": 0,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Describe the bug\n\nI'm currently trying to run a version of Silentworks' Game Creator 2D (1.0.41) in UTMT. Upon loading it in, it spits out the following error message\n\n<img width=\"538\" height=\"201\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/d4b6c987-d197-4b68-b841-4fd2d2b7036e\" />\n\nI can continue on from there just fine, however, when I attempt to run it using \"Run game with other runner\", it makes it to the splash screen before crashing with this error message\n\n<img width=\"983\" height=\"758\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/fd8de0db-fb90-4fb8-a3ee-e7d215dfa0dd\" />\n\n(If it helps, this is a .droid file I'm inserting rather than a .win)\n\n### Reproducing steps\n\n1. Extract the .apk and open the game.droid file in UTMT\n2. witness the first error, and continue from there\n3. try to run it by clicking on \"Run game with other runner\"\n4. witness the crash and second error.\n\n### Setup Details\n\nUnderTaleModTool Version: Latest version (+Bleeding Edge version)\nOS: Windows 11\nGameMaker game: Silentworks' Game Creator 2D (1.0.41)\nhttps://archive.org/details/game-creator-1.0.41",
+        "url": "https://github.com/UnderminersTeam/UndertaleModTool/issues/2407"
+    },
+    {
+        "id": 4724814213,
+        "number": 2404,
+        "title": "failed to run data.win",
+        "state": "open",
+        "created_at": "2026-06-23T10:13:51Z",
+        "updated_at": "2026-06-23T10:49:03Z",
+        "closed_at": null,
+        "author": "Alexis3241",
+        "comments": 1,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Describe the bug\n\nwhen i was importing new rooms it was fine if i keep it open but when i come to reopen it there it was this crash can you help me pls\n\n### Reproducing steps\n\nwhen importing new room\nreopen the data.win file\nboom crash\n\n### Setup Details\n\nundertalemodtool bleeding build\nwindows 11\n2024.11",
+        "url": "https://github.com/UnderminersTeam/UndertaleModTool/issues/2404"
+    },
+    {
+        "id": 4711834588,
+        "number": 2402,
+        "title": "Add the ability to stretch frames",
+        "state": "open",
+        "created_at": "2026-06-21T20:17:41Z",
+        "updated_at": "2026-06-23T16:44:53Z",
+        "closed_at": null,
+        "author": "Timmy3921",
+        "comments": 3,
+        "labels": [
+            "enhancement"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Which component should be improved?\n\nUI/UX\n\n### Describe your feature suggestion in more detail\n\nGamemaker lets you stretch frames to allow for variable frame duration within a given animation.\n\nThe UTMT sprite editor should have the ability to see and modify stretched frames for certain animations. This can be done by having a text field next to each frame in an animation showing the length of the frame (0 by default).\n\nNot only would this make the sprite editor less cluttered, but stretched frames also have a property where their image_index values are returned as a fraction of one number (i.e. an animation stretched to 4 frames returns, 1.0, 1.25, 1.5, 1.75).",
+        "url": "https://github.com/UnderminersTeam/UndertaleModTool/issues/2402"
+    },
+    {
+        "id": 4708812094,
+        "number": 2399,
+        "title": "failed to run a data.win file",
+        "state": "closed",
+        "created_at": "2026-06-21T00:23:07Z",
+        "updated_at": "2026-06-29T18:28:02Z",
+        "closed_at": "2026-06-29T18:28:02Z",
+        "author": "Goldetm",
+        "comments": 2,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Describe the bug\n\nwhen i try to open a data.win file from a game called monster girl assult and it crashed like this \n\n<img width=\"1920\" height=\"1080\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/0c941c2c-4f92-4df7-a4af-aed592d1df40\" />\n\n### Reproducing steps\n\n1 i open the app and open the file and it just show error\n\n### Setup Details\n\ni use the newest version",
+        "url": "https://github.com/UnderminersTeam/UndertaleModTool/issues/2399"
+    },
+    {
+        "id": 4672980307,
+        "number": 2395,
+        "title": "Game crashes when using file_text_open_write",
+        "state": "closed",
+        "created_at": "2026-06-16T09:41:50Z",
+        "updated_at": "2026-06-17T07:35:55Z",
+        "closed_at": "2026-06-16T10:10:24Z",
+        "author": "Rchat42",
+        "comments": 5,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Describe the bug\n\nI was trying to edit a file using file_text_open_write, but when I save and go to open the game it says that the function \"file_open_write\" (probably an alias) can't be found. What's even weirder is that the game itself uses that exact same function for its saving functionality. The Functions and Strings tabs in UndertaleModTool also contain the file_open_write entry as well.\n\nHere is the specific code used in the KeyPress event:\n<img width=\"835\" height=\"249\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/a8cad7e9-7b78-4d4b-adf1-8d136d71900c\" />\n\nI also tried putting the file editing code inside a function in a global script but I still got the exact same error.\n\nIn the previous version of UndertaleModTool I was able to use the file_text_open_write function just fine, but now it's not working for some reason.\n\n### Reproducing steps\n\n1) Create a new piece of code\n2) Use file_text_open_write in it\n3) Assign it as a KeyPress event for some object\n4) Save as the new data.win and open the game\n5) Game crashes with\nERROR in\naction number 1\nof Create Event\nfor object <undefined>:\n\nError on load\nUnable to find function file_open_write\n\n### Setup Details\n\nOn Windows 11 with UndertaleModTool v0.9.0.0 (latest version) for the game \"Will You Snail?\"",
+        "url": "https://github.com/UnderminersTeam/UndertaleModTool/issues/2395"
+    },
+    {
+        "id": 4661163539,
+        "number": 2393,
+        "title": "mb_side support",
+        "state": "closed",
+        "created_at": "2026-06-15T00:24:48Z",
+        "updated_at": "2026-06-29T18:55:16Z",
+        "closed_at": "2026-06-29T18:54:29Z",
+        "author": "johnnydaworm",
+        "comments": 1,
+        "labels": [
+            "enhancement"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Which component should be improved?\n\nOther\n\n### Describe your feature suggestion in more detail\n\nUnless if this is already a feature and it saving as a variable is a bug",
+        "url": "https://github.com/UnderminersTeam/UndertaleModTool/issues/2393"
+    },
+    {
+        "id": 4592127999,
+        "number": 2388,
+        "title": "Remove unnecessary using's",
+        "state": "open",
+        "created_at": "2026-06-04T20:57:23Z",
+        "updated_at": "2026-06-28T14:43:09Z",
+        "closed_at": null,
+        "author": "H-A-M-G-E-R",
+        "comments": 1,
+        "labels": [
+            "enhancement"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Describe the bug\n\nIn the UndertaleModTool code, remove unused dependencies such as\n`using System.Threading.Tasks;`\nto improve code readability\n\n### Reproducing steps\n\nabove\n\n### Setup Details\n\nin the latest UndertaleModTool code",
+        "url": "https://github.com/UnderminersTeam/UndertaleModTool/issues/2388"
+    },
+    {
+        "id": 4545155309,
+        "number": 2386,
+        "title": "Root chunk is ???? and not form",
+        "state": "closed",
+        "created_at": "2026-05-29T02:17:34Z",
+        "updated_at": "2026-06-29T18:56:37Z",
+        "closed_at": "2026-06-29T18:56:37Z",
+        "author": "anactest23-source",
+        "comments": 3,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Describe the bug\n\nRecently I decided to try and see the files of a game called \"SM4J OB\" but in the latest version from 3 years ago, an error appears saying \"root chunk is ???? and not form\" help much appreciated!\n\n### Reproducing steps\n\n<img width=\"4080\" height=\"3060\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/c2ffed29-4021-40d4-ac0b-24d3187d6af6\" />\n\n### Setup Details\n\n1. Latest release 0.9.0.0.0\n2. Windows 11\n3. SM4J Online Battle ( https://carlosxdjavgames.altervista.org/archivos/199 )",
+        "url": "https://github.com/UnderminersTeam/UndertaleModTool/issues/2386"
+    },
+    {
+        "id": 4536871938,
+        "number": 2385,
+        "title": "It cannot find the exacutable game path.",
+        "state": "open",
+        "created_at": "2026-05-28T01:07:48Z",
+        "updated_at": "2026-05-28T01:09:05Z",
+        "closed_at": null,
+        "author": "joeld2014",
+        "comments": 0,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Describe the bug\n\nWhen i tried to temp run the game\"Undertale\" It said \"cannot find exacutable game path\" an i dont know how to fix it.\n\n### Reproducing steps\n\nI clicked on file then i went to run temp game and then it showed the error\n\n### Setup Details\n\nUTMT version 0.9.0.0. Windows 10 Undertale i dont know what version of undertale it is.",
+        "url": "https://github.com/UnderminersTeam/UndertaleModTool/issues/2385"
+    },
+    {
+        "id": 4512738573,
+        "number": 2383,
+        "title": "Accidentally importing a sprite with missing indexes/frames will lock you out of the Data.win and instantly close when trying to open the sprite.",
+        "state": "closed",
+        "created_at": "2026-05-24T19:54:24Z",
+        "updated_at": "2026-06-19T22:13:29Z",
+        "closed_at": "2026-06-19T22:13:29Z",
+        "author": "TheBird6053",
+        "comments": 1,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Describe the bug\n\nExactly as the title says. I'm workin' on a Five Nights At Frickbear's 3 mod, and when importing some sprites using ImportGraphics.csx I accidentally forgot to rename one of them from sBonnetJumpscareDeathscreen_53 to sBonnetJumpscareDeathscreen_0.\n\n<img width=\"339\" height=\"363\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/d66c7afd-0f5b-461e-bc27-ee362744fc39\" />\n\nFrom my understanding, that just made it create a 54th frame for the sprite, but only this 54th one. So when opening, it tried to load 53 textures that don't exist, and now it can't load the data.win anymore.\nEvery time I try to open it throws this error:\n\n<img width=\"879\" height=\"486\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/7c87e7b5-e740-44e9-b207-f3a878358cb9\" />\n\nLost about 5 days of progress, unfortunately, however most of it I can just do it quickly so it's not THAT big of a deal.\nOn one side this is kinda on me for not paying attention (and for some reason not doing any backups for like an entire week) but on the other side this is a pretty dumb bug. I don't really know how Undertale Mod Tool's scripts and all that stuff work, but I think y'all should definitely make it check if all the previous frames exist before importing a new one.\n\nIf there's like a super easy fix for this (that isn't making a back up) then sorry for the unnescessary report I guess.\n\n### Reproducing steps\n\n1. Open a data.win\n2. Use the ImportGraphics.csx script.\n3. Import a new sprite and have it only have a frame/index that isn't 0. (For example, import a sprite called \"FunnySprite\" but import it as \"FunnySprite_3\" instead of \"FunnySprite_0\")\n4. Now Undertale Mod Tool shouldn't let you save and ouble clicking the sprite should instantly close the program.\n5. Trying to open the data.win will just throw the same error again and again.\n\n### Setup Details\n\n1. I was using the \"bleeding edge\" version of Undertale Mod Tool. However changing to a regular release would still not let me open the game.\n2. I have Windows 10.\n3. https://gamejolt.com/games/frickbears3/930477 (I doubt the game itself has something to do with this problem but I'm putting it here just in case)",
+        "url": "https://github.com/UnderminersTeam/UndertaleModTool/issues/2383"
+    },
+    {
+        "id": 4483071860,
+        "number": 2382,
+        "title": "More practical features",
+        "state": "open",
+        "created_at": "2026-05-20T04:14:38Z",
+        "updated_at": "2026-05-20T04:19:24Z",
+        "closed_at": null,
+        "author": "Genouka",
+        "comments": 0,
+        "labels": [
+            "enhancement"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Which component should be improved?\n\nUI/UX\n\n### Describe your feature suggestion in more detail\n\nI implement the following different functions in different branches to facilitate rebase: https://github.com/Genouka/UndertaleModTool/branches\n \n- Allow to import resources from other datafiles. \n  ![Preview](https://raw.githubusercontent.com/Genouka/UndertaleModTool/refs/heads/master/images/preview/image-3.png)\n  ![Preview](https://raw.githubusercontent.com/Genouka/UndertaleModTool/refs/heads/master/images/preview/image-4.png)\n- Add floating information panel documentation for built-in functions, constants, and variables. \n  ![Preview](https://raw.githubusercontent.com/Genouka/UndertaleModTool/refs/heads/master/images/preview/image.png)\n  ![Preview](https://raw.githubusercontent.com/Genouka/UndertaleModTool/refs/heads/master/images/preview/image-1.png)\n- Add floating information panel documents for sprites, numbers, etc. \n  ![Preview](https://raw.githubusercontent.com/Genouka/UndertaleModTool/refs/heads/master/images/preview/image-5.png)\n  ![Preview](https://raw.githubusercontent.com/Genouka/UndertaleModTool/refs/heads/master/images/preview/image-6.png)\n- Add control options for automatic line wrapping and displaying whitespace characters to the code editor. They can also be configured with default values from the settings. \n  ![Preview](https://raw.githubusercontent.com/Genouka/UndertaleModTool/refs/heads/master/images/preview/image-7.png)\n  ![Preview](https://raw.githubusercontent.com/Genouka/UndertaleModTool/refs/heads/master/images/preview/image-8.png)\n- Support displaying recently opened files (automatically excluding invalid files). \n  ![Preview](https://raw.githubusercontent.com/Genouka/UndertaleModTool/refs/heads/master/images/preview/image-9.png)\n\nBecause I am developing based on a localized branch(https://github.com/UnderminersTeam/UndertaleModTool/pull/2378), it may need some changes to rebase to upstream without merging https://github.com/UnderminersTeam/UndertaleModTool/pull/2378 .\n\nI don't know how to do it better, so I submitted this issue firstly here.",
+        "url": "https://github.com/UnderminersTeam/UndertaleModTool/issues/2382"
+    },
+    {
+        "id": 4482242577,
+        "number": 2381,
+        "title": "Converting decimal colors to hex does not work correctly with little endian",
+        "state": "closed",
+        "created_at": "2026-05-20T00:57:12Z",
+        "updated_at": "2026-06-29T18:32:42Z",
+        "closed_at": "2026-06-29T18:29:47Z",
+        "author": "Shorts404",
+        "comments": 4,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Describe the bug\n\nHello, this is my first ever reported issue on GitHub, so apologies if it's not great, and I'm also not the best when it comes to highly technical stuff like big/little endian values.\n\nI encountered this issue when editing palettes in the GIMMIKO Demo, it seems that game uses little endian for its decimal color values, because when I right click them to convert them to hex, the resulting color ends up inaccurate to the color it's replacing on the sprite.\n\nFor example, converting 10221567 in UTMT gives me 0x9BF7FF, when it should be 0xFFF79B.\n\n### Reproducing steps\n\n1. Right click on decimal color\n2. Click the hex value color\n3. Color ends up inaccurate\n\n### Setup Details\n\n1. UTMT v0.9.0.0 (Git: c4e5c2c)\n2. Windows 11\n3. GIMMIKO Demo ( https://store.steampowered.com/app/2101420/GIMMIKO/ )",
+        "url": "https://github.com/UnderminersTeam/UndertaleModTool/issues/2381"
+    }
+]

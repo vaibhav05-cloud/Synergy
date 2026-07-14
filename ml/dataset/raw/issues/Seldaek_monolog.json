@@ -1,0 +1,358 @@
+[
+    {
+        "id": 4253491763,
+        "number": 2027,
+        "title": "E_WARNING from http_response_code() in handleException when a status line has been registered via header() but not yet sent",
+        "state": "open",
+        "created_at": "2026-04-13T10:13:39Z",
+        "updated_at": "2026-05-30T19:22:53Z",
+        "closed_at": null,
+        "author": "tanakahisateru",
+        "comments": 1,
+        "labels": [
+            "Bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "Monolog version 3.9.0\n\nRelated issue: #1096 and #1106 \n\n### Summary\n\n`handleException` guards its call to `http_response_code(500)` with `!headers_sent()`, but this guard is insufficient. PHP maintains **three distinct phases** for HTTP headers, and the guard only covers two of them. When an exception is thrown during phase 2 (described below), the call produces a spurious `E_WARNING`:\n\n```\nE_WARNING: http_response_code(): Calling http_response_code() after header('HTTP/...') has no effect\n```\n\n### The three phases\n\n**Phase 1 — No status code set yet**  \nNeither `header('HTTP/...')` nor `http_response_code()` has been called. `headers_sent()` returns `false`. Calling `http_response_code()` works correctly as a \"default value\" that will be used if no explicit status line is ever registered.\n\n**Phase 2 — Status line registered, but not yet written to the output stream**  \nAn explicit `header('HTTP/1.x NNN ...')` call has added a status line to PHP's internal header list (`SG(sapi_headers).headers`). The headers have **not** been flushed to the client yet, so `headers_sent()` still returns `false` — it reflects only whether bytes have been written to the output stream, not whether a status line has been staged.\n\nAt this point, calling `http_response_code()` has no effect on the actual response (the `header()` value wins) and PHP emits an `E_WARNING`. There is no PHP API to detect this state from userland without inspecting `headers_list()` manually.\n\n**Phase 3 — Headers flushed to the output stream**  \nOnce any body output is produced, PHP flushes the staged headers first. Only now does `headers_sent()` return `true`. Both `header()` and `http_response_code()` become meaningless at this point.\n\n### Why the current guard is insufficient\n\n```php\n// ErrorHandler.php ~L177\nif (!headers_sent() && \\in_array(...)) {\n    http_response_code(500); // ← still fires during phase 2, causing E_WARNING\n}\n```\n\n`!headers_sent()` is `true` in both phase 1 and phase 2. The guard therefore cannot distinguish between \"safe to call\" and \"will produce a warning and have no effect\".\n\nBecause `handleException` is invoked from a registered exception handler — which can fire at any point during request processing — it is impossible for user code to guarantee that no `header('HTTP/...')` call has occurred before the exception is thrown. This is not a usage error; it is a gap in the guard logic.\n\n### Proposed fix\n\nCheck `headers_list()` for an existing HTTP status line before calling `http_response_code()`:\n\n```php\nif (!headers_sent() && !self::hasHttpStatusHeader() && \\in_array(strtolower((string) \\ini_get('display_errors')), ['0', '', 'false', 'off', 'none', 'no'], true)) {\n    http_response_code(500);\n}\n\nprivate static function hasHttpStatusHeader(): bool\n{\n    foreach (headers_list() as $header) {\n        if (stripos($header, 'HTTP/') === 0) {\n            return true;\n        }\n    }\n    return false;\n}\n```\n\nAlternatively, a simpler one-liner using `array_filter`:\n\n```php\n$hasStatusHeader = (bool) array_filter(headers_list(), static fn($h) => stripos($h, 'HTTP/') === 0);\n\nif (!headers_sent() && !$hasStatusHeader && \\in_array(...)) {\n    http_response_code(500);\n}\n```\n\n### References\n\n- [`SG(headers_sent)` in `SAPI.h`](https://github.com/php/php-src/blob/master/main/SAPI.h) — the flag that `headers_sent()` reads; set only when headers are actually written to the output stream.\n- [`http_response_code()` implementation in `head.c`](https://github.com/php/php-src/blob/master/ext/standard/head.c) — checks only `SG(headers_sent)`, not whether a status line is already staged in `SG(sapi_headers).headers`.\n- [php/php-src#18582](https://github.com/php/php-src/issues/18582) — upstream PHP issue acknowledging the incompatibility between `header('HTTP/...')` and `http_response_code()`.",
+        "url": "https://github.com/Seldaek/monolog/issues/2027"
+    },
+    {
+        "id": 4237744789,
+        "number": 2026,
+        "title": "TelegramBotHandler: silent failure when API returns non-JSON response",
+        "state": "closed",
+        "created_at": "2026-04-10T08:28:34Z",
+        "updated_at": "2026-05-30T11:44:19Z",
+        "closed_at": "2026-05-30T11:44:10Z",
+        "author": "ruttydm",
+        "comments": 0,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "## Summary\n\n`TelegramBotHandler::sendCurl()` silently swallows errors when the Telegram API (or an intermediary proxy) returns a non-JSON response. The handler returns as if the message was sent successfully, with no exception and no indication of failure.\n\n**Version:** 3.10.0\n\n## Vulnerable code\n\n[`TelegramBotHandler.php` lines 277–285](https://github.com/Seldaek/monolog/blob/b321dd6749f0bf7189444158a3ce785cc16d69b0/src/Monolog/Handler/TelegramBotHandler.php#L277-L285):\n\n```php\n$result = Curl\\Util::execute($ch);\nif (!\\is_string($result)) {\n    throw new RuntimeException('Telegram API error. Description: No response');\n}\n$result = json_decode($result, true);\n\nif ($result['ok'] === false) {\n    throw new RuntimeException('Telegram API error. Description: ' . $result['description']);\n}\n```\n\nThree layers of failure compound:\n\n1. `json_decode()` returns `null` for non-JSON input — no null check follows\n2. `null['ok']` emits a warning and returns `null` in PHP 8+ — no type check\n3. `null === false` evaluates to `false` — the error check is bypassed entirely\n\n## Why it triggers\n\n`curl_exec()` returns the response **body** for HTTP error status codes (502, 503, etc.), not `false`. The `is_string()` check on line 278 passes. The HTML/plaintext error page then proceeds to `json_decode`, which returns `null`.\n\nCommon real-world triggers:\n- Cloudflare 502 Bad Gateway (returns HTML)\n- Nginx error pages during Telegram API downtime\n- Truncated responses from network timeouts\n- Any proxy/CDN intercepting the request with a non-JSON error page\n\n## Impact\n\nThe handler's purpose is critical alerting. When it fails silently during infrastructure issues — exactly when alerts matter most — log messages are permanently lost with zero indication. The Logger's try/catch (Logger.php:389) only works if an exception is thrown; since this bug suppresses the exception, the failure is completely invisible.\n\nFor comparison: SlackWebhookHandler, SendGridHandler, and IFTTTHandler don't attempt response validation at all. TelegramBotHandler is the only handler that validates, but gets it wrong for the non-JSON case.\n\n## Suggested fix\n\n```php\n$result = json_decode($result, true);\n\nif (!is_array($result)) {\n    throw new RuntimeException('Telegram API error. Description: Unexpected non-JSON response');\n}\n\nif ($result['ok'] === false) {\n    throw new RuntimeException('Telegram API error. Description: ' . ($result['description'] ?? 'Unknown error'));\n}\n```",
+        "url": "https://github.com/Seldaek/monolog/issues/2026"
+    },
+    {
+        "id": 4235377725,
+        "number": 2025,
+        "title": "DeduplicationHandler: file handle leak when flock() fails",
+        "state": "closed",
+        "created_at": "2026-04-09T22:57:45Z",
+        "updated_at": "2026-05-30T12:17:04Z",
+        "closed_at": "2026-05-30T12:16:30Z",
+        "author": "ruttydm",
+        "comments": 1,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "## Bug\n\n`DeduplicationHandler::collectLogs()` opens a file handle on line 145 but never closes it when `flock()` fails on line 151, leaking a file descriptor.\n\n**Version:** 3.10.0\n\n## Code\n\n[`DeduplicationHandler.php` lines 145–152](https://github.com/Seldaek/monolog/blob/b321dd6749f0bf7189444158a3ce785cc16d69b0/src/Monolog/Handler/DeduplicationHandler.php#L145-L152):\n\n```php\n$handle = fopen($this->deduplicationStore, 'rw+');\n\nif (false === $handle) {\n    throw new \\RuntimeException('Failed to open file for reading and writing: ' . $this->deduplicationStore);\n}\n\nif (false === flock($handle, LOCK_EX)) {\n    return;  // BUG: $handle is never closed\n}\n```\n\nThe happy path correctly calls `fclose($handle)` on line 172, but the early return on line 152 skips it.\n\n## Impact\n\nEach failed `flock()` call leaks one file descriptor. In long-running processes (daemons, queue workers, etc.), this can accumulate and eventually exhaust the OS file descriptor limit.\n\n## Suggested fix\n\n```php\nif (false === flock($handle, LOCK_EX)) {\n    fclose($handle);\n    return;\n}\n```",
+        "url": "https://github.com/Seldaek/monolog/issues/2025"
+    },
+    {
+        "id": 4010007492,
+        "number": 2021,
+        "title": "Add more control on infinite loop detection",
+        "state": "closed",
+        "created_at": "2026-03-02T08:37:34Z",
+        "updated_at": "2026-04-08T20:36:54Z",
+        "closed_at": "2026-04-08T20:36:54Z",
+        "author": "zamaldev",
+        "comments": 1,
+        "labels": [
+            "Feature"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "In my flow, I am using http requests pool to get information from third party. But when I trigger an error from response handler, sometimes I got an infinite loop detection error. As I understood, it is caused by nature of response handlers (pretty async IMO because even `dd()` returns few results instead of one).\nAnd there is no easy workaround how to manage it. For now everything that we have is just option to disable it (which I don't want to do because there may be real infinite loop). I have tried to extends Logger, but there are bunch on private properties and constants, so I have to literally copy whole class for this. Which I don't want so much to do.\nMy proposition to add a bit more control on it. For example: manage the trigger depth of infinite loop. I would say to have an option to change 3 messages to 5 or 6 (should work for me) or even add some callback handler (like we have with exceptions).\nMaybe something like that:\n```php\n        if ($logDepth === $this->infiniteLoopTriggerDepth) { // Currently - 3\n            if (null === $this->infiniteLoopHandler) {\n                $this->warning('A possible infinite logging loop was detected and aborted. It appears some of your handler code is triggering logging, see the previous log record for a hint as to what may be the cause.'); // Currently - just this message\n\n                return false;\n            }\n\n            return ($this->infiniteLoopHandler)($level, $message, $context, $datetime);\n        } elseif ($logDepth >= ($this->infiniteLoopTriggerDepth + 2)) { // Currently - 5; log depth 4 is let through, so we can log the warning above\n            return false;\n        }\n```\n\nSo in my case, I will have options to increase the depth (to allow more messages appear) or at least include the original message into warning (so I can have more information while debug).\n\nAny thoughts?",
+        "url": "https://github.com/Seldaek/monolog/issues/2021"
+    },
+    {
+        "id": 3835155384,
+        "number": 2018,
+        "title": "Strip down data of a record context marked by SensitiveParameter",
+        "state": "open",
+        "created_at": "2026-01-20T19:38:14Z",
+        "updated_at": "2026-05-31T20:18:41Z",
+        "closed_at": null,
+        "author": "theofidry",
+        "comments": 1,
+        "labels": [
+            "Feature"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "## Context\n\nWhen logging, values passed as part of the record context may contain PHP objects that are normalized by a `Monolog\\Formatter\\FormatterInterface`:\n\n```php\n$logger->log(\n  'My message',\n  context: ['message' => $message, ...$additionalContext],\n);\n```\n\n## Problem\n\nConsider an object like this:\n\n```php\nfinal readonly class UpdateUser {\n  function __construct(\n    public string $id,``\n    #[SensitiveParameter]\n    public string $mySecretUrl,\n  ) {}\n}\n```\n\nSince PHP 8.2, `#[SensitiveParameter]` prevents `UpdateUser::$mySecretUrl` from appearing in stack traces. However, when such an object is passed as part of a log record context, this attribute is not respected and the sensitive value is still written to the logs.\n\n## Proposal\n\nFormatters could leverage `#[SensitiveParameter]` to automatically redact sensitive properties during normalization.\n\nBased on https://github.com/symfony/symfony/pull/46183, this behaviour may not always be desired, so it could be implemented behind a configuration flag. That said, I would argue that redacting by default is the safer choice—frameworks like Symfony could then disable it in dev/debug mode if needed.\n\nAdditionally, since users often implement custom formatters, it would be helpful to expose this functionality in a reusable way.",
+        "url": "https://github.com/Seldaek/monolog/issues/2018"
+    },
+    {
+        "id": 3798202621,
+        "number": 2017,
+        "title": "Malware scanner flagging shell_exec calls",
+        "state": "closed",
+        "created_at": "2026-01-09T20:01:36Z",
+        "updated_at": "2026-01-09T20:23:55Z",
+        "closed_at": "2026-01-09T20:22:52Z",
+        "author": "mark-c-woodard",
+        "comments": 2,
+        "labels": [
+            "Bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "Monolog version 2.11.0\n\nHello, \nI saw that you added some shell_exec commands as part of the 2.11.0 release, this commit specifically https://github.com/Seldaek/monolog/commit/e01926b069b331b13708b1c1b3669d871ea93e6b\n\nI didn't see the commit related to any particular issue so I wanted to ask if those calls were necessary and potentially ask if you could replace them.\nI got a bug report from one of my users saying that the calls are being flagged by a malware scanner.\n\nhttps://wordpress.org/support/topic/version-3-5-30-has-calls-to-shell_exec/\n\nThank you,\nMark\n",
+        "url": "https://github.com/Seldaek/monolog/issues/2017"
+    },
+    {
+        "id": 3756558087,
+        "number": 2012,
+        "title": "Add #[NoDiscard] attribute to TestHandler assertion methods",
+        "state": "closed",
+        "created_at": "2025-12-23T08:31:35Z",
+        "updated_at": "2026-01-01T12:07:39Z",
+        "closed_at": "2026-01-01T12:07:39Z",
+        "author": "jaugustin",
+        "comments": 0,
+        "labels": [
+            "Feature"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "## Description\nWith the introduction of the `#[NoDiscard]` attribute in PHP 8.5, we have an opportunity to help developers catch a common category of testing bugs: calling an assertion helper but failing to use the returned result.\n\nIn TestHandler, methods like hasError(), hasRecord(), or hasErrorRecords() are often called, but if the developer forgets to wrap them in an assertTrue() or similar assertion, the test passes silently even if the condition is met.\n\n## Proposed Change\n\nI propose adding the #[NoDiscard] attribute to all \"check\" methods in TestHandler.\nPHP\n\n// Example of the proposed change\n```php\n#[\\NoDiscard]\npublic function hasError(string|array $record): bool\n{\n    return $this->hasRecord($record, Level::Error);\n}\n```\n\n\n## Benefits\n\n- Static Analysis: Tools like PHPStan and Psalm can use this attribute (even on older PHP versions via vendor-specific rules) to alert users if they call these methods without using the return value.\n\n- Runtime Safety: On PHP 8.5+, IDEs will provide immediate visual feedback if the result is ignored.\n\n- Backward Compatibility: This is a non-breaking change. The attribute is ignored by the engine on PHP versions < 8.5 unless explicitly fetched via Reflection.\n\n## Implementation\n\nI am happy to provide a PR for this if the maintainers are open to the feature.",
+        "url": "https://github.com/Seldaek/monolog/issues/2012"
+    },
+    {
+        "id": 3754692807,
+        "number": 2011,
+        "title": "StreamHandler doesn't handle non-blocking streams properly, truncating logs",
+        "state": "closed",
+        "created_at": "2025-12-22T17:53:56Z",
+        "updated_at": "2026-05-30T12:13:08Z",
+        "closed_at": "2026-05-30T12:13:08Z",
+        "author": "martin-heralecky",
+        "comments": 1,
+        "labels": [
+            "Bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "When writing large logs to a non-blocking stream, logs are often truncated. The exact length of the line that is actually written varies between calls.\n\nHere's a snippet that attempts to write around 1M characters to a non-blocking stream:\n\n```php\nstream_set_blocking(STDOUT, false);\n\n$log = new Logger(\"log\", [new StreamHandler(STDOUT)]);\n\n$log->info(join(\",\", array_fill(0, 100000, \"123456789\"))); // ~1MB\n```\n\nRun with `php snippet.php | wc -c` to see the number of characters actually written. On my platform, this is typically around 64K. I'm using monolog version 3.9.0.\n\n---\n\nThe problem lies in the `StreamHandler::streamWrite()` method, which ignores the return value of `fwrite()`. I believe the correct solution is to call `fwrite()` in a loop until all characters are written. If it is desirable to have this behavior in monolog, I am willing to put together a patch.",
+        "url": "https://github.com/Seldaek/monolog/issues/2011"
+    },
+    {
+        "id": 3664500276,
+        "number": 2004,
+        "title": "PHP 8.5: Don't use deprecated `curl_close()` on PHP >= 8.0.0",
+        "state": "closed",
+        "created_at": "2025-11-25T20:29:56Z",
+        "updated_at": "2025-12-30T16:14:29Z",
+        "closed_at": "2025-12-30T16:14:29Z",
+        "author": "mpesari",
+        "comments": 0,
+        "labels": [
+            "Feature"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "`curl_close()` is noop since 8.0.0 and emites `E_DEPRECATED` since 8.5.0.\n\nIt's used in `Monolog\\Handler\\Curl\\Util::execute()` if `$closeAfterDone` = `true`.\n\nIt's the same for `1.x`, `2.x` and `3.x`.\n\nOn `3.x` we could just drop the `$closeAfterDone` parameter, but that might lead to backport difficulties.\n\nOne suggestion would be to check `PHP_VERSION_ID` on the top of the affected function:\n\n```php\n// src/Monolog/Handler/Curl/Util.php\n\n    public static function execute(CurlHandle $ch, int $retries = 5, bool $closeAfterDone = true): bool|string\n    {\n        if (\\PHP_VERSION_ID >= 80000) {\n            $closeAfterDone = false;\n        }\n\n        // ...\n    }\n```\n\nThis would retain similar code in all branches until old versions are dropped.\n\n* https://www.php.net/curl_close\n* https://github.com/php/php-src/blob/php-8.0.0/UPGRADING#L1016-L1020\n* https://github.com/php/php-src/blob/php-8.5.0/UPGRADING#L416-L418",
+        "url": "https://github.com/Seldaek/monolog/issues/2004"
+    },
+    {
+        "id": 3650826373,
+        "number": 2003,
+        "title": "[Feature Request] Add support for Telemetry",
+        "state": "closed",
+        "created_at": "2025-11-21T09:07:39Z",
+        "updated_at": "2025-11-21T13:19:14Z",
+        "closed_at": "2025-11-21T13:19:14Z",
+        "author": "manticorp",
+        "comments": 2,
+        "labels": [
+            "Feature"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "Rollbar now supports adding Telemetry data to logs.\n\n[https://docs.rollbar.com/docs/php-telemetry](https://docs.rollbar.com/docs/php-telemetry)\n\nIt'd be great to add support for this through Monolog. It would be invaluable for decoding hard to replicate fatal errors.\n\nWhat are your thoughts on this? Worth pursuing? Not sure if Monolog is trying to align solely with PSR3 logging specs or would welcome this additional functionality.\n\nIt could look something like this:\n\n```php\n<?php\n\nuse MyApp;\nuse Monolog\\Level;\nuse Monolog\\Logger;\nuse Rollbar\\Rollbar;\nuse Monolog\\Handler\\RollbarHandler;\n\n// Create the logger\n$logger = new Logger('my_logger');\n// Now add some handlers\n$logger->pushHandler(new RollbarHandler(Rollbar::logger()));\n\n// You can now use your logger\n$logger->info('My logger is now ready');\n\n\n$start = microtime(true) * 1000;\n$result = MyApp::someProcess($userInputString);\n$end = microtime(true) * 1000;\n\n$logger->addTelemetry(\n    'log',\n    'info',\n    [\n        'message' => 'MyApp::someProcess called with ' . ((string) $userInputString),\n        'method' => '',\n        'url' => '',\n        'status_code' => '',\n        'subtype' => '',\n        'stack' => null,\n        'from' => '',\n        'to' => '',\n        'start_timestamp_ms' => $start,\n        'end_timestamp_ms' => $end,\n        'extra' => ['result' => $result]\n    ]\n);\n```\n\nTo accomplish this, you could add a \"supportsTelemetry\" method to AbstractHandler:\n\n```php\n<?php\n\nabstract class AbstractHandler extends Handler implements ResettableInterface\n{\n    protected bool $supportsTelemetry = false;\n\n    public function supportsTelemetry(): bool\n    {\n        return $this->supportsTelemetry;\n    }\n\n    public function addTelemetry(int|string|EventType $type, int|string|Level $level, array $telemetryData): void\n    {\n        if ($this->supportsTelemetry()) {\n            $this->handleAddTelemetry($type, $level, $telemetryData);\n        }\n        return;\n    }\n\n    public function handleAddTelemetry(int|string|EventType $type, int|string|Level $level, array $telemetryData): void\n    {\n        throw new RuntimeException('handleAddTelemetry method should be implemented if supportsTelemetry is set to true');\n    }\n}\n```\n\nand then loggers that support it could change that flag to true:\n\n```php\n<?php\n\nclass RollbarHandler extends AbstractProcessingHandler\n{\n    protected bool $supportsTelemetry = true;\n\n    public function handleAddTelemetry(int|string|EventType $type, int|string|Level $level, array $telemetryData): void\n    {\n        $this->rollbarLogger->captureTelemetryEvent(\n            type: $this->toRollbarTelemetryEventType($type),\n            level: $this->toRollbarTelemetryEventLevel($type),\n            metadata: $this->toRollbarTelemetryData($telemetryData)\n        );\n    }\n\n    protected function toRollbarTelemetryEventType() { /* ... implementation ... */ }\n    protected function toRollbarTelemetryEventLevel() { /* ... implementation ... */ }\n    protected function toRollbarTelemetryData() { /* ... implementation ... */ }\n}\n```",
+        "url": "https://github.com/Seldaek/monolog/issues/2003"
+    },
+    {
+        "id": 3459297036,
+        "number": 1995,
+        "title": "PHP 8.5 deprecated warning",
+        "state": "closed",
+        "created_at": "2025-09-26T22:37:25Z",
+        "updated_at": "2025-10-24T08:02:33Z",
+        "closed_at": "2025-10-24T08:02:32Z",
+        "author": "HeenaBansal20",
+        "comments": 0,
+        "labels": [
+            "Bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "Monologversion :\n\"version\": \"3.8.1\",\n\nPHP 8.5 RC1\n\n001+ Deprecated: The __sleep() serialization magic method has been deprecated. Implement __serialize() instead (or in addition, if support for old PHP versions is necessary) in vendor/monolog/monolog/src/Monolog/Handler/Handler.php on line 19",
+        "url": "https://github.com/Seldaek/monolog/issues/1995"
+    },
+    {
+        "id": 3433824935,
+        "number": 1991,
+        "title": "TelegramBotHandler: API returns error when long message is split with only whitespace",
+        "state": "closed",
+        "created_at": "2025-09-19T10:28:00Z",
+        "updated_at": "2025-10-23T19:23:01Z",
+        "closed_at": "2025-10-23T19:22:24Z",
+        "author": "MacDada",
+        "comments": 0,
+        "labels": [
+            "Bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "Monolog 3.9.\n\nWhen I [split long messages](https://github.com/Seldaek/monolog/blob/3.9.0/src/Monolog/Handler/TelegramBotHandler.php#L117) and the split happens exactly at the ending part of the message, which happens to contain only whitespace, [Telegram API returns error 400](https://github.com/Seldaek/monolog/blob/3.9.0/src/Monolog/Handler/TelegramBotHandler.php#L280):\n\n> Bad Request: text must be non-empty\n\nThat's because the last (from split) message is just `\"\\n\\n\"`.",
+        "url": "https://github.com/Seldaek/monolog/issues/1991"
+    },
+    {
+        "id": 3433771696,
+        "number": 1990,
+        "title": "TelegramBotHandler: API returns error when truncating/splitting in HTML parse mode",
+        "state": "open",
+        "created_at": "2025-09-19T10:14:16Z",
+        "updated_at": "2025-12-30T21:45:48Z",
+        "closed_at": null,
+        "author": "MacDada",
+        "comments": 3,
+        "labels": [
+            "Bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "Monolog 3.9\n\nI set [`$parseMode`](https://github.com/Seldaek/monolog/blob/3.9.0/src/Monolog/Handler/TelegramBotHandler.php#L114) to `'HTML'` and keep the default [`$splitLongMessages`](https://github.com/Seldaek/monolog/blob/3.9.0/src/Monolog/Handler/TelegramBotHandler.php#L117) as `false`.\n\nWhen the message is looooong, it [gets truncated](https://github.com/Seldaek/monolog/blob/3.9.0/src/Monolog/Handler/TelegramBotHandler.php#L292). If the truncation happens inside HTML tag,\nthe [Telegram API returns error 400](https://github.com/Seldaek/monolog/blob/3.9.0/src/Monolog/Handler/TelegramBotHandler.php#L280):\n\n> Bad Request: can't parse entities: Can't find end tag corresponding to start tag \"code\"\n\nIn my example the loooong string has `<code>blah blah</code>`. Lets say it gets truncated at first `blah`, then the `</code>` is gone and API complains.\n\n* Possible solution 1: would need to fix (actually parse?) HTML if truncating?\n* Possible solution 2: strip HTML tags when truncating? (kinda ugly)\n* Low hanging fruit: at least want about that in the (php) docs?\n\n---\n\nEDIT: actually, with `$splitLongMessages=true` same kind of problem – the message splits inside HTML causing Telegram API error(s).",
+        "url": "https://github.com/Seldaek/monolog/issues/1990"
+    },
+    {
+        "id": 3428121880,
+        "number": 1989,
+        "title": "StreamHandler choking on php://stderr",
+        "state": "closed",
+        "created_at": "2025-09-17T23:57:51Z",
+        "updated_at": "2025-10-23T19:52:08Z",
+        "closed_at": "2025-10-23T19:52:08Z",
+        "author": "jdwx",
+        "comments": 2,
+        "labels": [
+            "Bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "Monolog version 1|2|3? 3.9.0\n\nRecently we've started getting this\n\n```php\nFile: .../vendor/monolog/monolog/src/Monolog/Handler/StreamHandler.php\nLine: 186\n\nMessage: Writing to the log file failed: Write of 8748 bytes failed with errno=32 Broken pipe\n```\n\nFrom this handler:\n\n```php\n$format = new LineFormatter( allowInlineLineBreaks: true );\n$log = new StreamHandler( 'php://stderr', Level::Info );\n$log->setFormatter( $format );\n```\n\nI'm a little baffled as to how that could happen. The stderr output is not closed; I have this information because our emergency backup exception handler is logging it there after this happens.\n\nThe environment is php-fpm.\n\nSince I don't understand how this could happen, I'm not sure how to try to debug this. I'm not sure if this is a Monolog bug, or how it could be, but since stderr remains available in the process, just not to Monolog, I would really appreciate any possible insight into what might be going on.\n\nThis started happening rather suddenly about a week ago without any changes to the environment, and, worst of all, it is intermittent.\n",
+        "url": "https://github.com/Seldaek/monolog/issues/1989"
+    },
+    {
+        "id": 3380075664,
+        "number": 1987,
+        "title": "Google Cloud Pub/Sub Handler",
+        "state": "closed",
+        "created_at": "2025-09-03T14:23:24Z",
+        "updated_at": "2025-10-24T08:09:59Z",
+        "closed_at": "2025-10-24T08:09:59Z",
+        "author": "HelioDantas",
+        "comments": 2,
+        "labels": [
+            "Feature"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "\n## Feature Request: Google Cloud Pub/Sub Handler\n\n### Description\nRequest the implementation of a `GooglePubSubHandler` to send Monolog logs to Google Cloud Pub/Sub topics.\n\n### Proposed Features\n- Send formatted log records to Google Cloud Pub/Sub topics\n- Automatic message attributes (log_level, channel, datetime, context, extra)\n- Message truncation for large payloads (10MB limit)\n- Custom topic attributes support\n- Error handling without breaking application flow\n\n### Requirements\n- Dependencies: `google/cloud-pubsub` package\n- Authentication: Support for service account keys and application default credentials\n- Message size: Handle Pub/Sub 10MB message limit with intelligent truncation",
+        "url": "https://github.com/Seldaek/monolog/issues/1987"
+    },
+    {
+        "id": 3365507387,
+        "number": 1984,
+        "title": "RotateFileHandler unlink error not suppressed",
+        "state": "closed",
+        "created_at": "2025-08-29T05:24:01Z",
+        "updated_at": "2025-10-24T07:29:19Z",
+        "closed_at": "2025-10-24T07:29:13Z",
+        "author": "greggebura",
+        "comments": 2,
+        "labels": [
+            "Bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "Version 3.9.0\n\nWhile rotating old files there is a code that should not suppressed errors if more than one processes will reach this part of code\n\n```\n// suppress errors here as unlink() might fail if two processes\n// are cleaning up/rotating at the same time\nset_error_handler(function (int $errno, string $errstr, string $errfile, int $errline): bool {\n    return false;\n});\n```\nError handler should return true if error is handled properly.",
+        "url": "https://github.com/Seldaek/monolog/issues/1984"
+    },
+    {
+        "id": 3256706637,
+        "number": 1977,
+        "title": "prevent [] [] at the end of the log output",
+        "state": "closed",
+        "created_at": "2025-07-23T14:54:15Z",
+        "updated_at": "2025-07-23T17:17:41Z",
+        "closed_at": "2025-07-23T17:17:41Z",
+        "author": "ofgrenudo",
+        "comments": 3,
+        "labels": [
+            "Bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "Monolog version 1|2|3?\n- Version 3\nWrite your bug report here.\nWhenever i log, it presents the following output:\n\n```\nAttaching to service-1\nservice-1  | [2025-07-23T14:49:22.419567+00:00] db_conn.INFO: Successfully able to connect to the MySQL Database [] []\n```\n\nIdeally, i would not like the [] [] at the end of the log. Is there a way to remove that? for example, my code looks like this \n\n```sql\nif (mysqli_connect_errno()) {\n    // TODO implement actual error logging.\n    $log->emergency(\"Unable to connect to the MySQL database.\\n\\t\", mysqli_connect_error());\n} else {\n    $log->info(\"Successfully able to connect to the MySQL Database\");\n}\n```\n\nThanks",
+        "url": "https://github.com/Seldaek/monolog/issues/1977"
+    },
+    {
+        "id": 3191683803,
+        "number": 1972,
+        "title": "[GelfFormatter] Missing boolean values",
+        "state": "closed",
+        "created_at": "2025-07-01T09:47:39Z",
+        "updated_at": "2025-10-23T18:24:17Z",
+        "closed_at": "2025-10-23T18:24:06Z",
+        "author": "am4rth",
+        "comments": 0,
+        "labels": [
+            "Bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "Monolog version: 3\n\nThe GELF Payload Specification does not support `bool` values as a addtional field. See https://go2docs.graylog.org/current/getting_in_log_data/gelf.html#GELFPayloadSpecification  \n\nIf a `bool` value is provided Graylog will simply drop it.\n\nGiven the following example code\n\n```php\n\n        $this->logger->info(\"debug logger\", [\n            'int' => 113,\n            'float' => 23.23,\n            'trueBool' => true,\n            'falseBool' => false,\n            'object' => (object) [],\n            'array' => ['some' => 'array'],\n        ]);\n```\nwill result in this log in Graylog:\n![Image](https://github.com/user-attachments/assets/6fe7889c-7e86-4726-a00e-e508431f1572)\n\nTherefore bool values should be converted before adding them to the Gelf Message.",
+        "url": "https://github.com/Seldaek/monolog/issues/1972"
+    },
+    {
+        "id": 3074419248,
+        "number": 1969,
+        "title": "JsonFormatter crashes when stringable object has an error",
+        "state": "closed",
+        "created_at": "2025-05-19T16:33:09Z",
+        "updated_at": "2025-12-30T16:21:14Z",
+        "closed_at": "2025-12-30T16:20:55Z",
+        "author": "adrien914",
+        "comments": 0,
+        "labels": [
+            "Bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "Monolog version 3?\n\nWhen using JsonFormatter with a stringable object, if the toString() method throws an exception the whole normalization process crashes. We should not throw an exception while trying to log something.",
+        "url": "https://github.com/Seldaek/monolog/issues/1969"
+    },
+    {
+        "id": 3012100722,
+        "number": 1965,
+        "title": "add \"__set_state\" to Handlers to allow laravel config cache",
+        "state": "open",
+        "created_at": "2025-04-22T20:49:35Z",
+        "updated_at": "2025-11-10T12:27:05Z",
+        "closed_at": null,
+        "author": "Curicows",
+        "comments": 4,
+        "labels": [
+            "Feature"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "I have a project that uses the Laravel framework. I'm using the **TelegramBotHandler** to handle logs.\n```php\n\"telegram\" => [\n    'driver'  => 'monolog',\n    'handler' => FilterHandler::class,\n    'tap' => [TelegramFormatter::class],\n    'level' => \"debug\",\n    'with' => [\n        'handler' => new TelegramBotHandler(\n            apiKey: env('TELEGRAM_API_KEY', \"\"),\n            channel: env('TELEGRAM_CHANNEL', \"\"),\n            level: Level::Debug,\n            parseMode: \"MarkdownV2\"\n        )\n    ]\n],\n``` \nWhile it works perfect in the local environment, when I try to cache the Laravel config an error is thrown:\n```\nlaravel@ubuntu:/path/to/project$ artisan optimize\n\n   INFO  Caching framework bootstrap, configuration, and metadata.  \n\n  config .............................................................................................................................. 76.17ms FAIL\n[2025-04-22 17:28:06] development.ERROR: Your configuration files are not serializable. {\"exception\":\"[object] (LogicException(code: 0): Your configuration files are not serializable. at /path/to/project/vendor/laravel/framework/src/Illuminate/Foundation/Console/ConfigCacheCommand.php:72)\n[stacktrace]\n#0 /path/to/project/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(36): Illuminate\\\\Foundation\\\\Console\\\\ConfigCacheCommand->handle()\n#1 /path/to/project/vendor/laravel/framework/src/Illuminate/Container/Util.php(43): Illuminate\\\\Container\\\\BoundMethod::{closure:Illuminate\\\\Container\\\\BoundMethod::call():35}()\n#2 /path/to/project/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(96): Illuminate\\\\Container\\\\Util::unwrapIfClosure()\n#3 /path/to/project/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(35): Illuminate\\\\Container\\\\BoundMethod::callBoundMethod()\n#4 /path/to/project/vendor/laravel/framework/src/Illuminate/Container/Container.php(754): Illuminate\\\\Container\\\\BoundMethod::call()\n#5 /path/to/project/vendor/laravel/framework/src/Illuminate/Console/Command.php(211): Illuminate\\\\Container\\\\Container->call()\n#6 /path/to/project/vendor/symfony/console/Command/Command.php(279): Illuminate\\\\Console\\\\Command->execute()\n#7 /path/to/project/vendor/laravel/framework/src/Illuminate/Console/Command.php(180): Symfony\\\\Component\\\\Console\\\\Command\\\\Command->run()\n#8 /path/to/project/vendor/laravel/framework/src/Illuminate/Console/Concerns/CallsCommands.php(68): Illuminate\\\\Console\\\\Command->run()\n#9 /path/to/project/vendor/laravel/framework/src/Illuminate/Console/Concerns/CallsCommands.php(41): Illuminate\\\\Console\\\\Command->runCommand()\n#10 /path/to/project/vendor/laravel/framework/src/Illuminate/Console/Concerns/CallsCommands.php(53): Illuminate\\\\Console\\\\Command->callSilent()\n#11 /path/to/project/vendor/laravel/framework/src/Illuminate/Foundation/Console/OptimizeCommand.php(48): Illuminate\\\\Console\\\\Command->callSilently()\n#12 /path/to/project/vendor/laravel/framework/src/Illuminate/Console/View/Components/Task.php(41): Illuminate\\\\Foundation\\\\Console\\\\OptimizeCommand->{closure:Illuminate\\\\Foundation\\\\Console\\\\OptimizeCommand::handle():48}()\n#13 /path/to/project/vendor/laravel/framework/src/Illuminate/Console/View/Components/Factory.php(59): Illuminate\\\\Console\\\\View\\\\Components\\\\Task->render()\n#14 /path/to/project/vendor/laravel/framework/src/Illuminate/Foundation/Console/OptimizeCommand.php(48): Illuminate\\\\Console\\\\View\\\\Components\\\\Factory->__call()\n#15 /path/to/project/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(36): Illuminate\\\\Foundation\\\\Console\\\\OptimizeCommand->handle()\n#16 /path/to/project/vendor/laravel/framework/src/Illuminate/Container/Util.php(43): Illuminate\\\\Container\\\\BoundMethod::{closure:Illuminate\\\\Container\\\\BoundMethod::call():35}()\n#17 /path/to/project/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(96): Illuminate\\\\Container\\\\Util::unwrapIfClosure()\n#18 /path/to/project/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(35): Illuminate\\\\Container\\\\BoundMethod::callBoundMethod()\n#19 /path/to/project/vendor/laravel/framework/src/Illuminate/Container/Container.php(754): Illuminate\\\\Container\\\\BoundMethod::call()\n#20 /path/to/project/vendor/laravel/framework/src/Illuminate/Console/Command.php(211): Illuminate\\\\Container\\\\Container->call()\n#21 /path/to/project/vendor/symfony/console/Command/Command.php(279): Illuminate\\\\Console\\\\Command->execute()\n#22 /path/to/project/vendor/laravel/framework/src/Illuminate/Console/Command.php(180): Symfony\\\\Component\\\\Console\\\\Command\\\\Command->run()\n#23 /path/to/project/vendor/symfony/console/Application.php(1094): Illuminate\\\\Console\\\\Command->run()\n#24 /path/to/project/vendor/symfony/console/Application.php(342): Symfony\\\\Component\\\\Console\\\\Application->doRunCommand()\n#25 /path/to/project/vendor/symfony/console/Application.php(193): Symfony\\\\Component\\\\Console\\\\Application->doRun()\n#26 /path/to/project/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(197): Symfony\\\\Component\\\\Console\\\\Application->run()\n#27 /path/to/project/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(1234): Illuminate\\\\Foundation\\\\Console\\\\Kernel->handle()\n#28 /path/to/project/artisan(13): Illuminate\\\\Foundation\\\\Application->handleCommand()\n#29 {main}\n\n[previous exception] [object] (Error(code: 0): Call to undefined method Monolog\\\\Handler\\\\TelegramBotHandler::__set_state() at /path/to/project/bootstrap/cache/config.php:902)\n[stacktrace]\n#0 /path/to/project/vendor/laravel/framework/src/Illuminate/Foundation/Console/ConfigCacheCommand.php(68): require()\n#1 /path/to/project/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(36): Illuminate\\\\Foundation\\\\Console\\\\ConfigCacheCommand->handle()\n#2 /path/to/project/vendor/laravel/framework/src/Illuminate/Container/Util.php(43): Illuminate\\\\Container\\\\BoundMethod::{closure:Illuminate\\\\Container\\\\BoundMethod::call():35}()\n#3 /path/to/project/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(96): Illuminate\\\\Container\\\\Util::unwrapIfClosure()\n#4 /path/to/project/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(35): Illuminate\\\\Container\\\\BoundMethod::callBoundMethod()\n#5 /path/to/project/vendor/laravel/framework/src/Illuminate/Container/Container.php(754): Illuminate\\\\Container\\\\BoundMethod::call()\n#6 /path/to/project/vendor/laravel/framework/src/Illuminate/Console/Command.php(211): Illuminate\\\\Container\\\\Container->call()\n#7 /path/to/project/vendor/symfony/console/Command/Command.php(279): Illuminate\\\\Console\\\\Command->execute()\n#8 /path/to/project/vendor/laravel/framework/src/Illuminate/Console/Command.php(180): Symfony\\\\Component\\\\Console\\\\Command\\\\Command->run()\n#9 /path/to/project/vendor/laravel/framework/src/Illuminate/Console/Concerns/CallsCommands.php(68): Illuminate\\\\Console\\\\Command->run()\n#10 /path/to/project/vendor/laravel/framework/src/Illuminate/Console/Concerns/CallsCommands.php(41): Illuminate\\\\Console\\\\Command->runCommand()\n#11 /path/to/project/vendor/laravel/framework/src/Illuminate/Console/Concerns/CallsCommands.php(53): Illuminate\\\\Console\\\\Command->callSilent()\n#12 /path/to/project/vendor/laravel/framework/src/Illuminate/Foundation/Console/OptimizeCommand.php(48): Illuminate\\\\Console\\\\Command->callSilently()\n#13 /path/to/project/vendor/laravel/framework/src/Illuminate/Console/View/Components/Task.php(41): Illuminate\\\\Foundation\\\\Console\\\\OptimizeCommand->{closure:Illuminate\\\\Foundation\\\\Console\\\\OptimizeCommand::handle():48}()\n#14 /path/to/project/vendor/laravel/framework/src/Illuminate/Console/View/Components/Factory.php(59): Illuminate\\\\Console\\\\View\\\\Components\\\\Task->render()\n#15 /path/to/project/vendor/laravel/framework/src/Illuminate/Foundation/Console/OptimizeCommand.php(48): Illuminate\\\\Console\\\\View\\\\Components\\\\Factory->__call()\n#16 /path/to/project/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(36): Illuminate\\\\Foundation\\\\Console\\\\OptimizeCommand->handle()\n#17 /path/to/project/vendor/laravel/framework/src/Illuminate/Container/Util.php(43): Illuminate\\\\Container\\\\BoundMethod::{closure:Illuminate\\\\Container\\\\BoundMethod::call():35}()\n#18 /path/to/project/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(96): Illuminate\\\\Container\\\\Util::unwrapIfClosure()\n#19 /path/to/project/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(35): Illuminate\\\\Container\\\\BoundMethod::callBoundMethod()\n#20 /path/to/project/vendor/laravel/framework/src/Illuminate/Container/Container.php(754): Illuminate\\\\Container\\\\BoundMethod::call()\n#21 /path/to/project/vendor/laravel/framework/src/Illuminate/Console/Command.php(211): Illuminate\\\\Container\\\\Container->call()\n#22 /path/to/project/vendor/symfony/console/Command/Command.php(279): Illuminate\\\\Console\\\\Command->execute()\n#23 /path/to/project/vendor/laravel/framework/src/Illuminate/Console/Command.php(180): Symfony\\\\Component\\\\Console\\\\Command\\\\Command->run()\n#24 /path/to/project/vendor/symfony/console/Application.php(1094): Illuminate\\\\Console\\\\Command->run()\n#25 /path/to/project/vendor/symfony/console/Application.php(342): Symfony\\\\Component\\\\Console\\\\Application->doRunCommand()\n#26 /path/to/project/vendor/symfony/console/Application.php(193): Symfony\\\\Component\\\\Console\\\\Application->doRun()\n#27 /path/to/project/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(197): Symfony\\\\Component\\\\Console\\\\Application->run()\n#28 /path/to/project/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(1234): Illuminate\\\\Foundation\\\\Console\\\\Kernel->handle()\n#29 /path/to/project/artisan(13): Illuminate\\\\Foundation\\\\Application->handleCommand()\n#30 {main}\n\"} \n\n   LogicException \n\n  Your configuration files are not serializable.\n\n  at vendor/laravel/framework/src/Illuminate/Foundation/Console/ConfigCacheCommand.php:72\n     68▕             require $configPath;\n     69▕         } catch (Throwable $e) {\n     70▕             $this->files->delete($configPath);\n     71▕ \n  ➜  72▕             throw new LogicException('Your configuration files are not serializable.', 0, $e);\n     73▕         }\n     74▕ \n     75▕         $this->components->info('Configuration cached successfully.');\n     76▕     }\n\n  1   bootstrap/cache/config.php:902\n      Error::(\"Call to undefined method Monolog\\Handler\\TelegramBotHandler::__set_state()\")\n      +29 vendor frames \n\n  31  artisan:13\n      Illuminate\\Foundation\\Application::handleCommand()\n```\nInspecting the generated file before the **\"LogicException\"** has been thrown resulted in this cache:\n```\n'telegram' => \n      array (\n        'driver' => 'monolog',\n        'handler' => 'Monolog\\\\Handler\\\\FilterHandler',\n        'tap' => \n        array (\n          0 => 'App\\\\Log\\\\TelegramFormatter',\n        ),\n        'level' => 'debug',\n        'with' => \n        array (\n          'handler' => \n          \\Monolog\\Handler\\TelegramBotHandler::__set_state(array(\n             'level' => \n            \\Monolog\\Level::Debug,\n             'bubble' => true,\n             'processors' => \n            array (\n            ),\n             'formatter' => NULL,\n             'apiKey' => 'redacted',\n             'channel' => '@redacted',\n             'parseMode' => 'MarkdownV2',\n             'disableWebPagePreview' => NULL,\n             'disableNotification' => NULL,\n             'splitLongMessages' => false,\n             'delayBetweenMessages' => false,\n             'topic' => NULL,\n          )),\n        ),\n      ),\n```\nThe error occurs because when Laravel cache the config that directly instantiates an object it is transformed to call the static magic method \"__set_state\" of the class used. But an error is thrown because the Handler classes doesn't have this magic method.\n\nI'm able to create a pull request to resolve that and if more information is needed I can provide it, thanks for the attention.",
+        "url": "https://github.com/Seldaek/monolog/issues/1965"
+    }
+]

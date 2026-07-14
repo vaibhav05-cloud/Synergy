@@ -1,0 +1,50 @@
+[
+    {
+        "id": 2421038611,
+        "number": 6,
+        "title": "Consider adding a license",
+        "state": "closed",
+        "created_at": "2024-07-20T20:04:12Z",
+        "updated_at": "2024-07-23T18:56:46Z",
+        "closed_at": "2024-07-23T18:56:46Z",
+        "author": "eclairevoyant",
+        "comments": 1,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "We were looking into packaging this [for nixpkgs](https://github.com/NixOS/nixpkgs/issues/317240) but currently we are unsure how the project is permitted to be used.\r\n\r\nhttps://toaster.llc/debase/index.html mentioned that this is open-source, but we don't see a license mentioned. Would you consider adding an explicitly open-source license (GPL3, MIT, BSD, etc.)?",
+        "url": "https://github.com/toasterllc/debase/issues/6"
+    },
+    {
+        "id": 2396647823,
+        "number": 5,
+        "title": "feature request: signing commits",
+        "state": "open",
+        "created_at": "2024-07-08T21:57:50Z",
+        "updated_at": "2024-07-08T21:57:50Z",
+        "closed_at": null,
+        "author": "jeremyschlatter",
+        "comments": 0,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "I have git configured to sign all of my commits, but when I make edits through debase they are not signed.\r\n\r\nI looked through the libgit2 api to see what it would take to implement this, and unfortunately it doesn't look totally straightforward. libgit2 does have a hook specifically intended for signing commits:\r\n\r\nhttps://github.com/toasterllc/debase/blob/a5015472b7a58189e389ed61622cc6a24ea46842/lib/libgit2/include/git2/rebase.h#L77-L87\r\n\r\n...but only during rebase, not amending. And you still have to implement the signing yourself.\r\n\r\nNonetheless, this would be a nice feature to have. As it is now, my only unsigned commits are ones created by debase, which makes them stand out and makes me less inclined to use debase to create them in the first place. I can kind of work around it by amending them a second time after using debase, but it's tedious.",
+        "url": "https://github.com/toasterllc/debase/issues/5"
+    },
+    {
+        "id": 2334059148,
+        "number": 2,
+        "title": "Homebrew",
+        "state": "open",
+        "created_at": "2024-06-04T17:44:01Z",
+        "updated_at": "2024-06-04T17:44:01Z",
+        "closed_at": null,
+        "author": "Immortalin",
+        "comments": 0,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "Add support for homebrew\r\n\r\nhttps://brew.sh/",
+        "url": "https://github.com/toasterllc/debase/issues/2"
+    }
+]

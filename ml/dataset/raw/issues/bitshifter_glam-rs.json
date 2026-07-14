@@ -1,0 +1,361 @@
+[
+    {
+        "id": 4747364137,
+        "number": 751,
+        "title": "Const all the floating point arithmetic",
+        "state": "open",
+        "created_at": "2026-06-25T21:00:48Z",
+        "updated_at": "2026-06-29T09:37:04Z",
+        "closed_at": null,
+        "author": "davidgraymi",
+        "comments": 4,
+        "labels": [
+            "enhancement",
+            "future"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "**What problem does this solve or what need does it fill?**\n\nFloating point arithmetic can now be used in constant functions! This is a valuable API improvement, as it allows users to define their own derived constants using our handy math operations.\n\n**Describe the solution you'd like**\n\nWe should constify our APIs, one library at a time. This should be kept to relatively simple functions and methods: only things that we can commit to being const indefinitely.\n\n**Describe alternatives you've considered**\n\nUse a quick sweep of `cargo clippy --fix --allow-dirty -- -W clippy::missing_const_for_fn` to set all functions that allow it to const.\n\n**Additional context**\n\nI come from [bevy](https://github.com/bevyengine/bevy) and want to support https://github.com/bevyengine/bevy/issues/16124. \n",
+        "url": "https://github.com/bitshifter/glam-rs/issues/751"
+    },
+    {
+        "id": 4712501322,
+        "number": 748,
+        "title": "Add .is_negative_mask() and .is_negative() for all vector types",
+        "state": "closed",
+        "created_at": "2026-06-22T00:30:57Z",
+        "updated_at": "2026-06-28T06:20:27Z",
+        "closed_at": "2026-06-28T06:20:27Z",
+        "author": "VoidAndEther",
+        "comments": 3,
+        "labels": [
+            "enhancement"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "What problem does this solve or what need does it fill?\n\nThis solves the problem of having to manually writing out a function for .is_negative_mask() every time you need to check for the signs of the vector's elements\n\nDescribe the solution you'd like\n\nImplement the method .is_negative_mask() for all Vector types except BVec3\n\nDescribe alternatives you've considered\n\nvector.signum().cmpeq(Vec3::NEG_ONE)\nvector.cmplt(Vec3::ZERO)",
+        "url": "https://github.com/bitshifter/glam-rs/issues/748"
+    },
+    {
+        "id": 4703671823,
+        "number": 747,
+        "title": "Quat::ZERO is private",
+        "state": "open",
+        "created_at": "2026-06-19T21:32:02Z",
+        "updated_at": "2026-06-23T05:48:47Z",
+        "closed_at": null,
+        "author": "BadMachine",
+        "comments": 1,
+        "labels": [
+            "enhancement"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "**What problem does this solve or what need does it fill?**\n\naccess to the constant\n\n**Describe the solution you'd like**\n\nmake it public\n\n**Describe alternatives you've considered**\n\nQuat::from_array([0.0; 4])\n",
+        "url": "https://github.com/bitshifter/glam-rs/issues/747"
+    },
+    {
+        "id": 4674480898,
+        "number": 746,
+        "title": "Wincode",
+        "state": "closed",
+        "created_at": "2026-06-16T13:11:39Z",
+        "updated_at": "2026-06-23T06:33:47Z",
+        "closed_at": "2026-06-23T06:33:47Z",
+        "author": "suprohub",
+        "comments": 1,
+        "labels": [
+            "enhancement"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "What about implementing traits from [wincode](https://lib.rs/crates/wincode)?",
+        "url": "https://github.com/bitshifter/glam-rs/issues/746"
+    },
+    {
+        "id": 4578960977,
+        "number": 736,
+        "title": "Suggestion: Move the `fast-math` feature to a `--cfg` flag",
+        "state": "open",
+        "created_at": "2026-06-03T10:25:17Z",
+        "updated_at": "2026-06-03T10:40:44Z",
+        "closed_at": null,
+        "author": "LikeLakers2",
+        "comments": 0,
+        "labels": [
+            "enhancement"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "**What problem does this solve or what need does it fill?**\n\nThe `fast-math` feature, as currently described in the readme, is not meant to be used by intermediate libraries:\n> Intermediate libraries should not use this feature and defer the decision to the final binary build.\n\n**Describe the solution you'd like**\n\nWhile the above warning should be sufficient, we can do a little better to further discourage intermediate libraries from using this feature. Specifically, we can change `fast-math` from being specified as `--features glam/fast-math` to `--cfg glam_fast_math`. (I'd suggest adding a `glam_` prefix so as not to conflict with other crates that might have a \"fast math\" mode.)\n\nUsers would then specify this using rustflags - either through the `RUSTFLAGS` environment variable, or through the `build.rustflags` option in `.cargo/config.toml`.\n\n**Describe alternatives you've considered**\n\nLeaving it as is (which I admit may be a desirable option)\n\n**Additional context**\n\nThis idea came to me after I saw how the `getrandom` and `sha2` crates allow specifying various backend stuff through `--cfg` flags. See <https://docs.rs/sha2/0.11.0/sha2/#backends> and <https://docs.rs/getrandom/0.4.2/getrandom/#opt-in-backends>.\n\nIf implementing this change is desired, I am willing to make a PR, as the changes are relatively simple.",
+        "url": "https://github.com/bitshifter/glam-rs/issues/736"
+    },
+    {
+        "id": 4551686359,
+        "number": 733,
+        "title": "All `map()`-Methods could take `FnMut`-Closures as arguments",
+        "state": "closed",
+        "created_at": "2026-05-29T21:18:49Z",
+        "updated_at": "2026-05-29T22:21:46Z",
+        "closed_at": "2026-05-29T22:21:46Z",
+        "author": "bitshifter",
+        "comments": 0,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "\n### Discussed in https://github.com/bitshifter/glam-rs/discussions/731\n\n<div type='discussions-op-text'>\n\n<sup>Originally posted by **StT191** May 28, 2026</sup>\nCurrently all the `map()`-methods of the `glam` vector-types require the mapping function to implement `Fn`.\r\nHowever they could all take a function with a more flexible `FnMut` requirement like the primitive `array`-types [do](https://doc.rust-lang.org/std/primitive.array.html#method.map) in `std`.\r\n\r\nOf course anybody who would need to map with a `FnMut`-closure could convert to/from `array` and use the `array`-map-method. \r\nBut being able to use the `map()`-methods of the `glam`-types would be much nicer in that case.</div>",
+        "url": "https://github.com/bitshifter/glam-rs/issues/733"
+    },
+    {
+        "id": 4425544928,
+        "number": 729,
+        "title": "support `core-simd` in no-std",
+        "state": "open",
+        "created_at": "2026-05-12T01:45:30Z",
+        "updated_at": "2026-05-12T01:45:30Z",
+        "closed_at": null,
+        "author": "vxpm",
+        "comments": 0,
+        "labels": [
+            "enhancement"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "**What problem does this solve or what need does it fill?**\n\ncurrently, the `core::simd` backend is only supported if `std` is enabled. this is because of `core::simd::StdFloat`, which assumes `std` is available. it would be interesting to use `core::simd` in no-std environments.\n\n**Describe the solution you'd like**\n\nallow usage of `core::simd` even without `std` by falling back to scalar `libm` code.\n\n**Describe alternatives you've considered**\n\nkeeping it as is, or gating methods that depend on `StdFloat` behind `std` when `core-simd` is also enabled. \n\n**Additional context**\n\nthe use case is simply `no-std` with weird ISAs that don't have specific implementations in glam.",
+        "url": "https://github.com/bitshifter/glam-rs/issues/729"
+    },
+    {
+        "id": 4102262334,
+        "number": 724,
+        "title": "XZ Coords in Vec2",
+        "state": "closed",
+        "created_at": "2026-03-19T14:53:45Z",
+        "updated_at": "2026-03-27T22:18:49Z",
+        "closed_at": "2026-03-27T22:18:49Z",
+        "author": "suprohub",
+        "comments": 1,
+        "labels": [
+            "enhancement"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "**What problem does this solve or what need does it fill?**\n\nCurrent vector is:\n```rust\npub struct IVec2 {\n    pub x: i32,\n    pub y: i32,\n}\n```\n\nNot all games are Z based. Some games are Y based, and if devs want use Vec2 in this games (for chunk system for example), they mental map will fall apart because 2 Y's meaning 2 different things.\n\n**Describe the solution you'd like**\n\n```rust\npub struct IVec2XZ {\n    pub x: i32,\n    pub z: i32,\n}\n```\n\n**Describe alternatives you've considered**\n\nName can be also IVec2Z.\nMaybe somehow implement macros for auto generating xz and replacing y everywhere.\n\n**Additional context**\nMy use case its minecraft custom server.\n",
+        "url": "https://github.com/bitshifter/glam-rs/issues/724"
+    },
+    {
+        "id": 4032881408,
+        "number": 721,
+        "title": "scalar / matrix implementation is wrong",
+        "state": "closed",
+        "created_at": "2026-03-06T08:13:36Z",
+        "updated_at": "2026-03-06T08:52:48Z",
+        "closed_at": "2026-03-06T08:52:39Z",
+        "author": "bitshifter",
+        "comments": 1,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "The implementation of `scalar / matrix` is backwards and is actually performing `matrix / scalar`.\n\nIt should return a matrix where every element is `scalar / element`.",
+        "url": "https://github.com/bitshifter/glam-rs/issues/721"
+    },
+    {
+        "id": 3878703927,
+        "number": 713,
+        "title": "Add support for wasm64, remove hard wasm32 dependency",
+        "state": "closed",
+        "created_at": "2026-01-31T07:56:50Z",
+        "updated_at": "2026-02-03T08:34:51Z",
+        "closed_at": "2026-02-03T08:34:51Z",
+        "author": "barabadzhi",
+        "comments": 2,
+        "labels": [
+            "enhancement"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "**What problem does this solve or what need does it fill?**\n\nToday `glam` relies on `core::arch::wasm32` intrinsics heavily for `wasm` family of targets.\nWith introduction of `wasm64-unknown-unknown` it becomes unusable as it simply did not compile on `wasm64`.\n\nWhy we may need this? Simply, more memory to address  = more objects to draw. Nom-nom 😄 👾 👾 👾 👾 👾  \n\n**Describe the solution you'd like**\n\nRemove hard dependency on `core::arch::wasm32` intrinsics.\nConditional `target`-based compilation is likely a way to go.\n\n**Describe alternatives you've considered**\n\nSwitchiong away from `glam` in the meantime.\nHand-rolling math primitives (not really in scope).\n\nHow do you intend to use it?\n\nTo turn this...\n👾 👾 👾 👾 👾 👾 👾 👾 👾 👾 👾 👾 👾 👾 👾 👾 👾 👾 👾 👾 👾 👾 👾 👾 👾 👾 👾 👾 👾 👾 👾 👾\n\ninto THIS...\n👾 👾 👾 👾 👾 👾 👾 👾 👾 👾 👾 👾 👾 👾 👾 👾 👾 👾 👾 👾 👾 👾 👾 👾 👾 👾 👾 👾 👾 👾 👾 👾\n👾 👾 👾 👾 👾 👾 👾 👾 👾 👾 👾 👾 👾 👾 👾 👾 👾 👾 👾 👾 👾 👾 👾 👾 👾 👾 👾 👾 👾 👾 👾 👾 ",
+        "url": "https://github.com/bitshifter/glam-rs/issues/713"
+    },
+    {
+        "id": 3830718461,
+        "number": 709,
+        "title": "Add missing `ISizeVec{2,3,4}` types",
+        "state": "closed",
+        "created_at": "2026-01-19T18:01:46Z",
+        "updated_at": "2026-04-04T09:46:39Z",
+        "closed_at": "2026-02-01T10:46:03Z",
+        "author": "ItzShiney",
+        "comments": 9,
+        "labels": [
+            "enhancement"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "Add the missing counterpart for `USizeVec{2,3,4}`. I believe it may be useful as the default option for \"I need signed integers with the best possible range to execution time ratio\". As `{i,u}size` types, I believe, are always the best in this regard. I'm actually surprised no one has requested this here yet.",
+        "url": "https://github.com/bitshifter/glam-rs/issues/709"
+    },
+    {
+        "id": 3826492412,
+        "number": 705,
+        "title": "Adopted matrix extensions from glam_matrix_extras and glamx",
+        "state": "closed",
+        "created_at": "2026-01-18T08:12:23Z",
+        "updated_at": "2026-01-19T06:24:12Z",
+        "closed_at": "2026-01-19T06:24:12Z",
+        "author": "bitshifter",
+        "comments": 1,
+        "labels": [
+            "enhancement"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "Physics libraries Avian and Rapier both use glam and matrix extension traits for some features that glam doesn't have. Some of these look generally useful.\n\n* https://github.com/Jondolf/glam_matrix_extras\n* https://github.com/dimforge/glamx\n\nDefinitely add:\n*  `fn diagonal(&self) -> Self::Vector`\n* `fn inverse_or_zero(&self) -> Self`\n* `fn try_inverse(&self) -> Option<Self>`\n\nPossibly add:\n* `fn is_symmetric(&self) -> bool`\n* `fn from_outer_product(a: Self::Vector, b: Self::Vector) -> Self`\n",
+        "url": "https://github.com/bitshifter/glam-rs/issues/705"
+    },
+    {
+        "id": 3814934181,
+        "number": 699,
+        "title": "Make a pass over Embark's macaw to identify things that make sense for core glam",
+        "state": "closed",
+        "created_at": "2026-01-14T21:25:17Z",
+        "updated_at": "2026-01-18T01:29:46Z",
+        "closed_at": "2026-01-18T01:29:46Z",
+        "author": "bitshifter",
+        "comments": 0,
+        "labels": [
+            "enhancement"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "Macaw added a bunch of extensions to glam, it would be worth going through these and seeing which things make sense to add to core glam\n\nhttps://github.com/EmbarkStudios/macaw\n\n- [x] Affine3 (no SIMD so it's smaller) - Bevy has also added this so I think it makes sense to make in glam\n- [x] FloatExt - glam already has some of these, also compare with what rust-gpu adds and add common stuff\n- [x] Mat3Ex - mul_diagonal_scale -  a little niche but potentially nice optimization for a common operation\n- [x] QuatEx - rotate_negative_z_towards and rotate_positive_z_towards - maybe too niche\n- [x] Vec2Ex\n- [x] Vec3Ex\n- [x] Vec3Ex",
+        "url": "https://github.com/bitshifter/glam-rs/issues/699"
+    },
+    {
+        "id": 3733941436,
+        "number": 692,
+        "title": "Can't build `glam=0.30.9`",
+        "state": "closed",
+        "created_at": "2025-12-16T09:25:33Z",
+        "updated_at": "2026-02-04T10:56:03Z",
+        "closed_at": "2026-02-04T10:56:03Z",
+        "author": "JoelBeicher",
+        "comments": 5,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "**Describe the bug**\n\n`glam@=0.30.9` not compiling.\n\n**To Reproduce**\n\n1. `cargo new new-project`\n2. `cargo add glam@=0.30.9`\n3. `cd new-project`\n4. `cargo build`\n\n**Expected behavior**\n\nTo compile successfully.\n\n**System information:**\n\nrustc 1.92.0 (ded5c06cf 2025-12-08)\nbinary: rustc\ncommit-hash: ded5c06cf21d2b93bffd5d884aa6e96934ee4234\ncommit-date: 2025-12-08\nhost: aarch64-apple-darwin\nrelease: 1.92.0\nLLVM version: 21.1.3\ncargo 1.92.0 (344c4567c 2025-10-21)\n\nCPU: Apple M2\n\n**Additional context**\n\nMultiple Errors like this one:\n\n```bash\nerror[E0432]: unresolved import `crate::Vec3`\n --> /Users/.../.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/glam-0.30.9/src/euler.rs:3:66\n  |\n3 | ...Vec3, Mat3, Mat3A, Mat4, Quat, Vec3, Vec3A, Vec3Swizzles};\n  |                                   ^^^^\n  |                                   |\n  |                                   no `Vec3` in the root\n  |                                   help: a similar name exists in the module (notice the capitalization): `vec3`\n  |\n  = help: consider importing this struct instead:\n          crate::deref::Vec3\n```\n\n_Don't know if I'm missing something obvious._\n",
+        "url": "https://github.com/bitshifter/glam-rs/issues/692"
+    },
+    {
+        "id": 3675321480,
+        "number": 691,
+        "title": "Add dual quaternions",
+        "state": "open",
+        "created_at": "2025-11-28T15:50:48Z",
+        "updated_at": "2026-01-14T20:58:02Z",
+        "closed_at": null,
+        "author": "cactusdualcore",
+        "comments": 2,
+        "labels": [
+            "enhancement"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "**What problem does this solve or what need does it fill?**\n\nDual quaternions can represent rigid body transformations and allow efficient on them.\n\n**Describe the solution you'd like**\n\nA `DualQuat` type added to this crate.\n\n**Describe alternatives you've considered**\n\nRolling my own from two `Quat`s.\n\n**Additional context**\n\nDual quaternions can be very useful when working with physics simulations on rigid bodies.",
+        "url": "https://github.com/bitshifter/glam-rs/issues/691"
+    },
+    {
+        "id": 3627603543,
+        "number": 690,
+        "title": "Incorrect (overzealous) error checking in `new_inclusive` for vec types",
+        "state": "closed",
+        "created_at": "2025-11-15T00:13:50Z",
+        "updated_at": "2026-01-03T09:49:19Z",
+        "closed_at": "2026-01-03T09:49:19Z",
+        "author": "nfagerlund",
+        "comments": 0,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "**Describe the bug**\n\nIn Glam's UniformSampler implementations for types like Vec2, the `new_inclusive` method disallows equal values for high and low bounds, just like the `new` method does: \n\nhttps://github.com/bitshifter/glam-rs/blob/534feb225f0f21c8cb5dd9b4156fdd6f5978fa77/src/features/impl_rand.rs#L59\n\nBut that's not correct! The text for `UniformError::EmptyRange` says `low > high (or equal if exclusive) in uniform distribution` — equal is only considered an error if the distribution is _exclusive_ (i.e. created with `new`), and `new_inclusive` should allow it. Compare the rand crate's first-party implementation for f32:\n\nhttps://github.com/rust-random/rand/blob/2eb1bbeb1dc0f489c1575f3f5157bd851acdf255/src/distr/uniform_float.rs#L127\n\n**To Reproduce**\n\nHere's a pair of tests to illustrate:\n\n```rust\nuse rand::distr::Uniform;\n\n#[test]\nfn boomsauce() {\n    let u = Uniform::new_inclusive(Vec2::splat(-0.0), Vec2::splat(0.0)).unwrap();\n    println!(\"{:?}\", u);\n}\n\n#[test] \nfn fine() {\n    let u = Uniform::new_inclusive(-0.0f32, 0.0f32).unwrap();\n    println!(\"{:?}\", u);\n}\n```\n\n**Expected behavior**\n\nSince a Vec2 is made out of f32s, I would expect a `rand::distr::Uniform<Vec2>` to behave exactly the same as a pair of `rand::distr::Uniform<f32>`s. The latter allows a degenerate form of inclusive distribution that will always sample the sole included value, but the former blows up when you try it.\n\n**System information (please complete the following information):**\n\n - OS: macos\n - Architecture aarch64\n\n**Additional context**\n\nI actually did want to do this. 😆 I'm scattering points randomly within a rectangle, and I wanted to be able to scatter them randomly along a line instead using the same code (which requires one component to have an equal value in both Vec2s).\n",
+        "url": "https://github.com/bitshifter/glam-rs/issues/690"
+    },
+    {
+        "id": 3518149118,
+        "number": 682,
+        "title": "add arbitrary trait implementations",
+        "state": "closed",
+        "created_at": "2025-10-15T13:50:41Z",
+        "updated_at": "2025-10-21T07:25:46Z",
+        "closed_at": "2025-10-21T07:25:46Z",
+        "author": "ScanMountGoat",
+        "comments": 1,
+        "labels": [
+            "enhancement"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "**What problem does this solve or what need does it fill?**\n\nThis makes it possible to derive `arbitrary::Arbitrary` for types using glam types.\n\n**Describe the solution you'd like**\n\nI'd like to have the trait implementation in glam as an optional feature similar to serde, encase, etc.\n\n**Describe alternatives you've considered**\n\nI currently use a derive attribute to specify a custom function for each field that uses a glam type. This works but can be a bit messy for some structs.\n\n```rust\n#[cfg_attr(feature = \"serde\", derive(Serialize, Deserialize))]\n#[cfg_attr(feature = \"arbitrary\", derive(arbitrary::Arbitrary))]\n#[derive(Debug, PartialEq, Clone, Copy, Default)]\npub struct Transform {\n    #[cfg_attr(feature = \"arbitrary\", arbitrary(with = arbitrary_vec3))]\n    pub scale: Vec3,\n\n    #[cfg_attr(feature = \"arbitrary\", arbitrary(with = arbitrary_quat))]\n    pub rotation: Quat,\n\n    #[cfg_attr(feature = \"arbitrary\", arbitrary(with = arbitrary_vec3))]\n    pub translation: Vec3,\n}\n```\n\n**Additional context**\n\nThe `arbitrary::Arbitrary` trait enables structured fuzzing with cargo-fuzz. I use fuzzing for testing the stability of conversion code for file formats for 3D models.\n\nThis shouldn't be too hard to implement. I would be happy to make a PR if this looks like a good addition for glam.",
+        "url": "https://github.com/bitshifter/glam-rs/issues/682"
+    },
+    {
+        "id": 3434346291,
+        "number": 672,
+        "title": "Patch version bump from 0.30.5 to 0.30.6 Caused a breaking change",
+        "state": "closed",
+        "created_at": "2025-09-19T13:17:15Z",
+        "updated_at": "2025-09-19T21:46:11Z",
+        "closed_at": "2025-09-19T21:25:30Z",
+        "author": "fredizzimo",
+        "comments": 4,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "This change https://github.com/bitshifter/glam-rs/pull/647 of changing the arguments from `self` to `&self` is a breaking change in combination with [Glamour](https://github.com/simonask/glamour) and causes errors like this\n```rust\nerror[E0308]: mismatched types\n   --> /home/fredizzimo/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/glamour-0.18.0/src/forward.rs:159:30\n    |\n159 |             <Self>::$fn_name(self $(, $arg_name)*)\n    |             ---------------- ^^^^ expected `Vec2`, found `&Vec2`\n    |             |\n    |             arguments to this function are incorrect\n    |\n   ::: /home/fredizzimo/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/glamour-0.18.0/src/bindings/vec.rs:186:1\n    |\n186 | impl_vector2!(glam::Vec2, glam::Vec3);\n    | ------------------------------------- in this macro invocation\n    |\nnote: method defined here\n   --> /home/fredizzimo/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/glam-0.30.6/src/f32/vec2.rs:129:18\n    |\n129 |     pub const fn to_array(self) -> [f32; 2] {\n    |                  ^^^^^^^^\n    = note: this error originates in the macro `crate::forward_fn_self_ref` which comes from the expansion of the macr\no `impl_vector2` (in Nightly builds, run with -Z macro-backtrace for more info)\nhelp: consider dereferencing the borrow\n    |\n159 |             <Self>::$fn_name(*self $(, $arg_name)*)\n```\n\nSo, I think it should have been released as 0.31.0 instead.",
+        "url": "https://github.com/bitshifter/glam-rs/issues/672"
+    },
+    {
+        "id": 3279271352,
+        "number": 667,
+        "title": "Rustdoc ICE triggered by glam",
+        "state": "closed",
+        "created_at": "2025-07-31T06:25:38Z",
+        "updated_at": "2025-07-31T07:50:50Z",
+        "closed_at": "2025-07-31T07:50:50Z",
+        "author": "mintlu8",
+        "comments": 1,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "**Describe the bug**\n\nGlam triggers an internal compiler error on `docs.rs` with its SIMD code.\n\n**To Reproduce**\n\nRustdoc build log:\nhttps://docs.rs/crate/bevy_rich_text3d/0.4.1/builds/2366087\n\nDoes not happen locally with `cargo doc --open`\n\n",
+        "url": "https://github.com/bitshifter/glam-rs/issues/667"
+    },
+    {
+        "id": 3274627489,
+        "number": 666,
+        "title": "Unable to compile on nightly-x86_64-pc-windows-msvc due to internal compiler error",
+        "state": "closed",
+        "created_at": "2025-07-29T18:46:47Z",
+        "updated_at": "2025-07-30T05:51:43Z",
+        "closed_at": "2025-07-30T05:51:43Z",
+        "author": "imthatgin",
+        "comments": 4,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "**Describe the bug**\n\nI figure it'll just be easiest to post my stacktrace from the compile:\n\n```\nerror: internal compiler error: compiler\\rustc_mir_transform\\src\\validate.rs:80:25: broken MIR in Item(DefId(0:23022 ~ glam[fdf1]::euler::{impl#44}::to_euler_angles)) (after phase change to runtime-optimized) at bb0[5]:\n                                Projecting into SIMD type std::arch::x86_64::__m128 is banned by MCP#838\n   --> C:\\Users\\Seneca\\.cargo\\registry\\src\\index.crates.io-1949cf8c6b5b557f\\glam-0.29.3\\src\\euler.rs:410:34\n    |\n410 |                 $mat3::from_mat4(self).to_euler_angles(order)\n    |                                  ^^^^\n...\n435 | impl_mat4_to_euler!(f32, Mat4, Mat3);\n    | ------------------------------------ in this macro invocation\n    |\n    = note: this error: internal compiler error originates in the macro `impl_mat4_to_euler` (in Nightly builds, run with -Z macro-backtrace for more info)\n\n\nthread 'rustc' panicked at compiler\\rustc_mir_transform\\src\\validate.rs:80:25:\nBox<dyn Any>\nstack backtrace:\n   0:     0x7ff981bd9cc2 - std::backtrace_rs::backtrace::win64::trace\n                               at /rustc/498ae9fed2e7d90821d70a048f3770f91af08957/library\\std\\src\\..\\..\\backtrace\\src\\backtrace\\win64.rs:85\n   1:     0x7ff981bd9cc2 - std::backtrace_rs::backtrace::trace_unsynchronized\n                               at /rustc/498ae9fed2e7d90821d70a048f3770f91af08957/library\\std\\src\\..\\..\\backtrace\\src\\backtrace\\mod.rs:66\n   2:     0x7ff981bd9cc2 - std::sys::backtrace::_print_fmt\n                               at /rustc/498ae9fed2e7d90821d70a048f3770f91af08957/library\\std\\src\\sys\\backtrace.rs:66\n   3:     0x7ff981bd9cc2 - std::sys::backtrace::impl$0::print::impl$0::fmt\n                               at /rustc/498ae9fed2e7d90821d70a048f3770f91af08957/library\\std\\src\\sys\\backtrace.rs:39\n   4:     0x7ff981c0cc1b - core::fmt::rt::Argument::fmt\n                               at /rustc/498ae9fed2e7d90821d70a048f3770f91af08957/library\\core\\src\\fmt\\rt.rs:173\n   5:     0x7ff981c0cc1b - core::fmt::write\n                               at /rustc/498ae9fed2e7d90821d70a048f3770f91af08957/library\\core\\src\\fmt\\mod.rs:1468\n   6:     0x7ff981bcfa57 - std::io::default_write_fmt\n                               at /rustc/498ae9fed2e7d90821d70a048f3770f91af08957/library\\std\\src\\io\\mod.rs:639\n   7:     0x7ff981bcfa57 - std::io::Write::write_fmt<std::sys::stdio::windows::Stderr>\n                               at /rustc/498ae9fed2e7d90821d70a048f3770f91af08957/library\\std\\src\\io\\mod.rs:1954\n   8:     0x7ff981bd9b05 - std::sys::backtrace::BacktraceLock::print\n                               at /rustc/498ae9fed2e7d90821d70a048f3770f91af08957/library\\std\\src\\sys\\backtrace.rs:42\n   9:     0x7ff981bdf869 - std::panicking::default_hook::closure$0\n                               at /rustc/498ae9fed2e7d90821d70a048f3770f91af08957/library\\std\\src\\panicking.rs:300\n  10:     0x7ff981bdf5df - std::panicking::default_hook\n                               at /rustc/498ae9fed2e7d90821d70a048f3770f91af08957/library\\std\\src\\panicking.rs:327\n  11:     0x7ff9833a6ea9 - core[74d31f6b41740ae4]::slice::sort::unstable::heapsort::heapsort::<((rustc_lint_defs[ec03c25c70286bc]::Level, &str), usize), <((rustc_lint_defs[ec03c25c70286bc]::Level, &str), usize) as core[74d31f6b41740ae4]::cmp::PartialOrd>::lt>\n  12:     0x7ff981be04ba - std::panicking::rust_panic_with_hook\n                               at /rustc/498ae9fed2e7d90821d70a048f3770f91af08957/library\\std\\src\\panicking.rs:841\n  13:     0x7ff984c20bb3 - RINvNtNtNtNtCsa1R16IuJxTk_4core5slice4sort6stable9quicksort9quicksortTjRNtNtCs3E3jvCJLbXL_12rustc_errors7snippet10AnnotationENCINvMNtCsesdnjiLiruC_5alloc5sliceSB15_11sort_by_keyTINtNtBa_3cmp7ReversejEbENCNCNvMs4_NtB1c_7emitterNtB3o_12HumanEmitter18render_s       \n  14:     0x7ff984c154f9 - std[834ff3b516956812]::sys::backtrace::__rust_end_short_backtrace::<std[834ff3b516956812]::panicking::begin_panic<rustc_errors[2a77ad8b8fcfea7f]::ExplicitBug>::{closure#0}, !>\n  15:     0x7ff984c15258 - std[834ff3b516956812]::panicking::begin_panic::<rustc_errors[2a77ad8b8fcfea7f]::ExplicitBug>\n  16:     0x7ff984c2d515 - <rustc_errors[2a77ad8b8fcfea7f]::diagnostic::BugAbort as rustc_errors[2a77ad8b8fcfea7f]::diagnostic::EmissionGuarantee>::emit_producing_guarantee\n  17:     0x7ff984ac99df - RINvMs6_NtCsecx6ytOKQP3_9hashbrown3rawINtB6_8RawTableTTNtNtCskDyNhJoffCq_10rustc_span6def_id5DefIdRINtNtNtCsa28bIjagKWi_12rustc_middle2ty4list7RawListuNtNtB1E_12generic_args10GenericArgEENtB1E_2TyEE14reserve_rehashNCINvNtB8_3map11make_hasherBQ_B2Z_NtCs3C2f       \n  18:     0x7ff984b79b86 - rustc_middle[74e0713c56bb5c18]::util::bug::span_bug_fmt::<rustc_span[f06270827cf646b4]::span_encoding::Span>\n  19:     0x7ff984b509dd - <rustc_middle[74e0713c56bb5c18]::ty::consts::Const>::walk\n  20:     0x7ff984b507a6 - <rustc_middle[74e0713c56bb5c18]::ty::consts::Const>::walk\n  21:     0x7ff984b79ae9 - rustc_middle[74e0713c56bb5c18]::util::bug::span_bug_fmt::<rustc_span[f06270827cf646b4]::span_encoding::Span>\n  22:     0x7ff983abe523 - <rustc_mir_transform[fe5064b7a917626f]::strip_debuginfo::StripDebugInfo as rustc_mir_transform[fe5064b7a917626f]::pass_manager::MirPass>::run_pass\n  23:     0x7ff9821dc5e5 - <rustc_mir_transform[fe5064b7a917626f]::validate::Validator as rustc_mir_transform[fe5064b7a917626f]::pass_manager::MirPass>::run_pass\n  24:     0x7ff98210b836 - rustc_mir_transform[fe5064b7a917626f]::run_analysis_to_runtime_passes\n  25:     0x7ff98210dae6 - rustc_mir_transform[fe5064b7a917626f]::optimized_mir\n  26:     0x7ff982b468b0 - rustc_query_impl[60fd5f0abaaee6da]::plumbing::query_key_hash_verify_all\n  27:     0x7ff982a116ab - RINvNtNtCsi4CdGZzyq7i_18rustc_query_system5query8plumbing17try_execute_queryINtCs8kgZvjbrlwc_16rustc_query_impl13DynamicConfigINtNtB4_6caches10DefIdCacheINtNtNtCsa28bIjagKWi_12rustc_middle5query5erase6ErasedAhj8_EEKb0_KB3r_KB3r_ENtNtB1f_8plumbing9QueryCtxt       \n  28:     0x7ff982b4c254 - rustc_query_impl[60fd5f0abaaee6da]::plumbing::query_key_hash_verify_all\n  29:     0x7ff9820d674b - rustc_mir_transform[fe5064b7a917626f]::cross_crate_inline::cross_crate_inlinable\n  30:     0x7ff982b479f0 - rustc_query_impl[60fd5f0abaaee6da]::plumbing::query_key_hash_verify_all\n  31:     0x7ff9829febb7 - RINvNtNtCsi4CdGZzyq7i_18rustc_query_system5query8plumbing17try_execute_queryINtCs8kgZvjbrlwc_16rustc_query_impl13DynamicConfigINtNtB4_6caches10DefIdCacheINtNtNtCsa28bIjagKWi_12rustc_middle5query5erase6ErasedAhj1_EEKb0_KB3r_KB3r_ENtNtB1f_8plumbing9QueryCtxt       \n  32:     0x7ff982b58861 - rustc_query_impl[60fd5f0abaaee6da]::plumbing::query_key_hash_verify_all\n  33:     0x7ff98281b33e - rustc_passes[cef19247e5799762]::reachable::reachable_set\n  34:     0x7ff9817606b4 - <alloc[a85e0e3375290938]::sync::Arc<rustc_session[b4bc31f555f33721]::cstore::CrateSource>>::drop_slow\n  35:     0x7ff9816788ed - RINvNtNtCsi4CdGZzyq7i_18rustc_query_system5query8plumbing17try_execute_queryINtCs8kgZvjbrlwc_16rustc_query_impl13DynamicConfigINtNtB4_6caches11SingleCacheINtNtNtCsa28bIjagKWi_12rustc_middle5query5erase6ErasedAhj8_EEKb0_KB3s_KB3s_ENtNtB1f_8plumbing9QueryCtx       \n  36:     0x7ff981779e95 - rustc_query_impl[60fd5f0abaaee6da]::query_system\n  37:     0x7ff9848e3b2e - <rustc_metadata[d4613074eda90d50]::rmeta::encoder::EncodeContext as rustc_serialize[90767acd8e82550b]::serialize::Encoder>::emit_raw_bytes\n  38:     0x7ff98489bb94 - <rustc_data_structures[e3d372eb1353660d]::profiling::SelfProfilerRef>::exec::cold_call::<<rustc_data_structures[e3d372eb1353660d]::profiling::SelfProfilerRef>::generic_activity_with_arg<&str>::{closure#0}>\n  39:     0x7ff98194424a - rustc_metadata[d4613074eda90d50]::rmeta::encoder::encode_metadata\n  40:     0x7ff9819211ac - rustc_metadata[d4613074eda90d50]::fs::encode_and_write_metadata\n  41:     0x7ff97e15343f - <rustc_interface[f2cb05b48bb94bb1]::queries::Linker>::codegen_and_build_linker\n  42:     0x7ff97e0d7ea1 - std[834ff3b516956812]::sys::backtrace::__rust_begin_short_backtrace::<<std[834ff3b516956812]::thread::Builder>::spawn_unchecked_<ctrlc[9650c4061f36fe67]::set_handler_inner<rustc_driver_impl[6903998514fa6511]::install_ctrlc_handler::{closure#0}>::{closure#0}, ()>::{closure#1}::{closure#0}::{closure#0}, ()>\n  43:     0x7ff97e0d2529 - std[834ff3b516956812]::sys::backtrace::__rust_begin_short_backtrace::<<std[834ff3b516956812]::thread::Builder>::spawn_unchecked_<ctrlc[9650c4061f36fe67]::set_handler_inner<rustc_driver_impl[6903998514fa6511]::install_ctrlc_handler::{closure#0}>::{closure#0}, ()>::{closure#1}::{closure#0}::{closure#0}, ()>\n  44:     0x7ff9833be602 - <tracing_subscriber[c135132a423d4e4a]::util::TryInitError as core[74d31f6b41740ae4]::fmt::Display>::fmt\n  45:     0x7ff984e16001 - <rustc_thread_pool[b148eddeb3d373b6]::registry::WorkerThread>::wait_or_steal_until_cold\n  46:     0x7ff984e12c6c - <rustc_thread_pool[b148eddeb3d373b6]::registry::ThreadBuilder>::run\n  47:     0x7ff98339e07e - RINvNtNtCsbgYhK5P7qdG_3std3sys9backtrace28___rust_begin_short_backtraceNCNCNCINvMs1_CsfdGmqB0r1Uo_17rustc_thread_poolNtB1k_17ThreadPoolBuilder12build_scopedNCNCNCINvNtCskQnFp4pvURx_15rustc_interface4util31run_in_thread_pool_with_globalsNCINvNtB2F_9interfac       \n  48:     0x7ff9833ae218 - core[74d31f6b41740ae4]::slice::sort::unstable::heapsort::heapsort::<((rustc_lint_defs[ec03c25c70286bc]::Level, &str), usize), <((rustc_lint_defs[ec03c25c70286bc]::Level, &str), usize) as core[74d31f6b41740ae4]::cmp::PartialOrd>::lt>\n  49:     0x7ff981be408d - alloc::boxed::impl$28::call_once\n                               at /rustc/498ae9fed2e7d90821d70a048f3770f91af08957/library\\alloc\\src\\boxed.rs:1971\n  50:     0x7ff981be408d - alloc::boxed::impl$28::call_once\n                               at /rustc/498ae9fed2e7d90821d70a048f3770f91af08957/library\\alloc\\src\\boxed.rs:1971\n  51:     0x7ff981be408d - std::sys::pal::windows::thread::impl$0::new::thread_start\n                               at /rustc/498ae9fed2e7d90821d70a048f3770f91af08957/library\\std\\src\\sys\\pal\\windows\\thread.rs:56\n  52:     0x7ffa2b747374 - BaseThreadInitThunk\n  53:     0x7ffa2c8dcc91 - RtlUserThreadStart\n\nnote: we would appreciate a bug report: https://github.com/rust-lang/rust/issues/new?labels=C-bug%2C+I-ICE%2C+T-compiler&template=ice.md\n\nnote: please make sure that you have updated to the latest nightly\n\nnote: please attach the file at `C:\\Users\\Seneca\\.cargo\\registry\\src\\index.crates.io-1949cf8c6b5b557f\\glam-0.29.3\\rustc-ice-2025-07-29T18_40_43-21596.txt` to your bug report\n\nnote: compiler flags: --crate-type lib -C opt-level=3 -C embed-bitcode=no -C debuginfo=2 -C debug-assertions=on -C linker=rust-lld.exe -Z share-generics=n -Z threads=0\n\nnote: some of the compiler flags provided by cargo are hidden\n\nquery stack during panic:\n#0 [optimized_mir] optimizing MIR for `euler::<impl at C:\\Users\\Seneca\\.cargo\\registry\\src\\index.crates.io-1949cf8c6b5b557f\\glam-0.29.3\\src\\euler.rs:404:9: 404:31>::to_euler_angles`\n#1 [cross_crate_inlinable] whether the item should be made inlinable across crates\n... and 1 other queries... use `env RUST_BACKTRACE=1` to see the full query stack\nerror: could not compile `glam` (lib)\n\nCaused by:\n  process didn't exit successfully: `C:\\Users\\Seneca\\.rustup\\toolchains\\nightly-x86_64-pc-windows-msvc\\bin\\rustc.exe --crate-name glam --edition=2021 'C:\\Users\\Seneca\\.cargo\\registry\\src\\index.crates.io-1949cf8c6b5b557f\\glam-0.29.3\\src\\lib.rs' --error-format=json --json=diagnostic-rendered-ansi,artifacts,future-incompat --diagnostic-width=289 --crate-type lib --emit=dep-info,metadata,link -C opt-level=3 -C embed-bitcode=no -C debuginfo=2 --warn=unexpected_cfgs --check-cfg 'cfg(target_arch, values(\"spirv\"))' -C debug-assertions=on --cfg 'feature=\"bytemuck\"' --cfg 'feature=\"nostd-libm\"' --cfg 'feature=\"rand\"' --cfg 'feature=\"serde\"' --cfg 'feature=\"std\"' --check-cfg 'cfg(docsrs,test)' --check-cfg 'cfg(feature, values(\"approx\", \"bytecheck\", \"bytemuck\", \"core-simd\", \"cuda\", \"debug-glam-assert\", \"default\", \"fast-math\", \"glam-assert\", \"libm\", \"mint\", \"nostd-libm\", \"rand\", \"rkyv\", \"scalar-math\", \"serde\", \"std\"))' -C metadata=aff27924e5d6e65f -C extra-filename=-a932ea63ccb8b255 --out-dir 'J:\\Development\\gamekit\\target\\debug\\deps' -C linker=rust-lld.exe -L 'dependency=J:\\Development\\gamekit\\target\\debug\\deps' --extern 'bytemuck=J:\\Development\\gamekit\\target\\debug\\deps\\libbytemuck-ac2359768af04690.rmeta' --extern 'libm=J:\\Development\\gamekit\\target\\debug\\deps\\liblibm-2dc888b8c15cdb65.rmeta' --extern 'rand=J:\\Development\\gamekit\\target\\debug\\deps\\librand-a4726e70a9670abd.rmeta' --extern 'serde=J:\\Development\\gamekit\\target\\debug\\deps\\libserde-83884db39c627c01.rmeta' --cap-lints allow -Zshare-generics=n -Zthreads=0` (exit code: 101)\nwarning: build failed, waiting for other jobs to finish...\n```\n\n**To Reproduce**\n\nUnsure, I'm just trying to compile a basic bevy application on windows\n\n**Expected behavior**\n\nShould be able to build the crate.\n\n**System information (please complete the following information):**\n\n - OS: Windows\n - Architecture x86_64\n\n**Additional context**\n\nAdd any other context about the problem here.\n",
+        "url": "https://github.com/bitshifter/glam-rs/issues/666"
+    }
+]

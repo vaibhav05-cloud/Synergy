@@ -1,0 +1,384 @@
+[
+    {
+        "id": 4870461678,
+        "number": 10285,
+        "title": "NoMethodError: undefined method 'search_by_keywords' for an instance of ActiveRecord::Relation",
+        "state": "open",
+        "created_at": "2026-07-13T04:41:25Z",
+        "updated_at": "2026-07-13T04:41:25Z",
+        "closed_at": null,
+        "author": "komagata",
+        "comments": 0,
+        "labels": [
+            "バグ"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "View details in Rollbar: [https://app.rollbar.com/a/komagata/fix/item/Bootcamp/2309](https://app.rollbar.com/a/komagata/fix/item/Bootcamp/2309)\n\n```\n\nNoMethodError: undefined method 'search_by_keywords' for an instance of ActiveRecord::Relation\n  File \"/usr/local/bundle/gems/activerecord-8.1.1/lib/active_record/relation/delegation.rb\", line 132, in ActiveRecord::Delegation::ClassSpecificRelation#method_missing\n  File \"/app/app/controllers/api/users_controller.rb\", line 46, in API::UsersController#search_for_users\n  File \"/app/app/controllers/api/users_controller.rb\", line 18, in API::UsersController#index\n  File \"/usr/local/bundle/gems/actionpack-8.1.1/lib/action_controller/metal/basic_implicit_render.rb\", line 8, in ActionController::BasicImplicitRender#send_action\n  File \"/usr/local/bundle/gems/actionpack-8.1.1/lib/abstract_controller/base.rb\", line 221, in AbstractController::Base#process_action\n  File \"/usr/local/bundle/gems/actionpack-8.1.1/lib/action_controller/metal/rendering.rb\", line 199, in ActionController::Rendering#process_action\n  File \"/usr/local/bundle/gems/actionpack-8.1.1/lib/abstract_controller/callbacks.rb\", line 267, in block in AbstractController::Callbacks#process_action\n  File \"/usr/local/bundle/gems/activesupport-8.1.1/lib/active_support/callbacks.rb\", line 121, in block in ActiveSupport::Callbacks#run_callbacks\n  File \"/usr/local/bundle/gems/turbo-rails-2.0.20/lib/turbo-rails.rb\", line 24, in Turbo.with_request_id\n  File \"/usr/local/bundle/gems/turbo-rails-2.0.20/app/controllers/concerns/turbo/request_id_tracking.rb\", line 10, in Turbo::RequestIdTracking#turbo_tracking_request_id\n  File \"/usr/local/bundle/gems/activesupport-8.1.1/lib/active_support/callbacks.rb\", line 130, in block in ActiveSupport::Callbacks#run_callbacks\n  File \"/usr/local/bundle/gems/actiontext-8.1.1/lib/action_text/rendering.rb\", line 24, in ActionText::Rendering::ClassMethods#with_renderer\n  File \"/usr/local/bundle/gems/actiontext-8.1.1/lib/action_text/engine.rb\", line 72, in block (4 levels) in <class:Engine>\n  File \"/usr/local/bundle/gems/activesupport-8.1.1/lib/active_support/callbacks.rb\", line 130, in BasicObject#instance_exec\n  File \"/usr/local/bundle/gems/activesupport-8.1.1/lib/active_support/callbacks.rb\", line 130, in block in ActiveSupport::Callbacks#run_callbacks\n  File \"/usr/local/bundle/gems/active_decorator-1.5.1/lib/active_decorator/view_context.rb\", line 62, in block (3 levels) in <module:Filter>\n  File \"/usr/local/bundle/gems/active_decorator-1.5.1/lib/active_decorator/view_context.rb\", line 50, in ActiveDecorator::ViewContext.run_with\n  File \"/usr/local/bundle/gems/active_decorator-1.5.1/lib/active_decorator/view_context.rb\", line 61, in block (2 levels) in <module:Filter>\n  File \"/usr/local/bundle/gems/activesupport-8.1.1/lib/active_support/callbacks.rb\", line 130, in BasicObject#instance_exec\n  File \"/usr/local/bundle/gems/activesupport-8.1.1/lib/active_support/callbacks.rb\", line 130, in block in ActiveSupport::Callbacks#run_callbacks\n  File \"/usr/local/bundle/gems/activesupport-8.1.1/lib/active_support/callbacks.rb\", line 141, in ActiveSupport::Callbacks#run_callbacks\n  File \"/usr/local/bundle/gems/actionpack-8.1.1/lib/abstract_controller/callbacks.rb\", line 266, in AbstractController::Callbacks#process_action\n  File \"/usr/local/bundle/gems/actionpack-8.1.1/lib/action_controller/metal/rescue.rb\", line 36, in ActionController::Rescue#process_action\n  File \"/usr/local/bundle/gems/actionpack-8.1.1/lib/action_controller/metal/instrumentation.rb\", line 76, in block in ActionController::Instrumentation#process_action\n  File \"/usr/local/bundle/gems/activesupport-8.1.1/lib/active_support/notifications.rb\", line 210, in block in ActiveSupport::Notifications.instrument\n  File \"/usr/local/bundle/gems/activesupport-8.1.1/lib/active_support/notifications/instrumenter.rb\", line 58, in ActiveSupport::Notifications::Instrumenter#instrument\n  File \"/usr/local/bundle/gems/activesupport-8.1.1/lib/active_support/notifications.rb\", line 210, in ActiveSupport::Notifications.instrument\n  File \"/usr/local/bundle/gems/actionpack-8.1.1/lib/action_controller/metal/instrumentation.rb\", line 75, in ActionController::Instrumentation#process_action\n  File \"/usr/local/bundle/gems/actionpack-8.1.1/lib/action_controller/metal/params_wrapper.rb\", line 259, in ActionController::ParamsWrapper#process_action\n  File \"/usr/local/bundle/gems/activerecord-8.1.1/lib/active_record/railties/controller_runtime.rb\", line 39, in ActiveRecord::Railties::ControllerRuntime#process_action\n  File \"/usr/local/bundle/gems/actionpack-8.1.1/lib/abstract_controller/base.rb\", line 154, in AbstractController::Base#process\n  File \"/usr/local/bundle/gems/actionview-8.1.1/lib/action_view/rendering.rb\", line 40, in ActionView::Rendering#process\n  File \"/usr/local/bundle/gems/actionpack-8.1.1/lib/action_controller/metal.rb\", line 252, in ActionController::Metal#dispatch\n  File \"/usr/local/bundle/gems/actionpack-8.1.1/lib/action_controller/metal.rb\", line 335, in ActionController::Metal.dispatch\n  File \"/usr/local/bundle/gems/actionpack-8.1.1/lib/action_dispatch/routing/route_set.rb\", line 65, in ActionDispatch::Routing::RouteSet::Dispatcher#dispatch\n  File \"/usr/local/bundle/gems/actionpack-8.1.1/lib/action_dispatch/routing/route_set.rb\", line 50, in ActionDispatch::Routing::RouteSet::Dispatcher#serve\n  File \"/usr/local/bundle/gems/actionpack-8.1.1/lib/action_dispatch/journey/router.rb\", line 35, in block in ActionDispatch::Journey::Router#serve\n  File \"/usr/local/bundle/gems/actionpack-8.1.1/lib/action_dispatch/journey/router.rb\", line 86, in block in ActionDispatch::Journey::Router#recognize\n  File \"/usr/local/bundle/gems/actionpack-8.1.1/lib/action_dispatch/journey/router.rb\", line 66, in Array#each\n  File \"/usr/local/bundle/gems/actionpack-8.1.1/lib/action_dispatch/journey/router.rb\", line 66, in ActionDispatch::Journey::Router#recognize\n  File \"/usr/local/bundle/gems/actionpack-8.1.1/lib/action_dispatch/journey/router.rb\", line 31, in ActionDispatch::Journey::Router#serve\n  File \"/usr/local/bundle/gems/actionpack-8.1.1/lib/action_dispatch/routing/route_set.rb\", line 906, in ActionDispatch::Routing::RouteSet#call\n  File \"/usr/local/bundle/gems/omniauth-2.1.4/lib/omniauth/strategy.rb\", line 202, in OmniAuth::Strategy#call!\n  File \"/usr/local/bundle/gems/omniauth-2.1.4/lib/omniauth/strategy.rb\", line 169, in OmniAuth::Strategy#call\n  File \"/usr/local/bundle/gems/omniauth-2.1.4/lib/omniauth/strategy.rb\", line 202, in OmniAuth::Strategy#call!\n  File \"/usr/local/bundle/gems/omniauth-2.1.4/lib/omniauth/strategy.rb\", line 169, in OmniAuth::Strategy#call\n  File \"/usr/local/bundle/gems/omniauth-2.1.4/lib/omniauth/builder.rb\", line 48, in OmniAuth::Builder#call\n  File \"/usr/local/bundle/gems/rack-3.2.5/lib/rack/tempfile_reaper.rb\", line 20, in Rack::TempfileReaper#call\n  File \"/usr/local/bundle/gems/rack-3.2.5/lib/rack/etag.rb\", line 29, in Rack::ETag#call\n  File \"/usr/local/bundle/gems/rack-3.2.5/lib/rack/conditional",
+        "url": "https://github.com/fjordllc/bootcamp/issues/10285"
+    },
+    {
+        "id": 4862474204,
+        "number": 10282,
+        "title": "ArgumentError: Invalid document_type: questions. Available types: practice, user, report, product, announcement, page, question, answer, correct_answer, comment, event, regular_event, pair_work, all",
+        "state": "open",
+        "created_at": "2026-07-11T13:35:59Z",
+        "updated_at": "2026-07-11T13:35:59Z",
+        "closed_at": null,
+        "author": "komagata",
+        "comments": 0,
+        "labels": [
+            "バグ"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "View details in Rollbar: [https://app.rollbar.com/a/komagata/fix/item/Bootcamp/2307](https://app.rollbar.com/a/komagata/fix/item/Bootcamp/2307)\n\n```\n\nArgumentError: Invalid document_type: questions. Available types: practice, user, report, product, announcement, page, question, answer, correct_answer, comment, event, regular_event, pair_work, all\n  File \"/app/app/models/searcher.rb\", line 87, in Searcher#validate_document_type\n  File \"/app/app/models/searcher.rb\", line 19, in Searcher#initialize\n  File \"/app/app/controllers/searchables_controller.rb\", line 11, in Class#new\n  File \"/app/app/controllers/searchables_controller.rb\", line 11, in SearchablesController#index\n  File \"/usr/local/bundle/gems/actionpack-8.1.1/lib/action_controller/metal/basic_implicit_render.rb\", line 8, in ActionController::BasicImplicitRender#send_action\n  File \"/usr/local/bundle/gems/actionpack-8.1.1/lib/abstract_controller/base.rb\", line 221, in AbstractController::Base#process_action\n  File \"/usr/local/bundle/gems/actionpack-8.1.1/lib/action_controller/metal/rendering.rb\", line 199, in ActionController::Rendering#process_action\n  File \"/usr/local/bundle/gems/actionpack-8.1.1/lib/abstract_controller/callbacks.rb\", line 267, in block in AbstractController::Callbacks#process_action\n  File \"/usr/local/bundle/gems/activesupport-8.1.1/lib/active_support/callbacks.rb\", line 121, in block in ActiveSupport::Callbacks#run_callbacks\n  File \"/usr/local/bundle/gems/turbo-rails-2.0.20/lib/turbo-rails.rb\", line 24, in Turbo.with_request_id\n  File \"/usr/local/bundle/gems/turbo-rails-2.0.20/app/controllers/concerns/turbo/request_id_tracking.rb\", line 10, in Turbo::RequestIdTracking#turbo_tracking_request_id\n  File \"/usr/local/bundle/gems/activesupport-8.1.1/lib/active_support/callbacks.rb\", line 130, in block in ActiveSupport::Callbacks#run_callbacks\n  File \"/usr/local/bundle/gems/actiontext-8.1.1/lib/action_text/rendering.rb\", line 24, in ActionText::Rendering::ClassMethods#with_renderer\n  File \"/usr/local/bundle/gems/actiontext-8.1.1/lib/action_text/engine.rb\", line 72, in block (4 levels) in <class:Engine>\n  File \"/usr/local/bundle/gems/activesupport-8.1.1/lib/active_support/callbacks.rb\", line 130, in BasicObject#instance_exec\n  File \"/usr/local/bundle/gems/activesupport-8.1.1/lib/active_support/callbacks.rb\", line 130, in block in ActiveSupport::Callbacks#run_callbacks\n  File \"/usr/local/bundle/gems/active_decorator-1.5.1/lib/active_decorator/view_context.rb\", line 62, in block (3 levels) in <module:Filter>\n  File \"/usr/local/bundle/gems/active_decorator-1.5.1/lib/active_decorator/view_context.rb\", line 50, in ActiveDecorator::ViewContext.run_with\n  File \"/usr/local/bundle/gems/active_decorator-1.5.1/lib/active_decorator/view_context.rb\", line 61, in block (2 levels) in <module:Filter>\n  File \"/usr/local/bundle/gems/activesupport-8.1.1/lib/active_support/callbacks.rb\", line 130, in BasicObject#instance_exec\n  File \"/usr/local/bundle/gems/activesupport-8.1.1/lib/active_support/callbacks.rb\", line 130, in block in ActiveSupport::Callbacks#run_callbacks\n  File \"/usr/local/bundle/gems/activesupport-8.1.1/lib/active_support/callbacks.rb\", line 141, in ActiveSupport::Callbacks#run_callbacks\n  File \"/usr/local/bundle/gems/actionpack-8.1.1/lib/abstract_controller/callbacks.rb\", line 266, in AbstractController::Callbacks#process_action\n  File \"/usr/local/bundle/gems/actionpack-8.1.1/lib/action_controller/metal/rescue.rb\", line 36, in ActionController::Rescue#process_action\n  File \"/usr/local/bundle/gems/actionpack-8.1.1/lib/action_controller/metal/instrumentation.rb\", line 76, in block in ActionController::Instrumentation#process_action\n  File \"/usr/local/bundle/gems/activesupport-8.1.1/lib/active_support/notifications.rb\", line 210, in block in ActiveSupport::Notifications.instrument\n  File \"/usr/local/bundle/gems/activesupport-8.1.1/lib/active_support/notifications/instrumenter.rb\", line 58, in ActiveSupport::Notifications::Instrumenter#instrument\n  File \"/usr/local/bundle/gems/activesupport-8.1.1/lib/active_support/notifications.rb\", line 210, in ActiveSupport::Notifications.instrument\n  File \"/usr/local/bundle/gems/actionpack-8.1.1/lib/action_controller/metal/instrumentation.rb\", line 75, in ActionController::Instrumentation#process_action\n  File \"/usr/local/bundle/gems/actionpack-8.1.1/lib/action_controller/metal/params_wrapper.rb\", line 259, in ActionController::ParamsWrapper#process_action\n  File \"/usr/local/bundle/gems/activerecord-8.1.1/lib/active_record/railties/controller_runtime.rb\", line 39, in ActiveRecord::Railties::ControllerRuntime#process_action\n  File \"/usr/local/bundle/gems/actionpack-8.1.1/lib/abstract_controller/base.rb\", line 154, in AbstractController::Base#process\n  File \"/usr/local/bundle/gems/actionview-8.1.1/lib/action_view/rendering.rb\", line 40, in ActionView::Rendering#process\n  File \"/usr/local/bundle/gems/actionpack-8.1.1/lib/action_controller/metal.rb\", line 252, in ActionController::Metal#dispatch\n  File \"/usr/local/bundle/gems/actionpack-8.1.1/lib/action_controller/metal.rb\", line 335, in ActionController::Metal.dispatch\n  File \"/usr/local/bundle/gems/actionpack-8.1.1/lib/action_dispatch/routing/route_set.rb\", line 65, in ActionDispatch::Routing::RouteSet::Dispatcher#dispatch\n  File \"/usr/local/bundle/gems/actionpack-8.1.1/lib/action_dispatch/routing/route_set.rb\", line 50, in ActionDispatch::Routing::RouteSet::Dispatcher#serve\n  File \"/usr/local/bundle/gems/actionpack-8.1.1/lib/action_dispatch/journey/router.rb\", line 35, in block in ActionDispatch::Journey::Router#serve\n  File \"/usr/local/bundle/gems/actionpack-8.1.1/lib/action_dispatch/journey/router.rb\", line 86, in block in ActionDispatch::Journey::Router#recognize\n  File \"/usr/local/bundle/gems/actionpack-8.1.1/lib/action_dispatch/journey/router.rb\", line 66, in Array#each\n  File \"/usr/local/bundle/gems/actionpack-8.1.1/lib/action_dispatch/journey/router.rb\", line 66, in ActionDispatch::Journey::Router#recognize\n  File \"/usr/local/bundle/gems/actionpack-8.1.1/lib/action_dispatch/journey/router.rb\", line 31, in ActionDispatch::Journey::Router#serve\n  File \"/usr/local/bundle/gems/actionpack-8.1.1/lib/action_dispatch/routing/route_set.rb\", line 906, in ActionDispatch::Routing::RouteSet#call\n  File \"/usr/local/bundle/gems/omniauth-2.1.4/lib/omniauth/strategy.rb\", line 202, in OmniAuth::Strategy#call!\n  File \"/usr/local/bundle/gems/omniauth-2.1.4/lib/omniauth/strategy.rb\", line 169, in OmniAuth::Strategy#call\n  File \"/usr/local/bundle/gems/omniauth-2.1.4/lib/omniauth/strategy.rb\", line 202, in OmniAuth::Strategy#call!\n  File \"/usr/local/bundle/gems/omniauth-2.1.4/lib/omniauth/strategy.rb\", line 169, in OmniAuth::Strategy#call\n  File \"/usr/local/bundle/gems/omniauth-2.1.4/lib/omniauth/builder.rb\", line 48, in OmniAuth::Builder#call\n  File \"/usr/local/bundle/gems/rack-3.2.5/lib/rack/tempfile_reaper.rb\", line 20, in Rack::TempfileReaper#call\n  File \"/usr/local/bundle/gems/rack-3.2.5/lib/rack/etag.rb\", line 29, in Rack::ETag#cal",
+        "url": "https://github.com/fjordllc/bootcamp/issues/10282"
+    },
+    {
+        "id": 4836200350,
+        "number": 10278,
+        "title": "AIへに渡すプロンプトをそれぞれの提出物毎に設定できるにしたい。",
+        "state": "open",
+        "created_at": "2026-07-08T09:34:36Z",
+        "updated_at": "2026-07-08T09:34:59Z",
+        "closed_at": null,
+        "author": "machida",
+        "comments": 0,
+        "labels": [],
+        "assignees": [
+            "komagata"
+        ],
+        "locked": false,
+        "body": "それぞれの提出物毎に、気を付けること、重点的にチェックするポイント、許容範囲、アドバイス方法などを細かく指定したい。そのために、AIへに渡すプロンプトをそれぞれの提出物毎に設定できるにしたい。\n\nプラクティスの編集画面にプロンプト的な textarea（Markdown）を追加し、そこをAIが読むようにしたい。",
+        "url": "https://github.com/fjordllc/bootcamp/issues/10278"
+    },
+    {
+        "id": 4833543150,
+        "number": 10275,
+        "title": "CodeRabbitのテスト追加ルールを実装コード変更時に発火するようにする",
+        "state": "open",
+        "created_at": "2026-07-08T01:33:22Z",
+        "updated_at": "2026-07-08T01:33:22Z",
+        "closed_at": null,
+        "author": "yokomaru",
+        "comments": 0,
+        "labels": [
+            "雑事"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "## 概要\n-  現状の`.coderabbit.yaml`はユニットテストの追加を促すルール(`# Unit Test`以下)が`test/**/*`に設定されている\n\nhttps://github.com/fjordllc/bootcamp/blob/babdc123bc9d229d96ca1504b30676ca447cbc24/.coderabbit.yaml#L21-L28\n\n- `path_instructions`は対象パスに一致するファイルをレビューするときに適用されるため、`app/models`や`app/helpers`のみを変更した場合、対応するテストの追加を促すレビューが発火しない可能性がある\n\n## Issue化した理由\n- Bootcampアプリの`.coderabbit.yaml`を参考に自作サービスリポジトリにCodeRabbitの設定を追加したところCodeRabbitから以下指摘を受けたため念のためIssueとして起票しました(RSpecを使っているのでspec配下になっています)\n\n<img width=\"1142\" height=\"566\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/4c5cb4ce-e87b-4a83-9426-40179d86bf95\" />\n\n- 意図してこの設定にしている or 不要な場合はクローズお願いします🙏\n\n## 修正方法\n- `test/**/*`に置いている`#Unit Test`の`メソッドを追加した場合は必ず対応したUnit TestのTestCaseを1つは書く。`というルール(instructions)を`app/models/**/*.rb`、`app/helpers/**/*.rb`などのpathごとに置き直す\n",
+        "url": "https://github.com/fjordllc/bootcamp/issues/10275"
+    },
+    {
+        "id": 4832008507,
+        "number": 10274,
+        "title": "メンター、管理者でログインしてるときは、給付金コースのプラクティスからオリジナルのプラクティスへのリンクを表示したい",
+        "state": "open",
+        "created_at": "2026-07-07T20:31:04Z",
+        "updated_at": "2026-07-08T09:42:28Z",
+        "closed_at": null,
+        "author": "machida",
+        "comments": 0,
+        "labels": [
+            "1"
+        ],
+        "assignees": [
+            "oyamairishitomi"
+        ],
+        "locked": false,
+        "body": "メンター、管理者でログインしてるときは、\n\n- 給付金コースのプラクティスからオリジナルのプラクティスへのリンクを表示したい。\n- 逆に、今いるプラクティスがコピー持っている場合、コピーへのリンクを表示したい。\n\n理由\n\n- 内容を見比べたりする機会が結構あるので、行き来しやすくしたい。\n- そのプラクティスはコピーを持っていることを知っておきたい。\n- それぞれリンクを置いておいてくれれば machidaがデザインします。\n\n---\n\n以下参考です。\n\n参考ドキュメント\n[給付金コースの人が元コースの関連情報を見れるようにする](https://github.com/fjordllc/bootcamp/wiki/%E7%B5%A6%E4%BB%98%E9%87%91%E3%82%B3%E3%83%BC%E3%82%B9%E3%81%AE%E4%BA%BA%E3%81%8C%E5%85%83%E3%82%B3%E3%83%BC%E3%82%B9%E3%81%AE%E9%96%A2%E9%80%A3%E6%83%85%E5%A0%B1%E3%82%92%E8%A6%8B%E3%82%8C%E3%82%8B%E3%82%88%E3%81%86%E3%81%AB%E3%81%99%E3%82%8B)\n↑\nこれは給付金コースの人向けですが、今回のIssueはメンター向けです。メンターも給付金コースのプラクティスと元のプラクティスを両方行き来しやすくしたい、という要望です。\n\n似たようなIssue。これを見れば元のプラクティスへのリンクはどれかなどがわかるかもです。\nhttps://github.com/fjordllc/bootcamp/issues/9292\n",
+        "url": "https://github.com/fjordllc/bootcamp/issues/10274"
+    },
+    {
+        "id": 4831877635,
+        "number": 10273,
+        "title": "FJORD STANDのリンクがフッターに欲しい",
+        "state": "open",
+        "created_at": "2026-07-07T20:10:28Z",
+        "updated_at": "2026-07-07T20:11:38Z",
+        "closed_at": null,
+        "author": "machida",
+        "comments": 0,
+        "labels": [
+            "1",
+            "good first issue"
+        ],
+        "assignees": [
+            "oyamairishitomi"
+        ],
+        "locked": false,
+        "body": "ログイン後の画面のフッターにFJORD STANDのリンクがフッターに欲しい。\n\nURL\nhttps://fjordstand.com\n\nアンカーテキスト\nFJORD STAND\n\nアドベントカレンダーの前に配置してください。\n近々フッターのリンクのデザインは別Issueで整えます。",
+        "url": "https://github.com/fjordllc/bootcamp/issues/10273"
+    },
+    {
+        "id": 4828792251,
+        "number": 10267,
+        "title": "1つの提出物に複数のCheckを作成できないようにする",
+        "state": "closed",
+        "created_at": "2026-07-07T13:06:38Z",
+        "updated_at": "2026-07-07T16:20:26Z",
+        "closed_at": "2026-07-07T16:20:26Z",
+        "author": "komagata",
+        "comments": 0,
+        "labels": [
+            "バグ"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "## 概要\n\n`checks` は本来的には、ユーザーが異なっても1つの提出物（checkable）に対して1件だけ存在できるべきです。\n\n現在は `Check` モデルとDBの一意制約が `user_id, checkable_id, checkable_type` の組み合わせになっているため、同じ提出物に対して別ユーザーの `Check` が複数作成できてしまいます。\n\n## 期待される振る舞い\n\n- 同じ `checkable_id` / `checkable_type` に対する `Check` は1件だけ作成できる\n- ユーザーが異なっても、既にOK済みの提出物には追加の `Check` を作成できない\n- DBのunique indexでもこの制約が保証される\n\n追記: 既に1つの提出物に複数の `Check` が存在する場合は、古いほう（最も `created_at` が古いもの）を有効な `Check` として残し、それ以外を削除する処理を data-migrate として実装する。\n\n## 受け入れ条件\n\n- `checks` に `checkable_id, checkable_type` の一意制約が追加されている\n- `Check` モデルのvalidationがDB制約と整合している\n- 既存データに同一checkableの重複Checkがある場合の扱いが整理されている\n- 同じ提出物に別ユーザーで2件目のCheckを作成できないテストがある\n\n## 関連コード\n\n- `app/models/check.rb`: 現在は `user_id` scoped validationになっている\n- `db/schema.rb`: 現在は `user_id, checkable_id, checkable_type` のunique indexになっている\n- `db/migrate/20181002051214_change_checkable_index.rb`: 現在のunique indexを追加したmigration\n\n## 関連PR\n\nRef: #10266\n",
+        "url": "https://github.com/fjordllc/bootcamp/issues/10267"
+    },
+    {
+        "id": 4825483166,
+        "number": 10263,
+        "title": "ピヨルドがbootcampにアップした画像を見れるようにする",
+        "state": "open",
+        "created_at": "2026-07-07T05:19:08Z",
+        "updated_at": "2026-07-07T05:19:35Z",
+        "closed_at": null,
+        "author": "komagata",
+        "comments": 0,
+        "labels": [
+            "新機能",
+            "2"
+        ],
+        "assignees": [
+            "komagata"
+        ],
+        "locked": false,
+        "body": null,
+        "url": "https://github.com/fjordllc/bootcamp/issues/10263"
+    },
+    {
+        "id": 4825479789,
+        "number": 10262,
+        "title": "ピヨルドがなるべくメンターを巻き込むようにする",
+        "state": "open",
+        "created_at": "2026-07-07T05:18:26Z",
+        "updated_at": "2026-07-07T05:18:26Z",
+        "closed_at": null,
+        "author": "komagata",
+        "comments": 0,
+        "labels": [
+            "新機能"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": null,
+        "url": "https://github.com/fjordllc/bootcamp/issues/10262"
+    },
+    {
+        "id": 4825477458,
+        "number": 10261,
+        "title": "ピヨルドが簡単な提出物にはOKを出してもいいようにする",
+        "state": "open",
+        "created_at": "2026-07-07T05:17:58Z",
+        "updated_at": "2026-07-07T17:02:23Z",
+        "closed_at": null,
+        "author": "komagata",
+        "comments": 0,
+        "labels": [
+            "新機能"
+        ],
+        "assignees": [
+            "komagata"
+        ],
+        "locked": false,
+        "body": "プラクティスにピヨルドが提出物OKを出しても良いフラグを追加する。\nそのフラグがONの場合は、提出物をチェックしてどう見てもOKな内容だったらコメントしたうえで、提出物OKとする。\n\n提出物をOKにするAPIがなかったら作る。",
+        "url": "https://github.com/fjordllc/bootcamp/issues/10261"
+    },
+    {
+        "id": 4813343834,
+        "number": 10260,
+        "title": "「BookRin」のリンク先がNS_ERROR_UNKNOWN_HOST",
+        "state": "open",
+        "created_at": "2026-07-05T15:11:41Z",
+        "updated_at": "2026-07-07T20:18:12Z",
+        "closed_at": null,
+        "author": "shibainurou",
+        "comments": 1,
+        "labels": [
+            "バグ"
+        ],
+        "assignees": [
+            "oyamairishitomi"
+        ],
+        "locked": false,
+        "body": "## 概要\n\nフッターのリンク集のうちの1つである「BookRin」へのリンクをクリックすると「NS_ERROR_UNKNOWN_HOST」になる。\n<img width=\"751\" height=\"91\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/96c8f80d-b717-4973-9e7f-754d260b285b\" />\n\n## 期待される振る舞い\n\nアドレスが変わったのであれば変更し、サービスが終了したのであればリンクから削除する。\n",
+        "url": "https://github.com/fjordllc/bootcamp/issues/10260"
+    },
+    {
+        "id": 4801191680,
+        "number": 10256,
+        "title": "ペアワークの画面でアイコンが表示されない",
+        "state": "open",
+        "created_at": "2026-07-03T07:05:54Z",
+        "updated_at": "2026-07-03T07:06:09Z",
+        "closed_at": null,
+        "author": "komagata",
+        "comments": 0,
+        "labels": [
+            "バグ",
+            "1"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "<img width=\"807\" height=\"485\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/d24fb95b-d80b-4c07-ace0-fcf79d0f4174\" />",
+        "url": "https://github.com/fjordllc/bootcamp/issues/10256"
+    },
+    {
+        "id": 4800289192,
+        "number": 10255,
+        "title": "buzzesのページが500エラー",
+        "state": "closed",
+        "created_at": "2026-07-03T04:10:51Z",
+        "updated_at": "2026-07-07T16:31:05Z",
+        "closed_at": "2026-07-07T16:31:05Z",
+        "author": "komagata",
+        "comments": 1,
+        "labels": [
+            "バグ"
+        ],
+        "assignees": [
+            "komagata"
+        ],
+        "locked": false,
+        "body": "View details in Rollbar: [https://app.rollbar.com/a/komagata/fix/item/Bootcamp/2305](https://app.rollbar.com/a/komagata/fix/item/Bootcamp/2305)\n\nActionView::Template::Error: No route matches {action: \"buzzes\", controller: \"welcome\", year: 202672}, possible unmatched constraints: [:year]\n\n```\n\nActionController::UrlGenerationError: No route matches {action: \"buzzes\", controller: \"welcome\", year: 202672}, possible unmatched constraints: [:year]\n  File \"/usr/local/bundle/gems/actionpack-8.1.1/lib/action_dispatch/journey/formatter.rb\", line 46, in ActionDispatch::Journey::Formatter::MissingRoute#path\n  File \"/usr/local/bundle/gems/actionpack-8.1.1/lib/action_dispatch/routing/route_set.rb\", line 878, in ActionDispatch::Routing::RouteSet#url_for\n  File \"/usr/local/bundle/gems/actionpack-8.1.1/lib/action_dispatch/routing/route_set.rb\", line 287, in ActionDispatch::Routing::RouteSet::NamedRouteCollection::UrlHelper#call\n  File \"/usr/local/bundle/gems/actionpack-8.1.1/lib/action_dispatch/routing/route_set.rb\", line 343, in block in define_url_helper\n  File \"/app/app/views/welcome/_buzz_pc_filter.html.slim\", line 7, in block in _app_views_welcome__buzz_pc_filter_html_slim___4213614336006307358_460392\n  File \"/app/app/views/welcome/_buzz_pc_filter.html.slim\", line 5, in Array#reverse_each\n  File \"/app/app/views/welcome/_buzz_pc_filter.html.slim\", line 5, in _app_views_welcome__buzz_pc_filter_html_slim___4213614336006307358_460392\n  File \"/usr/local/bundle/gems/actionview-8.1.1/lib/action_view/base.rb\", line 281, in Kernel#public_send\n  File \"/usr/local/bundle/gems/actionview-8.1.1/lib/action_view/base.rb\", line 281, in ActionView::Base#_run\n  File \"/usr/local/bundle/gems/actionview-8.1.1/lib/action_view/template.rb\", line 284, in block in ActionView::Template#render\n  File \"/usr/local/bundle/gems/activesupport-8.1.1/lib/active_support/notifications.rb\", line 212, in ActiveSupport::Notifications.instrument\n  File \"/usr/local/bundle/gems/actionview-8.1.1/lib/action_view/template.rb\", line 583, in ActionView::Template#instrument_render_template\n  File \"/usr/local/bundle/gems/actionview-8.1.1/lib/action_view/template.rb\", line 272, in ActionView::Template#render\n  File \"/usr/local/bundle/gems/actionview-8.1.1/lib/action_view/renderer/partial_renderer.rb\", line 268, in block in ActionView::PartialRenderer#render_partial_template\n  File \"/usr/local/bundle/gems/activesupport-8.1.1/lib/active_support/notifications.rb\", line 212, in ActiveSupport::Notifications.instrument\n  File \"/usr/local/bundle/gems/actionview-8.1.1/lib/action_view/renderer/partial_renderer.rb\", line 262, in ActionView::PartialRenderer#render_partial_template\n  File \"/usr/local/bundle/gems/actionview-8.1.1/lib/action_view/renderer/partial_renderer.rb\", line 253, in ActionView::PartialRenderer#render\n  File \"/usr/local/bundle/gems/actionview-8.1.1/lib/action_view/renderer/renderer.rb\", line 78, in ActionView::Renderer#render_partial_to_object\n  File \"/usr/local/bundle/gems/actionview-8.1.1/lib/action_view/renderer/renderer.rb\", line 29, in ActionView::Renderer#render_to_object\n  File \"/usr/local/bundle/gems/actionview-8.1.1/lib/action_view/renderer/renderer.rb\", line 24, in ActionView::Renderer#render\n  File \"/usr/local/bundle/gems/actionview-8.1.1/lib/action_view/helpers/rendering_helper.rb\", line 145, in block in ActionView::Helpers::RenderingHelper#render\n  File \"/usr/local/bundle/gems/actionview-8.1.1/lib/action_view/base.rb\", line 308, in ActionView::Base#in_rendering_context\n  File \"/usr/local/bundle/gems/actionview-8.1.1/lib/action_view/helpers/rendering_helper.rb\", line 141, in ActionView::Helpers::RenderingHelper#render\n  File \"/app/app/views/welcome/buzzes.html.slim\", line 35, in _app_views_welcome_buzzes_html_slim___4543948020870416044_460376\n  File \"/usr/local/bundle/gems/actionview-8.1.1/lib/action_view/base.rb\", line 281, in Kernel#public_send\n  File \"/usr/local/bundle/gems/actionview-8.1.1/lib/action_view/base.rb\", line 281, in ActionView::Base#_run\n  File \"/usr/local/bundle/gems/actionview-8.1.1/lib/action_view/template.rb\", line 284, in block in ActionView::Template#render\n  File \"/usr/local/bundle/gems/activesupport-8.1.1/lib/active_support/notifications.rb\", line 212, in ActiveSupport::Notifications.instrument\n  File \"/usr/local/bundle/gems/actionview-8.1.1/lib/action_view/template.rb\", line 583, in ActionView::Template#instrument_render_template\n  File \"/usr/local/bundle/gems/actionview-8.1.1/lib/action_view/template.rb\", line 272, in ActionView::Template#render\n  File \"/usr/local/bundle/gems/actionview-8.1.1/lib/action_view/renderer/template_renderer.rb\", line 66, in block (2 levels) in ActionView::TemplateRenderer#render_template\n  File \"/usr/local/bundle/gems/activesupport-8.1.1/lib/active_support/notifications.rb\", line 210, in block in ActiveSupport::Notifications.instrument\n  File \"/usr/local/bundle/gems/activesupport-8.1.1/lib/active_support/notifications/instrumenter.rb\", line 58, in ActiveSupport::Notifications::Instrumenter#instrument\n  File \"/usr/local/bundle/gems/activesupport-8.1.1/lib/active_support/notifications.rb\", line 210, in ActiveSupport::Notifications.instrument\n  File \"/usr/local/bundle/gems/actionview-8.1.1/lib/action_view/renderer/template_renderer.rb\", line 60, in block in ActionView::TemplateRenderer#render_template\n  File \"/usr/local/bundle/gems/actionview-8.1.1/lib/action_view/renderer/template_renderer.rb\", line 76, in block in ActionView::TemplateRenderer#render_with_layout\n  File \"/usr/local/bundle/gems/activesupport-8.1.1/lib/active_support/notifications.rb\", line 210, in block in ActiveSupport::Notifications.instrument\n  File \"/usr/local/bundle/gems/activesupport-8.1.1/lib/active_support/notifications/instrumenter.rb\", line 58, in ActiveSupport::Notifications::Instrumenter#instrument\n  File \"/usr/local/bundle/gems/activesupport-8.1.1/lib/active_support/notifications.rb\", line 210, in ActiveSupport::Notifications.instrument\n  File \"/usr/local/bundle/gems/actionview-8.1.1/lib/action_view/renderer/template_renderer.rb\", line 75, in ActionView::TemplateRenderer#render_with_layout\n  File \"/usr/local/bundle/gems/actionview-8.1.1/lib/action_view/renderer/template_renderer.rb\", line 59, in ActionView::TemplateRenderer#render_template\n  File \"/usr/local/bundle/gems/actionview-8.1.1/lib/action_view/renderer/template_renderer.rb\", line 11, in ActionView::TemplateRenderer#render\n  File \"/usr/local/bundle/gems/actionview-8.1.1/lib/action_view/renderer/renderer.rb\", line 58, in ActionView::Renderer#render_template_to_object\n  File \"/usr/local/bundle/gems/actionview-8.1.1/lib/action_view/renderer/renderer.rb\", line 31, in ActionView::Renderer#render_to_object\n  File \"/usr/local/bundle/gems/actionview-8.1.1/lib/action_view/rendering.rb\", line 136, in block in ActionView::Rendering#_render_template\n  File \"/usr/local/bundle/gems/actionview-8.1.1/lib/action_view/base.rb\", line 308, in ActionView::Base#in_rendering_context\n  File \"/usr/local/bundle/gems/actionview-8.1.1/lib/action_view/rendering.rb\", line 135, in ActionView::Rendering#_render_template\n  File \"/usr/local/bundle/gems/actionpack-8.1.1/lib/action_controller/metal/",
+        "url": "https://github.com/fjordllc/bootcamp/issues/10255"
+    },
+    {
+        "id": 4798218289,
+        "number": 10254,
+        "title": "日報作成画面に「直近の日報を複製」ボタンが欲しい",
+        "state": "open",
+        "created_at": "2026-07-02T21:12:01Z",
+        "updated_at": "2026-07-05T02:13:29Z",
+        "closed_at": null,
+        "author": "shibainurou",
+        "comments": 2,
+        "labels": [
+            "新機能",
+            "2"
+        ],
+        "assignees": [
+            "shibainurou"
+        ],
+        "locked": false,
+        "body": "## 機能の説明\n\n日報作成画面に「直近の日報を複製」ボタンをつける。\nクリックすると一番最近書いた日報の複製を画面に表示する。\n\n<img width=\"752\" height=\"238\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/8b13a4a0-757c-4c59-8a93-b2ed041f031e\" />\n\n## 何故この機能が必要なのか\n毎回一番最近の日報を開きその画面の複製ボタンをクリックしているが、日報の作成から複製ができると便利なので。",
+        "url": "https://github.com/fjordllc/bootcamp/issues/10254"
+    },
+    {
+        "id": 4794208880,
+        "number": 10253,
+        "title": "ユーザー情報変更画面でアイコンが表示されない",
+        "state": "open",
+        "created_at": "2026-07-02T12:06:08Z",
+        "updated_at": "2026-07-02T12:06:22Z",
+        "closed_at": null,
+        "author": "komagata",
+        "comments": 0,
+        "labels": [
+            "バグ",
+            "1"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "<img width=\"618\" height=\"473\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/c3f2d9e3-1d13-49e5-bc5c-a11530ad8228\" />",
+        "url": "https://github.com/fjordllc/bootcamp/issues/10253"
+    },
+    {
+        "id": 4781351379,
+        "number": 10250,
+        "title": "ActiveRecord::RecordInvalid: バリデーションに失敗しました: Emailは不正な値です",
+        "state": "open",
+        "created_at": "2026-07-01T00:29:39Z",
+        "updated_at": "2026-07-01T00:29:39Z",
+        "closed_at": null,
+        "author": "komagata",
+        "comments": 0,
+        "labels": [
+            "バグ"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "View details in Rollbar: [https://app.rollbar.com/a/komagata/fix/item/Bootcamp/2304](https://app.rollbar.com/a/komagata/fix/item/Bootcamp/2304)\n\n```\n\nActiveRecord::RecordInvalid: バリデーションに失敗しました: Emailは不正な値です\n  File \"/usr/local/bundle/gems/activerecord-8.1.1/lib/active_record/validations.rb\", line 87, in ActiveRecord::Validations#raise_validation_error\n  File \"/usr/local/bundle/gems/activerecord-8.1.1/lib/active_record/validations.rb\", line 54, in ActiveRecord::Validations#save!\n  File \"/usr/local/bundle/gems/activerecord-8.1.1/lib/active_record/transactions.rb\", line 385, in block in ActiveRecord::Transactions#save!\n  File \"/usr/local/bundle/gems/activerecord-8.1.1/lib/active_record/transactions.rb\", line 438, in block (3 levels) in ActiveRecord::Transactions#with_transaction_returning_status\n  File \"/usr/local/bundle/gems/activerecord-8.1.1/lib/active_record/connection_adapters/abstract/database_statements.rb\", line 376, in ActiveRecord::ConnectionAdapters::DatabaseStatements#transaction\n  File \"/usr/local/bundle/gems/activerecord-8.1.1/lib/active_record/transactions.rb\", line 434, in block (2 levels) in ActiveRecord::Transactions#with_transaction_returning_status\n  File \"/usr/local/bundle/gems/activerecord-8.1.1/lib/active_record/connection_adapters/abstract/connection_pool.rb\", line 485, in ActiveRecord::ConnectionAdapters::ConnectionPool#with_pool_transaction_isolation_level\n  File \"/usr/local/bundle/gems/activerecord-8.1.1/lib/active_record/transactions.rb\", line 430, in block in ActiveRecord::Transactions#with_transaction_returning_status\n  File \"/usr/local/bundle/gems/activerecord-8.1.1/lib/active_record/connection_adapters/abstract/connection_pool.rb\", line 457, in ActiveRecord::ConnectionAdapters::ConnectionPool#with_connection\n  File \"/usr/local/bundle/gems/activerecord-8.1.1/lib/active_record/connection_handling.rb\", line 313, in ActiveRecord::ConnectionHandling#with_connection\n  File \"/usr/local/bundle/gems/activerecord-8.1.1/lib/active_record/transactions.rb\", line 429, in ActiveRecord::Transactions#with_transaction_returning_status\n  File \"/usr/local/bundle/gems/activerecord-8.1.1/lib/active_record/transactions.rb\", line 385, in ActiveRecord::Transactions#save!\n  File \"/usr/local/bundle/gems/activerecord-8.1.1/lib/active_record/suppressor.rb\", line 56, in ActiveRecord::Suppressor#save!\n  File \"/usr/local/bundle/gems/activerecord-8.1.1/lib/active_record/persistence.rb\", line 580, in block in ActiveRecord::Persistence#update!\n  File \"/usr/local/bundle/gems/activerecord-8.1.1/lib/active_record/transactions.rb\", line 438, in block (3 levels) in ActiveRecord::Transactions#with_transaction_returning_status\n  File \"/usr/local/bundle/gems/activerecord-8.1.1/lib/active_record/connection_adapters/abstract/transaction.rb\", line 648, in block in ActiveRecord::ConnectionAdapters::TransactionManager#within_new_transaction\n  File \"/usr/local/bundle/gems/activesupport-8.1.1/lib/active_support/concurrency/null_lock.rb\", line 9, in ActiveSupport::Concurrency::NullLock#synchronize\n  File \"/usr/local/bundle/gems/activerecord-8.1.1/lib/active_record/connection_adapters/abstract/transaction.rb\", line 645, in ActiveRecord::ConnectionAdapters::TransactionManager#within_new_transaction\n  File \"/usr/local/bundle/gems/activerecord-8.1.1/lib/active_record/connection_adapters/abstract/database_statements.rb\", line 386, in ActiveRecord::ConnectionAdapters::DatabaseStatements#within_new_transaction\n  File \"/usr/local/bundle/gems/activerecord-8.1.1/lib/active_record/connection_adapters/abstract/database_statements.rb\", line 378, in ActiveRecord::ConnectionAdapters::DatabaseStatements#transaction\n  File \"/usr/local/bundle/gems/activerecord-8.1.1/lib/active_record/transactions.rb\", line 434, in block (2 levels) in ActiveRecord::Transactions#with_transaction_returning_status\n  File \"/usr/local/bundle/gems/activerecord-8.1.1/lib/active_record/connection_adapters/abstract/connection_pool.rb\", line 485, in ActiveRecord::ConnectionAdapters::ConnectionPool#with_pool_transaction_isolation_level\n  File \"/usr/local/bundle/gems/activerecord-8.1.1/lib/active_record/transactions.rb\", line 430, in block in ActiveRecord::Transactions#with_transaction_returning_status\n  File \"/usr/local/bundle/gems/activerecord-8.1.1/lib/active_record/connection_adapters/abstract/connection_pool.rb\", line 463, in ActiveRecord::ConnectionAdapters::ConnectionPool#with_connection\n  File \"/usr/local/bundle/gems/activerecord-8.1.1/lib/active_record/connection_handling.rb\", line 313, in ActiveRecord::ConnectionHandling#with_connection\n  File \"/usr/local/bundle/gems/activerecord-8.1.1/lib/active_record/transactions.rb\", line 429, in ActiveRecord::Transactions#with_transaction_returning_status\n  File \"/usr/local/bundle/gems/activerecord-8.1.1/lib/active_record/persistence.rb\", line 578, in ActiveRecord::Persistence#update!\n  File \"/app/app/controllers/users_controller.rb\", line 90, in UsersController#toggle_show_study_streak\n  File \"/usr/local/bundle/gems/actionpack-8.1.1/lib/action_controller/metal/basic_implicit_render.rb\", line 8, in ActionController::BasicImplicitRender#send_action\n  File \"/usr/local/bundle/gems/actionpack-8.1.1/lib/abstract_controller/base.rb\", line 221, in AbstractController::Base#process_action\n  File \"/usr/local/bundle/gems/actionpack-8.1.1/lib/action_controller/metal/rendering.rb\", line 199, in ActionController::Rendering#process_action\n  File \"/usr/local/bundle/gems/actionpack-8.1.1/lib/abstract_controller/callbacks.rb\", line 267, in block in AbstractController::Callbacks#process_action\n  File \"/usr/local/bundle/gems/activesupport-8.1.1/lib/active_support/callbacks.rb\", line 121, in block in ActiveSupport::Callbacks#run_callbacks\n  File \"/usr/local/bundle/gems/turbo-rails-2.0.20/lib/turbo-rails.rb\", line 24, in Turbo.with_request_id\n  File \"/usr/local/bundle/gems/turbo-rails-2.0.20/app/controllers/concerns/turbo/request_id_tracking.rb\", line 10, in Turbo::RequestIdTracking#turbo_tracking_request_id\n  File \"/usr/local/bundle/gems/activesupport-8.1.1/lib/active_support/callbacks.rb\", line 130, in block in ActiveSupport::Callbacks#run_callbacks\n  File \"/usr/local/bundle/gems/actiontext-8.1.1/lib/action_text/rendering.rb\", line 24, in ActionText::Rendering::ClassMethods#with_renderer\n  File \"/usr/local/bundle/gems/actiontext-8.1.1/lib/action_text/engine.rb\", line 72, in block (4 levels) in <class:Engine>\n  File \"/usr/local/bundle/gems/activesupport-8.1.1/lib/active_support/callbacks.rb\", line 130, in BasicObject#instance_exec\n  File \"/usr/local/bundle/gems/activesupport-8.1.1/lib/active_support/callbacks.rb\", line 130, in block in ActiveSupport::Callbacks#run_callbacks\n  File \"/usr/local/bundle/gems/active_decorator-1.5.1/lib/active_decorator/view_context.rb\", line 62, in block (3 levels) in <module:Filter>\n  File \"/usr/local/bundle/gems/active_decorator-1.5.1/lib/active_decorator/view_context.rb\", line 50, in ActiveDecorator::ViewContext.run_with\n  File \"/usr/local/bundle/gems/active_decorator-1.5.1/lib",
+        "url": "https://github.com/fjordllc/bootcamp/issues/10250"
+    },
+    {
+        "id": 4765139381,
+        "number": 10245,
+        "title": "管理者が研修終了日時を修正できるようにしたい",
+        "state": "closed",
+        "created_at": "2026-06-29T04:51:52Z",
+        "updated_at": "2026-06-30T22:54:22Z",
+        "closed_at": "2026-06-30T18:58:40Z",
+        "author": "komagata",
+        "comments": 3,
+        "labels": [
+            "新機能",
+            "2"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "管理者が研修終了日（これが入力されていると研修終了とみなされログインできない）を修正できるようにしたい。\n（現状はDBを直接いじるしかない）\n\n各ユーザーのユーザー情報変更画面で修正できるようにしたい。",
+        "url": "https://github.com/fjordllc/bootcamp/issues/10245"
+    },
+    {
+        "id": 4762122327,
+        "number": 10244,
+        "title": "ActionView::MissingTemplate: Missing template welcome/index with {locale: [:ja], formats: [:json], variants: [], handlers: [:raw, :erb, :html, :builder, :ruby, :jbuilder, :slim]}.\n\nSearched in:\n  * \"/app/app/views\"\n  * \"/usr/local/bundle/gems/view_compone",
+        "state": "open",
+        "created_at": "2026-06-28T11:48:59Z",
+        "updated_at": "2026-06-28T11:48:59Z",
+        "closed_at": null,
+        "author": "komagata",
+        "comments": 0,
+        "labels": [
+            "バグ"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "View details in Rollbar: [https://app.rollbar.com/a/komagata/fix/item/Bootcamp/2301](https://app.rollbar.com/a/komagata/fix/item/Bootcamp/2301)\n\n```\n\nActionView::MissingTemplate: Missing template welcome/index with {locale: [:ja], formats: [:json], variants: [], handlers: [:raw, :erb, :html, :builder, :ruby, :jbuilder, :slim]}.\n\nSearched in:\n  * \"/app/app/views\"\n  * \"/usr/local/bundle/gems/view_component-4.2.0/app/views\"\n  * \"/usr/local/bundle/gems/switchlet-0.3.1/app/views\"\n  * \"/usr/local/bundle/gems/mission_control-jobs-1.1.0/app/views\"\n  * \"/usr/local/bundle/gems/turbo-rails-2.0.20/app/views\"\n  * \"/usr/local/bundle/gems/kaminari-core-1.2.2/app/views\"\n  * \"/usr/local/bundle/gems/doorkeeper-5.8.2/app/views\"\n  * \"/usr/local/bundle/gems/any_login-1.7.0/app/views\"\n  * \"/usr/local/bundle/gems/actiontext-8.1.1/app/views\"\n  * \"/usr/local/bundle/gems/actionmailbox-8.1.1/app/views\"\n\n  File \"/usr/local/bundle/gems/actionview-8.1.1/lib/action_view/path_set.rb\", line 42, in ActionView::PathSet#find\n  File \"/usr/local/bundle/gems/actionview-8.1.1/lib/action_view/lookup_context.rb\", line 131, in ActionView::LookupContext::ViewPaths#find\n  File \"/usr/local/bundle/gems/actionview-8.1.1/lib/action_view/renderer/template_renderer.rb\", line 49, in ActionView::TemplateRenderer#determine_template\n  File \"/usr/local/bundle/gems/actionview-8.1.1/lib/action_view/renderer/template_renderer.rb\", line 7, in ActionView::TemplateRenderer#render\n  File \"/usr/local/bundle/gems/actionview-8.1.1/lib/action_view/renderer/renderer.rb\", line 58, in ActionView::Renderer#render_template_to_object\n  File \"/usr/local/bundle/gems/actionview-8.1.1/lib/action_view/renderer/renderer.rb\", line 31, in ActionView::Renderer#render_to_object\n  File \"/usr/local/bundle/gems/actionview-8.1.1/lib/action_view/rendering.rb\", line 136, in block in ActionView::Rendering#_render_template\n  File \"/usr/local/bundle/gems/actionview-8.1.1/lib/action_view/base.rb\", line 308, in ActionView::Base#in_rendering_context\n  File \"/usr/local/bundle/gems/actionview-8.1.1/lib/action_view/rendering.rb\", line 135, in ActionView::Rendering#_render_template\n  File \"/usr/local/bundle/gems/actionpack-8.1.1/lib/action_controller/metal/streaming.rb\", line 179, in ActionController::Streaming#_render_template\n  File \"/usr/local/bundle/gems/actionview-8.1.1/lib/action_view/rendering.rb\", line 122, in ActionView::Rendering#render_to_body\n  File \"/usr/local/bundle/gems/actionpack-8.1.1/lib/action_controller/metal/rendering.rb\", line 192, in ActionController::Rendering#render_to_body\n  File \"/usr/local/bundle/gems/actionpack-8.1.1/lib/action_controller/metal/renderers.rb\", line 155, in ActionController::Renderers#render_to_body\n  File \"/usr/local/bundle/gems/actionpack-8.1.1/lib/abstract_controller/rendering.rb\", line 28, in AbstractController::Rendering#render\n  File \"/usr/local/bundle/gems/actionpack-8.1.1/lib/action_controller/metal/rendering.rb\", line 173, in ActionController::Rendering#render\n  File \"/usr/local/bundle/gems/actionpack-8.1.1/lib/action_controller/metal/instrumentation.rb\", line 31, in block (2 levels) in ActionController::Instrumentation#render\n  File \"/usr/local/bundle/gems/activesupport-8.1.1/lib/active_support/benchmark.rb\", line 17, in ActiveSupport::Benchmark.realtime\n  File \"/usr/local/bundle/gems/actionpack-8.1.1/lib/action_controller/metal/instrumentation.rb\", line 31, in block in ActionController::Instrumentation#render\n  File \"/usr/local/bundle/gems/actionpack-8.1.1/lib/action_controller/metal/instrumentation.rb\", line 100, in ActionController::Instrumentation#cleanup_view_runtime\n  File \"/usr/local/bundle/gems/activerecord-8.1.1/lib/active_record/railties/controller_runtime.rb\", line 48, in ActiveRecord::Railties::ControllerRuntime#cleanup_view_runtime\n  File \"/usr/local/bundle/gems/actionpack-8.1.1/lib/action_controller/metal/instrumentation.rb\", line 30, in ActionController::Instrumentation#render\n  File \"/usr/local/bundle/gems/meta-tags-2.22.3/lib/meta_tags/controller_helper.rb\", line 22, in MetaTags::ControllerHelper#render\n  File \"/app/app/controllers/home_controller.rb\", line 18, in HomeController#index\n  File \"/usr/local/bundle/gems/actionpack-8.1.1/lib/action_controller/metal/basic_implicit_render.rb\", line 8, in ActionController::BasicImplicitRender#send_action\n  File \"/usr/local/bundle/gems/actionpack-8.1.1/lib/abstract_controller/base.rb\", line 221, in AbstractController::Base#process_action\n  File \"/usr/local/bundle/gems/actionpack-8.1.1/lib/action_controller/metal/rendering.rb\", line 199, in ActionController::Rendering#process_action\n  File \"/usr/local/bundle/gems/actionpack-8.1.1/lib/abstract_controller/callbacks.rb\", line 267, in block in AbstractController::Callbacks#process_action\n  File \"/usr/local/bundle/gems/activesupport-8.1.1/lib/active_support/callbacks.rb\", line 121, in block in ActiveSupport::Callbacks#run_callbacks\n  File \"/usr/local/bundle/gems/turbo-rails-2.0.20/lib/turbo-rails.rb\", line 24, in Turbo.with_request_id\n  File \"/usr/local/bundle/gems/turbo-rails-2.0.20/app/controllers/concerns/turbo/request_id_tracking.rb\", line 10, in Turbo::RequestIdTracking#turbo_tracking_request_id\n  File \"/usr/local/bundle/gems/activesupport-8.1.1/lib/active_support/callbacks.rb\", line 130, in block in ActiveSupport::Callbacks#run_callbacks\n  File \"/usr/local/bundle/gems/actiontext-8.1.1/lib/action_text/rendering.rb\", line 24, in ActionText::Rendering::ClassMethods#with_renderer\n  File \"/usr/local/bundle/gems/actiontext-8.1.1/lib/action_text/engine.rb\", line 72, in block (4 levels) in <class:Engine>\n  File \"/usr/local/bundle/gems/activesupport-8.1.1/lib/active_support/callbacks.rb\", line 130, in BasicObject#instance_exec\n  File \"/usr/local/bundle/gems/activesupport-8.1.1/lib/active_support/callbacks.rb\", line 130, in block in ActiveSupport::Callbacks#run_callbacks\n  File \"/usr/local/bundle/gems/active_decorator-1.5.1/lib/active_decorator/view_context.rb\", line 62, in block (3 levels) in <module:Filter>\n  File \"/usr/local/bundle/gems/active_decorator-1.5.1/lib/active_decorator/view_context.rb\", line 50, in ActiveDecorator::ViewContext.run_with\n  File \"/usr/local/bundle/gems/active_decorator-1.5.1/lib/active_decorator/view_context.rb\", line 61, in block (2 levels) in <module:Filter>\n  File \"/usr/local/bundle/gems/activesupport-8.1.1/lib/active_support/callbacks.rb\", line 130, in BasicObject#instance_exec\n  File \"/usr/local/bundle/gems/activesupport-8.1.1/lib/active_support/callbacks.rb\", line 130, in block in ActiveSupport::Callbacks#run_callbacks\n  File \"/usr/local/bundle/gems/activesupport-8.1.1/lib/active_support/callbacks.rb\", line 141, in ActiveSupport::Callbacks#run_callbacks\n  File \"/usr/local/bundle/gems/actionpack-8.1.1/lib/abstract_controller/callbacks.rb\", line 266, in AbstractController::Callbacks#process_action\n  File \"/usr/local/bundle/gems/actionpack-8.1.1/lib/action_controller/metal/rescue.rb\", line 36, in ActionController::Rescue#process_action\n  File \"/usr/local/bundle/gems/actionpack-8.1.1/l",
+        "url": "https://github.com/fjordllc/bootcamp/issues/10244"
+    },
+    {
+        "id": 4758866947,
+        "number": 10242,
+        "title": "Uncaught TypeError: Cannot read properties of undefined (reading 'length')",
+        "state": "open",
+        "created_at": "2026-06-27T15:21:51Z",
+        "updated_at": "2026-06-27T15:21:51Z",
+        "closed_at": null,
+        "author": "komagata",
+        "comments": 0,
+        "labels": [
+            "バグ"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "View details in Rollbar: [https://app.rollbar.com/a/komagata/fix/item/Bootcamp/2300](https://app.rollbar.com/a/komagata/fix/item/Bootcamp/2300)\n\n```\n\nTypeError: Cannot read properties of undefined (reading 'length')\n  File \"https://ga.jspm.io/npm:choices.js@11.2.3/public/assets/scripts/choices.mjs\", line 2, in e._onKeyDown\n```",
+        "url": "https://github.com/fjordllc/bootcamp/issues/10242"
+    },
+    {
+        "id": 4757031051,
+        "number": 10240,
+        "title": "プラクティスに理解度テスト機能を追加する",
+        "state": "open",
+        "created_at": "2026-06-27T06:01:26Z",
+        "updated_at": "2026-06-27T06:06:31Z",
+        "closed_at": null,
+        "author": "komagata",
+        "comments": 1,
+        "labels": [
+            "新機能"
+        ],
+        "assignees": [
+            "komagata"
+        ],
+        "locked": false,
+        "body": "## 機能の説明\n\nプラクティスごとに選択式の理解度テストを設定できるようにし、テストが設定されているプラクティスでは、テスト合格をプラクティス修了条件に含めたいです。\n\nMVP の回答形式は以下に絞ります。\n\n- 単一選択\n- 複数選択\n\nYES/NO は単一選択の2択問題として扱います。画像選択、自由記入、AI判定、並び替え、部分点、ランダム出題はこの Issue の対象外です。\n\n受講生側の挙動:\n\n- プラクティスに公開中のテストがない場合、現行どおり修了できる。\n- 公開中のテストがある場合、テストに合格するまでプラクティスを修了できない。\n- テストはプラクティスページから受験する。\n- 全問正解で合格とする。\n- 不合格の場合、正解と解説は表示しない。\n- 合格後は、正解・解説・合格済み状態を表示する。\n- テスト提出後は、合否に関係なく1時間再受験できない。\n- 再受験制限中は、次回受験可能時刻を表示する。\n- すでに合格済みの場合は再受験不要。完了条件は満たしたものとして扱う。\n\nプラクティス修了条件:\n\n- 提出物なしプラクティス\n  - テストなし: 現行どおり修了可能。\n  - テストあり: テスト合格後に修了可能。\n- 提出物ありプラクティス\n  - 提出物の合格とテスト合格の両方が必要。\n  - どちらかが未達なら `Learning.status = complete` にしない。\n\n管理者・メンター側では、プラクティス編集画面または専用管理画面から以下を管理できるようにします。\n\n- テストの公開/非公開\n- 問題文\n- 問題形式: 単一選択 / 複数選択\n- 選択肢\n- 正解選択肢\n- 解説\n- 並び順\n\n公開条件:\n\n- 公開中のテストには1問以上の公開問題が必要。\n- 各問題には2つ以上の選択肢が必要。\n- 単一選択は正解が1つだけ。\n- 複数選択は正解が1つ以上。\n- 正解が設定されていない問題は公開できない。\n\n## 何故この機能が必要なのか\n\nプラクティスを完了する前に、そのプラクティスの内容を最低限理解できているかを機械的に確認できるようにするためです。\n\n現状は修了操作自体を受講生が行えるため、理解が曖昧なまま先に進めてしまう場合があります。選択式の理解度テストを完了条件に含めることで、受講生に復習のきっかけを作り、メンターの確認負荷も増やさずに最低限の理解確認を行えるようにします。\n\nまた、総当たりで適当に回答されることを避けるため、一度テストに臨んだら次の受験まで1時間空ける仕様にします。\n\n## 実装方針案\n\n既存の `coding_tests` はコード実行系のテストなので、理解度確認用に別モデルとして実装します。\n\nデータ設計案:\n\n- `practice_quizzes`\n  - `practice_id`\n  - `published`\n  - `created_at`\n  - `updated_at`\n- `practice_quiz_questions`\n  - `practice_quiz_id`\n  - `question_type`: `single_choice`, `multiple_choice`\n  - `body`\n  - `explanation`\n  - `position`\n  - `published`\n  - `created_at`\n  - `updated_at`\n- `practice_quiz_choices`\n  - `practice_quiz_question_id`\n  - `body`\n  - `correct`\n  - `position`\n  - `created_at`\n  - `updated_at`\n- `practice_quiz_attempts`\n  - `practice_quiz_id`\n  - `user_id`\n  - `submitted_at`\n  - `passed`\n  - `created_at`\n  - `updated_at`\n- `practice_quiz_answers`\n  - `practice_quiz_attempt_id`\n  - `practice_quiz_question_id`\n  - `practice_quiz_choice_id`\n  - `correct`\n  - `created_at`\n  - `updated_at`\n\n複数選択は、1つの問題に対して複数の `practice_quiz_answers` を作ります。\n\n判定ルール:\n\n- 単一選択: 選んだ選択肢が唯一の正解なら正解。\n- 複数選択: 選んだ選択肢の集合が、正解選択肢の集合と完全一致したら正解。\n- 未回答が1つでもあれば不合格。\n- 全問題が正解なら `practice_quiz_attempts.passed = true`。\n- 1問でも不正解なら `practice_quiz_attempts.passed = false`。\n\n再受験制限:\n\n- 最新の `practice_quiz_attempts.submitted_at` が1時間以内なら受験不可。\n- 合格済みの場合は制限を見ずに「合格済み」とする。\n- 制限はプラクティス単位。別プラクティスのテストには影響しない。\n\n完了制御:\n\n- 受験画面では正解情報を返さない。\n- 提出時にサーバー側で採点する。\n- `API::Practices::LearningController#update` 側でも、テスト未合格なら `complete` への更新を拒否する。\n- UI 側だけでなくサーバー側で完了制御する。\n\n## 受け入れ条件\n\n- テスト未設定のプラクティスは、既存仕様どおり修了できる。\n- テスト設定済みのプラクティスは、未合格の状態では修了できない。\n- 単一選択問題を全問正解すると合格になる。\n- 複数選択問題は、正解集合と回答集合が完全一致した場合だけ正解になる。\n- 未回答がある場合は不合格になる。\n- 不合格後、1時間以内は再受験できない。\n- 1時間経過後は再受験できる。\n- 合格済みならプラクティスを修了できる。\n- 提出物ありプラクティスでは、提出物合格とテスト合格の両方がそろうまで修了できない。\n- 不合格時には正解・解説を表示しない。\n- 合格後には正解・解説を表示する。\n- 管理者/メンターは問題・選択肢・正解・解説を作成編集できる。\n- 公開条件を満たさないテストや問題は公開できない。\n- 完了制御は UI だけでなくサーバー側でも行われる。\n\n## 関連コード\n\n- `app/models/practice.rb`: プラクティスと `Learning`、`coding_tests` の関連がある。\n- `app/models/learning.rb`: プラクティスの進捗状態を `unstarted`, `started`, `submitted`, `complete` で管理している。\n- `app/controllers/api/practices/learning_controller.rb`: プラクティス修了状態の更新口。テスト未合格時の `complete` 拒否が必要。\n- `app/models/product.rb`: 提出物の状態変更時に `Learning` を更新している。\n- `app/models/learning_status_updater.rb`: 提出物チェック後の `Learning.status` 更新に関係する。\n- `app/views/practices/show.html.slim`: プラクティスページ上の受験導線・合格状態表示を追加する候補。\n",
+        "url": "https://github.com/fjordllc/bootcamp/issues/10240"
+    }
+]

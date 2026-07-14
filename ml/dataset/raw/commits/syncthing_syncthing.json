@@ -1,0 +1,242 @@
+[
+    {
+        "sha": "d4cffd848eb13d65f3caca5ef6da9a3fd25a2d6a",
+        "author": "Syncthing Release Automation",
+        "email": "release@syncthing.net",
+        "date": "2026-07-13T04:53:32Z",
+        "message": "chore(gui, man, authors): update docs, translations, and contributors",
+        "url": "https://github.com/syncthing/syncthing/commit/d4cffd848eb13d65f3caca5ef6da9a3fd25a2d6a"
+    },
+    {
+        "sha": "527703390608d743788f464ada8d422bfa933993",
+        "author": "Syncthing Release Automation",
+        "email": "release@syncthing.net",
+        "date": "2026-07-06T05:07:17Z",
+        "message": "chore(gui, man, authors): update docs, translations, and contributors",
+        "url": "https://github.com/syncthing/syncthing/commit/527703390608d743788f464ada8d422bfa933993"
+    },
+    {
+        "sha": "ef4629ea56021d0941017f30ec53be45d2836e24",
+        "author": "Jakob Borg",
+        "email": "jakob@kastelo.net",
+        "date": "2026-07-01T16:01:46Z",
+        "message": "chore(model): simplify FileInfoBatch size computation (#10776)\n\nWe used a size computation to generate reasonably sized batches, but the\nProtoSize call is fairly expensive as it requires a conversion to a wire\ntype etc. We don't need that much precision. Instead, just limit to 1000\nfiles or 5000 blocks, which is likely approximately that much data\nanyway.\n\nCloses #10707\n\nSigned-off-by: Jakob Borg <jakob@kastelo.net>",
+        "url": "https://github.com/syncthing/syncthing/commit/ef4629ea56021d0941017f30ec53be45d2836e24"
+    },
+    {
+        "sha": "35576881ff4ef2b189c6a81b60a45f515727dc77",
+        "author": "Jakob Borg",
+        "email": "jakob@kastelo.net",
+        "date": "2026-07-01T15:43:17Z",
+        "message": "chore(stcrashreceiver): the \"internal\" directory exists\n\nCloses #10729\n\nSigned-off-by: Jakob Borg <jakob@kastelo.net>",
+        "url": "https://github.com/syncthing/syncthing/commit/35576881ff4ef2b189c6a81b60a45f515727dc77"
+    },
+    {
+        "sha": "466d30bd70115732be7e5e9f9bddae30925fb673",
+        "author": "Syncthing Release Automation",
+        "email": "release@syncthing.net",
+        "date": "2026-06-29T05:17:21Z",
+        "message": "chore(gui, man, authors): update docs, translations, and contributors",
+        "url": "https://github.com/syncthing/syncthing/commit/466d30bd70115732be7e5e9f9bddae30925fb673"
+    },
+    {
+        "sha": "2775f424f2286f58d3391ea37efc8103b9b32a64",
+        "author": "greatroar",
+        "email": "61184462+greatroar@users.noreply.github.com",
+        "date": "2026-06-28T06:00:08Z",
+        "message": "chore(fs): use x/sys/windows where possible (#10766)\n\nGets rid of an import of \"unsafe\".\n\n---------\n\nSigned-off-by: greatroar <61184462+greatroar@users.noreply.github.com>\nSigned-off-by: Jakob Borg <jakob@kastelo.net>\nCo-authored-by: Jakob Borg <jakob@kastelo.net>",
+        "url": "https://github.com/syncthing/syncthing/commit/2775f424f2286f58d3391ea37efc8103b9b32a64"
+    },
+    {
+        "sha": "44cbfcad56db30ccccdbbab40124fc498ee354db",
+        "author": "Jakob Borg",
+        "email": "jakob@kastelo.net",
+        "date": "2026-06-26T05:22:40Z",
+        "message": "fix(sqlite): update last migration to set schema version, counts (#10768)\n\nThe counts needs to be modified manually since we're not running\ntriggers during migrations. The schema version needed to be bumped.\n\nSigned-off-by: Jakob Borg <jakob@kastelo.net>",
+        "url": "https://github.com/syncthing/syncthing/commit/44cbfcad56db30ccccdbbab40124fc498ee354db"
+    },
+    {
+        "sha": "e4d08b336e56f4f430b76410aebb1e93f1cdf880",
+        "author": "Jakob Borg",
+        "email": "jakob@kastelo.net",
+        "date": "2026-06-23T05:57:36Z",
+        "message": "fix(config): remove extraneous defaults setting while unmarshalling folder options (fixes #10746, fixes #10389) (#10763)\n\nThis broke PATCH on folders. Any place that needs the defaults should\nset them prior to unmarshal.\n\nSigned-off-by: Jakob Borg <jakob@kastelo.net>",
+        "url": "https://github.com/syncthing/syncthing/commit/e4d08b336e56f4f430b76410aebb1e93f1cdf880"
+    },
+    {
+        "sha": "97cb72a6083707334582c5bab21a4b8dd4667d5f",
+        "author": "Jakob Borg",
+        "email": "jakob@kastelo.net",
+        "date": "2026-06-23T05:48:53Z",
+        "message": "chore(versioner): attempt to prevent blatantly unsafe external versioner commands (fixes #10721) (#10722)\n\nWhile preparing the command, attempt to verify that the template\nexpansion happens in a way that will result in a non-shell-injection\ncommand. I don't presume to say that this is a 100% prevention, and the\nscript itself can always do dumb shit with the file path later.\nNonetheless, we should make a best-effort attempt.\n\nEqually, this could generate false positives for commands that are\nstrangely written but in fact safe. I think this is acceptable; external\nversioning is currently used by approximately 0.02% of users, and\npresumably most of them have a setup that is sane.\n\n---------\n\nSigned-off-by: Jakob Borg <jakob@kastelo.net>",
+        "url": "https://github.com/syncthing/syncthing/commit/97cb72a6083707334582c5bab21a4b8dd4667d5f"
+    },
+    {
+        "sha": "c9236b1adc5368d46c020d2df1b2698745a7dcf8",
+        "author": "Simon Frei",
+        "email": "freisim93@gmail.com",
+        "date": "2026-06-22T18:32:03Z",
+        "message": "chore: stop treating dirs as having size 128 (#10750)\n\nResp. directories for the database, and both dirs and symlinks for\n`FileInfo.FileSize`. Instead handle it in the UI progress percentage. We\neven already have special cases there for deletions, might as well\nhandle directories just like any other zero-sized needed item there.\n\nThis went through the very thorough testing of running it on my laptop,\nthe migration was applied and it seemed to be working fine after.\n\n---------\n\nSigned-off-by: Simon Frei <freisim93@gmail.com>",
+        "url": "https://github.com/syncthing/syncthing/commit/c9236b1adc5368d46c020d2df1b2698745a7dcf8"
+    },
+    {
+        "sha": "5313c75eba300b75888bb75a9c3d97cf0b3de180",
+        "author": "Jakob Borg",
+        "email": "jakob@kastelo.net",
+        "date": "2026-06-22T10:53:03Z",
+        "message": "chore(model): increase default value for num hashers (#10761)",
+        "url": "https://github.com/syncthing/syncthing/commit/5313c75eba300b75888bb75a9c3d97cf0b3de180"
+    },
+    {
+        "sha": "40febaa81156cdb9df1f3168c413659d3c1f1cbf",
+        "author": "Syncthing Release Automation",
+        "email": "release@syncthing.net",
+        "date": "2026-06-22T05:29:45Z",
+        "message": "chore(gui, man, authors): update docs, translations, and contributors",
+        "url": "https://github.com/syncthing/syncthing/commit/40febaa81156cdb9df1f3168c413659d3c1f1cbf"
+    },
+    {
+        "sha": "92ff9ac078501fb6ba629dcd70516bc0112c620a",
+        "author": "Jakob Borg",
+        "email": "jakob@kastelo.net",
+        "date": "2026-06-21T17:48:15Z",
+        "message": "chore(osutil): fixup test for symlinked folder root (#10758)\n\nThis test was incorrectly rewritten to use fakefs, which doesn't really\ntest what it's supposed to test.\n\nSigned-off-by: Jakob Borg <jakob@kastelo.net>",
+        "url": "https://github.com/syncthing/syncthing/commit/92ff9ac078501fb6ba629dcd70516bc0112c620a"
+    },
+    {
+        "sha": "f7f2e7c70b06b7baea735a333e93c131a9026b21",
+        "author": "Henrik Bråthen",
+        "email": "henrikbs@proton.me",
+        "date": "2026-06-21T16:23:37Z",
+        "message": "fix(folder): check if context canceled when scanning (fixes #10363) (#10757)\n\nDuring initial folder scan and the scan is interrupted with a\ncontext.Canceled error, it was previously logged as a \"Failed initial\nscan\" error, which can be misleading\n\nThe change adds a explicit check for context.Canceled and silently\nignores it (fixes #10363)\n\nSigned-off-by: Henrik Bråthen <henrikbs@proton.me>",
+        "url": "https://github.com/syncthing/syncthing/commit/f7f2e7c70b06b7baea735a333e93c131a9026b21"
+    },
+    {
+        "sha": "3d168d6e44215f17de9d6a2096e20ca4aa84418c",
+        "author": "Syncthing Release Automation",
+        "email": "release@syncthing.net",
+        "date": "2026-06-15T05:28:39Z",
+        "message": "chore(gui, man, authors): update docs, translations, and contributors",
+        "url": "https://github.com/syncthing/syncthing/commit/3d168d6e44215f17de9d6a2096e20ca4aa84418c"
+    },
+    {
+        "sha": "8cc4c4ffb3dc46df21749b104f728a849907889d",
+        "author": "Jakob Borg",
+        "email": "jakob@kastelo.net",
+        "date": "2026-06-13T12:01:46Z",
+        "message": "build: use Go 1.26 for Windows as well (#10744)\n\nSigned-off-by: Jakob Borg <jakob@kastelo.net>",
+        "url": "https://github.com/syncthing/syncthing/commit/8cc4c4ffb3dc46df21749b104f728a849907889d"
+    },
+    {
+        "sha": "f1d631d66e1c3101a8968e0713fac29e67329134",
+        "author": "Jakob Borg",
+        "email": "jakob@kastelo.net",
+        "date": "2026-06-13T06:31:26Z",
+        "message": "fix(protocol): loosen restriction on size of directory entries (#10743)\n\nThe synthetic directory size must be permitted.\n\nRef #10737.\n\n---------\n\nSigned-off-by: Jakob Borg <jakob@kastelo.net>",
+        "url": "https://github.com/syncthing/syncthing/commit/f1d631d66e1c3101a8968e0713fac29e67329134"
+    },
+    {
+        "sha": "ee275fee65b37ea75802c8fc3c9decd5a66cb065",
+        "author": "Jakob Borg",
+        "email": "jakob@kastelo.net",
+        "date": "2026-06-12T06:59:50Z",
+        "message": "build(deps): update dependencies (#10740)\n\nSigned-off-by: Jakob Borg <jakob@kastelo.net>",
+        "url": "https://github.com/syncthing/syncthing/commit/ee275fee65b37ea75802c8fc3c9decd5a66cb065"
+    },
+    {
+        "sha": "6606e6b4d346b787e4685a950a99e188b0786a52",
+        "author": "Jakob Borg",
+        "email": "jakob@kastelo.net",
+        "date": "2026-06-11T16:52:24Z",
+        "message": "fix(protocol): be more stringent about blocks in non-file entries (#10737)\n\nDirectories, but also symlinks, should not have blocks or a size.\n\nSigned-off-by: Jakob Borg <jakob@kastelo.net>",
+        "url": "https://github.com/syncthing/syncthing/commit/6606e6b4d346b787e4685a950a99e188b0786a52"
+    },
+    {
+        "sha": "f6428af4c891a08e8fee103a227dd311f61d29e9",
+        "author": "Jakob Borg",
+        "email": "jakob@kastelo.net",
+        "date": "2026-06-11T16:51:25Z",
+        "message": "fix(protocol): always expect & validate block hash in requests (#10738)\n\nVerify that block requests have a hash and that it's correct. This helps\nprevent certain races and ensure that only expected data is ever\nreturned in response to a request.\n\n(In Syncthing prior to 1.28.1 the block hash was omitted for encrypted\nrequests from trusted devices. This breaks compatibility with that\nspecific config on those versions.)\n\n---------\n\nSigned-off-by: Jakob Borg <jakob@kastelo.net>",
+        "url": "https://github.com/syncthing/syncthing/commit/f6428af4c891a08e8fee103a227dd311f61d29e9"
+    },
+    {
+        "sha": "a5cbeeafea552709d27fe8e6b1ebcfcdde4d2afa",
+        "author": "Jakob Borg",
+        "email": "jakob@kastelo.net",
+        "date": "2026-06-11T16:50:11Z",
+        "message": "fix(fs, model): improve symlink resilience in file shortcut (#10739)\n\nEnsure file was a file before the shortcut as well as after... (This was\nimplied when talking to a correct implementation, but not enforced.)\n\nMake our file opening operations safe by default by ensuring the last\npath component is not a symlink.\n\n---------\n\nSigned-off-by: Jakob Borg <jakob@kastelo.net>",
+        "url": "https://github.com/syncthing/syncthing/commit/a5cbeeafea552709d27fe8e6b1ebcfcdde4d2afa"
+    },
+    {
+        "sha": "5dbf809a4cda7cae978bdfa56d2fc86b714adbb4",
+        "author": "Syncthing Release Automation",
+        "email": "release@syncthing.net",
+        "date": "2026-06-08T05:17:05Z",
+        "message": "chore(gui, man, authors): update docs, translations, and contributors",
+        "url": "https://github.com/syncthing/syncthing/commit/5dbf809a4cda7cae978bdfa56d2fc86b714adbb4"
+    },
+    {
+        "sha": "e16b8013a6a77c8d755342b5ea91b7de3c6b4653",
+        "author": "Simon Frei",
+        "email": "freisim93@gmail.com",
+        "date": "2026-06-04T18:28:19Z",
+        "message": "chore(db, model): separate methods to drop a device vs its files (#10480)\n\nFixes #10469\n\n---------\n\nSigned-off-by: Simon Frei <freisim93@gmail.com>\nSigned-off-by: Jakob Borg <jakob@kastelo.net>\nCo-authored-by: Marcus B Spencer <marcus@marcusspencer.us>\nCo-authored-by: Jakob Borg <jakob@kastelo.net>",
+        "url": "https://github.com/syncthing/syncthing/commit/e16b8013a6a77c8d755342b5ea91b7de3c6b4653"
+    },
+    {
+        "sha": "6df85dc95c5cd7d02834c9dce322814c6bf26a24",
+        "author": "Jakob Borg",
+        "email": "jakob@kastelo.net",
+        "date": "2026-06-03T08:54:04Z",
+        "message": "fix: let umask do the thing (#10723)\n\nWe had a few places where we had perhaps too much of an opinion on the\npermissions on created files and directories, sometimes fuled by a\nmisconception about how permissions work in both Unix and Windows. Recap\non the ground rules:\n\n- On all unixes, all file & directory creation (`Mkdir`, `MkdirAll`,\n`Create`, `WriteFile`, `Open`) has the given permission bits filtered\nvia the user's umask. The proper permissions for us to use are in almost\nall cases 0o666 for files and 0o777 for directories, strange as that may\nlook at the call site.\n- On Windows, there is no umask but in turn all of the permission bits\nexcept the user write bit are ignored. The absence of user write bit is\nconverted into the read only attribute. This means that what is proper\nfor Unix above is also proper for Windows.\n- We make an exception when creating files for certificate keys and the\nconfig / database directories, as those contain secrets we think should remain closed\neven if the user generally collaborates with other users on the system.\n\n(Also removal of a bugfixed copy of MkdirAll for Windows that hasn't\nbeen necessary for a few years.)\n\n---------\n\nSigned-off-by: Jakob Borg <jakob@kastelo.net>",
+        "url": "https://github.com/syncthing/syncthing/commit/6df85dc95c5cd7d02834c9dce322814c6bf26a24"
+    },
+    {
+        "sha": "f93306c8194e2bc74741bca3c5cb8116eca8a293",
+        "author": "Jakob Borg",
+        "email": "jakob@kastelo.net",
+        "date": "2026-06-02T14:54:21Z",
+        "message": "fix(gui): properly escape filenames in fancytree\n\nSigned-off-by: Jakob Borg <jakob@kastelo.net>",
+        "url": "https://github.com/syncthing/syncthing/commit/f93306c8194e2bc74741bca3c5cb8116eca8a293"
+    },
+    {
+        "sha": "9cdff04877552427946d552610cce58a5a6b99bf",
+        "author": "Jakob Borg",
+        "email": "jakob@kastelo.net",
+        "date": "2026-06-02T12:01:03Z",
+        "message": "fix(connections): do not report connection metrics for self (ref #10509) (#10724)\n\nMakes the metrics easier to interpret.\n\nSigned-off-by: Jakob Borg <jakob@kastelo.net>",
+        "url": "https://github.com/syncthing/syncthing/commit/9cdff04877552427946d552610cce58a5a6b99bf"
+    },
+    {
+        "sha": "9bb5f9b4ddcba4294cf31fc06833ef5c8099e891",
+        "author": "Shablone",
+        "email": "20610621+Shablone@users.noreply.github.com",
+        "date": "2026-06-02T12:00:38Z",
+        "message": "fix: on Windows don't allocate console if not opened inside one (#10726)\n\nThis change allows Syncthing to be launched from Explorer without\nshowing a console window, while preserving the existing command-line\nbehavior.\nPreviously, launching syncthing.exe from Explorer would always allocate\na console window, which could only be hidden later by using\n`--no-console`. It was not possible to avoid console allocation entirely\nwithout introducing other issues.\n\nOn Windows 24H2 and later a new application manifest allows us to\nachieve it. See [console allocation\npolicy](https://learn.microsoft.com/en-us/windows/console/console-allocation-policy)\nThis manifest is built into a syso-file by `goversioninfo`, which is\nalready used to generate Windows resource files consumed by the Go\ncompiler.\n\n**Note1:** On Windows 24H2 and later, no console is allocated when\nSyncthing is launched from Explorer, even if `--no-console` is set to\n`False`. It can still be used as a CLI tool as usual if you call it from\nconsole.\n\n**Note2:** The content of the manifest file may not be formatted. Even a\n`newline` would break it.\n\n### Testing\n\nTested on Windows 11 25H2: No console visible from explorer. CLI works\nas usual.\n\nRef #8046, ref #10633, ref #10481, ref #10600\n\nSigned-off-by: Elias <1elias.bauer@gmail.com>\nCo-authored-by: Elias <1elias.bauer@gmail.com>",
+        "url": "https://github.com/syncthing/syncthing/commit/9bb5f9b4ddcba4294cf31fc06833ef5c8099e891"
+    },
+    {
+        "sha": "8961f642c6eaae547e94fcd73ecb3008e9ce6a5a",
+        "author": "Syncthing Release Automation",
+        "email": "release@syncthing.net",
+        "date": "2026-06-01T05:22:49Z",
+        "message": "chore(gui, man, authors): update docs, translations, and contributors",
+        "url": "https://github.com/syncthing/syncthing/commit/8961f642c6eaae547e94fcd73ecb3008e9ce6a5a"
+    },
+    {
+        "sha": "d91f8849a277d206f7ae1a4e6b8a9d7d5b4a20e0",
+        "author": "Shablone",
+        "email": "20610621+Shablone@users.noreply.github.com",
+        "date": "2026-05-25T21:37:10Z",
+        "message": "chore(syncthing): open URLs via Windows API instead via cmd.exe (#10712)\n\n### Purpose\nOn Windows replace `cmd.exe /C start` with direct `ShellExecute` API for\nopening the webpage.\n\nThe previous implementation used `exec.Command(\"cmd.exe\", \"/C\", \"start\n\"+url)` which spawns two extra processes (cmd.exe → start). Launching\ncmd.exe resulted in a shortly visible terminal.\n\nBoth\n-`start`\n-and another alternative `exec.Command(\"rundll32\",\n\"url.dll,FileProtocolHandler\", url).Start()`\nare just wrappers for `ShellExecute`. So this implementation is even\nmore direct\n\n### Testing\n\nI executed the compiled syncthing.exe on Windows 11, both from explorer\nand console. The webpage opened as expected.\n\n### Screenshots\n\nN/A.\n\n### Documentation\n\nN/A\n\n## Authorship\n\nName: Elias @Shablone\nEmail: [1elias.bauer@gmail.com](mailto:1elias.bauer@gmail.com)\n\nSigned-off-by: Elias <1elias.bauer@gmail.com>\nCo-authored-by: Elias <1elias.bauer@gmail.com>",
+        "url": "https://github.com/syncthing/syncthing/commit/d91f8849a277d206f7ae1a4e6b8a9d7d5b4a20e0"
+    },
+    {
+        "sha": "6be1ff84802810ebf6ab5a5169f865333607a8a5",
+        "author": "Jakob Borg",
+        "email": "jakob@kastelo.net",
+        "date": "2026-05-25T13:22:07Z",
+        "message": "fix(protocol): handle zero-size requests (fixes #10709) (#10710)\n\n- Allow zero-sized requests since they are sent by all current versions\nof Syncthing.\n- Stop sending zero-sized requests since that's stupid.\n\n---------\n\nSigned-off-by: Jakob Borg <jakob@kastelo.net>",
+        "url": "https://github.com/syncthing/syncthing/commit/6be1ff84802810ebf6ab5a5169f865333607a8a5"
+    }
+]

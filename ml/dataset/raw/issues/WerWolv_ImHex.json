@@ -1,0 +1,362 @@
+[
+    {
+        "id": 4855950436,
+        "number": 2780,
+        "title": "[Bug] [Win32] Build Fails under Msys2, MinGW",
+        "state": "closed",
+        "created_at": "2026-07-10T14:35:47Z",
+        "updated_at": "2026-07-10T17:50:58Z",
+        "closed_at": "2026-07-10T17:50:58Z",
+        "author": "samuelvenable",
+        "comments": 1,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Operating System\n\nWindows\n\n### What's the issue you encountered?\n\nThis is the error in the terminal I get when attempting to build it using the regular means to do so from the documentation / readme. \n\n```\n[534/577] Linking CXX shared library plugins\\ui.hexpluglib\nFAILED: [code=1] plugins/ui.hexpluglib plugins/ui/libui.dll.a\nC:\\WINDOWS\\system32\\cmd.exe /C \"cd . && C:\\msys64-imhex\\mingw64\\bin\\c++.exe -O3 -DNDEBUG  -shared -fuse-ld=lld -Wa,mbig-obj -Wl,--wrap=_ZSt21__glibcxx_assert_failPKciS0_S0_ -o plugins\\ui.hexpluglib -Wl,--out-implib,plugins\\ui\\libui.dll.a -Wl,--major-image-version,0,--minor-image-version,0 plugins/ui/CMakeFiles/ui.dir/source/library_ui.cpp.obj plugins/ui/CMakeFiles/ui.dir/source/ui/hex_editor.cpp.obj plugins/ui/CMakeFiles/ui.dir/source/ui/pattern_drawer.cpp.obj plugins/ui/CMakeFiles/ui.dir/source/ui/visualizer_drawer.cpp.obj plugins/ui/CMakeFiles/ui.dir/source/ui/menu_items.cpp.obj plugins/ui/CMakeFiles/ui.dir/source/ui/pattern_value_editor.cpp.obj plugins/ui/CMakeFiles/ui.dir/source/ui/widgets.cpp.obj plugins/ui/CMakeFiles/ui.dir/source/ui/markdown.cpp.obj plugins/ui/CMakeFiles/ui.dir/source/ui/text_editor/editor.cpp.obj plugins/ui/CMakeFiles/ui.dir/source/ui/text_editor/highlighter.cpp.obj plugins/ui/CMakeFiles/ui.dir/source/ui/text_editor/navigate.cpp.obj plugins/ui/CMakeFiles/ui.dir/source/ui/text_editor/render.cpp.obj plugins/ui/CMakeFiles/ui.dir/source/ui/text_editor/support.cpp.obj plugins/ui/CMakeFiles/ui.dir/source/ui/text_editor/utf8.cpp.obj plugins/ui/CMakeFiles/ui.dir/source/ui/text_editor/codeFolder.cpp.obj -LC:/msys64-imhex/home/Windows/ImHex/lib/libimhex/../third_party/libdlgmod plugins/fonts/libfonts.dll.a  lib/libimhex/liblibimhex.dll.a  plugins/ui/libromfs/lib/libromfs-ui.a  lib/external/libwolv/libs/io/liblibwolv-io.a  lib/external/libwolv/libs/net/libwolv-net.a  -lWs2_32  lib/external/libwolv/libs/math_eval/libwolv-math_eval.a  lib/external/libwolv/libs/utils/libwolv-utils.a  -lntdll  -lgdiplus  -lcomctl32  -lshlwapi  -lcomdlg32  -lole32  -loleaut32  -luuid  C:/msys64-imhex/home/Windows/ImHex/lib/libimhex/../third_party/libdlgmod/libdlgmod.a  C:/msys64-imhex/mingw64/lib/libfreetype.dll.a  C:/msys64-imhex/mingw64/lib/libglfw3.dll.a  -lopengl32  -lglu32  C:/msys64-imhex/mingw64/lib/libcurl.dll.a  -LC:/msys64-imhex/mingw64/lib -lmbedtls -lmbedx509 -lmbedcrypto  lib/third_party/lunasvg/liblunasvg.a  lib/third_party/lunasvg/plutovg/libplutovg.a  -lm  lib/trace/libtracing.a  lib/third_party/llvm-demangle/libLLVMDemangle.a  -lDbgHelp  lib/third_party/md4c/src/libmd4c.a  -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32 && cd .\"\nld.lld: error: undefined symbol: hex::fonts::HexEditor()\n>>> referenced by plugins/ui/CMakeFiles/ui.dir/source/ui/hex_editor.cpp.obj:(hex::ui::HexEditor::draw(float))\n>>> referenced by plugins/ui/CMakeFiles/ui.dir/source/ui/hex_editor.cpp.obj:(hex::ui::HexEditor::draw(float))\n\nld.lld: error: undefined symbol: hex::fonts::Default()\n>>> referenced by plugins/ui/CMakeFiles/ui.dir/source/ui/markdown.cpp.obj:(hex::ui::Markdown::Markdown(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char>>)::'lambda0'(MD_BLOCKTYPE, void*, void*)::_FUN(MD_BLOCKTYPE, void*, void*))\n>>> referenced by plugins/ui/CMakeFiles/ui.dir/source/ui/markdown.cpp.obj:(hex::ui::Markdown::Markdown(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char>>)::'lambda0'(MD_SPANTYPE, void*, void*)::_FUN(MD_SPANTYPE, void*, void*))\n>>> referenced by plugins/ui/CMakeFiles/ui.dir/source/ui/markdown.cpp.obj:(hex::ui::Markdown::Markdown(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char>>)::'lambda'(MD_SPANTYPE, void*, void*)::operator()(MD_SPANTYPE, void*, void*) const (.constprop.0.isra.0))\n>>> referenced 2 more times\n\nld.lld: error: undefined symbol: hex::fonts::CodeEditor()\n>>> referenced by plugins/ui/CMakeFiles/ui.dir/source/ui/text_editor/render.cpp.obj:(hex::ui::TextEditor::drawText(hex::ui::TextEditor::Range::Coordinates&, unsigned int, char))\n>>> referenced by plugins/ui/CMakeFiles/ui.dir/source/ui/text_editor/render.cpp.obj:(hex::ui::TextEditor::drawText(hex::ui::TextEditor::Range::Coordinates&, unsigned int, char))\n>>> referenced by plugins/ui/CMakeFiles/ui.dir/source/ui/text_editor/utf8.cpp.obj:(hex::ui::TextEditor::Line::stringTextSize(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char>> const&) const)\n>>> referenced 7 more times\ncollect2.exe: error: ld returned 1 exit status\n[541/577] Building CXX object plugins/visualizers/CMakeFiles/visualizers.dir/source/plugin_visualizers.cpp.obj\nninja: build stopped: subcommand failed.\n```\n\n### How can the issue be reproduced?\n\nbuild main branch from source as of 7/10/26\n\n### ImHex Version\n\nmain branch\n\n### ImHex Build Type\n\n- [x] Nightly or built from sources\n\n### Installation type\n\ngit clone\n\n### Additional context?\n\nmy fork im testing this build with doesn't even modify the files it errored at, or anything related to it. the fork is identical to the upstream main branch. there's only slight modification to libimhex's cmakelists.txt and fs.cpp. the rest is the same and up to date, so it really can't be an issue with my fork",
+        "url": "https://github.com/WerWolv/ImHex/issues/2780"
+    },
+    {
+        "id": 4823138009,
+        "number": 2778,
+        "title": "[Feature] Export virtual file system",
+        "state": "open",
+        "created_at": "2026-07-06T21:12:00Z",
+        "updated_at": "2026-07-06T21:12:00Z",
+        "closed_at": null,
+        "author": "Aurel300",
+        "comments": 0,
+        "labels": [
+            "feature request"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### What feature would you like to see?\n\nI would like to be able to export the full file hierarchy I can see in the virtual filesystem (created using `hex::core::add_virtual_file`) to disk.\n\n### How will this feature be useful to you and others?\n\nWhen reversing archive formats (say the data files for a game), exporting the archive into separate files is useful for further inspection.\n\n### Request Type\n\n- [ ] I can provide a PoC for this feature or am willing to work on it myself and submit a PR\n\n### Additional context?\n\n_No response_",
+        "url": "https://github.com/WerWolv/ImHex/issues/2778"
+    },
+    {
+        "id": 4822416471,
+        "number": 2777,
+        "title": "[Bug] Imhex does not create directories in %localappdata%",
+        "state": "closed",
+        "created_at": "2026-07-06T19:26:00Z",
+        "updated_at": "2026-07-08T16:17:32Z",
+        "closed_at": "2026-07-08T16:17:32Z",
+        "author": "TBM13",
+        "comments": 2,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Operating System\n\nWindows\n\n### What's the issue you encountered?\n\nImhex (standalone, installed using the MSI `imhex-1.39.0.WIP-Windows-x86_64.msi` installer) is failing to save its settings. Every time I open it, it thinks it is starting for the first time.\n\nThe Help->About->Directories shows the config dir in red, just like it does with all other directories in `%localappdata%`:\n<img width=\"666\" height=\"47\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/62a82b71-f7e1-4486-820a-252ec4580c80\" />\n\nUpon looking, the `%localappdata%/imhex` directory does not exist. I had to manually create it and all its subdirectories for them to appear blue in imhex and fix the settings not saving.\n\n### How can the issue be reproduced?\n\n1- Install Imhex from the MSI installer\n2- Launch Imhex, go through the first-launch screens and optionally change a setting.\n3- Restart Imhex. It will once again show the first-launch screens and the setting changed in step 2 will have its original value\n\n### ImHex Version\n\n1.39.0.WIP\n\n### ImHex Build Type\n\n- [x] Nightly or built from sources\n\n### Installation type\n\nLatest MSI\n\n### Additional context?\n\n_No response_",
+        "url": "https://github.com/WerWolv/ImHex/issues/2777"
+    },
+    {
+        "id": 4810254405,
+        "number": 2776,
+        "title": "[Bug] [FreeBSD] `<sys/xattr.h>` header not found.",
+        "state": "open",
+        "created_at": "2026-07-04T19:17:16Z",
+        "updated_at": "2026-07-08T22:57:58Z",
+        "closed_at": null,
+        "author": "samuelvenable",
+        "comments": 3,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Operating System\n\nFreeBSD\n\n### What's the issue you encountered?\n\nAccording to a quick Google search, this is a Linux/macOS-specific header and therefore will not exist on FreeBSD. After further investigation the FreeBSD equivalent header is `<sys/extattr.h>` however it uses an incompatible API.\n\n### How can the issue be reproduced?\n\nCompile on FreeBSD.\n\n### ImHex Version\n\nmaster branch\n\n### ImHex Build Type\n\n- [x] Nightly or built from sources\n\n### Installation type\n\ngit clone\n\n### Additional context?\n\nError produced in `file_provider.cpp` under `plugins`.",
+        "url": "https://github.com/WerWolv/ImHex/issues/2776"
+    },
+    {
+        "id": 4809419236,
+        "number": 2775,
+        "title": "[Bug] Memory leak when processing 200 MB file with custom pattern",
+        "state": "closed",
+        "created_at": "2026-07-04T14:51:28Z",
+        "updated_at": "2026-07-04T21:43:14Z",
+        "closed_at": "2026-07-04T21:43:14Z",
+        "author": "mpeter50",
+        "comments": 10,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Operating System\n\nLinux\n\n### What's the issue you encountered?\n\nI have made a pattern for an [IFF](https://en.wikipedia.org/wiki/Interchange_File_Format) file I have, it uses a searcher pattern for finding the children of the AUDO chunk.\n\nWhen I run my pattern on my 190 MB IFF file, it will consume all 16 GB memory I have free on my system, while still not completing pattern placement. If I limit searching chunks to slightly less than half of it, pattern placement completes with 4,8 GB of RAM usage.\n\nI have read #1258 , and indeed I am using a 4 byte local variable (a string), but the while loop will only run ~~37~~ 58 times, so in my understanding this local variable should only take up 4\\*58=232 bytes for the whole dataset (or 5\\*58 if read_string also returns a zero byte at the end of the string).\n\nIf I stop evaluation when for all 10 expected searched items a green bar appears in the progress bar, roughly at 4 GB memory usage, all 10 expected records will be visible in the pattern data view in their complete form, and memory usage will fall back to ~300-400 MB of RAM.\nIf I dont stop evaluation, memory usage shortly falls back, but then continues to rise, then the green bars disappear one by one, and when I eventually have to stop it at 9 GB the memory usage will not fall back, and I will have the same results in the pattern data view.\n\nThis sounds like 2 issues to me:\n- temporary memory leak while placing patterns\n- permanent memory leak when continuing to read through the end of the file?\n\n### How can the issue be reproduced?\n\nThe IFF file is too big for github, so I uploaded it here: https://big.grin.hu/ngzE2O/data.dat\nIt will stay available for an undetermined amount of time. If it disappears but you wanted to use it, please let me know in a comment and I will reupload.\n\nUse this pattern with the IFF file:\n```\nimport std.mem;\nimport std.io;\n\nu32 counter = 0;\n\nstruct RIFFChunk {\n    char id[4];\n    u32 chunkSize;\n    u8 data[chunkSize];\n};\n\nstruct RIFFBlock {\n    char signature[4];      // \"RIFF\"\n    u32 totalSize;          // Size of everything after this field\n    char format[4];         // \"WAVE\"\n    \n    RIFFChunk fmt_chunk;\n    RIFFChunk list_chunk;\n    RIFFChunk data_chunk;\n};\n\nstruct AudoChunkChildSearcher {\n    str test_str = std::mem::read_string($, 4);\n    \n    counter += 1;\n    std::print(counter);\n    \n    if (test_str == \"RIFF\") {\n        RIFFBlock riff @ $;\n        $ += sizeof(riff);\n    } else if (!std::mem::eof()) {\n        $ += 1; continue;\n    } else {\n        break;\n    }\n};\n\nstruct AudoChunk {\n    char type[4];      // \"AUDO\"\n    s32 chunk_size;\n    \n    // this needs to be stopped manually:\n    AudoChunkChildSearcher inner_chunks[while(!std::mem::eof())];\n    // this runs to completion, but is still leaking memory\n    //AudoChunkChildSearcher inner_chunks[while($ < 0x04000000)];\n};\n\nstruct FormChunk {\n    char type_id[4];      // \"FORM\"\n    s32 chunk_size;\n    \n    AudoChunk audo_chunk;\n};\n\nFormChunk form_chunk @ 0x0;\n```\n\n### ImHex Version\n\n1.38.1\n\n### ImHex Build Type\n\n- [ ] Nightly or built from sources\n\n### Installation type\n\nFlatpak\n\n### Additional context?\n\n_No response_",
+        "url": "https://github.com/WerWolv/ImHex/issues/2775"
+    },
+    {
+        "id": 4802896640,
+        "number": 2774,
+        "title": "[Bug] Hard recursion limit",
+        "state": "open",
+        "created_at": "2026-07-03T11:02:06Z",
+        "updated_at": "2026-07-03T13:28:11Z",
+        "closed_at": null,
+        "author": "smiRaphi",
+        "comments": 1,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Operating System\n\nWindows\n\n### What's the issue you encountered?\n\nImHex crashes when a pattern recurses over ~345-350 times (`#pragma eval_depth` does not help)\n\n### How can the issue be reproduced?\n\nedit the `if (rc >= 345) break;` line to edit the recursion limit\n[imx.hexpat.txt](https://github.com/user-attachments/files/29633207/imx.hexpat.txt)\n\n### ImHex Version\n\nv1.39.0 master@bf42e47\n\n### ImHex Build Type\n\n- [x] Nightly or built from sources\n\n### Installation type\n\nMSI\n\n### Additional context?\n\nBinary:\nhttps://github.com/user-attachments/files/28807415/ALLDOGS.zip\n",
+        "url": "https://github.com/WerWolv/ImHex/issues/2774"
+    },
+    {
+        "id": 4790615006,
+        "number": 2773,
+        "title": "[Bug] imhex upgrade left broken includes in appdata",
+        "state": "open",
+        "created_at": "2026-07-02T02:05:55Z",
+        "updated_at": "2026-07-02T05:31:05Z",
+        "closed_at": null,
+        "author": "otac0n",
+        "comments": 2,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Operating System\n\nWindows\n\n### What's the issue you encountered?\n\nAfter an upgrade, I get an error reporting `from` as a keyword anytime I include `std` libraries.\n\n### How can the issue be reproduced?\n\nUnsure. But it may be on any upgrade.\n\n### ImHex Version\n\nv1.38.1\n\n### ImHex Build Type\n\n- [ ] Nightly or built from sources\n\n### Installation type\n\nDon't remember.\n\n### Additional context?\n\nI was able to resolve it by downloading the includes manually from the repo.",
+        "url": "https://github.com/WerWolv/ImHex/issues/2773"
+    },
+    {
+        "id": 4776748037,
+        "number": 2772,
+        "title": "[Feature] Pattern editor allow to read from external files",
+        "state": "closed",
+        "created_at": "2026-06-30T12:28:54Z",
+        "updated_at": "2026-06-30T13:17:32Z",
+        "closed_at": "2026-06-30T13:17:32Z",
+        "author": "PerfectlyFineCode",
+        "comments": 2,
+        "labels": [
+            "feature request"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### What feature would you like to see?\n\nAllow reading from external files in pattern editor for files that depend on each other during extraction, say an index and a packed data relations\n\n### How will this feature be useful to you and others?\n\nCurrently have an index file which contains information about packed files in relative directory, they depend on each other. There is currently no way to reference external files, which means the pattern completely fails as I would have to individually open each packed file separately. Index file contains where in the packed data said information exists as well as the size of it\n\n### Request Type\n\n- [ ] I can provide a PoC for this feature or am willing to work on it myself and submit a PR\n\n### Additional context?\n\n_No response_",
+        "url": "https://github.com/WerWolv/ImHex/issues/2772"
+    },
+    {
+        "id": 4763381885,
+        "number": 2771,
+        "title": "[Bug] No titlebar in linux build",
+        "state": "open",
+        "created_at": "2026-06-28T19:35:10Z",
+        "updated_at": "2026-06-28T19:35:54Z",
+        "closed_at": null,
+        "author": "codeman4033",
+        "comments": 1,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Operating System\n\nLinux\n\n### What's the issue you encountered?\n\nI launch imhex and immediately, I noticed that there's no titlebar.\n\n<img width=\"1904\" height=\"842\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/5bdec076-1e0f-4d66-9cc3-12fa42667fb2\" />\n\n### How can the issue be reproduced?\n\nYou launch the app without \"Use OS Window decorations\" checked.\n\n### ImHex Version\n\nv1.39.0.WIP; master@af55d25\n\n### ImHex Build Type\n\n- [x] Nightly or built from sources\n\n### Installation type\n\nAppImage+Arch pkg.tar.zst\n\n### Additional context?\n\nSure, I fixed it by checking \"Use OS Window decorations\", but this shouldn't even be an issue to begin with.",
+        "url": "https://github.com/WerWolv/ImHex/issues/2771"
+    },
+    {
+        "id": 4758654300,
+        "number": 2770,
+        "title": "Debugging On Windows ARM64 builds",
+        "state": "open",
+        "created_at": "2026-06-27T14:19:45Z",
+        "updated_at": "2026-06-28T09:23:35Z",
+        "closed_at": null,
+        "author": "shewitt-au",
+        "comments": 0,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Operating System\n\nWindows\n\n### What's the issue you encountered?\nWhen building a debug version on Windows (building on an ARM system targeting ARM, debugging with VSCode), debugging doesn't work properly. For example, breakpoints can't be set.\n\nForm ARM64 builds clang is used. Clang's debugger (lldb-dap in my case) requites the correct DWARF debugging info, which isn't the default.\n\nSee this [PR](https://github.com/WerWolv/ImHex/pull/2769) for an example fix.\n\nThis works for me, but it might need to be cleaned up.\n\n### How can the issue be reproduced?\n\nBuild an ARM64 (uses Clang) and try to debug. As mentioned, I'm VSCode.\n\n### ImHex Version\n\nv1.39.0.WIP-Debug\n\n### ImHex Build Type\n\n- [x] Nightly or built from sources\n\n### Installation type\n\nBuilt from source",
+        "url": "https://github.com/WerWolv/ImHex/issues/2770"
+    },
+    {
+        "id": 4742489950,
+        "number": 2768,
+        "title": "[Bug] File larger than 2 GB with max RAM truncates the file",
+        "state": "closed",
+        "created_at": "2026-06-25T09:26:53Z",
+        "updated_at": "2026-07-05T12:24:04Z",
+        "closed_at": "2026-07-05T12:24:04Z",
+        "author": "neptuwunium",
+        "comments": 1,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Operating System\n\nLinux\n\n### What's the issue you encountered?\n\nWhen opening a file with \"Max file size to load into RAM\" set to a number greater than 2 GB, the file is all zeroes past 0x7fffffff (INT_MAX).\n\n\n### How can the issue be reproduced?\n\n- Set Max file size to load into RAM to a value greater than 2 GB \n- Locate a file larger than  that amount GB, otherwise create one\n- Navigate to offset 0x7fffffff\n- Observe file being zeroes after 0x7fffffff\n\n### ImHex Version\n\n7f9f7289400029b0c6eceae373e215e5eb3ebaee\n\n### ImHex Build Type\n\n- [x] Nightly or built from sources\n\n### Installation type\n\nManually Built\n\n### Additional context?\n\n_No response_",
+        "url": "https://github.com/WerWolv/ImHex/issues/2768"
+    },
+    {
+        "id": 4694520890,
+        "number": 2763,
+        "title": "[Bug] Interacting with Hex Editor or opening Pattern Editor disables keyboard navigation",
+        "state": "open",
+        "created_at": "2026-06-18T17:12:50Z",
+        "updated_at": "2026-06-18T19:34:35Z",
+        "closed_at": null,
+        "author": "bbb651",
+        "comments": 2,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Operating System\n\nLinux\n\n### What's the issue you encountered?\n\nKeyboard navigation gets globally disabled when Interacting with Hex Editor or opening Pattern Editor, so pretty much always.\n\nIt's pretty straight forward why this happens, [keyboard navigation is turned on when initializing imgui\n](https://github.com/search?q=repo%3AWerWolv%2FImHex%20%22ImGuiConfigFlags_NavEnableKeyboard%22&type=code), then [calls to `discardNavigationRequests()`](https://github.com/search?q=repo%3AWerWolv%2FImHex%20discardNavigationRequests&type=code) disable it and it's never enabled again.\n\n### How can the issue be reproduced?\n\n- Interact with Hex Editor or open Pattern Editor\n- Keyboard navigation doesn't work in e.g. Find search results and Pattern Data\n\n### ImHex Version\n\n1.38.1\n\n### ImHex Build Type\n\n- [ ] Nightly or built from sources\n\n### Installation type\n\nArchLinux AUR `imhex-bin` package\n\n### Additional context?\n\n_No response_",
+        "url": "https://github.com/WerWolv/ImHex/issues/2763"
+    },
+    {
+        "id": 4681683278,
+        "number": 2762,
+        "title": "[Bug] EnterNotify doesn't reliably cause a redraw on i3",
+        "state": "open",
+        "created_at": "2026-06-17T08:58:43Z",
+        "updated_at": "2026-06-17T08:59:28Z",
+        "closed_at": null,
+        "author": "StomyPX",
+        "comments": 0,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Operating System\n\nLinux\n\n### What's the issue you encountered?\n\nI'm running i3 on Arch (for this, I doubt distro matters) and when I switch workspaces away from ImHex and then back to it, the window contents doesn't redraw until I interact with a UI element that would trigger a redraw, like mousing over a row in the data inspector.\n\nI'm assuming ImHex is only drawing on relevant events, and it works fine most of the time. But when flipping back and forth between ImHex on one workspace and something else on another it has this annoying extra step of needing to fling the cursor around the screen to get it to redraw after bringing ImHex back up.\n\nThe window redraws properly if it loses focus again while remaining on-screen, so it does seem to handle the LeaveNotify XEvent properly but it's inconsistent regarding EnterNotify.\n\n### How can the issue be reproduced?\n\nRunning with i3 window manager on a single monitor:\n\n1. Open imhex on workspace 1\n2. Position mouse so it is not hovering over any controls\n3. Switch to workspace 2 (this will cause imhex's window contents to be abandoned by i3, which is expected behavior)\n4. Switch back to workspace 1 again.\n5. Instead of imhex you will see a still of the contents of workspace 2 until you move the cursor over a control that highlights on hover.\n\n### ImHex Version\n\n1.38.1\n\n### ImHex Build Type\n\n- [ ] Nightly or built from sources\n\n### Installation type\n\npackage `imhex-bin` from Arch User Repository\n\n### Additional context?\n\n_No response_",
+        "url": "https://github.com/WerWolv/ImHex/issues/2762"
+    },
+    {
+        "id": 4655889584,
+        "number": 2760,
+        "title": "[Bug] ImHex window with opened file breaks cursor in browser",
+        "state": "open",
+        "created_at": "2026-06-13T14:54:20Z",
+        "updated_at": "2026-06-13T14:54:52Z",
+        "closed_at": null,
+        "author": "rzcoder",
+        "comments": 0,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Operating System\n\nMacOS\n\n### What's the issue you encountered?\n\nWhen an ImHex window is open with a file and positioned behind the browser, cursor changes on hover over browser elements stop working correctly. For example, the cursor changes to the correct pointer, but a moment later it reverts back to the default.\n\n### How can the issue be reproduced?\n\n1. Open a file in ImHex\n2. Position the browser window over the ImHex window\n3. Hover over an element\n\n### ImHex Version\n\n1.38.1\n\n### ImHex Build Type\n\n- [ ] Nightly or built from sources\n\n### Installation type\n\nDMG\n\n### Additional context?\n\nMacOS 15.6.1, Chrome/FF/Safari - same",
+        "url": "https://github.com/WerWolv/ImHex/issues/2760"
+    },
+    {
+        "id": 4651115821,
+        "number": 2758,
+        "title": "[Bug] Pattern editor highlighting drops variables declared by a Template with a bit shift as argument",
+        "state": "open",
+        "created_at": "2026-06-12T17:00:28Z",
+        "updated_at": "2026-06-18T12:15:46Z",
+        "closed_at": null,
+        "author": "smiRaphi",
+        "comments": 7,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Operating System\n\nWindows\n\n### What's the issue you encountered?\n\nPattern editor highlighting drops variables that are declared by a Template with a bit shift as argument\n\n<img width=\"257\" height=\"239\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/66689b4e-dd2a-44c6-8258-ac86067d8815\" />\n\n### How can the issue be reproduced?\n\nExample:\n```rust\n// Data: 50 69 54 45 53 54 00\n\nstruct Test1<auto n> {\n    u8 value;\n    u8 data[n];\n};\nstruct Test2 {\n    u8 flag;\n    Test1<(flag >> 4)> test1;\n    u8 access = test1.value; // red\n};\n\nTest2 test2 @ 0;\n\n```\n\n### ImHex Version\n\n1.39.0-master@296e5c1\n\n### ImHex Build Type\n\n- [x] Nightly or built from sources\n\n### Installation type\n\nMSI\n\n### Additional context?\n\nThe above is a synthetic example but here is with what I discovered it, it's on line 74 (warning: list with 1.05 million entries)\n\n[pbo.zip](https://github.com/user-attachments/files/28889957/pbo.zip)",
+        "url": "https://github.com/WerWolv/ImHex/issues/2758"
+    },
+    {
+        "id": 4617440122,
+        "number": 2757,
+        "title": "[Feature]List all tools needed for build",
+        "state": "open",
+        "created_at": "2026-06-08T23:42:06Z",
+        "updated_at": "2026-06-09T00:44:09Z",
+        "closed_at": null,
+        "author": "ConcernedOnlooker",
+        "comments": 2,
+        "labels": [
+            "feature request"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### What feature would you like to see?\n\nIt would be helpful to have a list of the build tools and required versions linked to the builds page and linked to the individual instruction pages.  It appears that gcc, Ninja and Cmake are needed.\n\n### How will this feature be useful to you and others?\n\nIt took me awhile to realize that Ninja is a build tool, and not a option to cmake.\n\n### Request Type\n\n- [ ] I can provide a PoC for this feature or am willing to work on it myself and submit a PR\n\n### Additional context?\n\n_No response_",
+        "url": "https://github.com/WerWolv/ImHex/issues/2757"
+    },
+    {
+        "id": 4611367176,
+        "number": 2755,
+        "title": "[Bug] Russian translation causes Dear ImGui \"conflicting ID\" warning in Edit menu",
+        "state": "open",
+        "created_at": "2026-06-08T08:50:46Z",
+        "updated_at": "2026-06-08T08:50:46Z",
+        "closed_at": null,
+        "author": "zomoleg",
+        "comments": 0,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Operating System\n\nWindows\n\n### What's the issue you encountered?\n\nRussian translation causes Dear ImGui \"conflicting ID\" warning in Edit menu\n\n<img width=\"706\" height=\"142\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/7e9ca091-09d3-4933-9509-cc08bba7a746\" />\n\n### How can the issue be reproduced?\n\nSteps to reproduce:\n1. Open ImHex \n2. Select Language = Russian\n3. Create new file\n4. Go to the Edit menu\n5. Hover your mouse over the \"Paste\" option\n\nResulting in two menu items with the same visible label:\n<img width=\"1191\" height=\"514\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/166b1535-96cb-4b59-91d8-1295db3e8da8\" />\n\n\n### ImHex Version\n\n1.38.1\n\n### ImHex Build Type\n\n- [ ] Nightly or built from sources\n\n### Installation type\n\nMSI\n\n### Additional context?\n\n_No response_",
+        "url": "https://github.com/WerWolv/ImHex/issues/2755"
+    },
+    {
+        "id": 4597225071,
+        "number": 2754,
+        "title": "[Feature] Dear ImGui File Selection Dialogs",
+        "state": "closed",
+        "created_at": "2026-06-05T13:19:59Z",
+        "updated_at": "2026-07-04T19:43:00Z",
+        "closed_at": "2026-07-04T19:43:00Z",
+        "author": "samuelvenable",
+        "comments": 0,
+        "labels": [
+            "feature request"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### What feature would you like to see?\n\nExamples:\n\n- SDL3 Windowing / SDL3 Renderer Backend: https://github.com/samuelvenable/SDL3-ImGui-FileDialogs\n- SDL2 Windowing / SDL2 Renderer Backend: https://github.com/samuelvenable/SDL2-ImGui-FileDialogs\n- SDL2 Windowing / OpenGL 3.3 Renderer Backend: https://github.com/samuelvenable/ImFileDialog\n\nWindows:\n\n<img width=\"720\" height=\"424\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/a5927670-b7f7-4fae-8013-f5f6440a1ab3\" />\n\nMacintosh:\n\n<img width=\"720\" height=\"424\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/d7d393cb-2777-4fb0-a2b2-9d8fa5109596\" />\n\nUbuntu:\n\n<img width=\"720\" height=\"424\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/e4dc47ef-31d7-448b-962a-8217d0d67d24\" />\n\n### How will this feature be useful to you and others?\n\n- The file selection dialogs do not stay-on-top of the parent window on Windows, (this would fix that issue). \n- Unified look-and-feel across platforms; this is the main reason; native dialogs can be set to stay-on-top too.\n\n### Request Type\n\n- [ ] I can provide a PoC for this feature or am willing to work on it myself and submit a PR\n\n### Additional context?\n\nIn order to use the same Dear ImGui theme as the rest of your application, you need to do this before creating dialogs:\n\n```cpp\n#include <apifilesystem/filesystem.hpp>\n// default=\"-2\", classic=\"-1\", dark=\"0\", light=\"1\", custom=\"2\"...\nngs::fs::environment_set_variable(\"IMGUI_DIALOG_THEME\", \"0\"); // dark\n```",
+        "url": "https://github.com/WerWolv/ImHex/issues/2754"
+    },
+    {
+        "id": 4591451087,
+        "number": 2753,
+        "title": "[Feature] [Pattern Language] Add the ability to check the length of a file.",
+        "state": "closed",
+        "created_at": "2026-06-04T19:08:04Z",
+        "updated_at": "2026-06-05T16:08:49Z",
+        "closed_at": "2026-06-05T16:08:49Z",
+        "author": "GameLord2011",
+        "comments": 1,
+        "labels": [
+            "feature request"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### What feature would you like to see?\n\nAdd something to get the length of the file being inspected without using `std::file`.\n\n### How will this feature be useful to you and others?\n\nIt would allow for easier footer validation with custom patterns.\n\n### Request Type\n\n- [ ] I can provide a PoC for this feature or am willing to work on it myself and submit a PR\n\n### Additional context?\n\nI made a file format that has a footer, and am making an ImHex pattern for debugging. It would be nice if there was a footer for it so that it is easier to check the footer.",
+        "url": "https://github.com/WerWolv/ImHex/issues/2753"
+    },
+    {
+        "id": 4573937537,
+        "number": 2751,
+        "title": "[Bug] Data race in log::debug() when debug logging is not enabled",
+        "state": "open",
+        "created_at": "2026-06-02T18:19:16Z",
+        "updated_at": "2026-06-02T18:20:30Z",
+        "closed_at": null,
+        "author": "bthiae2934",
+        "comments": 0,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Operating System\n\nWindows\n\n### What's the issue you encountered?\n\nI found ImHex crashes when it starts. Here's the stack trace:\n\n```\n0:010> k\n # Child-SP          RetAddr               Call Site\n00 0000001d`433fe3e8 00007ffb`93d89676     ntdll!NtWaitForMultipleObjects+0x14\n01 0000001d`433fe3f0 00007ffb`93d892df     ntdll!WerpWaitForCrashReporting+0x82\n02 0000001d`433fe470 00007ffb`93e0bcd8     ntdll!RtlReportExceptionHelper+0x4d3\n03 0000001d`433fe5f0 00007ffb`93e69fe6     ntdll!RtlReportException+0x78\n04 0000001d`433fe620 00007ffb`93e1f933     ntdll!RtlReportFatalFailure$filt$0+0x33\n05 0000001d`433fe650 00007ffb`93e647af     ntdll!_C_specific_handler+0x93\n06 0000001d`433fe6c0 00007ffb`93d221c7     ntdll!RtlpExecuteHandlerForException+0xf\n07 0000001d`433fe6f0 00007ffb`93d96ea1     ntdll!RtlDispatchException+0x437\n08 0000001d`433fee40 00007ffb`93e12265     ntdll!RtlRaiseException+0x221\n09 0000001d`433ff620 00007ffb`93d09d69     ntdll!RtlReportFatalFailure+0x9\n0a 0000001d`433ff670 00007ffb`93d75ba2     ntdll!RtlReportCriticalFailure+0xa9\n0b 0000001d`433ff760 00007ffb`93e1bb3a     ntdll!RtlpHeapHandleError+0x12\n0c 0000001d`433ff790 00007ffb`93d330fb     ntdll!RtlpHpHeapHandleError+0x7a\n0d 0000001d`433ff7c0 00007ffb`93d2fdfa     ntdll!RtlpLogHeapFailure+0x4b\n0e 0000001d`433ff7f0 00007ffb`92abd60c     ntdll!RtlFreeHeap+0x6da\n0f 0000001d`433ff8e0 00007ffa`eb6676bb     msvcrt!free+0x1c\n10 0000001d`433ff910 00007ffa`eb54ac6e     libimhex!ZN3hex3log4impl11addLogEntryESt17basic_string_viewIcSt11char_traitsIcEES5_NSt7__cxx1112basic_stringIcS4_SaIcEEE+0x21b\n11 0000001d`433ff9b0 00007ffa`eb58aaa8     libimhex!ZN3hex3log5debugIJRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEEEEvN3fmt3v127fstringIJDpT_EE1tEDpOSD_+0xae\n12 0000001d`433ffa90 00007ffa`ec5da2ff     libimhex!ZN3hex11TaskManager18createBlockingTaskERKNS_17UnlocalizedStringEySt8functionIFvvEE+0x3e8\n13 0000001d`433ffba0 00007ffb`7218673c     libstdc___6!atomic_flag_test_and_set_explicit+0x2cf\n14 0000001d`433ffbe0 00007ffb`92adf0ad     libwinpthread_1!pthread_create_wrapper+0x9c\n15 0000001d`433ffc20 00007ffb`92adf17c     msvcrt!_callthreadstartex+0x1d\n16 0000001d`433ffc50 00007ffb`9304e957     msvcrt!_threadstartex+0x7c\n17 0000001d`433ffc80 00007ffb`93d87c1c     kernel32!BaseThreadInitThunk+0x17\n18 0000001d`433ffcb0 00000000`00000000     ntdll!RtlUserThreadStart+0x2c\n```\n\nThe exception is about a heap operation:\n```\n0:010> !heap\n**************************************************************\n*                                                            *\n*                  HEAP ERROR DETECTED                       *\n*                                                            *\n**************************************************************\n\nDetails:\n\nHeap address:  000001ed54e70000\nError address: 000001ed5b076040\nError type:    HEAP_FAILURE_BLOCK_NOT_BUSY\nDetails:       The caller performed an operation (such as a free\n               or a size check) that is illegal on a free block.\nFollow-up:     Check the error's stack trace to find the culprit.\n\nStack trace:\nStack trace at 0x00007ffb93ecc138\n    00007ffb93d330fb: ntdll!RtlpLogHeapFailure+0x4b\n    00007ffb93d2fdfa: ntdll!RtlFreeHeap+0x6da\n    00007ffb92abd60c: msvcrt!free+0x1c\n    00007ffaeb6676bb: libimhex!ZN3hex3log4impl11addLogEntryESt17basic_string_viewIcSt11char_traitsIcEES5_NSt7__cxx1112basic_stringIcS4_SaIcEEE+0x21b\n    00007ffaeb54ac6e: libimhex!ZN3hex3log5debugIJRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEEEEvN3fmt3v127fstringIJDpT_EE1tEDpOSD_+0xae\n    00007ffaeb58aaa8: libimhex!ZN3hex11TaskManager18createBlockingTaskERKNS_17UnlocalizedStringEySt8functionIFvvEE+0x3e8\n    00007ffaec5da2ff: libstdc___6!atomic_flag_test_and_set_explicit+0x2cf\n    00007ffb7218673c: libwinpthread_1!pthread_create_wrapper+0x9c\n    00007ffb92adf0ad: msvcrt!_callthreadstartex+0x1d\n    00007ffb92adf17c: msvcrt!_threadstartex+0x7c\n    00007ffb9304e957: kernel32!BaseThreadInitThunk+0x17\n    00007ffb93d87c1c: ntdll!RtlUserThreadStart+0x2c\n```\n\nI analyzed the crash dump and found that it's about a double free of memory of `std::vector`.\nI checked the code and found `addLogEntry` is not protected by mutex:\n```cpp\n    template<typename ... Args>\n    [[maybe_unused]] void debug(fmt::format_string<Args...> fmt, Args && ... args) {\n        if (impl::isDebugLoggingEnabled()) [[unlikely]] {\n            impl::print(fg(impl::color::debug()) | fmt::emphasis::bold, \"[DEBUG]\", fmt, std::forward<Args>(args)...);\n        } else {\n            impl::addLogEntry(IMHEX_PROJECT_NAME, \"[DEBUG]\", fmt::format(fmt, std::forward<Args>(args)...));\n        }\n    }\n\n        void addLogEntry(std::string_view project, std::string_view level, std::string message) {\n            s_logEntries->emplace_back(\n                project,\n                level,\n                std::move(message)\n            );\n        }\n```\n\nThe `print` method is protected:\n```cpp\n    template<typename ... Args>\n    [[maybe_unused]] void print(fmt::format_string<Args...> fmt, Args && ... args) {\n        impl::lockLoggerMutex();\n        ON_SCOPE_EXIT { impl::unlockLoggerMutex(); };\n...\n```\n\n### How can the issue be reproduced?\n\nRight click a file and select \"open by ImHex\".\n\n### ImHex Version\n\n1.38.1\n\n### ImHex Build Type\n\n- [ ] Nightly or built from sources\n\n### Installation type\n\nMSI\n\n### Additional context?\n\n_No response_",
+        "url": "https://github.com/WerWolv/ImHex/issues/2751"
+    }
+]

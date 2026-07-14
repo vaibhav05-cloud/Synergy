@@ -1,0 +1,242 @@
+[
+    {
+        "sha": "7741dee822522ba02a84a0a232acec6e73cc7a7a",
+        "author": "Gosuke Miyashita",
+        "email": "gosukenator@gmail.com",
+        "date": "2026-07-05T01:27:51Z",
+        "message": "Bump version",
+        "url": "https://github.com/mizzy/specinfra/commit/7741dee822522ba02a84a0a232acec6e73cc7a7a"
+    },
+    {
+        "sha": "c2f55bf877bb2522873795e6283656b214de9921",
+        "author": "Gosuke Miyashita",
+        "email": "gosukenator@gmail.com",
+        "date": "2026-07-05T01:26:49Z",
+        "message": "Merge pull request #765 from ryot4/suppress-ohai-error\n\nhost_inventory/ohai: Suppress error messages to avoid parse error",
+        "url": "https://github.com/mizzy/specinfra/commit/c2f55bf877bb2522873795e6283656b214de9921"
+    },
+    {
+        "sha": "8b0c80dff0ea6ba4430a9a4fbb00163f602e8e9b",
+        "author": "ryot4",
+        "email": "ryot4@readonly.xyz",
+        "date": "2026-07-04T12:03:52Z",
+        "message": "host_inventory/ohai: Suppress error messages to avoid parse error\n\nohai prints errors to stderr, but when request_pty is true, they are\nmerged into stdout and causes parse error.",
+        "url": "https://github.com/mizzy/specinfra/commit/8b0c80dff0ea6ba4430a9a4fbb00163f602e8e9b"
+    },
+    {
+        "sha": "2bfa9a28b19ec4e7b57b8abf9da1c9a72d9b9eb1",
+        "author": "Gosuke Miyashita",
+        "email": "gosukenator@gmail.com",
+        "date": "2026-03-05T09:11:35Z",
+        "message": "Bump version\n\nCo-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>",
+        "url": "https://github.com/mizzy/specinfra/commit/2bfa9a28b19ec4e7b57b8abf9da1c9a72d9b9eb1"
+    },
+    {
+        "sha": "11e4e88363bd8ed014c36432be2334125ef2ca3a",
+        "author": "Gosuke Miyashita",
+        "email": "gosukenator@gmail.com",
+        "date": "2026-03-05T09:08:06Z",
+        "message": "Merge pull request #764 from elboulangero/add-support-for-kali-linux\n\nAdd support for Kali Linux",
+        "url": "https://github.com/mizzy/specinfra/commit/11e4e88363bd8ed014c36432be2334125ef2ca3a"
+    },
+    {
+        "sha": "45fb42597b38abc4b34f5315f53762c27c1cad24",
+        "author": "Arnaud Rebillout",
+        "email": "arnaudr@debian.org",
+        "date": "2026-03-05T06:41:48Z",
+        "message": "Add support for Kali Linux\n\nShould fix the following error on Kali Linux:\n\n```\nNameError:\n  uninitialized constant Specinfra::Command::Kali\n```",
+        "url": "https://github.com/mizzy/specinfra/commit/45fb42597b38abc4b34f5315f53762c27c1cad24"
+    },
+    {
+        "sha": "4f112c83ce11a111ae7ac16c7e29096f400617ad",
+        "author": "Gosuke Miyashita",
+        "email": "gosukenator@gmail.com",
+        "date": "2026-02-26T13:44:14Z",
+        "message": "Bump version",
+        "url": "https://github.com/mizzy/specinfra/commit/4f112c83ce11a111ae7ac16c7e29096f400617ad"
+    },
+    {
+        "sha": "e7f1900d6596096058ea78a6e667b8fe7efe99da",
+        "author": "Gosuke Miyashita",
+        "email": "gosukenator@gmail.com",
+        "date": "2026-02-26T13:43:40Z",
+        "message": "Merge pull request #763 from terceiro/suse-hijacks-debian\n\nSpecinfra::Helper::DetectOs::Suse: avoid misdetection when zypper is installed",
+        "url": "https://github.com/mizzy/specinfra/commit/e7f1900d6596096058ea78a6e667b8fe7efe99da"
+    },
+    {
+        "sha": "16d3118cc7aa056f6755be2874548c999b02078f",
+        "author": "Antonio Terceiro",
+        "email": "terceiro@debian.org",
+        "date": "2026-02-26T11:58:59Z",
+        "message": "Specinfra::Helper::DetectOs::Suse: avoid misdetection when zypper is installed\n\nI happened to have zypper installed on a Debian host (it's packaged in\nDebian), and this causes the SuSE detection to detect the system as\nbeing SuSE even though it's not.",
+        "url": "https://github.com/mizzy/specinfra/commit/16d3118cc7aa056f6755be2874548c999b02078f"
+    },
+    {
+        "sha": "8b269e9d556a01820b92a5fe838f1b7ac5c6c59a",
+        "author": "Gosuke Miyashita",
+        "email": "gosukenator@gmail.com",
+        "date": "2025-07-09T00:40:29Z",
+        "message": "Merge pull request #762 from zenspider/zenspider_skip_flaky_tests\n\nzenspider skip flaky tests",
+        "url": "https://github.com/mizzy/specinfra/commit/8b269e9d556a01820b92a5fe838f1b7ac5c6c59a"
+    },
+    {
+        "sha": "85db28a13bddabef3c516a435090daf5f6159b71",
+        "author": "Ryan Davis",
+        "email": "ryand-ruby@zenspider.com",
+        "date": "2025-07-09T00:19:53Z",
+        "message": "Sleeps should not be used in tests. This doesn't remove them but at least sets to n/10",
+        "url": "https://github.com/mizzy/specinfra/commit/85db28a13bddabef3c516a435090daf5f6159b71"
+    },
+    {
+        "sha": "e68475d53e2310aeff46aae82ae94b5d5d108e25",
+        "author": "Ryan Davis",
+        "email": "ryand-ruby@zenspider.com",
+        "date": "2025-07-09T00:14:54Z",
+        "message": "and going",
+        "url": "https://github.com/mizzy/specinfra/commit/e68475d53e2310aeff46aae82ae94b5d5d108e25"
+    },
+    {
+        "sha": "40727ccc08d9fa21cd94b314ba9eeebd15c84205",
+        "author": "Ryan Davis",
+        "email": "ryand-ruby@zenspider.com",
+        "date": "2025-07-09T00:12:02Z",
+        "message": "It just keeps going",
+        "url": "https://github.com/mizzy/specinfra/commit/40727ccc08d9fa21cd94b314ba9eeebd15c84205"
+    },
+    {
+        "sha": "1e7b230d69c72a288bc10d93e1d83bb696c551e4",
+        "author": "Ryan Davis",
+        "email": "ryand-ruby@zenspider.com",
+        "date": "2025-07-09T00:00:02Z",
+        "message": "Two more failures\n\nrspec ./spec/processor_spec.rb[1:2:1:2:1,1:2:1:2:2,1:2:2:1] --order random --seed 32573",
+        "url": "https://github.com/mizzy/specinfra/commit/1e7b230d69c72a288bc10d93e1d83bb696c551e4"
+    },
+    {
+        "sha": "ee083de78a0f7589a0c4ea754c242102630c83ad",
+        "author": "Ryan Davis",
+        "email": "ryand-ruby@zenspider.com",
+        "date": "2025-07-08T23:48:36Z",
+        "message": "Skip all tests that are leaky and causing test order dependency errors\n\nmostly running this sequence of commands:\n\n```\n$ rspec ./spec/backend/{ssh,lxd,dockercli} ./spec/backend/exec/build_command_spec.rb --order random\n$ rspec ./spec/backend/{ssh,lxd,dockercli} ./spec/backend/exec/build_command_spec.rb --order random --seed 49775\n$ rspec ./spec/backend/{ssh,lxd,dockercli} ./spec/backend/exec/build_command_spec.rb --order random --seed 49775 --bisect\n$ rspec ./spec/backend/exec/build_command_spec.rb[1:1:1:1,1:1:2:1,1:1:2:2,1:1:3:1,1:1:4:1,1:1:5:1,1:1:6:1,1:1:7:1] ./spec/backend/lxd/build_command_spec.rb[1:1:10:1] --order random --seed 49775\n```",
+        "url": "https://github.com/mizzy/specinfra/commit/ee083de78a0f7589a0c4ea754c242102630c83ad"
+    },
+    {
+        "sha": "bea3b1055729ca64ea70df6c79d8c6c10ad6e7d4",
+        "author": "Ryan Davis",
+        "email": "ryand-ruby@zenspider.com",
+        "date": "2025-07-08T23:47:00Z",
+        "message": "Remove .travis.yml",
+        "url": "https://github.com/mizzy/specinfra/commit/bea3b1055729ca64ea70df6c79d8c6c10ad6e7d4"
+    },
+    {
+        "sha": "b6b72c45a6df49d4b12a75926333f4b536ab516d",
+        "author": "Ryan Davis",
+        "email": "ryand-ruby@zenspider.com",
+        "date": "2025-07-08T23:09:24Z",
+        "message": "Mark locally failing test as skipped\n\nNeeds to stub out ALL the backends. I have no idea how this is passing\non CI/linux but it definitely fails on darwin locally.",
+        "url": "https://github.com/mizzy/specinfra/commit/b6b72c45a6df49d4b12a75926333f4b536ab516d"
+    },
+    {
+        "sha": "31025fa8c5f2a7fcb49e5cb5ba3e20880ddc0d0b",
+        "author": "Ryan Davis",
+        "email": "ryand-ruby@zenspider.com",
+        "date": "2025-07-08T23:08:54Z",
+        "message": "Clean up some random trailing whitespace",
+        "url": "https://github.com/mizzy/specinfra/commit/31025fa8c5f2a7fcb49e5cb5ba3e20880ddc0d0b"
+    },
+    {
+        "sha": "b8789be452d37efc3c13b59266de3918074623dc",
+        "author": "Ryan Davis",
+        "email": "ryand-ruby@zenspider.com",
+        "date": "2025-07-08T23:04:12Z",
+        "message": "Quell warning about duplicate in hash.",
+        "url": "https://github.com/mizzy/specinfra/commit/b8789be452d37efc3c13b59266de3918074623dc"
+    },
+    {
+        "sha": "433ba782f4abb533491a06be3417a02bc19fa9d5",
+        "author": "Gosuke Miyashita",
+        "email": "gosukenator@gmail.com",
+        "date": "2025-07-08T22:46:04Z",
+        "message": "Merge pull request #761 from zenspider/zenspider_ci_is_broken\n\nCI seems not to be running for the last year despite recent commits",
+        "url": "https://github.com/mizzy/specinfra/commit/433ba782f4abb533491a06be3417a02bc19fa9d5"
+    },
+    {
+        "sha": "b15db48328d8983a63686946b7091ac7db99d461",
+        "author": "Ryan Davis",
+        "email": "ryand-ruby@zenspider.com",
+        "date": "2025-07-08T22:32:32Z",
+        "message": "Get CI minimally working again\n\n* Add 3.3 and 3.4.\n* Drop rubies < 2.3.\n* Bump all older versions to be latest X.Y.\n* Nuke old ruby 2.2 test task.",
+        "url": "https://github.com/mizzy/specinfra/commit/b15db48328d8983a63686946b7091ac7db99d461"
+    },
+    {
+        "sha": "e4ca9967d0c296dd9cf1a9da68ab3a1b11448ec6",
+        "author": "Ryan Davis",
+        "email": "ryand-ruby@zenspider.com",
+        "date": "2025-07-08T22:17:37Z",
+        "message": "CI seems not to be running for the last year despite recent commits\n\nLocal runs are broken out of the box.\n\nCI is also very very out of date. 3.2 is the latest but next to EOL.\n\nPlease enable issues. This is hostile to contributions.\n\n```\n/Users/ryan/Work/p4/zss/usr/root/ansible/mitamae/specinfra/spec/host_inventory/base/user_spec.rb:38: warning: key \"root\" is duplicated and overwritten on line 57\n..........FFFFFFFF...................................FFFFFFFFFF..................................................................................................................................................................................................................................................................................................................................................................................................................................................................F....................................................................................................\n\nFailures:\n\n  1) Specinfra::Backend::Exec#build_command with simple command should escape spaces\n     Failure/Error: expect(Specinfra.backend.build_command('test -f /etc/passwd')).to eq '/bin/sh -c test\\ -f\\ /etc/passwd'\n\n       expected: \"/bin/sh -c test\\\\ -f\\\\ /etc/passwd\"\n            got: \"env PATH=\\\"/opt/bin:/opt/test & spec/bin:$PATH\\\" /bin/sh -c test\\\\ -f\\\\ /etc/passwd\"\n\n       (compared using ==)\n     # ./spec/backend/exec/build_command_spec.rb:11:in 'block (4 levels) in <top (required)>'\n\n  2) Specinfra::Backend::Exec#build_command with complex command should escape special chars\n     Failure/Error: expect(Specinfra.backend.build_command('test ! -f /etc/selinux/config || (getenforce | grep -i -- disabled && grep -i -- ^SELINUX=disabled$ /etc/selinux/config)')).to eq '/bin/sh -c test\\ \\!\\ -f\\ /etc/selinux/config\\ \\|\\|\\ \\(getenforce\\ \\|\\ grep\\ -i\\ --\\ disabled\\ \\&\\&\\ grep\\ -i\\ --\\ \\^SELINUX\\=disabled\\$\\ /etc/selinux/config\\)'\n\n       expected: \"/bin/sh -c test\\\\ \\\\!\\\\ -f\\\\ /etc/selinux/config\\\\ \\\\|\\\\|\\\\ \\\\(getenforce\\\\ \\\\|\\\\ grep\\\\ -i\\\\ --\\\\ disabled\\\\ \\\\&\\\\&\\\\ grep\\\\ -i\\\\ --\\\\ \\\\^SELINUX\\\\=disabled\\\\$\\\\ /etc/selinux/config\\\\)\"\n            got: \"env PATH=\\\"/opt/bin:/opt/test & spec/bin:$PATH\\\" /bin/sh -c test\\\\ \\\\!\\\\ -f\\\\ /etc/selinux/config\\\\ ...\\\\ -i\\\\ --\\\\ disabled\\\\ \\\\&\\\\&\\\\ grep\\\\ -i\\\\ --\\\\ \\\\^SELINUX\\\\=disabled\\\\$\\\\ /etc/selinux/config\\\\)\"\n\n       (compared using ==)\n     # ./spec/backend/exec/build_command_spec.rb:17:in 'block (4 levels) in <top (required)>'\n\n  3) Specinfra::Backend::Exec#build_command with complex command should escape quotes\n     Failure/Error: expect(Specinfra.backend.build_command(%Q{find /etc/apt/ -name \\*.list | xargs grep -o -E \"^deb +[\\\\\"']?http://ppa.launchpad.net/gluster/glusterfs-3.7\"})).to eq('/bin/sh -c find\\ /etc/apt/\\ -name\\ \\*.list\\ \\|\\ xargs\\ grep\\ -o\\ -E\\ \\\"\\^deb\\ +\\[\\\\\\\\\\\"\\\\\\'\\]\\?http://ppa.launchpad.net/gluster/glusterfs-3.7\\\"')\n\n       expected: \"/bin/sh -c find\\\\ /etc/apt/\\\\ -name\\\\ \\\\*.list\\\\ \\\\|\\\\ xargs\\\\ grep\\\\ -o\\\\ -E\\\\ \\\\\\\"\\\\^deb\\\\ +\\\\[\\\\\\\\\\\\\\\"\\\\'\\\\]\\\\?http://ppa.launchpad.net/gluster/glusterfs-3.7\\\\\\\"\"\n            got: \"env PATH=\\\"/opt/bin:/opt/test & spec/bin:$PATH\\\" /bin/sh -c find\\\\ /etc/apt/\\\\ -name\\\\ \\\\*.list\\\\ \\\\...ep\\\\ -o\\\\ -E\\\\ \\\\\\\"\\\\^deb\\\\ +\\\\[\\\\\\\\\\\\\\\"\\\\'\\\\]\\\\?http://ppa.launchpad.net/gluster/glusterfs-3.7\\\\\\\"\"\n\n       (compared using ==)\n     # ./spec/backend/exec/build_command_spec.rb:25:in 'block (4 levels) in <top (required)>'\n\n  4) Specinfra::Backend::Exec#build_command with custom shell should use custom shell\n     Failure/Error: expect(Specinfra.backend.build_command('test -f /etc/passwd')).to eq '/usr/local/bin/tcsh -c test\\ -f\\ /etc/passwd'\n\n       expected: \"/usr/local/bin/tcsh -c test\\\\ -f\\\\ /etc/passwd\"\n            got: \"env PATH=\\\"/opt/bin:/opt/test & spec/bin:$PATH\\\" /bin/sh -c test\\\\ -f\\\\ /etc/passwd\"\n\n       (compared using ==)\n     # ./spec/backend/exec/build_command_spec.rb:40:in 'block (4 levels) in <top (required)>'\n\n  5) Specinfra::Backend::Exec#build_command with custom shell that needs escaping should use custom shell\n     Failure/Error: expect(Specinfra.backend.build_command('test -f /etc/passwd')).to eq '/usr/test\\ \\&\\ spec/bin/sh -c test\\ -f\\ /etc/passwd'\n\n       expected: \"/usr/test\\\\ \\\\&\\\\ spec/bin/sh -c test\\\\ -f\\\\ /etc/passwd\"\n            got: \"env PATH=\\\"/opt/bin:/opt/test & spec/bin:$PATH\\\" /bin/sh -c test\\\\ -f\\\\ /etc/passwd\"\n\n       (compared using ==)\n     # ./spec/backend/exec/build_command_spec.rb:54:in 'block (4 levels) in <top (required)>'\n\n  6) Specinfra::Backend::Exec#build_command with an interactive shell should emulate an interactive shell\n     Failure/Error: expect(Specinfra.backend.build_command('test -f /etc/passwd')).to eq '/bin/sh -i -c test\\ -f\\ /etc/passwd'\n\n       expected: \"/bin/sh -i -c test\\\\ -f\\\\ /etc/passwd\"\n            got: \"env PATH=\\\"/opt/bin:/opt/test & spec/bin:$PATH\\\" /bin/sh -c test\\\\ -f\\\\ /etc/passwd\"\n\n       (compared using ==)\n     # ./spec/backend/exec/build_command_spec.rb:68:in 'block (4 levels) in <top (required)>'\n\n  7) Specinfra::Backend::Exec#build_command with an login shell should emulate an login shell\n     Failure/Error: expect(Specinfra.backend.build_command('test -f /etc/passwd')).to eq '/bin/sh -l -c test\\ -f\\ /etc/passwd'\n\n       expected: \"/bin/sh -l -c test\\\\ -f\\\\ /etc/passwd\"\n            got: \"env PATH=\\\"/opt/bin:/opt/test & spec/bin:$PATH\\\" /bin/sh -c test\\\\ -f\\\\ /etc/passwd\"\n\n       (compared using ==)\n     # ./spec/backend/exec/build_command_spec.rb:82:in 'block (4 levels) in <top (required)>'\n\n  8) Specinfra::Backend::Exec#build_command with custom path should use custom path\n     Failure/Error: expect(Specinfra.backend.build_command('test -f /etc/passwd')).to eq 'env PATH=\"/opt/bin:/opt/foo/bin:$PATH\" /bin/sh -c test\\ -f\\ /etc/passwd'\n\n       expected: \"env PATH=\\\"/opt/bin:/opt/foo/bin:$PATH\\\" /bin/sh -c test\\\\ -f\\\\ /etc/passwd\"\n            got: \"env PATH=\\\"/opt/bin:/opt/test & spec/bin:$PATH\\\" /bin/sh -c test\\\\ -f\\\\ /etc/passwd\"\n\n       (compared using ==)\n     # ./spec/backend/exec/build_command_spec.rb:96:in 'block (4 levels) in <top (required)>'\n\n  9) Specinfra::Backend::Ssh#build_command with root user should not prepend sudo\n     Failure/Error: expect(Specinfra.backend.build_command('test -f /etc/passwd')).to eq '/bin/sh -c test\\ -f\\ /etc/passwd'\n\n       expected: \"/bin/sh -c test\\\\ -f\\\\ /etc/passwd\"\n            got: \"env PATH=\\\"/opt/bin:/opt/test & spec/bin:$PATH\\\" /bin/sh -c test\\\\ -f\\\\ /etc/passwd\"\n\n       (compared using ==)\n     # ./spec/backend/ssh/build_command_spec.rb:30:in 'block (4 levels) in <top (required)>'\n\n  10) Specinfra::Backend::Ssh#build_command with root user should escape special characters\n      Failure/Error: expect(Specinfra.backend.build_command('test ! -f /etc/selinux/config || (getenforce | grep -i -- disabled && grep -i -- ^SELINUX=disabled$ /etc/selinux/config)')).to eq '/bin/sh -c test\\ \\!\\ -f\\ /etc/selinux/config\\ \\|\\|\\ \\(getenforce\\ \\|\\ grep\\ -i\\ --\\ disabled\\ \\&\\&\\ grep\\ -i\\ --\\ \\^SELINUX\\=disabled\\$\\ /etc/selinux/config\\)'\n\n        expected: \"/bin/sh -c test\\\\ \\\\!\\\\ -f\\\\ /etc/selinux/config\\\\ \\\\|\\\\|\\\\ \\\\(getenforce\\\\ \\\\|\\\\ grep\\\\ -i\\\\ --\\\\ disabled\\\\ \\\\&\\\\&\\\\ grep\\\\ -i\\\\ --\\\\ \\\\^SELINUX\\\\=disabled\\\\$\\\\ /etc/selinux/config\\\\)\"\n             got: \"env PATH=\\\"/opt/bin:/opt/test & spec/bin:$PATH\\\" /bin/sh -c test\\\\ \\\\!\\\\ -f\\\\ /etc/selinux/config\\\\ ...\\\\ -i\\\\ --\\\\ disabled\\\\ \\\\&\\\\&\\\\ grep\\\\ -i\\\\ --\\\\ \\\\^SELINUX\\\\=disabled\\\\$\\\\ /etc/selinux/config\\\\)\"\n\n        (compared using ==)\n      # ./spec/backend/ssh/build_command_spec.rb:34:in 'block (4 levels) in <top (required)>'\n\n  11) Specinfra::Backend::Ssh#build_command with non-root user should prepend sudo\n      Failure/Error: expect(Specinfra.backend.build_command('test -f /etc/passwd')).to eq %q{sudo -p 'Password: ' /bin/sh -c test\\ -f\\ /etc/passwd}\n\n        expected: \"sudo -p 'Password: ' /bin/sh -c test\\\\ -f\\\\ /etc/passwd\"\n             got: \"sudo -p 'Password: ' env PATH=\\\"/opt/bin:/opt/test & spec/bin:$PATH\\\" /bin/sh -c test\\\\ -f\\\\ /etc/passwd\"\n\n        (compared using ==)\n      # ./spec/backend/ssh/build_command_spec.rb:53:in 'block (4 levels) in <top (required)>'\n\n  12) Specinfra::Backend::Ssh#build_command with non-root user should escape special characters\n      Failure/Error: expect(Specinfra.backend.build_command('test ! -f /etc/selinux/config || (getenforce | grep -i -- disabled && grep -i -- ^SELINUX=disabled$ /etc/selinux/config)')).to eq %q{sudo -p 'Password: ' /bin/sh -c test\\ \\!\\ -f\\ /etc/selinux/config\\ \\|\\|\\ \\(getenforce\\ \\|\\ grep\\ -i\\ --\\ disabled\\ \\&\\&\\ grep\\ -i\\ --\\ \\^SELINUX\\=disabled\\$\\ /etc/selinux/config\\)}\n\n        expected: \"sudo -p 'Password: ' /bin/sh -c test\\\\ \\\\!\\\\ -f\\\\ /etc/selinux/config\\\\ \\\\|\\\\|\\\\ \\\\(getenforce\\\\ \\\\|...\\\\ -i\\\\ --\\\\ disabled\\\\ \\\\&\\\\&\\\\ grep\\\\ -i\\\\ --\\\\ \\\\^SELINUX\\\\=disabled\\\\$\\\\ /etc/selinux/config\\\\)\"\n             got: \"sudo -p 'Password: ' env PATH=\\\"/opt/bin:/opt/test & spec/bin:$PATH\\\" /bin/sh -c test\\\\ \\\\!\\\\ -f\\\\ /...\\\\ -i\\\\ --\\\\ disabled\\\\ \\\\&\\\\&\\\\ grep\\\\ -i\\\\ --\\\\ \\\\^SELINUX\\\\=disabled\\\\$\\\\ /etc/selinux/config\\\\)\"\n\n        (compared using ==)\n      # ./spec/backend/ssh/build_command_spec.rb:57:in 'block (4 levels) in <top (required)>'\n\n  13) Specinfra::Backend::Ssh#build_command with custom sudo path command pattern 1a\n      Failure/Error: expect(Specinfra.backend.build_command('test -f /etc/passwd')).to eq %q{/usr/local/bin/sudo -p 'Password: ' /bin/sh -c test\\ -f\\ /etc/passwd}\n\n        expected: \"/usr/local/bin/sudo -p 'Password: ' /bin/sh -c test\\\\ -f\\\\ /etc/passwd\"\n             got: \"/usr/local/bin/sudo -p 'Password: ' env PATH=\\\"/opt/bin:/opt/test & spec/bin:$PATH\\\" /bin/sh -c test\\\\ -f\\\\ /etc/passwd\"\n\n        (compared using ==)\n      # ./spec/backend/ssh/build_command_spec.rb:78:in 'block (4 levels) in <top (required)>'\n\n  14) Specinfra::Backend::Ssh#build_command with custom sudo path command pattern 2a\n      Failure/Error: expect(Specinfra.backend.build_command('test ! -f /etc/selinux/config || (getenforce | grep -i -- disabled && grep -i -- ^SELINUX=disabled$ /etc/selinux/config)')).to eq %q{/usr/local/bin/sudo -p 'Password: ' /bin/sh -c test\\ \\!\\ -f\\ /etc/selinux/config\\ \\|\\|\\ \\(getenforce\\ \\|\\ grep\\ -i\\ --\\ disabled\\ \\&\\&\\ grep\\ -i\\ --\\ \\^SELINUX\\=disabled\\$\\ /etc/selinux/config\\)}\n\n        expected: \"/usr/local/bin/sudo -p 'Password: ' /bin/sh -c test\\\\ \\\\!\\\\ -f\\\\ /etc/selinux/config\\\\ \\\\|\\\\|\\\\ \\\\(g...\\\\ -i\\\\ --\\\\ disabled\\\\ \\\\&\\\\&\\\\ grep\\\\ -i\\\\ --\\\\ \\\\^SELINUX\\\\=disabled\\\\$\\\\ /etc/selinux/config\\\\)\"\n             got: \"/usr/local/bin/sudo -p 'Password: ' env PATH=\\\"/opt/bin:/opt/test & spec/bin:$PATH\\\" /bin/sh -c test...\\\\ -i\\\\ --\\\\ disabled\\\\ \\\\&\\\\&\\\\ grep\\\\ -i\\\\ --\\\\ \\\\^SELINUX\\\\=disabled\\\\$\\\\ /etc/selinux/config\\\\)\"\n\n        (compared using ==)\n      # ./spec/backend/ssh/build_command_spec.rb:82:in 'block (4 levels) in <top (required)>'\n\n  15) Specinfra::Backend::Ssh#build_command without sudo command pattern 1b\n      Failure/Error: expect(Specinfra.backend.build_command('test -f /etc/passwd')).to eq '/bin/sh -c test\\ -f\\ /etc/passwd'\n\n        expected: \"/bin/sh -c test\\\\ -f\\\\ /etc/passwd\"\n             got: \"env PATH=\\\"/opt/bin:/opt/test & spec/bin:$PATH\\\" /bin/sh -c test\\\\ -f\\\\ /etc/passwd\"\n\n        (compared using ==)\n      # ./spec/backend/ssh/build_command_spec.rb:103:in 'block (4 levels) in <top (required)>'\n\n  16) Specinfra::Backend::Ssh#build_command without sudo command pattern 2b\n      Failure/Error: expect(Specinfra.backend.build_command('test ! -f /etc/selinux/config || (getenforce | grep -i -- disabled && grep -i -- ^SELINUX=disabled$ /etc/selinux/config)')).to eq '/bin/sh -c test\\ \\!\\ -f\\ /etc/selinux/config\\ \\|\\|\\ \\(getenforce\\ \\|\\ grep\\ -i\\ --\\ disabled\\ \\&\\&\\ grep\\ -i\\ --\\ \\^SELINUX\\=disabled\\$\\ /etc/selinux/config\\)'\n\n        expected: \"/bin/sh -c test\\\\ \\\\!\\\\ -f\\\\ /etc/selinux/config\\\\ \\\\|\\\\|\\\\ \\\\(getenforce\\\\ \\\\|\\\\ grep\\\\ -i\\\\ --\\\\ disabled\\\\ \\\\&\\\\&\\\\ grep\\\\ -i\\\\ --\\\\ \\\\^SELINUX\\\\=disabled\\\\$\\\\ /etc/selinux/config\\\\)\"\n             got: \"env PATH=\\\"/opt/bin:/opt/test & spec/bin:$PATH\\\" /bin/sh -c test\\\\ \\\\!\\\\ -f\\\\ /etc/selinux/config\\\\ ...\\\\ -i\\\\ --\\\\ disabled\\\\ \\\\&\\\\&\\\\ grep\\\\ -i\\\\ --\\\\ \\\\^SELINUX\\\\=disabled\\\\$\\\\ /etc/selinux/config\\\\)\"\n\n        (compared using ==)\n      # ./spec/backend/ssh/build_command_spec.rb:107:in 'block (4 levels) in <top (required)>'\n\n  17) Specinfra::Backend::Ssh#build_command with sudo on alternative path command pattern 1a is expected to eq \"sudo -p 'Password: ' /bin/sh -c test\\\\ -f\\\\ /etc/passwd\"\n      Failure/Error: it { should eq %q{sudo -p 'Password: ' /bin/sh -c test\\ -f\\ /etc/passwd} }\n\n        expected: \"sudo -p 'Password: ' /bin/sh -c test\\\\ -f\\\\ /etc/passwd\"\n             got: \"sudo -p 'Password: ' env PATH=\\\"/opt/bin:/opt/test & spec/bin:$PATH\\\" /bin/sh -c test\\\\ -f\\\\ /etc/passwd\"\n\n        (compared using ==)\n      # ./spec/backend/ssh/build_command_spec.rb:129:in 'block (5 levels) in <top (required)>'\n\n  18) Specinfra::Backend::Ssh#build_command with sudo on alternative path command pattern 2a is expected to eq \"sudo -p 'Password: ' /bin/sh -c test\\\\ \\\\!\\\\ -f\\\\ /etc/selinux/config\\\\ \\\\|\\\\|\\\\ \\\\(getenforce\\\\ \\\\|...\\\\ -i\\\\ --\\\\ disabled\\\\ \\\\&\\\\&\\\\ grep\\\\ -i\\\\ --\\\\ \\\\^SELINUX\\\\=disabled\\\\$\\\\ /etc/selinux/config\\\\)\"\n      Failure/Error: it { should eq %q{sudo -p 'Password: ' /bin/sh -c test\\ \\!\\ -f\\ /etc/selinux/config\\ \\|\\|\\ \\(getenforce\\ \\|\\ grep\\ -i\\ --\\ disabled\\ \\&\\&\\ grep\\ -i\\ --\\ \\^SELINUX\\=disabled\\$\\ /etc/selinux/config\\)} }\n\n        expected: \"sudo -p 'Password: ' /bin/sh -c test\\\\ \\\\!\\\\ -f\\\\ /etc/selinux/config\\\\ \\\\|\\\\|\\\\ \\\\(getenforce\\\\ \\\\|...\\\\ -i\\\\ --\\\\ disabled\\\\ \\\\&\\\\&\\\\ grep\\\\ -i\\\\ --\\\\ \\\\^SELINUX\\\\=disabled\\\\$\\\\ /etc/selinux/config\\\\)\"\n             got: \"sudo -p 'Password: ' env PATH=\\\"/opt/bin:/opt/test & spec/bin:$PATH\\\" /bin/sh -c test\\\\ \\\\!\\\\ -f\\\\ /...\\\\ -i\\\\ --\\\\ disabled\\\\ \\\\&\\\\&\\\\ grep\\\\ -i\\\\ --\\\\ \\\\^SELINUX\\\\=disabled\\\\$\\\\ /etc/selinux/config\\\\)\"\n\n        (compared using ==)\n      # ./spec/backend/ssh/build_command_spec.rb:134:in 'block (5 levels) in <top (required)>'\n\n  19) Specinfra::HostInventory::Kernel get it includes the value of os_info[:arch] in the key 'machine'\n      Failure/Error: raise NotImplementedError.new(\"#{method} is not implemented in #{command_class}\")\n\n      NotImplementedError:\n        get_kernel is not implemented in Specinfra::Command::Base::Inventory\n      # ./lib/specinfra/command_factory.rb:20:in 'Specinfra::CommandFactory#get'\n      # ./lib/specinfra/host_inventory/kernel.rb:8:in 'Specinfra::HostInventory::Kernel#get'\n      # ./spec/host_inventory/darwin/kernel_spec.rb:9:in 'block (3 levels) in <top (required)>'\n      # ./spec/host_inventory/darwin/kernel_spec.rb:11:in 'block (3 levels) in <top (required)>'\n\nFinished in 8.88 seconds (files took 0.18374 seconds to load)\n614 examples, 19 failures\n\nFailed examples:\n\nrspec ./spec/backend/exec/build_command_spec.rb:10 # Specinfra::Backend::Exec#build_command with simple command should escape spaces\nrspec ./spec/backend/exec/build_command_spec.rb:16 # Specinfra::Backend::Exec#build_command with complex command should escape special chars\nrspec ./spec/backend/exec/build_command_spec.rb:20 # Specinfra::Backend::Exec#build_command with complex command should escape quotes\nrspec ./spec/backend/exec/build_command_spec.rb:39 # Specinfra::Backend::Exec#build_command with custom shell should use custom shell\nrspec ./spec/backend/exec/build_command_spec.rb:53 # Specinfra::Backend::Exec#build_command with custom shell that needs escaping should use custom shell\nrspec ./spec/backend/exec/build_command_spec.rb:67 # Specinfra::Backend::Exec#build_command with an interactive shell should emulate an interactive shell\nrspec ./spec/backend/exec/build_command_spec.rb:81 # Specinfra::Backend::Exec#build_command with an login shell should emulate an login shell\nrspec ./spec/backend/exec/build_command_spec.rb:95 # Specinfra::Backend::Exec#build_command with custom path should use custom path\nrspec ./spec/backend/ssh/build_command_spec.rb:29 # Specinfra::Backend::Ssh#build_command with root user should not prepend sudo\nrspec ./spec/backend/ssh/build_command_spec.rb:33 # Specinfra::Backend::Ssh#build_command with root user should escape special characters\nrspec ./spec/backend/ssh/build_command_spec.rb:52 # Specinfra::Backend::Ssh#build_command with non-root user should prepend sudo\nrspec ./spec/backend/ssh/build_command_spec.rb:56 # Specinfra::Backend::Ssh#build_command with non-root user should escape special characters\nrspec ./spec/backend/ssh/build_command_spec.rb:77 # Specinfra::Backend::Ssh#build_command with custom sudo path command pattern 1a\nrspec ./spec/backend/ssh/build_command_spec.rb:81 # Specinfra::Backend::Ssh#build_command with custom sudo path command pattern 2a\nrspec ./spec/backend/ssh/build_command_spec.rb:102 # Specinfra::Backend::Ssh#build_command without sudo command pattern 1b\nrspec ./spec/backend/ssh/build_command_spec.rb:106 # Specinfra::Backend::Ssh#build_command without sudo command pattern 2b\nrspec ./spec/backend/ssh/build_command_spec.rb:129 # Specinfra::Backend::Ssh#build_command with sudo on alternative path command pattern 1a is expected to eq \"sudo -p 'Password: ' /bin/sh -c test\\\\ -f\\\\ /etc/passwd\"\nrspec ./spec/backend/ssh/build_command_spec.rb:134 # Specinfra::Backend::Ssh#build_command with sudo on alternative path command pattern 2a is expected to eq \"sudo -p 'Password: ' /bin/sh -c test\\\\ \\\\!\\\\ -f\\\\ /etc/selinux/config\\\\ \\\\|\\\\|\\\\ \\\\(getenforce\\\\ \\\\|...\\\\ -i\\\\ --\\\\ disabled\\\\ \\\\&\\\\&\\\\ grep\\\\ -i\\\\ --\\\\ \\\\^SELINUX\\\\=disabled\\\\$\\\\ /etc/selinux/config\\\\)\"\nrspec ./spec/host_inventory/darwin/kernel_spec.rb:10 # Specinfra::HostInventory::Kernel get it includes the value of os_info[:arch] in the key 'machine'\n```",
+        "url": "https://github.com/mizzy/specinfra/commit/e4ca9967d0c296dd9cf1a9da68ab3a1b11448ec6"
+    },
+    {
+        "sha": "292f6ed67721baa8546ccb1f4e1d611e36b7daf3",
+        "author": "Gosuke Miyashita",
+        "email": "gosukenator@gmail.com",
+        "date": "2025-06-22T04:38:07Z",
+        "message": "Merge pull request #760 from fuminori-ido/feature_fix_subclasses\n\nfix 'stack level too deep' caused by local re-definition of Class#subclasses",
+        "url": "https://github.com/mizzy/specinfra/commit/292f6ed67721baa8546ccb1f4e1d611e36b7daf3"
+    },
+    {
+        "sha": "80f9f443639f543facd029d137d99fb700572363",
+        "author": "ido",
+        "email": "ido-gh@wtech.jp",
+        "date": "2025-06-22T03:13:37Z",
+        "message": "fix 'stack level too deep' caused by local re-definition of Class#subclasses\n\nClass#subclasses is added officially since ruby 3.1 so that the local\ndefinition is no longer necessary.",
+        "url": "https://github.com/mizzy/specinfra/commit/80f9f443639f543facd029d137d99fb700572363"
+    },
+    {
+        "sha": "f72019c6df985caaa5cb2abd460ea112ed3bb80e",
+        "author": "Gosuke Miyashita",
+        "email": "gosukenator@gmail.com",
+        "date": "2025-04-26T00:27:19Z",
+        "message": "Bump version",
+        "url": "https://github.com/mizzy/specinfra/commit/f72019c6df985caaa5cb2abd460ea112ed3bb80e"
+    },
+    {
+        "sha": "12a431d6b851382ce81541240a7a9292ddfbc095",
+        "author": "Gosuke Miyashita",
+        "email": "gosukenator@gmail.com",
+        "date": "2025-04-26T00:26:15Z",
+        "message": "Merge pull request #759 from takumin/feat-platform-codename-host-inventory\n\nfeat: Add `platform_codename` host inventory",
+        "url": "https://github.com/mizzy/specinfra/commit/12a431d6b851382ce81541240a7a9292ddfbc095"
+    },
+    {
+        "sha": "6d8b4ec66288e4ff52259f1955a76e37d300360d",
+        "author": "Takumi Takahashi",
+        "email": "takumiiinn@gmail.com",
+        "date": "2025-04-25T08:07:54Z",
+        "message": "feat: Add `platform_codename` host inventory\n\nIn Debian and Ubuntu, codenames are used in various places, such as\nAPT repository settings.\n\nIf the codenames can be obtained from the host inventory, users will\nno longer need to check the /etc/os-release file individually.",
+        "url": "https://github.com/mizzy/specinfra/commit/6d8b4ec66288e4ff52259f1955a76e37d300360d"
+    },
+    {
+        "sha": "948e85ae707f5a7e4f42f5a36cde913503ecab76",
+        "author": "Gosuke Miyashita",
+        "email": "gosukenator@gmail.com",
+        "date": "2025-04-03T00:13:01Z",
+        "message": "Bump version",
+        "url": "https://github.com/mizzy/specinfra/commit/948e85ae707f5a7e4f42f5a36cde913503ecab76"
+    },
+    {
+        "sha": "1fe34ffa53bc910bd19a12858b9bf86ddb843eb6",
+        "author": "Gosuke Miyashita",
+        "email": "gosukenator@gmail.com",
+        "date": "2025-04-03T00:12:25Z",
+        "message": "Merge pull request #758 from chuhn/debian_testing_again\n\nDetect Debian Testing and assign a impossibly high version number",
+        "url": "https://github.com/mizzy/specinfra/commit/1fe34ffa53bc910bd19a12858b9bf86ddb843eb6"
+    },
+    {
+        "sha": "37562053158b7a1043c943f48f30fe63603e0203",
+        "author": "Christopher Huhn",
+        "email": "christo@knollhuhn.de",
+        "date": "2025-04-02T15:02:04Z",
+        "message": "Straighten out the logic and assign a conveniently high version number on detection of Debian Testing",
+        "url": "https://github.com/mizzy/specinfra/commit/37562053158b7a1043c943f48f30fe63603e0203"
+    }
+]

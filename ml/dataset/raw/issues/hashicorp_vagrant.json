@@ -1,0 +1,358 @@
+[
+    {
+        "id": 4815709317,
+        "number": 13828,
+        "title": "Add support for detecting VMware 26H1 in vagrant-vmware-utility",
+        "state": "open",
+        "created_at": "2026-07-06T03:29:17Z",
+        "updated_at": "2026-07-06T13:30:20Z",
+        "closed_at": null,
+        "author": "iexpurgator",
+        "comments": 1,
+        "labels": [
+            "enhancement",
+            "waiting-intake"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "**Is your feature request related to a problem? Please describe.**\nYes. I am trying to install `vagrant-vmware-utility`, but the installer reports that VMware is not installed. However, VMware is already installed on my machine. I am using the newer VMware version `26H1`, and it seems that `vagrant-vmware-utility` does not detect this version correctly.\n\n<img width=\"806\" height=\"564\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/10e81e73-7f00-4e9f-b4a3-4b0bdb40f8c9\" />\n\n\n**Describe the solution you'd like**\nI would like `vagrant-vmware-utility` to support and correctly detect VMware `26H1` during installation. The installer should recognize this version as a valid VMware installation and allow the installation to continue.\n\n**Describe alternatives you've considered**\nI have considered reinstalling VMware and `vagrant-vmware-utility`, but the issue appears to be related to version detection rather than a missing VMware installation. I have also considered using an older VMware version, but I would prefer to keep using the latest VMware release.\n\n**Additional context**\nVMware is already installed and working on my system, but `vagrant-vmware-utility` still shows an error saying that VMware is not installed. This may be caused by the installer only checking for older VMware versions or older installation paths/registry entries, and not recognizing the new `26H1` release.\n\n",
+        "url": "https://github.com/hashicorp/vagrant/issues/13828"
+    },
+    {
+        "id": 4787963494,
+        "number": 13826,
+        "title": "Nixos Libvirt plugin remote connection disconnect loop",
+        "state": "closed",
+        "created_at": "2026-07-01T17:47:20Z",
+        "updated_at": "2026-07-13T15:11:10Z",
+        "closed_at": "2026-07-13T15:11:10Z",
+        "author": "GuillaumeDorschner",
+        "comments": 3,
+        "labels": [
+            "waiting-intake"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Debug output\n\nhttps://gist.github.com/GuillaumeDorschner/558f3ea1e4a74a8ac9dca370562a4064\n\n### Expected behavior\n\nShould create 3 VM 2 servers 1 client with there respective IP.\n\n### Actual behavior\n\nCurrently i get the `Warning: Remote connection disconnect. Retrying...` in loop that never stops.\n```bash\n    server02: Warning: Connection reset. Retrying...\n    server02: Warning: Remote connection disconnect. Retrying...\n    server01: Warning: Connection reset. Retrying...\n    server01: Warning: Remote connection disconnect. Retrying...\n    server02: Warning: Connection reset. Retrying...\n    server01: Warning: Remote connection disconnect. Retrying...\n    server02: Warning: Remote connection disconnect. Retrying...\n    client01: Warning: Connection reset. Retrying...\n    server01: Warning: Connection reset. Retrying...\n```\nBut i can ssh into the VM (from an other terminal) but i don't get the configure IP.\n```bash\n➜  vagrant_test ✗ vagrant ssh server01\n[fog][WARNING] Unrecognized arguments: libvirt_ip_command\nvagrant@debian12:~$ ip a\n1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000\n    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00\n    inet 127.0.0.1/8 scope host lo\n       valid_lft forever preferred_lft forever\n2: eth0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc fq_codel state UP group default qlen 1000\n    link/ether 52:54:00:44:75:a4 brd ff:ff:ff:ff:ff:ff\n    altname enp0s5\n    altname ens5\n    inet 192.168.121.102/24 brd 192.168.121.255 scope global dynamic eth0\n       valid_lft 3309sec preferred_lft 3309sec\n3: eth1: <BROADCAST,MULTICAST> mtu 1500 qdisc noop state DOWN group default qlen 1000\n    link/ether 52:54:00:1e:7c:70 brd ff:ff:ff:ff:ff:ff\n    altname enp0s6\n    altname ens6\nvagrant@debian12:~$\n```\n\n#### Vagrant version\n\nVagrant 2.4.9\n\n#### Host operating system\n\nNixOS 25.11 with the libvirt plugin so i can directly use the virtual manager from my machine.\n\n#### Guest operating system\n\ngeneric/debian12\n\n#### Steps to reproduce\n\n1. Create vagrantfile\n2. run `vagrant up`\n\n#### Vagrantfile\n\n```ruby\n# -*- mode: ruby -*-\n# vi: set ft=ruby :\n\nNODES = [\n  { name: \"server01\",    ip: \"10.11.10.171\", ram: 4096 },\n  { name: \"server02\",    ip: \"10.11.10.172\", ram: 4096 },\n  { name: \"client01\", ip: \"10.11.10.11\", ram: 2048 },\n]\n\nVagrant.configure(\"2\") do |config|\n  config.vm.box = \"generic/debian12\"\n\n  NODES.each do |node|\n    config.vm.define node[:name] do |vm|\n      vm.vm.hostname = node[:name]\n      vm.vm.network :private_network, ip: node[:ip]\n\n      vm.vm.provider \"libvirt\" do |lv|\n        lv.memory = node[:ram]\n      end\n    end\n  end\nend\n```\n\n",
+        "url": "https://github.com/hashicorp/vagrant/issues/13826"
+    },
+    {
+        "id": 4659893695,
+        "number": 13821,
+        "title": "libvirt provider: VM fails to start with \"Permission denied\" on snapshot creation",
+        "state": "open",
+        "created_at": "2026-06-14T16:56:44Z",
+        "updated_at": "2026-06-14T16:56:44Z",
+        "closed_at": null,
+        "author": "tomislav-varga",
+        "comments": 0,
+        "labels": [
+            "waiting-intake"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "<!--\nPlease note that the Vagrant issue tracker is reserved for bug reports. For general usage questions, please use\nHashiCorp Discuss, https://discuss.hashicorp.com/c/vagrant/.\nWhen you submit a bug report, please provide the minimal configuration and required information necessary to reliably reproduce the issue. It\nshould include a basic Vagrantfile.\nThank you!\n-->\n\n### Summary\nSnapshot creation fails with \"Permission denied\" error when using libvirt provider on Ubuntu, even though file permissions are correctly set. The issue appears related to improper URL-encoding of the box image filename (containing \"VAGRANTSLASH\" instead of forward slash).\n\n### Debug output\n<!--\nProvide a link to a GitHub Gist containing the complete debug output, https://www.vagrantup.com/docs/other/debugging.html. \nThe debug output should be very long. Do NOT paste the debug output in the issue.\n-->\nFull debug output available at: https://gist.github.com/tomislav-varga/1fbe48ce2bd328526b20ce684475c10d\n\nKey error from `journalctl`:\nlibvirtd[4298]: internal error: process exited while connecting to monitor:\n2026-06-14T08:38:06.896141Z qemu-system-x86_64: -blockdev\n{\"driver\":\"file\",\"filename\":\"/var/lib/libvirt/images/cloud-image-VAGRANTSLASH-ubuntu-24.04_vagrant_box_image_20260518.0.0_box.img\"...}:\nCould not open '/var/lib/libvirt/images/cloud-image-VAGRANTSLASH-ubuntu-24.04_vagrant_box_image_20260518.0.0_box.img': Permission denied\n\n### Expected behavior\nVM should start successfully and snapshots should be created without permission errors. The box image filename should be properly encoded without \"VAGRANTSLASH\" placeholders.\n\n### Actual behavior\nWhen `vagrant up --provider=libvirt` runs and attempts to create a snapshot:\n1. Vagrant creates a box image with malformed filename: `cloud-image-VAGRANTSLASH-ubuntu-24.04_vagrant_box_image_20260518.0.0_box.img`\n2. QEMU fails to open the file with \"Permission denied\" error\n3. VM fails to start\n4. Subsequent `vagrant up` attempts fail with: `Call to virStorageVolCreateXML failed: storage volume 'cloud-image-VAGRANTSLASH-ubuntu-24.04_vagrant_box_image_20260518.0.0_box.img' exists already`\n\n### Reproduction information \n\n#### Vagrant version\n<!--\nUse `vagrant -v` to collect the version information. If you are not running the latest version\nof Vagrant, please upgrade before submitting an issue.\n-->\n`vagrant -v` output: Vagrant 2.4.9\n\n#### Host operating system\nUbuntu 24.04 LTS with libvirt/QEMU virtualization\n\n#### Guest operating system\nUbuntu 24.04\n\n#### Steps to reproduce\n1. Create a minimal Vagrantfile with libvirt provider and Ubuntu 24.04 box\n2. Run `VAGRANT_LOG=info vagrant up --provider=libvirt`\n3. Observe permission denied error during snapshot creation\n4. File permissions are correct: `-rw-r--r-- libvirt-qemu kvm` on the image file\n5. `/var/lib/libvirt/images/` directory permissions are correct: `drwx--x--x libvirt-qemu libvirt-qemu`\n\n#### Vagrantfile\n```ruby\nVagrant.configure(\"2\") do |config|\n  config.vm.box = \"cloud-image/ubuntu-24.04\"\n   config.vm.box_version = \"20260518.0.0\"\n   config.vm.synced_folder \".\", \"/vagrant\", disabled: true\n\n    libvirt.driver = \"kvm\"\n    libvirt.cpu_mode = \"host-passthrough\"\n  end\nend\n```\n\n### Additional Information\n- **AppArmor**: Disabled to rule out security policies - issue persists\n- **File attributes**: No immutable or restrictive attributes set\n- **Filename issue**: The presence of \"VAGRANTSLASH\" (likely URL-encoded `%2F`) in the image filename suggests a metadata/encoding bug in how Vagrant generates or references box images\n- **Workaround attempted**: Removing and re-adding boxes does not resolve the issue\n- **libvirt version**: libvirtd (libvirt) 10.0.0\n- **QEMU version**:\nQEMU emulator version 8.2.2 (Debian 1:8.2.2+ds-0ubuntu1.16)\nCopyright (c) 2003-2023 Fabrice Bellard and the QEMU Project developers\n",
+        "url": "https://github.com/hashicorp/vagrant/issues/13821"
+    },
+    {
+        "id": 4611397816,
+        "number": 13820,
+        "title": "Package not available in Fedora 44 repo",
+        "state": "open",
+        "created_at": "2026-06-08T08:55:52Z",
+        "updated_at": "2026-06-14T07:00:40Z",
+        "closed_at": null,
+        "author": "alehar",
+        "comments": 1,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "Please add vagrant to the Fedora 44 repo or update your webpage that Fedora 44 is not supported.\nThanks",
+        "url": "https://github.com/hashicorp/vagrant/issues/13820"
+    },
+    {
+        "id": 4557558807,
+        "number": 13817,
+        "title": "Enhancement Request: Allow ssh communicator using ssh cli",
+        "state": "open",
+        "created_at": "2026-05-31T12:34:02Z",
+        "updated_at": "2026-05-31T12:34:02Z",
+        "closed_at": null,
+        "author": "loynoir",
+        "comments": 0,
+        "labels": [
+            "enhancement",
+            "waiting-intake"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "**Is your feature request related to a problem? Please describe.**\n\nI'm frustrated when I found:\n\nThere is no way let ssh communicator using ssh cli, even\n\n- `VAGRANT_PREFER_SYSTEM_BIN=1`\n\n- `config.ssh.ssh_command = \"/path/to/custom/ssh/wrapper\"`\n\n**Describe the solution you'd like**\n\nAllow ssh communicator using ssh cli\n\n- when set `config.communicator.ssh.ssh_command`, use it\n\n- when set `config.ssh.ssh_command`, use it\n\n- when set `VAGRANT_PREFER_SYSTEM_BIN=1`, use `ssh` in PATH\n\n- fallback to pure ruby ssh implementation\n\n**Describe alternatives you've considered**\n\nNope.\n\n**Additional context**\n\n## prepare\n\n`/path/to/custom/ssh/wrapper`\n\n```shell\n#!/bin/bash\n\necho \"ssh $*\" >> /tmp/q.log\n\n# sleep to prevent ruby net-ssh retry leads to ugly warning\nsleep 60\n\nexec ssh \"$@\"\n```\n\n`Vagrantfile`\n\n```ruby\nVagrant.configure(\"2\") do |config|\n  ...\n  config.ssh.ssh_command = \"/path/to/custom/ssh/wrapper\"\n  ...\nend\n```\n\n## reproduce\n\n`/tmp/q.log` is not triggered\n\n```console\n$ tail -f /tmp/q.log &\n$ VAGRANT_PREFER_SYSTEM_BIN=1 vagrant up\n...\n    default: SSH address: XXX\n    default: SSH username: XXX\n    default: SSH auth method: XXX\n    default: Warning: Connection reset. Retrying...\n    default: Warning: Remote connection disconnect. Retrying...\n    default: Warning: Connection reset. Retrying...\n    default: Warning: Remote connection disconnect. Retrying...\n    default: Warning: Connection reset. Retrying...\n    default: Warning: Remote connection disconnect. Retrying...\n    default: Warning: Connection reset. Retrying...\n...\n```\n\n## trace\n\nSeems caused by\n\nhttps://github.com/hashicorp/vagrant/blob/main/plugins/communicators/ssh/communicator.rb#L101\n\nSeems caused by Pure Ruby implementation of an SSH (protocol 2) client\n\nhttps://github.com/net-ssh/net-ssh\n\n## similar\n\nhttps://doc.rust-lang.org/cargo/reference/config.html#netgit-fetch-with-cli\n\nnet.git-fetch-with-cli\n\n> If this is true, then Cargo will use the git executable to fetch registry indexes and git dependencies. \n> If false, then it uses a built-in git library.\n\nhttps://github.com/rust-lang/cargo/blob/master/src/cargo/sources/git/utils.rs#L1087-L1093\n\n`cargo` provide using git cli ability on top of pure rust git implementation `libgit2`.\n\nWould be nice to have:\n\n- `vagrant` provide using ssh cli ability on top of pure ruby ssh implementation `net-ssh`.\n",
+        "url": "https://github.com/hashicorp/vagrant/issues/13817"
+    },
+    {
+        "id": 4480201479,
+        "number": 13814,
+        "title": "Publish installer builds for Arm Linux",
+        "state": "open",
+        "created_at": "2026-05-19T19:01:53Z",
+        "updated_at": "2026-05-19T19:01:53Z",
+        "closed_at": null,
+        "author": "clayg",
+        "comments": 0,
+        "labels": [
+            "enhancement",
+            "waiting-intake"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "Got me one of those snapdragon processors in my lenovo laptop - the ubuntu repos don't have arm:\n\n```\nNotice: Skipping acquire of configured file 'main/binary-arm64/Packages' as repository 'https://apt.releases.hashicorp.com plucky InRelease' doesn't support architecture 'arm64'\n```\n\nhttps://releases.hashicorp.com/vagrant/2.4.9/\n\n^ all I see is darwin_arm64",
+        "url": "https://github.com/hashicorp/vagrant/issues/13814"
+    },
+    {
+        "id": 4381089055,
+        "number": 13811,
+        "title": "Package not available for Ubuntu 26.04",
+        "state": "open",
+        "created_at": "2026-05-05T02:35:36Z",
+        "updated_at": "2026-05-05T02:37:21Z",
+        "closed_at": null,
+        "author": "brlin-tw",
+        "comments": 0,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "Refer to the following error message of the `apt update` command:\n\n```text\nError: The repository 'https://apt.releases.hashicorp.com resolute Release' does not have a Release file.\nNotice: Updating from such a repository can't be done securely, and is therefore disabled by default.\nNotice: See apt-secure(8) manpage for repository creation and user configuration details.\n```\n\nAs 26.04 is released please add support to this distro version.\n\n## Known workaround\n\nInstall via Homebrew instead.",
+        "url": "https://github.com/hashicorp/vagrant/issues/13811"
+    },
+    {
+        "id": 4316693168,
+        "number": 13808,
+        "title": "Nessus security scan flags high severity vulnerability of embedded OpenSSL",
+        "state": "open",
+        "created_at": "2026-04-23T14:26:47Z",
+        "updated_at": "2026-04-23T14:30:13Z",
+        "closed_at": null,
+        "author": "Enrice",
+        "comments": 0,
+        "labels": [
+            "waiting-intake"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "As a follow-up to #13780 I should mention that there is a vulnerability in embedded OpenSSL 3.5 with severity High:\nhttps://openssl-library.org/news/vulnerabilities-3.5/#CVE-2025-15467\nand additionally also several other with severity Low and Moderate \n\nVersion in use: 2.4.9\nOperating System: Windows 11 AMD64",
+        "url": "https://github.com/hashicorp/vagrant/issues/13808"
+    },
+    {
+        "id": 4262377654,
+        "number": 13806,
+        "title": "vmware_fusion plugin install errors",
+        "state": "open",
+        "created_at": "2026-04-14T13:30:45Z",
+        "updated_at": "2026-04-14T13:30:45Z",
+        "closed_at": null,
+        "author": "ex0atmospheric",
+        "comments": 0,
+        "labels": [
+            "waiting-intake"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "platform Mac mini M1 arm64 architecture running MacOS 26.4.1 and VMWare Fusion Pro 25H2u1.\n\nuser executing has admin rights.\n\nvagrant-vmware-desktop and vagrant-parallels install fine with no errors.\n\n-----------------\nex0atmospheric@David-MM metasploitable3 % vagrant plugin install vagrant-vmware-fusion\nInstalling the 'vagrant-vmware-fusion' plugin. This can take a few minutes...\nBuilding native extensions. This could take a while...\nBuilding native extensions. This could take a while...\nVagrant failed to properly resolve required dependencies. These\nerrors can commonly be caused by misconfigured plugin installations\nor transient network issues. The reported error is:\n\nERROR: Failed to build gem native extension.\n\n    current directory: /Users/ex0atmospheric/.vagrant.d/gems/3.3.8/gems/vagrant-vmware-fusion-5.0.4/ext/vagrant-vmware-desktop\n/opt/vagrant/embedded/bin/ruby extconf.rb\n*** extconf.rb failed ***\nCould not create Makefile due to some reason, probably lack of necessary\nlibraries and/or headers.  Check the mkmf.log file for more details.  You may\nneed configuration options.\n\nProvided configuration options:\n\t--with-opt-dir\n\t--without-opt-dir\n\t--with-opt-include=${opt-dir}/include\n\t--without-opt-include\n\t--with-opt-lib=${opt-dir}/lib\n\t--without-opt-lib\n\t--with-make-prog\n\t--without-make-prog\n\t--srcdir=.\n\t--curdir\n\t--ruby=/opt/vagrant/embedded/bin/$(RUBY_BASE_NAME)\n\nextconf failed, exit code 1\n\nGem files will remain installed in /Users/ex0atmospheric/.vagrant.d/gems/3.3.8/gems/vagrant-vmware-fusion-5.0.4 for inspection.\nResults logged to /Users/ex0atmospheric/.vagrant.d/gems/3.3.8/extensions/arm64-darwin/3.3.0/vagrant-vmware-fusion-5.0.4/gem_make.out\n\nex0atmospheric@David-MM metasploitable3 % \nant issue tracker is reserved for bug reports. For general usage questions, please use\nHashiCorp Discuss, https://discuss.hashicorp.com/c/vagrant/.\n\nWhen you submit a bug report, please provide the minimal configuration and required information necessary to reliably reproduce the issue. It\nshould include a basic Vagrantfile.\n\nThank you!\n-->\n\n### Debug output\n\n<!--\nProvide a link to a GitHub Gist containing the complete debug output, https://www.vagrantup.com/docs/other/debugging.html. \n\nThe debug output should\nbe very long. Do NOT paste the debug output in the issue.\n-->\n\n### Expected behavior\n\n<!--\nWhat should have happened?\n-->\n\n### Actual behavior\n\n<!--\nWhat actually happened?\n-->\n\n### Reproduction information \n\n#### Vagrant version\n\n<!--\nUse `vagrant -v` to collect the version information. If you are not running the latest version\nof Vagrant, please upgrade before submitting an issue.\n-->\n\n#### Host operating system\n\n<!--\nYour local system.\n-->\n\n#### Guest operating system\n\n<!--\nThe operating system of the virtual machine.\n-->\n\n#### Steps to reproduce\n\n1.\n2.\n3.\n\n#### Vagrantfile\n\n```ruby\n# Copy-paste your Vagrantfile here. Remove any sensitive information such as passwords, authentication tokens, or email addresses.\n```\n\n<!--\nAlways start with a minimal Vagrantfile and include only the relevant configuration\nto reproduce the reported behavior.\n-->\n\n",
+        "url": "https://github.com/hashicorp/vagrant/issues/13806"
+    },
+    {
+        "id": 4230741399,
+        "number": 13803,
+        "title": "use_dhcp_assigned_default_route KO with Debian Trixie",
+        "state": "open",
+        "created_at": "2026-04-09T08:34:37Z",
+        "updated_at": "2026-04-09T08:34:37Z",
+        "closed_at": null,
+        "author": "didiermfb",
+        "comments": 0,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "Hello,\n\nWhen we use use_dhcp_assigned_default_route on a Debian Trixie box, Vagrant stop with the following error:\n```\nThe following SSH command responded with a non-zero exit status.\nVagrant assumes that this means the command failed!\n/sbin/ifup 'eth1'\nStdout from the command:\nStderr from the command:\ndhcpcd already running on pid 1825 (/run/dhcpcd/eth1.pid)\nifup: failed to bring up eth1\n```\nIt probably related to this line: https://github.com/hashicorp/vagrant/blob/main/templates/guests/debian/network_dhcp.erb#L10\nisc-dhcp-client is EOL and not installed by default anymore. It can be installed but for how long?\n",
+        "url": "https://github.com/hashicorp/vagrant/issues/13803"
+    },
+    {
+        "id": 4127496994,
+        "number": 13795,
+        "title": "Ubuntu 24.04 hangs on shutdown when using VirtualBox synced folders",
+        "state": "closed",
+        "created_at": "2026-03-24T12:26:21Z",
+        "updated_at": "2026-06-30T02:46:20Z",
+        "closed_at": "2026-05-30T09:42:46Z",
+        "author": "giner",
+        "comments": 0,
+        "labels": [
+            "waiting-intake"
+        ],
+        "assignees": [],
+        "locked": true,
+        "body": "Ubuntu 24.04 and probably other distributions which use recent versions of systemd hang on shutdown if any local synced folders are mounted (`/vagrant` is mounted by default unless explicitly disabled). The issue was introduced in https://github.com/hashicorp/vagrant/pull/12184 but didn't manifest itself with older version of systemd. Manual unmounting of the folders before running `poweroff` or `vagrant halt` makes shutdown proceed smoothly.",
+        "url": "https://github.com/hashicorp/vagrant/issues/13795"
+    },
+    {
+        "id": 4005017835,
+        "number": 13789,
+        "title": "is:issue state:open",
+        "state": "open",
+        "created_at": "2026-02-28T17:15:43Z",
+        "updated_at": "2026-07-06T14:45:25Z",
+        "closed_at": null,
+        "author": "nicolasbarbosilva-hub",
+        "comments": 1,
+        "labels": [
+            "waiting-intake"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "<!--\nPlease note that the Vagrant issue tracker is reserved for bug reports. For general usage questions, please use\nHashiCorp Discuss, https://discuss.hashicorp.com/c/vagrant/.\n\nWhen you submit a bug report, please provide the minimal configuration and required information necessary to reliably reproduce the issue. It\nshould include a basic Vagrantfile.\n\nThank you!\n-->\n\n### Debug output\n\n<!--\nProvide a link to a GitHub Gist containing the complete debug output, https://www.vagrantup.com/docs/other/debugging.html. \n\nThe debug output should\nbe very long. Do NOT paste the debug output in the issue.\n-->\n\n### Expected behavior\n\n<!--\nWhat should have happened?\n-->\n\n### Actual behavior\n\n<!--\nWhat actually happened?\n-->\n\n### Reproduction information \n\n#### Vagrant version\n\n<!--\nUse `vagrant -v` to collect the version information. If you are not running the latest version\nof Vagrant, please upgrade before submitting an issue.\n-->\n\n#### Host operating system\n\n<!--\nYour local system.\n-->\n\n#### Guest operating system\n\n<!--\nThe operating system of the virtual machine.\n-->\n\n#### Steps to reproduce\n\n1.\n2.\n3.\n\n#### Vagrantfile\n\n```ruby\n# Copy-paste your Vagrantfile here. Remove any sensitive information such as passwords, authentication tokens, or email addresses.\n```\n\n<!--\nAlways start with a minimal Vagrantfile and include only the relevant configuration\nto reproduce the reported behavior.\n-->\n\n",
+        "url": "https://github.com/hashicorp/vagrant/issues/13789"
+    },
+    {
+        "id": 3817049272,
+        "number": 13780,
+        "title": "Nessus scan of Vagrant 2.4.9 flagging High / Medium threats",
+        "state": "open",
+        "created_at": "2026-01-15T10:58:32Z",
+        "updated_at": "2026-02-03T16:34:22Z",
+        "closed_at": null,
+        "author": "tomworks",
+        "comments": 1,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "We have Nessus vulnerability scans of our machines and currently it is flagging several issues with Vagrant 2.4.9 on Mac OS X:\n \nRuby Rack < 2.2.19 / 3.1.x < 3.1.17 / 3.2.x < 3.2.2 Multiple Vulnerabilities\nCVSS Rating 7.5 (v3)\nPath              : /opt/vagrant/embedded/gems/specifications/rack-3.2.0.gemspec\n  Installed version : 3.2.0\n  Fixed version     : 3.2.2\n \nRuby REXML 3.3.3 < 3.4.2 DoS vulnerability\nCVSS Rating 5.3 (v3)\nCVE-2025-58767\nPath              : /opt/vagrant/embedded/gems/specifications/rexml-3.4.1.gemspec\n  Installed version : 3.4.1\n  Fixed version     : 3.4.2\n \n  Path              : /opt/vagrant/embedded/lib/ruby/gems/3.3.0/specifications/rexml-3.3.9.gemspec\n  Installed version : 3.3.9\n  Fixed version     : 3.4.2\n \nReported on security@hashicorp.com with no response.",
+        "url": "https://github.com/hashicorp/vagrant/issues/13780"
+    },
+    {
+        "id": 3778924617,
+        "number": 13775,
+        "title": "Hyper-V provider fails admin check under PowerShell CLM (Constrained Language Mode)",
+        "state": "open",
+        "created_at": "2026-01-04T07:00:32Z",
+        "updated_at": "2026-01-04T07:18:05Z",
+        "closed_at": null,
+        "author": "granstrand",
+        "comments": 1,
+        "labels": [
+            "waiting-intake"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "When using Vagrant to manage Hyper-V guests on Windows hosts, even with\nWindows Terminal running as administrator (run as admin), Vagrant still\ncomplains that it is **not** running with administrative privileges.\n\n<details>\n  <summary>Expand for PowerShell prompt</summary>\n\n```powershell\nPS D:\\vm\\vw11> net session >$null 2>&1; if($LASTEXITCODE){'not admin'}else{'admin'}\nadmin\nPS D:\\vm\\vw11> vagrant up --provider=hyperv\nThe provider 'hyperv' that was requested to back the machine\n'default' is reporting that it isn't usable on this system. The\nreason is shown below:\n\nThe Hyper-V provider requires that Vagrant be run with\nadministrative privileges. This is a limitation of Hyper-V itself.\nHyper-V requires administrative privileges for management\ncommands. Please restart your console with administrative\nprivileges and try again.\nPS D:\\vm\\vw11>\n```\n\n</details>\n\nAfter checking the debug log, it appears that Windows security measures are\ncausing Vagrant's Hyper-V provider to malfunction -- our Info Security and IT\ndepartment mandates that PowerShell runs under [Constrained Language Mode]\n(CLM) due to cybersecurity concerns.\n\n\n\n[Constrained Language Mode]: https://devblogs.microsoft.com/powershell/powershell-constrained-language-mode/\n\n\nSeveral existing issues are potentially relevant:\n\n- #12685\n- #13183 (lacking debug output, but similar symptom)\n\n<!--\nPlease note that the Vagrant issue tracker is reserved for bug reports. For general usage questions, please use\nHashiCorp Discuss, https://discuss.hashicorp.com/c/vagrant/.\n\nWhen you submit a bug report, please provide the minimal configuration and required information necessary to reliably reproduce the issue. It\nshould include a basic Vagrantfile.\n\n-->\n\n\n---\n\n### Debug output\n\nIn the debug output, we can see that three basic checks Vagrant performs to\nverify Hyper-V availability have failed, presumably because PowerShell lacks\nthe necessary capabilities under CLM.\n\n```powershell\n(new-object System.Security.Principal.WindowsPrincipal([System.Security.Principal.WindowsIdentity]::GetCurrent())\n ).IsInRole([System.Security.Principal.WindowsBuiltInRole]::Administrator)\nWrite-Output ([System.Security.Principal.WindowsIdentity]::GetCurrent().Groups | Select-Object Value | ConvertTo-JSON)\n$x = (Get-VMHost).Name; if($x -eq [System.Net.Dns]::GetHostName()){ Write-Output 'true'}\n```\n\n<details>\n  <summary>Relevant debug log section</summary>\n\n```ini\nINFO environment: Getting machine: default (hyperv)\nINFO environment: Uncached load of machine.\nDEBUG powershell: preferred powershell executable name: pwsh\nDEBUG powershell: detected powershell for \"pwsh\" - C:\\Program Files\\PowerShell\\7/pwsh.EXE\nDEBUG powershell: detected powershell for \"powershell\" - C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\/powershell.EXE\nDEBUG powershell: using preferred powershell \"pwsh\" - C:\\Program Files\\PowerShell\\7/pwsh.EXE\nINFO subprocess: Starting process: [\"C:\\\\Program Files\\\\PowerShell\\\\7/pwsh.EXE\", \"-NoLogo\", \"-NoProfile\", \"-NonInteractive\", \"-ExecutionPolicy\", \"Bypass\", \"-Command\", \"Write-Output $PSVersionTable.PSVersion.Major\"]\nINFO subprocess: Command not in installer, restoring original environment...\nDEBUG subprocess: Selecting on IO\nDEBUG subprocess: Waiting for process to exit. Remaining to timeout: 29\nDEBUG subprocess: Exit status: 0\nINFO subprocess: Starting process: [\"C:\\\\Program Files\\\\PowerShell\\\\7/pwsh.EXE\", \"-NoLogo\", \"-NoProfile\", \"-NonInteractive\", \"-ExecutionPolicy\", \"Bypass\", \"-Command\", \"(new-object System.Security.Principal.WindowsPrincipal([System.Security.Principal.WindowsIdentity]::GetCurrent())).IsInRole([System.Security.Principal.WindowsBuiltInRole]::Administrator)\"]\nINFO subprocess: Command not in installer, restoring original environment...\nDEBUG subprocess: Selecting on IO\nDEBUG subprocess: Waiting for process to exit. Remaining to timeout: 32000\nDEBUG subprocess: Exit status: 1\nINFO subprocess: Starting process: [\"C:\\\\Program Files\\\\PowerShell\\\\7/pwsh.EXE\", \"-NoLogo\", \"-NoProfile\", \"-NonInteractive\", \"-ExecutionPolicy\", \"Bypass\", \"-Command\", \"Write-Output ([System.Security.Principal.WindowsIdentity]::GetCurrent().Groups | Select-Object Value | ConvertTo-JSON)\"]\nINFO subprocess: Command not in installer, restoring original environment...\nDEBUG subprocess: Selecting on IO\nDEBUG subprocess: Waiting for process to exit. Remaining to timeout: 32000\nDEBUG subprocess: Exit status: 1\nINFO subprocess: Starting process: [\"C:\\\\Program Files\\\\PowerShell\\\\7/pwsh.EXE\", \"-NoLogo\", \"-NoProfile\", \"-NonInteractive\", \"-ExecutionPolicy\", \"Bypass\", \"-Command\", \"$x = (Get-VMHost).Name; if($x -eq [System.Net.Dns]::GetHostName()){ Write-Output 'true'}\"]\nINFO subprocess: Command not in installer, restoring original environment...\nDEBUG subprocess: Selecting on IO\nDEBUG subprocess: Waiting for process to exit. Remaining to timeout: 32000\nDEBUG subprocess: Exit status: 1\nINFO environment: Running hook: environment_unload\n```\n\n</details>\n\n- Full debug output: https://pastebin.com/2MMZSHwP\n\n<!--\nProvide a link to a GitHub Gist containing the complete debug output, https://www.vagrantup.com/docs/other/debugging.html.\n\nThe debug output should\nbe very long. Do NOT paste the debug output in the issue.\n-->\n\n### Expected behavior\n\n- Expect Vagrant Hyper-V provider to correctly tell it's run as admin.\n\n<!--\nWhat should have happened?\n-->\n\n### Actual behavior\n\n- Vagrant Hyper-V provider refuse to run even when the console is already running with administrative privileges.\n\n<!--\nWhat actually happened?\n-->\n\n### Reproduction information\n\n#### Vagrant version\n\n- Vagrant 2.4.9\n    - Installed via winget\n\n<!--\nUse `vagrant -v` to collect the version information. If you are not running the latest version\nof Vagrant, please upgrade before submitting an issue.\n-->\n\n#### Host operating system\n\n- Windows 11 x64 24H2\n    - Microsoft Windows NT 10.0.26100.0\n\n<!--\nYour local system.\n-->\n\n#### Guest operating system\n\n- Windows 11 x64 25H2\n    - `gusztavvargadr/windows-11-25h2-enterprise`\n\n<!--\nThe operating system of the virtual machine.\n-->\n\n#### Steps to reproduce\n\n1. Enable Hyper-V with `Enable-WindowsOptionalFeature -Online -FeatureName Microsoft-Hyper-V -All`\n2. Reboot host machine if needed.\n3. Install latest Vagrant with winget: `winget install --source winget vagrant`\n4. Launch a new Windows Terminal window as administrator.\n5. Create a folder and put Vagrantfile into it\n   ```\n   mkdir D:\\vm\\vw11\n   mv Vagrantfile D:\\vm\\vw11\n   ```\n6. Run `vagrant up --provider=hyperv`\n\n#### Vagrantfile\n\n<details>\n<summary>Expand for Vagrantfile</summary>\n\n```ruby\n# -*- mode: ruby -*-\n# vi: set ft=ruby :\n\nVagrant.configure(\"2\") do |config|\n  config.vm.box = \"gusztavvargadr/windows-11-25h2-enterprise\"\n  config.vm.box_version = \"2511.0.0\"\n  config.vm.communicator = \"winrm\"\n  config.vm.boot_timeout = 600\n  config.vm.provider \"hyperv\" do |h|\n    h.cpus = 4\n    h.memory = 8192\n    h.enable_virtualization_extensions = true # nested virtualization\n    h.linked_clone = true  # save host space and speed up deployment\n  end\n\n  # config.vm.provision \"shell\", path: \"scripts/setup-dev-env.ps1\"\n  # the ps1 currently only contains `winget source update`\nend\n```\n\n</details>\n\n<!--\nAlways start with a minimal Vagrantfile and include only the relevant configuration\nto reproduce the reported behavior.\n-->\n",
+        "url": "https://github.com/hashicorp/vagrant/issues/13775"
+    },
+    {
+        "id": 3748707942,
+        "number": 13770,
+        "title": "404 http error when downloading vagrant rockylinux 9 box version 6.0.0",
+        "state": "closed",
+        "created_at": "2025-12-19T20:09:34Z",
+        "updated_at": "2026-01-20T02:31:57Z",
+        "closed_at": "2025-12-20T04:53:33Z",
+        "author": "Cepxio",
+        "comments": 1,
+        "labels": [
+            "question"
+        ],
+        "assignees": [],
+        "locked": true,
+        "body": "Hi guys!\n\nI'm trying to get the vbox from the hashicorp hub but the box was removed because the rockylinux version 9.6 is archived.\nI have solved it by using `box_url`, but it would be nice to update the hub with the latest releases :)",
+        "url": "https://github.com/hashicorp/vagrant/issues/13770"
+    },
+    {
+        "id": 3739198861,
+        "number": 13769,
+        "title": "Command `vagrant powershell` fails to start a remote session automatically when running from PowerShell 7.5.4",
+        "state": "open",
+        "created_at": "2025-12-17T14:44:17Z",
+        "updated_at": "2025-12-17T14:44:17Z",
+        "closed_at": null,
+        "author": "nurbo",
+        "comments": 0,
+        "labels": [
+            "waiting-intake"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "<!--\nPlease note that the Vagrant issue tracker is reserved for bug reports. For general usage questions, please use\nHashiCorp Discuss, https://discuss.hashicorp.com/c/vagrant/.\n\nWhen you submit a bug report, please provide the minimal configuration and required information necessary to reliably reproduce the issue. It\nshould include a basic Vagrantfile.\n\nThank you!\n-->\n\nWhen using the `vagrant powershell` command from PowerShell 7.5.4 the session cannot be automatically created and a prompt for entering username/password is displayed.\n\nThe issue does not appear with the system PowerShell 5.1.26100.7462.\n\n### Debug output\n\nBefore running the `vagrant powershell` command I opened a new shell without loading the profile (`pwsh.exe -NoProfile`) and did the following:\n\n```powershell\nvagrant init gusztavvargadr/windows-11-24h2-enterprise --box-version 2511.0.0\nvagrant up\n```\n\nOutput of `vagrant powershell --debug`:\n\n```log\nDEBUG host: Searching for cap: ps_client\nDEBUG host: Checking in: windows\nDEBUG host: Found cap: ps_client in windows\n INFO host: Execute capability: ps_client [#<Vagrant::Environment: C:/REDACTED>, {:host=>\"127.0.0.1\", :port=>55985, :username=>\"vagrant\", :password=>\"vagrant\", :extra_args=>nil}] (windows)\nDEBUG windows: Starting remote powershell with command:\n            $plain_password = \"vagrant\"\n            $username = \"vagrant\"\n            $port = \"55985\"\n            $hostname = \"127.0.0.1\"\n            $password = ConvertTo-SecureString $plain_password -asplaintext -force\n            $creds = New-Object System.Management.Automation.PSCredential (\"$hostname\\$username\", $password)\n            function prompt { kill $PID }\n            Enter-PSSession -ComputerName $hostname -Credential $creds -Port $port\n\nDEBUG safe_exec: Converting command and arguments to common UTF-8 encoding for exec.\nDEBUG safe_exec: Command: `\"powershell\"` Args: `[\"-NoProfile\", \"-ExecutionPolicy\", \"Bypass\", \"-NoExit\", \"-EncodedCommand\", \"IAAgACAAIAAgACAAIAAgACAAIAAgACAAJABwAGwAYQBpAG4AXwBwAGEAcwBzAHcAbwByAGQAIAA9ACAAIgB2AGEAZwByAGEAbgB0ACIACgAgACAAIAAgACAAIAAgACAAIAAgACAAIAAkAHUAcwBlAHIAbgBhAG0AZQAgAD0AIAAiAHYAYQBnAHIAYQBuAHQAIgAKACAAIAAgACAAIAAgACAAIAAgACAAIAAgACQAcABvAHIAdAAgAD0AIAAiADUANQA5ADgANQAiAAoAIAAgACAAIAAgACAAIAAgACAAIAAgACAAJABoAG8AcwB0AG4AYQBtAGUAIAA9ACAAIgAxADIANwAuADAALgAwAC4AMQAiAAoAIAAgACAAIAAgACAAIAAgACAAIAAgACAAJABwAGEAcwBzAHcAbwByAGQAIAA9ACAAQwBvAG4AdgBlAHIAdABUAG8ALQBTAGUAYwB1AHIAZQBTAHQAcgBpAG4AZwAgACQAcABsAGEAaQBuAF8AcABhAHMAcwB3AG8AcgBkACAALQBhAHMAcABsAGEAaQBuAHQAZQB4AHQAIAAtAGYAbwByAGMAZQAKACAAIAAgACAAIAAgACAAIAAgACAAIAAgACQAYwByAGUAZABzACAAPQAgAE4AZQB3AC0ATwBiAGoAZQBjAHQAIABTAHkAcwB0AGUAbQAuAE0AYQBuAGEAZwBlAG0AZQBuAHQALgBBAHUAdABvAG0AYQB0AGkAbwBuAC4AUABTAEMAcgBlAGQAZQBuAHQAaQBhAGwAIAAoACIAJABoAG8AcwB0AG4AYQBtAGUAXAAkAHUAcwBlAHIAbgBhAG0AZQAiACwAIAAkAHAAYQBzAHMAdwBvAHIAZAApAAoAIAAgACAAIAAgACAAIAAgACAAIAAgACAAZgB1AG4AYwB0AGkAbwBuACAAcAByAG8AbQBwAHQAIAB7ACAAawBpAGwAbAAgACQAUABJAEQAIAB9AAoAIAAgACAAIAAgACAAIAAgACAAIAAgACAARQBuAHQAZQByAC0AUABTAFMAZQBzAHMAaQBvAG4AIAAtAEMAbwBtAHAAdQB0AGUAcgBOAGEAbQBlACAAJABoAG8AcwB0AG4AYQBtAGUAIAAtAEMAcgBlAGQAZQBuAHQAaQBhAGwAIAAkAGMAcgBlAGQAcwAgAC0AUABvAHIAdAAgACQAcABvAHIAdAAKAA==\"]`\nDEBUG safe_exec: Converted - Command: `\"powershell\"` Args: `[\"-NoProfile\", \"-ExecutionPolicy\", \"Bypass\", \"-NoExit\", \"-EncodedCommand\", \"IAAgACAAIAAgACAAIAAgACAAIAAgACAAJABwAGwAYQBpAG4AXwBwAGEAcwBzAHcAbwByAGQAIAA9ACAAIgB2AGEAZwByAGEAbgB0ACIACgAgACAAIAAgACAAIAAgACAAIAAgACAAIAAkAHUAcwBlAHIAbgBhAG0AZQAgAD0AIAAiAHYAYQBnAHIAYQBuAHQAIgAKACAAIAAgACAAIAAgACAAIAAgACAAIAAgACQAcABvAHIAdAAgAD0AIAAiADUANQA5ADgANQAiAAoAIAAgACAAIAAgACAAIAAgACAAIAAgACAAJABoAG8AcwB0AG4AYQBtAGUAIAA9ACAAIgAxADIANwAuADAALgAwAC4AMQAiAAoAIAAgACAAIAAgACAAIAAgACAAIAAgACAAJABwAGEAcwBzAHcAbwByAGQAIAA9ACAAQwBvAG4AdgBlAHIAdABUAG8ALQBTAGUAYwB1AHIAZQBTAHQAcgBpAG4AZwAgACQAcABsAGEAaQBuAF8AcABhAHMAcwB3AG8AcgBkACAALQBhAHMAcABsAGEAaQBuAHQAZQB4AHQAIAAtAGYAbwByAGMAZQAKACAAIAAgACAAIAAgACAAIAAgACAAIAAgACQAYwByAGUAZABzACAAPQAgAE4AZQB3AC0ATwBiAGoAZQBjAHQAIABTAHkAcwB0AGUAbQAuAE0AYQBuAGEAZwBlAG0AZQBuAHQALgBBAHUAdABvAG0AYQB0AGkAbwBuAC4AUABTAEMAcgBlAGQAZQBuAHQAaQBhAGwAIAAoACIAJABoAG8AcwB0AG4AYQBtAGUAXAAkAHUAcwBlAHIAbgBhAG0AZQAiACwAIAAkAHAAYQBzAHMAdwBvAHIAZAApAAoAIAAgACAAIAAgACAAIAAgACAAIAAgACAAZgB1AG4AYwB0AGkAbwBuACAAcAByAG8AbQBwAHQAIAB7ACAAawBpAGwAbAAgACQAUABJAEQAIAB9AAoAIAAgACAAIAAgACAAIAAgACAAIAAgACAARQBuAHQAZQByAC0AUABTAFMAZQBzAHMAaQBvAG4AIAAtAEMAbwBtAHAAdQB0AGUAcgBOAGEAbQBlACAAJABoAG8AcwB0AG4AYQBtAGUAIAAtAEMAcgBlAGQAZQBuAHQAaQBhAGwAIAAkAGMAcgBlAGQAcwAgAC0AUABvAHIAdAAgACQAcABvAHIAdAAKAA==\"]`\nConvertTo-SecureString : The 'ConvertTo-SecureString' command was found in the module 'Microsoft.PowerShell.Security', but the\nmodule could not be loaded. For more information, run 'Import-Module Microsoft.PowerShell.Security'.\nAt line:5 char:25\n+             $password = ConvertTo-SecureString $plain_password -aspla ...\n+                         ~~~~~~~~~~~~~~~~~~~~~~\n    + CategoryInfo          : ObjectNotFound: (ConvertTo-SecureString:String) [], CommandNotFoundException\n    + FullyQualifiedErrorId : CouldNotAutoloadMatchingModule\n\nNew-Object : Exception calling \".ctor\" with \"2\" argument(s): \"Cannot process argument because the value of argument \"password\"\nis null. Change the value of argument \"password\" to a non-null value.\"\nAt line:6 char:22\n+ ...    $creds = New-Object System.Management.Automation.PSCredential (\"$h ...\n+                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n    + CategoryInfo          : InvalidOperation: (:) [New-Object], MethodInvocationException\n    + FullyQualifiedErrorId : ConstructorInvokedThrowException,Microsoft.PowerShell.Commands.NewObjectCommand\n```\n\nThe error comes from:\n\nhttps://github.com/hashicorp/vagrant/blob/e15df81962dfc444ea180197ed339a8f2db2e461/plugins/hosts/windows/cap/ps.rb#L21\n\nNote that the error persists regardless of importing the module `Microsoft.PowerShell.Security` before running the command. The module can be otherwise imported in the shell and the `ConvertTo-SecureString` cmdlet can be ran.\n\n<!--\nProvide a link to a GitHub Gist containing the complete debug output, https://www.vagrantup.com/docs/other/debugging.html. \n\nThe debug output should\nbe very long. Do NOT paste the debug output in the issue.\n-->\n\n### Expected behavior\n\n<!--\nWhat should have happened?\n-->\n\nI expected the PowerShell session to be connected without being prompted for username and password.\n\n### Actual behavior\n\n<!--\nWhat actually happened?\n-->\n\nThe command fails with an error informing that the `Microsoft.PowerShell.Security` module could not be loaded.\n\n### Reproduction information \n\n#### Vagrant version\n\n<!--\nUse `vagrant -v` to collect the version information. If you are not running the latest version\nof Vagrant, please upgrade before submitting an issue.\n-->\n\n```\nVagrant 2.4.9\n```\n\n#### Host operating system\n\n- Windows 11 Pro, 24H2, 26100.7462\n\nVersion of PowerShell 7.5.4, which does not work:\n\n```\nName                           Value\n----                           -----\nPSVersion                      7.5.4\nPSEdition                      Core\nGitCommitId                    7.5.4\nOS                             Microsoft Windows 10.0.26100\nPlatform                       Win32NT\nPSCompatibleVersions           {1.0, 2.0, 3.0, 4.0…}\nPSRemotingProtocolVersion      2.3\nSerializationVersion           1.1.0.1\nWSManStackVersion              3.0\n```\n\nVersion of working system PowerShell:\n\n```\nName                           Value\n----                           -----\nPSVersion                      5.1.26100.7462\nPSEdition                      Desktop\nPSCompatibleVersions           {1.0, 2.0, 3.0, 4.0...}\nBuildVersion                   10.0.26100.7462\nCLRVersion                     4.0.30319.42000\nWSManStackVersion              3.0\nPSRemotingProtocolVersion      2.3\nSerializationVersion           1.1.0.1\n```\n\n#### Guest operating system\n\n<!--\nThe operating system of the virtual machine.\n-->\n\nWindows 11 24H2 Enterprise from:\n\n```\ngusztavvargadr/windows-11-24h2-enterprise --box-version 2511.0.0\n```\n\n#### Steps to reproduce\n\n1. Start fresh PowerShell 7 shell with `pwsh.exe -NoProfile`\n2. Pull and initialize the box mentioned above\n3. Run `vagrant powershell --debug`\n\n#### Vagrantfile\n\n```ruby\nVagrant.configure(\"2\") do |config|\n  config.vm.box = \"gusztavvargadr/windows-11-24h2-enterprise\"\n  config.vm.box_version = \"2511.0.0\"\n  config.vm.synced_folder \".\", \"/vagrant\", disabled: true\nend\n```\n\n<!--\nAlways start with a minimal Vagrantfile and include only the relevant configuration\nto reproduce the reported behavior.\n-->\n\n",
+        "url": "https://github.com/hashicorp/vagrant/issues/13769"
+    },
+    {
+        "id": 3720433248,
+        "number": 13766,
+        "title": "when i try to login to Virtual machine which i created through using vagrant+virtualbox its showing connection reset by ip of vm port 22 its coming whats the problem",
+        "state": "open",
+        "created_at": "2025-12-11T18:05:29Z",
+        "updated_at": "2025-12-11T18:05:29Z",
+        "closed_at": null,
+        "author": "Tarunpkothapalli2106",
+        "comments": 0,
+        "labels": [
+            "waiting-intake"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "<!--\nPlease note that the Vagrant issue tracker is reserved for bug reports. For general usage questions, please use\nHashiCorp Discuss, https://discuss.hashicorp.com/c/vagrant/.\n\nWhen you submit a bug report, please provide the minimal configuration and required information necessary to reliably reproduce the issue. It\nshould include a basic Vagrantfile.\n\nThank you!\n-->\n\n### Debug output\n\n<!--\nProvide a link to a GitHub Gist containing the complete debug output, https://www.vagrantup.com/docs/other/debugging.html. \n\nThe debug output should\nbe very long. Do NOT paste the debug output in the issue.\n-->\n\n### Expected behavior\n\n<!--\nWhat should have happened?\n-->\n\n### Actual behavior\n\n<!--\nWhat actually happened?\n-->\n\n### Reproduction information \n\n#### Vagrant version\n\n<!--\nUse `vagrant -v` to collect the version information. If you are not running the latest version\nof Vagrant, please upgrade before submitting an issue.\n-->\n\n#### Host operating system\n\n<!--\nYour local system.\n-->\n\n#### Guest operating system\n\n<!--\nThe operating system of the virtual machine.\n-->\n\n#### Steps to reproduce\n\n1.\n2.\n3.\n\n#### Vagrantfile\n\n```ruby\n# Copy-paste your Vagrantfile here. Remove any sensitive information such as passwords, authentication tokens, or email addresses.\n```\n\n<!--\nAlways start with a minimal Vagrantfile and include only the relevant configuration\nto reproduce the reported behavior.\n-->\n\n",
+        "url": "https://github.com/hashicorp/vagrant/issues/13766"
+    },
+    {
+        "id": 3698763621,
+        "number": 13754,
+        "title": "Slow vagrant ssh on AMD64 with Linux & 2.4.9",
+        "state": "open",
+        "created_at": "2025-12-05T12:19:14Z",
+        "updated_at": "2025-12-05T13:00:50Z",
+        "closed_at": null,
+        "author": "aphorise",
+        "comments": 0,
+        "labels": [
+            "waiting-intake"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "I've recently provisioned a new host to match an existing Vagrant host that's with almost identical specs.\n\nWhat's strange is that even though both units have Vagrant 2.4.9 the new host exhibits a constant 10 second delay each time a `vagrant ssh` is attempted.\n\n```bash \nuname -pisorv\n  # Linux 6.12.48+deb13-amd64 #1 SMP PREEMPT_DYNAMIC Debian 6.12.48-1 (2025-09-20) unknown unknown GNU/Linux\n\nvagrant ssh --debug-timestamp ;\n\n# 2025-12-04 11:49:02 [DEBUG] Invoking command class: VagrantPlugins::CommandSSH::Command [\"dr1primary-vault1\"]\n# 2025-12-04 11:49:02 [DEBUG] waiting for checkpoint to complete...\n\n# ... 10 SECOND DELAY EACH TIME THEN:\n\n# 2025-12-04 11:49:12 [DEBUG] no information received from checkpoint\n# 2025-12-04 11:49:12 [DEBUG] Getting target VMs for command. Arguments:\n# ...\n```\n\nIt seems like the `waiting for checkpoint to complete` is the issue and what's most interesting is that these symptoms are not exhibited using the same version (2.4.9) on my macOS MacBook either.\n\n## work-around\nIt's possible to disable CHECKPOINT using either:\n1. `CHECKPOINT_DISABLE=1 vagrant ssh`\n2. `VAGRANT_CHECKPOINT_DISABLE=1 vagrant ssh`\n\nBoth variables can be set / exported in your shell as environment variable and the first should disabled CHECKPOINTS for all HashiCorp products (not limited to Vagrant) whereas the later environment variable is specific to vagrant. Using this approach reduces the ssh period back to less than a few seconds as I am used to.",
+        "url": "https://github.com/hashicorp/vagrant/issues/13754"
+    },
+    {
+        "id": 3693905511,
+        "number": 13753,
+        "title": "Opensuse 16.0 ifup/ifdown not found",
+        "state": "open",
+        "created_at": "2025-12-04T10:22:39Z",
+        "updated_at": "2026-03-12T14:46:08Z",
+        "closed_at": null,
+        "author": "HolgerHees",
+        "comments": 1,
+        "labels": [
+            "waiting-intake"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "If I try to configure a second network interface with `setup.vm.network \"private_network\", ip: 192.168.11.1` I got the following error\n\n```\n.\n.\n.\n    smartserver_demo_suse: Guest Additions Version: 7.2.4\n    smartserver_demo_suse: VirtualBox Version: 7.1\n==> smartserver_demo_suse: Configuring and enabling network interfaces...\nThe following SSH command responded with a non-zero exit status.\nVagrant assumes that this means the command failed!\n\n/sbin/ifdown 'enp0s8' || true\nmv '/tmp/vagrant-network-enp0s8-1764673579-0' '/etc/sysconfig/network/ifcfg-enp0s8'\n/sbin/ifup 'enp0s8'\n\n\nStdout from the command:\n\n\n\nStderr from the command:\n\nbash: line 4: /sbin/ifdown: No such file or directory\nbash: line 6: /sbin/ifup: No such file or directory\n```\n\nifup/ifdown is deprecated since a while and it looks like that the legacy packages are installed by default anymore.\n\ncurrently my workarround is to configure it manually.\n\n```\nsetup.vm.network \"private_network\", ip: $env_ip, auto_config: false\nsetup.vm.provision \"shell\", inline: <<-SHELL\n        CONN_UUID=$(nmcli -t -f uuid con show | sed -n '2 p')\n        nmcli con mod $CONN_UUID ipv4.addresses #{$env_ip}/24\n        nmcli con down $CONN_UUID\n        nmcli con up $CONN_UUID\nSHELL\n```\n",
+        "url": "https://github.com/hashicorp/vagrant/issues/13753"
+    },
+    {
+        "id": 3664359065,
+        "number": 13751,
+        "title": "Enhancement Request: Allow Running As Hyper-V Administrator",
+        "state": "closed",
+        "created_at": "2025-11-25T19:40:12Z",
+        "updated_at": "2025-12-26T02:28:21Z",
+        "closed_at": "2025-11-25T19:43:01Z",
+        "author": "grochoge",
+        "comments": 0,
+        "labels": [
+            "enhancement",
+            "waiting-intake"
+        ],
+        "assignees": [],
+        "locked": true,
+        "body": "**Is your feature request related to a problem? Please describe.**\nWhen attempting to run Vagrant with the Hyper-V backend as a regular Windows user, it fails and states Administrator is required. It looks like it's only checking if the user is part of the 'Administrators' group.\n\n**Describe the solution you'd like**\nAlso allow running if the user is part of `Hyper-V Administrators` (SID S-1-5-32-578) but not `Administrators` (S-1-5-32-544). I _think_ this should still allow using the necessary Hyper-V features, but I haven't tried it.\n\n**Describe alternatives you've considered**\nNice feature for contexts where full Administrator isn't grants (such as CI/CT)\n\n**Additional context**\nN/A\n",
+        "url": "https://github.com/hashicorp/vagrant/issues/13751"
+    }
+]

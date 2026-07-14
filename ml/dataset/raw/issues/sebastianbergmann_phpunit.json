@@ -1,0 +1,428 @@
+[
+    {
+        "id": 4863962155,
+        "number": 6831,
+        "title": "PHPUnit's error handler does not respect `@` error suppression and forwards suppressed warnings to previous error handler",
+        "state": "closed",
+        "created_at": "2026-07-11T20:02:13Z",
+        "updated_at": "2026-07-12T12:07:59Z",
+        "closed_at": "2026-07-12T05:51:15Z",
+        "author": "calebdw",
+        "comments": 1,
+        "labels": [
+            "type/bug",
+            "feature/issues",
+            "version/13"
+        ],
+        "assignees": [
+            "sebastianbergmann"
+        ],
+        "locked": false,
+        "body": "## Summary\n\nPHPUnit 13's `ErrorHandler::__invoke()` intercepts warnings from `@`-suppressed calls (e.g., `@include`) and forwards them via `forwardToPreviousErrorHandler()` without checking whether `error_reporting()` excludes the error level. This breaks the `@` suppression contract.\n\n## Steps to reproduce\n\n1. Register a custom error handler (or use a framework like Laravel that registers one via `HandleExceptions::handleError()`)\n2. Run tests under PHPUnit 13\n3. Have code that uses `@include` on a non-existent file (or any `@`-suppressed call that triggers a warning)\n\n## Expected behavior\n\nThe `@` operator sets `error_reporting()` to exclude the suppressed level. PHPUnit's error handler should check this and return early, as the PHP manual documents:\n\n> If you have set a custom error handler function with `set_error_handler()` then it will still get called, but this custom error handler can (and should) call `error_reporting()` which will return `0` when the call that triggered the error was prepended by an `@`.\n\n## Actual behavior\n\nPHPUnit's error handler intercepts the warning and forwards it to the previous error handler (e.g., Laravel's `HandleExceptions::handleError()`), which then throws a fatal error.\n\nError chain:\n```\n@include('nonexistent.php')\n  -> PHPUnit ErrorHandler->__invoke()\n    -> forwardToPreviousErrorHandler()\n      -> Laravel HandleExceptions->handleError()\n        -> throws ErrorException\n```\n\n## Suggested fix\n\nCheck `error_reporting()` before forwarding:\n\n```php\nif (!(error_reporting() & $severity)) {\n    return true;\n}\n```\n\n## Context\n\n- PHPUnit version: 13.x\n- PHP version: 8.2+\n- Discovered via Larastan CI: https://github.com/larastan/larastan/actions/runs/29059934565/job/86259357412\n- Related PHPStan PR (rejected, maintainers indicated this is a userland error handler issue): https://github.com/phpstan/phpstan-src/pull/6034",
+        "url": "https://github.com/sebastianbergmann/phpunit/issues/6831"
+    },
+    {
+        "id": 4862010554,
+        "number": 6830,
+        "title": "Warn when `failOnAllIssues=\"true\"` is combined with an explicitly disabled fine-grained `failOn*` setting",
+        "state": "closed",
+        "created_at": "2026-07-11T11:28:14Z",
+        "updated_at": "2026-07-11T12:58:34Z",
+        "closed_at": "2026-07-11T12:58:34Z",
+        "author": "sebastianbergmann",
+        "comments": 0,
+        "labels": [
+            "type/enhancement",
+            "feature/test-runner",
+            "feature/configuration/xml",
+            "feature/issues"
+        ],
+        "assignees": [
+            "sebastianbergmann"
+        ],
+        "locked": false,
+        "body": "`failOnAllIssues=\"true\"` is a blanket setting that enables failing on all issue types. It is not meant to be overridden by more fine-grained `failOn*` settings; the `--do-not-fail-on-*` CLI options are the intended mechanism for carve-outs. This works as designed (see #6829).\n\nHowever, when `failOnAllIssues=\"true\"` is configured together with an explicitly disabled fine-grained setting such as `failOnSelfDeprecation=\"false\"`, the fine-grained setting is silently ignored. A test runner warning should be emitted for this combination so that the conflict is no longer silent.\n\n#### Proposed behavior\n\nGiven this XML configuration:\n\n```xml\n<phpunit failOnAllIssues=\"true\"\n         failOnSelfDeprecation=\"false\">\n```\n\na test runner warning such as this should be emitted:\n\n```\nfailOnSelfDeprecation=\"false\" has no effect because failOnAllIssues is enabled; use the --do-not-fail-on-self-deprecation CLI option to not fail on self-deprecations\n```\n\nThe warning should be emitted for each fine-grained `failOn*` attribute that is explicitly set to `false` in the XML configuration file while `failOnAllIssues` is enabled (whether via the XML configuration file or via the `--fail-on-all-issues` CLI option).",
+        "url": "https://github.com/sebastianbergmann/phpunit/issues/6830"
+    },
+    {
+        "id": 4861959902,
+        "number": 6829,
+        "title": "`failOn*=\"false\"` XML attributes are silently ignored when `failOnAllIssues=\"true\"` is set",
+        "state": "closed",
+        "created_at": "2026-07-11T11:12:24Z",
+        "updated_at": "2026-07-11T11:30:19Z",
+        "closed_at": "2026-07-11T11:25:11Z",
+        "author": "Ziffrit",
+        "comments": 1,
+        "labels": [
+            "feature/test-runner",
+            "feature/configuration/xml",
+            "feature/issues"
+        ],
+        "assignees": [
+            "sebastianbergmann"
+        ],
+        "locked": false,
+        "body": "# Bug Report: `failOn*=\"false\"` XML attributes are silently ignored when `failOnAllIssues=\"true\"` is set\n\n## Summary\n\nI ran into this while setting up `failOnAllIssues=\"true\"` in my `phpunit.xml` and trying to carve out an exception for self-deprecations with `failOnSelfDeprecation=\"false\"`. It didn't work — the build kept failing on self-deprecations anyway. After digging into the source, I found that none of the granular `failOn*=\"false\"` overrides can turn a specific issue type back off once `failOnAllIssues=\"true\"` is set. The only way to override it is through the `--do-not-fail-on-*` family of CLI flags, and those have no XML equivalent at all. This isn't just a `failOnSelfDeprecation` problem either — I checked, and it affects all 13 `failOn*` settings that `failOnAllIssues` touches.\n\n- **Type:** Logic bug (configuration precedence)\n- **Affected version:** PHPUnit 13.3-g92a2b54 (current `main`, still present as of this report)\n- **Affected file:** `src/TextUI/ShellExitCodeCalculator.php`\n- **Tested on:** PHP 8.4.22\n\n## How to reproduce it\n\n**`src/FirstParty.php`** — something that triggers a self-deprecation:\n```php\n<?php declare(strict_types=1);\nnamespace PoC;\n\nfinal class FirstParty\n{\n    public function triggerDeprecation(): void\n    {\n        trigger_error('self deprecation in first-party code', E_USER_DEPRECATED);\n    }\n}\n```\n\n**`tests/SelfDeprecationTest.php`:**\n```php\n<?php declare(strict_types=1);\nnamespace PoC;\n\nuse PHPUnit\\Framework\\TestCase;\nrequire_once __DIR__ . '/../src/FirstParty.php';\n\nfinal class SelfDeprecationTest extends TestCase\n{\n    public function testSelfDeprecation(): void\n    {\n        (new FirstParty)->triggerDeprecation();\n        $this->assertTrue(true);\n    }\n}\n```\n\n**`phpunit.xml`:**\n```xml\n<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<phpunit cacheResult=\"false\"\n         failOnAllIssues=\"true\"\n         failOnSelfDeprecation=\"false\">\n    <testsuites>\n        <testsuite name=\"default\">\n            <directory>tests</directory>\n        </testsuite>\n    </testsuites>\n    <source>\n        <include>\n            <directory>src</directory>\n        </include>\n    </source>\n</phpunit>\n```\n\nRunning this:\n```console\n$ php phpunit --configuration phpunit.xml\nPHPUnit 13.3-g92a2b54 by Sebastian Bergmann and contributors.\nRuntime:       PHP 8.4.22\nConfiguration: /tmp/bug-poc/phpunit.xml\n\nD                                                                   1 / 1 (100%)\n\nTime: 00:00.001, Memory: 20.00 MB\n\n1 test triggered 1 deprecation:\n\n1) /tmp/bug-poc/src/FirstParty.php:7\nself deprecation in first-party code\n\nTriggered by:\n\n* PoC\\SelfDeprecationTest::testSelfDeprecation\n  /tmp/bug-poc/tests/SelfDeprecationTest.php:8\n\nOK, but there were issues!\nTests: 1, Assertions: 1, Deprecations: 1.\n\n$ echo $?\n1\n```\n\nI expected exit code `0` since I explicitly set `failOnSelfDeprecation=\"false\"`. Instead I got `1`. The `false` value is just silently thrown away.\n\nTo confirm it's specifically an XML problem, I ran the exact same config with the CLI flag added:\n```console\n$ php phpunit --configuration phpunit.xml --do-not-fail-on-self-deprecation\n[... identical test output and deprecation report ...]\nOK, but there were issues!\nTests: 1, Assertions: 1, Deprecations: 1.\n\n$ echo $?\n0\n```\n\nSame test, same deprecation, same reported output — the only thing that changed is where the override came from. That pretty much isolates this to the config-merging/exit-code logic, not the test run itself.\n\n## Why this happens\n\nI traced it down to `src/TextUI/ShellExitCodeCalculator.php`, lines 39–70:\n\n```php\nif ($configuration->failOnAllIssues()) {\n    $failOnDeprecation        = true;\n    // ... (10 other flags set true) ...\n}\n\nif ($configuration->failOnDeprecation()) {\n    $failOnDeprecation = true;\n}\n\nif ($configuration->doNotFailOnDeprecation()) {\n    $failOnDeprecation = false;\n}\n\n$failOnSelfDeprecation     = $failOnDeprecation;   // inherits true from failOnAllIssues\n$failOnDirectDeprecation   = $failOnDeprecation;\n$failOnIndirectDeprecation = $failOnDeprecation;\n\nif ($configuration->failOnSelfDeprecation()) {      // false → this is skipped, no-op\n    $failOnSelfDeprecation = true;\n}\n\nif ($configuration->doNotFailOnSelfDeprecation()) { // the only path back to false\n    $failOnSelfDeprecation = false;\n}\n```\n\n`failOnSelfDeprecation()` is a plain boolean, so it can only ever push the flag from `false` to `true`. There's no way to distinguish \"the user didn't mention this setting\" from \"the user explicitly set it to false\" — both look the same. The only thing that can force the flag back to `false` is `doNotFailOnSelfDeprecation()`.\n\nAnd that's where it breaks for XML users. In `src/TextUI/Configuration/Merger.php`, lines 234–238:\n\n```php\n$doNotFailOnSelfDeprecation = false;\n\nif ($cliConfiguration->hasDoNotFailOnSelfDeprecation()) {\n    $doNotFailOnSelfDeprecation = $cliConfiguration->doNotFailOnSelfDeprecation();\n}\n```\n\nThere's no `elseif ($xmlConfiguration->...)` branch here. I checked the whole file, and this exact pattern — CLI-only, no XML fallback — repeats identically for all 13 `doNotFailOn*` variables: `doNotFailOnDeprecation`, `doNotFailOnSelfDeprecation`, `doNotFailOnDirectDeprecation`, `doNotFailOnIndirectDeprecation`, `doNotFailOnPhpunitDeprecation`, `doNotFailOnPhpunitNotice`, `doNotFailOnPhpunitWarning`, `doNotFailOnEmptyTestSuite`, `doNotFailOnIncomplete`, `doNotFailOnNotice`, `doNotFailOnRisky`, `doNotFailOnSkipped`, `doNotFailOnWarning`. None of them can be set from `phpunit.xml`.\n\nThe `--do-not-fail-on-*` flags clearly exist to let people carve out exceptions from a blanket `failOnAllIssues` — that override mechanism just never got wired up for the XML side.\n\nA couple of things made me fairly confident this isn't intentional:\n\n- There's no test file anywhere for `ShellExitCodeCalculator` at all (`find . -iname \"*ShellExitCode*\"` only turns up the source file). This precedence interaction has never been tested.\n- The schema doesn't document any override relationship either — `phpunit.xsd` just declares both as independent booleans with no annotation:\n  ```xml\n  <xs:attribute name=\"failOnAllIssues\" type=\"xs:boolean\" default=\"false\"/>\n  <xs:attribute name=\"failOnSelfDeprecation\" type=\"xs:boolean\" default=\"false\"/>\n  ```\n  If this were by design, I'd expect it to be documented somewhere near here.\n- The existence of the `--do-not-fail-on-*` flags at all tells me granular override of `failOnAllIssues` was a deliberate goal — it just never got finished for the XML side.\n\n## Why this matters in practice\n\nThis is a CI/CD correctness bug, not a security issue — I know PHPUnit's `SECURITY.md` puts CI/CD pipeline behavior explicitly out of scope for security reports, so I'm filing this as a regular bug, not anything CVE-worthy.\n\nHere's where it actually bites people:\n\n- **There's no XML-only way to say \"fail on everything except X.\"** This is a really common pattern when teams are migrating toward stricter test enforcement — they want to lock down most issue types but temporarily allow one category they haven't cleaned up yet. Right now that's just not expressible in `phpunit.xml` alone.\n- People end up moving part of their config into CLI flags to work around it, which means the actual enforced behavior secretly depends on a flag buried in a CI job somewhere, instead of being visible in the committed `phpunit.xml`. A reviewer looking at `phpunit.xml` in a PR would have no idea the real behavior differs from what's written.\n- Because the build fails when it shouldn't, teams often \"fix\" it by weakening things further — turning off `failOnAllIssues` entirely, or suppressing more than they meant to — which quietly lowers their overall test-quality bar as a side effect of working around this bug.\n- Since this affects all 13 flags, not just self-deprecations, it hits anyone using `failOnAllIssues=\"true\"` as a strict mode and trying to add any single documented exception through XML — deprecations, self/direct/indirect deprecations, PHPUnit's own deprecations/notices/warnings, empty suites, incomplete/risky/skipped tests, warnings, all of it.\n- Teams following the natural adoption path (turn on `failOnAllIssues`, then relax specific categories as they clean things up) will hit this immediately and may wrongly conclude the whole feature is broken, rather than realizing it's just an XML/CLI parity gap.\n\n## The relevant code\n\n`src/TextUI/ShellExitCodeCalculator.php` (lines 60–70):\n```php\n$failOnSelfDeprecation     = $failOnDeprecation;\n$failOnDirectDeprecation   = $failOnDeprecation;\n$failOnIndirectDeprecation = $failOnDeprecation;\n\nif ($configuration->failOnSelfDeprecation()) {\n    $failOnSelfDeprecation = true;\n}\n\nif ($configuration->doNotFailOnSelfDeprecation()) {\n    $failOnSelfDeprecation = false;\n}\n```\n\n`src/TextUI/Configuration/Merger.php` (lines 234–238):\n```php\n$doNotFailOnSelfDeprecation = false;\n\nif ($cliConfiguration->hasDoNotFailOnSelfDeprecation()) {\n    $doNotFailOnSelfDeprecation = $cliConfiguration->doNotFailOnSelfDeprecation();\n}\n```\n\n## What I think would fix it\n\nI see two reasonable approaches here:\n\n**Option A** — make `Merger.php` read `doNotFailOn*` from XML too, the same way every other `failOn*` setting already does. `failOnSelfDeprecation` a few lines above already falls back to XML correctly, so this would just be mirroring that pattern for the negative flags. It'd need corresponding `doNotFailOn*` attributes added to the schema and to `Xml/PHPUnit.php` / `Xml/Loader.php`:\n\n```php\n// Merger.php — proposed\n$doNotFailOnSelfDeprecation = false;\n\nif ($cliConfiguration->hasDoNotFailOnSelfDeprecation()) {\n    $doNotFailOnSelfDeprecation = $cliConfiguration->doNotFailOnSelfDeprecation();\n} elseif ($xmlConfiguration->phpunit()->hasDoNotFailOnSelfDeprecation()) {\n    $doNotFailOnSelfDeprecation = $xmlConfiguration->phpunit()->doNotFailOnSelfDeprecation();\n}\n```\n(and the same for all 13 flags)\n\n**Option B** — a smaller patch: since `failOnSelfDeprecation()` is already correctly wired from XML with its own `false` default, `ShellExitCodeCalculator` could treat an *explicit* `failOnSelfDeprecation=\"false\"` as authoritative over `failOnAllIssues`, if the configuration layer exposed a tri-state (\"unset\" vs \"true\" vs \"false\") instead of a plain boolean. `failOnEmptyTestSuite` already does something like this via `hasFailOnEmptyTestSuite()`, so there's precedent in the codebase:\n\n```php\n// following the existing hasFailOnEmptyTestSuite() precedent\nif ($configuration->hasFailOnSelfDeprecation()) {\n    $failOnSelfDeprecation = $configuration->failOnSelfDeprecation();\n} elseif ($configuration->doNotFailOnSelfDeprecation()) {\n    $failOnSelfDeprecation = false;\n}\n```\n\nOption A stays more consistent with how CLI/XML parity is handled everywhere else in the codebase. Option B is a smaller diff but touches more files to add the tri-state distinction. Either way, I'd suggest applying the fix to all 13 affected flags at once rather than just `failOnSelfDeprecation`, since the same bug exists in every one of them.\n\n## Proof of concept\n\nVerified against `main` (`PHPUnit 13.3-g92a2b54`, PHP 8.4.22):\n\n```console\n$ php phpunit --configuration phpunit.xml\n[...]\nOK, but there were issues!\nTests: 1, Assertions: 1, Deprecations: 1.\n$ echo $?\n1        # bug: should be 0\n\n$ php phpunit --configuration phpunit.xml --do-not-fail-on-self-deprecation\n[... identical output ...]\n$ echo $?\n0        # only reachable via CLI, no XML equivalent exists\n```\n\nAll three reproduction files are included above — `src/FirstParty.php`, `tests/SelfDeprecationTest.php`, and `phpunit.xml`. No external dependencies beyond PHPUnit itself.\n\n\n\n<img width=\"1920\" height=\"1080\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/4cf94734-d478-4ff3-988f-e2ddc96eeaef\" />\n\n<img width=\"1920\" height=\"1080\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/17949353-0292-4e1d-a174-510353ba93dc\" />",
+        "url": "https://github.com/sebastianbergmann/phpunit/issues/6829"
+    },
+    {
+        "id": 4829092304,
+        "number": 6818,
+        "title": "Issue is reported when custom error handler checks `error_reporting()` output dynamically",
+        "state": "closed",
+        "created_at": "2026-07-07T13:43:33Z",
+        "updated_at": "2026-07-07T14:07:36Z",
+        "closed_at": "2026-07-07T14:07:36Z",
+        "author": "Slamdunk",
+        "comments": 0,
+        "labels": [
+            "type/bug",
+            "feature/issues",
+            "version/13"
+        ],
+        "assignees": [
+            "sebastianbergmann"
+        ],
+        "locked": false,
+        "body": "| Q                   | A\n| --------------------| ---------------\n| PHPUnit version     | https://github.com/sebastianbergmann/phpunit/commit/1d90b396fab98d85813d4127497ca6bd146f99ac\n| PHP version         | 8.5\n| Installation Method | Composer\n\n#### Summary\n\nhttps://github.com/sebastianbergmann/phpunit/issues/6817 gets solved by https://github.com/sebastianbergmann/phpunit/commit/1d90b396fab98d85813d4127497ca6bd146f99ac but I forgot to mention that my error handler checks `error_reporting()` output dynamically\n\n#### How to reproduce\n\n`phpunit.xml`\n\n```xml\n<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<phpunit xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"\n         xsi:noNamespaceSchemaLocation=\"../phpunit.xsd\"\n         cacheResult=\"false\"\n         bootstrap=\"bootstrap.php\"\n         displayDetailsOnAllIssues=\"true\"\n         failOnAllIssues=\"true\"\n>\n</phpunit>\n```\n\n`bootstrap.php`\n\n```php\n<?php\n\nfinal class MyErrorException extends \\ErrorException {}\n\nfinal class MyCustomException extends \\Exception {}\n\nerror_reporting(E_ALL);\nset_error_handler(static function ($level, $message, $file = null, $line = null): bool {\n    if ($level & error_reporting()) {\n        throw new MyErrorException($message, $level, $level, $file, $line);\n    }\n\n    return false;\n});\n```\n\n`MyTest.php`\n\n```php\n<?php\n\nfinal class MyTest extends \\PHPUnit\\Framework\\TestCase\n{\n    public function testWarning(): void\n    {\n        $this->expectException(MyCustomException::class);\n\n        try {\n            trigger_error('warning from test', E_USER_WARNING);\n        } catch (MyErrorException $e) {\n            throw new MyCustomException('additional details', $e->getCode(), $e);\n        }\n    }\n}\n```\n\n`./phpunit MyTest.php`\n\n```console\nF                                                                   1 / 1 (100%)\n\nTime: 00:00.001, Memory: 18.00 MB\n\nThere was 1 failure:\n\n1) MyTest::testWarning\nFailed asserting that exception of type \"MyCustomException\" is thrown.\n\n--\n\n1 test triggered 1 warning:\n\n1) /home/tessarotto/repos/phpunit/tmp/MyTest.php:10\nwarning from test\n\nFAILURES!\nTests: 1, Assertions: 1, Failures: 1, Warnings: 1.\n```\n\n#### Expected behavior\n\n```console\n.                                                                   1 / 1 (100%)\n\nTime: 00:00, Memory: 18.00 MB\n\nOK (1 test, 1 assertion)\n```",
+        "url": "https://github.com/sebastianbergmann/phpunit/issues/6818"
+    },
+    {
+        "id": 4826730551,
+        "number": 6817,
+        "title": "Issue is reported even when previously registered error handler turns the error into an exception",
+        "state": "closed",
+        "created_at": "2026-07-07T08:34:42Z",
+        "updated_at": "2026-07-07T13:51:06Z",
+        "closed_at": "2026-07-07T11:33:35Z",
+        "author": "Slamdunk",
+        "comments": 2,
+        "labels": [
+            "type/bug",
+            "feature/issues",
+            "version/13"
+        ],
+        "assignees": [
+            "sebastianbergmann"
+        ],
+        "locked": false,
+        "body": "| Q                   | A\n| --------------------| ---------------\n| PHPUnit version     | 13.2\n| PHP version         | 8.5\n| Installation Method | Composer\n\n#### Summary\n\nWe set our custom error handler in the `bootstrap` because it's valid for all the application and this is how production behaves as well.\nBut apparently https://github.com/sebastianbergmann/phpunit/issues/5873 changed error handler priorities, and since `13.2` PHPUnit's one gets in the way so we are not able to test ours properly anymore.\n\n#### How to reproduce\n\n`phpunit.xml`\n\n```xml\n<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<phpunit xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"\n         xsi:noNamespaceSchemaLocation=\"vendor/phpunit/phpunit/phpunit.xsd\"\n         cacheResult=\"false\"\n         bootstrap=\"bootstrap.php\"\n         failOnAllIssues=\"true\"\n         displayDetailsOnAllIssues=\"true\"\n>\n    <testsuites>\n        <testsuite name=\"default\">\n            <directory>tests</directory>\n        </testsuite>\n    </testsuites>\n</phpunit>\n```\n\n`bootstrap.php`\n\n```php\n<?php\n\nfinal class MyErrorException extends \\ErrorException {}\n\nerror_reporting(E_ALL);\nset_error_handler(static function ($level, $message, $file = null, $line = null): bool {\n    throw new MyErrorException($message, $level, $level, $file, $line);\n});\n\nrequire_once __DIR__ . '/src/Source.php';\n```\n\n`src/Source.php`\n\n```php\n<?php declare(strict_types=1);\n\nfinal class Source\n{\n    public function triggerWarning(): void\n    {\n        // Using ZipArchive to raise a real E_WARNING\n        $zip = new \\ZipArchive();\n        $zip->open(uniqid('/tmp/test_'), \\ZipArchive::CREATE | \\ZipArchive::EXCL | \\ZipArchive::CHECKCONS);\n        $zip->addFile(uniqid('/tmp/non_existent_file_'), 'foo');\n    }\n}\n```\n\n`tests/SourceTest.php`\n\n```php\n<?php declare(strict_types=1);\n\nfinal class SourceTest extends \\PHPUnit\\Framework\\TestCase\n{\n    public function testWarning(): void\n    {\n        $this->expectException(MyErrorException::class);\n\n        (new Source)->triggerWarning();\n    }\n}\n```\n\nPHPUnit output as of version `13.2`\n\n```\nW                                                                   1 / 1 (100%)\n\nTime: 00:00, Memory: 18.00 MB\n\n1 test triggered 1 PHP warning:\n\n1) /tmp/src/Source.php:19\nZipArchive::addFile(): No such file or directory\n\nTriggered by:\n\n* SourceTest::testWarning\n  /tmp/tests/SourceTest.php:16\n\nOK, but there were issues!\nTests: 1, Assertions: 1, Warnings: 1.\n```\n\n#### Expected behavior\n\nPHPUnit output until `13.1.14`\n\n```\n.                                                                   1 / 1 (100%)\n\nTime: 00:00, Memory: 18.00 MB\n\nOK (1 test, 1 assertion)\n```",
+        "url": "https://github.com/sebastianbergmann/phpunit/issues/6817"
+    },
+    {
+        "id": 4804016452,
+        "number": 6811,
+        "title": "Make dependency on `ext/filter` explicit",
+        "state": "closed",
+        "created_at": "2026-07-03T13:53:38Z",
+        "updated_at": "2026-07-04T08:28:16Z",
+        "closed_at": "2026-07-04T08:28:16Z",
+        "author": "sebastianbergmann",
+        "comments": 0,
+        "labels": [
+            "type/dependencies"
+        ],
+        "assignees": [
+            "sebastianbergmann"
+        ],
+        "locked": false,
+        "body": "The ext-filter extension is only required to pass the `tests/end-to-end/extension-xml/phar-extension.phpt` test. The `vendor/phar-io/manifest/` dependency uses `filter_var()` without declaring an explicit dependency on `ext-filter`. It may make sense to also list `'filter'` in the `$requiredExtensions`.\r\n\r\n_Originally posted by @TimWolla in https://github.com/sebastianbergmann/phpunit/issues/6803#issuecomment-4864281686_\r\n            ",
+        "url": "https://github.com/sebastianbergmann/phpunit/issues/6811"
+    },
+    {
+        "id": 4788939871,
+        "number": 6797,
+        "title": "Code generated for test double of interface with constructor triggers deprecation on PHP 8.6",
+        "state": "closed",
+        "created_at": "2026-07-01T20:22:08Z",
+        "updated_at": "2026-07-06T14:18:26Z",
+        "closed_at": "2026-07-06T14:18:26Z",
+        "author": "pcf0",
+        "comments": 0,
+        "labels": [
+            "feature/test-doubles",
+            "type/change-in-php-requires-adaptation",
+            "version/9",
+            "version/10",
+            "version/8",
+            "version/11",
+            "version/12",
+            "version/13"
+        ],
+        "assignees": [
+            "sebastianbergmann"
+        ],
+        "locked": false,
+        "body": "| Q                   | A\n| --------------------| ---------------\n| PHPUnit version     | 13.2.2\n| PHP version         | 8.6.0-dev / 8.6.0alpha1\n| Installation Method | Composer\n\n#### Summary\n\nPHP 8.6 will deprecate returning a value from constructor.\nSee: https://wiki.php.net/rfc/deprecate-return-value-from-construct\n\n#### Current behavior\n\nIn my scenario, an interface contains the `__construct()` method to enforce its implementation.\nI want to create a stub using `TestCase::createStub(...)`.\nBecause return types are not allowed here, PHPUnit determines the return type to be `\\SebastianBergmann\\Type\\UnknownType`, which causes a return statement to be generated in the constructor.\nThis, in turn, triggers the following deprecation warning:\n```\n.../vendor/phpunit/phpunit/src/Framework/MockObject/Generator/DoubledClass.php(51) : eval()'d code:43\nReturning a value from a constructor is deprecated\n```\n\nRelevant code:\nhttps://github.com/sebastianbergmann/type/blob/main/src/ReflectionMapper.php#L76-L78\nhttps://github.com/sebastianbergmann/phpunit/blob/13.2.2/src/Framework/MockObject/Generator/DoubledMethod.php#L187-L193\n\n#### How to reproduce\n1. Install/compile PHP with at least Version 8.6.0alpha1\n2. create a composer project:\n```json\n{\n    \"require-dev\": {\n        \"phpunit/phpunit\": \"^13.2\"\n    },\n    \"require\": {\n        \"php\": \"^8.5\"\n    }\n}\n```\n3. create a `test.php` with following content:\n```php\n<?php\ndeclare(strict_types=1);\n\ninterface MyInterface\n{\n    public function __construct();\n}\n\nclass Test extends \\PHPUnit\\Framework\\TestCase\n{\n    public function testSomething(): void {\n        static::createStub(MyInterface::class);\n        static::assertTrue(true);\n    }\n}\n```\n\n4. run command:\n```bash\n$ vendor/bin/phpunit test.php --display-all-issues\n```\n5. See output:\n```\nPHPUnit 13.2.2 by Sebastian Bergmann and contributors.\n\nRuntime:       PHP 8.6.0-dev\n\nD                                                                   1 / 1 (100%)\n\nTime: 00:00, Memory: 16.00 MB\n\n1 test triggered 1 PHP deprecation:\n\n1) /home/gitlab-runner/test/vendor/phpunit/phpunit/src/Framework/MockObject/Generator/DoubledClass.php(51) : eval()'d code:43\nReturning a value from a constructor is deprecated\n\nTriggered by:\n\n* Test::testSomething\n  /home/gitlab-runner/test/test.php:11\n\nOK, but there were issues!\nTests: 1, Assertions: 1, Deprecations: 1.\n```\n\n```bash\n$ composer info | sort\nmyclabs/deep-copy            1.13.4 Create deep copies (clones) of your objects\nnikic/php-parser             5.7.0  A PHP parser written in PHP\nphar-io/manifest             2.0.4  Component for reading phar.io manifest information from a PHP Archive (PHAR)\nphar-io/version              3.2.1  Library for handling version information and constraints\nphpunit/php-code-coverage    14.2.2 Library that provides collection, processing, and rendering functionality for PHP code coverage information.\nphpunit/php-file-iterator    7.0.0  FilterIterator implementation that filters files based on a list of suffixes.\nphpunit/php-invoker          7.0.0  Invoke callables with a timeout\nphpunit/php-text-template    6.0.0  Simple template engine.\nphpunit/php-timer            9.0.0  Utility class for timing\nphpunit/phpunit              13.2.2 The PHP Unit Testing framework.\nsebastian/cli-parser         5.0.0  Library for parsing CLI options\nsebastian/comparator         8.3.0  Provides the functionality to compare PHP values for equality\nsebastian/complexity         6.0.0  Library for calculating the complexity of PHP code units\nsebastian/diff               9.0.0  Diff implementation\nsebastian/environment        9.3.2  Provides functionality to handle HHVM/PHP environments\nsebastian/exporter           8.1.0  Provides the functionality to export PHP variables for visualization\nsebastian/file-filter        1.0.0  Library for filtering files\nsebastian/git-state          1.0.0  Library for describing the state of a Git checkout\nsebastian/global-state       9.0.1  Snapshotting of global state\nsebastian/lines-of-code      5.0.1  Library for counting the lines of code in PHP source code\nsebastian/object-enumerator  8.0.0  Traverses array structures and object graphs to enumerate all referenced objects\nsebastian/object-reflector   6.0.0  Allows reflection of object attributes, including inherited and non-public ones\nsebastian/recursion-context  8.0.0  Provides functionality to recursively process PHP variables\nsebastian/type               7.0.1  Collection of value objects that represent the types of the PHP type system\nsebastian/version            7.0.0  Library that helps with managing the version number of Git-hosted PHP projects\nstaabm/side-effects-detector 1.0.5  A static analysis tool to detect side effects in PHP code\ntheseer/tokenizer            2.0.1  A small library for converting tokenized PHP source code into XML and potentially other formats\n```\n\n#### Expected behavior\n\nNo deprecation message.",
+        "url": "https://github.com/sebastianbergmann/phpunit/issues/6797"
+    },
+    {
+        "id": 4738455168,
+        "number": 6778,
+        "title": "Deprecation triggered outside of tests cannot be ignored",
+        "state": "closed",
+        "created_at": "2026-06-24T21:04:29Z",
+        "updated_at": "2026-06-25T04:59:59Z",
+        "closed_at": "2026-06-25T04:59:59Z",
+        "author": "nikophil",
+        "comments": 0,
+        "labels": [
+            "type/bug",
+            "feature/test-runner",
+            "feature/issues",
+            "version/13"
+        ],
+        "assignees": [
+            "sebastianbergmann"
+        ],
+        "locked": false,
+        "body": "| Q                   | A\n| --------------------| ---------------\n| PHPUnit version     | 13.2\n| PHP version         | any\n| Installation Method | Composer\n\n#### Summary\n\nHi,\n\nthis one is a little bit edgy, but still it seems like a bug. If some deprecations are triggered during the \"requirements\" phase it cannot be ignored, and some code which did not fail in 13.1 now fails in 13.2\n\n#### How to reproduce\n\nGiven the following code:\n\n```php\n// SomeTest.php\n\nuse Some\\Vendor\\DeprecatedClass;\nuse PHPUnit\\Framework\\Attributes\\RequiresMethod;\nuse PHPUnit\\Framework\\Attributes\\Test;\nuse PHPUnit\\Framework\\TestCase;\n\nclass SomeTest extends TestCase\n{\n    #[Test]\n    #[RequiresMethod(DeprecatedClass::class, 'foo')]\n    public function testSomething(): void\n    {\n        self::assertTrue(true);\n    }\n}\n\n// DeprecatedClass.php\n\ntrigger_deprecation('1.0', 'some/vendor', 'deprec!');\n\nclass DeprecatedClass\n{\n}\n```\n\nRunning the test emits a deprecation which cannot be ignored:\n\n```\n➜ vendor/bin/phpunit\nPHPUnit 13.2.1 by Sebastian Bergmann and contributors.\n\nRuntime:       PHP 8.4.22\nConfiguration: /path/to/phpunit.xml\n\nS                                                                   1 / 1 (100%)\n\nTime: 00:00.001, Memory: 18.00 MB\n\nThere was 1 deprecation triggered outside of tests:\n\n1) /path/to/vendor/symfony/deprecation-contracts/function.php:25\nSince 1.0 some/vendor: deprec!\n\nOK, but there were issues!\nTests: 1, Assertions: 0, Deprecations: 1, Skipped: 1.\n```\n\n`--generate-baseline baseline.xml` generates an empty file. `#[IgnoreDeprecation]` has no effect\n\nand then if the test suite is run with `failOnDeprecation=\"true\"`, the test suite exits with 1\n\nthank you for your help",
+        "url": "https://github.com/sebastianbergmann/phpunit/issues/6778"
+    },
+    {
+        "id": 4724107554,
+        "number": 6770,
+        "title": "Use SIGQUIT instead SIGINT to handle interrupts",
+        "state": "closed",
+        "created_at": "2026-06-23T08:41:19Z",
+        "updated_at": "2026-06-24T05:42:20Z",
+        "closed_at": "2026-06-24T05:42:20Z",
+        "author": "esler",
+        "comments": 1,
+        "labels": [
+            "type/enhancement",
+            "feature/test-runner"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "Hello,\n\nPHPUnit introduced interrupt handling in #4201, which is great. Many years ago, I wrote a small extension to do exactly that: [esler/phpunit-graceful-interrupt](https://packagist.org/packages/esler/phpunit-graceful-interrupt).\n\nHowever, in my library I chose to intercept `SIGQUIT` (`Ctrl+\\`) instead of `SIGINT` (`Ctrl+C`). The [reasoning](https://github.com/esler/phpunit-graceful-interrupt/wiki) was that sometimes you need to interrupt a stuck test immediately. So I reserved `Ctrl+C` for a hard stop and used a different signal for a graceful one.\n\nOn the other hand, not many users are familiar with the `Ctrl+\\` shortcut. `Ctrl+C` is the more natural choice for most people, which creates a tension between discoverability and flexibility. 🤔\n\nI'd be happy to write a corresponding PR if you consider this a worthwhile change.",
+        "url": "https://github.com/sebastianbergmann/phpunit/issues/6770"
+    },
+    {
+        "id": 4718122028,
+        "number": 6769,
+        "title": "Allow negative priorities for hook methods",
+        "state": "closed",
+        "created_at": "2026-06-22T15:29:39Z",
+        "updated_at": "2026-06-22T15:54:00Z",
+        "closed_at": "2026-06-22T15:50:45Z",
+        "author": "nikophil",
+        "comments": 1,
+        "labels": [
+            "type/bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "| Q                   | A\n| --------------------| ---------------\n| PHPUnit version     | 13.2.1\n| PHP version         | any\n| Installation Method | Composer\n\nHi!\n\nIt seems [this PR](https://github.com/sebastianbergmann/phpunit/pull/6120) has been rollback by [this commit](https://github.com/sebastianbergmann/phpunit/commit/82848be7178feec5a95ca16e3f7c8375b8da09a1) merged in 13.2.1\n\nBut negative priorities are perfectly valid, they allow to chose the given hook to occur after a hook method which does not have a priority \n\nwould you be OK to let those priorities be negative again?",
+        "url": "https://github.com/sebastianbergmann/phpunit/issues/6769"
+    },
+    {
+        "id": 4718121535,
+        "number": 6768,
+        "title": "Negative priorities for hook methods are rejected by static analysis",
+        "state": "closed",
+        "created_at": "2026-06-22T15:29:34Z",
+        "updated_at": "2026-06-22T16:01:24Z",
+        "closed_at": "2026-06-22T16:01:24Z",
+        "author": "nikophil",
+        "comments": 0,
+        "labels": [
+            "type/bug",
+            "feature/test-runner",
+            "version/13"
+        ],
+        "assignees": [
+            "sebastianbergmann"
+        ],
+        "locked": false,
+        "body": "| Q                   | A\n| --------------------| ---------------\n| PHPUnit version     | 13.2.1\n| PHP version         | any\n| Installation Method | Composer\n\nHi!\n\nIt seems [this PR](https://github.com/sebastianbergmann/phpunit/pull/6120) has been rollback by [this commit](https://github.com/sebastianbergmann/phpunit/commit/82848be7178feec5a95ca16e3f7c8375b8da09a1) merged in 13.2.1\n\nBut negative priorities are perfectly valid, they allow to chose the given hook to occur after a hook method which does not have a priority \n\nwould you be OK to let those priorities be negative again?",
+        "url": "https://github.com/sebastianbergmann/phpunit/issues/6768"
+    },
+    {
+        "id": 4710139616,
+        "number": 6767,
+        "title": "The composer audit is called twice in the ci pipeline",
+        "state": "closed",
+        "created_at": "2026-06-21T10:22:50Z",
+        "updated_at": "2026-06-21T11:54:02Z",
+        "closed_at": "2026-06-21T11:54:02Z",
+        "author": "bebehr",
+        "comments": 0,
+        "labels": [
+            "type/bug",
+            "type/build-automation"
+        ],
+        "assignees": [
+            "sebastianbergmann"
+        ],
+        "locked": false,
+        "body": "**Version**\nmain-Branch: https://github.com/sebastianbergmann/phpunit/blob/main/.github/workflows/ci.yaml\n\nAcross different versions, not quite sure but I guess for all version of phpunit from 9.6 to 13.2\n\n**Problem**\nhttps://github.com/sebastianbergmann/phpunit/blob/ea25442a475d1b01e19a5389d545306ca96b2092/.github/workflows/ci.yaml#L90-L94\n\n**Analysis**\nThere were two commits which do the same:\n- https://github.com/sebastianbergmann/phpunit/commit/d70691052b08722c52f7dc573726a4cfb575506b\n- https://github.com/sebastianbergmann/phpunit/commit/6eda9e8ebfed4799a80229476654bbc665717911\n\nThis ends up in calling composer audit twice unnecessarily.\n\n**Proposed solution**\nRemove duplicate call and save a few resources in the CI pipeline.",
+        "url": "https://github.com/sebastianbergmann/phpunit/issues/6767"
+    },
+    {
+        "id": 4710048174,
+        "number": 6766,
+        "title": "Retried tests do not report total test duration, only the last attempt’s one",
+        "state": "closed",
+        "created_at": "2026-06-21T09:43:56Z",
+        "updated_at": "2026-06-22T09:40:30Z",
+        "closed_at": "2026-06-21T12:32:39Z",
+        "author": "mondrake",
+        "comments": 2,
+        "labels": [
+            "type/bug",
+            "feature/retry"
+        ],
+        "assignees": [
+            "sebastianbergmann"
+        ],
+        "locked": false,
+        "body": "| Q                   | A\n| --------------------| ---------------\n| PHPUnit version     | 13.3-dev\n| PHP version         | 8.5\n| Installation Method | Composer\n\n#### Summary\n\nI am not sure this is a bug, but I wanted to report it nonetheless.\n\nIt took me some time to understand the logic of reporting the retried test only once in #6742.\n\nOnly the last attempt gets reported (I've been looking at JUnit and OTR logs); this way, however, we lose information about the reasons earlier attempts failed, which may be relevant to investigate. Example: the last failure may be a normal assertion failure, hence I'd be looking into fixing my code, but the previous ones may be infra related and I will not know I have infra problems.\n\nApart from the above, the reported duration of the test IMHO should be the sum of all attempts, not just the duration of the last one. The runner total execution time does not match the sum of all the tests.\n\nExample:\n\nwith a test like\n```\n<?php\n\ndeclare(strict_types=1);\n\nnamespace Drupal\\Tests\\Core\\Layout;\n\nuse Drupal\\Tests\\UnitTestCase;\nuse PHPUnit\\Framework\\Attributes\\DataProvider;\nuse PHPUnit\\Framework\\Attributes\\Retry;\nuse PHPUnit\\Framework\\TestCase;\n\nclass LayoutDefaultTest extends TestCase {\n\n  #[DataProvider('providerTestBuild')]\n  #[Retry(5)]\n  public function testBuild(int $wait): void {\n    sleep($wait);\n    $this->assertFalse(TRUE);\n  }\n\n  public static function providerTestBuild(): array {\n    $data = [];\n    $data['foo'] = [1];\n    $data['bar'] = [2];\n    return $data;\n  }\n\n}\n\n```\n\nrunning `phpunit --log-junit junit.log --log-otr otr.log LayoutDefaultTest.php `\n\nwe get \n```\nPHPUnit 13.3-dev by Sebastian Bergmann and contributors.\n\nRuntime:       PHP 8.5.6\nConfiguration: /Users/xxxx/Dev/drupal/core/phpunit.xml.dist\n\nFF                                                                  2 / 2 (100%)\n\nTime: 00:15.106, Memory: 20.00 MB\n\nThere were 2 failures:\n\n1) Drupal\\Tests\\Core\\Layout\\LayoutDefaultTest::testBuild@foo with data (1)\nFailed asserting that true is false.\n\n/Users/xxxx/Dev/drupal/core/tests/Drupal/Tests/Core/Layout/LayoutDefaultTest.php:18\n\n2) Drupal\\Tests\\Core\\Layout\\LayoutDefaultTest::testBuild@bar with data (2)\nFailed asserting that true is false.\n\n/Users/xxxx/Dev/drupal/core/tests/Drupal/Tests/Core/Layout/LayoutDefaultTest.php:18\n\nFAILURES!\nTests: 2, Assertions: 2, Failures: 2.\n\n```\n\nthe runner reports 15 seconds elapsed (which is correct). Junit reports a total elapsed of 3 seconds (ie. the sum of the two last attempts of each test case). OTR reports a total of 15 seconds and the suites time are correct too, but the individual test cases do not match the suite time.",
+        "url": "https://github.com/sebastianbergmann/phpunit/issues/6766"
+    },
+    {
+        "id": 4699007851,
+        "number": 6763,
+        "title": "Use of `#[Retry]` and `#[Repeat]` breaks `#[Group]` metadata",
+        "state": "closed",
+        "created_at": "2026-06-19T08:05:13Z",
+        "updated_at": "2026-06-21T11:56:49Z",
+        "closed_at": "2026-06-20T04:56:34Z",
+        "author": "mondrake",
+        "comments": 1,
+        "labels": [
+            "type/bug",
+            "feature/retry",
+            "feature/repeat"
+        ],
+        "assignees": [
+            "sebastianbergmann"
+        ],
+        "locked": false,
+        "body": "| Q                   | A\n| --------------------| ---------------\n| PHPUnit version     | 13.3-dev\n| PHP version         | 8.5\n| Installation Method | Composer\n\n#### Summary\n\nIf a test adds a `#[Retry]` or a `#[Repeat]` attribute, the test objects that are embedded in the respective `TestSuite*` collections only get 'default' as a group, even if the `#[Group]` attribute is specified.\n\n#### Current behavior\n\nSee above\n\n#### How to reproduce\n\nAdd a test like\n```\n<?php\n\ndeclare(strict_types=1);\n\nnamespace Drupal\\Tests\\Core\\Layout;\n\nuse PHPUnit\\Framework\\TestCase;\nuse PHPUnit\\Framework\\Attributes\\Group;\nuse PHPUnit\\Framework\\Attributes\\Repeat;\nuse PHPUnit\\Framework\\Attributes\\Retry;\n\n#[Group('Foo')]\nclass LayoutAttributeTest extends TestCase {\n\n  #[Group('Bar')]\n  #[Repeat(3)]\n  public function testMissingProperties(): void {\n    $this->assertTrue(TRUE);\n  }\n\n}\n```\n\nneither `phpunit --group Foo` nor `phpunit --group Bar` discover and execute the test. Same using #[Retry] instead of #[Repeat].\n\n#### Expected behavior\n\nWhen `#[Group]` attribute is specified, it should be accessible reading the test metadata.",
+        "url": "https://github.com/sebastianbergmann/phpunit/issues/6763"
+    },
+    {
+        "id": 4681525469,
+        "number": 6754,
+        "title": "Native parallel test execution",
+        "state": "closed",
+        "created_at": "2026-06-17T08:34:30Z",
+        "updated_at": "2026-06-26T05:05:38Z",
+        "closed_at": "2026-06-26T05:05:38Z",
+        "author": "sebastianbergmann",
+        "comments": 2,
+        "labels": [
+            "type/enhancement",
+            "feature/test-runner"
+        ],
+        "assignees": [
+            "sebastianbergmann"
+        ],
+        "locked": false,
+        "body": "## Disclaimer\n\nThe purpose of this issue is to provide a space for exploring and discussing the architecture and design specifications of native parallel test execution implemented directly within PHPUnit. I would like to make it clear that I am not working on this because I think that existing solutions, such as Paratest and ParaUnit, are inadequate. I also want to make it clear that the existence of this issue does not mean that PHPUnit will support parallel test execution out of the box. For now, I am treating this as a thought experiment: what if parallel test execution were to be implemented natively in PHPUnit? Would that benefit end users? Would it be easier to maintain?\n\n## Status Quo\n\nAt present, PHPUnit can only execute a test suite sequentially: `TextUI\\TestRunner::run()` flattens the suite and calls `$test->run()` on each test in turn (`Framework\\TestSuite::run()`). On multi-core machines this leaves most of the hardware idle. Third-party tools (paratest, paraunit) parallelize by running PHPUnit itself as a black-box subprocess per test file and then parsing its log output to reconstruct results. That approach is inherently lossy and cannot reproduce PHPUnit's own reporting fidelity.\n\n## High-level implementation approach\n\nPHPUnit already owns a high-fidelity mechanism for running a test in another process and reconstituting its outcome: the implementation of its process isolation feature. Native parallelism is therefore not a new subsystem bolted on top; it is the generalization of that implementation from \"one synchronous child per test\" to \"N concurrent, reusable workers\":\n\n| Concern | Class | Role |\n|---|---|---|\n| Serialize a test into a runnable child script | `Framework\\TestRunner\\SeparateProcessTestRunner` | Templates one `TestCase` + config + (optional) global state into PHP code |\n| Spawn a child and collect its output | `Util\\PHP\\JobRunner` | `proc_open`, feed code, collect stdout/stderr |\n| Reconstitute a child's outcome in the parent | `Framework\\TestRunner\\ChildProcessResultProcessor` | Forwards events, imports `PassedTests`, sets result/status/assertions, merges coverage |\n| Transport | nonce-prefixed serialized `stdClass` written to a temp file | `{events, passedTests, testResult, status, numAssertions, output, codeCoverage}` |\n| Replay child events in the parent | `Event\\Facade::forward(EventCollection)` | Re-dispatches a collected event stream through the parent dispatcher |\n| Collect events in a child | `Event\\Facade::initForIsolation()` → `CollectingDispatcher` | Accumulates events; `flush()` returns + resets them |\n\nEvery printer, logger, and report is a downstream subscriber of events. A child runs with a `CollectingDispatcher`, collects its events into an `EventCollection`, ships them home, and the parent replays them with `forward()`. Consequently, if a worker can ship its event stream to the parent, the parent's entire output/logging/result subsystem works unchanged:\n\n```\nTextUI\\Application\n        │  (selects runner when parallel workers > 1)\n        ▼\nTextUI\\TestRunner ───────────────► TextUI\\ParallelTestRunner\n   (sequential, today)                      │\n                                            ▼\n                              Runner\\Parallel\\WorkerPool\n                               │        │         │\n                        Worker 1     Worker 2   Worker N   (PersistentWorker)\n                               │        │         │\n                          ┌────┴────────┴─────────┴─────┐\n                          │  Scheduler / WorkQueue      │\n                          └─────────────────────────────┘\n                                       │  per-unit result envelopes\n                                       ▼\n                          Runner\\Parallel\\ResultAggregator\n                          → Event\\Facade::forward(...) in suite order\n                          → PassedTests::import(), CodeCoverage::merge()\n```\n\nThe parent process remains the single source of truth for output: it owns the `OutputFacade`, `TestResultFacade`, `CodeCoverage`, `ResultCache`, and the sealed event dispatcher. Workers never produce user-facing output; they only emit events that the parent replays.\n\n`JobRunner::runProcess()` was synchronous: spawn one process, block in `stream_get_contents()`, `proc_close()`. A pool needs to keep N processes busy simultaneously.\n\nChosen mechanism: `proc_open()` and `stream_select()` over the workers' pipes.\n\nRationale:\n- No new dependency or runtime requirement, it runs everywhere `proc_open()` already runs (the existing isolation requirement)\n- Rejected alternatives: `ext-parallel` (requires ZTS; narrow availability) and `ext-pcntl` fork (no Windows; fragile fork-sharing of an initialized PHPUnit)\n\nGranularity should be configurable, defaulting to per test class:\n\n- per-suite: coarsest; good for several independent `<testsuite>`s\n- per-class (default): preserves `#[BeforeClass]` / `#[AfterClass]` and intra-class ordering; matches paratest's default; bounds per-process overhead\n- per-method: finest balancing, but breaks shared class fixtures (and likely has increased per-test coverage serialization cost, for example)\n\nDistribution is a dynamic work-stealing queue, not static pre-chunking: each idle worker pulls the next unit, which self-balances against stragglers. The `ResultCache` (per-test durations, `Runner\\ResultCache\\`) can seed a longest-processing-time-first ordering so large units start early.\n\n## Step 1:  Async-capable `JobRunner`\n\nThis has already been implemented in #6753.\n\n## Step 2: Persistent worker\n\nThis has already been implemented in #6753.\n\n## Step 3: Worker Pool and Scheduler\n\n- `Runner\\Parallel\\WorkerPool` owns N `PersistentWorker`s and pumps their pipes with `stream_select()`\n- Dynamic work-stealing queue; default per-class granularity; ordering seeded from `ResultCache`\n- `TextUI\\ParallelTestRunner` (or a branch in the existing runner) selects the parallel path when configured worker count > 1\n\n## Step 4: ResultAggregator with ordered replay\n\nWorkers finish out of order; events carry telemetry and the printers assume suite-ordered arrival. The aggregator buffers each unit's `EventCollection` and forwards it to the parent dispatcher in deterministic suite order, releasing a unit only once all prior units have flushed. Output then matches sequential mode byte-for-byte (good for CI diffs), at the cost of latency and memory.\n\n## Step 5: Correctness and robustness\n\n- **Dependencies:** `#[Depends]` / `ExecutionOrderDependency`: dependent tests must land in the same worker in order (the `TestSuiteSorter` graph already computes this)\n- **Stop conditions:** `--stop-on-*` / interruption need a broadcast halt; in-flight units are abandoned, so the stop point is no longer exactly\n  deterministic (maybe \"only\" a documentation issue)\n- **Suite hooks:** before-first-test / after-last-test hook methods run once in the parent (or a designated worker), not per worker\n- **Resource partitioning:** expose a worker-identity environment variable so test fixtures can choose a per-worker database/port/temporary directory/...\n- **Crash/retry:** detect a dead pipe / abnormal exit, attribute it to the in-flight unit, optionally retry once on a fresh worker, keep other workers running\n",
+        "url": "https://github.com/sebastianbergmann/phpunit/issues/6754"
+    },
+    {
+        "id": 4674038050,
+        "number": 6746,
+        "title": "Testrunner-Option to skip the first N tests",
+        "state": "closed",
+        "created_at": "2026-06-16T12:15:28Z",
+        "updated_at": "2026-06-16T12:30:31Z",
+        "closed_at": "2026-06-16T12:30:31Z",
+        "author": "ThomasMeschke",
+        "comments": 1,
+        "labels": [
+            "type/enhancement",
+            "feature/test-runner"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "Assume I have a test suite consisting of 3.000 tests. \nAssume I am running them with the --stop-on-defect option. \nAssume an error or failure is found after 2.500 tests. \nAssume this error would make some of the next 500 tests fail as well, \ndue to being follow-up implications or simply affected by the same issue. \n\nCurrently, I have to re-run all the tests just to maybe find the next issue e.g. in test number 2.513, and so on.\n\nI would love to have an option to stop on the first defect, fix the found defect, and then sort of continue the test execution from where I left of, in the sense of skipping the first N tests (here: 2.499) and start the execution with test number 2.500 (to proof the fix) onward, without having to re-run the first 2.499 tests of which I assume they work. \n\nThis could speed up the \"am I done yet?\" phase of a refactoring an would leave the \"run all and everything\" moment until the very end. ",
+        "url": "https://github.com/sebastianbergmann/phpunit/issues/6746"
+    },
+    {
+        "id": 4664640764,
+        "number": 6744,
+        "title": "Environment-variable attributes reject empty-string values since PHPUnit 13.2.0",
+        "state": "closed",
+        "created_at": "2026-06-15T11:28:48Z",
+        "updated_at": "2026-06-15T11:59:14Z",
+        "closed_at": "2026-06-15T11:59:14Z",
+        "author": "cs278",
+        "comments": 0,
+        "labels": [
+            "type/bug",
+            "feature/test-runner",
+            "feature/metadata/attributes",
+            "version/13"
+        ],
+        "assignees": [
+            "sebastianbergmann"
+        ],
+        "locked": false,
+        "body": "Upon updating to 13.2.0 PHPStan is now telling us that setting an environment variable to an empty string is not permitted. Environment variables containing empty strings are perfectly valid. I've tracked this down to this change: 82848be7178feec5a95ca16e3f7c8375b8da09a1.\n\nThe following test works perfectly fine, but PHPStan throws an error.\n\n```php\n<?php\n\ndeclare(strict_types=1);\n\nuse PHPUnit\\Framework\\Attributes\\CoversNothing;\nuse PHPUnit\\Framework\\Attributes\\WithEnvironmentVariable;\nuse PHPUnit\\Framework\\TestCase;\n\n#[CoversNothing]\nfinal class MyTest extends TestCase\n{\n    #[WithEnvironmentVariable('FOO', '')]\n    public function testFoo(): void\n    {\n        $this->assertSame('', getenv('FOO'));\n        $this->assertSame('', $_ENV['FOO']);\n    }\n}\n```\n\n>  `Parameter #2 $value of attribute class PHPUnit\\Framework\\Attributes\\WithEnvironmentVariable constructor expects non-empty-string|null, '' given.`",
+        "url": "https://github.com/sebastianbergmann/phpunit/issues/6744"
+    },
+    {
+        "id": 4647188413,
+        "number": 6741,
+        "title": "Test is not run when `--filter` matches the name of a data set but not the name of the test method",
+        "state": "closed",
+        "created_at": "2026-06-12T07:11:50Z",
+        "updated_at": "2026-07-13T00:35:26Z",
+        "closed_at": "2026-06-12T07:48:32Z",
+        "author": "lpartington",
+        "comments": 0,
+        "labels": [
+            "type/bug",
+            "feature/test-runner",
+            "feature/data-provider",
+            "version/13"
+        ],
+        "assignees": [
+            "sebastianbergmann"
+        ],
+        "locked": true,
+        "body": "| Q                   | A\n| --------------------| ---------------\n| PHPUnit version     | 13.2.0\n| PHP version         | 8.5.7\n| Installation Method | Composer\n\n#### Summary\nWhen specifying a --filter string containing a key, or part of a key, for DataProvider test cases, the matching test cases should be executed. However, for phpunit 13.2.0+ none of the cases are executed.\n\n#### Current behavior\nThe following snippet uses a DataProvider to add several test cases named 'case1', 'case2', and so on. \n`phpunit --filter case1` should run the case1 test, but no tests are executed (the output is \"No tests executed!\".\n\n```\n<?php\nnamespace Tests;\nuse PHPUnit\\Framework\\TestCase;\nuse PHPUnit\\Framework\\Attributes\\{Test, DataProvider};\n\nclass DataProviderTest extends TestCase\n{\n    public static function data()\n    {\n        $cases = [];\n        for ($i = 1; $i <= 4; ++$i)\n            $cases[\"case{$i}\"] = [$i];\n        return $cases;\n    }\n\n    #[Test]\n    #[DataProvider('data')]\n    public function test($case_id)\n    {\n        $this->assertTrue(true);\n    }\n}\n```\n\n#### How to reproduce\nInstall phpunit 13.2.0, 13.2.x-dev or 13.3.x-dev.\nUsing the above code snippet, run `phpunit --filter case1`\n\n#### Expected behavior\nThe test case with key = \"case1\" should be executed.\nNote that case1 is executed when using phpunit 13.1.14.\n\n#### Supporting Info\nphp composer info | sort:\nmyclabs/deep-copy            1.13.4           Create deep copies (clones) of your objects\nnikic/php-parser             5.7.0            A PHP parser written in PHP\nphar-io/manifest             2.0.4            Component for reading phar.io manifest information from a PHP Archive (PHAR)\nphar-io/version              3.2.1            Library for handling version information and constraints\nphpunit/php-code-coverage    14.2.2           Library that provides collection, processing, and rendering functionality for PHP code co...\nphpunit/php-file-iterator    7.0.0            FilterIterator implementation that filters files based on a list of suffixes.\nphpunit/php-invoker          7.0.0            Invoke callables with a timeout\nphpunit/php-text-template    6.0.0            Simple template engine.\nphpunit/php-timer            9.0.0            Utility class for timing\nphpunit/phpunit              dev-main 598d0d1 The PHP Unit Testing framework.\nsebastian/cli-parser         5.0.0            Library for parsing CLI options\nsebastian/comparator         8.3.0            Provides the functionality to compare PHP values for equality\nsebastian/complexity         6.0.0            Library for calculating the complexity of PHP code units\nsebastian/diff               9.0.0            Diff implementation\nsebastian/environment        9.3.2            Provides functionality to handle HHVM/PHP environments\nsebastian/exporter           8.1.0            Provides the functionality to export PHP variables for visualization\nsebastian/file-filter        1.0.0            Library for filtering files\nsebastian/git-state          1.0.0            Library for describing the state of a Git checkout\nsebastian/global-state       9.0.1            Snapshotting of global state\nsebastian/lines-of-code      5.0.1            Library for counting the lines of code in PHP source code\nsebastian/object-enumerator  8.0.0            Traverses array structures and object graphs to enumerate all referenced objects\nsebastian/object-reflector   6.0.0            Allows reflection of object attributes, including inherited and non-public ones\nsebastian/recursion-context  8.0.0            Provides functionality to recursively process PHP variables\nsebastian/type               7.0.1            Collection of value objects that represent the types of the PHP type system\nsebastian/version            7.0.0            Library that helps with managing the version number of Git-hosted PHP projects\nstaabm/side-effects-detector 1.0.5            A static analysis tool to detect side effects in PHP code\ntheseer/tokenizer            2.0.1            A small library for converting tokenized PHP source code into XML and potentially other f...\n\nvendor/bin/phpunit --check-php-configuration:\nPHPUnit 13.3-dev by Sebastian Bergmann and contributors.\nChecking whether PHP is configured according to https://docs.phpunit.de/en/13.3/installation.html#configuring-php-for-development\ndisplay_errors = On         ... not ok ()\ndisplay_startup_errors = On ... not ok ()\nerror_reporting = -1        ... not ok (22527)\nzend.assertions = 1         ... not ok (-1)\nassert.exception = 1        ... ok\nmemory_limit = -1           ... ok",
+        "url": "https://github.com/sebastianbergmann/phpunit/issues/6741"
+    },
+    {
+        "id": 4631293533,
+        "number": 6740,
+        "title": "Introduce a bootstrap method for DeprecationFilter",
+        "state": "closed",
+        "created_at": "2026-06-10T12:42:51Z",
+        "updated_at": "2026-07-12T00:35:23Z",
+        "closed_at": "2026-06-11T05:23:12Z",
+        "author": "mondrake",
+        "comments": 3,
+        "labels": [
+            "type/enhancement"
+        ],
+        "assignees": [],
+        "locked": true,
+        "body": "WRT to the recently introduced `DeprecationFilter` #6710, I was wondering whether it would make sense to introduce a `bootstrap()` method (similarly to other PHPUnit extensions) or something like that, so that preparing data to be used by the `ignore()` method can be made available to it in a structured manner.\n\nDrupal would have to preload the patterns to be ignored from a file.\n\nObviously this can happen in the constructor of the `DeprecationFilter` implementation, but I'd be wary to deal with I/O during object construction; a dedicated method would make DX more effective I think.\n\nThanks\n\n\n",
+        "url": "https://github.com/sebastianbergmann/phpunit/issues/6740"
+    },
+    {
+        "id": 4612627176,
+        "number": 6730,
+        "title": "Allow millisecond time limits through event's telemetryInfo",
+        "state": "closed",
+        "created_at": "2026-06-08T11:53:30Z",
+        "updated_at": "2026-07-09T00:38:10Z",
+        "closed_at": "2026-06-08T12:06:19Z",
+        "author": "rvanlaak",
+        "comments": 2,
+        "labels": [
+            "type/enhancement"
+        ],
+        "assignees": [],
+        "locked": true,
+        "body": "As a follow-up of the interesting discussion on #6361 regarding timeouts in milliseconds; it does seems that `$event->telemetryInfo()->duration()->asFloat();` allows returning miliseconds. Maybe defining the configuration value's format could be reconsidered?\n\n- The main goal I'd have is to let the `Unit` suite fail when a test exceeds 50ms. \n- A stretch goal could be that defining `timeoutForSmallTests` would be definable on suite level.\n\nThe following code sample shows how milliseconds could be used (note: did not verify it yet at this phase):\n\n```php\n<?php\ndeclare(strict_types=1);\n\nnamespace Tests\\Extensions;\n\nuse PHPUnit\\Event\\Test\\Finished;\nuse PHPUnit\\Event\\Test\\FinishedSubscriber;\nuse PHPUnit\\Runner\\Extension\\Extension;\nuse PHPUnit\\Runner\\Extension\\Facade;\nuse PHPUnit\\Runner\\Extension\\ParameterCollection;\nuse PHPUnit\\TextUI\\Configuration\\Configuration;\n\nfinal class TimeLimitExtension implements Extension\n{\n    public function bootstrap(\n        Configuration $configuration,\n        Facade $facade,\n        ParameterCollection $parameters\n    ): void {\n        // Register our custom subscriber to trigger when a test finishes\n        $facade->registerSubscriber(new class implements FinishedSubscriber {\n            public function notify(Finished $event): void\n            {\n                // PHPUnit provides duration in seconds with microsecond precision\n                $duration = $event->telemetryInfo()->duration()->asFloat();\n                $maxAllowedSeconds = 0.050; // 50 milliseconds\n\n                if ($duration > $maxAllowedSeconds) {\n                    $testName = $event->test()->id();\n                    $msSpent = round($duration * 1000, 2);\n                    \n                    // Mark the test as failed due to execution time breach\n                    throw new \\RuntimeException(\n                        \"Test [{$testName}] exceeded the 50ms speed limit! Took {$msSpent}ms.\"\n                    );\n                }\n            }\n        });\n    }\n}\n```\n\n## Reference\n\nRelated blogposts for timeouts in milliseconds:\nhttps://smaine-milianni.medium.com/set-a-max-timeout-for-your-phpunit-tests-ba160c7f53a5\n\nReference to current configuration format:\nhttps://docs.phpunit.de/en/12.5/xml-configuration-file.html#the-timeoutforsmalltests-attribute",
+        "url": "https://github.com/sebastianbergmann/phpunit/issues/6730"
+    }
+]

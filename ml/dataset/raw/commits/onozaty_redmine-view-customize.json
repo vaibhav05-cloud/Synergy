@@ -1,0 +1,242 @@
+[
+    {
+        "sha": "cdec221825f0a29c3babe2aa501e062fecbdc97a",
+        "author": "onozaty",
+        "email": "onozaty@gmail.com",
+        "date": "2026-07-05T14:48:21Z",
+        "message": "Merge pull request #136 from onozaty/add-redmine-4.0-ci\n\nfeat: add redmine-4.1 CI job",
+        "url": "https://github.com/onozaty/redmine-view-customize/commit/cdec221825f0a29c3babe2aa501e062fecbdc97a"
+    },
+    {
+        "sha": "0fbae8ae096154d87cc9b39b399f3885c96d8ea0",
+        "author": "onozaty",
+        "email": "onozaty@gmail.com",
+        "date": "2026-07-05T14:38:58Z",
+        "message": "fix: replace redmine-4.0 with redmine-4.1 job\n\nRedmine 4.0.9's issue fixture (issues.yml) doesn't set estimated_hours\non the fixture issue with id 1, which the plugin's tests assume (added\nupstream in 4.1.7), causing an unrelated test failure. Track 4.1\ninstead, and broaden the loofah pin to also cover nokogiri ~> 1.11.1\n(Redmine 4.1's pinned version under Ruby 2.6), which likewise predates\nNokogiri::HTML4.",
+        "url": "https://github.com/onozaty/redmine-view-customize/commit/0fbae8ae096154d87cc9b39b399f3885c96d8ea0"
+    },
+    {
+        "sha": "f63b5eef71e7da2e2f044d96eb67e08508c7762a",
+        "author": "onozaty",
+        "email": "onozaty@gmail.com",
+        "date": "2026-07-05T14:30:48Z",
+        "message": "fix: pin loofah for redmine-4.0 job\n\nRedmine 4.0.9 pins nokogiri to ~> 1.10.0, but loofah >= 2.21\nrequires Nokogiri::HTML4, which that version doesn't provide,\nbreaking rake tasks with a NameError.",
+        "url": "https://github.com/onozaty/redmine-view-customize/commit/f63b5eef71e7da2e2f044d96eb67e08508c7762a"
+    },
+    {
+        "sha": "bb8f7c81e0d162f76310c26584f81b51b9dcb6fc",
+        "author": "onozaty",
+        "email": "onozaty@gmail.com",
+        "date": "2026-07-05T14:25:00Z",
+        "message": "feat: add redmine-4.0 CI job",
+        "url": "https://github.com/onozaty/redmine-view-customize/commit/bb8f7c81e0d162f76310c26584f81b51b9dcb6fc"
+    },
+    {
+        "sha": "1d5a62afc147f0073e0222161c90cc377b666ae6",
+        "author": "onozaty",
+        "email": "onozaty@gmail.com",
+        "date": "2026-07-05T14:20:57Z",
+        "message": "chore: bump version to 3.6.0",
+        "url": "https://github.com/onozaty/redmine-view-customize/commit/1d5a62afc147f0073e0222161c90cc377b666ae6"
+    },
+    {
+        "sha": "48580e67962780c00440a3633f5059afbcc25f33",
+        "author": "onozaty",
+        "email": "onozaty@gmail.com",
+        "date": "2026-07-05T14:14:10Z",
+        "message": "Merge pull request #133 from vividtone/fix-redmine-7-deprecation-warning\n\nAvoid Redmine 7.0 ActiveSupport::Configurable deprecation warning",
+        "url": "https://github.com/onozaty/redmine-view-customize/commit/48580e67962780c00440a3633f5059afbcc25f33"
+    },
+    {
+        "sha": "fc3175d73a7dbcbe183804b9ae1304d98fb3f475",
+        "author": "onozaty",
+        "email": "onozaty@gmail.com",
+        "date": "2026-07-05T13:49:53Z",
+        "message": "Merge pull request #134 from onozaty/update-devcontainer\n\nchore: update DevContainer configuration",
+        "url": "https://github.com/onozaty/redmine-view-customize/commit/fc3175d73a7dbcbe183804b9ae1304d98fb3f475"
+    },
+    {
+        "sha": "3c68a8cbd64b0cc8bc65815e2c24f7e38fcd4a41",
+        "author": "onozaty",
+        "email": "onozaty@gmail.com",
+        "date": "2026-07-05T13:47:41Z",
+        "message": "Merge branch 'master' into update-devcontainer",
+        "url": "https://github.com/onozaty/redmine-view-customize/commit/3c68a8cbd64b0cc8bc65815e2c24f7e38fcd4a41"
+    },
+    {
+        "sha": "7dd3200baf41bf793428a03b36d2edf70543f375",
+        "author": "onozaty",
+        "email": "onozaty@gmail.com",
+        "date": "2026-07-05T13:46:15Z",
+        "message": "Merge pull request #135 from onozaty/fix-circleci-bundler\n\nfix: upgrade CircleCI orb and Redmine version matrix",
+        "url": "https://github.com/onozaty/redmine-view-customize/commit/7dd3200baf41bf793428a03b36d2edf70543f375"
+    },
+    {
+        "sha": "00f2d10343fba492d59bb48213c40b8ef1dabe3e",
+        "author": "onozaty",
+        "email": "onozaty@gmail.com",
+        "date": "2026-07-05T13:37:11Z",
+        "message": "fix: use sudo when downgrading RubyGems\n\ncimg/ruby images run as a non-root user, so gem update --system\nneeds sudo to write to the system Ruby install.",
+        "url": "https://github.com/onozaty/redmine-view-customize/commit/00f2d10343fba492d59bb48213c40b8ef1dabe3e"
+    },
+    {
+        "sha": "1b017b3a28a32f45327d33595e51239274cde392",
+        "author": "onozaty",
+        "email": "onozaty@gmail.com",
+        "date": "2026-07-05T13:29:33Z",
+        "message": "fix: remove unneeded minitest pin, downgrade RubyGems for redmine-6.1\n\n- Redmine 5.1.13 already pins minitest to '< 6.0' in its own Gemfile,\n  so our own pin caused a duplicate-gem Bundler error. Remove it.\n- redmine-6.1 depends on commonmarker ~> 2.3, which requires\n  RubyGems ~> 3.4. CircleCI's ruby:3.2 image ships a newer RubyGems\n  that can't satisfy this, so downgrade it before bundle install.",
+        "url": "https://github.com/onozaty/redmine-view-customize/commit/1b017b3a28a32f45327d33595e51239274cde392"
+    },
+    {
+        "sha": "8fba3a3035c2b34a7e8a1d776daf1fe7586661d1",
+        "author": "onozaty",
+        "email": "onozaty@gmail.com",
+        "date": "2026-07-05T11:06:00Z",
+        "message": "feat: add redmine-6.0 and redmine-6.1 CI jobs, track latest patch versions\n\n- Add CI jobs for Redmine 6.0 and 6.1, which were previously untested\n  (latest already covers 7.0)\n- Switch pinned patch versions (5.1.6, 5.0.11, 4.2.10) to minor-only\n  version specs so CI tracks the latest patch release automatically",
+        "url": "https://github.com/onozaty/redmine-view-customize/commit/8fba3a3035c2b34a7e8a1d776daf1fe7586661d1"
+    },
+    {
+        "sha": "3948d751d3cc74d4e389e5b070b8c7e4a5da9e8a",
+        "author": "onozaty",
+        "email": "onozaty@gmail.com",
+        "date": "2026-07-05T10:57:42Z",
+        "message": "fix: pin minitest to 5.x only for redmine-5.1.6 job\n\nminitest 6 removes APIs that Rails 6.1's line_filtering still\nrelies on, breaking test runs for redmine-5.1.6 when bundler\nresolves the newest minitest release. Other jobs already resolve\nto minitest 5.x or 6.x compatible versions, so scope the pin to\nthe affected job only.",
+        "url": "https://github.com/onozaty/redmine-view-customize/commit/3948d751d3cc74d4e389e5b070b8c7e4a5da9e8a"
+    },
+    {
+        "sha": "310637248b5d631ce5f2cfd99eba1c66cb5ee12d",
+        "author": "onozaty",
+        "email": "onozaty@gmail.com",
+        "date": "2026-07-05T10:46:19Z",
+        "message": "fix: upgrade redmine-plugin orb to fix CI failure with Bundler 4\n\nbundle install used the removed --path flag, which broke jobs\nrunning on newer Ruby/Bundler versions.",
+        "url": "https://github.com/onozaty/redmine-view-customize/commit/310637248b5d631ce5f2cfd99eba1c66cb5ee12d"
+    },
+    {
+        "sha": "32c76bedf09ea5a2dea206f75345038a2d851d3c",
+        "author": "onozaty",
+        "email": "onozaty@gmail.com",
+        "date": "2026-07-05T10:32:06Z",
+        "message": "chore: update DevContainer configuration\n\n- Add GitHub CLI feature\n- Pin postgres image to version 17 instead of latest",
+        "url": "https://github.com/onozaty/redmine-view-customize/commit/32c76bedf09ea5a2dea206f75345038a2d851d3c"
+    },
+    {
+        "sha": "7f257c79751888c462557aec976aa6ab69d920bd",
+        "author": "MAEDA Go",
+        "email": "maeda@farend.jp",
+        "date": "2026-07-02T09:12:36Z",
+        "message": "Avoid Redmine 7.0 ActiveSupport::Configurable deprecation warning\n\nReplace activerecord-compatible_legacy_migration with explicit\nActiveRecord::Migration[4.2] inheritance in plugin migrations. This removes\nthe compatibility helper and means the plugin no longer remains compatible\nwith Redmine 3.x.\n\nUpdate the documented compatibility range and require Redmine 4.0 or later.",
+        "url": "https://github.com/onozaty/redmine-view-customize/commit/7f257c79751888c462557aec976aa6ab69d920bd"
+    },
+    {
+        "sha": "b604b6cced34295d1b4570d8c5891ff2a8056922",
+        "author": "onozaty",
+        "email": "onozaty@gmail.com",
+        "date": "2025-11-03T06:58:29Z",
+        "message": "Merge pull request #130 from onozaty/develop/v3.5.4\n\nDevelop v3.5.4",
+        "url": "https://github.com/onozaty/redmine-view-customize/commit/b604b6cced34295d1b4570d8c5891ff2a8056922"
+    },
+    {
+        "sha": "a78adb8ca0d7fc8393d542478506b7023bcb9097",
+        "author": "onozaty",
+        "email": "onozaty@gmail.com",
+        "date": "2025-11-03T06:51:10Z",
+        "message": "Bump version to 3.5.4",
+        "url": "https://github.com/onozaty/redmine-view-customize/commit/a78adb8ca0d7fc8393d542478506b7023bcb9097"
+    },
+    {
+        "sha": "41ceb2b71dbf1bbd5da19be15734ad859f816a4c",
+        "author": "onozaty",
+        "email": "onozaty@gmail.com",
+        "date": "2025-11-03T06:50:17Z",
+        "message": "Merge pull request #129 from hidakatsuya/remove-unnecessary-styles\n\nRemove unnecessary icon styles",
+        "url": "https://github.com/onozaty/redmine-view-customize/commit/41ceb2b71dbf1bbd5da19be15734ad859f816a4c"
+    },
+    {
+        "sha": "5efb91598fe5e9df029821fefdd189c9b3a492cb",
+        "author": "Katsuya HIDAKA",
+        "email": "hidakatsuya@gmail.com",
+        "date": "2025-10-28T05:11:04Z",
+        "message": "Remove unnecessary icon styles\n\nThese icon styles do not need to be defined in the plugin because\nidentical styles are already defined in Redmine itself, at least up to\nversion 6.1. Defining them globally in the plugin could even cause\nunexpected UI issues. Removing these styles still allows icons (PNG or\nSVG) to display correctly from Redmine 5.1 through trunk.",
+        "url": "https://github.com/onozaty/redmine-view-customize/commit/5efb91598fe5e9df029821fefdd189c9b3a492cb"
+    },
+    {
+        "sha": "dfee75df6e063ab3e08b0dfbb3613d7bc4c03c18",
+        "author": "onozaty",
+        "email": "onozaty@gmail.com",
+        "date": "2025-10-25T04:49:55Z",
+        "message": "Bump version to 3.5.3",
+        "url": "https://github.com/onozaty/redmine-view-customize/commit/dfee75df6e063ab3e08b0dfbb3613d7bc4c03c18"
+    },
+    {
+        "sha": "2f7e1255c066934e26bb456358574f5d6a0abb17",
+        "author": "onozaty",
+        "email": "onozaty@gmail.com",
+        "date": "2025-10-25T04:45:50Z",
+        "message": "Merge pull request #128 from hidakatsuya/svg-icon\n\nReplace PNG icons with SVG for future Redmine compatibility",
+        "url": "https://github.com/onozaty/redmine-view-customize/commit/2f7e1255c066934e26bb456358574f5d6a0abb17"
+    },
+    {
+        "sha": "0b07f37c309d0e83399b65601fe0eeac4fa14204",
+        "author": "Katsuya HIDAKA",
+        "email": "hidakatsuya@gmail.com",
+        "date": "2025-10-24T06:09:01Z",
+        "message": "Replace PNG icons with SVG for future Redmine compatibility\n\nRedmine switched to SVG icons in version 6.0. This change updates the\nplugin icons accordingly while keeping PNG support for older Redmine\nversions.",
+        "url": "https://github.com/onozaty/redmine-view-customize/commit/0b07f37c309d0e83399b65601fe0eeac4fa14204"
+    },
+    {
+        "sha": "fca18cea78ee72b5a30e050afce6212ef472a79d",
+        "author": "onozaty",
+        "email": "onozaty@gmail.com",
+        "date": "2025-07-16T14:27:07Z",
+        "message": "chore: change restart policy to 'unless-stopped'",
+        "url": "https://github.com/onozaty/redmine-view-customize/commit/fca18cea78ee72b5a30e050afce6212ef472a79d"
+    },
+    {
+        "sha": "2bb5cdc42d9fd2b6544fda1db630a242f5a0d5b3",
+        "author": "onozaty",
+        "email": "onozaty@gmail.com",
+        "date": "2025-02-11T13:50:16Z",
+        "message": "Merge pull request #125 from onozaty/fix-circleci-test\n\nFix CircleCI test",
+        "url": "https://github.com/onozaty/redmine-view-customize/commit/2bb5cdc42d9fd2b6544fda1db630a242f5a0d5b3"
+    },
+    {
+        "sha": "8a8ac0dcc1ca246e9a7263f6b6cda0f8d5d88f69",
+        "author": "onozaty",
+        "email": "onozaty@gmail.com",
+        "date": "2025-02-11T13:43:49Z",
+        "message": "Add CircleCI test patterns",
+        "url": "https://github.com/onozaty/redmine-view-customize/commit/8a8ac0dcc1ca246e9a7263f6b6cda0f8d5d88f69"
+    },
+    {
+        "sha": "b492edcdcca44c68e71117a26c900b964dbae8f4",
+        "author": "onozaty",
+        "email": "onozaty@gmail.com",
+        "date": "2025-02-11T13:35:51Z",
+        "message": "Fix failing test",
+        "url": "https://github.com/onozaty/redmine-view-customize/commit/b492edcdcca44c68e71117a26c900b964dbae8f4"
+    },
+    {
+        "sha": "b92006f3f7219b83b6909896935f67f93fa4803c",
+        "author": "onozaty",
+        "email": "onozaty@gmail.com",
+        "date": "2025-02-09T16:04:46Z",
+        "message": "Add DevContainer settings",
+        "url": "https://github.com/onozaty/redmine-view-customize/commit/b92006f3f7219b83b6909896935f67f93fa4803c"
+    },
+    {
+        "sha": "fbeb6ef2c7044f6a3490d4af8fb8718ccd1fd4e2",
+        "author": "onozaty",
+        "email": "onozaty@gmail.com",
+        "date": "2025-02-08T14:55:27Z",
+        "message": "Add DevContainer settings",
+        "url": "https://github.com/onozaty/redmine-view-customize/commit/fbeb6ef2c7044f6a3490d4af8fb8718ccd1fd4e2"
+    },
+    {
+        "sha": "56a31851756c9f118cb506bb0eebfa766a29b2f9",
+        "author": "onozaty",
+        "email": "onozaty@gmail.com",
+        "date": "2025-02-06T14:53:24Z",
+        "message": "Update agileware-jp/redmine-plugin",
+        "url": "https://github.com/onozaty/redmine-view-customize/commit/56a31851756c9f118cb506bb0eebfa766a29b2f9"
+    }
+]

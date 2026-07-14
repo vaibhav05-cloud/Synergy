@@ -1,0 +1,242 @@
+[
+    {
+        "sha": "e55ec64532dd4a0a07d707a88f33d066a1b8c832",
+        "author": "SaladDay",
+        "email": "92240037+SaladDay@users.noreply.github.com",
+        "date": "2026-01-13T11:57:51Z",
+        "message": "fix: improve reconnecting regex to match messages with error details (#36)\n\nRemove the trailing $ anchor from the reconnecting regex pattern to\nproperly match messages like \"Reconnecting... 1/5 (error details)\"\ninstead of only matching \"Reconnecting... 1/5\".\n\nFixes #22",
+        "url": "https://github.com/GuDaStudio/codexmcp/commit/e55ec64532dd4a0a07d707a88f33d066a1b8c832"
+    },
+    {
+        "sha": "236123b158d6579cfb6b385199bcd12280dae2bf",
+        "author": "GuDaStudio",
+        "email": "gudaclaude@gmail.com",
+        "date": "2025-12-09T02:19:43Z",
+        "message": "v0.7.7：增强进程终止处理 (#29)",
+        "url": "https://github.com/GuDaStudio/codexmcp/commit/236123b158d6579cfb6b385199bcd12280dae2bf"
+    },
+    {
+        "sha": "8d5366d0924063b97ea679d35e0b10331c2db3f2",
+        "author": "GuDaStudio",
+        "email": "gudaclaude@gmail.com",
+        "date": "2025-12-02T11:11:14Z",
+        "message": "v0.7.6：更新 README 文件，添加 Claude Code 和 Codex CLI 的版本要求",
+        "url": "https://github.com/GuDaStudio/codexmcp/commit/8d5366d0924063b97ea679d35e0b10331c2db3f2"
+    },
+    {
+        "sha": "bc4d7445352a384a2f0bbbf8804b56cb85febdfb",
+        "author": "GuDaStudio",
+        "email": "gudaclaude@gmail.com",
+        "date": "2025-12-02T10:58:35Z",
+        "message": "Update issue templates",
+        "url": "https://github.com/GuDaStudio/codexmcp/commit/bc4d7445352a384a2f0bbbf8804b56cb85febdfb"
+    },
+    {
+        "sha": "ae876ca94a1c34ff14b196dece904ff10a70f503",
+        "author": "GuDaStudio",
+        "email": "gudaclaude@gmail.com",
+        "date": "2025-12-02T10:42:40Z",
+        "message": "Update issue templates",
+        "url": "https://github.com/GuDaStudio/codexmcp/commit/ae876ca94a1c34ff14b196dece904ff10a70f503"
+    },
+    {
+        "sha": "34a0fb287d687ed7ff8454afb961111c864bedc9",
+        "author": "GuDaStudio",
+        "email": "gudaclaude@gmail.com",
+        "date": "2025-12-02T10:36:00Z",
+        "message": "Update issue templates",
+        "url": "https://github.com/GuDaStudio/codexmcp/commit/34a0fb287d687ed7ff8454afb961111c864bedc9"
+    },
+    {
+        "sha": "d6279bd4a7f32ee24690bc587b593a4bb54a9580",
+        "author": "GuDaStudio",
+        "email": "gudaclaude@gmail.com",
+        "date": "2025-12-02T09:36:31Z",
+        "message": "v0.7.5：重构 codex 函数参数并优化错误提示",
+        "url": "https://github.com/GuDaStudio/codexmcp/commit/d6279bd4a7f32ee24690bc587b593a4bb54a9580"
+    },
+    {
+        "sha": "e6931e68882aa73b5b4e6163d0db890f76dc0955",
+        "author": "Abner",
+        "email": "22141172+Silentely@users.noreply.github.com",
+        "date": "2025-12-01T03:39:12Z",
+        "message": "Enhance error handling for JSON decoding (#24)\n\nImprove error handling for non-JSON lines by printing to stderr instead of breaking the flow.",
+        "url": "https://github.com/GuDaStudio/codexmcp/commit/e6931e68882aa73b5b4e6163d0db890f76dc0955"
+    },
+    {
+        "sha": "d8debc618289e47885232e7b37b2adf2864c4840",
+        "author": "Menghuan",
+        "email": "menghuan2003@outlook.com",
+        "date": "2025-12-01T02:29:53Z",
+        "message": "v0.7.4：忽略`Reconnecting... X/Y`类型的错误(重连尝试警告) (#23)",
+        "url": "https://github.com/GuDaStudio/codexmcp/commit/d8debc618289e47885232e7b37b2adf2864c4840"
+    },
+    {
+        "sha": "c258d6b73b90b88eb0635b694309aa59f0d0ca97",
+        "author": "GuDaStudio",
+        "email": "gudaclaude@gmail.com",
+        "date": "2025-11-24T06:18:11Z",
+        "message": "v0.7.3：更新banner image",
+        "url": "https://github.com/GuDaStudio/codexmcp/commit/c258d6b73b90b88eb0635b694309aa59f0d0ca97"
+    },
+    {
+        "sha": "5b63169aba6ba6cfef634856441461c892c59e40",
+        "author": "GuDaStudio",
+        "email": "gudaclaude@gmail.com",
+        "date": "2025-11-20T10:31:36Z",
+        "message": "v0.7.2：允许mcp等错误发生",
+        "url": "https://github.com/GuDaStudio/codexmcp/commit/5b63169aba6ba6cfef634856441461c892c59e40"
+    },
+    {
+        "sha": "94569b327276559c05a788fe13a0c8116dc89362",
+        "author": "GuDaStudio",
+        "email": "gudaclaude@gmail.com",
+        "date": "2025-11-19T11:10:22Z",
+        "message": "v0.7.1：允许`reconnecting`错误继续 (#8)",
+        "url": "https://github.com/GuDaStudio/codexmcp/commit/94569b327276559c05a788fe13a0c8116dc89362"
+    },
+    {
+        "sha": "dc46ff746b8a855f752602a2bbbceacce946da29",
+        "author": "GuDaStudio",
+        "email": "gudaclaude@gmail.com",
+        "date": "2025-11-14T08:19:31Z",
+        "message": "v0.7：增加错误提示信息，方便CC调试 (#3)\n\n* v0.7：更新错误提示\n\n* v0.7.1：修复None bug\n\n* v0.7.2：修复错误提取信息bug",
+        "url": "https://github.com/GuDaStudio/codexmcp/commit/dc46ff746b8a855f752602a2bbbceacce946da29"
+    },
+    {
+        "sha": "9b33944ea8c6d8dcd039e1621f9faf63c5d5cd50",
+        "author": "GuDaStudio",
+        "email": "gudaclaude@gmail.com",
+        "date": "2025-11-14T07:40:51Z",
+        "message": "v0.6.6：设置skip_git_repo_check为True方便多数用户",
+        "url": "https://github.com/GuDaStudio/codexmcp/commit/9b33944ea8c6d8dcd039e1621f9faf63c5d5cd50"
+    },
+    {
+        "sha": "4da9b5194d65c671edce02e89691063cf27af55c",
+        "author": "GuDaStudio",
+        "email": "gudaclaude@gmail.com",
+        "date": "2025-11-14T03:27:59Z",
+        "message": "v0.6.5：更新相关提示词为“严禁使用”",
+        "url": "https://github.com/GuDaStudio/codexmcp/commit/4da9b5194d65c671edce02e89691063cf27af55c"
+    },
+    {
+        "sha": "bdde61551140e88576f0578fc078356564e57dcf",
+        "author": "GuDaStudio",
+        "email": "gudaclaude@gmail.com",
+        "date": "2025-11-14T03:14:46Z",
+        "message": "v0.6.4：更新README",
+        "url": "https://github.com/GuDaStudio/codexmcp/commit/bdde61551140e88576f0578fc078356564e57dcf"
+    },
+    {
+        "sha": "3ebc8ae1d1ba6cba3aa1bf4b1be7d48f5295ec08",
+        "author": "GuDaStudio",
+        "email": "gudaclaude@gmail.com",
+        "date": "2025-11-13T10:28:04Z",
+        "message": "v0.6.3：支持image参数",
+        "url": "https://github.com/GuDaStudio/codexmcp/commit/3ebc8ae1d1ba6cba3aa1bf4b1be7d48f5295ec08"
+    },
+    {
+        "sha": "c609d6fa83eadb2bfe5f939baed915245fd192e6",
+        "author": "GuDaStudio",
+        "email": "gudaclaude@gmail.com",
+        "date": "2025-11-13T10:17:44Z",
+        "message": "v0.6.2：紧急修复",
+        "url": "https://github.com/GuDaStudio/codexmcp/commit/c609d6fa83eadb2bfe5f939baed915245fd192e6"
+    },
+    {
+        "sha": "c84a40e8299918d7b152e764a1cf4dbee27ce650",
+        "author": "GuDaStudio",
+        "email": "gudaclaude@gmail.com",
+        "date": "2025-11-13T09:58:38Z",
+        "message": "v0.6.1：增加--profile参数",
+        "url": "https://github.com/GuDaStudio/codexmcp/commit/c84a40e8299918d7b152e764a1cf4dbee27ce650"
+    },
+    {
+        "sha": "2cc614fea182cf0ef7b44dd49f09c0b1d9a89987",
+        "author": "GuDaStudio",
+        "email": "gudaclaude@gmail.com",
+        "date": "2025-11-13T09:55:09Z",
+        "message": "v0.6：支持更多参数",
+        "url": "https://github.com/GuDaStudio/codexmcp/commit/2cc614fea182cf0ef7b44dd49f09c0b1d9a89987"
+    },
+    {
+        "sha": "ed42408e7b54ab5896e4d2412e263552bb07e78c",
+        "author": "GuDaStudio",
+        "email": "gudaclaude@gmail.com",
+        "date": "2025-11-13T09:35:46Z",
+        "message": "v0.5.1：修复字符转换问题",
+        "url": "https://github.com/GuDaStudio/codexmcp/commit/ed42408e7b54ab5896e4d2412e263552bb07e78c"
+    },
+    {
+        "sha": "c7a5bfb1690066929e404b8fea9d45343f5482f5",
+        "author": "GuDaStudio",
+        "email": "gudaclaude@gmail.com",
+        "date": "2025-11-11T06:00:37Z",
+        "message": "v0.5：添加自动化设置",
+        "url": "https://github.com/GuDaStudio/codexmcp/commit/c7a5bfb1690066929e404b8fea9d45343f5482f5"
+    },
+    {
+        "sha": "0125d479bd8edc0a2208f17900fccbeab65326c5",
+        "author": "GuDaStudio",
+        "email": "gudaclaude@gmail.com",
+        "date": "2025-11-11T04:19:09Z",
+        "message": "v0.4.8",
+        "url": "https://github.com/GuDaStudio/codexmcp/commit/0125d479bd8edc0a2208f17900fccbeab65326c5"
+    },
+    {
+        "sha": "0dd6b957e49f25b8c0e3699c6ae902f06f25ded5",
+        "author": "GuDaStudio",
+        "email": "gudaclaude@gmail.com",
+        "date": "2025-11-10T11:08:28Z",
+        "message": "v0.4.7",
+        "url": "https://github.com/GuDaStudio/codexmcp/commit/0dd6b957e49f25b8c0e3699c6ae902f06f25ded5"
+    },
+    {
+        "sha": "4f746a757b84267e9b2e6d90c45175869d3d20b3",
+        "author": "GuDaStudio",
+        "email": "gudaclaude@gmail.com",
+        "date": "2025-11-10T10:53:16Z",
+        "message": "v0.4.6",
+        "url": "https://github.com/GuDaStudio/codexmcp/commit/4f746a757b84267e9b2e6d90c45175869d3d20b3"
+    },
+    {
+        "sha": "d429757967daf9022b8fd8fa737d6dc1db29982c",
+        "author": "GuDaStudio",
+        "email": "gudaclaude@gmail.com",
+        "date": "2025-11-10T10:42:33Z",
+        "message": "v0.4.5：修复Windows下长文本无法回答",
+        "url": "https://github.com/GuDaStudio/codexmcp/commit/d429757967daf9022b8fd8fa737d6dc1db29982c"
+    },
+    {
+        "sha": "34995325af7af0af7f20c788261519e6bb829fab",
+        "author": "GuDaStudio",
+        "email": "gudaclaude@gmail.com",
+        "date": "2025-11-10T10:29:39Z",
+        "message": "v0.4.4",
+        "url": "https://github.com/GuDaStudio/codexmcp/commit/34995325af7af0af7f20c788261519e6bb829fab"
+    },
+    {
+        "sha": "8867569aa8ff7c0e67f5c075e64617f688d73308",
+        "author": "GuDaStudio",
+        "email": "gudaclaude@gmail.com",
+        "date": "2025-11-10T10:26:02Z",
+        "message": "v0.4.3：修复错误信息没更新",
+        "url": "https://github.com/GuDaStudio/codexmcp/commit/8867569aa8ff7c0e67f5c075e64617f688d73308"
+    },
+    {
+        "sha": "ab8d342596aaddc5e9c54ef80144907cd4e9dfb2",
+        "author": "GuDaStudio",
+        "email": "gudaclaude@gmail.com",
+        "date": "2025-11-10T04:45:01Z",
+        "message": "v0.4.2：修复Windows下编码bug",
+        "url": "https://github.com/GuDaStudio/codexmcp/commit/ab8d342596aaddc5e9c54ef80144907cd4e9dfb2"
+    },
+    {
+        "sha": "5b1a839d63d5fd9178c009d28e85fd468d5b3824",
+        "author": "GuDaStudio",
+        "email": "gudaclaude@gmail.com",
+        "date": "2025-11-09T06:38:16Z",
+        "message": "v0.4.1：修复Windows下无限挂起bug",
+        "url": "https://github.com/GuDaStudio/codexmcp/commit/5b1a839d63d5fd9178c009d28e85fd468d5b3824"
+    }
+]

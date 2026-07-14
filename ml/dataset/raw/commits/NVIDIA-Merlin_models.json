@@ -1,0 +1,242 @@
+[
+    {
+        "sha": "eb1e54196a64a70950b2a7e7744d2150e052d53e",
+        "author": "Mike McKiernan",
+        "email": "mmckiernan@nvidia.com",
+        "date": "2024-04-25T10:51:01Z",
+        "message": "Add GDPR info to footer (#1237)\n\nSigned-off-by: Mike McKiernan <mmckiernan@nvidia.com>",
+        "url": "https://github.com/NVIDIA-Merlin/models/commit/eb1e54196a64a70950b2a7e7744d2150e052d53e"
+    },
+    {
+        "sha": "48e0c702afc73d8cbb8067c06074b425cb26725f",
+        "author": "edknv",
+        "email": "109497216+edknv@users.noreply.github.com",
+        "date": "2024-01-08T22:05:24Z",
+        "message": "move merlin dependecy install in horovod-cpu tests (#1235)\n\n* move merlin dependecy install in horovod-cpu tests\r\n\r\n* trigger horovod test",
+        "url": "https://github.com/NVIDIA-Merlin/models/commit/48e0c702afc73d8cbb8067c06074b425cb26725f"
+    },
+    {
+        "sha": "2bec1a5b27e0277bad4b7292d1cfa26ac215b13b",
+        "author": "edknv",
+        "email": "109497216+edknv@users.noreply.github.com",
+        "date": "2024-01-08T20:16:52Z",
+        "message": "fix dependencies in docs build (#1236)",
+        "url": "https://github.com/NVIDIA-Merlin/models/commit/2bec1a5b27e0277bad4b7292d1cfa26ac215b13b"
+    },
+    {
+        "sha": "162f4984b9b20619f7d504400801bddb8c3ca199",
+        "author": "Emma",
+        "email": "qqiao@nvidia.com",
+        "date": "2024-01-07T07:00:00Z",
+        "message": "Fix sok import error in ut (#1232)\n\n* Fix sok import error in ut\r\n\r\n* Update SOK import in backend.py",
+        "url": "https://github.com/NVIDIA-Merlin/models/commit/162f4984b9b20619f7d504400801bddb8c3ca199"
+    },
+    {
+        "sha": "80b086f34ab6634d19c041c264f173858a0ab669",
+        "author": "Oliver Holworthy",
+        "email": "oholworthy@nvidia.com",
+        "date": "2023-11-10T17:47:39Z",
+        "message": "Ensure TopKEncoder has correct outputs when model is saved (#1225)\n\n* Remove output_names from base BaseModel.\r\n\r\n* Add assertion for output signature of saved model to test_topk_encoder\r\n\r\n* Move compile method from BaseModel to Model\r\n\r\n* Correct name of structured outputs\r\n\r\n* Move compile method back and add special case for TopKOutput",
+        "url": "https://github.com/NVIDIA-Merlin/models/commit/80b086f34ab6634d19c041c264f173858a0ab669"
+    },
+    {
+        "sha": "16d289a77227c73817464c815b6fa8c0c78f56a5",
+        "author": "Oliver Holworthy",
+        "email": "oholworthy@nvidia.com",
+        "date": "2023-11-02T17:47:41Z",
+        "message": "Handle ColumnSchema `target` in serialization of `SequenceTransform` (#1214)\n\nCo-authored-by: rnyak <16246900+rnyak@users.noreply.github.com>",
+        "url": "https://github.com/NVIDIA-Merlin/models/commit/16d289a77227c73817464c815b6fa8c0c78f56a5"
+    },
+    {
+        "sha": "fcc55c27afea0431c54534540e594851287302b6",
+        "author": "Oliver Holworthy",
+        "email": "oholworthy@nvidia.com",
+        "date": "2023-11-01T21:41:01Z",
+        "message": "Change model call default arg values to None instead of bool vals (#1218)\n\n* Change model call default arg values to None instead of bool vals\r\n\r\nThis fixes an issue with model saving where the concrete function\r\ncannot be matched correctly\r\n\r\n* Add linux-amd64-gpu-p100-latest-1 to actionlint config\r\n\r\n---------\r\n\r\nCo-authored-by: rnyak <16246900+rnyak@users.noreply.github.com>",
+        "url": "https://github.com/NVIDIA-Merlin/models/commit/fcc55c27afea0431c54534540e594851287302b6"
+    },
+    {
+        "sha": "7d99e53e6b8521cfe85c0ab7bbe8ea150289ecf4",
+        "author": "Radek Osmulski",
+        "email": "rosmulski@gmail.com",
+        "date": "2023-10-31T03:25:41Z",
+        "message": "improve the hpo test (#1222)\n\n* improve the hpo test",
+        "url": "https://github.com/NVIDIA-Merlin/models/commit/7d99e53e6b8521cfe85c0ab7bbe8ea150289ecf4"
+    },
+    {
+        "sha": "ba1b77597c8ccf5cfef6c6c1f6cb95d3048d71b5",
+        "author": "Julio Perez",
+        "email": "37191411+jperez999@users.noreply.github.com",
+        "date": "2023-10-15T03:53:38Z",
+        "message": "use rapids infra to run testing (#1216)\n\n* use rapids infra to run testing\r\n\r\n* remove branch tags from logic\r\n\r\n* remove artifact dupe of jobs field\r\n\r\n* add back in logic for branch identification\r\n\r\n* add gpus flag to container call\r\n\r\n* checking gpu with nvidia-smi\r\n\r\n* using private container test\r\n\r\n* adding correct address for container\r\n\r\n* add new container pull logic to all test sets\r\n\r\n* consolidate testing because all in one container",
+        "url": "https://github.com/NVIDIA-Merlin/models/commit/ba1b77597c8ccf5cfef6c6c1f6cb95d3048d71b5"
+    },
+    {
+        "sha": "96fcccedd43cbdf470fe3322ea3978a9c82242d5",
+        "author": "AJ Schmidt",
+        "email": "ajschmidt8@users.noreply.github.com",
+        "date": "2023-09-05T17:03:56Z",
+        "message": "Use `copy-pr-bot` (#1209)\n\nThis PR replaces the `copy_prs` functionality from the `ops-bot` with the new dedicated `copy-pr-bot` GitHub application.\r\n\r\nThorough documentation for the new `copy-pr-bot` application can be viewed below.\r\n\r\n- https://docs.gha-runners.nvidia.com/apps/copy-pr-bot/\r\n\r\n**Important**: `copy-pr-bot` enforces signed commits. If an organization member opens a PR that contains unsigned commits, it will be deemed untrusted and therefore require an `/ok to test` comment. See the GitHub docs [here](https://docs.github.com/en/authentication/managing-commit-signature-verification/about-commit-signature-verification) for information on how to set up commit signing.\r\n\r\nAny time a PR is deemed untrusted, it will receive a comment that looks like this: https://github.com/rapidsai/ci-imgs/pull/63#issuecomment-1688973208.\r\n\r\nEvery subsequent commit on an untrusted PR will require an additional `/ok to test` comment.\r\n\r\nAny existing PRs that have unsigned commits after this change is merged will require an `/ok to test` comment for each subsequent commit _or_ the PR can be rebased to sign the unsigned commits as mentioned in the docs here:\r\nhttps://docs.gha-runners.nvidia.com/cpr/contributors.\r\n\r\nThis information is all included on the documentation page linked above.\r\n\r\n_I've skipped CI on this PR since it's not a change that is tested._\r\n\r\n[skip ci]",
+        "url": "https://github.com/NVIDIA-Merlin/models/commit/96fcccedd43cbdf470fe3322ea3978a9c82242d5"
+    },
+    {
+        "sha": "a1d0be2a00248696e1c1c6d9b299ae904b94b9aa",
+        "author": "Gabriel Moreira",
+        "email": "gmoreira@nvidia.com",
+        "date": "2023-07-20T22:42:28Z",
+        "message": "Makes RetrievalModelV2 support item tower with transforms (e.g. pre-trained embeddings) (#1198)\n\n* Making retrieval model to_top_k_model(), candidate_embeddings() and batch_predict() support Loader with transforms for pre-trained embeddings in item tower\r\n\r\n* Fixing test error and ensuring all batch_predict() with the new API support Loader with transforms (which include pre-trained embeddings)\r\n\r\n* Fixing retrieval example, which was using wrong schema to export query and item embeddings\r\n\r\n* Added missing importorskip on torch and pytorch_lightning for torch integration tests\r\n\r\n* Skiping a test if nvtabular is available",
+        "url": "https://github.com/NVIDIA-Merlin/models/commit/a1d0be2a00248696e1c1c6d9b299ae904b94b9aa"
+    },
+    {
+        "sha": "52c89a4e7a89d80a89f8f366c25ad277a378a030",
+        "author": "Sara Rabhi",
+        "email": "sara.rabhi@gmail.com",
+        "date": "2023-07-18T17:03:37Z",
+        "message": "Add TabularPredictNext for causal item prediction task (#1202)\n\n* first impelementation of tabular predict next\r\n\r\n* add unit tests\r\n\r\n* include PR comments\r\n\r\n* fix docstrings description\r\n\r\n* include Marc comments\r\n\r\n* add torchscript support to TabularPredictNextModule\r\n\r\n---------\r\n\r\nCo-authored-by: edknv <109497216+edknv@users.noreply.github.com>",
+        "url": "https://github.com/NVIDIA-Merlin/models/commit/52c89a4e7a89d80a89f8f366c25ad277a378a030"
+    },
+    {
+        "sha": "fe7a9f4569ad5a56a4d53cf69e399bc086572516",
+        "author": "Marc Romeyn",
+        "email": "marcromeyn@gmail.com",
+        "date": "2023-07-18T00:05:22Z",
+        "message": "Add generic map that works on any Module (#1203)\n\n* First pass over generic map\r\n\r\n* Adding user-facing map/walk\r\n\r\n* Expose map & walk in __init__\r\n\r\n* Trying to fix failing tests",
+        "url": "https://github.com/NVIDIA-Merlin/models/commit/fe7a9f4569ad5a56a4d53cf69e399bc086572516"
+    },
+    {
+        "sha": "f035867658436b041de684ba32f3892c68428fe8",
+        "author": "Marc Romeyn",
+        "email": "marcromeyn@gmail.com",
+        "date": "2023-07-12T21:28:52Z",
+        "message": "Adding CrossAttentionBlock (#1193)\n\n* Adding CrossAttentionBlock\r\n\r\n* Fix failing test by setting dropout=0.0\r\n\r\n* proposed changes\r\n\r\n---------\r\n\r\nCo-authored-by: edknv <edwardk@nvidia.com>\r\nCo-authored-by: edknv <109497216+edknv@users.noreply.github.com>",
+        "url": "https://github.com/NVIDIA-Merlin/models/commit/f035867658436b041de684ba32f3892c68428fe8"
+    },
+    {
+        "sha": "28b690cd39a187e658ad37edff1d8f0786d16bd6",
+        "author": "Marc Romeyn",
+        "email": "marcromeyn@gmail.com",
+        "date": "2023-07-12T16:02:24Z",
+        "message": "Adding sequence-defaults in TabularInputBlock (#1200)\n\n* Adding sequence-defaults in TabularInputBlock\r\n\r\n* First pass over stack_context\r\n\r\n* Fixing failing tests",
+        "url": "https://github.com/NVIDIA-Merlin/models/commit/28b690cd39a187e658ad37edff1d8f0786d16bd6"
+    },
+    {
+        "sha": "8b1ff945f8e9a42b5abfecef87b4e1c24a34a629",
+        "author": "Marc Romeyn",
+        "email": "marcromeyn@gmail.com",
+        "date": "2023-07-12T07:24:50Z",
+        "message": "Add functional-methods to make it easier to transform blocks & models. (#1194)\n\n* First commit\r\n\r\n* Implementing more methods in ContainerMixin\r\n\r\n* Add recurse flag to all functional methods\r\n\r\n* Adding ContainerMixin\r\n\r\n* Fixing merge-conflicts\r\n\r\n* Adding freeze and unfreeze\r\n\r\n* Fix recurse in filter & choose\r\n\r\n* Revert \"Fix recurse in filter & choose\"\r\n\r\nThis reverts commit 1f5b086bb388af935b1f81b3a72add7de03f1937.\r\n\r\n* proposal for recursive filter and choose\r\n\r\n---------\r\n\r\nCo-authored-by: edknv <edwardk@nvidia.com>\r\nCo-authored-by: edknv <109497216+edknv@users.noreply.github.com>",
+        "url": "https://github.com/NVIDIA-Merlin/models/commit/8b1ff945f8e9a42b5abfecef87b4e1c24a34a629"
+    },
+    {
+        "sha": "3b14b9665cb34de8b72b37933ba001e16db3ba93",
+        "author": "edknv",
+        "email": "109497216+edknv@users.noreply.github.com",
+        "date": "2023-07-11T20:56:16Z",
+        "message": "Rename setup_schema to initialize_from_schema in TabularPadding (#1199)",
+        "url": "https://github.com/NVIDIA-Merlin/models/commit/3b14b9665cb34de8b72b37933ba001e16db3ba93"
+    },
+    {
+        "sha": "3431321c83e6a3fa69711af1cf0a54b1f7da6b0b",
+        "author": "Marc Romeyn",
+        "email": "marcromeyn@gmail.com",
+        "date": "2023-07-11T16:58:03Z",
+        "message": "Introducing BatchBlock (#1192)\n\n* Introducing BatchBlock\r\n\r\n* Introducing BatchBlock\r\n\r\n* Adding type-hint to model.pre\r\n\r\n* Adding doc-strings to BatchBlock\r\n\r\n* Adding match= to pytest.raises\r\n\r\n* Adding EncoderBlock, this should be returned when you do model.select\r\n\r\n* Running linting\r\n\r\n* Fixing merge-conflicts\r\n\r\n* Running linting\r\n\r\n* Fix according to PR-comments\r\n\r\n* Fix according to PR-comments",
+        "url": "https://github.com/NVIDIA-Merlin/models/commit/3431321c83e6a3fa69711af1cf0a54b1f7da6b0b"
+    },
+    {
+        "sha": "25004188ad73798c82008ba7ae612e1b0573e776",
+        "author": "Marc Romeyn",
+        "email": "marcromeyn@gmail.com",
+        "date": "2023-07-11T16:27:47Z",
+        "message": "Adding * selection of schema (#1197)",
+        "url": "https://github.com/NVIDIA-Merlin/models/commit/25004188ad73798c82008ba7ae612e1b0573e776"
+    },
+    {
+        "sha": "86ac77983a823079ed9dcde35b27ed444cc8cbe5",
+        "author": "Marc Romeyn",
+        "email": "marcromeyn@gmail.com",
+        "date": "2023-07-11T15:26:08Z",
+        "message": "Adding BroadcastToSequence (#1195)\n\n* First commit\r\n\r\n* Adding BroadcastToSequence\r\n\r\n* Adding to __init__\r\n\r\n---------\r\n\r\nCo-authored-by: edknv <109497216+edknv@users.noreply.github.com>",
+        "url": "https://github.com/NVIDIA-Merlin/models/commit/86ac77983a823079ed9dcde35b27ed444cc8cbe5"
+    },
+    {
+        "sha": "36d582ac24b639ccd6eb726ad2d80ced1417e077",
+        "author": "Marc Romeyn",
+        "email": "marcromeyn@gmail.com",
+        "date": "2023-07-11T14:58:22Z",
+        "message": "Apply rename to initialize_from_schema to ContrastiveOutput (#1196)",
+        "url": "https://github.com/NVIDIA-Merlin/models/commit/36d582ac24b639ccd6eb726ad2d80ced1417e077"
+    },
+    {
+        "sha": "8a9e5ea4182faf612aab2b1f6e8cabcf5986d684",
+        "author": "Gabriel Moreira",
+        "email": "gmoreira@nvidia.com",
+        "date": "2023-07-11T11:13:50Z",
+        "message": "Making it possible to set optimizer and scheduler instances via PyTorch model properties for training (#1187)\n\n* Making it possible to set optimizer and scheduler via model properties\r\n\r\n* Proposal to change the signature of configure_optimizers to make tests pass\r\n\r\n* Fixed merge issue\r\n\r\n* Ignoring Model.optimizer property in jit tracing\r\n\r\n* Checking PyTorch version for defining LRScheduler based type\r\n\r\n* Fixed LRScheduler dependent version references\r\n\r\n---------\r\n\r\nCo-authored-by: Marc Romeyn <marcromeyn@gmail.com>",
+        "url": "https://github.com/NVIDIA-Merlin/models/commit/8a9e5ea4182faf612aab2b1f6e8cabcf5986d684"
+    },
+    {
+        "sha": "219bedbf666208d1743465035fa876f3315cc65d",
+        "author": "Oliver Holworthy",
+        "email": "oholworthy@nvidia.com",
+        "date": "2023-07-11T09:55:02Z",
+        "message": "Enable lazy module initialization from schema for any module (#1186)\n\n* Rename `setup_schema` to `initialize_from_schema`\r\n\r\n* Add test for tracing with initialize_from_schema\r\n\r\n* Infer feature schema from batch argument signature\r\n\r\n* Add missing self\r\n\r\n* Rename `setup_schema` in input and output blocks\r\n\r\n---------\r\n\r\nCo-authored-by: Marc Romeyn <marcromeyn@gmail.com>",
+        "url": "https://github.com/NVIDIA-Merlin/models/commit/219bedbf666208d1743465035fa876f3315cc65d"
+    },
+    {
+        "sha": "d2113e870b9bd7f79495d3ee022fcc0ee9b01b77",
+        "author": "Marc Romeyn",
+        "email": "marcromeyn@gmail.com",
+        "date": "2023-07-11T08:35:15Z",
+        "message": "Adding MMOE & PLE (#1173)\n\n* First pass over MMOEBlock & PLEBlock\r\n\r\n* Adding some simple tests for MMOEBlock\r\n\r\n* Adding some doc-strings\r\n\r\n* Fixing failing tests\r\n\r\n* Increase test-coverage\r\n\r\n* Improving doc-strings\r\n\r\n* Fixing failing tests",
+        "url": "https://github.com/NVIDIA-Merlin/models/commit/d2113e870b9bd7f79495d3ee022fcc0ee9b01b77"
+    },
+    {
+        "sha": "190cd48917c1999af5db0f6bede563d2bcd5792e",
+        "author": "Marc Romeyn",
+        "email": "marcromeyn@gmail.com",
+        "date": "2023-07-11T08:07:01Z",
+        "message": "Adding ContrastiveOutput (#1191)\n\n* Adding ContrastiveOutput\r\n\r\n* Fixing failing tests\r\n\r\n* Use the version of LogUniformSampler from Gabriel instead",
+        "url": "https://github.com/NVIDIA-Merlin/models/commit/190cd48917c1999af5db0f6bede563d2bcd5792e"
+    },
+    {
+        "sha": "145e5923b35ed7a8912e089ec83363ba53c64b0a",
+        "author": "Marc Romeyn",
+        "email": "marcromeyn@gmail.com",
+        "date": "2023-07-10T12:48:39Z",
+        "message": "Enabling data-parallel multi-GPU training (#1188)\n\n* First pass over multi-GPU\r\n\r\n* Multi-gpu test passes now locally (without metric calculations)\r\n\r\n* Introducing MultiLoader & add auto-initialization of Model\r\n\r\n* Enable multi-GPU with metric-calculations\r\n\r\n* Remove un-used to method in ModelOutput\r\n\r\n* fix test for cpu\r\n\r\n* use multigpu marker\r\n\r\n* automatically reparition if repartition is not provided\r\n\r\n* test rank\r\n\r\n* Add comment for follow up tasks\r\n\r\n* lint\r\n\r\n* fix test for cpu\r\n\r\n---------\r\n\r\nCo-authored-by: edknv <edwardk@nvidia.com>\r\nCo-authored-by: edknv <109497216+edknv@users.noreply.github.com>",
+        "url": "https://github.com/NVIDIA-Merlin/models/commit/145e5923b35ed7a8912e089ec83363ba53c64b0a"
+    },
+    {
+        "sha": "c5afbd134f06be23d2f0b63893da7e003ad17b35",
+        "author": "edknv",
+        "email": "109497216+edknv@users.noreply.github.com",
+        "date": "2023-07-08T10:52:10Z",
+        "message": "Add DCN Model (#1185)\n\n* Add DCN Model\r\n\r\n* improve docstrings\r\n\r\n---------\r\n\r\nCo-authored-by: Marc Romeyn <marcromeyn@gmail.com>",
+        "url": "https://github.com/NVIDIA-Merlin/models/commit/c5afbd134f06be23d2f0b63893da7e003ad17b35"
+    },
+    {
+        "sha": "7c629ec3e0a32635bd7979fa8dcf2b71b8c9684e",
+        "author": "Oliver Holworthy",
+        "email": "oholworthy@nvidia.com",
+        "date": "2023-07-06T15:24:18Z",
+        "message": "Update docs theme from `sphinx_rtd_theme` to `sphinx_book_theme` (#1189)\n\n* Update docs theme from `sphinx_rtd_theme` to `sphinx_book_theme`\r\n\r\n* Add missing `PrepareListFeatures` to merlin.models.tf module\r\n\r\n* Add upper bound on tensorflow version",
+        "url": "https://github.com/NVIDIA-Merlin/models/commit/7c629ec3e0a32635bd7979fa8dcf2b71b8c9684e"
+    },
+    {
+        "sha": "58ce8c15fef5de2e034bb6619201049285b1914d",
+        "author": "Marc Romeyn",
+        "email": "marcromeyn@gmail.com",
+        "date": "2023-07-06T11:05:31Z",
+        "message": "Making input- and output-block lazy to allow for nesting (#1184)\n\n* Making schema optional in TabularInputBlock to allow for nesting\r\n\r\n* Adding tests to ensure correct behaviour\r\n\r\n* Fixing failing test\r\n\r\n---------\r\n\r\nCo-authored-by: edknv <109497216+edknv@users.noreply.github.com>",
+        "url": "https://github.com/NVIDIA-Merlin/models/commit/58ce8c15fef5de2e034bb6619201049285b1914d"
+    },
+    {
+        "sha": "9922f2522c3ab0644f6ceec422bfae952cf537c4",
+        "author": "Radek Osmulski",
+        "email": "rosmulski@gmail.com",
+        "date": "2023-07-06T05:47:51Z",
+        "message": "Remove examples spanning multiple repos / promote ecommerce session-based example (#1160)\n\n* Remove 2 examples (move to Merlin)\r\n* Move session-based ecommerce example one level up, from usecases to\r\n  examples\r\n* Delete benchmarking (asvdb) test (move to Merlin)\r\n* add link/fix image links",
+        "url": "https://github.com/NVIDIA-Merlin/models/commit/9922f2522c3ab0644f6ceec422bfae952cf537c4"
+    }
+]

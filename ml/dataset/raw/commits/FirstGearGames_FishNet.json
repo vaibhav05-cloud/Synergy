@@ -1,0 +1,242 @@
+[
+    {
+        "sha": "de19b5d66459f60400ffd0edc443c4da173a01e7",
+        "author": "FIrstGearGames",
+        "email": "firstgeargames@gmail.com",
+        "date": "2026-04-17T13:24:54Z",
+        "message": "4.7.2\n\n- Fixed NetworkTickSmoother.FavorNetworkTransform missing from the inspector.\n- Fixed garbage collection in NetworkCollider/2D on server/host.\n- Fixed garbage collection ObjectCaching due to ConcurrentStack internal collections being discarded.\n- Changed removed threading Tugboat socket start/stop to support ObjectCaching changes.\n- Changed: Use new() over new Explicit().\n- Added BETA Synapse Transport/Socket: 5a01d2640255d31db51d595ab3a5a8eab8ee769a",
+        "url": "https://github.com/FirstGearGames/FishNet/commit/de19b5d66459f60400ffd0edc443c4da173a01e7"
+    },
+    {
+        "sha": "144a689414f9a5b571c44e1729875840335e16d4",
+        "author": "FirstGearGames",
+        "email": "firstgeargames@gmail.com",
+        "date": "2026-03-31T20:45:19Z",
+        "message": "4.7.1\n\n- Fixed prediction level of detail(LOD) incorrectly using the closest LOD when multiple LOD objects were present.\n- Fixed null check missing on networkManager in ObserverManager.UpdateLevelOfDetails.\n- Changed organized several files to correct folders.\n- Added NetworkObject.LocalLevelOfDetailCalculationType(Prediction tab).",
+        "url": "https://github.com/FirstGearGames/FishNet/commit/144a689414f9a5b571c44e1729875840335e16d4"
+    },
+    {
+        "sha": "6d1754c96eb743db90017f41f8d399254fe46835",
+        "author": "FirstGearGames",
+        "email": "firstgeargames@gmail.com",
+        "date": "2026-03-26T19:17:21Z",
+        "message": "4.7.0R\n\n- Fixed NetworkTrigger/Collider incorrectly updating states during replays, resulting in collider Enter callbacks invoking unexpectedly.\n- Fixed PredictionRigidbody/2D pending forces conflicting with NetworkTrigger/Collider interactions.\n- Fixed Local States not being used as reconcile data when remote states were unavailable.\n- Fixed overflow vulnerability with SplitReader.\n- Fixed memory allocation attack via packet fragmentation in LiteNetLib (#1026).\n- Fixed Buffer ArgumentNullException (#1021).\n- Fixed NetworkCollider/Trigger callbacks sometimes invoking OnEnter incorrectly multiple times during a reconcile.\n- Fixed cecil errors commonly seen as xyz not imported (#1023).\n- Changed (break) NetworkCollider/Trigger now provides Tick as well. Callbacks must be updated to include 'uint tick'.\n- Changed reverted objects deinitializing during OnDisable. This change prior caused NulLReferenceExceptions for some when reloading scenes.\n- Improved additional sanity checks when an object becomes intialized twice without first deinitializing.\n- Added ObserverManager Level of Detail. This feature currently supports prediction reconciles -- improving both server and client performance and bandwidth.\n- Added NetworkObject.UseLevelOfDetail.\n- Added NetworkObject AddComponentMenu (#1022).\n- Added TransportManager.MaximumClientPacketSize.",
+        "url": "https://github.com/FirstGearGames/FishNet/commit/6d1754c96eb743db90017f41f8d399254fe46835"
+    },
+    {
+        "sha": "bd5c1188297b29ec8e2ddc87c3488963d6f9486a",
+        "author": "FirstGearGames",
+        "email": "emailpunfish+github@gmail.com",
+        "date": "2026-03-17T17:53:18Z",
+        "message": "Merge pull request #1021 from f2069/fix-iterate-outgoing\n\nArgumentNullException ByteBuffer",
+        "url": "https://github.com/FirstGearGames/FishNet/commit/bd5c1188297b29ec8e2ddc87c3488963d6f9486a"
+    },
+    {
+        "sha": "93dca474aac735cc9181004cadb978bfb963db81",
+        "author": "FirstGearGames",
+        "email": "emailpunfish+github@gmail.com",
+        "date": "2026-03-17T17:51:10Z",
+        "message": "Merge pull request #1022 from f2069/qol-net-object-menu\n\nAddComponentMenu for NetworkObject",
+        "url": "https://github.com/FirstGearGames/FishNet/commit/93dca474aac735cc9181004cadb978bfb963db81"
+    },
+    {
+        "sha": "6d1bc6241c4cbd272b74496c046f416a8273ef1d",
+        "author": "FirstGearGames",
+        "email": "emailpunfish+github@gmail.com",
+        "date": "2026-03-17T17:49:43Z",
+        "message": "Merge pull request #1026 from FUTURE-SL/updates\n\nUpdates",
+        "url": "https://github.com/FirstGearGames/FishNet/commit/6d1bc6241c4cbd272b74496c046f416a8273ef1d"
+    },
+    {
+        "sha": "16b95e01eb033a13e5581c54536c81af5927d6a4",
+        "author": "FUTURE-SL",
+        "email": "future.games.scp@gmail.com",
+        "date": "2026-03-16T14:19:34Z",
+        "message": "Fix Merged packet reader",
+        "url": "https://github.com/FirstGearGames/FishNet/commit/16b95e01eb033a13e5581c54536c81af5927d6a4"
+    },
+    {
+        "sha": "c928c7c2a56c8cbdf3a59aed6bbe57589905c6a8",
+        "author": "FUTURE-SL",
+        "email": "future.games.scp@gmail.com",
+        "date": "2026-03-16T14:18:59Z",
+        "message": "Remove LiteNetLib fragmentation",
+        "url": "https://github.com/FirstGearGames/FishNet/commit/c928c7c2a56c8cbdf3a59aed6bbe57589905c6a8"
+    },
+    {
+        "sha": "bf3a9dfaa928c6f57ecb7083aa9b61381b945dac",
+        "author": "Ilya Kvant",
+        "email": "fatalerror2069@gmail.com",
+        "date": "2026-03-07T09:54:22Z",
+        "message": "add NetworkObject component in menu",
+        "url": "https://github.com/FirstGearGames/FishNet/commit/bf3a9dfaa928c6f57ecb7083aa9b61381b945dac"
+    },
+    {
+        "sha": "6e3a6a0aa68ffac26c105f5147599aa6909f548d",
+        "author": "Ilya Kvant",
+        "email": "fatalerror2069@gmail.com",
+        "date": "2026-03-07T09:08:58Z",
+        "message": "probably fix ArgumentNullException",
+        "url": "https://github.com/FirstGearGames/FishNet/commit/6e3a6a0aa68ffac26c105f5147599aa6909f548d"
+    },
+    {
+        "sha": "32528cbc96cbb24be79a6732215a554d5acb7a41",
+        "author": "FirstGearGames",
+        "email": "firstgeargames@gmail.com",
+        "date": "2026-02-20T14:56:13Z",
+        "message": "4.6.22R\n\n- Fixed removed 'useLocalSpace' references from MovementSettingsDrawer (#1019).\n- Changed Beta ReplicateStates moved into Stable; old states have been removed.",
+        "url": "https://github.com/FirstGearGames/FishNet/commit/32528cbc96cbb24be79a6732215a554d5acb7a41"
+    },
+    {
+        "sha": "f8a99854c00d1d17debbffdf43151deeb9a3a1e9",
+        "author": "FirstGearGames",
+        "email": "firstgeargames@gmail.com",
+        "date": "2026-02-17T15:27:46Z",
+        "message": "4.6.21R\n\n- Fixed MovePosition/Rotation being unintentionally cleared with velocities (#1009, #1010).\n- Fixed NetworkCollider disposing of rather than pooling some collections, resulting in garbage collection.\n- Fixed NetworkTrafficStatistics initializing when disabled; this did not result in tracking but did have a neglible runtime performance impact.\n- Fixed NetworkTransform.GetChanged including non-synchronized properties (#1016).\n- Fixed missing error log when exceeding NetworkBehaviour limit pet NetworkObject.\n- Fixed prefab searching being done recursively despite being set not to (#1005 #1015).\n- Fixed ObserversRpc.BufferLast not handling ExcludeOwner (#985).\n- Fixed smoothers AttachOnStop not working (#1018).\n- Improved NetworkTrafficStatics uses TryGetBidirectionalNetworkTraffic rather than assume value is not null. This is to resolve a Unity bug where fields lose value during debug inspection (#1000).\n- Improved added additional ProfileMarkers to PredictionManager.\n- Improved NetworkTransform performance marginally (#989).\n- Improved added ProfileMarkers to ClientManager, ClientObjects/.RpcLinks, NetworkTransform (#989).\n- Improved Writer.WriteGuidAllocated obsoleted. Allocations have been removed; use WriteGuid instead (@belplaton).\n- Improved added INetworkConnectionBroadcast interface to allow broadcast mocking (#1007).\n- Added ManagedObjects.OnSpawnedAdd/Remove/Clear events (#989).\n- Added Beta Threaded TickSmoothers (contribution by https://github.com/belplaton)\n- Added Beta Threaded Collider Rollback (contribution by https://github.com/belplaton).\n- Added ability for NetworkTrafficStatistics to run in headless builds (#1004).",
+        "url": "https://github.com/FirstGearGames/FishNet/commit/f8a99854c00d1d17debbffdf43151deeb9a3a1e9"
+    },
+    {
+        "sha": "db0bc2bfeaf30d5f520a44149383133eac5f2997",
+        "author": "FirstGearGames",
+        "email": "emailpunfish+github@gmail.com",
+        "date": "2026-02-17T15:22:02Z",
+        "message": "Merge pull request #1015 from TrevorSundberg/main\n\nFix slowdown in prefab generator ignoring recursive flag",
+        "url": "https://github.com/FirstGearGames/FishNet/commit/db0bc2bfeaf30d5f520a44149383133eac5f2997"
+    },
+    {
+        "sha": "cad537e26d71fe08824ca2a8f573fe79b6b14ca0",
+        "author": "FirstGearGames",
+        "email": "emailpunfish+github@gmail.com",
+        "date": "2026-02-17T15:21:51Z",
+        "message": "Merge pull request #1013 from Mocretion/patch-1\n\nFix typo in TimeManagerEditor",
+        "url": "https://github.com/FirstGearGames/FishNet/commit/cad537e26d71fe08824ca2a8f573fe79b6b14ca0"
+    },
+    {
+        "sha": "a6468d3201a45043bdf8f59e3936d4b1cb37142a",
+        "author": "FirstGearGames",
+        "email": "emailpunfish+github@gmail.com",
+        "date": "2026-02-17T15:21:42Z",
+        "message": "Merge pull request #1010 from vyachkoslav/fix-removeforces\n\nfix: RemoveForces removing MoveRotation and MovePosition",
+        "url": "https://github.com/FirstGearGames/FishNet/commit/a6468d3201a45043bdf8f59e3936d4b1cb37142a"
+    },
+    {
+        "sha": "bd351ab889a7265bdfdddf8240562e491f1b26ab",
+        "author": "FirstGearGames",
+        "email": "emailpunfish+github@gmail.com",
+        "date": "2026-02-17T15:21:31Z",
+        "message": "Merge pull request #1007 from adeutscher/feat/network-connection-broadcast-interface\n\nAdd an INetworkConnectionBroadcaster interface",
+        "url": "https://github.com/FirstGearGames/FishNet/commit/bd351ab889a7265bdfdddf8240562e491f1b26ab"
+    },
+    {
+        "sha": "a9f6caf0e79fc25a5db21712399961e8f98615c3",
+        "author": "FirstGearGames",
+        "email": "emailpunfish+github@gmail.com",
+        "date": "2026-02-17T15:21:22Z",
+        "message": "Merge pull request #1006 from belplaton/Fix-NetworkBehaviour-OnOwnershipClient\n\nfix network object prevowner changing on hostclient",
+        "url": "https://github.com/FirstGearGames/FishNet/commit/a9f6caf0e79fc25a5db21712399961e8f98615c3"
+    },
+    {
+        "sha": "f3d98af38bdfe8bc73faf23baf028a8bbbb071bb",
+        "author": "FirstGearGames",
+        "email": "emailpunfish+github@gmail.com",
+        "date": "2026-02-17T15:21:12Z",
+        "message": "Merge pull request #1003 from belplaton/Make-Tick-Smoothers-multithreaded\n\nfix float3 to vector3 casting for tick smoothers pr",
+        "url": "https://github.com/FirstGearGames/FishNet/commit/f3d98af38bdfe8bc73faf23baf028a8bbbb071bb"
+    },
+    {
+        "sha": "02c59e5138c94a86798b2387119b7a79b2ee24e2",
+        "author": "FirstGearGames",
+        "email": "emailpunfish+github@gmail.com",
+        "date": "2026-02-17T15:21:02Z",
+        "message": "Merge pull request #992 from belplaton/Make-rollback-manager-muthithreaded-and-also-defered\n\nfeat: make rollback jobified",
+        "url": "https://github.com/FirstGearGames/FishNet/commit/02c59e5138c94a86798b2387119b7a79b2ee24e2"
+    },
+    {
+        "sha": "5298b406426f2ffb2acb96c0bd03d120e8bea8bc",
+        "author": "FirstGearGames",
+        "email": "firstgeargames@gmail.com",
+        "date": "2026-02-17T14:33:42Z",
+        "message": "4.6.20 -- import -- push.\n\nFixing corrupt files.",
+        "url": "https://github.com/FirstGearGames/FishNet/commit/5298b406426f2ffb2acb96c0bd03d120e8bea8bc"
+    },
+    {
+        "sha": "5fdb4e6fb35a8dcfdab491c8e8eeb4e2c9b60cd6",
+        "author": "FirstGearGames",
+        "email": "firstgeargames@gmail.com",
+        "date": "2026-02-17T14:32:54Z",
+        "message": "4.6.19 -- import -- push.\n\nFixing corrupt files.",
+        "url": "https://github.com/FirstGearGames/FishNet/commit/5fdb4e6fb35a8dcfdab491c8e8eeb4e2c9b60cd6"
+    },
+    {
+        "sha": "7329c86831240e545244d7193c633924e81a0c6f",
+        "author": "TrevorSundberg",
+        "email": "Trevor.Sundberg@gmail.com",
+        "date": "2026-02-05T01:36:55Z",
+        "message": "Fix slowdown in prefab generator ignoring recursive flag (https://github.com/FirstGearGames/FishNet/issues/1005)",
+        "url": "https://github.com/FirstGearGames/FishNet/commit/7329c86831240e545244d7193c633924e81a0c6f"
+    },
+    {
+        "sha": "74871d084f595046752687b94fea3ec42b1e151f",
+        "author": "Mocretion",
+        "email": "33748512+Mocretion@users.noreply.github.com",
+        "date": "2026-02-03T15:08:19Z",
+        "message": "Fix typo in TimeManagerEditor",
+        "url": "https://github.com/FirstGearGames/FishNet/commit/74871d084f595046752687b94fea3ec42b1e151f"
+    },
+    {
+        "sha": "7849024b1e9f792d6f1059d81136493c91977664",
+        "author": "Vyacheslav Denisov",
+        "email": "vyach.denisov@gmail.com",
+        "date": "2026-01-28T18:18:07Z",
+        "message": "fix: RemoveForces removing MoveRotation and MovePosition",
+        "url": "https://github.com/FirstGearGames/FishNet/commit/7849024b1e9f792d6f1059d81136493c91977664"
+    },
+    {
+        "sha": "843cd2ce3d8f9870d9e029f1229de269488765e7",
+        "author": "Alan Deutscher",
+        "email": "adeutscher@gmail.com",
+        "date": "2026-01-27T23:33:35Z",
+        "message": "more comments",
+        "url": "https://github.com/FirstGearGames/FishNet/commit/843cd2ce3d8f9870d9e029f1229de269488765e7"
+    },
+    {
+        "sha": "f5d70a7cf6521e9251330802a7ef83be8bcc3114",
+        "author": "Alan Deutscher",
+        "email": "adeutscher@gmail.com",
+        "date": "2026-01-27T23:31:39Z",
+        "message": "include documentation comments",
+        "url": "https://github.com/FirstGearGames/FishNet/commit/f5d70a7cf6521e9251330802a7ef83be8bcc3114"
+    },
+    {
+        "sha": "4dd5f0a8202305e93cbca212c3e16d97b27dadbd",
+        "author": "Alan Deutscher",
+        "email": "adeutscher@gmail.com",
+        "date": "2026-01-27T23:22:33Z",
+        "message": "Add minimal INetworkConnectionBroadcaster interface so that a network connection's broadcasting can be more easily mocked.",
+        "url": "https://github.com/FirstGearGames/FishNet/commit/4dd5f0a8202305e93cbca212c3e16d97b27dadbd"
+    },
+    {
+        "sha": "9b3b26e0ea49f603295ef56786a01f27865d253f",
+        "author": "belplaton",
+        "email": "platonbeliakov@gmail.com",
+        "date": "2026-01-26T15:13:31Z",
+        "message": "fix network object prevowner changing on hostclient",
+        "url": "https://github.com/FirstGearGames/FishNet/commit/9b3b26e0ea49f603295ef56786a01f27865d253f"
+    },
+    {
+        "sha": "29d28eeb204723d48ac881e488224f3ff32f9f52",
+        "author": "belplaton",
+        "email": "platonbeliakov@gmail.com",
+        "date": "2026-01-23T17:21:53Z",
+        "message": "fix",
+        "url": "https://github.com/FirstGearGames/FishNet/commit/29d28eeb204723d48ac881e488224f3ff32f9f52"
+    },
+    {
+        "sha": "9a925c0131604fe3e729b888872286a67f405ca0",
+        "author": "FirstGearGames",
+        "email": "emailpunfish+github@gmail.com",
+        "date": "2026-01-23T17:10:00Z",
+        "message": "Merge pull request #989 from belplaton/QOL-things\n\nQol things",
+        "url": "https://github.com/FirstGearGames/FishNet/commit/9a925c0131604fe3e729b888872286a67f405ca0"
+    }
+]

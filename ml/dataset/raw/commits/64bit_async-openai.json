@@ -1,0 +1,242 @@
+[
+    {
+        "sha": "884aff958c0461cce41e2d9e9b2fe4f29e76b740",
+        "author": "Himanshu Neema",
+        "email": "himanshun.iitkgp@gmail.com",
+        "date": "2026-06-18T19:26:35Z",
+        "message": "chore: Release",
+        "url": "https://github.com/64bit/async-openai/commit/884aff958c0461cce41e2d9e9b2fe4f29e76b740"
+    },
+    {
+        "sha": "7604d6d9a05f1ad0f60937b01e30b2f06c110670",
+        "author": "Vlad-Sebastian Cretu",
+        "email": "34884860+yourlogarithm@users.noreply.github.com",
+        "date": "2026-06-18T19:17:48Z",
+        "message": "fix(types): omit ImageUrl.detail when None (#564)\n\nImageUrl.detail serializes as an explicit \"detail\": null when unset.\nThe OpenAI API tolerates this, but stricter OpenAI-compatible gateways\nvalidate detail as a Literal['auto','low','high'] and reject null with\nHTTP 400. Skip serializing the field when None so it is simply absent.\n\nCo-authored-by: Vlad Sebastian CRETU <vcretu@bitdefender.com>",
+        "url": "https://github.com/64bit/async-openai/commit/7604d6d9a05f1ad0f60937b01e30b2f06c110670"
+    },
+    {
+        "sha": "7f7c8d0852e44092a5ef3ad1f9d5e1a522580c7f",
+        "author": "Himanshu Neema",
+        "email": "himanshun.iitkgp@gmail.com",
+        "date": "2026-06-04T21:41:18Z",
+        "message": "chore: Release",
+        "url": "https://github.com/64bit/async-openai/commit/7f7c8d0852e44092a5ef3ad1f9d5e1a522580c7f"
+    },
+    {
+        "sha": "97117c9d5d1aa6bfcb5dff54888115942e6029d8",
+        "author": "Himanshu Neema",
+        "email": "himanshun.iitkgp@gmail.com",
+        "date": "2026-06-04T21:39:37Z",
+        "message": "feat: upstream spec sync (#563)\n\n* update agents.md to use github instead of stainless url\n\n* rename openapi.documented.yml -> openapi.yaml\n\n* updates to response types\n\n* updates to realtime: add realtime translations api and types\n\n* update to admin + impls + libs\n\n* updates to return types for certificates and project_certificates apis\n\n* more spec sync\n\n* string variant for custom image size\n\n* image size in ImageGenTool allow custom string\n\n* update realtime sesstion to include fields in the response\n\n* use object property as discriminator in usage response result\n\n* updates to resposnes compact request body\n\n* updated spec openapi.yaml\n\n* cargo fmt\n\n* fix usage example\n\n* updates\n\n* gpt image 2 + update examples\n\n* updated readme\n\n* remove height\n\n* update image edit example\n\n* update image-generate b64 json method\n\n* remove b64-json example - its redundant now\n\n* update middleware docs",
+        "url": "https://github.com/64bit/async-openai/commit/97117c9d5d1aa6bfcb5dff54888115942e6029d8"
+    },
+    {
+        "sha": "2de0cc233d7d789df9b69d4a83745fa67a290f18",
+        "author": "Himanshu Neema",
+        "email": "himanshun.iitkgp@gmail.com",
+        "date": "2026-06-01T21:18:32Z",
+        "message": "chore: Release",
+        "url": "https://github.com/64bit/async-openai/commit/2de0cc233d7d789df9b69d4a83745fa67a290f18"
+    },
+    {
+        "sha": "81831b7a64eceb1ecc541de3366fe360088094aa",
+        "author": "Alex",
+        "email": "1201551+pennycoders@users.noreply.github.com",
+        "date": "2026-06-01T21:07:02Z",
+        "message": "fix(chat): skip_serializing_if on FunctionCallStream optional fields (#561)\n\nThe streaming FunctionCallStream's name and arguments fields lacked\nthe skip_serializing_if = \"Option::is_none\" attribute that the\nneighbouring optional fields in the same module use (e.g.\nservice_tier, system_fingerprint). When constructed with None, the\nfields serialized as JSON null, which deviates from OpenAI's typical\nabsent-or-string streaming wire shape and breaks strict-string\ndownstream accumulators that read the field with a string default.\nApply the attribute to match the rest of the module.",
+        "url": "https://github.com/64bit/async-openai/commit/81831b7a64eceb1ecc541de3366fe360088094aa"
+    },
+    {
+        "sha": "d7bfd69d8b638f24462e784f158b724d93fe633c",
+        "author": "Himanshu Neema",
+        "email": "himanshun.iitkgp@gmail.com",
+        "date": "2026-05-22T18:49:44Z",
+        "message": "chore: Release",
+        "url": "https://github.com/64bit/async-openai/commit/d7bfd69d8b638f24462e784f158b724d93fe633c"
+    },
+    {
+        "sha": "f6a31a8bf3c0029616bd3d1855c90ff97652b29c",
+        "author": "Max Zheng",
+        "email": "max@perceptron.inc",
+        "date": "2026-05-22T01:53:15Z",
+        "message": "fix: surface streaming HTTP errors at the function call instead of as first stream item (#558)",
+        "url": "https://github.com/64bit/async-openai/commit/f6a31a8bf3c0029616bd3d1855c90ff97652b29c"
+    },
+    {
+        "sha": "0d105f04d656d8255aa3b834ddb07caeb434841b",
+        "author": "Himanshu Neema",
+        "email": "himanshun.iitkgp@gmail.com",
+        "date": "2026-05-21T18:43:36Z",
+        "message": "chore: Release",
+        "url": "https://github.com/64bit/async-openai/commit/0d105f04d656d8255aa3b834ddb07caeb434841b"
+    },
+    {
+        "sha": "174512724028dee9c4c42f66a73a22c2254b0422",
+        "author": "Rudi Floren",
+        "email": "rudi.floren@gmail.com",
+        "date": "2026-05-21T18:17:01Z",
+        "message": "feat: forward reqwest's rustls-no-provider feature (#556)\n\n* feat(tls): add rustls-no-provider feature flag (#547)\n\nExposes reqwest 0.13's `rustls-no-provider` feature so consumers can\nopt out of the bundled `aws-lc-rs` crypto provider and install their\nown (e.g. `ring`).\n\n* ci(tls): add TLS feature matrix with aws-lc-rs regression check\n\nAdds a `tls-features` job that builds each TLS variant against\nchat-completion (`rustls`, `rustls-no-provider`, `native-tls`,\n`native-tls-vendored`) and asserts via `cargo tree` that:\n\n- `rustls-no-provider` does NOT pull in `aws-lc-rs` (the regression\n  we want to protect against).\n- `rustls` DOES pull in `aws-lc-rs` (sanity check that the assertion\n  above is meaningful).",
+        "url": "https://github.com/64bit/async-openai/commit/174512724028dee9c4c42f66a73a22c2254b0422"
+    },
+    {
+        "sha": "c14590bb88945dc6d0468bf6307a55933ffd4762",
+        "author": "Himanshu Neema",
+        "email": "himanshun.iitkgp@gmail.com",
+        "date": "2026-05-21T01:44:05Z",
+        "message": "chore: Release",
+        "url": "https://github.com/64bit/async-openai/commit/c14590bb88945dc6d0468bf6307a55933ffd4762"
+    },
+    {
+        "sha": "408a8051ad3c0e2abfe86d58bc6c5482d850311c",
+        "author": "Himanshu Neema",
+        "email": "himanshun.iitkgp@gmail.com",
+        "date": "2026-05-21T01:43:10Z",
+        "message": "fix: compilation of all examples after updates to crate",
+        "url": "https://github.com/64bit/async-openai/commit/408a8051ad3c0e2abfe86d58bc6c5482d850311c"
+    },
+    {
+        "sha": "9639a11a94799261fc904c9a48631f5ddf97f6b9",
+        "author": "Max Zheng",
+        "email": "max@perceptron.inc",
+        "date": "2026-05-21T01:38:49Z",
+        "message": "Return http status code for ApiError (#552)\n\n* Return http status code for ApiError\n\n* doc comments on ApiErrorResponse\n\n* cargo fmt\n\n---------\n\nCo-authored-by: Himanshu Neema <himanshun.iitkgp@gmail.com>",
+        "url": "https://github.com/64bit/async-openai/commit/9639a11a94799261fc904c9a48631f5ddf97f6b9"
+    },
+    {
+        "sha": "8b788aed227bafe992e09df9a0decba524ba7cb1",
+        "author": "Himanshu Neema",
+        "email": "himanshun.iitkgp@gmail.com",
+        "date": "2026-05-21T01:15:08Z",
+        "message": "chore: Release",
+        "url": "https://github.com/64bit/async-openai/commit/8b788aed227bafe992e09df9a0decba524ba7cb1"
+    },
+    {
+        "sha": "fd506bea45fe5b10c45c30f0096edfc3c465e06c",
+        "author": "Himanshu Neema",
+        "email": "himanshun.iitkgp@gmail.com",
+        "date": "2026-05-21T01:11:19Z",
+        "message": "fix: make schema required field in ResponseFormatJsonSchema (#555)\n\n* fix: make schema required field in ResponseFormatJsonSchema\n\n* update examples to use required schema field in ResponseFormatJsonSchema",
+        "url": "https://github.com/64bit/async-openai/commit/fd506bea45fe5b10c45c30f0096edfc3c465e06c"
+    },
+    {
+        "sha": "f112151480ee02d3274fb9294a12cc3f6259dff3",
+        "author": "Paul Ellenbogen",
+        "email": "quick.king5598@ellenbogen.net",
+        "date": "2026-05-21T00:37:53Z",
+        "message": "fix(responses): default ResponseTextParam.format during deserialization (#554)\n\nCloses #551",
+        "url": "https://github.com/64bit/async-openai/commit/f112151480ee02d3274fb9294a12cc3f6259dff3"
+    },
+    {
+        "sha": "c9c99e33ec0f6881aee400f67123157c5c2aad52",
+        "author": "Rijk van Zanten",
+        "email": "rijkvanzanten@me.com",
+        "date": "2026-05-20T17:52:22Z",
+        "message": "fix: Make `action` optional in `response.output_item.added` (#550)\n\n* Make `action` optional\n\n* Add test\n\n* Run fmt",
+        "url": "https://github.com/64bit/async-openai/commit/c9c99e33ec0f6881aee400f67123157c5c2aad52"
+    },
+    {
+        "sha": "eeb375f35e9eb685ae70e852729544d40f4743cb",
+        "author": "Himanshu Neema",
+        "email": "himanshun.iitkgp@gmail.com",
+        "date": "2026-05-14T00:05:44Z",
+        "message": "chore: Release",
+        "url": "https://github.com/64bit/async-openai/commit/eeb375f35e9eb685ae70e852729544d40f4743cb"
+    },
+    {
+        "sha": "7fdcd7f425c0fb7c3080def7f8297ced9dbb7d59",
+        "author": "Anthony Casagrande",
+        "email": "acasagrande@nvidia.com",
+        "date": "2026-05-13T23:55:17Z",
+        "message": "fix(responses): default InputImageContent.detail during deserialization (#546)\n\n- default InputImageContent.detail to auto when missing in JSON input\n- add focused response-types integration tests covering both the\n  EasyMessage and strict Item::Message(Input::User) deserialization paths\n\nInputImageContent.detail is documented as defaulting to `auto`, but\nwithout #[serde(default)] any spec-compliant payload that omits it\n(per openai-python's ResponseInputImageParam, which marks detail\nOptional[Literal[\"low\",\"high\",\"auto\"]]) fails to deserialize. Because\nInputItem is #[serde(untagged)], the single missing-field error rolls\nup to \"data did not match any variant of untagged enum InputItem\",\nwhich is what spec-compliant clients hit in practice.\n\nCloses #545.\n\nRefs:\n- openapi.documented.yml: ResponseInputImage (type required;\n  image_url/file_id/detail all optional)\n- openai-python: src/openai/types/responses/response_input_image_param.py\n  (detail: Optional[Literal[\"low\", \"high\", \"auto\"]])\n- openai-node: src/resources/responses/responses.ts (detail?: 'low'|'high'|'auto')\n- Prior fix in same spirit: #527",
+        "url": "https://github.com/64bit/async-openai/commit/7fdcd7f425c0fb7c3080def7f8297ced9dbb7d59"
+    },
+    {
+        "sha": "4fe630499c17eadc8c0df6175bf6e079f5a6d3cd",
+        "author": "Himanshu Neema",
+        "email": "himanshun.iitkgp@gmail.com",
+        "date": "2026-05-11T19:54:11Z",
+        "message": "chore: Release",
+        "url": "https://github.com/64bit/async-openai/commit/4fe630499c17eadc8c0df6175bf6e079f5a6d3cd"
+    },
+    {
+        "sha": "bd562be7ca0f22a20894e9dd482feb7d1be0af7b",
+        "author": "Himanshu Neema",
+        "email": "himanshun.iitkgp@gmail.com",
+        "date": "2026-05-11T19:50:40Z",
+        "message": "doc: updates (#544)\n\n* update middleware docs\n\n* updated readme\n\n* update readme\n\n* update doc\n\n* update lib.rs\n\n* cleanup\n\n* refactor readme",
+        "url": "https://github.com/64bit/async-openai/commit/bd562be7ca0f22a20894e9dd482feb7d1be0af7b"
+    },
+    {
+        "sha": "4b51dc67bbb4142353215f256e77a125a43d2c9a",
+        "author": "钊  景",
+        "email": "jingzhaolinux@163.com",
+        "date": "2026-05-11T18:37:13Z",
+        "message": "fix: check [DONE] SSE marker before deserialization in stream_mapped_raw_events (#543)\n\nPR #537 refactored the streaming pipeline and removed reqwest-eventsource.\nThe old `stream()` function checked for the `[DONE]` SSE end-of-stream\nmarker *before* passing event data to `serde_json::from_str`. The\nrefactored version delegated to `stream_mapped_raw_events`, which checks\n`[DONE]` *after* calling the `event_mapper` closure. Since the mapper in\n`stream()` deserializes JSON, this causes `[DONE]` to fail with:\n\n  failed deserialization of: [DONE]\n\nMove the `[DONE]` check before the mapper call in both the WASM\n(futures::stream::unfold) and non-WASM (tokio::mpsc) implementations.\n\nCloses #542\n\nCo-authored-by: zhaojing.jz <zhaojing.jz@alibaba-inc.com>",
+        "url": "https://github.com/64bit/async-openai/commit/4b51dc67bbb4142353215f256e77a125a43d2c9a"
+    },
+    {
+        "sha": "b7fd7eacbb6fed9d7170dfdfc489ede2c01c5ce5",
+        "author": "Himanshu Neema",
+        "email": "himanshun.iitkgp@gmail.com",
+        "date": "2026-05-08T04:57:31Z",
+        "message": "chore: Release",
+        "url": "https://github.com/64bit/async-openai/commit/b7fd7eacbb6fed9d7170dfdfc489ede2c01c5ce5"
+    },
+    {
+        "sha": "3d3f112464e65c5d30b8f01664e86d5b7818d9a2",
+        "author": "Himanshu Neema",
+        "email": "himanshun.iitkgp@gmail.com",
+        "date": "2026-05-08T04:02:07Z",
+        "message": "feat: all native features on wasm (#541)\n\n* MaybeSend\n\n* StreamResponse helper type\n\n* all types udpated with StreamResponse for wasm\n\n* api groups updated with StreamResponse\n\n* remove redundant OpenAIError wasm/non-wasm\n\n* updated doc in lib.rs\n\n* updated readme\n\n* update to macro crate\n\n* client and cargo.toml for wasm streaming\n\n* remove duplicated methods for wasm\n\n* deduplicate build_request_factory_with_form using MaybeSend trait\n\n* remove duplicate implementation for streaming\n\n* unify stream\n\n* add wasm streaming example\n\n* dedup build_request_factory_with_form\n\n* make AsyncTryFrom use MaybeSend\n\n* cleanup MiddlewareInput\n\n* bump macro version\n\n* update docs\n\n* cleanup docs\n\n* doc comments\n\n* update doc\n\n* simplify dynamic dispatch docs",
+        "url": "https://github.com/64bit/async-openai/commit/3d3f112464e65c5d30b8f01664e86d5b7818d9a2"
+    },
+    {
+        "sha": "f5ede7ac44d646783aec6422ba37cbeb769c89af",
+        "author": "Himanshu Neema",
+        "email": "himanshun.iitkgp@gmail.com",
+        "date": "2026-05-07T01:18:03Z",
+        "message": "have type field in content field of ReasoningItem (#540)",
+        "url": "https://github.com/64bit/async-openai/commit/f5ede7ac44d646783aec6422ba37cbeb769c89af"
+    },
+    {
+        "sha": "c10f2c607792ab1b658664533273277c41f1c167",
+        "author": "Himanshu Neema",
+        "email": "himanshun.iitkgp@gmail.com",
+        "date": "2026-05-06T23:53:25Z",
+        "message": "chore: Release",
+        "url": "https://github.com/64bit/async-openai/commit/c10f2c607792ab1b658664533273277c41f1c167"
+    },
+    {
+        "sha": "2b3d8ada57377b2f46075f4fd4bd5ef6db325944",
+        "author": "Himanshu Neema",
+        "email": "himanshun.iitkgp@gmail.com",
+        "date": "2026-05-06T23:49:07Z",
+        "message": "feat: Tower based Middlewares (#539)\n\n* initial implementation of middleware\n\n* allow error to be Into<OpenAIError>\n\n* documentation and default reqwest service\n\n* namspaced in middleware\n\n* park tower error handling for now TODO\n\n* working compilation of all crates\n\n* support for middleware in wasm\n\n* impl Default for ReqwestService\n\n* add tower example\n\n* add tower-wasm example\n\n* introduce Boxed variant\n\n* add both display and debug\n\n* update comment\n\n* updated doc\n\n* updated doc\n\n* refactor: rename http_executor to executor; create a middleware dir for doc.rs\n\n* move retry stuff in its own module\n\n* update examples\n\n* document and log retry headers\n\n* add openai retry layer\n\n* fix logical error in openai layer\n\n* optimize openai retry layer\n\n* return early on success\n\n* update doc\n\n* updated doc\n\n* add middleware to full\n\n* add middleware section\n\n* nest retry stuff inside ::middleware::retry\n\n* change of module path\n\n* updated doc\n\n* updated doc\n\n* update doc\n\n* updated doc\n\n* fix the warning\n\n* update tower example\n\n* cleanup\n\n* middleware.md\n\n* only compile it for wasm\n\n* cleanup client\n\n* cleanup client\n\n* cleanup\n\n* renmae midddlware\n\n* update readme\n\n* cleanup streaming and form creation\n\n* fix test\n\n* add larger delay for retrieval to work\n\n* make image-edit example work\n\n* allow tower user input to be random\n\n* update readme\n\n* update workflows to build middleware feature\n\n* fix warnings\n\n* fix warnings\n\n* only keep wasm32-unknown-unknown for workflows checks\n\n* bump async-openai-macros version\n\n* update doc comment\n\n* remove duplicate From tower BoxError for wasm/non-wasm\n\n* remove redundant doc comment\n\n* cleanup comment\n\n* in readme use link to github instead of relative path - so that it works on crates.io\n\n* remove comment\n\n* update lib.rs WASM section\n\n* add docs on middleware error handling",
+        "url": "https://github.com/64bit/async-openai/commit/2b3d8ada57377b2f46075f4fd4bd5ef6db325944"
+    },
+    {
+        "sha": "02870d981c36f2fc51a9bff858e2cbf92a0c03d9",
+        "author": "Himanshu Neema",
+        "email": "himanshun.iitkgp@gmail.com",
+        "date": "2026-04-26T19:36:10Z",
+        "message": "chore: Release",
+        "url": "https://github.com/64bit/async-openai/commit/02870d981c36f2fc51a9bff858e2cbf92a0c03d9"
+    },
+    {
+        "sha": "c1074e0e74962e37001378073ec888269756c690",
+        "author": "Siyuan Yan",
+        "email": "44753941+Madoshakalaka@users.noreply.github.com",
+        "date": "2026-04-26T19:10:14Z",
+        "message": "`From<OutputItem> for Item` (and `InputItem`) for multi-turn responses (#538)\n\n* Add From<OutputItem> for Item / InputItem (multi-turn responses)\n\nThe Responses API requires Reasoning items to be echoed back into the\nnext request's input alongside the FunctionCall items they preceded.\nWithout that pairing the server rejects the request with:\n\n    Item 'fc_...' of type 'function_call' was provided without its\n    required 'reasoning' item: 'rs_...'\n\nIn the Python and Node SDKs the canonical pattern is `input_list +=\nresponse.output` because their input/output item types are the same.\nIn Rust the schemas split into Item vs OutputItem, with several\nvariants that have *Resource (output, required id/status) and\n*ItemParam (input, optional id/status) flavors, so callers had to\nhand-write a per-variant conversion to do what's a one-liner in the\nofficial SDKs.\n\nAdd From<OutputItem> for Item and From<OutputItem> for InputItem,\nplus the supporting per-variant From impls (status enum mappings,\nshell environment/outcome mappings, apply_patch operation mappings,\nresource-to-param mappings). Required id/status fields fold into\nSome(...) on the way in; the output-only created_by annotation is\ndropped because the input schema doesn't accept it. The canonical\nSDK pattern now works:\n\n    input_items.extend(response.output.into_iter().map(InputItem::from));\n\nIncludes round-trip tests covering the headline reasoning +\nfunction_call pairing case plus the resource-to-param folding for\nApplyPatch, Compaction, and FunctionCallOutput. New\nresponses-multi-turn-reasoning example demonstrates the pattern with\na reasoning model.\n\nCloses #492.\n\n* chore: fmt",
+        "url": "https://github.com/64bit/async-openai/commit/c1074e0e74962e37001378073ec888269756c690"
+    },
+    {
+        "sha": "5fba89d8e330c30dbb9b335bfccb11ae85cd1d31",
+        "author": "Himanshu Neema",
+        "email": "himanshun.iitkgp@gmail.com",
+        "date": "2026-04-23T23:40:42Z",
+        "message": "chore: Release",
+        "url": "https://github.com/64bit/async-openai/commit/5fba89d8e330c30dbb9b335bfccb11ae85cd1d31"
+    }
+]

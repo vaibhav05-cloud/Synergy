@@ -1,0 +1,352 @@
+[
+    {
+        "id": 1066104738,
+        "number": 42,
+        "title": "Not compatible with frozen strings",
+        "state": "closed",
+        "created_at": "2021-11-29T14:26:50Z",
+        "updated_at": "2021-12-03T09:49:40Z",
+        "closed_at": "2021-12-03T09:49:40Z",
+        "author": "morgoth",
+        "comments": 1,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "Hi @weppos \r\n\r\nI would like to setup my app to have frozen strings by default.\r\nExample description: https://www.mikeperham.com/2018/02/28/ruby-optimization-with-one-magic-comment/\r\n\r\nUsing tabs_on_rails is not possible with globally enabled frozen string. This can be seen by setting `RUBYOPT=\"--enable=frozen-string-literal\"` and running Rails app.\r\n\r\nWhen rendering tabs, the error is thrown: `ActionView::Template::Error (can't modify frozen String: \"\")`",
+        "url": "https://github.com/weppos/tabs_on_rails/issues/42"
+    },
+    {
+        "id": 593890020,
+        "number": 41,
+        "title": "Deprecation warnings in Rails 6",
+        "state": "closed",
+        "created_at": "2020-04-04T14:24:37Z",
+        "updated_at": "2025-02-04T20:39:33Z",
+        "closed_at": "2025-02-04T20:39:33Z",
+        "author": "olimart",
+        "comments": 0,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "Hi,\r\n\r\nThis\r\nhttps://github.com/weppos/tabs_on_rails/blob/master/lib/tabs_on_rails/railtie.rb#L14\r\nis causing the following warning in Rails 6 app.\r\n\r\n`DEPRECATION WARNING: Initialization autoloaded the constants ActionText::ContentHelper and ActionText::TagHelper.`\r\n\r\nShould use `:prepend` instead of `:include`.\r\nHere is an example of a potential fix\r\nhttps://github.com/mileszs/wicked_pdf/pull/869/files#diff-ea9340aeb7bd0bcc5782373373980c56R10-R15\r\n\r\nI used the following snippet to track it down\r\nhttps://github.com/rails/rails/issues/36546#issuecomment-558773961\r\n\r\nLet me know if you need anything else. Thanks",
+        "url": "https://github.com/weppos/tabs_on_rails/issues/41"
+    },
+    {
+        "id": 182484668,
+        "number": 37,
+        "title": "Update Gem to support Rails 5.1",
+        "state": "closed",
+        "created_at": "2016-10-12T10:01:31Z",
+        "updated_at": "2017-02-02T16:50:04Z",
+        "closed_at": "2017-02-02T16:49:42Z",
+        "author": "ghost",
+        "comments": 2,
+        "labels": [
+            "enhancement"
+        ],
+        "assignees": [
+            "weppos"
+        ],
+        "locked": false,
+        "body": "Heya,\n\nwould you mind to update your gem to support Rails 5.1?\n\nCurrently you implemented its functionality by using `before_filter`. Those are deprecated are going to be removed with rails 5.1. They need to be replaced by `before_action`.\n\n```\nDEPRECATION WARNING: before_filter is deprecated and will be removed in Rails 5.1. Use before_action instead. (called from set_tab at /home/user/.rvm/gems/ruby-2.3.0/bundler/gems/tabs_on_rails-01ba07eca6fb/lib/tabs_on_rails/action_controller.rb:106)\n```\n",
+        "url": "https://github.com/weppos/tabs_on_rails/issues/37"
+    },
+    {
+        "id": 167273668,
+        "number": 36,
+        "title": "Shall we create dynamic tabs through view.",
+        "state": "closed",
+        "created_at": "2016-07-25T03:08:02Z",
+        "updated_at": "2016-07-25T07:01:45Z",
+        "closed_at": "2016-07-25T07:01:45Z",
+        "author": "shivareddy547",
+        "comments": 1,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "Hi,\n\nShall we create dynamic menus like Tabs (Management) creation,Footer links management using tabs_on_rails gem.\n\nAs per my requirement i need to manage tabs through admin configuration.\n\nThanks in advance.\n\nThanks\nShiva.A \n",
+        "url": "https://github.com/weppos/tabs_on_rails/issues/36"
+    },
+    {
+        "id": 119520103,
+        "number": 34,
+        "title": "No tabs",
+        "state": "closed",
+        "created_at": "2015-11-30T15:52:13Z",
+        "updated_at": "2016-10-12T12:18:50Z",
+        "closed_at": "2016-10-12T12:18:50Z",
+        "author": "ojmurphy",
+        "comments": 1,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "Hello, \n\nI placed the tabs_tag do |tab| command in my view, but instead of rendering any tabs, the view displays a bullet point list from my proposed tabs. Specifically: \n- User\n- Group\n- Settings\n",
+        "url": "https://github.com/weppos/tabs_on_rails/issues/34"
+    },
+    {
+        "id": 17480732,
+        "number": 30,
+        "title": "Add a class and id to the <ul>",
+        "state": "closed",
+        "created_at": "2013-07-31T22:26:57Z",
+        "updated_at": "2013-08-31T00:54:35Z",
+        "closed_at": "2013-08-31T00:54:35Z",
+        "author": "turizoft",
+        "comments": 1,
+        "labels": [
+            "question"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "For boostrap for example we need the ul to has the class 'nav nav-pills' for example in order to get the pills style:\n\n`<ul class=\"nav nav-pills\">`\n\nIt would be nice to have support for something like:\n\n`<%= tabs_tag class: 'nav nav-pills', id: 'my-tab' do |tab| %>`\n",
+        "url": "https://github.com/weppos/tabs_on_rails/issues/30"
+    },
+    {
+        "id": 16374386,
+        "number": 29,
+        "title": "Controller#set_tab instance method implemented but not documented",
+        "state": "open",
+        "created_at": "2013-07-04T16:16:57Z",
+        "updated_at": "2025-07-21T07:18:49Z",
+        "closed_at": null,
+        "author": "jcamenisch",
+        "comments": 0,
+        "labels": [
+            "enhancement"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "I just spent a good bit of time writing ten different calls to `set_tab :x, if: ->{ condition }` in a controller, to set the current tab based on given params. I got it working perfectly, but hated the whole approach. It was begging to have set_tab called from a before_action filter instead of at the class level.\n\nIt finally dawned on me that that might be possible, even though the documentation says nothing about the capability. I checked the source, and there it is!\n\nMay I suggest mentioning this somewhere in the documentation? Would you consider a pull request if I worked on writing something up?\n\nNo promises, but I might be able to take some time to do that—if there's a chance it would be merged.\n\nThanks!\n",
+        "url": "https://github.com/weppos/tabs_on_rails/issues/29"
+    },
+    {
+        "id": 11975802,
+        "number": 27,
+        "title": "Can the current tab stay clickable?",
+        "state": "closed",
+        "created_at": "2013-03-13T14:37:24Z",
+        "updated_at": "2017-02-02T16:49:55Z",
+        "closed_at": "2017-02-02T16:49:55Z",
+        "author": "29thfloor",
+        "comments": 1,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "Is there a way to make the current tab stay clickable? \n\nI'm using this for an app that has a top nav bar where certain tabs need to be highlighted when you are in a section that is below that top level section. So technically you're not on that page and should be able to click the tab to get back to it. But when I set the current tab it becomes unclickable.\n",
+        "url": "https://github.com/weppos/tabs_on_rails/issues/27"
+    },
+    {
+        "id": 6090271,
+        "number": 25,
+        "title": "wrong number of arguments (3 for 2)",
+        "state": "closed",
+        "created_at": "2012-08-07T22:02:05Z",
+        "updated_at": "2017-02-02T16:50:57Z",
+        "closed_at": "2017-02-02T16:50:57Z",
+        "author": "alexmobo",
+        "comments": 1,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "Here is my problem.\n\nI've only one controller to navigate throught my primary tab menu...\n\n> class StaticPagesController < ApplicationController\n>  def home\n>    set_tab :home\n>  end\n> ...\n>  def facilities\n>    set_tab :facilities\n>    @facilities = Facility.all\n> \n>    set_tab :second, :navigation, :only => %w(second)\n>    set_tab :third, :navigation, :only => %w(third)\n>    set_tab :first, :navigation, :only => %w(first)\n>  end\n> \n>  def first; end\n>  def second; end\n>  def third; end\n> ...\n>  def contact\n>    set_tab :contact\n>  end\n> end\n\nand I want to create a sub-menu inside facilities static page.\n\nWhen I try to run this code, rails throws me the error:\n\n> wrong number of arguments (3 for 2)\n\non line:\n\n> set_tab :second, :navigation, :only => %w(second)\n\nIt seems that isn't finding the method:\n\n> set_tab(*args)\n\nThanks in advanced,\nAlex\n",
+        "url": "https://github.com/weppos/tabs_on_rails/issues/25"
+    },
+    {
+        "id": 5846682,
+        "number": 24,
+        "title": "Dropdown on Tabs",
+        "state": "closed",
+        "created_at": "2012-07-26T05:11:12Z",
+        "updated_at": "2012-07-26T12:39:07Z",
+        "closed_at": "2012-07-26T12:39:05Z",
+        "author": "albaredoreynan",
+        "comments": 1,
+        "labels": [
+            "question"
+        ],
+        "assignees": [
+            "weppos"
+        ],
+        "locked": false,
+        "body": "how to make a dropdown for the builders tab?\n",
+        "url": "https://github.com/weppos/tabs_on_rails/issues/24"
+    },
+    {
+        "id": 5776406,
+        "number": 22,
+        "title": "Parameterize class of current tab",
+        "state": "open",
+        "created_at": "2012-07-23T11:00:20Z",
+        "updated_at": "2025-07-21T07:18:49Z",
+        "closed_at": null,
+        "author": "ruurd",
+        "comments": 2,
+        "labels": [
+            "enhancement"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "Please make the CSS class name for the active tab  parameterizable. Currently the current tab is adorned with class=\"current\" however for example bootstrap does the same with class=\"active\". \n",
+        "url": "https://github.com/weppos/tabs_on_rails/issues/22"
+    },
+    {
+        "id": 5484731,
+        "number": 21,
+        "title": "Display a different set of \"sub-tabs\" populated by controller.",
+        "state": "closed",
+        "created_at": "2012-07-08T03:56:34Z",
+        "updated_at": "2012-07-16T10:49:53Z",
+        "closed_at": "2012-07-09T07:54:14Z",
+        "author": "voltechs",
+        "comments": 3,
+        "labels": [
+            "question"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "My different main sections have the need for unique sub-navigation. I'd like to be able to define the array/hash for the subnav in the appropriate controller and have the layout render them. How could I do that?\n",
+        "url": "https://github.com/weppos/tabs_on_rails/issues/21"
+    },
+    {
+        "id": 2914383,
+        "number": 19,
+        "title": "Path for custom Builder",
+        "state": "closed",
+        "created_at": "2012-01-20T17:51:50Z",
+        "updated_at": "2012-01-20T18:07:15Z",
+        "closed_at": "2012-01-20T18:07:15Z",
+        "author": "ghost",
+        "comments": 2,
+        "labels": [
+            "question"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "I try to build a custom Builder but do not know where is the right place for the file.\nTried /lib/menu_tab_builder.rb and /lib/tabs_on_rails/tabs/menu_tab_builder.rb but does not work.\n\n Can somebody help?\n",
+        "url": "https://github.com/weppos/tabs_on_rails/issues/19"
+    },
+    {
+        "id": 2740521,
+        "number": 18,
+        "title": "Rails 3.2 and ActiveSupport::Concern deprecation warning",
+        "state": "closed",
+        "created_at": "2012-01-05T21:02:20Z",
+        "updated_at": "2012-02-03T16:05:29Z",
+        "closed_at": "2012-02-03T16:05:29Z",
+        "author": "indrekj",
+        "comments": 1,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [
+            "weppos"
+        ],
+        "locked": false,
+        "body": "```\nDEPRECATION WARNING: The InstanceMethods module inside ActiveSupport::Concern will be no longer included automatically. Please define instance methods directly in ActionController::Base instead.\n```\n\nI think it comes from lib/tabs_on_rails/action_controller.rb\n",
+        "url": "https://github.com/weppos/tabs_on_rails/issues/18"
+    },
+    {
+        "id": 2709886,
+        "number": 15,
+        "title": "Error description in readme - \"Creating a custom Builder\"",
+        "state": "closed",
+        "created_at": "2012-01-03T12:30:23Z",
+        "updated_at": "2012-03-21T11:22:52Z",
+        "closed_at": "2012-01-03T23:20:31Z",
+        "author": "sharp",
+        "comments": 3,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "class MenuTabBuilder < TabsOnRails::Tabs::Builder\n  def tab_for(tab, name, options, item_options = {})\n    item_options[:class] = (current_tab?(tab) ? 'active' : '')\n    @context.content_tag(:li, item_options) do\n      @context.link_to(name, options)\n    end\n  end\nend\n\nthe correct builder is 'TabsOnRails::Tabs::TabsBuilder' not class MenuTabBuilder < TabsOnRails::Tabs::Builder, or else it has no ul tag\n",
+        "url": "https://github.com/weppos/tabs_on_rails/issues/15"
+    },
+    {
+        "id": 1611160,
+        "number": 14,
+        "title": "Compatible with Rails 3.1",
+        "state": "closed",
+        "created_at": "2011-09-09T20:45:05Z",
+        "updated_at": "2011-09-09T21:34:26Z",
+        "closed_at": "2011-09-09T21:31:56Z",
+        "author": "webchi",
+        "comments": 5,
+        "labels": [
+            "question"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "Is tabs_on_rails compatible with rails 3.1? I use it in my app and see nothing - no tabs, no errors. \n",
+        "url": "https://github.com/weppos/tabs_on_rails/issues/14"
+    },
+    {
+        "id": 1161951,
+        "number": 13,
+        "title": "Add the support for the nav tag",
+        "state": "closed",
+        "created_at": "2011-07-04T12:38:45Z",
+        "updated_at": "2012-06-08T15:41:00Z",
+        "closed_at": "2012-06-08T15:41:00Z",
+        "author": "lyuba",
+        "comments": 3,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "I've implemented it with a tab builder, but that would be even cooler to set it as an option to a default builder.\n",
+        "url": "https://github.com/weppos/tabs_on_rails/issues/13"
+    },
+    {
+        "id": 572802,
+        "number": 10,
+        "title": "Uninitialized constant (...builder => MenuTabBuilder...)",
+        "state": "closed",
+        "created_at": "2011-02-03T15:54:58Z",
+        "updated_at": "2012-12-28T02:56:15Z",
+        "closed_at": "2011-02-11T11:06:10Z",
+        "author": "fabiochi",
+        "comments": 2,
+        "labels": [
+            "question"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "Hi to all,\nI got a uninitialized constant ActionView::CompiledTemplates::MenuTabBuilder\nExtracted source (around line #15):\n\n14:     <!-- prova tabs_on_rails -->\n15:     <% tabs_tag (:builder => MenuTabBuilder, :open_tabs => { :id => \"navigation\" }) do |tab| %>\n16:       <%= tab.home      I18n.t('.home'), pick_path %>\n17:       <%= tab.buildings I18n.t('.buildings'), buildings_path %>\n18:       <%= tab.customers I18n.t('.customers'), customers_path %>\n\nHere the code /lib/menu_tab_builder.rb \n\nclass MenuTabBuilder < TabsOnRails::Tabs::Builder\n    def tab_for(tab, name, options, item_options = {})\n      item_options[:class] = (current_tab?(tab) ? 'menu-sel' : '')\n      @context.content_tag(:li, item_options) do\n        @context.link_to(name, options)\n      end\n    end\nend\n\nWhere's the error?\n\nFabio\n",
+        "url": "https://github.com/weppos/tabs_on_rails/issues/10"
+    },
+    {
+        "id": 544713,
+        "number": 8,
+        "title": "undefined method `tabs_tag' with 1.3.2 and 2.0.0.pre",
+        "state": "closed",
+        "created_at": "2011-01-23T05:15:36Z",
+        "updated_at": "2011-04-10T14:56:35Z",
+        "closed_at": "2011-02-03T22:43:42Z",
+        "author": "incubus",
+        "comments": 9,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "Hi!\n\n I got a \"undefined method `tabs_tag'\" error with 1.3.2 and 2.0.0.pre versions. With 1.3.1 everything  is ok.\n\n$ rails -v\n\nRails 3.0.3\n\n$ ruby -v\n\nruby 1.9.2p0 (2010-08-18 revision 29036) [amd64-freebsd9]\n\n$ cat Gemfile\n\nsource 'http://rubygems.org'\n\ngem 'rails', '3.0.3'\n\ngem 'active_scaffold'\ngem 'ancestry'\ngem 'devise'\ngem 'haml'\ngem 'pg'\ngem 'tabs_on_rails'\n",
+        "url": "https://github.com/weppos/tabs_on_rails/issues/8"
+    },
+    {
+        "id": 505582,
+        "number": 7,
+        "title": ":link_current documented but not implemented",
+        "state": "closed",
+        "created_at": "2011-01-04T12:40:13Z",
+        "updated_at": "2017-02-02T16:50:13Z",
+        "closed_at": "2017-02-02T16:50:13Z",
+        "author": "weppos",
+        "comments": 2,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "See lostboy/tabs_on_rails@03ea1fe8461ccd6fa131b943bb8aadb40cd6c14a\n",
+        "url": "https://github.com/weppos/tabs_on_rails/issues/7"
+    }
+]

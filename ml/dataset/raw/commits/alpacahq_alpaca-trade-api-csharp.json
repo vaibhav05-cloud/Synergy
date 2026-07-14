@@ -1,0 +1,242 @@
+[
+    {
+        "sha": "fd72be178ab294feafe51420c52da40aa340e071",
+        "author": "Carlos Tasada",
+        "email": "carlos.tasada@alpaca.markets",
+        "date": "2026-07-10T08:08:37Z",
+        "message": "Merge pull request #819 from alpacahq/fix/account-removed-properties\n\nfeat: Remove deprecated properties from IAccount interface and fix JSON property name typo",
+        "url": "https://github.com/alpacahq/alpaca-trade-api-csharp/commit/fd72be178ab294feafe51420c52da40aa340e071"
+    },
+    {
+        "sha": "ef8ad33de518f28f6c7ec9fed250b5247579302c",
+        "author": "Carlos Tasada",
+        "email": "carlos.tasada@alpaca.markets",
+        "date": "2026-07-08T13:01:57Z",
+        "message": "feat: Remove deprecated properties from IAccount interface and fix JSON property name typo\n\n- Removed `IsDayPatternTrader` and `DayTradeCount` properties from the `IAccount` interface due to changes in the Alpaca Trading API.\n- Fixed a typo in the JSON property name for `NonMarginableBuyingPower` to ensure correct population.\n- Updated compatibility suppressions to reflect the removal of the deprecated properties.",
+        "url": "https://github.com/alpacahq/alpaca-trade-api-csharp/commit/ef8ad33de518f28f6c7ec9fed250b5247579302c"
+    },
+    {
+        "sha": "83e75c2113698a4de1daf206460032f86177fd92",
+        "author": "Carlos Tasada",
+        "email": "carlos.tasada@alpaca.markets",
+        "date": "2026-07-08T11:59:26Z",
+        "message": "Merge pull request #818 from alpacahq/ctasada/messagepack-security-fix\n\nfix: bump MessagePack to 3.1.7 for security advisory",
+        "url": "https://github.com/alpacahq/alpaca-trade-api-csharp/commit/83e75c2113698a4de1daf206460032f86177fd92"
+    },
+    {
+        "sha": "aa7abb0f5853e5e288094b69f73e4ae55d9cae09",
+        "author": "Carlos Tasada",
+        "email": "carlos.tasada@alpaca.markets",
+        "date": "2026-07-08T10:43:17Z",
+        "message": "fix: bump MessagePack to 3.1.7 for security advisory",
+        "url": "https://github.com/alpacahq/alpaca-trade-api-csharp/commit/aa7abb0f5853e5e288094b69f73e4ae55d9cae09"
+    },
+    {
+        "sha": "ad8225f3a8e64ce7de43004d6b62b4a2f499acd5",
+        "author": "Oleg Rakhmatulin",
+        "email": "oleg.rakhmatulin@gmail.com",
+        "date": "2025-09-22T20:47:50Z",
+        "message": "Merge pull request #802 from alpacahq/feature/order-imbalance-streaming\n\nFeature/order imbalance streaming",
+        "url": "https://github.com/alpacahq/alpaca-trade-api-csharp/commit/ad8225f3a8e64ce7de43004d6b62b4a2f499acd5"
+    },
+    {
+        "sha": "c9705037db4e23b800b6645e9e59929d87e33aaf",
+        "author": "Oleg Rakhmatulin",
+        "email": "oleg.rakhmatulin@gmail.com",
+        "date": "2025-09-22T20:33:08Z",
+        "message": "Merge pull request #801 from alpacahq/feature/options-rest-api-completeness\n\nfeat: complete Options REST API with missing endpoints",
+        "url": "https://github.com/alpacahq/alpaca-trade-api-csharp/commit/c9705037db4e23b800b6645e9e59929d87e33aaf"
+    },
+    {
+        "sha": "b566f63d407c28adc56c34c5914be2bf816725b7",
+        "author": "Oleg Rakhmatulin",
+        "email": "oleg.rakhmatulin@gmail.com",
+        "date": "2025-09-22T20:28:57Z",
+        "message": "Re-enables code coverage\n\nRe-enables code coverage in the CI pipeline by restoring the `dotnet dotcover test` command and the Codacy reporting.",
+        "url": "https://github.com/alpacahq/alpaca-trade-api-csharp/commit/b566f63d407c28adc56c34c5914be2bf816725b7"
+    },
+    {
+        "sha": "dbd19a60a83015bf577c922e90002bc154d2b68b",
+        "author": "Oleg Rakhmatulin",
+        "email": "oleg.rakhmatulin@gmail.com",
+        "date": "2025-09-22T19:58:27Z",
+        "message": "Disables code coverage temporarily\n\nTemporarily disables code coverage in the CI pipeline.\n\nThis change addresses an issue with the code coverage tool\nand allows the pipeline to continue running tests and builds\nwithout generating coverage reports. Coverage reporting will\nbe re-enabled once the underlying issue is resolved.",
+        "url": "https://github.com/alpacahq/alpaca-trade-api-csharp/commit/dbd19a60a83015bf577c922e90002bc154d2b68b"
+    },
+    {
+        "sha": "31294af77c8142524f6e707628aa9cfcd66ebddf",
+        "author": "Oleg Rakhmatulin",
+        "email": "oleg.rakhmatulin@gmail.com",
+        "date": "2025-09-22T15:41:39Z",
+        "message": "Merge pull request #800 from alpacahq/feature/options-streaming\n\nAdd support for the options real-time streaming",
+        "url": "https://github.com/alpacahq/alpaca-trade-api-csharp/commit/31294af77c8142524f6e707628aa9cfcd66ebddf"
+    },
+    {
+        "sha": "5a8582293402a9d5284744b86763b3126903fac1",
+        "author": "Oleg Rakhmatulin",
+        "email": "oleg.rakhmatulin@gmail.com",
+        "date": "2025-09-22T13:05:27Z",
+        "message": "docs: Clarify crypto perpetual futures support (Issue #772)\n\nProvides comprehensive documentation clarifying that Alpaca Markets currently supports spot crypto trading only. The CryptoPerpetual enum exists as preparatory infrastructure for potential future functionality.\n\n📋 **Documentation Added:**\n- `CRYPTO_PERPETUALS.md` - Complete explanation of current crypto support status\n- XML documentation updates for IAlpacaCryptoDataClient and IAlpacaCryptoStreamingClient\n- AssetClass.CryptoPerpetual enum documentation with preparatory note\n- Usage example clarification in MeanReversionWithCrypto\n\n✅ **Key Clarifications:**\n- Alpaca Markets supports spot crypto trading only (BTC/USD, ETH/USD, etc.)\n- Crypto perpetual futures are not currently available\n- CryptoPerpetual enum (JSON: \"crypto_perp\") is preparatory infrastructure\n- Existing crypto clients work perfectly for spot trading\n\n📊 **Research Findings:**\n- No active crypto perpetual futures trading at Alpaca Markets\n- No perpetual-specific API endpoints available\n- Existing IAlpacaCryptoDataClient and IAlpacaCryptoStreamingClient handle spot trading only\n- Future-ready architecture when/if Alpaca adds perpetual futures\n\n🎯 **Impact:**\n- Eliminates client confusion about crypto perpetual support\n- Sets clear expectations for current crypto functionality\n- Provides guidance for users needing perpetual futures trading\n- Completes Issue #772 documentation requirements\n\n🤖 Generated with [Claude Code](https://claude.ai/code)\n\nCo-Authored-By: Claude <noreply@anthropic.com>",
+        "url": "https://github.com/alpacahq/alpaca-trade-api-csharp/commit/5a8582293402a9d5284744b86763b3126903fac1"
+    },
+    {
+        "sha": "aae4d4238ce81105e57850841249d1755ba925ec",
+        "author": "Oleg Rakhmatulin",
+        "email": "oleg.rakhmatulin@gmail.com",
+        "date": "2025-09-22T11:52:36Z",
+        "message": "feat: Add order imbalance streaming support (Issue #770)\n\nImplements comprehensive order imbalance data streaming for pre-market opening and closing auctions, enabling sophisticated trading strategies around auction periods.\n\n🚀 **New Features:**\n- `IOrderImbalance` interface with ReferencePrice, PairedShares, ImbalanceShares, ImbalanceSide, AuctionType\n- `GetOrderImbalanceSubscription()` method in `IAlpacaDataStreamingClient`\n- WebSocket channel support with \"imbalances\" channel (\"i\")\n- JSON deserialization with `JsonOrderImbalance` data model\n\n🔧 **Extension Methods:**\n- `GetOrderImbalanceSubscription()` with params and IEnumerable overloads\n- `SubscribeOrderImbalanceAsync()` with 3 overloads for disposable subscriptions\n- Full reconnection wrapper support\n\n✅ **Quality Assurance:**\n- Unit tests following existing patterns (AlpacaDataStreamingClientTest.Imbalances.cs)\n- API compatibility resolved with suppression files\n- All existing tests pass\n- Comprehensive XML documentation\n\n📊 **Impact:**\n- Completes #2 priority feature for SDK 8.0.0 final release\n- Enables advanced auction-based trading strategies\n- Follows exact same patterns as existing LULD streaming\n- Based on NYSE order imbalance specifications\n\n🤖 Generated with [Claude Code](https://claude.ai/code)\n\nCo-Authored-By: Claude <noreply@anthropic.com>",
+        "url": "https://github.com/alpacahq/alpaca-trade-api-csharp/commit/aae4d4238ce81105e57850841249d1755ba925ec"
+    },
+    {
+        "sha": "6032483b1c50bb1a581990e2d9dc7e01e375452e",
+        "author": "Oleg Rakhmatulin",
+        "email": "oleg.rakhmatulin@gmail.com",
+        "date": "2025-09-21T18:45:43Z",
+        "message": "feat: complete Options REST API with missing endpoints\n\nAdd the two missing options data endpoints to achieve full API completeness:\n\n- ListLatestBarsAsync: Get latest bars for option contracts\n- Historical quotes: Complete IHistoricalQuotesClient implementation\n\nChanges:\n• Add HistoricalOptionQuotesRequest following existing patterns\n• Update IAlpacaOptionsDataClient with missing interface and method\n• Implement ListLatestBarsAsync in AlpacaOptionsDataClient\n• Update PublicAPI.Shipped.txt with new public APIs\n• Add comprehensive unit tests (Latest.cs and Quotes.cs)\n• Document API compatibility resolution in CLAUDE.md\n• Generate CompatibilitySuppressions.xml for new APIs\n\nAll tests passing (22/22). Options REST API now matches full Alpaca specification.\n\n🤖 Generated with [Claude Code](https://claude.ai/code)\n\nCo-Authored-By: Claude <noreply@anthropic.com>",
+        "url": "https://github.com/alpacahq/alpaca-trade-api-csharp/commit/6032483b1c50bb1a581990e2d9dc7e01e375452e"
+    },
+    {
+        "sha": "00d7c421c64250cb7eecc19157d69aea29b76d2a",
+        "author": "Oleg Rakhmatulin",
+        "email": "oleg.rakhmatulin@gmail.com",
+        "date": "2025-09-22T08:37:00Z",
+        "message": "Removes API discrepancies analysis\n\nRemoves outdated and incomplete documentation regarding API discrepancies and feature analysis.",
+        "url": "https://github.com/alpacahq/alpaca-trade-api-csharp/commit/00d7c421c64250cb7eecc19157d69aea29b76d2a"
+    },
+    {
+        "sha": "34a9bb890a223015f35435fab3271de7d28b4519",
+        "author": "Oleg Rakhmatulin",
+        "email": "oleg.rakhmatulin@gmail.com",
+        "date": "2025-09-21T13:06:33Z",
+        "message": "Add options real-time streaming support (Issue #721)\n\n- Add IAlpacaOptionsStreamingClient interface for options streaming\n- Implement AlpacaOptionsStreamingClient with MessagePack support\n- Add AlpacaOptionsStreamingClientConfiguration with feed selection\n- Support both Indicative (free) and OPRA (premium) feeds\n- Add Environment factory methods for easy client creation\n- Add ConfigurationExtensions.GetClient() for options streaming\n- Add comprehensive unit tests with mocking support\n- Add usage example and documentation\n- Update PublicAPI.Shipped.txt with new public interfaces\n- Complete options ecosystem: REST + Streaming + Trading\n\nTechnical improvements:\n- Eliminate code duplication by leveraging base class methods\n- Reuse existing JsonRealTime* data models instead of duplicates\n- Proper MessagePack configuration in all constructors\n- Clean API design with internal implementation details\n- Remove unnecessary 'new' keyword usage\n- Enhanced inheritance guidelines in CLAUDE.md\n\nFeatures:\n- Real-time options trades subscription\n- Real-time options quotes (bid/ask) subscription\n- Options bars subscription (minute, daily, updated)\n- WebSocket connection to wss://stream.data.alpaca.markets/v1beta1/{feed}\n- MessagePack protocol support for efficient data transfer\n- Consistent API design with existing streaming clients\n\n🤖 Generated with [Claude Code](https://claude.ai/code)\n\nCo-Authored-By: Claude <noreply@anthropic.com>",
+        "url": "https://github.com/alpacahq/alpaca-trade-api-csharp/commit/34a9bb890a223015f35435fab3271de7d28b4519"
+    },
+    {
+        "sha": "e1e68979ebdfdcbfa8de471121ea39ad3576a03d",
+        "author": "Oleg Rakhmatulin",
+        "email": "oleg.rakhmatulin@gmail.com",
+        "date": "2025-09-21T12:38:02Z",
+        "message": "Adds CLAUDE.md for SDK context and guidelines\n\nAdds a CLAUDE.md file to provide general information,\ndevelopment notes, architecture overview, and CI/CD\nconfiguration for the .NET SDK. This file serves as a\ncentral reference point for developers working with the\nAlpaca Markets API. It's excluded from builds by `.gitignore`\n\nThe solution file is updated to include this new file.",
+        "url": "https://github.com/alpacahq/alpaca-trade-api-csharp/commit/e1e68979ebdfdcbfa8de471121ea39ad3576a03d"
+    },
+    {
+        "sha": "7977ce53d35c84120891e5ef6f02c5f7e3bf4633",
+        "author": "Oleg Rakhmatulin",
+        "email": "oleg.rakhmatulin@gmail.com",
+        "date": "2025-09-15T09:46:19Z",
+        "message": "Update dependencies for .NET 9.0.305",
+        "url": "https://github.com/alpacahq/alpaca-trade-api-csharp/commit/7977ce53d35c84120891e5ef6f02c5f7e3bf4633"
+    },
+    {
+        "sha": "f46f97a6d7141773c4d830c11046524a7592868b",
+        "author": "Oleg Rakhmatulin",
+        "email": "oleg.rakhmatulin@gmail.com",
+        "date": "2025-09-08T18:28:03Z",
+        "message": "Prepare releases for both packages\n\n- Main SDK - 8.0.0-beta4\n- Extensions - 8.0.0-beta2",
+        "url": "https://github.com/alpacahq/alpaca-trade-api-csharp/commit/f46f97a6d7141773c4d830c11046524a7592868b"
+    },
+    {
+        "sha": "a4d7672d2c85d41f685554a08795f3cf3360efa1",
+        "author": "Oleg Rakhmatulin",
+        "email": "oleg.rakhmatulin@gmail.com",
+        "date": "2025-09-08T17:44:10Z",
+        "message": "The modern C# features were proposed by the R# tool.",
+        "url": "https://github.com/alpacahq/alpaca-trade-api-csharp/commit/a4d7672d2c85d41f685554a08795f3cf3360efa1"
+    },
+    {
+        "sha": "0c469f8697e487fca497bdca918a9b38c0e2947e",
+        "author": "Oleg Rakhmatulin",
+        "email": "oleg.rakhmatulin@gmail.com",
+        "date": "2025-09-08T13:35:49Z",
+        "message": "Merge pull request #798 from alpacahq/fix/json-serialzation\n\nFix JSON deserialization issues",
+        "url": "https://github.com/alpacahq/alpaca-trade-api-csharp/commit/0c469f8697e487fca497bdca918a9b38c0e2947e"
+    },
+    {
+        "sha": "22613d78050909253c0e94a83c5f73bc56723db1",
+        "author": "Oleg Rakhmatulin",
+        "email": "oleg.rakhmatulin@gmail.com",
+        "date": "2025-09-06T13:25:02Z",
+        "message": "Issue #796 - All API changes were marked as published.",
+        "url": "https://github.com/alpacahq/alpaca-trade-api-csharp/commit/22613d78050909253c0e94a83c5f73bc56723db1"
+    },
+    {
+        "sha": "64dc51bfb296d5f201565eae66eaa142a3df85cb",
+        "author": "Oleg Rakhmatulin",
+        "email": "oleg.rakhmatulin@gmail.com",
+        "date": "2025-09-06T12:21:13Z",
+        "message": "Issue #796 - Changes in the`IPortfolioHistory` interface\n\nThe `BaseValue` property in `IPortfolioHistory` was changed to be nullable.",
+        "url": "https://github.com/alpacahq/alpaca-trade-api-csharp/commit/64dc51bfb296d5f201565eae66eaa142a3df85cb"
+    },
+    {
+        "sha": "3d61190c78803d3598829ed08958eea756ac6f58",
+        "author": "Oleg Rakhmatulin",
+        "email": "oleg.rakhmatulin@gmail.com",
+        "date": "2025-09-06T12:08:11Z",
+        "message": "Issue #796 - Updated enumerations and JSON mappings\n\n- The new `Boats` and `Overnight` values were added to the `MarketDataFeed` enumeration.\n- The new `CryptoPerpetual` value was added to the `AssetClass` enumeration.\n- The new `Ascx` value was added to the `Exchange` enumeration.",
+        "url": "https://github.com/alpacahq/alpaca-trade-api-csharp/commit/3d61190c78803d3598829ed08958eea756ac6f58"
+    },
+    {
+        "sha": "6418d8aa754a6b4e26b43df003f1fbddca9ae59f",
+        "author": "Oleg Rakhmatulin",
+        "email": "oleg.rakhmatulin@gmail.com",
+        "date": "2025-09-06T11:38:13Z",
+        "message": "Issue #796 - Changes in the `IAsset` interface\n\n- The new `MarginRequirementLong` and `MarginRequirementShort` properties were added to the `IAsset` interface.\n- The old `MaintenanceMarginRequirement` property of the `IAsset` interface is marked as obsolete.",
+        "url": "https://github.com/alpacahq/alpaca-trade-api-csharp/commit/6418d8aa754a6b4e26b43df003f1fbddca9ae59f"
+    },
+    {
+        "sha": "b6bc87b29b200de153bd33999ae7fc96602ea46d",
+        "author": "Oleg Rakhmatulin",
+        "email": "oleg.rakhmatulin@gmail.com",
+        "date": "2025-09-08T13:24:44Z",
+        "message": "Merge pull request #799 from alpacahq/feature/docfx-tool\n\nUpdate DocFX tool version",
+        "url": "https://github.com/alpacahq/alpaca-trade-api-csharp/commit/b6bc87b29b200de153bd33999ae7fc96602ea46d"
+    },
+    {
+        "sha": "95f48c96885c900e1ff4bfee77166e20037619d7",
+        "author": "Oleg Rakhmatulin",
+        "email": "oleg.rakhmatulin@gmail.com",
+        "date": "2025-09-08T13:11:41Z",
+        "message": "Merge pull request #792 from sientolo/feature/options-streaming\n\nIssue #721 - Add support for the options real-time streaming",
+        "url": "https://github.com/alpacahq/alpaca-trade-api-csharp/commit/95f48c96885c900e1ff4bfee77166e20037619d7"
+    },
+    {
+        "sha": "b49d5325143378c9bebe82b91611bf71ea652669",
+        "author": "Oleg Rakhmatulin",
+        "email": "oleg.rakhmatulin@gmail.com",
+        "date": "2025-09-08T13:06:40Z",
+        "message": "Bump actions/setup-dotnet from 4 to 5 (#380) (#797)\n\nBumps [actions/setup-dotnet](https://github.com/actions/setup-dotnet) from 4 to 5.\n- [Release notes](https://github.com/actions/setup-dotnet/releases)\n- [Commits](https://github.com/actions/setup-dotnet/compare/v4...v5)\n\n---\nupdated-dependencies:\n- dependency-name: actions/setup-dotnet\n  dependency-version: '5'\n  dependency-type: direct:production\n  update-type: version-update:semver-major\n...\n\nSigned-off-by: dependabot[bot] <support@github.com>\nCo-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>",
+        "url": "https://github.com/alpacahq/alpaca-trade-api-csharp/commit/b49d5325143378c9bebe82b91611bf71ea652669"
+    },
+    {
+        "sha": "ed851454963c323de5ba7a6b88c39db5ff6419da",
+        "author": "Oleg Rakhmatulin",
+        "email": "oleg.rakhmatulin@gmail.com",
+        "date": "2025-09-06T14:30:33Z",
+        "message": " Issue #795 - The DocFX tool version was updated.\n\n- The DocFX utility was installed as a local tool (not a library).\n- The documentation build process was updated.",
+        "url": "https://github.com/alpacahq/alpaca-trade-api-csharp/commit/ed851454963c323de5ba7a6b88c39db5ff6419da"
+    },
+    {
+        "sha": "c75bce0817ce8088994e80cbdcafcc98c597e033",
+        "author": "Oleg Rakhmatulin",
+        "email": "oleg.rakhmatulin@gmail.com",
+        "date": "2025-09-06T14:06:02Z",
+        "message": "Issue #795 - The documentation project was removed.",
+        "url": "https://github.com/alpacahq/alpaca-trade-api-csharp/commit/c75bce0817ce8088994e80cbdcafcc98c597e033"
+    },
+    {
+        "sha": "43907bd814461964c1964472153ba957e5f1c395",
+        "author": "Oleg Rakhmatulin",
+        "email": "oleg.rakhmatulin@gmail.com",
+        "date": "2025-09-06T13:58:17Z",
+        "message": "Issue #795 - The old documentation folder was removed.",
+        "url": "https://github.com/alpacahq/alpaca-trade-api-csharp/commit/43907bd814461964c1964472153ba957e5f1c395"
+    },
+    {
+        "sha": "0bc6d25bb7abfec03c1ba02f869ba17e828e1b0f",
+        "author": "Oleg Rakhmatulin",
+        "email": "oleg.rakhmatulin@gmail.com",
+        "date": "2025-09-05T22:44:21Z",
+        "message": "Issue #721 - Some code styling adjusted to the current state\n\nThe PR build enabled so we can be sure about test before merge.",
+        "url": "https://github.com/alpacahq/alpaca-trade-api-csharp/commit/0bc6d25bb7abfec03c1ba02f869ba17e828e1b0f"
+    }
+]

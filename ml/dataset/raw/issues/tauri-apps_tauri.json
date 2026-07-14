@@ -1,0 +1,380 @@
+[
+    {
+        "id": 4878964074,
+        "number": 15712,
+        "title": "`[docs]` `tauri-bundler` README links Tauri CLI to nonexistent `../cli`",
+        "state": "closed",
+        "created_at": "2026-07-14T01:13:08Z",
+        "updated_at": "2026-07-14T08:17:51Z",
+        "closed_at": "2026-07-14T08:17:51Z",
+        "author": "m-novotny",
+        "comments": 0,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "### Documentation location\n\n`crates/tauri-bundler/README.md`:\n\nhttps://github.com/tauri-apps/tauri/blob/11012a13f55ab55ec5ed12ca3ac95338ae1731c3/crates/tauri-bundler/README.md#L7\n\n### Problem\n\nThe `Tauri CLI` link targets `../cli`, which does not exist, so the link returns 404. The CLI crate in this workspace is `crates/tauri-cli`.\n\n### Suggested fix\n\nChange the link target from `../cli` to `../tauri-cli`.\n\nI did not find an existing issue or PR for this README path.\n",
+        "url": "https://github.com/tauri-apps/tauri/issues/15712"
+    },
+    {
+        "id": 4869492466,
+        "number": 15708,
+        "title": "RUSTSEC-2026-0206: `rustybuzz` is unmaintained",
+        "state": "closed",
+        "created_at": "2026-07-13T00:54:04Z",
+        "updated_at": "2026-07-13T08:05:09Z",
+        "closed_at": "2026-07-13T08:05:09Z",
+        "author": "github-actions[bot]",
+        "comments": 1,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "\n> `rustybuzz` is unmaintained\n\n| Details             |                                                |\n| ------------------- | ---------------------------------------------- |\n| Status              | unmaintained                |\n| Package             | `rustybuzz`                      |\n| Version             | `0.20.1`                   |\n| URL                 | [https://github.com/harfbuzz/rustybuzz/issues/166](https://github.com/harfbuzz/rustybuzz/issues/166) |\n| Date                | 2026-07-11                         |\n\nThe current maintainer of `rustybuzz` has stated that the crate is unmaintained and will not receive further fixes or updates (see the referenced issue).\n\n## Alternative(s)\n\n- [`harfrust`](https://github.com/harfbuzz/harfrust), an actively maintained and updated alternative which is part of the Harfbuzz project.\n\nSee [advisory page](https://rustsec.org/advisories/RUSTSEC-2026-0206.html) for additional details.\n",
+        "url": "https://github.com/tauri-apps/tauri/issues/15708"
+    },
+    {
+        "id": 4869014117,
+        "number": 15707,
+        "title": "[bug] setTheme resolves but no longer repaints the standard macOS title bar on macOS 26 (raw tao 0.35.3 + wry 0.55.1 works)",
+        "state": "open",
+        "created_at": "2026-07-12T22:26:09Z",
+        "updated_at": "2026-07-13T13:00:46Z",
+        "closed_at": null,
+        "author": "acxtodd",
+        "comments": 3,
+        "labels": [
+            "type: bug",
+            "platform: macOS",
+            "status: needs triage",
+            "ai-slop"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Describe the bug\n\nOn macOS 26.5.1 (25F80), `Window.setTheme('dark'|'light')` (and `app.setTheme`) resolves successfully but the **standard title bar never repaints** in a Tauri 2.11.2 app — while the identical underlying call **works correctly in a raw tao 0.35.3 + wry 0.55.1 program on the same machine**.\n\nEvidence gathered before filing:\n- The IPC resolves (no capability error; `core:window:allow-set-theme` granted).\n- The appearance override IS applied at the AppKit level: inside the webview, `matchMedia('(prefers-color-scheme: dark)')` flips in lockstep with `setTheme` — so `NSApplication.setAppearance` took effect and reached the view hierarchy. Only the window-server-drawn standard title bar stays in the OS appearance.\n- `window.theme()` is not usable as verification: tao returns the optimistically cached `shared_state.current_theme` (set by `set_theme` itself), and the KVO handler suppresses `ThemeChanged` when the cache already matches.\n- Not the #13443 class: in 2.11.2 the window `set_theme` is dispatched through the event-loop proxy (tauri-runtime-wry `lib.rs:2528` → `:3675`) and runs on the main thread; `app.setTheme` behaves identically to `window.setTheme` here (both resolve, neither repaints the bar).\n- Single-variable bisection (all on the same machine, human-observed):\n\n| Configuration | Standard title bar follows setTheme? |\n|---|---|\n| tao 0.35.3, bare binary | ✅ flips |\n| tao + embedded Info.plist | ✅ flips |\n| tao + Info.plist + wry 0.55.1 WKWebView attached (goes through wry's `setTitlebarSeparatorStyle` path) | ✅ flips |\n| **minimal Tauri 2.11.2** (default config, static HTML, no plugins, `withGlobalTauri`) | ❌ never flips (setTheme resolves on-screen) |\n\nSo the regression surface is bracketed inside `tauri`/`tauri-runtime-wry` window/event-loop wiring, between raw tao+wry and a default Tauri app.\n\n### Reproduction\n\nMinimal Tauri app (fails — bar never flips; `src/main.rs` is just `tauri::Builder::default().run(tauri::generate_context!())`):\n\n`tauri.conf.json`:\n```json\n{\n  \"productName\": \"tauri-min\", \"version\": \"0.1.0\", \"identifier\": \"com.diag.taurimin\",\n  \"build\": { \"frontendDist\": \"./dist\" },\n  \"app\": { \"withGlobalTauri\": true, \"windows\": [ { \"title\": \"TAURI MIN\", \"width\": 700, \"height\": 400 } ] },\n  \"bundle\": { \"active\": false }\n}\n```\ncapability: `{ \"identifier\": \"default\", \"windows\": [\"main\"], \"permissions\": [\"core:default\", \"core:window:allow-set-theme\"] }`\n\n`dist/index.html`:\n```html\n<script>\n  const w = window.__TAURI__.window.getCurrentWindow();\n  let themes = ['dark','light','dark','light','dark','light','dark','light'], i = 0;\n  const tick = async () => {\n    if (i >= themes.length) return;\n    const t = themes[i++];\n    try { await w.setTheme(t); document.body.textContent = 'setTheme ' + t + ' OK (' + i + '/8)'; }\n    catch (e) { document.body.textContent = 'setTheme FAILED: ' + e; }\n    setTimeout(tick, 4000);\n  };\n  setTimeout(tick, 4000);\n</script>\n```\n\nControl program (works — bar flips every cycle; same behavior with an Info.plist embedded via `-sectcreate` and with a wry 0.55.1 webview attached via `WebViewBuilder::new().with_url(\"about:blank\").build(&window)`):\n\n```rust\nuse std::{thread, time::Duration};\nuse tao::{event::{Event, WindowEvent}, event_loop::{ControlFlow, EventLoopBuilder}, window::{Theme, WindowBuilder}};\n\nfn main() {\n  let event_loop = EventLoopBuilder::<Theme>::with_user_event().build();\n  let window = WindowBuilder::new().with_title(\"TAO THEME ISOLATION\").build(&event_loop).unwrap();\n  let proxy = event_loop.create_proxy();\n  thread::spawn(move || {\n    let mut next = Theme::Dark;\n    for _ in 0..8 {\n      thread::sleep(Duration::from_secs(4));\n      let _ = proxy.send_event(next);\n      next = if matches!(next, Theme::Dark) { Theme::Light } else { Theme::Dark };\n    }\n    thread::sleep(Duration::from_secs(4));\n    std::process::exit(0);\n  });\n  event_loop.run(move |event, _, control_flow| {\n    *control_flow = ControlFlow::Wait;\n    match event {\n      Event::UserEvent(theme) => { window.set_theme(Some(theme)); println!(\"set_theme({theme:?})\"); }\n      Event::WindowEvent { event: WindowEvent::CloseRequested, .. } => *control_flow = ControlFlow::Exit,\n      _ => (),\n    }\n  });\n}\n```\n\n### Expected behavior\n\nThe standard macOS title bar follows `setTheme`, as it does in the raw tao 0.35.3 + wry 0.55.1 control on the same OS.\n\n### Full `tauri info`\n\n- macOS 26.5.1 (25F80), Apple Silicon\n- tauri 2.11.2 / tauri-runtime-wry 2.11.2 / tao 0.35.3 / wry 0.55.1 / @tauri-apps/api 2.11.0 / CLI 2.11.2\n\n(Happy to run further bisection builds — the two repro programs above bracket the defect.)",
+        "url": "https://github.com/tauri-apps/tauri/issues/15707"
+    },
+    {
+        "id": 4866710289,
+        "number": 15706,
+        "title": "[feat] in NSIS installer on main window top left after program name show version number",
+        "state": "open",
+        "created_at": "2026-07-12T10:42:29Z",
+        "updated_at": "2026-07-12T12:19:31Z",
+        "closed_at": null,
+        "author": "bovirus",
+        "comments": 0,
+        "labels": [
+            "type: feature request",
+            "platform: Windows",
+            "scope: bundler"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Describe the problem\n\nHow can be setup the taurio script to create a NSIS instalelr that show on top left after program name the program version?\n\n\n### Describe the solution you'd like\n\nPlease describe how can setup the tauri script to get this info\n\n### Alternatives considered\n\n_No response_\n\n### Additional context\n\n_No response_",
+        "url": "https://github.com/tauri-apps/tauri/issues/15706"
+    },
+    {
+        "id": 4865072100,
+        "number": 15705,
+        "title": "[bug] App renders with unstyled content with nix devshell",
+        "state": "open",
+        "created_at": "2026-07-12T02:22:52Z",
+        "updated_at": "2026-07-12T02:42:48Z",
+        "closed_at": null,
+        "author": "dastarruer",
+        "comments": 0,
+        "labels": [
+            "type: bug",
+            "status: needs triage",
+            "platform: Nix/NixOS"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Describe the bug\n\nThis is the issue I filed: https://github.com/readest/readest/issues/5005\n\nEssentially, trying to run that app with the included devshell with `pnpm tauri dev` renders an unstyled app:\n\n<img width=\"927\" height=\"998\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/54c0271e-6845-4849-9463-0feec24f8797\" />\n\n### Reproduction\n\n1. Clone https://github.com/readest/readest\n2. Enter devshell with `nix develop ./ops`\n3. Run `pnpm tauri dev`\n\n### Expected behavior\n\nThe app should look like this:\n\n<img width=\"1872\" height=\"998\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/70f8ca25-ace7-45b6-ae85-ed9f51513bd3\" />\n\n### Full `tauri info` output\n\n```text\n[⚠] Environment\n    - OS: NixOS 26.11.0 x86_64 (X64) (Hyprland on wayland)\n    ✔ webkit2gtk-4.1: 2.52.4\n    ✔ rsvg2: 2.62.1\n    ✔ rustc: 1.98.0-nightly (f46ec5218 2026-06-30)\n    ✔ cargo: 1.98.0-nightly (a335d47ff 2026-06-26)\n    ⚠ rustup: not installed!\n      If you have rust installed some other way, we recommend uninstalling it\n      then use rustup instead. Visit https://rustup.rs/\n    ⚠ Rust toolchain: couldn't be detected!\n      Maybe you don't have rustup installed? if so, Visit https://rustup.rs/\n    - node: 24.16.0\n    - pnpm: 11.1.1\n    - npm: 11.13.0\n\n[-] Packages\n    - tauri 🦀: 2.10.3, (outdated, latest: 2.11.5)\n    - tauri-build 🦀: 2\n    - wry 🦀: 0.54.4, (outdated, latest: 0.55.1)\n    - tao 🦀: 0.34.8, (outdated, latest: 0.35.3)\n    - @tauri-apps/api  ⱼₛ: 2.10.1 (outdated, latest: 2.11.1)\n    - @tauri-apps/cli  ⱼₛ: 2.10.1 (outdated, latest: 2.11.4)\n\n[-] Plugins\n    - tauri-plugin-single-instance 🦀: 2.4.2\n    - @tauri-apps/plugin-single-instance  ⱼₛ: not installed!\n    - tauri-plugin-opener 🦀: 2.5.4\n    - @tauri-apps/plugin-opener  ⱼₛ: 2.5.4\n    - tauri-plugin-process 🦀: 2.3.1\n    - @tauri-apps/plugin-process  ⱼₛ: 2.3.1\n    - tauri-plugin-deep-link 🦀: 2.4.9\n    - @tauri-apps/plugin-deep-link  ⱼₛ: 2.4.9\n    - tauri-plugin-shell 🦀: 2.3.5\n    - @tauri-apps/plugin-shell  ⱼₛ: 2.3.5\n    - tauri-plugin-fs 🦀: 2.5.1\n    - @tauri-apps/plugin-fs  ⱼₛ: 2.5.1\n    - tauri-plugin-updater 🦀: 2.10.1\n    - @tauri-apps/plugin-updater  ⱼₛ: 2.10.1\n    - tauri-plugin-dialog 🦀: 2.7.1\n    - @tauri-apps/plugin-dialog  ⱼₛ: 2.7.1\n    - tauri-plugin-os 🦀: 2.3.2\n    - @tauri-apps/plugin-os  ⱼₛ: 2.3.2\n    - tauri-plugin-http 🦀: 2.5.9\n    - @tauri-apps/plugin-http  ⱼₛ: 2.5.9\n    - tauri-plugin-haptics 🦀: 2.3.2\n    - @tauri-apps/plugin-haptics  ⱼₛ: 2.3.2\n    - tauri-plugin-persisted-scope 🦀: 2.3.7\n    - @tauri-apps/plugin-persisted-scope  ⱼₛ: not installed!\n    - tauri-plugin-cli 🦀: 2.4.1\n    - @tauri-apps/plugin-cli  ⱼₛ: 2.4.1\n    - tauri-plugin-log 🦀: 2.8.0\n    - @tauri-apps/plugin-log  ⱼₛ: 2.8.0\n    - tauri-plugin-biometric 🦀: 2.3.2\n    - @tauri-apps/plugin-biometric  ⱼₛ: 2.3.2\n    - tauri-plugin-websocket 🦀: 2.4.2\n    - @tauri-apps/plugin-websocket  ⱼₛ: 2.4.2\n    - tauri-plugin-window-state 🦀: 2.4.1\n    - @tauri-apps/plugin-window-state  ⱼₛ: not installed!\n    - tauri-plugin-clipboard-manager 🦀: 2.3.2\n    - @tauri-apps/plugin-clipboard-manager  ⱼₛ: 2.3.2\n\n[-] App\n    - build-type: bundle\n    - CSP: default-src 'self' 'unsafe-inline' blob: data: customprotocol: asset: http://asset.localhost http://rangefile.localhost ipc: http://ipc.localhost; script-src 'self' 'unsafe-inline' 'unsafe-eval' data: blob: asset: http://asset.localhost https://*.sentry.io https://*.posthog.com  https://*.stripe.com; connect-src 'self' blob: data: asset: http://asset.localhost http://rangefile.localhost ipc: http://ipc.localhost http://*:* https://*:* https://*.sentry.io https://*.posthog.com https://*.deepl.com https://*.wikipedia.org https://*.wiktionary.org https://*.supabase.co https://*.readest.com wss://speech.platform.bing.com https://*.cloudflarestorage.com https://translate.googleapis.com https://translate.toil.cc https://*.microsofttranslator.com https://edge.microsoft.com https://*.googleusercontent.com; style-src 'self' 'unsafe-inline' blob: asset: http://asset.localhost https://cdn.jsdelivr.net https://fonts.googleapis.com https://cdnjs.cloudflare.com https://storage.readest.com; img-src 'self' blob: data: asset: http://asset.localhost https://* https://*:* http://* http://*:*; font-src 'self' blob: data: asset: http://asset.localhost tauri: https://db.onlinewebfonts.com https://cdn.jsdelivr.net https://fonts.gstatic.com https://cdnjs.cloudflare.com  https://storage.readest.com; frame-src 'self' blob: asset: http://asset.localhost https://*.stripe.com\n    - frontendDist: ../out\n    - devUrl: http://localhost:3000/\n    - framework: React (Next.js)\n    - bundler: Webpack\n```\n\n### Stack trace\n\n```text\nwarning: the following packages contain code that will be rejected by a future version of Rust: proc-macro-error2 v2.0.1\nnote: to see what the problems were, use the option `--future-incompat-report`, or run `cargo report future-incompatibilities --id 1`\n     Running `/home/dastarruer/Documents/dev/readest/target/debug/Readest`\n[native-bridge] secret service init failed: Platform failure: DBus error: The name is not activatable\n[2026-07-12][02:12:50][readestlib][INFO] Allowed directory in fs_scope: \"/home/dastarruer/Documents/dev/readest/target/debug\"\n[2026-07-12][02:12:50][readestlib][INFO] Allowed directory in asset_protocol_scope: \"/home/dastarruer/Documents/dev/readest/target/debug\"\n GET / 200 in 3.6s (next.js: 661ms, proxy.ts: 232ms, application-code: 2.8s)\nGStreamer element appsink not found. Please install it.\n GET /auth 200 in 169ms (next.js: 44ms, proxy.ts: 7ms, application-code: 118ms)\n GET /auth 200 in 48ms (next.js: 6ms, proxy.ts: 5ms, application-code: 37ms)\n```\n\n### Additional context\n\n_No response_",
+        "url": "https://github.com/tauri-apps/tauri/issues/15705"
+    },
+    {
+        "id": 4859299783,
+        "number": 15698,
+        "title": "[bug] rpm bundling hangs indefinitely on current versions (2.11.4 / tauri-bundler 2.9.4) — reproduces in GitHub Actions CI",
+        "state": "closed",
+        "created_at": "2026-07-10T23:14:29Z",
+        "updated_at": "2026-07-13T00:08:36Z",
+        "closed_at": "2026-07-13T00:08:36Z",
+        "author": "Just-Insane",
+        "comments": 7,
+        "labels": [
+            "platform: Linux",
+            "scope: bundler",
+            "ai-slop"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "Likely the same underlying issue as #11478 (closed not-planned, no root cause identified), reproducible essentially 100% of the time for us on current versions — opening fresh since that one's closed and this includes new diagnostic evidence that wasn't captured there.\n\n**Versions**: `@tauri-apps/cli` 2.11.4, `tauri-bundler` 2.9.4, reproduced in GitHub Actions CI (`ubuntu-latest`/`ubuntu-22.04`), command: `pnpm tauri build --debug --bundles deb,rpm`.\n\n**Symptom**: identical to #11478 — deb bundles fine, rpm bundling starts (\"Bundling foo-0.1.0-1.x86_64.rpm\" prints), then the process goes completely silent forever. No error, no CPU usage, no timeout from the tool itself — needs to be killed externally.\n\n### What we ruled out\n\nEach independently tested and falsified via a background-build + live `/proc` snapshot on the actual hung GitHub Actions runner:\n\n- FUSE mounting for AppImage — doesn't apply; the hang reproduces identically with `--bundles deb,rpm` (AppImage excluded entirely).\n- An untimed network download inside `tauri-bundler`'s `http_utils::download` (`ureq`) — pre-fetching the AppImage tooling into `~/.cache/tauri` so that code path never runs didn't change anything.\n- A libuv `io_uring` kernel deadlock (the stuck process had `anon_inode:[io_uring]` fds open) — `UV_USE_IO_URING=0` didn't fix it, and the actual `wchan` for every relevant thread was plain `ep_poll`, not an `io_uring`-specific wait.\n- A recent Node.js regression — pinning `actions/setup-node` to `22.22.3` (the version before the `22.23.0`/`22.23.1` June 2026 releases) didn't fix it either.\n- Runner image drift — reproduces identically on both `ubuntu-24.04` (kernel `6.17.0-1018-azure`) and `ubuntu-22.04` (kernel `6.8.0-1059-azure`).\n- A byte-for-byte reproduction of our own CI job as it existed before we made any recent caching/tooling changes (when it was apparently passing reliably) — still hangs today under otherwise-identical conditions, ruling out anything in our own workflow config.\n\n### What's consistent across every hang\n\nThe process tree never includes any subprocess beyond the Tauri CLI's own `node` process — nothing external ever gets spawned for the rpm step, consistent with RPM generation happening in-process via the `rpm` crate (`rpm::PackageBuilder`), not a shelled-out `rpmbuild`. Every thread of that node process is idle (zero CPU) — main thread parked in `epoll_pwait`, worker threads in `futex_wait` — when snapshotted mid-hang.\n\n### Narrowed further with `-vv`\n\nWe hadn't captured bundler-internal verbose output during an actual hang until this run. With `-v -v`, the very last log line before it goes silent is:\n\n```\nDebug [handlebars::render] Rendering value: Path(Relative(([Named(\"mime_type\")], \"mime_type\")))\n```\n\n— the final step of rendering the `.desktop` file template for the **rpm** target (`freedesktop::generate_desktop_file`, called from `rpm.rs`). Notably, the identical handlebars render sequence completes successfully for the **deb** target earlier in the same run (deb bundles fine every time). So the hang isn't in `handlebars` or desktop-file generation itself — it's somewhere in what runs immediately after, in `rpm.rs`, none of which appears to log anything at `-vv`:\n\n- `list_icon_files` (opens each configured PNG icon and decodes its header via `image::codecs::png::PngDecoder` to get dimensions)\n- adding files to the `rpm::PackageBuilder` (`.with_file(...)`)\n- the final `builder.build()` call (cpio archive assembly + compression — default Gzip level 6, no custom `rpm` config on our end, no `TAURI_SIGNING_RPM_KEY` set so PGP signing is not in play)\n\nGiven the process is idle (zero CPU) rather than busy-spinning when snapshotted, a raw computational hang inside PNG decoding or gzip compression seems less likely than something in that range blocking on an event that never arrives — but we don't have log coverage to point at one specific line yet.\n\nThis appears to be environment/kernel-adjacent rather than anything malformed in our config, and is a real CI blocker — currently only mitigated on our end with a retry-on-timeout wrapper, not a real fix. Happy to capture more (we now have decent tooling for getting a live `/proc`/strace snapshot of the exact hung process) — let us know what would help narrow this down further, e.g. instrumenting `rpm.rs`'s `list_icon_files`/`with_file`/`build()` calls with explicit log lines for a future release.\n",
+        "url": "https://github.com/tauri-apps/tauri/issues/15698"
+    },
+    {
+        "id": 4858588722,
+        "number": 15697,
+        "title": "[bug] `wix.fipsCompliant` only passes `-fips` to candle.exe, so MSI bundling still fails at light.exe (LGHT0001) on FIPS-enabled machines",
+        "state": "open",
+        "created_at": "2026-07-10T20:55:13Z",
+        "updated_at": "2026-07-11T04:19:50Z",
+        "closed_at": null,
+        "author": "zts3y",
+        "comments": 1,
+        "labels": [
+            "type: bug",
+            "status: needs more info",
+            "platform: Windows",
+            "scope: bundler",
+            "status: needs triage"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Describe the bug\n\nOn a Windows machine with the FIPS security policy enabled (common on\ncorporate images: `HKLM\\SYSTEM\\CurrentControlSet\\Control\\Lsa\\FipsAlgorithmPolicy\\Enabled = 1`),\nMSI bundling cannot succeed even with the dedicated config option enabled:\n\n1. Without `bundle.windows.wix.fipsCompliant`, candle fails as expected:\n   `error CNDL0308: FIPS appears to be enabled on the machine.`\n2. Setting `\"bundle\": { \"windows\": { \"wix\": { \"fipsCompliant\": true } } }`\n   fixes candle — but the build then dies one stage later:\n   `light.exe : error LGHT0001 : Catastrophic failure`\n   (`failed to bundle project: error running light.exe`).\n\nCause: the bundler adds `-fips` to the **candle** argument list only. In\n`crates/tauri-bundler/src/bundle/windows/msi/mod.rs`, `run_candle()` has:\n\n```rust\nif settings\n  .windows()\n  .wix\n  .as_ref()\n  .map(|w| w.fips_compliant)\n  .unwrap_or_default()\n{\n  args.push(\"-fips\".into());\n}\n```\n\nbut `run_light()` never receives the flag. light.exe hashes files too\n(smart cabbing uses MD5 by default) and accepts the same `-fips` switch,\nso on a FIPS machine it hits the non-FIPS-validated algorithm and dies\nwith the generic LGHT0001. Since there is also no passthrough for custom\nlight.exe arguments, there is currently **no way to build an MSI with\nTauri on a FIPS-enabled machine** (NSIS works fine, which is the\nworkaround we're using).\n\nThis is still the case on current `dev` (checked\n`crates/tauri-bundler/src/bundle/windows/msi/mod.rs` on `dev` as of\n2026-07-10).\n\n### Reproduction\n\n### Reproduction\n\nOn any Windows machine with the FIPS policy enabled\n(`HKLM\\...\\FipsAlgorithmPolicy\\Enabled = 1`):\n\n1. `npm create tauri-app@latest` (defaults are fine)\n2. Add to `src-tauri/tauri.conf.json`:\n   `\"bundle\": { \"windows\": { \"wix\": { \"fipsCompliant\": true } }, \"targets\": [\"msi\"] }`\n3. `npm run tauri build`\n\ncandle passes, then: `light.exe : error LGHT0001 : Catastrophic failure`.\n\n### Expected behavior\n\n`fipsCompliant: true` (or the `TAURI_BUNDLER_WIX_FIPS_COMPLIANT` env var)\nshould make the whole WiX pipeline FIPS-safe — i.e. pass `-fips` to\nlight.exe with the same conditional that `run_candle()` already uses.\nLooks like a one-line fix in `run_light()`.\n\n### Full `tauri info` output\n\n```text\n[✔] Environment\n    - OS: Windows 10.0.26100 x86_64 (X64)\n    ✔ WebView2: 150.0.4078.48\n    ✔ MSVC: Visual Studio Build Tools 2026\n    ✔ rustc: 1.97.0 (2d8144b78 2026-07-07)\n    ✔ cargo: 1.97.0 (c980f4866 2026-06-30)\n    ✔ rustup: 1.29.0 (28d1352db 2026-03-05)\n    ✔ Rust toolchain: stable-x86_64-pc-windows-msvc (default)\n    - node: 24.18.0\n    - npm: 11.16.0\n\n[-] Packages\n    - tauri [RUST]: 2.11.5\n    - tauri-build [RUST]: 2.6.3\n    - wry [RUST]: 0.55.1\n    - tao [RUST]: 0.35.3\n    - @tauri-apps/api [NPM]: 2.11.1\n    - @tauri-apps/cli [NPM]: 2.11.4\n\n[-] Plugins\n    - tauri-plugin-fs [RUST]: 2.5.1\n    - @tauri-apps/plugin-fs [NPM]: 2.5.1\n    - tauri-plugin-log [RUST]: 2.8.0\n    - @tauri-apps/plugin-log [NPM]: not installed!\n    - tauri-plugin-dialog [RUST]: 2.7.1\n    - @tauri-apps/plugin-dialog [NPM]: 2.7.1\n\n[-] App\n    - build-type: bundle\n    - CSP: default-src 'self'; frame-src 'self' https:; connect-src 'self' ipc: http://ipc.localhost http://127.0.0.1:*; media-src 'self' asset: http://asset.localhost blob:; img-src 'self' asset: http://asset.localhost data: blob: https://img.youtube.com https://i.ytimg.com; style-src 'self' 'unsafe-inline'; script-src 'self'; font-src 'self' data:; worker-src 'self' blob:\n    - frontendDist: ../dist\n    - devUrl: http://127.0.0.1:5173/\n    - framework: React\n    - bundler: Vite\n```\n\n### Stack trace\n\n```text\n\n```\n\n### Additional context\n\n### Additional context\n\n- Reproduced with `@tauri-apps/cli` 2.11.4 and WiX 3.14 as auto-downloaded\n  by Tauri to `%LOCALAPPDATA%\\tauri\\WixTools314`.\n- WiX v3's candle/light both document the `-fips` switch; prior art on the\n  switch pairing: https://wix-users.narkive.com/OcXVS3sb/bundle-creation-error-using-fips\n- Related but distinct: #14681 / #12148 (the latter is why the LGHT/CNDL\n  error text is easy to miss — the wrapped error is just\n  \"failed to bundle project\").",
+        "url": "https://github.com/tauri-apps/tauri/issues/15697"
+    },
+    {
+        "id": 4846507509,
+        "number": 15687,
+        "title": "[bug] Verbose logging output during code signing (using default `tauri build`)",
+        "state": "open",
+        "created_at": "2026-07-09T13:11:04Z",
+        "updated_at": "2026-07-10T03:50:03Z",
+        "closed_at": null,
+        "author": "WillemJann",
+        "comments": 1,
+        "labels": [
+            "type: bug",
+            "status: needs triage"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Describe the bug\n\nWhen we execute `tauri build`, we receive a very large number of log messages related to code signing during the bundling process. As a result, the output becomes almost unreadable (> 3000 lines). We noticed that detailed information about code signing appears in the normal output. This issue is easily remedied by changing the level of log messages regarding code signing so that they only appear with a `tauri build -v`. The many log messages contain useful information, but are only relevant with a log-level verbose.\n\n### Reproduction\n\nCreate a .NET API project and publish it as a self-contained application. This generates >300 files (.DLL and .EXE), most of which are already signed, while a few are not. Place these files in a `bin` folder in the `src-tauri` directory and configure the following in the `tauri.conf.json`:\n\n```\n\"bundle\": {\n    \"resources\": {\n        \"bin/*\": \"\"\n    }\n}\n```\n\nNext, enable code signing (in our example we use Azure Artifact Signing, but this applies to any code signing method). Then run `tauri build` and inspect the terminal output. You will see a lot of debug/informational messages.\n\n### Expected behavior\n\nFor already signed files, the following output should not be visible and only appear in verbose mode:\n\n```\nFile: C:\\Users\\Willem-Jan\\tauri-app\\src-tauri\\bin\\clretwrc.dll\nIndex  Algorithm  Timestamp    \n========================================\n0      sha256     RFC3161      \n\nSuccessfully verified: C:\\Users\\Willem-Jan\\tauri-app\\src-tauri\\bin\\clretwrc.dll\nFile: C:\\Users\\Willem-Jan\\tauri-app\\src-tauri\\bin\\clrgc.dll\nIndex  Algorithm  Timestamp    \n========================================\n0      sha256     RFC3161      \n\nSuccessfully verified: C:\\Users\\Willem-Jan\\tauri-app\\src-tauri\\bin\\clrgc.dll\nFile: C:\\Users\\Willem-Jan\\tauri-app\\src-tauri\\bin\\clrgcexp.dll\nIndex  Algorithm  Timestamp    \n========================================\n0      sha256     RFC3161      \n\nSuccessfully verified: C:\\Users\\Willem-Jan\\tauri-app\\src-tauri\\bin\\clrgcexp.dll\nFile: C:\\Users\\Willem-Jan\\tauri-app\\src-tauri\\bin\\clrjit.dll\nIndex  Algorithm  Timestamp    \n========================================\n0      sha256     RFC3161      \n\nSuccessfully verified: C:\\Users\\Willem-Jan\\tauri-app\\src-tauri\\bin\\clrjit.dll\nFile: C:\\Users\\Willem-Jan\\tauri-app\\src-tauri\\bin\\coreclr.dll\nIndex  Algorithm  Timestamp    \n========================================\n0      sha256     RFC3161      \n\nSuccessfully verified: C:\\Users\\Willem-Jan\\tauri-app\\src-tauri\\bin\\coreclr.dll\nFile: C:\\Users\\Willem-Jan\\tauri-app\\src-tauri\\bin\\createdump.exe\nIndex  Algorithm  Timestamp    \n========================================\n0      sha256     RFC3161      \n\nSuccessfully verified: C:\\Users\\Willem-Jan\\tauri-app\\src-tauri\\bin\\createdump.exe\nFile: C:\\Users\\Willem-Jan\\tauri-app\\src-tauri\\bin\\hostfxr.dll\nIndex  Algorithm  Timestamp    \n========================================\n0      sha256     RFC3161      \n\nSuccessfully verified: C:\\Users\\Willem-Jan\\tauri-app\\src-tauri\\bin\\hostfxr.dll\nFile: C:\\Users\\Willem-Jan\\tauri-app\\src-tauri\\bin\\hostpolicy.dll\nIndex  Algorithm  Timestamp    \n========================================\n0      sha256     RFC3161      \n\nSuccessfully verified: C:\\Users\\Willem-Jan\\tauri-app\\src-tauri\\bin\\hostpolicy.dll\nFile: C:\\Users\\Willem-Jan\\tauri-app\\src-tauri\\bin\\mscordaccore.dll\nIndex  Algorithm  Timestamp    \n========================================\n0      sha256     RFC3161      \n\nSuccessfully verified: C:\\Users\\Willem-Jan\\tauri-app\\src-tauri\\bin\\mscordaccore.dll\nFile: C:\\Users\\Willem-Jan\\tauri-app\\src-tauri\\bin\\mscordaccore_amd64_amd64_10.0.926.27113.dll\nIndex  Algorithm  Timestamp    \n========================================\n0      sha256     RFC3161      \n\nSuccessfully verified: C:\\Users\\Willem-Jan\\tauri-app\\src-tauri\\bin\\mscordaccore_amd64_amd64_10.0.926.27113.dll\nFile: C:\\Users\\Willem-Jan\\tauri-app\\src-tauri\\bin\\mscordbi.dll\nIndex  Algorithm  Timestamp    \n========================================\n0      sha256     RFC3161      \n\nSuccessfully verified: C:\\Users\\Willem-Jan\\tauri-app\\src-tauri\\bin\\mscordbi.dll\nFile: C:\\Users\\Willem-Jan\\tauri-app\\src-tauri\\bin\\mscorlib.dll\nIndex  Algorithm  Timestamp    \n========================================\n0      sha256     RFC3161      \n\nSuccessfully verified: C:\\Users\\Willem-Jan\\tauri-app\\src-tauri\\bin\\mscorlib.dll\nFile: C:\\Users\\Willem-Jan\\tauri-app\\src-tauri\\bin\\mscorrc.dll\nIndex  Algorithm  Timestamp    \n========================================\n0      sha256     RFC3161      \n\nSuccessfully verified: C:\\Users\\Willem-Jan\\tauri-app\\src-tauri\\bin\\mscorrc.dll\nFile: C:\\Users\\Willem-Jan\\tauri-app\\src-tauri\\bin\\msquic.dll\nIndex  Algorithm  Timestamp    \n========================================\n0      sha256     RFC3161      \n\nSuccessfully verified: C:\\Users\\Willem-Jan\\tauri-app\\src-tauri\\bin\\msquic.dll\nFile: C:\\Users\\Willem-Jan\\tauri-app\\src-tauri\\bin\\netstandard.dll\nIndex  Algorithm  Timestamp    \n========================================\n0      sha256     RFC3161      \n\nSuccessfully verified: C:\\Users\\Willem-Jan\\tauri-app\\src-tauri\\bin\\netstandard.dll\n```\n\nFor unsigned files, the following output:\n\n```\nFile: C:\\Users\\Willem-Jan\\tauri-app\\src-tauri\\bin\\Contoso.API.dll\nIndex  Algorithm  Timestamp    \n========================================\nSignTool Error: No signature found.\n\nNumber of errors: 1\n     Signing C:\\Users\\Willem-Jan\\tauri-app\\src-tauri\\bin\\Contoso.API.dll\n     Signing C:\\Users\\Willem-Jan\\tauri-app\\src-tauri\\bin\\Contoso.API.dll with a custom signing command\n     Signing Output of signing command:\n[\n  {\n    \"cloudName\": \"AzureCloud\",\n    \"homeTenantId\": \"<...>\",\n    \"id\": \"<...>\",\n    \"isDefault\": true,\n    \"managedByTenants\": [],\n    \"name\": \"Azure subscription 1\",\n    \"state\": \"Enabled\",\n    \"tenantId\": \"<...>\",\n    \"user\": {\n      \"name\": \"<...>\",\n      \"type\": \"servicePrincipal\"\n    }\n  }\n]\n\nArtifact Signing\n\nVersion: 1.0.128\n\n\"Metadata\": {\n  \"Endpoint\": \"https://neu.codesigning.azure.net/\",\n  \"CodeSigningAccountName\": \"<...>\",\n  \"CertificateProfileName\": \"<...>\",\n  \"ExcludeCredentials\": []\n}\n\nSubmitting digest for signing...\n\nOperationId d2718ad2-7586-4acc-9766-0fcf0c4c5fa7: InProgress\n\nSigning completed with status 'Succeeded' in 3.5060853s\n\nSuccessfully signed: C:\\Users\\Willem-Jan\\tauri-app\\src-tauri\\bin\\Contoso.API.dll\n\nNumber of files successfully Signed: 1\nNumber of warnings: 0\nNumber of errors: 0\n```\n\nShould be summarized to:\n\n```\n     Signing C:\\Users\\Willem-Jan\\tauri-app\\src-tauri\\bin\\Contoso.API.dll\n     Signing C:\\Users\\Willem-Jan\\tauri-app\\src-tauri\\bin\\Contoso.API.dll with a custom signing command\n```\n\nIn our real situation, this is the current output compared to the expected output:\n\n[Current output.txt](https://github.com/user-attachments/files/29849337/Current.output.txt) (3180 lines)\n[Expected output.txt](https://github.com/user-attachments/files/29849339/Expected.output.txt) (87 lines)\n\nHaving a more compressed output, this will help us a lot in understanding the result of the `tauri build` action.\n\n### Full `tauri info` output\n\n```text\n[✔] Environment\n    - OS: Windows 10.0.26200 x86_64 (X64)\n    ✔ WebView2: 150.0.4078.48\n    ✔ MSVC: Visual Studio Enterprise 2026\n    ✔ rustc: 1.95.0 (59807616e 2026-04-14)\n    ✔ cargo: 1.95.0 (f2d3ce0bd 2026-03-21)\n    ✔ rustup: 1.29.0 (28d1352db 2026-03-05)\n    ✔ Rust toolchain: stable-x86_64-pc-windows-msvc (default)\n    - node: 24.18.0\n    - yarn: 4.14.1\n    - npm: 11.12.1\n\n[-] Packages\n    - tauri 🦀: 2.11.3, (outdated, latest: 2.11.5)\n    - tauri-build 🦀: 2.6.3\n    - wry 🦀: 0.55.0, (outdated, latest: 0.55.1)\n    - tao 🦀: 0.35.0, (outdated, latest: 0.35.3)\n\n[-] Plugins\n    - tauri-plugin-dialog 🦀: 2.7.1\n    - tauri-plugin-opener 🦀: 2.5.4\n    - tauri-plugin-fs 🦀: 2.5.1\n    - tauri-plugin-single-instance 🦀: 2.4.2\n    - tauri-plugin-deep-link 🦀: 2.4.9\n    - tauri-plugin-shell 🦀: 2.3.5\n\n[-] App\n    - build-type: build\n    - CSP: connect-src ipc: http://ipc.localhost http://tauri.localhost http://localhost:*; default-src 'self'; img-src 'self' blob: data:; style-src 'self' 'unsafe-inline'\n    - frontendDist: ../dist\n    - devUrl: http://localhost:1420/\n```\n\n### Stack trace\n\n```text\n\n```\n\n### Additional context\n\n_No response_",
+        "url": "https://github.com/tauri-apps/tauri/issues/15687"
+    },
+    {
+        "id": 4845942258,
+        "number": 15686,
+        "title": "[bug] menu plugin can panic",
+        "state": "open",
+        "created_at": "2026-07-09T11:48:11Z",
+        "updated_at": "2026-07-09T14:10:10Z",
+        "closed_at": null,
+        "author": "Legend-Master",
+        "comments": 1,
+        "labels": [
+            "type: bug",
+            "priority: 2 medium"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Describe the bug\n\nMany menu plugin APIs can panic due to the use of `do_menu_item!` which panics on unexpected `ItemKind`\n\n### Reproduction\n\nThis is possible to do in JavaScript even the TypeScript types are not correct\n\n```js\nawait Menu.new({\n  items: [await Menu.new()]\n})\n```\n\n### Expected behavior\n\ncan't panic\n\n### Full `tauri info` output\n\n```text\nCurrent head 925faaafd1143ecaa95d2e722db290f3954f81f6\n```\n\n### Stack trace\n\n```text\n\n```\n\n### Additional context\n\n_No response_",
+        "url": "https://github.com/tauri-apps/tauri/issues/15686"
+    },
+    {
+        "id": 4845779161,
+        "number": 15685,
+        "title": "[bug] Cursor contrast calculation uses empty frame buffer",
+        "state": "open",
+        "created_at": "2026-07-09T11:22:07Z",
+        "updated_at": "2026-07-10T06:44:30Z",
+        "closed_at": null,
+        "author": "SimenZhor",
+        "comments": 2,
+        "labels": [
+            "type: bug",
+            "status: upstream",
+            "platform: Windows"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Describe the bug\n\nLet me start off by saying I'm fairly certain this is not a bug in Tauri or wry, but since that's how I discovered it I'm reporting it anyway as I'm not sure if there's something that can be done to mitigate the problem (and also to publish my workaround for others who may have the same issue).\n\nIn quite specific conditions I'm having trouble with the cursor \"disappearing\" over a white background. After a lot of debugging I believe this happens because the automatic contrast calculation XORs the cursor with an all black frame buffer - which makes the cursor white.\n\nThe following conditions need to be met ([example project](https://github.com/SimenZhor/cursor-bug-demo)):\n- (AMD) hardware accelerated cursor contrast calculation (for me this means that I can't have external monitors connected to my laptop, as that triggers a software implementation where this bug is not present)\n- A `crosshair` or `grab`/`grabbing` cursor needs to be used (maybe some others too, but `pointer` does not have this issue)\n- Frequent `requestAnimationFrame` calls somewhere in the window.\n- The background below the cursor needs to be white or something else with low contrast against an unintentionally white cursor.\n- I've only seen the bug on Windows.\n\nFor me, the criterion above occurred naturally (and reliably) in a fairly light-colored app where I had a React Three Fiber canvas as a small preview in my layout (I've since noticed that r3f canvas defaults to continuously redraw at 60 Hz, and that this can be prevented with [on demand rendering](https://r3f.docs.pmnd.rs/advanced/scaling-performance#on-demand-rendering), but that was not enough to fix the issue in my case).\n\nI've not been able to capture screenshots or recordings of the issue, as the tools I've tried to use for capturing it seem to force a software-cursor instead of the hardware-cursor where the problem appears (in fact it's even worse: I can see the bug occurring as I record, but the resulting recording shows the correct, high-contrast, cursor 🙄).\n\n**Workarounds**\n\nI've found two workarounds for the problem, which makes me quite certain that this is a hardware related issue (note: these do not need to be active at the same time):\n- Setting the following registry key to disable multi-plane overlay (MPO) `HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows\\Dwm\\OverlayTestMode=5`. This is obviously just diagnostic evidence, not a real fix.\n- Adding the following option to `tauri.conf.json`: \n```json\n\"app\": {\n  \"windows\": [\n    {\n      \"additionalBrowserArgs\": \"--disable-direct-composition\"\n    }\n  ],\n},\n```\n\nThe latter is a fix that can be distributed, so I guess I'm fine with it for my personal needs, but since it feels like I'm just hiding an issue that is still present I decided to file this bug report.\n\n### Reproduction\n\nI've set up a minimal example where the bug can be triggered by rapidly moving the cursor above the white square in the canvas. \n\nNote that the bug is hardware dependent, so it will probably not trigger consistently for everyone running the demo.\nhttps://github.com/SimenZhor/cursor-bug-demo\n\n### Expected behavior\n\nThe cursor is black when hovering over a white background.\n\n### Full `tauri info` output\n\n```text\n$ tauri info\n\n[✔] Environment\n    - OS: Windows 10.0.26200 x86_64 (X64)\n    ✔ WebView2: 150.0.4078.48\n    ✔ MSVC: \n        - Visual Studio Build Tools 2019\n        - Visual Studio Build Tools 2022\n    ✔ rustc: 1.91.0 (f8297e351 2025-10-28)\n    ✔ cargo: 1.91.0 (ea2d97820 2025-10-10)\n    ✔ rustup: 1.28.2 (e4f3ad6f8 2025-04-28)\n    ✔ Rust toolchain: stable-x86_64-pc-windows-msvc (default)\n    - node: 22.13.1\n    - pnpm: 10.3.0\n    - yarn: 1.22.22\n    - npm: 10.9.2\n    - bun: 1.3.7\n\n[-] Packages\n    - tauri 🦀: 2.11.5\n    - tauri-build 🦀: 2.6.3\n    - wry 🦀: 0.55.1\n    - tao 🦀: 0.35.3\n    - @tauri-apps/api  ⱼₛ: 2.11.1\n    - @tauri-apps/cli  ⱼₛ: 2.11.4\n\n[-] Plugins\n    - tauri-plugin-opener 🦀: 2.5.4\n    - @tauri-apps/plugin-opener  ⱼₛ: 2.5.4\n\n[-] App\n    - build-type: bundle\n    - CSP: unset\n    - frontendDist: ../dist\n    - devUrl: http://localhost:1420/\n    - bundler: Vite\n```\n\n### Stack trace\n\n```text\n\n```\n\n### Additional context\n\n| Hardware | Description |\n|------------|--------------|\n|Processor | AMD Ryzen 9 PRO 7940HS w/ **Radeon 780M Graphics**  (4.00 GHz)\n|Installed RAM | 32.0 GB (31.3 GB usable)|",
+        "url": "https://github.com/tauri-apps/tauri/issues/15685"
+    },
+    {
+        "id": 4842985268,
+        "number": 15682,
+        "title": "[feat] The child webview will always be displayed above the main webview, causing the dom element of the main webview to be obscured.",
+        "state": "open",
+        "created_at": "2026-07-09T03:49:12Z",
+        "updated_at": "2026-07-09T09:28:53Z",
+        "closed_at": null,
+        "author": "HQ1363",
+        "comments": 0,
+        "labels": [
+            "type: feature request",
+            "scope: unstable flag"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Describe the problem\n\nThe child webview will always be displayed above the main webview, causing the dom element of the main webview to be obscured.\n\n### Describe the solution you'd like\n\nThe child webview will always be displayed above the main webview, causing the dom element of the main webview to be obscured.\n\n<img width=\"1451\" height=\"801\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/1590fd78-d13e-485e-baa1-ac0b9779f392\" />\n\n### Alternatives considered\n\n<img width=\"1451\" height=\"801\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/400a8154-19dc-4a23-8f83-409cc7550f9c\" />\n\n### Additional context\n\n_No response_",
+        "url": "https://github.com/tauri-apps/tauri/issues/15682"
+    },
+    {
+        "id": 4833359495,
+        "number": 15672,
+        "title": "RUSTSEC-2026-0205: `Array::insert` violates exception safety if compare function panics, leading to potential Double-Free",
+        "state": "closed",
+        "created_at": "2026-07-08T00:50:44Z",
+        "updated_at": "2026-07-08T11:03:35Z",
+        "closed_at": "2026-07-08T11:03:35Z",
+        "author": "github-actions[bot]",
+        "comments": 0,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "\n> `Array::insert` violates exception safety if compare function panics, leading to potential Double-Free\n\n| Details             |                                                |\n| ------------------- | ---------------------------------------------- |\n| Status              | unsound                |\n| Package             | `scc`                      |\n| Version             | `2.4.0`                   |\n| URL                 | [https://codeberg.org/wvwwvwwv/scalable-concurrent-containers/issues/232](https://codeberg.org/wvwwvwwv/scalable-concurrent-containers/issues/232) |\n| Date                | 2026-07-06                         |\n\nIn affected versions of this crate, `Array::insert` is not exception safe. In the `UPSERT` path, `key` and `value`&#39;s snapshot is written to `self.data_block`, and after the insertion is completed, `key` and `value` are `mem::forget` in order to prevent double free. However, during the insertion, `K::compare` is invoked, which is a user-provided method. If user deliberately call panic in this function, during unwinding, the destructors of `key`, `value`, and `self` will all be called (since the `mem::forget` has not been called yet), leading to Double Free. Similar issues happens in the `!UPSERT` path.\n\nThe soundness issue was fixed in version `3.8.4` by using `ManuallyDrop` instead of `mem::forget`, and separating fallible code from infallible code during a node split - insert = insert_try -&gt; insert_unchecked.\n\nSee [advisory page](https://rustsec.org/advisories/RUSTSEC-2026-0205.html) for additional details.\n",
+        "url": "https://github.com/tauri-apps/tauri/issues/15672"
+    },
+    {
+        "id": 4831424733,
+        "number": 15671,
+        "title": "[bug] Android: blank webview when relaunching the app after task removal while a foreground service keeps the process alive",
+        "state": "open",
+        "created_at": "2026-07-07T19:03:20Z",
+        "updated_at": "2026-07-07T19:49:57Z",
+        "closed_at": null,
+        "author": "Turbo87",
+        "comments": 1,
+        "labels": [
+            "type: bug",
+            "status: needs triage",
+            "platform: Android"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Describe the bug\n\nWhen a foreground service keeps the app process alive and the user swipes the app away from recents and then relaunches it from the launcher, the relaunched activity stays a plain white screen. No webview is created, JS never executes (zero console output). A second relaunch does not recover, only killing the process does. The Rust side keeps running fine the whole time.\n\nReproduced with current versions (tauri 2.11.5, tao 0.35.3, wry 0.55.1) on Android 14 and 15 emulator images. Minimal standalone reproduction below.\n\nPossibly related: #11609 reported this scenario (foreground service keeps the process alive, app unusable on next launch). The activity memory leak from that issue was fixed and the issue was closed after the original reproduction disappeared, but the relaunch case itself is still broken. The `__TAURI_INVOKE_KEY__` errors quoted there came from wry's process-wide statics in pre-leak-fix versions. On current versions no webview is created at all, so there is nothing left to log. The surface symptom changed along the way, but the scenario is the same: a process that outlives its activity does not get a working webview back.\n\n#### Root cause\n\nThree layers are involved when a foreground service keeps the process alive and the user swipes the app away from recents, then relaunches it:\n\n1. Without countermeasures the process does not even survive: destroying the last activity closes the webview window and Tauri's default exit-on-last-window-close makes tao's Android `EventLoop::run` call `std::process::exit(0)`, killing the FGS with it. An app can prevent that with `RunEvent::ExitRequested` + `api.prevent_exit()` (used in the reproduction below).\n2. tao maps one Android Activity to one tao `Window` (`WindowId == ActivityId`), and `Window::new` binds to the \"next available activity\" via `ndk_glue::next_available_activity()`. wry can even re-create a webview when an activity with a known id comes back (`android_setup` replays stored `WEBVIEW_ATTRIBUTES`), but the id in the generated `WryActivity.onCreate` is `savedInstanceState ?: intent extras ?: hashCode()`. A launcher relaunch after task removal has neither saved state nor the extra, so the new activity gets a fresh `hashCode()`, nothing matches, and no webview is ever created for it. The relaunched activity stays blank and unclaimed.\n3. The app cannot react on its own either: in `tauri-runtime-wry` the mobile `e @ Event::Resumed | e @ Event::Suspended` arm dispatches only per-window events. With zero windows the loop body never runs, so the resume is silently dropped. App-level `RunEvent::Resumed` only fires from `NewEvents(StartCause::Poll)`, which never happens here.\n\n\n### Reproduction\n\n\n```sh\nnpm create tauri-app@latest tauri-11609-repro -- --template vanilla-ts \\\n  --manager npm --identifier com.example.repro --yes\ncd tauri-11609-repro && npm install\n```\n\nKeep the process alive across activity destruction, like any app with a foreground service needs to. In `src-tauri/src/lib.rs`, replace the `.run(...)` call of the template with:\n\n```rust\n        .build(tauri::generate_context!())\n        .expect(\"error while building tauri application\")\n        .run(|_app, event| {\n            if let tauri::RunEvent::ExitRequested { api, .. } = &event {\n                api.prevent_exit();\n            }\n        });\n```\n\nThen `npm run tauri android init` and add a minimal foreground service to the generated project (this stands in for any real FGS, e.g. location tracking):\n\n<details>\n<summary><code>src-tauri/gen/android/app/src/main/java/com/example/repro/KeepAliveService.kt</code> (new file)</summary>\n\n```kotlin\npackage com.example.repro\n\nimport android.app.Notification\nimport android.app.NotificationChannel\nimport android.app.NotificationManager\nimport android.app.Service\nimport android.content.Intent\nimport android.os.IBinder\n\nclass KeepAliveService : Service() {\n  override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {\n    val nm = getSystemService(NotificationManager::class.java)\n    nm.createNotificationChannel(\n      NotificationChannel(\"keepalive\", \"Keep alive\", NotificationManager.IMPORTANCE_LOW)\n    )\n    val notification = Notification.Builder(this, \"keepalive\")\n      .setContentTitle(\"running\")\n      .setSmallIcon(android.R.drawable.ic_menu_info_details)\n      .build()\n    startForeground(1, notification)\n    return START_STICKY\n  }\n\n  override fun onBind(intent: Intent?): IBinder? = null\n}\n```\n\n</details>\n\n<details>\n<summary><code>MainActivity.kt</code> (start the service) and <code>AndroidManifest.xml</code> (permissions + service)</summary>\n\n```kotlin\npackage com.example.repro\n\nimport android.content.Intent\nimport android.os.Bundle\n\nclass MainActivity : TauriActivity() {\n  override fun onCreate(savedInstanceState: Bundle?) {\n    super.onCreate(savedInstanceState)\n    startForegroundService(Intent(this, KeepAliveService::class.java))\n  }\n}\n```\n\n```xml\n<!-- next to the INTERNET permission: -->\n<uses-permission android:name=\"android.permission.FOREGROUND_SERVICE\" />\n<uses-permission android:name=\"android.permission.FOREGROUND_SERVICE_DATA_SYNC\" />\n\n<!-- inside <application>: -->\n<service\n    android:name=\".KeepAliveService\"\n    android:exported=\"false\"\n    android:foregroundServiceType=\"dataSync\" />\n```\n\n</details>\n\nRun it and reproduce:\n\n```sh\nnpm run tauri android build -- --debug --apk\nadb install -r src-tauri/gen/android/app/build/outputs/apk/universal/debug/app-universal-debug.apk\nadb shell am start -n com.example.repro/.MainActivity   # renders the template UI\n# swipe the app away from recents (activity destroyed, FGS keeps the process):\nadb shell input keyevent KEYCODE_APP_SWITCH && sleep 2 && adb shell input swipe 540 1080 540 150 250\nadb shell pidof com.example.repro                        # still alive\nadb shell am start -n com.example.repro/.MainActivity   # relaunch\n```\n\n(The swipe coordinates fit the 1080x2400 pixel_7 emulator image, on other devices dismiss the recents card manually.)\n\nResult: blank white screen, no webview content, no JS execution. A second relaunch does not recover, only killing the process does. The Rust side keeps running fine the whole time.\n\n\n### Expected behavior\n\nRelaunching the app while the FGS-pinned process is still alive shows a working webview again, like a fresh cold start does.\n\n\n### Full `tauri info` output\n\n```text\n[✔] Environment\n    - OS: Mac OS 15.7.4 arm64 (X64)\n    ✔ Xcode Command Line Tools: installed\n    ✔ Xcode: 26.3\n    ✔ rustc: 1.96.0 (ac68faa20 2026-05-25)\n    ✔ cargo: 1.96.0 (30a34c682 2026-05-25)\n    ✔ rustup: 1.29.0 (28d1352db 2026-03-05)\n    ✔ Rust toolchain: stable-aarch64-apple-darwin (default)\n    - node: 24.11.1\n    - pnpm: 11.2.2\n    - yarn: 1.22.22\n    - npm: 11.6.2\n    - bun: 1.2.17\n\n[-] Packages\n    - tauri 🦀: 2.11.5\n    - tauri-build 🦀: 2.6.3\n    - wry 🦀: 0.55.1\n    - tao 🦀: 0.35.3\n    - tauri-cli 🦀: 2.11.4\n    - @tauri-apps/api  ⱼₛ: 2.11.1\n    - @tauri-apps/cli  ⱼₛ: 2.11.4\n\n[-] Plugins\n    - tauri-plugin-opener 🦀: 2.5.4\n    - @tauri-apps/plugin-opener  ⱼₛ: 2.5.4\n\n[-] App\n    - build-type: bundle\n    - CSP: unset\n    - frontendDist: ../dist\n    - devUrl: http://localhost:1420/\n    - bundler: Vite\n```\n\n### Stack trace\n\n```text\nNothing is logged when the blank activity comes up. That is part of the problem, the resume is silently dropped (see root cause above).\n```\n\n### Additional context\n\n#### Fix, validated end-to-end\n\nTwo parts. First, surface the resume to the app in `tauri-runtime-wry` (in the mobile `Resumed`/`Suspended` arm):\n\n```rust\nif matches!(e, Event::Resumed) {\n  callback(RunEvent::Resumed);\n}\n```\n\n(To try this against the published release, copy `tauri-runtime-wry` 2.11.4 out of the cargo registry, add the three lines at the top of the arm, and point a `[patch.crates-io]` entry at the copy. The `dev` branch has the identical code in this arm.)\n\nSecond, re-create the window when resumed with no webviews. The repro's `run` closure from above becomes:\n\n```rust\n        .run(|app, event| match event {\n            tauri::RunEvent::ExitRequested { api, .. } => {\n                api.prevent_exit();\n            }\n            tauri::RunEvent::Resumed => {\n                use tauri::Manager;\n                if app.webview_windows().is_empty() {\n                    tauri::WebviewWindowBuilder::new(app, \"main\", tauri::WebviewUrl::default())\n                        .build()\n                        .expect(\"failed to recreate webview window\");\n                }\n            }\n            _ => {}\n        });\n```\n\nThe builder claims the relaunched activity through the existing `next_available_activity()` machinery. With these two changes the exact repro above relaunches into a fully working UI: the page renders, `invoke` round-trips work (verified with the template's `greet` command), and in a larger app I verified a foreground-service `Channel` stream staying gap-free across three swipe-away/relaunch cycles in a single process.\n\n#### Proposal\n\nPart two shouldn't be every app's problem. Tauri core could do it: on Android, when `Resumed` arrives and no webviews exist, re-run the same config-window loop that `setup()` already uses (`WebviewWindowBuilder::from_config` for windows with `create: true`). Zero webviews while resumed is never a healthy state on Android, so I'd argue for default-on rather than a config flag, but happy to gate it if you prefer. One thing worth a docs note either way: the recreated webview starts with fresh frontend state, apps keeping background state in Rust need to re-sync on load.\n\nI'm happy to submit a PR for both parts.\n",
+        "url": "https://github.com/tauri-apps/tauri/issues/15671"
+    },
+    {
+        "id": 4831008437,
+        "number": 15670,
+        "title": "[feat] Proposal of OpenAI-Compatible Plugin for Optimizing Development Agents",
+        "state": "closed",
+        "created_at": "2026-07-07T18:00:01Z",
+        "updated_at": "2026-07-07T19:48:01Z",
+        "closed_at": "2026-07-07T19:48:01Z",
+        "author": "jvhuaiying",
+        "comments": 0,
+        "labels": [
+            "type: feature request"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Describe the problem\n\nTo enhance the convenience of development agents, it is recommended to consider adding a new plugin compatible with the OpenAI interface, specifically designed for handling interactions with large models. This plugin will enable developers to more efficiently integrate and leverage the powerful capabilities of OpenAI, thereby optimizing the performance and functionality of the agents.\n\n### Describe the solution you'd like\n\nTo enhance the convenience of development agents, it is recommended to consider adding a new plugin compatible with the OpenAI interface, specifically designed for handling interactions with large models. This plugin will enable developers to more efficiently integrate and leverage the powerful capabilities of OpenAI, thereby optimizing the performance and functionality of the agents.\n\n### Alternatives considered\n\n_No response_\n\n### Additional context\n\n_No response_",
+        "url": "https://github.com/tauri-apps/tauri/issues/15670"
+    },
+    {
+        "id": 4824852718,
+        "number": 15665,
+        "title": "AppImages from default bundler settings fail on Mesa 25+ distros (over-bundled libwayland/glib/gstreamer, stale GST_PLUGIN_SYSTEM_PATH in AppRun)",
+        "state": "open",
+        "created_at": "2026-07-07T03:06:40Z",
+        "updated_at": "2026-07-09T12:18:19Z",
+        "closed_at": null,
+        "author": "wpfleger96",
+        "comments": 4,
+        "labels": [
+            "platform: Linux",
+            "ai-slop"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Describe the bug\n\nI hit this with a tauri 2.11 app ([block/buzz](https://github.com/block/buzz)) shipped as an AppImage built with the default bundler settings (no `bundle.linux` config at all, built on ubuntu-24.04 GitHub runners). On newer distros — Ubuntu 26.04 with Mesa 25 and GLib 2.88 in my case — the AppImage starts but the window never appears: WebKitWebProcess aborts and the app keeps running headless with no error surfaced to the user.\n\nI spent a while bisecting this and it comes down to three separate mechanisms, all in the default AppImage bundling path (`crates/tauri-bundler/src/bundle/linux/appimage/linuxdeploy.rs` plus the vendored linuxdeploy-plugin-gtk):\n\n**1. `libwayland-client` gets bundled, which breaks newer Mesa.** linuxdeploy's dependency follower sweeps `libwayland-client.so.0` (and the glib family that pins it) into `usr/lib` — its excludelist doesn't contain it, though the pkg2appimage community excludelist does, with a comment that bundling it breaks newer Mesa. With the host's Mesa 25 loaded against the bundled libwayland-client 1.22, `eglGetDisplay(EGL_DEFAULT_DISPLAY)` fails with `EGL_BAD_PARAMETER` under a Wayland session, WebKitWebProcess prints \"Could not create default EGL display: EGL_BAD_PARAMETER. Aborting...\" and dies. I confirmed by LD_PRELOAD-bisecting the bundled libs one at a time: every lib that reproduced the EGL failure links `libwayland-client`, and removing the wayland/glib infra libs fixes it.\n\n**2. AppRun exports `GST_PLUGIN_SYSTEM_PATH_1_0=$APPDIR/usr/lib/gstreamer-1.0` unconditionally, but with the default `bundleMediaFramework: false` that directory is never created.** Pointing that env var at a missing/empty dir disables GStreamer's default plugin search entirely, so WebKit's media setup fails (\"GStreamer element appsink not found\"), a NULL signal connect follows (GLib-GObject-CRITICAL), and the render process dies. It also rebuilds `~/.cache/gstreamer-1.0/registry.x86_64.bin` as an empty registry, which then affects other GStreamer apps for the user until the cache is cleared.\n\n**3. (latent) The bundled WebKit helper binaries only have `RUNPATH=$ORIGIN`.** Any launch path that doesn't go through AppRun's `cd $APPDIR/usr` makes the bundled `libwebkit2gtk` (2.44 in my build) spawn the *system* WebKit helpers (2.52 on my machine) — the version mismatch kills WebKitNetworkProcess with SIGBUS.\n\n### Reproduction\n\nBuild any tauri 2.11 app with `tauri build --bundles appimage` on ubuntu-24.04 with default config, then run the AppImage on Ubuntu 26.04 under Wayland. The window never appears and stderr shows the EGL abort above.\n\nManually removing the over-bundled infra libs from the extracted AppDir (`libwayland-*`, `libglib-2.0`/`libgio-2.0`/`libgobject-2.0`/`libgmodule-2.0`, all `libgst*`, `libmount`/`libblkid`/`libselinux`/`libpcre2-8`, `libzstd`/`libelf`/`libffi`) and symlinking `usr/lib/gstreamer-1.0` to the system plugin directory produces a fully working app on the same machine, so the system versions are drop-in compatible — bundling them is what breaks things.\n\n### What I'd like\n\n- A supported way to exclude libraries from the AppImage bundle (an `excludeLibraries`-style option under `bundle.linux.appimage`). Right now there's no config surface for this at all — `files` can only add real files, not remove or symlink — so we're stuck post-processing the AppImage in CI.\n- Consider not bundling the wayland/glib infra by default (or adopting the community excludelist). Bundling them means every AppImage silently breaks on distros newer than the build machine, which defeats the point of building on the oldest supported base.\n- AppRun probably shouldn't export `GST_PLUGIN_SYSTEM_PATH`/`GST_PLUGIN_SYSTEM_PATH_1_0` when `bundleMediaFramework` is false and the directory doesn't exist.\n\n### Environment\n\n- tauri / tauri-bundler 2.11.2 (I checked the diff through 2.11.5 — nothing touches this)\n- Build: ubuntu-24.04 GitHub runner, `--bundles appimage`, no `bundle.linux` config\n- Target: Ubuntu 26.04, GNOME Wayland, Mesa 25, GLib 2.88, webkit2gtk-4.1 2.52.3\n- Real-world case: the block/buzz 0.3.45 release AppImage\n",
+        "url": "https://github.com/tauri-apps/tauri/issues/15665"
+    },
+    {
+        "id": 4824278733,
+        "number": 15664,
+        "title": "RUSTSEC-2026-0204: Invalid pointer dereference in `fmt::Pointer` impl for `Atomic` and `Shared` when the underlying pointer is invalid",
+        "state": "closed",
+        "created_at": "2026-07-07T00:59:51Z",
+        "updated_at": "2026-07-08T09:34:00Z",
+        "closed_at": "2026-07-08T09:34:00Z",
+        "author": "github-actions[bot]",
+        "comments": 1,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "\n> Invalid pointer dereference in `fmt::Pointer` impl for `Atomic` and `Shared` when the underlying pointer is invalid\n\n| Details             |                                                |\n| ------------------- | ---------------------------------------------- |\n| Package             | `crossbeam-epoch`                      |\n| Version             | `0.9.18`                   |\n| URL                 | [https://github.com/crossbeam-rs/crossbeam/pull/1276](https://github.com/crossbeam-rs/crossbeam/pull/1276) |\n| Date                | 2026-07-06                         |\n| Patched versions    | `>=0.9.20`                  |\n| Unaffected versions | `<0.9.0`               |\n\nAffected versions of `fmt::Display` dereference the underlying pointer. This causes a invalid pointer dereference e.g., when a pointer created with `Atomic::null` or `Shared::null`. `fmt::Debug` impls and pre-0.9 `fmt::Display` impls, which do not dereference pointers, are not affected by this issue.\n\nSee [advisory page](https://rustsec.org/advisories/RUSTSEC-2026-0204.html) for additional details.\n",
+        "url": "https://github.com/tauri-apps/tauri/issues/15664"
+    },
+    {
+        "id": 4822984378,
+        "number": 15663,
+        "title": "[bug] iOS: embedded app extensions lose their entitlements when building with App Store Connect API-key auth",
+        "state": "open",
+        "created_at": "2026-07-06T20:46:54Z",
+        "updated_at": "2026-07-07T03:49:12Z",
+        "closed_at": null,
+        "author": "maccman",
+        "comments": 0,
+        "labels": [
+            "platform: iOS"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Describe the bug\n\nWhen building an iOS app with `tauri ios build` using App Store Connect API-key authentication (`APPLE_API_KEY`/`APPLE_API_ISSUER`/`APPLE_API_KEY_CONTENT`), any **embedded app extension** (`PlugIns/*.appex`, e.g. a share extension) is exported **without its entitlements** — in our case the App Group entitlement was silently dropped, so the extension's `containerURL(forSecurityApplicationGroupIdentifier:)` returned nil at runtime and every share failed. The same project built without the API-key env vars (local Xcode account signing) produces a correct IPA.\n\nThe cause is visible in `crates/tauri-cli/src/mobile/ios/build.rs`: when credentials are present, the build/archive runs with `CODE_SIGNING_ALLOWED=NO`, and before export the CLI force-signs **only the main app binary** with a generated self-signed certificate to preserve its entitlements through `xcodebuild -exportArchive`:\n\n```rust\n// if we skipped code signing, we do not have the entitlements applied to our exported IPA\n// we must force sign the app binary with a dummy certificate just to preserve the entitlements\n// target.export() will sign it with an actual certificate for us\nif skip_signing {\n  ...\n  self_signed_cert_keychain.sign(\n    &app_dir.join(config.app().stylized_name()),   // <-- only the app binary\n    Some(&...join(format!(\"{}.entitlements\", config.scheme()))),\n    false,\n  )\n```\n\n`xcodebuild -exportArchive` preserves only entitlements that are already present in a signature, so the app comes out fine while every embedded `.appex` (left unsigned in the archive) is re-signed with just the profile defaults (`application-identifier`, `beta-reports-active`, `get-task-allow`, team id) — its declared entitlements (App Groups, etc.) are gone. The build, upload, and TestFlight processing all succeed, so nothing surfaces until the extension misbehaves at runtime.\n\nVerified A/B on an unsigned device archive produced by `tauri ios build --archive-only --no-sign --ci`:\n\n- appex left unsigned → exported appex entitlements: no `com.apple.security.application-groups`\n- appex ad-hoc signed with its entitlements file before export (`codesign --force --sign - --entitlements ShareExtension/ShareExtension.entitlements ShareExtension.appex`) → exported appex keeps the App Group alongside the profile-derived keys\n\nSuggested fix: in the `skip_signing` branch, after signing the app binary, also sign each `PlugIns/*.appex` (and presumably other nested code like watch apps) with its own target's entitlements file. Ad-hoc signing is sufficient for the entitlements to survive export — export re-signs everything with the real certificate anyway.\n\nOur downstream workaround (works): a post-build phase on the extension target that ad-hoc signs the appex with its entitlements when `CODE_SIGNING_ALLOWED=NO` — team-reflect/reflect-open#612.\n\n### Reproduction\n\n1. iOS Tauri project with an embedded share-extension target (XcodeGen `app-extension` target with an `.entitlements` file declaring an App Group, embedded into the app target).\n2. Build with API-key auth: `APPLE_API_KEY=... APPLE_API_ISSUER=... APPLE_API_KEY_CONTENT=... tauri ios build --export-method app-store-connect --ci`\n3. Inspect the exported IPA: `unzip Reflect.ipa && codesign -d --entitlements :- Payload/*.app/PlugIns/*.appex` → the App Group entitlement is missing.\n4. Build the same project without the API-key env vars (local Xcode account): the appex entitlements are intact.\n\n### Expected behavior\n\nEmbedded app extensions keep the entitlements declared in their `.entitlements` files when building with App Store Connect API-key authentication, matching the behavior of locally-signed builds.\n\n### Full `tauri info` output\n\n```text\ntauri-cli 2.11.3 (@tauri-apps/cli ^2.11.3)\nmacOS 26.5.1, Xcode 26.6 locally / Xcode 26.5 on GitHub macos-26 runners\n```\n\n### Stack trace\n\n_No stack trace — the failure is silent at build time and only appears at runtime inside the extension._\n\n### Additional context\n\nDebugged end to end in team-reflect/reflect-open#612 (simulator repro with an entitlement-stripped appex, local export A/B, and CI verification with a pre-upload entitlements assertion).\n",
+        "url": "https://github.com/tauri-apps/tauri/issues/15663"
+    },
+    {
+        "id": 4819234968,
+        "number": 15658,
+        "title": "[docs] Rust tracing spans documentation",
+        "state": "open",
+        "created_at": "2026-07-06T12:43:15Z",
+        "updated_at": "2026-07-06T12:43:15Z",
+        "closed_at": null,
+        "author": "linde12",
+        "comments": 0,
+        "labels": [
+            "type: documentation"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "I'm using the `tracing` crate and have hooked it up to opentelemetry & Grafana, however handlers are being spawned in new tasks and don't know what span is the parent.\n\nI have a usecase where i want to keep all logs & spans from the rust side of my application under a single parent representing an application session. E.g.:\n\n```\nGUI Run\n  ComplexBusinessLogic\n  SomeHTTPRequest\n  MoreLogic\n    SubLogic\n```\n\nbut instead i get a root span that contains all sync command handlers as child spans, but each async command handler becomes its own root span.\n\nHow should we deal with this? Basically i want to do `async move { tauritasks.spawn(task); }.instrument(rootSpan)` but i have no clue how or if it's even possible",
+        "url": "https://github.com/tauri-apps/tauri/issues/15658"
+    },
+    {
+        "id": 4818792985,
+        "number": 15657,
+        "title": "[bug] AppImage build stops at Running output plugin: appimage with no errors",
+        "state": "open",
+        "created_at": "2026-07-06T11:47:34Z",
+        "updated_at": "2026-07-09T12:33:26Z",
+        "closed_at": null,
+        "author": "pokeghosst",
+        "comments": 2,
+        "labels": [
+            "type: bug",
+            "platform: Linux",
+            "status: needs triage"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Describe the bug\n\nWhen running `cargo tauri build`, the build process hangs at liine\n```\n-- Running output plugin: appimage --\n```\n\nWith no further output. I've waited for 10 minutes or so just for a good measure but it seems that nothing is happening.\n\nInterestingly, when running the build without internet connection, it doesn't stop at this line and continues, but fails (as expected) because appimagetool can't download the runtime since there's no connection.\n\n### Reproduction\n\n_No response_\n\n### Expected behavior\n\n_No response_\n\n### Full `tauri info` output\n\n```text\n[✔] Environment\n    - OS: openSUSE 20260702.0.0 x86_64 (X64) (xfce on x11)\n    ✔ webkit2gtk-4.1: 2.52.4\n    ✔ rsvg2: 2.62.3\n    ✔ rustc: 1.94.1 (e408947bf 2026-03-25)\n    ✔ cargo: 1.94.1 (29ea6fb6a 2026-03-24)\n    ✔ rustup: 1.29.0 (28d1352db 2026-03-05)\n    ✔ Rust toolchain: stable-x86_64-unknown-linux-gnu (overridden by environment variable RUSTUP_TOOLCHAIN)\n    - node: 20.20.2\n    - npm: 11.17.0\n\n[-] Packages\n    - tauri 🦀: 2.10.3, (outdated, latest: 2.11.5)\n    - tauri-build 🦀: 2.5.6, (outdated, latest: 2.6.3)\n    - wry 🦀: 0.54.2, (outdated, latest: 0.55.1)\n    - tao 🦀: 0.34.6, (outdated, latest: 0.35.3)\n    - tauri-cli 🦀: 2.11.4\n\n[-] Plugins\n    - tauri-plugin-log 🦀: 2.8.0\n    - tauri-plugin-store 🦀: 2.4.2, (outdated, latest: 2.4.3)\n\n[-] App\n    - build-type: bundle\n    - CSP: unset\n    - frontendDist: ../build\n    - devUrl: http://localhost:5173/\n```\n\n### Stack trace\n\n```text\n\n```\n\n### Additional context\n\n_No response_",
+        "url": "https://github.com/tauri-apps/tauri/issues/15657"
+    },
+    {
+        "id": 4817791053,
+        "number": 15656,
+        "title": "[bug] [Linux/Wayland] window.add_child() child webview renders with incorrect bounds on Ubuntu 26.04 + WebKitGTK 2.52.3",
+        "state": "open",
+        "created_at": "2026-07-06T09:29:10Z",
+        "updated_at": "2026-07-06T09:35:34Z",
+        "closed_at": null,
+        "author": "hozaifa-ali",
+        "comments": 0,
+        "labels": [
+            "type: bug",
+            "platform: Linux",
+            "status: needs triage",
+            "scope: unstable flag"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Describe the bug\n\nChild webview created with `window.add_child()` renders incorrectly on Linux Wayland.\nThe webview overflows outside its intended area and covers the sidebar and side panel \nof the UI instead of staying in the content area between them.\n\nThis works perfectly on macOS but is completely broken on Ubuntu 26.04 (Wayland) \nwith WebKitGTK 2.52.3. No matter what coordinate system we use — Logical, Physical, \nmanual `scale_factor()` multiplication — the position and size is always wrong.\n\n<img width=\"1372\" height=\"879\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/61204782-c69f-4ab9-a4c8-8d5afebebcf5\" />\n\n\n\n### Reproduction\n\n1. Create a Tauri 2 app with a React frontend webview filling the whole window\n2. Add a sidebar (56px) and tab bar (40px) in the React UI\n3. Call window.add_child() to spawn a child webview in the remaining content area\n4. Pass bounds from getBoundingClientRect() on the content div\n5. Run on Linux Ubuntu — child webview overflows over the sidebar and panels\n6. Run same code on macOS — works perfectly\n\nCode used:\nwindow.add_child(\n    builder,\n    tauri::Position::Logical(tauri::LogicalPosition::new(x, y)),\n    tauri::Size::Logical(tauri::LogicalSize::new(width, height)),\n)\n\nBounds come from getBoundingClientRect() with no DPR multiplication.\n\n### Expected behavior\n\nThe child webview should appear only inside the content area — \nto the right of the sidebar and below the tab bar — matching \nexactly the bounds passed to add_child(). Same behavior as macOS.\n\n### Full `tauri info` output\n\n```text\n[✘] Environment\n    - OS: Ubuntu 26.4.0 x86_64 (X64) (ubuntu on wayland)\n    ✔ webkit2gtk-4.1: 2.52.3\n    ✘ rsvg2: not installed\n    ✔ rustc: 1.96.0 (ac68faa20 2026-05-25)\n    ✔ cargo: 1.96.0 (30a34c682 2026-05-25)\n    ✔ rustup: 1.29.0 (28d1352db 2026-03-05)\n    ✔ Rust toolchain: stable-x86_64-unknown-linux-gnu (default)\n    - node: 24.18.0\n    - npm: 11.16.0\n\n[-] Packages\n    - tauri 🦀: 2.11.5\n    - tauri-build 🦀: 2.6.3\n    - wry 🦀: 0.55.1\n    - tao 🦀: 0.35.3\n    - @tauri-apps/api ⱼₛ: 2.11.1\n    - @tauri-apps/cli ⱼₛ: 2.11.4\n\n[-] Plugins\n    - tauri-plugin-fs 🦀: 2.5.1\n    - tauri-plugin-dialog 🦀: 2.7.1\n    - tauri-plugin-shell 🦀: 2.3.5\n\n[-] App\n    - build-type: bundle\n    - framework: React\n    - bundler: Vite\n    - Running on Wayland\n```\n\n### Stack trace\n\n```text\nNo crash or stack trace. The webview renders in the wrong \nposition silently with no errors.\n```\n\n### Additional context\n\nOS: Ubuntu 26.04\nWebKitGTK: 2.52.3 (libwebkit2gtk-4.1-0)\nRust: 1.96.0\nNode: v24.18.0\n\nWe tried every coordinate approach:\n- Physical pixels with manual scale_factor() multiply = double scaled, wrong\n- Hardcoded inner_size() minus sidebar pixels = wrong when panel opens\n- LogicalPosition directly from getBoundingClientRect() = still overflows\n- Ratio scaling between JS viewport and native window = still off\n\nRoot cause appears to be that on Linux/GTK, add_child() creates a separate \nGtkWindow instead of truly embedding the webview, so it uses a different \ncoordinate space than the WebKit CSS pixels from getBoundingClientRect().\n\n**Important:** running on Wayland (not X11). \nThe tauri info output shows \"ubuntu on wayland\".\nThis may be relevant since Wayland handles window \ncoordinates differently from X11 and could be \ncontributing to the add_child() bounds issue.\n\nScreenshot attached showing the overflow.\n\n<img width=\"1372\" height=\"879\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/173a8d68-1be9-4667-b429-e271294cb139\" />",
+        "url": "https://github.com/tauri-apps/tauri/issues/15656"
+    }
+]

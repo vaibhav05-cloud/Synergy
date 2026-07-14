@@ -1,0 +1,242 @@
+[
+    {
+        "sha": "da80ed0708a09dc096c184345d6eb42cbcd50a1e",
+        "author": "bors",
+        "email": "bors@rust-lang.org",
+        "date": "2026-07-14T04:16:03Z",
+        "message": "Auto merge of #159263 - jhpratt:rollup-1gDsq5l, r=jhpratt\n\nRollup of 6 pull requests\n\nSuccessful merges:\n\n - rust-lang/rust#159039 (resolve: fix effective visibilities for items in ambiguous glob sets)\n - rust-lang/rust#158981 (Fix where-bound suggestion with legacy const generics)\n - rust-lang/rust#159061 (Skip trivial cast lint for trait object upcasts)\n - rust-lang/rust#159241 (Update books)\n - rust-lang/rust#159248 (compiler: Remove `-Zmutable-noalias`)\n - rust-lang/rust#159250 (Rename `errors.rs` file to `diagnostics.rs` (13/N))",
+        "url": "https://github.com/rust-lang/rust/commit/da80ed0708a09dc096c184345d6eb42cbcd50a1e"
+    },
+    {
+        "sha": "57f0adccec2ad8ef498a11ec450e3ae7e896300d",
+        "author": "Jacob Pratt",
+        "email": "jacob@jhpratt.dev",
+        "date": "2026-07-14T04:15:25Z",
+        "message": "Rollup merge of #159250 - GuillaumeGomez:rename-diag, r=JonathanBrouwer\n\nRename `errors.rs` file to `diagnostics.rs` (13/N)\n\nFollow-up of https://github.com/rust-lang/rust/pull/157485.\n\nr? @JonathanBrouwer",
+        "url": "https://github.com/rust-lang/rust/commit/57f0adccec2ad8ef498a11ec450e3ae7e896300d"
+    },
+    {
+        "sha": "e59b99943f8ce342100f22b364c33a5fe2f59e40",
+        "author": "Jacob Pratt",
+        "email": "jacob@jhpratt.dev",
+        "date": "2026-07-14T04:15:24Z",
+        "message": "Rollup merge of #159248 - workingjubilee:remove-mutable-noalias, r=Urgau\n\ncompiler: Remove `-Zmutable-noalias`\n\nLet us mark the end of an era. The `noalias` optimization has been working relatively well for some time now. There may still be issues to sort out with `noalias`. If so, those are mostly on LLVM's side, where it may need to have a better model of what `noalias` means as that is necessary for soundly inferring it. We also may need to not add `noalias` somewhere we currently do, if our semantics do not actually match that. Either way, it doesn't seem useful to configure on a compilation-wide basis.",
+        "url": "https://github.com/rust-lang/rust/commit/e59b99943f8ce342100f22b364c33a5fe2f59e40"
+    },
+    {
+        "sha": "3a9d278aaa54d5b7c8b898b9fc63e47466d3a875",
+        "author": "Jacob Pratt",
+        "email": "jacob@jhpratt.dev",
+        "date": "2026-07-14T04:15:23Z",
+        "message": "Rollup merge of #159241 - rustbot:docs-update, r=ehuss\n\nUpdate books\n\n## rust-lang/book\n\n3 commits in 05d114287b7d6f6c9253d5242540f00fbd6172ab..dd7ab4f4f4541adf4aa2a872cdac06c206b73288\n2026-07-10 19:43:43 UTC to 2026-06-29 20:56:02 UTC\n\n- Update to Rust 1.97 (rust-lang/book#4799)\n- doc: upgrade rand dependency to v0.10.1 in book listings and text (rust-lang/book#4756)\n- Explicitly state \"compilation modes\" (rust-lang/book#3517)\n\n## rust-lang/edition-guide\n\n1 commits in c3c0f0b3da26610138b7ba7663f60cd2c68cf184..53686db907c45268d1b323afd9a3545a37abbced\n2026-07-10 17:05:04 UTC to 2026-07-10 17:05:04 UTC\n\n- Fix typo of key name `resolver.incompatible-rust-versions` (rust-lang/edition-guide#385)\n\n## rust-lang/reference\n\n4 commits in 86635e30bf861a038dc197d7e16fd09e7e514e7a..afdc77bab886d4455c11247cdd32391bfab636ae\n2026-07-09 16:48:44 UTC to 2026-07-06 14:48:32 UTC\n\n- Fix the tagged-union pattern-matching recommendation (rust-lang/reference#2303)\n- Structs with no fields or all-ZST fields are ZSTs (rust-lang/reference#2262)\n- macros.md: fix case (rust-lang/reference#2307)\n- Bump railroad-dependency (rust-lang/reference#2305)\n\n## rust-lang/rust-by-example\n\n1 commits in d3117f6c873acbbf331c1d510371d061dfcc975c..15308f3e951814ef3475d2b58f48276e6b17b9af\n2026-07-06 10:14:39 UTC to 2026-07-06 10:14:39 UTC\n\n- Update Chinese translations in `zh.po` (rust-lang/rust-by-example#2025)",
+        "url": "https://github.com/rust-lang/rust/commit/3a9d278aaa54d5b7c8b898b9fc63e47466d3a875"
+    },
+    {
+        "sha": "7035da7862ec7c85b5d3916dcd036ccd21df7413",
+        "author": "Jacob Pratt",
+        "email": "jacob@jhpratt.dev",
+        "date": "2026-07-14T04:15:22Z",
+        "message": "Rollup merge of #159061 - chenyukang:yukang-fix-148219-trivial-casts-dyn-any, r=folkertdev\n\nSkip trivial cast lint for trait object upcasts\n\nFixes rust-lang/rust#148219\n\nIn the case like `(other as &dyn Any).downcast_ref::<T>()`, removing the cast can change method lookup, so the cast is not always trivial, so skip lint on it.",
+        "url": "https://github.com/rust-lang/rust/commit/7035da7862ec7c85b5d3916dcd036ccd21df7413"
+    },
+    {
+        "sha": "28e67e02a0e63266282bb9db1ebc4d4a14f96a12",
+        "author": "Jacob Pratt",
+        "email": "jacob@jhpratt.dev",
+        "date": "2026-07-14T04:15:22Z",
+        "message": "Rollup merge of #158981 - coroama-contrib:fix-const-generics-bound-suggestion, r=mu001999\n\nFix where-bound suggestion with legacy const generics\n\n## Summary\nDuring lowering of legacy const generics in `lower_legacy_const_generics`, the function's span was passed when creating the associated `LocalDefId` instead of the const argument span. This later caused diagnostics to pull the function's name instead of the const argument for suggestions when emitting an `unconstrained generic constant` error.\n\nAlso adds regression tests for all basic integer types. The full set isn't redundant: non-`usize` types exercise the `as usize` cast in the suggestion, while `usize` exercises the no-cast path. The tests use a cross-crate aux crate rather than a target-specific intrinsic (the rewrite only fires cross-crate), so they run on all platforms.\n\n### Sample\n```rust\n#![allow(incomplete_features)]\n#![feature(generic_const_exprs)]\n\nuse std::arch::x86_64::*;\nfn uwu<const N: i32>() {\n    unsafe {\n        let a = _mm_setzero_ps();\n        let b = _mm_setzero_ps();\n        _mm_shuffle_ps(a, b, N + 1);\n    }\n}\n```\n### Previous Output\n```rust\nerror: unconstrained generic constant\n --> src/lib.rs:9:30\n  |\n9 |         _mm_shuffle_ps(a, b, N + 1);\n  |                              ^^^^^\n  |\nhelp: try adding a `where` bound\n  |\n5 | fn uwu<const N: i32>() where [(); _mm_shuffle_ps as usize]: {\n  |                        ++++++++++++++++++++++++++++++++++++\n```\n### Current Output\n```rust\nerror: unconstrained generic constant\n --> src/lib.rs:9:30\n  |\n9 |         _mm_shuffle_ps(a, b, N + 1);\n  |                              ^^^^^\n  |\nhelp: try adding a `where` bound\n  |\n5 | fn uwu<const N: i32>() where [(); N + 1 as usize]: {\n  |                        +++++++++++++++++++++++++++\n```\n\n## AI Assistance Disclosure\nThis is my first time contributing to the compiler, and I used Claude Opus 4.8 to assist with finding the root cause and implementing the fix, and to navigate the contributing docs, build system, and debugging tooling. The regression tests were designed and written entirely by me. I used Grok to proofread the written materials (commit bodies and this PR) for spelling and grammar. I reviewed and verified all changes myself.\n\n## Related Issues\nCloses rust-lang/rust#108382",
+        "url": "https://github.com/rust-lang/rust/commit/28e67e02a0e63266282bb9db1ebc4d4a14f96a12"
+    },
+    {
+        "sha": "86ad394fb5b046a39e3e5f8a5e18e21e968bd9ab",
+        "author": "Jacob Pratt",
+        "email": "jacob@jhpratt.dev",
+        "date": "2026-07-14T04:15:21Z",
+        "message": "Rollup merge of #159039 - calvinrp:fix/effective-vis-glob-ambiguity, r=petrochenkov\n\nresolve: fix effective visibilities for items in ambiguous glob sets\n\nFixes rust-lang/rust#159038 (1.96.1 → 1.97.0 regression; details there).\n\nWhen an item is glob-imported twice at different visibilities, effective visibility was computed from whichever declaration arrived first, not the most visible one. An exported item could then get no MIR encoded, and downstream crates fail with ``missing optimized MIR``.\n\nFix: also walk the most visible declaration's re-export chain (`update_decl_chain`, recursing into `ambiguity_vis_max`). Lint behavior unchanged. Two regression tests added; `tests/ui/{imports,privacy,resolve}` pass with every rust-lang/rust#154149 / rust-lang/rust#156284 test unmodified.\n\n@rustbot label +A-resolve +A-visibility +T-compiler +regression-from-stable-to-stable",
+        "url": "https://github.com/rust-lang/rust/commit/86ad394fb5b046a39e3e5f8a5e18e21e968bd9ab"
+    },
+    {
+        "sha": "4882893863fabec457aeea337eb654d479c96cca",
+        "author": "IsaiahCoroama",
+        "email": "coroamaisaiah@gmail.com",
+        "date": "2026-07-14T02:07:56Z",
+        "message": "Fix where-bound suggestion for legacy const generics\n\nPoint the suggestion at the const argument's span instead of the whole obligation, and parenthesize the snippet when the const expression needs it (e.g. `(N + 1) as usize`) so the suggested bound parses and compiles.\n\nAlso add regression tests for legacy const generic where-bound suggestions.",
+        "url": "https://github.com/rust-lang/rust/commit/4882893863fabec457aeea337eb654d479c96cca"
+    },
+    {
+        "sha": "55b6bd8ecbed23599e966a04508a8a13cbfe90b3",
+        "author": "bors",
+        "email": "bors@rust-lang.org",
+        "date": "2026-07-13T23:28:03Z",
+        "message": "Auto merge of #158888 - Mark-Simulacrum:bump-bootstrap, r=jieyouxu\n\nBump bootstrap to 1.98 beta\n\n\n\nhttps://forge.rust-lang.org/release/process.html#default-branch-bootstrap-update-and-crater-tuesday",
+        "url": "https://github.com/rust-lang/rust/commit/55b6bd8ecbed23599e966a04508a8a13cbfe90b3"
+    },
+    {
+        "sha": "83aeead362e473d565505ca407c56d7b580f9965",
+        "author": "Mark Rousskov",
+        "email": "mark.simulacrum@gmail.com",
+        "date": "2026-07-11T02:15:42Z",
+        "message": "Drop sccache from stage0 on Windows",
+        "url": "https://github.com/rust-lang/rust/commit/83aeead362e473d565505ca407c56d7b580f9965"
+    },
+    {
+        "sha": "268e708b93be4e8f72fa22032dc68f1dd22ed9ad",
+        "author": "Mark Rousskov",
+        "email": "mark.simulacrum@gmail.com",
+        "date": "2026-07-07T00:16:34Z",
+        "message": "Step cfg(bootstrap)",
+        "url": "https://github.com/rust-lang/rust/commit/268e708b93be4e8f72fa22032dc68f1dd22ed9ad"
+    },
+    {
+        "sha": "ed9f951c50ec5ed624dec332810487417ea3284c",
+        "author": "Mark Rousskov",
+        "email": "mark.simulacrum@gmail.com",
+        "date": "2026-07-07T00:16:25Z",
+        "message": "Bump stage0 compiler",
+        "url": "https://github.com/rust-lang/rust/commit/ed9f951c50ec5ed624dec332810487417ea3284c"
+    },
+    {
+        "sha": "61a4e6029c9b98a65fb7aaed558c3ece35fcdea9",
+        "author": "Mark Rousskov",
+        "email": "mark.simulacrum@gmail.com",
+        "date": "2026-07-05T20:55:05Z",
+        "message": "replace-version-placeholder",
+        "url": "https://github.com/rust-lang/rust/commit/61a4e6029c9b98a65fb7aaed558c3ece35fcdea9"
+    },
+    {
+        "sha": "2a74949017bdce8f1e7931960005391be2f6009c",
+        "author": "Guillaume Gomez",
+        "email": "contact@guillaume-gomez.fr",
+        "date": "2026-07-13T20:31:51Z",
+        "message": "Update `rustc_session::errors` import",
+        "url": "https://github.com/rust-lang/rust/commit/2a74949017bdce8f1e7931960005391be2f6009c"
+    },
+    {
+        "sha": "f779a137cbcdc5819598a0a8a5a9edfb47687546",
+        "author": "Guillaume Gomez",
+        "email": "contact@guillaume-gomez.fr",
+        "date": "2026-07-13T20:31:25Z",
+        "message": "Rename `rustc_session/src/errors.rs` into `rustc_session/src/diagnostics.rs`",
+        "url": "https://github.com/rust-lang/rust/commit/f779a137cbcdc5819598a0a8a5a9edfb47687546"
+    },
+    {
+        "sha": "daf2e5e18b3abc4311d9da3d96fd64138f43d508",
+        "author": "bors",
+        "email": "bors@rust-lang.org",
+        "date": "2026-07-13T18:35:59Z",
+        "message": "Auto merge of #159246 - JonathanBrouwer:rollup-ZywyNke, r=JonathanBrouwer\n\nRollup of 13 pull requests\n\nSuccessful merges:\n\n - rust-lang/rust#157706 (Deny `todo!()` in tidy)\n - rust-lang/rust#158535 (Support `#[track_caller]` on EII declarations)\n - rust-lang/rust#158632 (First steps of late-bound turbofishing (place FnDef behind a dummy binder))\n - rust-lang/rust#158846 (Fix unused variable warnings for diverging expressions)\n - rust-lang/rust#159002 (Small refactorings in `need_type_info` module)\n - rust-lang/rust#159202 (Bump rustc-demangle to 0.1.28)\n - rust-lang/rust#159216 (Avoid using probe self_ty for delegation arguments)\n - rust-lang/rust#156609 (Consider structurally impossible Sized predicates in MIR)\n - rust-lang/rust#157993 (Expose more info about ADTs and functions in rustc_public)\n - rust-lang/rust#158804 (Clarify `as_uninit_mut` may point to uninitialized memory)\n - rust-lang/rust#158854 (Add `#[rustc_test_entrypoint_marker]`)\n - rust-lang/rust#158998 (Some minor ast validation and visiting cleanups)\n - rust-lang/rust#159123 (doc: clarify attr parser APIs)",
+        "url": "https://github.com/rust-lang/rust/commit/daf2e5e18b3abc4311d9da3d96fd64138f43d508"
+    },
+    {
+        "sha": "768fb02b2384b57a46b5ad1b2db03854ed7556ed",
+        "author": "Jonathan Brouwer",
+        "email": "jonathantbrouwer@gmail.com",
+        "date": "2026-07-13T18:18:08Z",
+        "message": "Rollup merge of #159123 - kn1g78:doc/attr-parser-api, r=mejrs\n\ndoc: clarify attr parser APIs\n\nFollow up on rust-lang/rust#155696 by documenting the higher-level `AcceptContext` helpers for common argument shapes.\n\n`MetaItemParser` remains the lower-level tool for attributes with custom restricted syntax. Remove the stale FIXME now that the helpers are available.",
+        "url": "https://github.com/rust-lang/rust/commit/768fb02b2384b57a46b5ad1b2db03854ed7556ed"
+    },
+    {
+        "sha": "34d04a585c6efe40d1651a4f0c630e5b49148ee3",
+        "author": "Jonathan Brouwer",
+        "email": "jonathantbrouwer@gmail.com",
+        "date": "2026-07-13T18:18:07Z",
+        "message": "Rollup merge of #158998 - oli-obk:mut_ast_valid, r=petrochenkov\n\nSome minor ast validation and visiting cleanups\n\nOriginally I wanted to mutate the AST during validation, but I will first explore mutating it less and moving more things to arenas. Let's land the parts unrelated to actual mutation.\n\n<details>\n  <summary>Original PR description</summary>\nI think this could be useful for having to handle weird cases less later in the compiler. Either by replacing things with error nodes (e.g. ty/expr), or by editing out the invalid elements (`const fn` -> `fn` in trait methods or trait impls).\n</details>",
+        "url": "https://github.com/rust-lang/rust/commit/34d04a585c6efe40d1651a4f0c630e5b49148ee3"
+    },
+    {
+        "sha": "aa45526d8fbb9e1346d2c423c36eb22a6c649c2a",
+        "author": "Jonathan Brouwer",
+        "email": "jonathantbrouwer@gmail.com",
+        "date": "2026-07-13T18:18:06Z",
+        "message": "Rollup merge of #158854 - jdonszelmann:test-entrypoint, r=jonathanbrouwer\n\nAdd `#[rustc_test_entrypoint_marker]`\n\nr? @JonathanBrouwer\n\ncc: @Nadrieril @N1ark @aDotInTheVoid\n\nSome context: a bunch of tooling around rustc likes to find entry points. This is easy for `main`, it's a lang item. But tests aren't as easy. There is already a similar marker for the data structure associated with tests, but if you want to do for example dynamic analysis, you want just the defid of the function you can call to start the tests. This is that marker. There's a test using a rustc driver that the attr indeed shows up and marks the test functions.\n\n@Nadrieril and @N1ark asked for this kind of behavior. I talked to @aDotInTheVoid about whether we should do things like this where we cannot really guarantee the stability or even use it inside rustc. The thing is, we don't provide staboility guarantees, it's just a useful little thing to have for as long as its there and it doesn't bother anyone either. It's up to tool authors to deal with breakage we may introduce.",
+        "url": "https://github.com/rust-lang/rust/commit/aa45526d8fbb9e1346d2c423c36eb22a6c649c2a"
+    },
+    {
+        "sha": "1bce97824ee27bcea0a617d863ac01aab9e15e98",
+        "author": "Jonathan Brouwer",
+        "email": "jonathantbrouwer@gmail.com",
+        "date": "2026-07-13T18:18:05Z",
+        "message": "Rollup merge of #158804 - yilin0518:fix_as_uninit_mut, r=LawnGnome\n\nClarify `as_uninit_mut` may point to uninitialized memory\n\nTracking issue: rust-lang/rust#75402\n\nThis PR clarifies the safety documentation for `*mut T::as_uninit_mut`.\n\nUnlike `as_mut`, this method creates a reference to `MaybeUninit<T>`, so the source pointer may point to uninitialized memory. The pointer still must either be null or satisfy the pointer-to-reference conversion requirements.\n\nAfter adding the supplementary information, the safety documentation of `*mut T::as_uninit_mut` is consistent with `*mut T::as_uninit_ref`, `*const T::as_uninit_ref` and `std::ptr::NonNull::as_uninit_mut`.\n\nThis is a documentation-only change.\n\nTests were not added because this only updates API docs.",
+        "url": "https://github.com/rust-lang/rust/commit/1bce97824ee27bcea0a617d863ac01aab9e15e98"
+    },
+    {
+        "sha": "c6e564426de36e366b68e56ae23c7830aff0f12f",
+        "author": "Jonathan Brouwer",
+        "email": "jonathantbrouwer@gmail.com",
+        "date": "2026-07-13T18:18:04Z",
+        "message": "Rollup merge of #157993 - erickt:rustc-public, r=makai410\n\nExpose more info about ADTs and functions in rustc_public\n\nThis allows users of `rustc_public` to do more complex navigation through data structures by exposing the following info:\n\n* `AdtDef::generics_of` - Get the generics for the ADT.\n* `AdtDef::inherent_impls` - Get all the impls for the ADT.\n* `FnDef::associated_item` - Get the trait or impl block that contains the function if it exists.\n* `FnDef::generics_of` - get the generics for a given function.\n* `ImplDef::generics_of` - Get the generics for the impl block.\n* `ImplDef` implements `CrateDefType` - figure out the type of the impl block with `CrateDefType::ty()` or get the normalized type with `CrateDefType::ty_with_args()`.\n\nThis was partially written with the help of Gemini, but I reviewed the code it generated.",
+        "url": "https://github.com/rust-lang/rust/commit/c6e564426de36e366b68e56ae23c7830aff0f12f"
+    },
+    {
+        "sha": "3198c7aeb40ad150ed7e9085fa1b73ce4b227d46",
+        "author": "Jonathan Brouwer",
+        "email": "jonathantbrouwer@gmail.com",
+        "date": "2026-07-13T18:18:04Z",
+        "message": "Rollup merge of #156609 - qaijuang:mir-opt-impossible-sized-predicates, r=TaKO8Ki\n\nConsider structurally impossible Sized predicates in MIR\n\nFixes rust-lang/rust#156051\n\n`ImpossiblePredicates` filters predicates mentioning local generics before invoking the trait solver, which avoids normalization and solver work in generic contexts, thereby skipping predicates such as `dyn Trait<T>: Sized`, even though they are impossible for every substitution.\n\nThis PR adds a narrow structural fast path for positive `Sized` predicates whose self type is known-unsized without normalization, letting the pass clear unreachable bodies before later MIR opts can evaluate `SizedTypeProperties` constants such as `size_of::<Self>()`.",
+        "url": "https://github.com/rust-lang/rust/commit/3198c7aeb40ad150ed7e9085fa1b73ce4b227d46"
+    },
+    {
+        "sha": "256bcb885fae681f994f6e42fdab86865c539239",
+        "author": "Jonathan Brouwer",
+        "email": "jonathantbrouwer@gmail.com",
+        "date": "2026-07-13T18:18:03Z",
+        "message": "Rollup merge of #159216 - TaKO8Ki:delegation-probe-self-ty, r=petrochenkov\n\nAvoid using probe self_ty for delegation arguments\n\nFixes rust-lang/rust#159128\n\nThe old code temporarily wrote `pick.self_ty` into the first argument's node type before normal argument checking.\n\nThat `self_ty` can contain inference variables created inside the method-probe transaction, so resolving it later in the real function checking context could cause the ICE in `ena`.",
+        "url": "https://github.com/rust-lang/rust/commit/256bcb885fae681f994f6e42fdab86865c539239"
+    },
+    {
+        "sha": "95dfc7eaf061bc7ae615c8b18f277354d268009f",
+        "author": "Jonathan Brouwer",
+        "email": "jonathantbrouwer@gmail.com",
+        "date": "2026-07-13T18:18:02Z",
+        "message": "Rollup merge of #159202 - teor2345:bump-rustc-demangle, r=Mark-Simulacrum\n\nBump rustc-demangle to 0.1.28\n\nThis PR is part of the splat lang experiment: rust-lang/rust#153629\n\nIt brings in the changes from https://github.com/rust-lang/rustc-demangle/pull/90, which encode splatted types with a `w` prefix in type mangling. This is required to fix the symbol clashes in rust-lang/rust#158644.\n\nWe need to upgrade the compiler and standard library to avoid \"can't demangle\" panics or errors. Some tools might work without the upgrade, but we might as well do it there as well.\n\n@rustbot label +C-enhancement +F-splat +T-compiler +A-name-mangling",
+        "url": "https://github.com/rust-lang/rust/commit/95dfc7eaf061bc7ae615c8b18f277354d268009f"
+    },
+    {
+        "sha": "3bd0126bacffdb3cc4089591fee1d8e2cd669de1",
+        "author": "Jonathan Brouwer",
+        "email": "jonathantbrouwer@gmail.com",
+        "date": "2026-07-13T18:18:01Z",
+        "message": "Rollup merge of #159002 - WaffleLapkin:need_type_info_refactors, r=lcnr\n\nSmall refactorings in `need_type_info` module\n\nr? @lcnr\n\nThis supports low priority impl diagnostic.",
+        "url": "https://github.com/rust-lang/rust/commit/3bd0126bacffdb3cc4089591fee1d8e2cd669de1"
+    },
+    {
+        "sha": "a1855a20c7f7747447f6a575c20e0a842e61d668",
+        "author": "Jonathan Brouwer",
+        "email": "jonathantbrouwer@gmail.com",
+        "date": "2026-07-13T18:18:00Z",
+        "message": "Rollup merge of #158846 - chenyukang:yukang-fix-158783-unused-never-binding, r=TaKO8Ki,tiif\n\nFix unused variable warnings for diverging expressions\n\nFixes rust-lang/rust#158783",
+        "url": "https://github.com/rust-lang/rust/commit/a1855a20c7f7747447f6a575c20e0a842e61d668"
+    },
+    {
+        "sha": "3bb66d72291d002cf0430ec7c395ff8c5cde39a6",
+        "author": "Jonathan Brouwer",
+        "email": "jonathantbrouwer@gmail.com",
+        "date": "2026-07-13T18:18:00Z",
+        "message": "Rollup merge of #158632 - addiesh:superfisher, r=oli-obk\n\nFirst steps of late-bound turbofishing (place FnDef behind a dummy binder)\n\nr? oli-obk\n\nThis PR is part of rust-lang/rust#156581. This should be functionally identical to prior behavior, with the added fact that FnDef now places its arguments behind a binder.\n\nmost changes boil down to\n- replacing `args` from `FnDef` with `args.no_bound_vars().unwrap()`\n- replacing `Ty::new_fn_def(/* ... */, args)` with `Ty::new_fn_def(/* ... */, ty::Binder::dummy(args))`",
+        "url": "https://github.com/rust-lang/rust/commit/3bb66d72291d002cf0430ec7c395ff8c5cde39a6"
+    },
+    {
+        "sha": "153165d0472dbd99f2af80165d3ce31f83595cdb",
+        "author": "Jonathan Brouwer",
+        "email": "jonathantbrouwer@gmail.com",
+        "date": "2026-07-13T18:17:58Z",
+        "message": "Rollup merge of #158535 - cezarbbb:eii-track-caller, r=bjorn3\n\nSupport `#[track_caller]` on EII declarations\n\nTracking issue: rust-lang/rust#125418\nZulip thread: [Zulip](https://rust-lang.zulipchat.com/#narrow/channel/213817-t-lang/topic/Questions.20about.20support.20.60.23.5Btrack_caller.5D.60.20on.20EII.20declaration)\n\n`#[track_caller]` is currently rejected on EII declarations by the catch-all in `split_attrs`. This routes it onto the foreign item and\nderives it onto every implementation during codegen.\n\nThe foreign item is the symbol callers link against, so it must carry the flag for call sites to append the caller location. It is routed onto the foreign item only, not the default impl — `check_attr` already rejects `#[track_caller]` on EII implementations (`EiiWithTrackCaller`), since the attribute is part of the ABI.\n\nThe flag is then derived onto each implementation in `codegen_attrs`: if the foreign item is `#[track_caller]`, every impl gets the flag too. The shim in `add_function_aliases` takes its ABI from the impl's `fn_abi`, so if any impl lacked the flag the caller-location argument would be silently dropped rather than reported as a type error. Deriving it keeps default and explicit impls in sync without requiring users to repeat the attribute.\n\n`#[track_caller]` on a foreign item is an already-supported path (see `tests/ui/rfcs/rfc-2091-track-caller/track-caller-ffi.rs`); this just wires it into EII. Statics are unaffected — `#[track_caller]` isn't a valid target on statics and is rejected as before.\n\nr? @jdonszelmann @bjorn3",
+        "url": "https://github.com/rust-lang/rust/commit/153165d0472dbd99f2af80165d3ce31f83595cdb"
+    },
+    {
+        "sha": "490097dc9ac44a1b088ef1262d10e789dbf9dcd7",
+        "author": "Jonathan Brouwer",
+        "email": "jonathantbrouwer@gmail.com",
+        "date": "2026-07-13T18:17:57Z",
+        "message": "Rollup merge of #157706 - jdonszelmann:deny-todo, r=wafflelapkin\n\nDeny `todo!()` in tidy\n\nImplements https://github.com/rust-lang/compiler-team/issues/999\n\nPart of https://github.com/rust-lang/rust/issues/158173",
+        "url": "https://github.com/rust-lang/rust/commit/490097dc9ac44a1b088ef1262d10e789dbf9dcd7"
+    },
+    {
+        "sha": "1ccd7e1391d0285a5706cc38b92129085af21d4a",
+        "author": "Jubilee Young",
+        "email": "workingjubilee@gmail.com",
+        "date": "2026-07-13T17:14:58Z",
+        "message": "Remove noalias tests",
+        "url": "https://github.com/rust-lang/rust/commit/1ccd7e1391d0285a5706cc38b92129085af21d4a"
+    }
+]

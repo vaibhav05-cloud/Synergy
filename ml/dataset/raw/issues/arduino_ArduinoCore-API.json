@@ -1,0 +1,363 @@
+[
+    {
+        "id": 3879543673,
+        "number": 261,
+        "title": "Bit manipulation not working with 64 bit values",
+        "state": "open",
+        "created_at": "2025-12-08T21:57:07Z",
+        "updated_at": "2026-02-06T16:18:05Z",
+        "closed_at": null,
+        "author": "JDat",
+        "comments": 0,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "I need to manipulate bits in `uint64_t` variable.\nStandard `bitRead()`, `bitWrite()`, `bitSet()`, `bitClear()`, `bitToggle()` macros not working. They work only up to 32 bits (`uint32_t`).\n\nI made quick hack in my code to work with 64 bit variables:\n\n```cpp\n#define bitRead64(value, bit) (((value) >> (bit)) & 0x01ULL)\n#define bitSet64(value, bit) ((value) |= (1ULL << (bit)))\n#define bitClear64(value, bit) ((value) &= ~(1ULL << (bit)))\n#define bitToggle64(value, bit) ((value) ^= (1ULL << (bit)))\n#define bitWrite64(value, bit, bitvalue) ((bitvalue) ? bitSet64((value), (bit)) : bitClear64((value), (bit)))\n```\n\nRecommendations: consider to rewrite `bitRead()`, `bitWrite()`, `bitSet()`, `bitClear()`, `bitToggle()` and `bit()` for 64 bit compatibility if possible and hope it will not break global compatibility.\n\nOriginal post: https://github.com/earlephilhower/arduino-pico/issues/3260",
+        "url": "https://github.com/arduino/ArduinoCore-API/issues/261"
+    },
+    {
+        "id": 3415192880,
+        "number": 256,
+        "title": "Missing virtual destructor for `Print` class",
+        "state": "open",
+        "created_at": "2025-09-14T15:34:47Z",
+        "updated_at": "2025-09-14T19:20:27Z",
+        "closed_at": null,
+        "author": "ondra-novak",
+        "comments": 0,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Description\n\nMissing virtual destructor - memory leak and UB\n\n### Environment\n\nFirst found on R4, but it is general\n\n### Current behavior\n\nWarning while compiling sketch, possible UB.\n\n```\npackages/arduino/hardware/renesas_uno/1.5.0/libraries/WiFiS3/src/Modem.cpp: In destructor 'ModemClass::~ModemClass()':\npackages/arduino/hardware/renesas_uno/1.5.0/libraries/WiFiS3/src/Modem.cpp:27:14: warning: deleting object of polymorphic\n class type 'UART' which has non-virtual destructor might cause undefined behavior [-Wdelete-non-virtual-dtor]\n       delete _serial;\n```\nModemClass extends Serial which extends Print.\n\n### Expected behavior\n\nno warnings\n\n### Additional information\n\nThis class is very base class of all streams and other i/o components. \n\nhttps://github.com/arduino/ArduinoCore-API/blob/4a02bfc0a924e1fec34c3bb82ffd5dfba7643a0c/api/Print.h#L35\n",
+        "url": "https://github.com/arduino/ArduinoCore-API/issues/256"
+    },
+    {
+        "id": 3077062807,
+        "number": 251,
+        "title": "In stream.cpp add readln, to simplify reading Windows and Linux text files",
+        "state": "open",
+        "created_at": "2025-05-20T13:36:38Z",
+        "updated_at": "2026-01-16T14:50:26Z",
+        "closed_at": null,
+        "author": "zingzog",
+        "comments": 1,
+        "labels": [
+            "enhancement"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### API component\n\nstream.cpp \n\n### Description\n\nText files can be read using readBytesUntil with the LineFeed character but with Windows files the CR character has to be dealt with. readln would terminate on LF and ignore CR so that the user just sees c-strings representing the text on each line.\n\n### Is this a breaking change?\n\nNo\n\n### Additional information\n\nI have been using this code as a solution:\n`// as readBytes but terminates on LF (10), ignores CR (13)\n// terminates if length characters have been read, timeout, or if the terminator character  detected\n// returns the number of characters placed in the buffer (0 means no valid data found)\n\nint Stream::readln(char *buffer, int length) {\n  int index = 0;\n  int c = 0;\n  while (index < length) {\n    c = timedRead();\n    if (c < 0 || c == 10) {\n      break;\n    }\n    if (c != 13){\n      *buffer++ = (char)c;\n      index++;\n    }\n  }\n  *buffer = '\\0';\n  if (c < 0){ \n    return -1;\n  }else{\n    return index;  // return number of characters, not including null terminator\n  }\n}`\n\nAs mentioned earlier, text files can be read using readBytesUntil with the LineFeed character but with Windows files the CR character has to be dealt with. The advantages of readln are that:\n\n- it neatly encapsulates the issues\n- it works with both LF and CRLF terminated strings\n- no additional cleanup work needed by the programmer\n\nA quick Google search shows a number of questions in Stack Overflow, etc. requesting a solution to reading lines from text files.\nI am using the function with LittleFS to read configuration key=value pairs from text files, and to read lines from html files for modification, and removal.\nFor me it is simple, and works reliably.\n\n",
+        "url": "https://github.com/arduino/ArduinoCore-API/issues/251"
+    },
+    {
+        "id": 2970258933,
+        "number": 250,
+        "title": "Use modern C++ casts instead of current C-style casting approaches",
+        "state": "open",
+        "created_at": "2025-04-03T17:33:00Z",
+        "updated_at": "2025-04-03T17:38:56Z",
+        "closed_at": null,
+        "author": "bmourit",
+        "comments": 0,
+        "labels": [
+            "enhancement"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Description\n\nUpdate various API implementations that use c-style pointer casting and other c-style approaches to use modern C++ casts. \n\n### Is this a breaking change?\n\nThe function signatures would remain unchanged\nThe behavior of the functions would be identical\nUser code that calls these functions wouldn't need any modifications\n\n### Additional information\n\nModernizes the code base. Compilers will optimize these the same, but coding standards favor using C++ cast in C++ code.\n",
+        "url": "https://github.com/arduino/ArduinoCore-API/issues/250"
+    },
+    {
+        "id": 2963245407,
+        "number": 249,
+        "title": "Always true condition in IPAddress string-to-ipv6 conversion",
+        "state": "open",
+        "created_at": "2025-04-01T12:06:59Z",
+        "updated_at": "2025-04-01T12:06:59Z",
+        "closed_at": null,
+        "author": "bertmelis",
+        "comments": 0,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "Always true condition in IPAddress string-to-ipv6 conversion\n\nhttps://github.com/arduino/ArduinoCore-API/blob/master/api/IPAddress.cpp#L204\n\n`*address` is checked to be `':'` so it cannot be `'\\0'`. I'm not really sure what the intended behaviour is here.",
+        "url": "https://github.com/arduino/ArduinoCore-API/issues/249"
+    },
+    {
+        "id": 2876465587,
+        "number": 247,
+        "title": "integer to binary array conversion",
+        "state": "open",
+        "created_at": "2025-02-24T20:00:25Z",
+        "updated_at": "2025-12-02T23:05:19Z",
+        "closed_at": null,
+        "author": "jasonkanavas1",
+        "comments": 1,
+        "labels": [
+            "enhancement"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "I'm surprised there is no function for converting integers to binary arrays. There are workarounds, but why is that the case?",
+        "url": "https://github.com/arduino/ArduinoCore-API/issues/247"
+    },
+    {
+        "id": 2796822975,
+        "number": 244,
+        "title": "API Improvement - Wire Library",
+        "state": "open",
+        "created_at": "2025-01-18T07:25:15Z",
+        "updated_at": "2025-01-18T07:25:15Z",
+        "closed_at": null,
+        "author": "ghost",
+        "comments": 0,
+        "labels": [
+            "enhancement"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### API component\n\nThere should be consideration for improving the Wire library.\n\n### Description\n\nI propose a lower-level version of the Wire library that is more tethered to what's actually happening on the hardware.\nThe current implementation imposes unnecessary buffering and busy-loops, that it's not usable in any situation where timing is critical.\nI propose supplementing the Arduino Core with a new I2C interface, which the Wire library can use as a HAL component.\n\nMy suggestion is this (roughly):\n\n```c++\nenum class I2CStatus {\n    Ready,       // Ready for the next operation\n    Busy,        // Currently processing\n    Error,       // An error occurred\n    Completed    // Operation completed successfully\n};\n\nclass I2C {\npublic:\n    virtual ~I2C() = default;\n\n    // Start the I2C communication (generate START condition)\n    virtual void start(uint8_t address, bool write) = 0;\n\n    // Stop the I2C communication (generate STOP condition)\n    virtual void stop() = 0;\n\n    // Write a single byte to the I2C bus\n    virtual void writeByte(uint8_t byte) = 0;\n\n    // Send ack to respond to an incoming byte\n    virtual void sendAck(bool ack) = 0;\n\n    // Check the current status of the I2C bus\n    virtual I2CStatus getStatus() const = 0;\n\n    // Polling mechanism or ISR-driven handling will manage the progress\n    virtual void process() = 0;\n\n   // Returns 1 if a byte has been read\n   virtual int available() = 0;\n\n  // Returns a byte that has been read or a -1\n  virtual int read() = 0;\n};\n```\n\nIn regards to the ISR functions, you would have one for start conditions, stop conditions, reads, write,s etc. I didn't include them in this code example, but you'd probably want to add those as well.\n\n### Is this a breaking change?\n\nIt doesn't have to be. This can be implemented as a lower-level I2C library, and utilized in the Wire library. I noticed in both the SAMD core an the AVR code, a lot of the buffering logic in the Wire library is duplicated. Having this lower-level platform abstraction could potentially reduce some of that by making the Wire library a higher level library. Although I think the Wire library should be deprecated, it would still be good to have it for backwards compatibility. Here's what I mean:\n\n```c++\nclass TwoWire final\n{\npublic:\n  TwoWire(I2C* bus)\n    : bus_(bus)\n  {}\n  int endTransmission()\n  {\n    bus_->start(); // send start condition\n    // This polling/blocking behavior would be kept for compatibility, but the user's of the lower level library would be able to bypass it.\n    while (bus_->getStatus() != I2CStatus::Busy) {\n      busy_->process();\n    }\n    // error checking would go here\n    // write start address with R/W bit\n    // poll again, as shown above\n    // perform the write operations\n    return 0; // success\n  }\nprivate:\n  I2C* bus_{};\n};\n```\n\nI've left out some detail out because I think the code gets the point across.\nHowever if that's not true, I can elaborate more.\n\n### Additional information\n\nThe reason this is important to me is because I see Arduino as a good framework for cross-platform embedded programming (specifically when it comes to prototyping). The I2C busy loops are an issue for me because they make it more difficult to get deterministic timing. The reason why deterministic timing is important for Arduino (as a user):\n  - Data acquisition - if I'm trying to gather data reliably at 1 KHz (for example) on multiple sensors, I need to make sure the deadlines are getting hit for each transaction. Currently the API performs all the transactions at `endTransmission`, which is problematic.\n  - Motion Control - There are a lot of devices coming out that use I2C, due to the Qwiic and STEMMA QT interfaces made by SparkFun and Adafruit. \n\nThese companies are providing drivers for the I2C boards they're making, but they're limited in their quality due to the `Wire` API.\nBecause of the success and widespread adoption of Arduino and the popularity of I2C boards in rapid-prototyping boards, the I2C API needs a more robust, lower level standard.\n\nIf you're concerned about the user-friendliness:\n  - You can keep the `Wire` library, and even have it implemented by the new lower level HAL\n  - Most Arduino users aren't writing I2C drivers, the board manufactures are. The developers for the board manufactures are usually seasoned professionals.",
+        "url": "https://github.com/arduino/ArduinoCore-API/issues/244"
+    },
+    {
+        "id": 2780240831,
+        "number": 243,
+        "title": "SPI API add void transfer(const void *tx_buffer, void *rx_buffer, size_t count);",
+        "state": "open",
+        "created_at": "2025-01-10T13:52:00Z",
+        "updated_at": "2025-01-10T13:57:23Z",
+        "closed_at": null,
+        "author": "ag88",
+        "comments": 0,
+        "labels": [
+            "enhancement"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### API component\n\nSPI API\n\n### Description\n\nSPI API add\n```\nvirtual void transfer(const void *tx_buffer, void *rx_buffer, size_t count);\n```\n[Expand SPI API and Functionality for High Speed Devices](https://github.com/arduino/ArduinoCore-API/discussions/189)\n\n### Is this a breaking change?\n\nUnlikely\n\n### Additional information\n\nThis is really a missing API method, it doesn't make sense to have only a single buffer for both transmit and receive, as DMA hardware normally works in 2 buffers.\nThe plain old \nhttps://github.com/arduino/ArduinoCore-API/blob/master/api/HardwareSPI.h#L112\n```\n  virtual void transfer(void *buf, size_t count) = 0;\n```\nforces hacks such as:\n- allocate a temporary buffer\n- do the DMA transfers receiving into the temporary buffer\n- copy that temporary buffer data back into the address pointed by *buf*\n  wasting both memory and cpu cycles\n\n",
+        "url": "https://github.com/arduino/ArduinoCore-API/issues/243"
+    },
+    {
+        "id": 2707609553,
+        "number": 241,
+        "title": "Bug in I2C slave STM32F103",
+        "state": "closed",
+        "created_at": "2024-11-30T16:43:08Z",
+        "updated_at": "2024-12-01T11:27:39Z",
+        "closed_at": "2024-11-30T22:21:22Z",
+        "author": "AndKe",
+        "comments": 3,
+        "labels": [
+            "bug",
+            "invalid"
+        ],
+        "assignees": [
+            "per1234"
+        ],
+        "locked": false,
+        "body": "### Description\n\n```\n#include <Wire.h>\nlong lastms;\nvolatile int x = 0;\nvolatile int y = 0;\n\n#define STM\nvoid receiveEvent(int howMany) {\n  x = Wire.read();\n}\n\nvoid requestEvent() {\n  y = 1;\n}\n\nvoid setup() {\n  Serial.begin(115200);\n\n  #ifdef STM\n  //STM32F103\n  pinMode(PB6, INPUT); //PB6=SCL\n  pinMode(PB7, INPUT); //PB7=SDA\n  Wire.setSCL(PB6);\n  Wire.setSDA(PB7);\n \n  #elif \n  //Arduino Nano\n  pinMode(A4, INPUT);\n  pinMode(A5, INPUT);\n  //Wire.setSDA(A4);\n  //Wire.setSCL(A5);\n\n #endif\n  \n \n  Wire.begin(11);                // join i2c bus as slave\n  //Wire.onRequest(requestEvent);  \n  Wire.onReceive(receiveEvent); \n\n  lastms = millis();\n}\n\nvoid loop() {\n  if (millis() > lastms + 1000) {\n    Serial.print(\"-\");\n    lastms = millis();\n  }\n  if (x != 0) {\n    Serial.print(\"U:0x\");\n    Serial.println(x, HEX);\n    x = 0;\n  }\n  if (y != 0) {\n    Serial.println(\"V\");\n    y = 0;\n  }\n}\n```\n\n\n\n### Environment\n\n- Boards platform name: Bluepill / own board  / Arduino Nano (Nano and Leonardo works fine)\n- Boards platform version (as shown in Boards Manager):  ![Image](https://github.com/user-attachments/assets/d20b4dab-570f-472c-a762-15f614f586d5)\n\n\n- ArduinoCore-API version (if you manually installed it):  \n\n### Current behavior\n\nIf compiled for Nano, the application works. (displaying the incoming I2C requests.)\nWhen compiled for STM32F103 - with CDC serial, it does not. (it outputs only the \"-\" each 1sec.)\n\nThe incoming data is at the same time decoded by an oscilloscope, so pullups etc are ok.\n\n### Expected behavior\n\nI expect the code to work on STM32F103C8 /Bluepill  like it did on Nano\n\n### Additional information\n\nOn incoming I2C data, PB6 (SCK) is being pulled low, and held low by the controller, effectively killing all further traffic.\nThis happens even if USB /Serial support is set to NONE\n",
+        "url": "https://github.com/arduino/ArduinoCore-API/issues/241"
+    },
+    {
+        "id": 2706939214,
+        "number": 240,
+        "title": "`String::replace` buggy in certain cases",
+        "state": "closed",
+        "created_at": "2024-11-30T08:01:24Z",
+        "updated_at": "2024-11-30T08:56:45Z",
+        "closed_at": "2024-11-30T08:56:40Z",
+        "author": "rspierce",
+        "comments": 1,
+        "labels": [
+            "bug",
+            "duplicate"
+        ],
+        "assignees": [
+            "per1234"
+        ],
+        "locked": false,
+        "body": "### Description\n\nreplacing multiple occurrences of a string with a smaller string only works for an odd number of occurrences\n\n### Environment\n\n#### Boards platform name\n\n[\"**Raspberry Pi Pico/RP2040**\" boards platform](https://arduino-pico.readthedocs.io/en/latest/) from [Earle F. Philhower, III](https://github.com/earlephilhower)\n\n#### Boards platform version\n\n##### Original report\n\nNot specified\n\n#### Last verified with\n\n4.0.3\n\n### Code demonstrating problem\n\n```cpp\nvoid setup() {\n  Serial.begin(9600);\n  while (!Serial) {}\n  // this code should remove all occurrences of \"narf\" from the string\n  String s = \"narf\";\n  Serial.println();\n  Serial.print(\"input: (\");\n  Serial.print(s);\n  Serial.println(\")\");\n  s.replace(\"narf\", \"\");\n  Serial.print(\"result: (\");\n  Serial.print(s);\n  Serial.println(\")\");\n\n  s = \"narf narf\";\n  Serial.println();\n  Serial.print(\"input: (\");\n  Serial.print(s);\n  Serial.println(\")\");\n  s.replace(\"narf\", \"\");\n  Serial.print(\"result: (\");\n  Serial.print(s);\n  Serial.println(\")\");\n}\n\nvoid loop() {}\n```\n\nSerial monitor output:\n\n```text\ninput: (narf)\nresult: ()\n\ninput: (narf narf)\nresult: (narf narf)\n```\n\n### Additional information\n\nIn this code:\n\nhttps://github.com/earlephilhower/ArduinoCore-API/blob/ece6e68f29c6f406a4434659bcbcfe558baaa3a9/api/String.cpp#L667-L671\n\n```cpp\n\t\twhile ((foundAt = strstr(readFrom, find.buffer)) != NULL) {\n\t\t\treadFrom = foundAt + find.len;\n\t\t\tdiff = 0 - diff;\n\t\t\tsize -= diff;\n\t\t}\n```\n\nline 669 (`diff = 0 - diff;`) should be above the `while` loop.\n",
+        "url": "https://github.com/arduino/ArduinoCore-API/issues/240"
+    },
+    {
+        "id": 2612342806,
+        "number": 239,
+        "title": "String object, len is of type unsigned int, however indexOf() and lastIndexOf() return int",
+        "state": "open",
+        "created_at": "2024-10-24T18:55:43Z",
+        "updated_at": "2026-02-03T07:40:10Z",
+        "closed_at": null,
+        "author": "artofit",
+        "comments": 1,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Description\n\nString Object:\n\nlen is of type unsigned int.\nmethod that apply to position into the String or its size are expecting an unsigned int, this is the case with:\ncharAt()\nsubstring()\nremove()\nreserve()\n\nOddly, indexOf() and lastIndexOf() are returning int and not unsigned int\n\n### Current behavior\n\nOddly, indexOf() and lastIndexOf() are returning int and not unsigned int\n\n### Expected behavior\n\nindexOf() and lastIndexOf() ought to return unsigned int, to avoid unnecessary casting from int to unsigned int\n\n### Additional information\nIt's frequent to pass the result of indexOf() to substring()\n\n\nThanks",
+        "url": "https://github.com/arduino/ArduinoCore-API/issues/239"
+    },
+    {
+        "id": 2274671554,
+        "number": 230,
+        "title": "Feature Request - add \"remote\" member to the CanMsg class to denote Remote Transfer Request (RTR) frames",
+        "state": "open",
+        "created_at": "2024-05-01T06:17:33Z",
+        "updated_at": "2024-05-02T06:28:57Z",
+        "closed_at": null,
+        "author": "fastbike",
+        "comments": 1,
+        "labels": [
+            "enhancement"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "The CAN specification reserves a bit in the arbitration header to signal if the frame is a Remote Transfer Request (RTR) frame or a normal Data frame. This is the bit that follows the 11 identifier bits in the standard header, or the 18 bits of the second part of the identifier in an extended frame.\r\n\r\nThis is useful for system that use RTR (yes I know this is frowned on by some in the CAN community, see linked doc). However systems exist that require this support so we should enable the Uno R4 to detect if a frame has been sent with the RTR bit.\r\n\r\nGiven that the flag is already detected by the underlying FSP and the type appears in the \"can_frame_t\" CAN data frame struct, there is a relatively simple enhancement which I will float here.\r\n\r\nThe first part is to add it as a data member to the CanMsg class (in CanMsg.h)\r\n```\r\n  uint32_t id;\r\n  uint8_t  data_length;\r\n  uint8_t  data[MAX_DATA_LENGTH];\r\n  bool     remote;  // == new member ==\r\n```\r\nand then add it to the constructors as an optional argument\r\n```\r\nclass CanMsg : public Printable\r\n// snip\r\n  CanMsg(uint32_t const can_id, uint8_t const can_data_len, uint8_t const * can_data_ptr, bool const remote_frame_type = false)\r\n  : id{can_id}\r\n  , data_length{min(can_data_len, MAX_DATA_LENGTH)}\r\n  , data{0}\r\n  , remote{remote_frame_type}  \r\n  {\r\n//snip\r\n```\r\n(It would also need to be copied across in the copy constructor and probably useful to emit it in the printTo function.)\r\nThis now makes it available, however it is always set to false so the msg will default as a data frame unless the flag is set when the object is created.\r\nFor incoming messages in the R4 Uno this occurs in the R7FA4M1_CAN.cpp file\r\n```\r\nvoid R7FA4M1_CAN::onCanCallback(can_callback_args_t * p_args)\r\n{\r\n  switch (p_args->event)\r\n  {\r\n    case CAN_EVENT_TX_COMPLETE: break;\r\n    case CAN_EVENT_RX_COMPLETE: // Currently driver don't support this. This is unreachable code for now.\r\n    {\r\n      /* Extract the received CAN message. */\r\n      CanMsg const msg\r\n      (\r\n        (p_args->frame.id_mode == CAN_ID_MODE_STANDARD) ? CanStandardId(p_args->frame.id) : CanExtendedId(p_args->frame.id),\r\n        p_args->frame.data_length_code,\r\n        p_args->frame.data,\r\n        (p_args->frame.type == CAN_FRAME_TYPE_REMOTE) // == new argument ==\r\n      );\r\n      /* Store the received CAN message in the receive buffer. */\r\n      _can_rx_buf.enqueue(msg);\r\n    }\r\n//snip\r\n```\r\n\r\nI have not considered whether this would also require a change to files related to other 32 bit Renases chips (most likely yes).\r\nHowever it appears to be largely backwards compatible as it does not affect the id (the other option was to use bit 30 if the id).\r\n\r\nSo, looking for some feedback before I do any further work and potentially provide a PR.\r\n\r\n\r\n/-------------------\r\nhttps://copperhilltech.com/content/CiA%20802%20AN%20V1.0%20CANopen%20CAN%20remote%20frames%20%E2%80%93%20Avoiding%20of%20usage.pdf",
+        "url": "https://github.com/arduino/ArduinoCore-API/issues/230"
+    },
+    {
+        "id": 2043556487,
+        "number": 228,
+        "title": "IPAddress toString should use existing printTo algorithm and conform to RFC 5952 canonical format for IPv6 addresses",
+        "state": "open",
+        "created_at": "2023-12-15T11:27:17Z",
+        "updated_at": "2023-12-17T16:15:59Z",
+        "closed_at": null,
+        "author": "sgryphon",
+        "comments": 0,
+        "labels": [
+            "enhancement"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### API component\r\n\r\nIPAddress\r\n\r\n### Description\r\n\r\nThe `toString()` for an IPv6 type address has a different output from `printTo()`, and does not follow the RFC 5952 canonical format. It has an unnecessarily long fixed length format. Note that IPv4 does not use a fixed length format.\r\n\r\nAlso note that the existing `printTo()` method already implements the RFC 5952 canonical format algorithm, and has extensive tests (there are no tests for the `toString()` method).\r\n\r\nThe recommendation would be for `toString()` simply to use the existing algorithm from `printTo()` (and add some unit tests for `toString`).\r\n\r\n### Is this a breaking change?\r\n\r\nNo. Both formats are valid string formats for IPv6, and `fromString()` handles both of them (and all other valid formats), as should any other system. The canonical format is usually shorter, but will not exceed the fixed length format, so there is no issue with overruns.\r\n",
+        "url": "https://github.com/arduino/ArduinoCore-API/issues/228"
+    },
+    {
+        "id": 1973890098,
+        "number": 221,
+        "title": "Clarify CAN frame transmit order",
+        "state": "closed",
+        "created_at": "2023-11-02T09:54:57Z",
+        "updated_at": "2023-11-03T06:03:19Z",
+        "closed_at": "2023-11-03T06:03:19Z",
+        "author": "jboynes",
+        "comments": 1,
+        "labels": [
+            "enhancement"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### API component\r\n\r\nCAN\r\n\r\n### Description\r\n\r\nClarify the order in which `CAN.write()` will send frames with the same priority. Specifically, define whether buffered frames will be sent in transmit order, ordered by priority, or without an ordering guarantee.\r\n\r\nif the frames are not buffered by the API implementation then there is no issue. However, if they are the behaviour is currently undefined. I'm raising this as an issue for the API as it's part of the contract between the user and an implementation.\r\n\r\nThis affects protocols such as RV-C or NMEA2000 where messages may require multiple frames to transmit. Mechanisms such as ISO-TP or NMEA's Fast Packet transmit message segments using the same CAN ID with sequencing information contained in the frame's data. Some devices are known to require segments be received in order, effectively requiring the sender to ensure they are transmitted in order. CAN's inherent prioritization by ID does not help as the ID is the same for all message segment frames.\r\n\r\nThere are a few ways this could be addressed:\r\n\r\n1. Define the transmit API to be unbuflfered placing the application in control. \r\n2. Only support in-order transmission\r\n3. Extend the API to allow the transmit ordering to be configured\r\n4. Extend the API to allow the application to manage the state of buffered messages to control ordering\r\n\r\nThe first is the simplest option and matches the current behaviour of the Renesas core. The API change would simply be to define that behaviour in documentation so application code can rely on it.\r\n\r\nThe second would allow an implementation to use buffering providing the transmission order can be guaranteed. This could be achieved with a software ring buffer or hardware transmit FIFO. The downside is that it would not support pre-emption, allowing a higher priority CAN message to be transmitted ahead of those that are buffered. However, an application that needs that could still implement it by handling the queues itself.\r\n\r\nThe third and fourth add complexity to this API that probably can't be justified as it would be closely coupled to hardware capabilities anyway; an application that needs it would be better served using the underlying hardware APIs directly.\r\n\r\n### Proposal\r\n\r\nAdd documentation to the API class that states:\r\n\r\n* `CAN.write()` will always send messages in the order in which is called.\r\n\r\n* `CAN.write()` may buffer messages providing it ensures that they are transmitted in order (e.g. using a hardware FIFO). The number of messages that can be buffered is _implementation defined_.\r\n\r\n### Is this a breaking change?\r\n\r\nNo. Any API changes would be additive.\r\n\r\nThe current Renesas cores are unbuffered using a single mailbox for transmission and return an error if that mailbox is busy.\r\n\r\nI don't know of other cores using this part of the API especially as it's a fairly recent addition.\r\n\r\n### Additional information\r\n\r\nMany CAN controllers allow multiple frames to be buffered for transmission, for example, by providing:\r\n* transmit mailboxes\r\n* transmit FIFOs\r\n* transmit priority queues\r\n\r\nProblems can occur when an implementation uses multiple transmit mailboxes and where the hardware implicitly prioritizes transmission by mailbox number. For example, if the hardware has three mailboxes and the message requires more than three frames, the following sequence can occur\r\n\r\n1. First frame is queued in mailbox 0 and transmission is started\r\n2. Second frame is queued in mailbox 1\r\n3. Third frame is queued in mailbox 2\r\n4. First frame send completes, freeing mailbox 0\r\n5. Hardware starts send of mailbox 1 as that is the highest priority one with pending data\r\n6. Fourth frame is queued in mailbox 0\r\n7. Second frame send completes, freeing mailbox 1\r\n8. Hardware starts send of mailbox 0 (now containing the fourth frame) as that is higher priority than mailbox 2\r\n\r\nAs a result segment 4 will be send ahead of segment 3.\r\n\r\nThis would not occur if the mailboxes were used in FIFO mode as the hardware would then send mailbox 2 ahead of mailbox 0.",
+        "url": "https://github.com/arduino/ArduinoCore-API/issues/221"
+    },
+    {
+        "id": 1887341447,
+        "number": 209,
+        "title": "Clean up use of sprintf",
+        "state": "open",
+        "created_at": "2023-09-08T09:55:19Z",
+        "updated_at": "2023-09-08T09:55:19Z",
+        "closed_at": null,
+        "author": "jboynes",
+        "comments": 0,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "In #208 I added pragmas to suppress deprecation warnings related to sprintf that were added in newer versions of GCC and CLang, and which caused compilation failure. These suppressions should be removed.\r\n\r\nOne usage is in the test suite's implemention of `itoa` that is needed to run String tests. I have a quick fix for that relying on `snprintf` but I also thought of just using a more basic implementation of `itoa` such as the one from K&R or even just copying the implementation from the SAMD core. \r\n\r\nThinking a bit deeper though, the only use in API code is in `String` and it looks to be unnecessarily double buffering during those conversions. I think there's an opportunity to remove String's dependency on `itoa` and make it more efficient, which would also eliminate the need for an implementation of `itoa` in the test suite. I plan to look in to that approach.\r\n\r\nA similar use is in the test suite's implementation of `dtostrf` which delegates the deprecated avr impl. For that, I think `String` can be improved to avoid the double buffering although it would still delegate to the core for the conversion, assuming the core may have implementation-specific FP support.\r\n\r\nThe final use was in `IPAddress` and that looks like it can simply be changed to used `snprintf`",
+        "url": "https://github.com/arduino/ArduinoCore-API/issues/209"
+    },
+    {
+        "id": 1885464793,
+        "number": 204,
+        "title": "Intermittent failure with test case String::compareTo(const char *)",
+        "state": "closed",
+        "created_at": "2023-09-07T09:18:47Z",
+        "updated_at": "2023-09-08T03:53:34Z",
+        "closed_at": "2023-09-08T03:53:34Z",
+        "author": "jboynes",
+        "comments": 3,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "Running the unit tests on a VM  on a laptop, I get intermittent failures of this testcase. On one run it will pass, on another, with the same binary, it will fail. I realize this isn't a typical target CPU but I wonder if there's an underlying issue.\r\n\r\n```\r\nubuntu@foo:~/ArduinoCore-API/test/build$ bin/test-ArduinoCore-API\r\n===============================================================================\r\nAll tests passed (968 assertions in 304 test cases)\r\n\r\nubuntu@foo:~/ArduinoCore-API/test/build$ bin/test-ArduinoCore-API\r\n\r\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\r\ntest-ArduinoCore-API is a Catch v2.13.9 host application.\r\nRun with -? for options\r\n\r\n-------------------------------------------------------------------------------\r\nTesting String::compareTo(const char *)\r\n       When: Passed string is empty\r\n-------------------------------------------------------------------------------\r\n/home/ubuntu/ArduinoCore-API/test/src/String/test_compareTo.cpp:48\r\n...............................................................................\r\n\r\n/home/ubuntu/ArduinoCore-API/test/src/String/test_compareTo.cpp:51: FAILED:\r\n  REQUIRE( str1.compareTo(\"\") == strcmp(str1.c_str(), str2.c_str()) )\r\nwith expansion:\r\n  144 == 143\r\n\r\n===============================================================================\r\ntest cases: 304 | 303 passed | 1 failed\r\nassertions: 968 | 967 passed | 1 failed\r\n\r\nubuntu@foo:~/ArduinoCore-API/test/build$ \r\n```\r\n\r\nEnvironment is an Ubuntu VM running under Multipass on an Apple M1 laptop.\r\n```\r\n$ uname -a\r\nLinux foo 6.2.0-32-generic #32-Ubuntu SMP PREEMPT_DYNAMIC Mon Aug 14 12:37:51 UTC 2023 aarch64 aarch64 aarch64 GNU/Linux\r\n```",
+        "url": "https://github.com/arduino/ArduinoCore-API/issues/204"
+    },
+    {
+        "id": 1872522753,
+        "number": 199,
+        "title": "String::replace doesn't work when replacing multiple occurencies of longer String by shorter one",
+        "state": "closed",
+        "created_at": "2023-08-29T21:40:00Z",
+        "updated_at": "2023-09-04T09:27:30Z",
+        "closed_at": "2023-09-04T09:27:30Z",
+        "author": "kiiv-cz",
+        "comments": 0,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "```\r\nTEST_CASE (\"Testing String::replace(String, String) substr 'find' smaller than 'replace' multiple occurencies\", \"[String-replace-08]\")\r\n{\r\n  arduino::String str(\"Hello Arduino! Hello, Hello, Hello\");\r\n  str.replace(arduino::String(\"ll\"), arduino::String(\"lll\"));\r\n  REQUIRE(str == \"Helllo Arduino! Helllo, Helllo, Helllo\");\r\n}\r\n\r\nTEST_CASE (\"Testing String::replace(String, String) substr 'find' same length as 'replace' multiple occurencies\", \"[String-replace-09]\")\r\n{\r\n  arduino::String str(\"Hello Arduino! Hello, Hello, Hello\");\r\n  str.replace(arduino::String(\"ll\"), arduino::String(\"11\"));\r\n  REQUIRE(str == \"He11o Arduino! He11o, He11o, He11o\");\r\n}\r\n\r\nTEST_CASE (\"Testing String::replace(String, String) substr 'find' larger than 'replace' multiple occurencies\", \"[String-replace-10]\")\r\n{\r\n  arduino::String str(\"Helllo Arduino! Helllo, Helllo, Helllo\");\r\n  str.replace(arduino::String(\"lll\"), arduino::String(\"ll\"));\r\n  REQUIRE(str == \"Hello Arduino! Hello, Hello, Hello\");\r\n}\r\n```\r\n\r\nThe last testcase fails as it doesn't replace anything at all. Other two works as expected.\r\n\r\nReported in https://github.com/arduino/ArduinoCore-megaavr/issues/109\r\n",
+        "url": "https://github.com/arduino/ArduinoCore-API/issues/199"
+    },
+    {
+        "id": 1859599946,
+        "number": 197,
+        "title": "Error compiling test_toAscii.cpp with higher language level",
+        "state": "closed",
+        "created_at": "2023-08-21T15:13:00Z",
+        "updated_at": "2023-09-08T03:57:56Z",
+        "closed_at": "2023-09-08T03:57:56Z",
+        "author": "jboynes",
+        "comments": 1,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "Testing on Ubuntu 23 with GCC 12 and glibc-2.37\r\n\r\n```\r\n$ uname -a\r\nLinux foo 6.2.0-27-generic #28-Ubuntu SMP PREEMPT_DYNAMIC Thu Jul 13 00:41:18 UTC 2023 aarch64 aarch64 aarch64 GNU/Linux\r\n```\r\n\r\nI get the following compilation error:\r\n```\r\n[ 92%] Building CXX object CMakeFiles/test-ArduinoCore-API.dir/src/WCharacter/test_toAscii.cpp.o\r\nIn file included from /usr/include/c++/12/bits/atomic_wait.h:49,\r\n                 from /usr/include/c++/12/bits/atomic_base.h:41,\r\n                 from /usr/include/c++/12/bits/shared_ptr_atomic.h:33,\r\n                 from /usr/include/c++/12/memory:77,\r\n                 from /home/ubuntu/ArduinoCore-API/test/external/catch/v2.13.9/include/catch.hpp:2948,\r\n                 from /home/ubuntu/ArduinoCore-API/test/src/WCharacter/test_toAscii.cpp:11:\r\n/usr/include/c++/12/bits/std_mutex.h: In member function ‘void std::__condvar::wait_until(std::mutex&, clockid_t, timespec&)’:\r\n/usr/include/c++/12/bits/std_mutex.h:169:7: error: ‘pthread_cond_clockwait’ was not declared in this scope; did you mean ‘pthread_cond_wait’?\r\n  169 |       pthread_cond_clockwait(&_M_cond, __m.native_handle(), __clock,\r\n      |       ^~~~~~~~~~~~~~~~~~~~~~\r\n      |       pthread_cond_wait\r\nmake[2]: *** [CMakeFiles/test-ArduinoCore-API.dir/build.make:1084: CMakeFiles/test-ArduinoCore-API.dir/src/WCharacter/test_toAscii.cpp.o] Error 1\r\nmake[1]: *** [CMakeFiles/Makefile2:83: CMakeFiles/test-ArduinoCore-API.dir/all] Error 2\r\nmake: *** [Makefile:91: all] Error 2\r\n```\r\n\r\nI'm guessing this is because C++20 added `std::atomic<std::shared_ptr>`\r\n\r\nThis test case has an `#undef _GNU_SOURCE` and if that is removed then it compiles and passes.  Can this be removed?",
+        "url": "https://github.com/arduino/ArduinoCore-API/issues/197"
+    },
+    {
+        "id": 1836799293,
+        "number": 195,
+        "title": "RingBuffer - is inherently unsafe if either store_char or read_char is called from an interrupt.",
+        "state": "closed",
+        "created_at": "2023-08-04T13:58:47Z",
+        "updated_at": "2023-08-10T15:32:54Z",
+        "closed_at": "2023-08-07T04:11:30Z",
+        "author": "KurtE",
+        "comments": 2,
+        "labels": [
+            "bug",
+            "invalid"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "**Why**: The class has a member variable: _numElems\r\nWhich is updated by both of these methods. \r\n\r\nFor example\r\n```\r\ntemplate <int N>\r\nint RingBufferN<N>::read_char()\r\n{\r\n  if (isEmpty())\r\n    return -1;\r\n\r\n  uint8_t value = _aucBuffer[_iTail];\r\n  _iTail = nextIndex(_iTail);\r\n  _numElems--;\r\n\r\n  return value;\r\n}\r\n```\r\nunless _numElems-- is atomic, there is the risk that in between the fetch and store, an interrupt happens which calls store_char  one or more times, which each of these calls does numElems++.  The store operation will then miss these other changes.\r\n\r\n**Context:** - I am currently experimenting with changes the the SerialX objects for the Uno R4 code base, and was seeing that the processing of interrupts either to store away a character received into one Ring Buffer or to fetch the next byte from the write ring buffer to output, was taking more time than I was expecting.  More of this in the issue:\r\nhttps://github.com/arduino/ArduinoCore-renesas/issues/75\r\n\r\n**Possible solution**:  In the past I and I know many others have written buffer classes that the store_char method, would only update the _iHead member variable, and the read_char only updates the _iTail member, and when necessary, you compute how many elements are in the buffer, like:\r\n```\r\ntemplate <int N>\r\nint SaferRingBufferN<N>::available()\r\n{\r\n  if (_iHead >= _iTail) \r\n    return _iHead - _iTail;\r\n  return N + _iHead - _iTail;\r\n}\r\n```\r\nWhich is safer.  It does not solve the multiple producers or consumers problem.\r\nFor those cases you might need something like the SafeRingBuffer code that is in that core.  Although I have modified version, which only protects one side. either the Reads or the Writes, where the other side has only the single consumer or producer of the interrupt.\r\nI am testing a version of this now, which appears to be faster.\r\n\r\nShould the API version be updated?  ",
+        "url": "https://github.com/arduino/ArduinoCore-API/issues/195"
+    },
+    {
+        "id": 1627283332,
+        "number": 186,
+        "title": "Detecting errors in String operations",
+        "state": "open",
+        "created_at": "2023-03-16T11:32:10Z",
+        "updated_at": "2024-10-07T16:18:13Z",
+        "closed_at": null,
+        "author": "BojanJurca",
+        "comments": 1,
+        "labels": [],
+        "assignees": [],
+        "locked": true,
+        "body": "Hello,\r\n\r\nIf a String creation fails it is possible to detect this error in the code, like:\r\n\r\n```C++\r\nString s = \"abc\";\r\nif (!s) ... // error, out of heap or something ...\r\n```\r\n\r\nHowever the error detection doesn't work with String expressions:\r\n\r\n```C++\r\n#define howLarge 5000\r\nString *strArray = new String [howLarge]; \r\n\r\nvoid wasteAlmostAllMemory () {\r\n  for (int i = 0; i < howLarge; i++) strArray [i] = \" wasted memory \";\r\n  while (true)\r\n    for (int i = 0; i < howLarge; i++)\r\n      if (!strArray [i].concat (\" more wasted memory \"))\r\n        return;\r\n} \r\n\r\nString returnLongString () {\r\n  return \"This is a long string, much longer than fits into free memory, although not right now.\";\r\n}\r\n\r\nvoid setup () {\r\n    Serial.begin (115200);\r\n\r\n    String longString = returnLongString ();\r\n\r\n    Serial.printf (\"Wasting memory, please wait ... \");\r\n    wasteAlmostAllMemory ();\r\n    Serial.printf (\"memory successfuly wasted\\n\");\r\n\r\n    String resultString;\r\n\r\n    // 1.\r\n      resultString = longString;\r\n      if (!resultString)\r\n        Serial.printf (\"Could not create a long String s.\\n\"); // error detected successfuly\r\n      else { Serial.print (\"'\"); Serial.print (resultString); Serial.println (\"'\"); }\r\n\r\n    // 2.\r\n      resultString = \"ABC \" + longString + \" DEF\";\r\n      if (!resultString)\r\n        Serial.printf (\"Could not calculate a String s.\\n\"); // error goes by undetected\r\n      else { Serial.print (\"'\"); Serial.print (resultString); Serial.println (\"'\"); } // the output is: ' DEF' \r\n\r\n    // 3.\r\n      resultString = returnLongString (); // failure to create the return String crashes the controller\r\n}\r\n\r\nvoid loop () {\r\n\r\n}\r\n```\r\n\r\nMy proposal is that each string expression that contains string in \"error state\" result in string also in \"error state\", so success could be tested only once even after several String operations. Something like this: \r\n\r\n```C++\r\n    String s = \"abc\";\r\n    for (int i = 1; i < 1000; i++)\r\n      s += s.substring (1, 1);\r\n    if (!s) ... // error\r\n```\r\nThank you.",
+        "url": "https://github.com/arduino/ArduinoCore-API/issues/186"
+    }
+]

@@ -1,0 +1,387 @@
+[
+    {
+        "id": 4876409892,
+        "number": 64890,
+        "title": "Mailer NullTransport::__toString is not a valid DSN, can we make it so?",
+        "state": "open",
+        "created_at": "2026-07-13T18:17:11Z",
+        "updated_at": "2026-07-13T18:17:11Z",
+        "closed_at": null,
+        "author": "mwijngaard",
+        "comments": 0,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "### Description\n\nIt currently returns a hardcoded `null://`. The Dsn class uses parse_url, which doesn't work with just a scheme and no host. I suppose it would be a BC break to fix this, but it is unfortunate. Would you be open to changing it to `null://null`? This is what most of the examples use, also for the Messenger component. \n\n### Example\n\n_No response_",
+        "url": "https://github.com/symfony/symfony/issues/64890"
+    },
+    {
+        "id": 4863718251,
+        "number": 64880,
+        "title": "[Serializer] XmlEncoder silently corrupts invalid XML characters on libxml >= 2.14 instead of throwing",
+        "state": "open",
+        "created_at": "2026-07-11T18:52:38Z",
+        "updated_at": "2026-07-11T19:43:42Z",
+        "closed_at": null,
+        "author": "Amoifr",
+        "comments": 1,
+        "labels": [
+            "Serializer"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "| Q                | A\n| ---------------- | ---\n| Symfony version  | 6.4 → 8.2 (all maintained branches)\n| PHP version      | 8.5.4 (libxml 2.15.2)\n\n### Description\n\n`XmlEncoder` is supposed to reject data that cannot be represented in XML: encoding a string containing a character forbidden by XML 1.0 must throw a `NotEncodableValueException`. That is what `XmlEncoderTest::testEncodeException()` asserts.\n\nOn a recent libxml, it doesn't throw anymore. The invalid character is **silently replaced with U+FFFD** and the encoder happily returns a document. Data is corrupted without any signal.\n\n### How to reproduce\n\n```php\nuse Symfony\\Component\\Serializer\\Encoder\\XmlEncoder;\n\n$encoder = new XmlEncoder();\nvar_dump($encoder->encode('Invalid character: '.\\chr(7), 'xml'));\n```\n\n**PHP 8.4.19 / libxml 2.9.14** — correct:\n\n```\nNotEncodableValueException: DOMDocument::saveXML(): xmlEscapeEntities : char out of range\n```\n\n**PHP 8.5.4 / libxml 2.15.2** — no exception:\n\n```\nstring(71) \"<?xml version=\"1.0\"?>\n<response>Invalid character: &#xFFFD;</response>\n\"\n```\n\nRunning the existing test suite on PHP 8.5 shows it as a failure, on a pristine checkout of any maintained branch:\n\n```\n1) Symfony\\Component\\Serializer\\Tests\\Encoder\\XmlEncoderTest::testEncodeException\nFailed asserting that exception of type \"NotEncodableValueException\" is thrown.\n```\n\n### Root cause\n\n`XmlEncoder::saveXml()` doesn't detect invalid characters itself — it detects them *indirectly*, by installing an error handler that turns the `E_WARNING` raised by `DOMDocument::saveXML()` into a `NotEncodableValueException`:\n\n```php\n$prevErrorHandler = set_error_handler(static function ($type, $message, ...) use (&$prevErrorHandler) {\n    if (\\E_ERROR === $type || \\E_WARNING === $type) {\n        throw new NotEncodableValueException($message);\n    }\n    // ...\n});\n```\n\nRecent libxml no longer emits that warning: it substitutes U+FFFD and moves on. And it doesn't record a libxml error either — so the condition is undetectable from libxml:\n\n```php\n$d = new DOMDocument('1.0', 'UTF-8');\n$root = $d->createElement('response');\n$root->appendChild($d->createTextNode('x'.\\chr(7)));\n$d->appendChild($root);\n\nlibxml_use_internal_errors(true);\nlibxml_clear_errors();\n$out = $d->saveXML();\n\nvar_dump(\\count(libxml_get_errors()));  // int(0)  ← nothing, not even an internal error\nvar_dump($out);                         // <response>x&#xFFFD;</response>\n```\n\nSo the current guard is simply blind on libxml >= ~2.14: the only way to keep the guarantee is for the Serializer to validate the characters explicitly, instead of relying on libxml complaining.\n\n### Why it matters\n\nThis isn't just a red test. Any application that upgrades to PHP 8.5 (or a distro shipping a newer libxml) will start silently corrupting XML payloads that were previously rejected — the failure mode changes from a loud exception to a wrong document, which is the worst direction for this kind of bug.\n\n### Possible fix\n\nValidate the value against the XML character production before it reaches libxml (in `appendText()` / `appendCData()` and for attribute values), and throw `NotEncodableValueException` on characters that XML 1.0 forbids — plus on malformed UTF-8, which `preg_match('/../u')` reports via `PREG_BAD_UTF8_ERROR` rather than a match.\n\nTwo things I'd rather have your call on before sending a PR:\n\n1. **Target branch.** The `set_error_handler` guard (and `testEncodeException`) only exists on the recent branches — on `6.4`, `encode()` calls `$dom->saveXML()` directly and never converted the warning into an exception. So \"oldest maintained branch with the bug\" isn't clear-cut here: restoring the exception on `6.4` would arguably be a behavior change rather than a fix.\n2. **XML 1.1.** `chr(7)` is legal in XML 1.1 (as an escaped character reference), yet libxml 2.15 replaces it with U+FFFD there too. Should the encoder throw for `xml_version: '1.1'` as well, or is that a separate concern?\n\nHappy to send the PR as soon as you tell me which way to go. 🙂",
+        "url": "https://github.com/symfony/symfony/issues/64880"
+    },
+    {
+        "id": 4863578137,
+        "number": 64878,
+        "title": "[Validator] ISBN-10 validator accepts a misplaced \"X\" character",
+        "state": "closed",
+        "created_at": "2026-07-11T18:12:00Z",
+        "updated_at": "2026-07-12T11:53:13Z",
+        "closed_at": "2026-07-12T11:53:13Z",
+        "author": "semx",
+        "comments": 1,
+        "labels": [
+            "Validator"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Symfony version(s) affected\n\n6.4 and higher\n\n### Description\n\nThe `Isbn` constraint (type `Isbn::ISBN_10`) accepts strings that are **not** valid ISBN-10 numbers when the letter `X` appears at a position other than the check digit.\n\nIn a valid ISBN-10, `X` may appear **only as the check digit** (the last of the 10 characters), where it represents the value 10; all other positions must be a digit `0`–`9`. `IsbnValidator::validateIsbn10()` substitutes `X` → 10 at every position, so a malformed string whose weighted sum still satisfies the mod-11 checksum is wrongly reported as valid.\n\nAs a secondary effect, a misplaced `X` that does not satisfy the checksum is reported as `CHECKSUM_FAILED_ERROR` instead of `INVALID_CHARACTERS_ERROR`, contradicting the error priority documented in the method itself (\"1. ERROR_INVALID_CHARACTERS\").\n\n### How to reproduce\n\n```php\nuse Symfony\\Component\\Validator\\Constraints\\Isbn;\nuse Symfony\\Component\\Validator\\Validation;\n\n$validator = Validation::createValidator();\n\n// \"X\" placed first: weighted sum = 10*10 + 5*2 = 110, and 110 % 11 === 0\n$violations = $validator->validate('X000000050', new Isbn(Isbn::ISBN_10));\n\nvar_dump(count($violations)); // int(0) — accepted, but \"X000000050\" is not a valid ISBN-10\n\n// same class of problem, \"X\" in the middle: 10*9 + 9*1 = 99, and 99 % 11 === 0\n$violations = $validator->validate('0X00000009', new Isbn(Isbn::ISBN_10));\nvar_dump(count($violations)); // int(0)\n```\n\nBoth strings are accepted as valid ISBN-10 numbers although `X` is not in the check-digit position.\n\n### Possible Solution\n\nTreat `X` as the value 10 only when it is the check digit (`$i === 9`); anywhere else it must fall through to `INVALID_CHARACTERS_ERROR`. Valid ISBN-10 values whose check digit is `X` (e.g. `226623854X`, `0-9752298-0-X`) stay valid.\n\nI opened a pull request with the fix and tests: #64877\n\n### Additional Context\n\n_No response_\n",
+        "url": "https://github.com/symfony/symfony/issues/64878"
+    },
+    {
+        "id": 4859094604,
+        "number": 64871,
+        "title": "[WebProfilerBundle] Twig 3.27+ deprecation: `{% macro %}` defined inside `{% block panel %}` in mailer.html.twig",
+        "state": "closed",
+        "created_at": "2026-07-10T22:30:47Z",
+        "updated_at": "2026-07-13T10:31:19Z",
+        "closed_at": "2026-07-13T10:31:19Z",
+        "author": "HecFranco",
+        "comments": 1,
+        "labels": [
+            "WebProfilerBundle"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Symfony version(s) affected\n\n- `symfony/web-profiler-bundle` v8.1.1 (source path: `src/Symfony/Bundle/WebProfilerBundle/` in [symfony/symfony](https://github.com/symfony/symfony))\n- Also present on `8.1` and `8.2` branches as of 2026-07-11\n- `twig/twig` v3.28.0 (deprecation introduced in Twig 3.27.0)\n\n### Description\n\nWhen using Twig 3.27+, opening the **Mailer** panel in the Web Profiler triggers `E_USER_DEPRECATED` warnings:\n\n```\nUser Deprecated: Since twig/twig 3.27: Using the \"macro\" tag outside the root of a template is deprecated\nin @WebProfiler/Collector/mailer.html.twig at line 267.\n```\n\nThe same warning is emitted for the other two macros in that file (lines **306** and **472**).\n\nThis is caused by Twig 3.27's new `CorrectnessNodeVisitor`, which deprecates `{% macro %}`, `{% extends %}`, and `{% use %}` tags that are not at the **root** of a template (see [twigphp/Twig#4840](https://github.com/twigphp/Twig/pull/4840) and [Twig 3.27.0 changelog](https://github.com/twigphp/Twig/blob/3.x/CHANGELOG#3270-2026-05-27)).\n\nIn `src/Symfony/Bundle/WebProfilerBundle/Resources/views/Collector/mailer.html.twig`, all three macros are defined **inside** `{% block panel %}`:\n\n| Macro | Line |\n|-------|------|\n| `render_transport_details` | 267 |\n| `render_email_details` | 306 |\n| `render_file_size_humanized` | 472 |\n\n### How to reproduce\n\n1. Create a Symfony 8.1 project with `symfony/web-profiler-bundle` and `twig/twig` ^3.27.\n2. Enable the profiler in `dev`.\n3. Send at least one email (so the Mailer collector has data).\n4. Open the Web Profiler and navigate to the **Emails** panel.\n5. Observe deprecation warnings in the profiler's **Logs > Deprecations** section (or in the Symfony toolbar).\n\n**Minimal example** (any action that triggers mailer collector persistence is enough):\n\n```php\n// In a dev controller or command\n$mailer->send(\n    (new Email())\n        ->from('from@example.com')\n        ->to('to@example.com')\n        ->subject('Test')\n        ->text('Body')\n);\n```\n\nThen visit `/_profiler/{token}?panel=mailer`.\n\n### Expected behavior\n\nNo Twig deprecation warnings when rendering profiler collector templates.\n\n### Actual behavior\n\nThree deprecation warnings per render of the Mailer panel (one per macro).\n\n### Root cause\n\n`mailer.html.twig` is inconsistent with other WebProfiler collector templates that already define macros at the **template root** (after the `{% block panel %}` closing tag), which is valid under Twig 3.27+.\n\n**Templates that already follow the correct pattern** (macro after `{% endblock %}` of `panel`):\n\n| Template | `{% block panel %}` | Panel `{% endblock %}` | First `{% macro %}` |\n|----------|---------------------|------------------------|---------------------|\n| `cache.html.twig` | line 46 | line 129 | line 131 |\n| `events.html.twig` | line 10 | line 90 | line 92 |\n| `form.html.twig` | line 383 | line 407 | line 409 |\n| `logger.html.twig` | line 370 | line 546 | line 548 |\n| `messenger.html.twig` | line 85 | line 123 | line 125 |\n| `request.html.twig` | line 133 | line 424 | line 426 |\n| `serializer.html.twig` | line 101 | line 128 | line 130 |\n| `time.html.twig` | line 74 | line 189 | line 191 |\n| `translation.html.twig` | line 56 | line 127 | line 129 |\n\n**Template that does NOT follow this pattern:**\n\n| Template | `{% block panel %}` | Macros inside block |\n|----------|---------------------|---------------------|\n| `mailer.html.twig` | line 234 | lines 267, 306, 472 (before `{% endblock %}` at line 481) |\n\n### Possible Solution\n\nMove the three `{% macro %}` definitions from inside `{% block panel %}` to the template root, **after** the panel block's `{% endblock %}`, matching the pattern used in `cache.html.twig`:\n\n```diff\n {% block panel %}\n     ...\n     {{ _self.render_transport_details(collector, transport) }}\n     ...\n-\n-    {% macro render_transport_details(...) %}\n-        ...\n-    {% endmacro %}\n-\n-    {% macro render_email_details(...) %}\n-        ...\n-    {% endmacro %}\n-\n-    {% macro render_file_size_humanized(bytes) %}\n-        ...\n-    {% endmacro %}\n {% endblock %}\n+\n+{% macro render_transport_details(...) %}\n+    ...\n+{% endmacro %}\n+\n+{% macro render_email_details(...) %}\n+    ...\n+{% endmacro %}\n+\n+{% macro render_file_size_humanized(bytes) %}\n+    ...\n+{% endmacro %}\n```\n\nCalls via `_self.render_*()` inside the `panel` block should continue to work: Twig auto-imports macros defined in the same template under `_self` (see [Twig macro documentation](https://twig.symfony.com/doc/3.x/tags/macro.html)), and this is the same approach already used successfully in `cache.html.twig`, `form.html.twig`, etc.\n\n### Alternative solution (if root-level macros cause issues with `renderBlock()`)\n\nRelated discussion in [#58016](https://github.com/symfony/symfony/issues/58016): profiler blocks are sometimes rendered in isolation via `renderBlock()`, not full template render. If moving macros to the root proves problematic for the Mailer panel specifically, an alternative is to extract macros into a dedicated partial and import them inside the block:\n\n```twig\n{% block panel %}\n    {% import '@WebProfiler/Collector/_mailer_macros.html.twig' as mailer %}\n    ...\n    {{ mailer.render_transport_details(collector, transport) }}\n{% endblock %}\n```\n\nHowever, since the other nine collector templates above already use root-level macros with `_self` and do not trigger this deprecation, the first approach (move after `{% endblock %}`) is the most consistent fix.\n\n### Impact\n\n- **Environment:** `dev` only (Web Profiler is not used in production).\n- **Severity:** Low — deprecation only, no functional breakage today; will become a hard error in Twig 4.0.\n- **Scope:** Single file (`mailer.html.twig`); no other collector templates appear affected.\n\n### Additional context\n\n- Twig 3.28.0 release notes: https://symfony.com/blog/twig-3-28-0-released\n- Macro placement rules: https://twig.symfony.com/doc/3.x/tags/macro.html#macros-scoping\n- Profiler block rendering behavior: [#58016](https://github.com/symfony/symfony/issues/58016#issuecomment-2292236776)\n- Verified on branches `8.1` and `8.2` — issue not yet fixed upstream as of 2026-07-11.\n- Issues for WebProfilerBundle must be reported on [symfony/symfony](https://github.com/symfony/symfony), not on [symfony/web-profiler-bundle](https://github.com/symfony/web-profiler-bundle) (read-only mirror per bundle README).\n\n### Workaround (application-level)\n\nUntil fixed upstream, applications can override the template:\n\n```\ntemplates/bundles/WebProfilerBundle/Collector/mailer.html.twig\ntemplates/bundles/WebProfilerBundle/Collector/_mailer_macros.html.twig\n```\n\nHappy to submit a PR targeting `8.1` if this approach looks good to the maintainers.\n",
+        "url": "https://github.com/symfony/symfony/issues/64871"
+    },
+    {
+        "id": 4858445312,
+        "number": 64869,
+        "title": "[HttpClient] when the client adds transparently support for gzipped responses, it should remove from the response the content-encoding header",
+        "state": "open",
+        "created_at": "2026-07-10T20:30:04Z",
+        "updated_at": "2026-07-12T04:34:21Z",
+        "closed_at": null,
+        "author": "gggeek",
+        "comments": 4,
+        "labels": [
+            "Bug",
+            "Status: Needs Review",
+            "HttpClient"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Symfony version(s) affected\n\n8.1.1\n\n### Description\n\nWhen the Request sent through the client does not specify support for compressed response, the client transparently adds an `Accept-encoding: gzip` header, and if the received response's body is indeed gzip-encoded, it does decode it transparently before passing it back to the caller.\n\nHowever, when doing that, it does not strip the `Content-Encoding` header of the Response, with the result that the caller has to do some accurate (read: brittle) testing in order to decide if it should trust that `Content-Encoding` header and do decompression on its own, or not.\n\nThis makes it harder than necessary to build middlewares that use the Symfony http Client... (also, for comparison, Guzzle also does automatic decompression of response bodies, and it does strip the `Content-Encoding` header when doing so)\n\n### How to reproduce\n\nI tested this using the Psr18Client wrapper to send http requests via the Symfony Http Client.\n\n### Possible Solution\n\n_No response_\n\n### Additional Context\n\n_No response_",
+        "url": "https://github.com/symfony/symfony/issues/64869"
+    },
+    {
+        "id": 4856394146,
+        "number": 64865,
+        "title": "[Messenger] Message lost if failure transport is down",
+        "state": "open",
+        "created_at": "2026-07-10T15:32:18Z",
+        "updated_at": "2026-07-10T15:44:51Z",
+        "closed_at": null,
+        "author": "lyrixx",
+        "comments": 1,
+        "labels": [
+            "Bug",
+            "Status: Needs Review",
+            "Messenger"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Symfony version(s) affected\n\nall I guess\n\n### Description\n\nIf I use AMQP for async messages, and doctrine for failures messages, and doctrine connection is broken (ie: my DB is down), I loose my failed messagess!\n\nNote: This is juste an exception who explain that there is some hole in the sequence.\n\n### How to reproduce\n\nThe code : \n```php\n<?php\n\nnamespace App\\MessageHandler;\n\nuse App\\Message\\Foobar;\nuse Symfony\\Component\\Console\\Attribute\\AsCommand;\nuse Symfony\\Component\\Messenger\\Attribute\\AsMessageHandler;\nuse Symfony\\Component\\Messenger\\MessageBusInterface;\n\n#[AsMessageHandler]\nfinal class FoobarHandler\n{\n    public function __invoke(Foobar $message): void\n    {\n        throw new \\RuntimeException(str_repeat('.', 1));\n    }\n\n    #[AsCommand(\n        name: 'app:messenger:dispatch:foobar',\n        description: 'Dispatch a Foobar message.',\n    )]\n    public function dispatchMessage(MessageBusInterface $bus): int\n    {\n        $bus->dispatch(new Foobar());\n\n        return 0;\n    }\n}\n```\n\nand \n```php\n<?php\n// test.php\n\nrequire __DIR__.'/vendor/autoload.php';\n\n$conn = new AmqpConnection([\n    'host' => 'localhost',\n    'port' => 5672,\n    'username' => 'guest',\n    'password' => 'guest',\n]);\n$conn->connect();\n$channel = new AmqpChannel($conn);\n\n$queue = new AmqpQueue($channel);\n$queue->setName('messages');\n$queue->setFlags(AMQP_PASSIVE);\n$queue->declareQueue();\n\n$message = $queue->get();\nif (!$message) {\n    echo \"No message in the queue.\\n\";\n    exit(0);\n}\n\ndump($message);\n```\n\n```\n>…home/gregoire/dev/labs/symfony/symfony-8.1(main *+%) php test.php \nNo message in the queue.\n>…home/gregoire/dev/labs/symfony/symfony-8.1(main *+%) bin/console app:messenger:dispatch:foobar \n>…home/gregoire/dev/labs/symfony/symfony-8.1(main *+%) bin/console messenger:consume async -q\n17:26:37 CRITICAL  [messenger] Error thrown while handling message App\\Message\\Foobar. Removing from transport after 3 retries. Error: \"Handling \"App\\Message\\Foobar\" failed: .\" [\"class\" => \"App\\Message\\Foobar\",\"message_id\" => null,\"retryCount\" => 3,\"error\" => \"Handling \"App\\Message\\Foobar\" failed: .\",\"exception\" => Symfony\\Component\\Messenger\\Exception\\HandlerFailedException^ { …}]\n\nIn DoctrineSender.php line 48:\n                                                                                                                                      \n  An exception occurred in the driver: SQLSTATE[08006] [7] connection to server at \"127.0.0.1\", port 5432 failed: Connection refused  \n        Is the server running on that host and accepting TCP/IP connections?                                                               \n                                                                                                                                      \n\nIn ExceptionConverter.php line 78:\n                                                                                                                                      \n  An exception occurred in the driver: SQLSTATE[08006] [7] connection to server at \"127.0.0.1\", port 5432 failed: Connection refused  \n        Is the server running on that host and accepting TCP/IP connections?                                                               \n                                                                                                                                      \n\nIn Exception.php line 24:\n                                                                                                 \n  SQLSTATE[08006] [7] connection to server at \"127.0.0.1\", port 5432 failed: Connection refused  \n        Is the server running on that host and accepting TCP/IP connections?                          \n                                                                                                 \n\nIn PDOConnect.php line 28:\n                                                                                                 \n  SQLSTATE[08006] [7] connection to server at \"127.0.0.1\", port 5432 failed: Connection refused  \n        Is the server running on that host and accepting TCP/IP connections?                          \n                                                                                                 \n\nmessenger:consume [-l|--limit LIMIT] [-f|--failure-limit FAILURE-LIMIT] [-m|--memory-limit MEMORY-LIMIT] [-t|--time-limit TIME-LIMIT] [--sleep SLEEP] [-b|--bus BUS] [--queues QUEUES] [--no-reset [NO-RESET]] [--all] [--exclude-receivers EXCLUDE-RECEIVERS] [--keepalive [KEEPALIVE]] [--fetch-size FETCH-SIZE] [--] [<receivers>...]\n\n>…home/gregoire/dev/labs/symfony/symfony-8.1(main *+%) bin/console messenger:consume async -q\n17:26:45 CRITICAL  [messenger] Error thrown while handling message App\\Message\\Foobar. Removing from transport after 3 retries. Error: \"Redelivered message from AMQP detected that will be rejected and trigger the retry logic.\" [\"class\" => \"App\\Message\\Foobar\",\"message_id\" => null,\"retryCount\" => 3,\"error\" => \"Redelivered message from AMQP detected that will be rejected and trigger the retry logic.\",\"exception\" => Symfony\\Component\\Messenger\\Exception\\RejectRedeliveredMessageException^ { …}]\n\nIn DoctrineSender.php line 48:\n                                                                                                                                      \n  An exception occurred in the driver: SQLSTATE[08006] [7] connection to server at \"127.0.0.1\", port 5432 failed: Connection refused  \n        Is the server running on that host and accepting TCP/IP connections?                                                               \n                                                                                                                                      \n\nIn ExceptionConverter.php line 78:\n                                                                                                                                      \n  An exception occurred in the driver: SQLSTATE[08006] [7] connection to server at \"127.0.0.1\", port 5432 failed: Connection refused  \n        Is the server running on that host and accepting TCP/IP connections?                                                               \n                                                                                                                                      \n\nIn Exception.php line 24:\n                                                                                                 \n  SQLSTATE[08006] [7] connection to server at \"127.0.0.1\", port 5432 failed: Connection refused  \n        Is the server running on that host and accepting TCP/IP connections?                          \n                                                                                                 \n\nIn PDOConnect.php line 28:\n                                                                                                 \n  SQLSTATE[08006] [7] connection to server at \"127.0.0.1\", port 5432 failed: Connection refused  \n        Is the server running on that host and accepting TCP/IP connections?                          \n                                                                                                 \n\nmessenger:consume [-l|--limit LIMIT] [-f|--failure-limit FAILURE-LIMIT] [-m|--memory-limit MEMORY-LIMIT] [-t|--time-limit TIME-LIMIT] [--sleep SLEEP] [-b|--bus BUS] [--queues QUEUES] [--no-reset [NO-RESET]] [--all] [--exclude-receivers EXCLUDE-RECEIVERS] [--keepalive [KEEPALIVE]] [--fetch-size FETCH-SIZE] [--] [<receivers>...]\n\n>…home/gregoire/dev/labs/symfony/symfony-8.1(main *+%) php test.php \nNo message in the queue.\n```\n\n\n### Possible Solution\n\nI tried to read the messenger code, but it became too hacky for me :/ Sorry\n\n### Additional Context\n\n_No response_",
+        "url": "https://github.com/symfony/symfony/issues/64865"
+    },
+    {
+        "id": 4850257005,
+        "number": 64851,
+        "title": "[Event listeners] Duplicated event listeners in 404 page",
+        "state": "closed",
+        "created_at": "2026-07-09T22:08:03Z",
+        "updated_at": "2026-07-13T16:01:33Z",
+        "closed_at": "2026-07-13T15:36:23Z",
+        "author": "Eptagone",
+        "comments": 5,
+        "labels": [
+            "Bug",
+            "Status: Needs Review"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Symfony version(s) affected\n\n7.4.14\n\n### Description\n\nFor some reason, symfony events are triggeres twice in the 404 page for both dev and production environmentes\n\n### How to reproduce\n\nWith a custom 404 page, go to the /_error/404 and use the profiler to see the events.\n\n<img width=\"4228\" height=\"6580\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/b3308380-0cb0-44aa-8ce1-80ae76a17080\" />\n\nI created [this reproduction project](https://github.com/Eptagone/symfony-duplicated-events-404) with an event listener to add debug message to the page every time the event is called and it happen twice in the 404 page.\n\n### Possible Solution\n\n_No response_\n\n### Additional Context\n\n_No response_",
+        "url": "https://github.com/symfony/symfony/issues/64851"
+    },
+    {
+        "id": 4846072072,
+        "number": 64846,
+        "title": "[DoctrineBridge] ProxyCacheWarmer::warmUp() returns temp proxy files causing Symfony 7.4 CacheWarmerAggregate to throw",
+        "state": "open",
+        "created_at": "2026-07-09T12:07:30Z",
+        "updated_at": "2026-07-09T12:07:33Z",
+        "closed_at": null,
+        "author": "semx",
+        "comments": 0,
+        "labels": [
+            "DoctrineBridge"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "## Summary\n\n`ProxyCacheWarmer::warmUp()` uses `scandir()` to collect generated proxy files **without filtering by extension**, causing it to return temporary files left by `doctrine/orm`'s atomic write mechanism. Symfony 7.4's strict `CacheWarmerAggregate` validation then throws an exception.\n\n## Environment\n\n- symfony/doctrine-bridge: 7.4.x (latest)\n- doctrine/orm: 2.20+ / 2.21.x-dev / 3.2.x\n- PHP: 8.2+\n\n## Bug details\n\n**In `doctrine/orm`'s `ProxyFactory`, proxy files are written atomically:**\n\n```php\n// vendor/doctrine/orm/src/Proxy/ProxyFactory.php\n$tmpFileName = $fileName . '.' . bin2hex(random_bytes(12));\nfile_put_contents($tmpFileName, $proxyCode);\n@chmod($tmpFileName, 0664);\nrename($tmpFileName, $fileName);  // rename is not checked for errors\n```\n\nThis means files like `__CG__SomeEntity.php.2eb37f8174836c6595d337b3` exist in the proxy directory during generation (and can persist if `rename()` fails silently).\n\n**Meanwhile, `ProxyCacheWarmer::warmUp()` scans everything:**\n\n```php\n// src/Symfony/Bridge/Doctrine/CacheWarmer/ProxyCacheWarmer.php\n$em->getProxyFactory()->generateProxyClasses($classes);\n\nforeach (scandir($proxyCacheDir) as $file) {\n    if (!is_dir($file = $proxyCacheDir.'/'.$file)) {\n        $files[] = $file;  // includes .php.{hash} temp files!\n    }\n}\n```\n\n**Result — Symfony 7.4 `CacheWarmerAggregate` throws:**\n\n```\n\"Symfony\\Bridge\\Doctrine\\CacheWarmer\\ProxyCacheWarmer::warmUp()\" should return a list\nof files or classes but \"/var/cache/prod/doctrine/orm/Proxies/__CG__SomeEntity.php.2eb37f8174836c6595d337b3\"\nis none of them.\n```\n\n## Why it's intermittent\n\n- Fresh deploy to clean cache → `rename()` finishes before anything else reads the dir → ✅ OK\n- Concurrent PHP workers (e.g. php-fpm pool) warming up simultaneously → race: `scandir()` in one worker catches the temp file another worker is writing → ❌ FAIL\n- `rename()` fails silently (disk pressure, NFS, etc.) → temp file persists → every subsequent warmup fails → ❌ FAIL\n\n## Proposed fix\n\nOne-line change to filter `scandir()` to only `.php` files:\n\n```diff\n  foreach (scandir($proxyCacheDir) as $file) {\n-     if (!is_dir($file = $proxyCacheDir.'/'.$file)) {\n+     if (!is_dir($file = $proxyCacheDir.'/'.$file) && str_ends_with($file, '.php')) {\n          $files[] = $file;\n      }\n  }\n```\n\nThis makes the warmer robust against:\n- Temp files from the atomic write\n- Any other non-PHP files that may appear in the proxy directory\n\n## Notes\n\nThe fix should live in `src/Symfony/Bridge/Doctrine/CacheWarmer/ProxyCacheWarmer.php`. The same guard could optionally be added inside `doctrine/orm`'s `ProxyFactory` to verify `rename()` succeeded, but filtering on the consumer side is sufficient.\n\nConfirmed present in the latest commit on the 7.4 branch.",
+        "url": "https://github.com/symfony/symfony/issues/64846"
+    },
+    {
+        "id": 4843830607,
+        "number": 64841,
+        "title": "[Console] box style Table: wrong top border without header and stray crossing over colspan cells",
+        "state": "open",
+        "created_at": "2026-07-09T06:36:08Z",
+        "updated_at": "2026-07-09T06:38:02Z",
+        "closed_at": null,
+        "author": "wazum",
+        "comments": 0,
+        "labels": [
+            "Bug",
+            "Console",
+            "Status: Needs Review"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Symfony version(s) affected\n\n6.4 (also reproduces on 7.4)\n\n### Description\n\nHi, I found two rendering bugs in the Console `Table` helper when using the `box` style. Both are about the border/crossing characters, so I put them together in one issue.\n\n**Bug 1: a table without header draws the wrong characters on the top border**\n\nWhen a `box` table has rows but no header, the top line uses the \"middle junction\" characters (`├ ┼ ┤`) instead of the top corner characters (`┌ ┬ ┐`). So the table looks like it starts with a separator, not with a real top edge.\n\n**Bug 2: a header cell with colspan still shows a crossing above/below it**\n\nWhen a header cell spans multiple columns, the separators around it still draw a `┬` / `┼` at the inner column boundary, even if there is no vertical line at that place. So a small \"T\" appears over the spanned cell where it should be a plain line.\n\nBug 2 was already reported some time ago in #59616, but that issue got closed automatically because nobody answered. It is still there, so I mention it here again.\n\n### How to reproduce\n\n```php\nuse Symfony\\Component\\Console\\Helper\\Table;\nuse Symfony\\Component\\Console\\Helper\\TableCell;\nuse Symfony\\Component\\Console\\Output\\ConsoleOutput;\n\n$output = new ConsoleOutput();\n\n// Bug 1: no header\n(new Table($output))\n    ->setStyle('box')\n    ->setRows([['A', '1'], ['B', '2']])\n    ->render();\n\n// Bug 2: header cell with colspan\n(new Table($output))\n    ->setStyle('box')\n    ->setHeaders([new TableCell('Title', ['colspan' => 2])])\n    ->setRows([['A', '1'], ['B', '2']])\n    ->render();\n```\n\nActual output:\n\n```\n├───┼───┤\n│ A │ 1 │\n│ B │ 2 │\n└───┴───┘\n\n┌─────┬────┐\n│ Title    │\n├─────┼────┤\n│ A   │ 1  │\n│ B   │ 2  │\n└─────┴────┘\n```\n\n### Possible cause\n\nI did a little bit of digging, maybe it helps.\n\nBug 1: the `box` style sets only 9 crossing chars in `Table::initStyles()`. Because of that, the last three chars used by `SEPARATOR_TOP_BOTTOM` (indexes 9-11 from `TableStyle::getCrossingChars()`) fall back to `midLeft` / `cross` / `midRight` (`├ ┼ ┤`) in `TableStyle::setCrossingChars()`. When there is no header, `Table::render()` consumes the divider first and then draws `SEPARATOR_TOP_BOTTOM` as the very first line, but that separator is meant for a header/body junction, not for the top edge.\n\nBug 2: in `Table::renderRowSeparator()` the middle crossing char is written at every column boundary, without looking at the colspan of the cell in the row above or below. So it also draws a crossing where a cell is spanning.\n\n### Expected\n\nBug 1: the top border should be `┌───┬───┐`.\n\nBug 2: the border above/below a spanned cell should not have a crossing at the spanned boundary.\n\nI will send a PR against 6.4 for this. Thanks.",
+        "url": "https://github.com/symfony/symfony/issues/64841"
+    },
+    {
+        "id": 4835397718,
+        "number": 64833,
+        "title": "[WebProfilerBundle] Injection of the toolbar in a BinaryResponse triggers an exception",
+        "state": "open",
+        "created_at": "2026-07-08T07:41:51Z",
+        "updated_at": "2026-07-08T07:41:55Z",
+        "closed_at": null,
+        "author": "jderusse",
+        "comments": 0,
+        "labels": [
+            "Bug",
+            "WebProfilerBundle",
+            "Status: Needs Review"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Symfony version(s) affected\n\n8.1 (not tested previous versions)\n\n### Description\n\nIn a dev environment or an environment with debugToolbar enabled, when a controller returns a HTML page with the BinaryFileResponse, the `WebDebugToolbarListener` try to inject the Toolbar in the response, which triggers an exception \n\n```\nLogicException:\nThe content cannot be set on a BinaryFileResponse instance.\n\n  at vendor/symfony/http-foundation/BinaryFileResponse.php:370\n  at Symfony\\Component\\HttpFoundation\\BinaryFileResponse->setContent('')\n     (vendor/symfony/web-profiler-bundle/EventListener/WebDebugToolbarListener.php:182)\n```\n\n### How to reproduce\n\n```\n#[Route(path: '/']\npublic function __invoke(): Response\n{\n        file_put_contents('/tmp/sf.html', '<html>coucou</html>');\n        return new BinaryFileResponse('/tmp/sf.html');\n}\n```\n\n\n### Possible Solution\n\nI think multiple way to fix that:\n- disabling the toolbar injection for `BinaryFileResponse`\n- create a temporary file in `WebDebugToolbarListener` and replace `BinaryFileResponse.file` with that file\n\n### Additional Context\n\n_No response_",
+        "url": "https://github.com/symfony/symfony/issues/64833"
+    },
+    {
+        "id": 4831075678,
+        "number": 64830,
+        "title": "`bin/console` with namespace and  ` --list` adds a critical error to logs",
+        "state": "open",
+        "created_at": "2026-07-07T18:10:29Z",
+        "updated_at": "2026-07-10T09:19:08Z",
+        "closed_at": null,
+        "author": "AntanasGa",
+        "comments": 2,
+        "labels": [
+            "Bug",
+            "Console",
+            "Status: Needs Review"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Symfony version(s) affected\n\n8.1.1\n\n### Description\n\nWhen trying to run commands like:\n* `php bin/console secrets --list`\n* `php bin/console debug --list`\n* `php bin/console make --list`\n* etc.\n\nwhile the console output does not have an error:\n```\n$ php bin/console secrets --list\nSymfony v8.1.1 (env: dev, debug: true)\n\nUsage:\n  command [options] [arguments]\n\nOptions:\n  -h, --help            Display help for the given command. When no command is given display help for the list command\n      --silent          Do not output any message\n  -q, --quiet           Only errors are displayed. All other output is suppressed\n  -V, --version         Display this application version\n      --ansi|--no-ansi  Force (or disable --no-ansi) ANSI output\n  -n, --no-interaction  Do not ask any interactive question\n  -e, --env=ENV         The Environment name. [default: \"dev\"]\n      --no-debug        Switch off debug mode.\n      --profile         Enables profiling (requires debug).\n  -v|vv|vvv, --verbose  Increase the verbosity of messages: 1 for normal output, 2 for more verbose output and 3 for debug\n\nAvailable commands for the \"secrets\" namespace:\n  secrets:decrypt-to-local    Decrypt all secrets and stores them in the local vault\n  secrets:encrypt-from-local  Encrypt all local secrets to the vault\n  secrets:generate-keys       Generate new encryption keys\n  secrets:list                List all secrets\n  secrets:remove              Remove a secret from the vault\n  secrets:reveal              Reveal the value of a secret\n  secrets:set                 Set a secret in the vault\n\n```\nwith `symfony/monolog-bundle` var/log/*.log appends:\n```\n[${DATE}] console.CRITICAL: Error thrown while running command \"secrets --list\". Message: \"Command \"secrets\" is not defined.  Did you mean one of these?     secrets:decrypt-to-local     secrets:encrypt-from-local     secrets:generate-keys     secrets:list     secrets:remove     secrets:reveal     secrets:set\" {\"exception\":\"[object] (Symfony\\\\Component\\\\Console\\\\Exception\\\\CommandNotFoundException(code: 0): Command \\\"secrets\\\" is not defined.\\n\\nDid you mean one of these?\\n    secrets:decrypt-to-local\\n    secrets:encrypt-from-local\\n    secrets:generate-keys\\n    secrets:list\\n    secrets:remove\\n    secrets:reveal\\n    secrets:set at /vendor/symfony/console/Application.php:785)\",\"command\":\"secrets --list\",\"message\":\"Command \\\"secrets\\\" is not defined.\\n\\nDid you mean one of these?\\n    secrets:decrypt-to-local\\n    secrets:encrypt-from-local\\n    secrets:generate-keys\\n    secrets:list\\n    secrets:remove\\n    secrets:reveal\\n    secrets:set\"} []\n```\n\n### How to reproduce\n\nthe commands ran to reproduce the bug:\n```sh\n$ symfony new my_project_directory\n$ cd my_project_directory\n$ composer require symfony/monolog-bundle\n$ php bin/console secrets --list\n```\ncheck given output from `--list`, then\nafter these commands check `./var/log/*.log`\n\n### Possible Solution\n\n_No response_\n\n### Additional Context\n\n_No response_",
+        "url": "https://github.com/symfony/symfony/issues/64830"
+    },
+    {
+        "id": 4828636661,
+        "number": 64826,
+        "title": "`framework.cache.default_valkey_provider` config node is unused",
+        "state": "open",
+        "created_at": "2026-07-07T12:47:42Z",
+        "updated_at": "2026-07-07T13:09:47Z",
+        "closed_at": null,
+        "author": "mbabker",
+        "comments": 0,
+        "labels": [
+            "Bug",
+            "FrameworkBundle",
+            "Status: Needs Review",
+            "Cache"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Symfony version(s) affected\n\n7.3+\n\n### Description\n\nIn #59869 support for Valkey as a first-class scheme was added, which included the `default_valkey_provider` config node.  However, this config node is unused by the framework, so an application using this instead of `default_redis_provider` would not have the correct configuration and connections would default to the Redis node's `redis://localhost` DSN.\n\n### How to reproduce\n\nConfigure the cache component with this minimal file:\n\n```yaml\nframework:\n    cache:\n        app: cache.adapter.valkey\n        default_valkey_provider: valkey://localhost\n```\n\nRun Redis or Valkey on a non-localhost connection and note that the connection can't be opened since the framework is falling back to the `default_redis_provider` node's default.\n\n### Possible Solution\n\nMake the `cache.adapter.valkey` and `cache.adapter.valkey_tag_aware` services full services consuming those defaults instead of aliases to the Redis services.\n\n### Additional Context\n\n_No response_",
+        "url": "https://github.com/symfony/symfony/issues/64826"
+    },
+    {
+        "id": 4819804542,
+        "number": 64818,
+        "title": "new PropertyAccessor(throw: PropertyAccessor::DO_NOT_THROW) Seems to be ignored",
+        "state": "open",
+        "created_at": "2026-07-06T13:53:46Z",
+        "updated_at": "2026-07-07T04:56:29Z",
+        "closed_at": null,
+        "author": "ackalhan",
+        "comments": 1,
+        "labels": [
+            "Bug",
+            "Status: Needs Review",
+            "ObjectMapper"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Symfony version(s) affected\n\n8.1.1\n\n### Description\n\nObject mapper seems to have a problem when creating  with this configuration.\n\n`new ObjectMapper(propertyAccessor: new PropertyAccessor(throw: PropertyAccessor::DO_NOT_THROW));`\n\nAs per the example transform function (**transformProperty**). should receive the string value of $sourceProperty (**ABC**), instead it will throw an error saying\n\n> Target::transformProperty(): Argument #1 ($value) must be of type string, null given\n\nThis worked well in **object-mapper:8.1.0**\n\n### How to reproduce\n\n```\nclass Source\n{\n    public string $id = '123';\n    public string $sourceProperty = 'ABC';\n}\n\n#[Map(source: Source::class)]\nclass Target\n{\n    #[Map(source: 'sourceProperty', transform: [self::class, 'transformProperty'])]\n    public string $targetProperty;\n\n    public static function transformProperty(string $value): string\n    {\n        return $value;\n    }\n}\n\n$mapper = new ObjectMapper(propertyAccessor: new PropertyAccessor(throw: PropertyAccessor::DO_NOT_THROW));\n$mapper->map(new Source(), Target::class);\n```\n\n### Possible Solution\n\n_No response_\n\n### Additional Context\n\n_No response_",
+        "url": "https://github.com/symfony/symfony/issues/64818"
+    },
+    {
+        "id": 4819522475,
+        "number": 64817,
+        "title": "defaultValue not escaped in reference.php",
+        "state": "open",
+        "created_at": "2026-07-06T13:19:17Z",
+        "updated_at": "2026-07-06T13:29:14Z",
+        "closed_at": null,
+        "author": "lazka",
+        "comments": 0,
+        "labels": [
+            "Bug",
+            "Config",
+            "Status: Needs Review"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Symfony version(s) affected\n\n7.4.14\n\n### Description\n\nI have a bundle which has this config entry:\n\n```php\n                        ->scalarNode('schedule')\n                            ->info('Cron expression for when normal/incremental syncs should run')\n                            ->defaultValue('*/30 * * * *')\n                        ->end()\n```\n\nThis results in the following snippet being generated in the references.php (in a @psalm-type section):\n\n```php\n/**\n * ...\n *  schedule?: scalar|Param|null, // Cron expression for when normal/incremental syncs should run // Default: \"*/30 * * * *\"\n * ...\n */\n```\n\nSince `*/` ends the multi line comment, the file is invalid due to that.\n\n### How to reproduce\n\n```php\n                        ->scalarNode('schedule')\n                            ->info('Cron expression for when normal/incremental syncs should run')\n                            ->defaultValue('*/30 * * * *')\n                        ->end()\n```\n\nI don't know how to easily reproduce this without a full app with a bundle. I hope this is enough info.\n\n\n### Possible Solution\n\nEscape values that are included in PHP comments.\n\n### Additional Context\n\n_No response_",
+        "url": "https://github.com/symfony/symfony/issues/64817"
+    },
+    {
+        "id": 4814506276,
+        "number": 64802,
+        "title": "Array length in Expression language",
+        "state": "open",
+        "created_at": "2026-07-05T21:28:57Z",
+        "updated_at": "2026-07-10T18:18:41Z",
+        "closed_at": null,
+        "author": "whataboutpereira",
+        "comments": 1,
+        "labels": [
+            "Feature",
+            "ExpressionLanguage"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Description\n\nI tried to get at submitted array sizes using Expression language only to realize it doesn't support it.\n\nIt would be nice if Expression language would support something like `this.arr.count()` or `count(this.arr)` so we could for example validate 2 arrays are the same length or just a specific size.\n\n### Example\n\n_No response_",
+        "url": "https://github.com/symfony/symfony/issues/64802"
+    },
+    {
+        "id": 4813101835,
+        "number": 64799,
+        "title": "ConstraintValidatorTestCase: setGroup accepts null but internal property is string-typed (type inconsistency)",
+        "state": "open",
+        "created_at": "2026-07-05T13:56:21Z",
+        "updated_at": "2026-07-05T13:57:22Z",
+        "closed_at": null,
+        "author": "ixarlie",
+        "comments": 0,
+        "labels": [
+            "Bug",
+            "Status: Needs Review"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Symfony version(s) affected\n\n`>=7.0`\n\n### Description\n\nWhile writing tests for a custom constraint validator, I needed to simulate the case where no validation group is explicitly provided.\n\nIn `Symfony\\Component\\Validator\\Test\\ConstraintValidatorTestCase`, the `setGroup(?string $group)` method allows a nullable string, but the internal property is strictly typed as `string`.\n\nThis creates a type inconsistency between the method signature and the property assignment.\n\n**Code reference**\n\nhttps://github.com/symfony/symfony/blob/v7.0.0/src/Symfony/Component/Validator/Test/ConstraintValidatorTestCase.php#L55\n\n```php\nprotected string $group;\n```\nhttps://github.com/symfony/symfony/blob/v7.0.0/src/Symfony/Component/Validator/Test/ConstraintValidatorTestCase.php#L168-L172\n```php\nprotected function setGroup(?string $group)\n{\n    $this->group = $group;\n    $this->context->setGroup($group);\n}\n```\n\n### How to reproduce\n\nThis can be reproduced by extending `ConstraintValidatorTestCase` and calling `setGroup(null)`.\n\nExample:\n\n```php\nuse Symfony\\Component\\Validator\\Test\\ConstraintValidatorTestCase;\nuse Symfony\\Component\\Validator\\ConstraintValidatorInterface;\n\nfinal class DummyValidatorTest extends ConstraintValidatorTestCase\n{\n    public function testNullGroup(): void\n    {\n        // throws \\TypeError\n        $this->setGroup(null);\n\n        // ...\n    }\n\n    protected function createValidator(): ConstraintValidatorInterface\n    {\n        return new class implements ConstraintValidatorInterface {\n            public function initialize(ExecutionContextInterface $context): void {}\n            public function validate(mixed $value, Constraint $constraint): void {}\n        };\n    }\n}\n```\n\n> TypeError : Cannot assign null to property Symfony\\Component\\Validator\\Test\\ConstraintValidatorTestCase::$group of type string\n\n### Possible Solution\n\nA minimal and backward-compatible fix would be to allow the internal property to accept `null`, aligning it with the `setGroup(?string $group)` signature.\n\n```php\nprotected ?string $group = null;\n```\n\n### Additional Context\n\n_No response_",
+        "url": "https://github.com/symfony/symfony/issues/64799"
+    },
+    {
+        "id": 4810304983,
+        "number": 64795,
+        "title": "Process propagates $_ENV into child process environment, causing sensitive variables to appear in $_SERVER unexpectedly",
+        "state": "open",
+        "created_at": "2026-07-04T19:36:13Z",
+        "updated_at": "2026-07-04T20:09:25Z",
+        "closed_at": null,
+        "author": "mariovials",
+        "comments": 0,
+        "labels": [
+            "Bug",
+            "Process",
+            "Status: Needs Review"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Symfony version(s) affected\n\n7.3\n\n### Description\n\n**Summary**\n\nSymfony\\Component\\Process\\Process automatically propagates the contents of $_ENV into the environment of child processes, even when those variables are not part of the process environment (getenv()) and were intentionally kept only in $_ENV.\n\nAs a consequence, the child PHP process starts with those variables in its operating system environment, and PHP CLI automatically exposes them through $_SERVER.\n\nThis behavior is surprising and may unintentionally expose sensitive information to subprocesses.\n\n### Expected behavior\n\nIf an application intentionally stores secrets only in $_ENV, without calling putenv() or otherwise exporting them to the process environment, child processes should not automatically receive those values unless explicitly requested.\n\n### In other words:\n\n$_ENV should remain process-local application state.\nOnly the actual process environment (getenv()) or an explicitly provided environment array should be inherited by child processes.\n### Actual behavior\n\nInternally, Process builds the child environment using:\n\n```\n$env = getenv();\n$env = array_intersect_key($env, $_SERVER) ?: $env;\n$env = $_ENV + $env;\n```\n\nAs a result, every value stored in $_ENV is exported to the child process environment.\n\nWhen the child is another PHP CLI process, PHP initializes:\n\n```\ngetenv()\n$_SERVER\n```\n\nfrom that environment.\n\nTherefore, variables that intentionally existed only in $_ENV become available through:\n\n```\n$_SERVER['DB_PASS']\n$_SERVER['API_KEY']\n$_SERVER['SECRET']\n...\n```\n\nbefore any application code is executed.\n\n### Why this is problematic\n\nMany applications deliberately avoid exporting secrets to the operating system environment.\n\nFor example, with vlucas/phpdotenv it is perfectly possible to configure the repository so that variables are loaded only into $_ENV, explicitly avoiding:\n\n```\nputenv()\n$_SERVER\n```\n\nThis is commonly done to reduce accidental exposure of secrets.\n\nHowever, creating a child process with Symfony Process silently defeats that design decision.\n\nThe developer may verify that:\n\n```\nisset($_SERVER['DB_PASS']) === false\ngetenv('DB_PASS') === false\nisset($_ENV['DB_PASS']) === true\n```\n\nand reasonably conclude that secrets are not exposed outside the current process.\n\nAfter spawning a child process with Process, the child unexpectedly starts with:\n\n```\nisset($_SERVER['DB_PASS']) === true\ngetenv('DB_PASS') !== false\n```\n\neven before the first line of user code executes.\n\nThis behavior is extremely difficult to discover because nothing in the application explicitly exports those variables.\n\n### Minimal reproduction\nIn secction How to reproduce\n\nWhy this is unexpected\n\n$_ENV is a PHP superglobal intended for application-level environment variables.\n\nIt is not necessarily equivalent to the operating system environment.\n\nBy automatically promoting $_ENV into the child process environment, Process changes the visibility and lifetime of those variables in a way that the application never requested.\n\n### Possible improvements\n\n\nI understand the current behavior may be intentional for convenience, but from a security perspective it is surprising because it silently widens the scope of sensitive data that developers intentionally kept outside the operating system environment.\n\n### How to reproduce\n\nParent process:\n\n```\n$_ENV['SECRET'] = 'my-secret';\n\nvar_dump(isset($_ENV['SECRET']));      // true\nvar_dump(getenv('SECRET'));            // false\nvar_dump(isset($_SERVER['SECRET']));   // false\n\n$process = new Process([\n    PHP_BINARY,\n    'child.php',\n]);\n\n$process->run();\n```\n\nChild (child.php):\n\n```\nvar_dump(isset($_ENV['SECRET']));\nvar_dump(isset($_SERVER['SECRET']));\nvar_dump(getenv('SECRET'));\n```\n\n### Output:\n\n```\n$_ENV      => false\n$_SERVER   => true\ngetenv()   => \"my-secret\"\n```\n\n\n### Possible Solution\n\nSome possible options could be:\n\nOnly inherit the actual process environment (getenv()).\nAdd an option allowing developers to disable propagation of $_ENV.\nClearly document that $_ENV is automatically exported into child processes.\nMake propagation of $_ENV opt-in instead of implicit.\n\n\n### Additional Context\n\n_No response_",
+        "url": "https://github.com/symfony/symfony/issues/64795"
+    },
+    {
+        "id": 4803627029,
+        "number": 64790,
+        "title": "unlink(): Argument #1 ($filename) must not contain any null bytes",
+        "state": "open",
+        "created_at": "2026-07-03T12:55:46Z",
+        "updated_at": "2026-07-04T07:41:55Z",
+        "closed_at": null,
+        "author": "4d4ch4u32",
+        "comments": 2,
+        "labels": [
+            "Bug",
+            "Status: Needs Review",
+            "Status: Waiting feedback"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Symfony version(s) affected\n\n7.4.13\n\n### Description\n\n<img width=\"1025\" height=\"1190\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/91259bbc-83c6-4ab4-b98d-a065980e5665\" />\n\n```\nValueError:\nunlink(): Argument #1 ($filename) must not contain any null bytes\n\n  at vendor/symfony/http-kernel/Profiler/FileProfilerStorage.php:341\n  at unlink(binary string)\n     (vendor/symfony/http-kernel/Profiler/FileProfilerStorage.php:341)\n  at Symfony\\Component\\HttpKernel\\Profiler\\FileProfilerStorage->removeExpiredProfiles()\n     (vendor/symfony/http-kernel/Profiler/FileProfilerStorage.php:193)\n  at Symfony\\Component\\HttpKernel\\Profiler\\FileProfilerStorage->write(object(Profile))\n     (vendor/symfony/http-kernel/Profiler/Profiler.php:97)\n  at Symfony\\Component\\HttpKernel\\Profiler\\Profiler->saveProfile(object(Profile))\n     (vendor/symfony/http-kernel/EventListener/ProfilerListener.php:129)\n  at Symfony\\Component\\HttpKernel\\EventListener\\ProfilerListener->onKernelTerminate(object(TerminateEvent), 'kernel.terminate', object(TraceableEventDispatcher))\n     (vendor/symfony/event-dispatcher/Debug/WrappedListener.php:115)\n  at Symfony\\Component\\EventDispatcher\\Debug\\WrappedListener->__invoke(object(TerminateEvent), 'kernel.terminate', object(TraceableEventDispatcher))\n     (vendor/symfony/event-dispatcher/EventDispatcher.php:206)\n  at Symfony\\Component\\EventDispatcher\\EventDispatcher->callListeners(array(object(WrappedListener)), 'kernel.terminate', object(TerminateEvent))\n     (vendor/symfony/event-dispatcher/EventDispatcher.php:56)\n  at Symfony\\Component\\EventDispatcher\\EventDispatcher->dispatch(object(TerminateEvent), 'kernel.terminate')\n     (vendor/symfony/event-dispatcher/Debug/TraceableEventDispatcher.php:129)\n  at Symfony\\Component\\EventDispatcher\\Debug\\TraceableEventDispatcher->dispatch(object(TerminateEvent), 'kernel.terminate')\n     (vendor/symfony/http-kernel/HttpKernel.php:114)\n  at Symfony\\Component\\HttpKernel\\HttpKernel->terminate(object(Request), object(Response))\n     (vendor/symfony/http-kernel/Kernel.php:147)\n  at Symfony\\Component\\HttpKernel\\Kernel->terminate(object(Request), object(Response))\n     (vendor/symfony/runtime/Runner/Symfony/HttpKernelRunner.php:53)\n  at Symfony\\Component\\Runtime\\Runner\\Symfony\\HttpKernelRunner->run()\n     (vendor/autoload_runtime.php:32)\n  at require_once('/srv/app/vendor/autoload_runtime.php')\n     (public/index.php:5)       \n```\n\n\nThis problem happens to occur when the web app is reloaded, and I can't say what's causing it. \n\n### How to reproduce\n\nI haven't been able to reproduce the behavior.\n\n### Possible Solution\n\n_No response_\n\n### Additional Context\n\nFor example, it occurs after Flash messages are displayed.",
+        "url": "https://github.com/symfony/symfony/issues/64790"
+    },
+    {
+        "id": 4793674517,
+        "number": 64780,
+        "title": "[Scheduler] Jitter messes with schedules",
+        "state": "closed",
+        "created_at": "2026-07-02T10:49:19Z",
+        "updated_at": "2026-07-10T11:47:48Z",
+        "closed_at": "2026-07-10T11:47:48Z",
+        "author": "mrossard",
+        "comments": 1,
+        "labels": [
+            "Bug",
+            "Status: Needs Review",
+            "Scheduler"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Symfony version(s) affected\n\n8.0\n\n### Description\n\nI have a schedule with a configuration that looks like this : \n```php\n public function getSchedule(): SymfonySchedule\n    {\n        return new SymfonySchedule()\n            ->stateful($this->cache) // ensure missed tasks are executed\n            ->processOnlyLastMissedRun(true)\n            ->add(\n                RecurringMessage::every(\n                    frequency: '1 day',\n                    message: new RunCommandMessage('app:somecommand'),\n                    from: '02:45',\n                )->withJitter(300)\n            );\n}\n```\n\nInstead of running once per day it seems to run once every 2 days; i log start times for this and have this in the logs : \n2026-06-18 02:45:59\n2026-06-20 02:47:25\n2026-06-22 02:47:05\n2026-06-24 02:49:28\n2026-06-26 02:46:42\n2026-06-28 02:45:48\n2026-06-30 02:48:13\n2026-07-02 02:47:37\n\n### How to reproduce\n\nsee the example above.\n\n### Possible Solution\n\nMy guess is that it tries to run at 02:45, one day after the effective time of the previous run jitter included instead of using the base \"from\" time.\n\nI haven't had time to dive into it just yet, but I suppose it should be around MessageGenerator::getMessages(), which seems to be where next run dates are computed.\n\n### Additional Context\n\n_No response_",
+        "url": "https://github.com/symfony/symfony/issues/64780"
+    },
+    {
+        "id": 4788620252,
+        "number": 64777,
+        "title": "[Messenger] Add a messenger:show command for pending messages",
+        "state": "open",
+        "created_at": "2026-07-01T19:29:38Z",
+        "updated_at": "2026-07-07T10:35:06Z",
+        "closed_at": null,
+        "author": "laloona",
+        "comments": 4,
+        "labels": [
+            "Feature",
+            "Messenger"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Description\n\n### Motivation\n\nThe Messenger component already provides `messenger:failed:show`, which offers a great experience for inspecting failed messages.\n\nHowever, there is currently no equivalent command to inspect pending messages on regular transports. During development and operations, it is often necessary to inspect queued messages to understand what is waiting to be processed without having to query the transport storage directly.\n\n### Proposal\n\nIntroduce a new command:\n```bash\nphp bin/console messenger:show --transport=<transport>\nphp bin/console messenger:show --transport=<transport> <id>\nphp bin/console messenger:show --transport=<transport> --class-filter=<classname> --max=<max> --stats\nphp bin/console messenger:show <id>\n```\n\nThe command would list or display pending messages for the given transport.\n\nIt would only be available for transports that support browsing queued messages. If a transport does not support this capability, the command could simply report that browsing is not supported.\n\nThe existing `messenger:failed:show` command would remain unchanged and continue to focus exclusively on the configured failure transport.\n\n### Why this would be useful\n\n* Provides a consistent debugging experience for pending messages.\n* Avoids transport-specific tooling (database queries, broker UIs, etc.).\n* Reuses concepts that already exist in the Messenger component.\n* Only requires support from transports that are capable of browsing queued messages.\n\nWhile implementing a similar command internally, I noticed that most of the functionality already exists in `messenger:failed:show`. The new command would simply make this inspection capability available for regular transports as well.\n\nWould this be a feature that the Messenger component would consider adding?\n\n### Example\n\n_No response_",
+        "url": "https://github.com/symfony/symfony/issues/64777"
+    }
+]

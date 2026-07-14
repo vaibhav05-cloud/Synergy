@@ -1,0 +1,393 @@
+[
+    {
+        "id": 4881010440,
+        "number": 41524,
+        "title": "Tables explorer error when opening the list with a Motherduck Postgres endpoint connection",
+        "state": "open",
+        "created_at": "2026-07-14T07:49:35Z",
+        "updated_at": "2026-07-14T07:50:09Z",
+        "closed_at": null,
+        "author": "roberto-palloni",
+        "comments": 0,
+        "labels": [
+            "wait for review"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Description\n\nWhen clicking on the schema to explore tables inside, prompt return error\n\n```\nSQL Error [XXUUU]: ERROR: Catalog Error: Scalar Function with name pg_get_partkeydef does not exist!\nDid you mean \"pg_get_viewdef\"?\nLINE 1: ....pg_get_expr(c.relpartbound, c.oid) as partition_expr,  pg_catalog.pg_get_partkeydef(c.oid) as partition_key                                                        ^\n  ERROR: Catalog Error: Scalar Function with name pg_get_partkeydef does not exist!\nDid you mean \"pg_get_viewdef\"?\nLINE 1: ....pg_get_expr(c.relpartbound, c.oid) as partition_expr,  pg_catalog.pg_get_partkeydef(c.oid) as partition_key \n```\n\n<img width=\"1444\" height=\"318\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/da83a9af-6c7a-40ad-b98b-0e3ace39e028\" />\n\nHowever, the select on the table runs ok\n\n### DBeaver Version\n\n26.1.2\n\n### Operating System\n\nmacOS Tahoe 26.5.1\n\n### Database and driver\n\n_No response_\n\n### Steps to reproduce\n\n_No response_\n\n### Additional context\n\n_No response_",
+        "url": "https://github.com/dbeaver/dbeaver/issues/41524"
+    },
+    {
+        "id": 4877044806,
+        "number": 41522,
+        "title": "Connection timed out - SOCKS Proxy with jt400.jar - IBM DB2 i-Series",
+        "state": "open",
+        "created_at": "2026-07-13T19:44:58Z",
+        "updated_at": "2026-07-13T19:44:58Z",
+        "closed_at": null,
+        "author": "viktortoenkoel",
+        "comments": 0,
+        "labels": [
+            "wait for review"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Description\n\nHello,\n\nI'm trying to connect with a IBM DB2 i-Series database.\nConnection works from other client like PyCharm or IBM Data Studio, but I do not like those and I'd like to use dbeaver, but that does not work.\n\nVersion 26.1.1.202606211757\n\n<img width=\"633\" height=\"225\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/77a25d0f-57b3-42eb-b141-3baeb6810407\" />\n\n\n\n### DBeaver Version\n\nCE 26.1.1.202606211757\n\n### Operating System\n\nUnuntu 24\n\n### Database and driver\n\n- ibm db2 i series driver\n- custom ibm db2 driver which uses the exact jt400.jar with which other client work\n\n### Steps to reproduce\n\n1. create connection to an ibm db2 iseries db\n2. configure either sock or ssh proxy\n3. connection just times out (for me at least)\n\n### Additional context\n\n2. configure either sock or ssh proxy\n\n[dbeaver-diagnostic-info-1783971696245.zip](https://github.com/user-attachments/files/29981903/dbeaver-diagnostic-info-1783971696245.zip)",
+        "url": "https://github.com/dbeaver/dbeaver/issues/41522"
+    },
+    {
+        "id": 4875734316,
+        "number": 41521,
+        "title": "Can't read content assist due to highlight color and text color being similar.",
+        "state": "open",
+        "created_at": "2026-07-13T16:46:24Z",
+        "updated_at": "2026-07-13T19:26:42Z",
+        "closed_at": null,
+        "author": "kairoswater-jason",
+        "comments": 1,
+        "labels": [
+            "xo:eclipse",
+            "wait for review",
+            "xf:ui",
+            "xf:sql autocompletion"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Description\n\nPossibly related to 10 year old issue  https://github.com/dbeaver/dbeaver/issues/122\n\nThis is using default settings. See image below showing the content assist popup. I cannot read this popup due to the highlight foreground and background colors being so similar (not enough contrast)\n\n<img width=\"1780\" height=\"162\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/30a513e3-45a7-4fe5-b3a3-dba80359f007\" />\n\n<img width=\"2116\" height=\"182\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/324216d8-b21e-4c3c-af1e-b2c0c5a2c281\" />\n\n\nDoes dbeaver/eclipse have any configuration options that will permit making this readable? About 10 years ago in issue 122 the answer was \"it's some sort of eclipse problem\"\n\n\n\n\n### DBeaver Version\n\nVersion 26.1.2.202607051737\n\n### Operating System\n\nUbuntu 22.04, Xfce 4.16\n\n### Database and driver\n\n_No response_\n\n### Steps to reproduce\n\n_No response_\n\n### Additional context\n\n_No response_",
+        "url": "https://github.com/dbeaver/dbeaver/issues/41521"
+    },
+    {
+        "id": 4874346317,
+        "number": 41519,
+        "title": "Format Nullable(UInt64) values as integers for ClickHouse connections",
+        "state": "open",
+        "created_at": "2026-07-13T13:59:20Z",
+        "updated_at": "2026-07-13T19:24:03Z",
+        "closed_at": null,
+        "author": "andreyosadchuktccenter",
+        "comments": 1,
+        "labels": [
+            "x:clickhouse",
+            "xf:metadata",
+            "xf:data editor"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "Nullable UInt64 values are currently displayed/ formatted as Strings rather than digits. Make them displayed as integers.\n\n`WITH 1::UInt64 AS digit\nSELECT digit, toNullable(digit);`\n\n<img width=\"458\" height=\"83\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/f1c68784-8e1c-4438-ae52-f447fd6ecdb3\" />",
+        "url": "https://github.com/dbeaver/dbeaver/issues/41519"
+    },
+    {
+        "id": 4865495796,
+        "number": 41514,
+        "title": "Devstyle not working",
+        "state": "closed",
+        "created_at": "2026-07-12T05:05:37Z",
+        "updated_at": "2026-07-13T09:50:34Z",
+        "closed_at": "2026-07-13T09:50:34Z",
+        "author": "chepadawan",
+        "comments": 1,
+        "labels": [
+            "third party issue"
+        ],
+        "assignees": [],
+        "locked": true,
+        "body": "I have problems updating with after the version 26.1.0 the devstyle plugings seems there is an expiration issue.\n\n[devstyle.docx](https://github.com/user-attachments/files/29934739/devstyle.docx)\nsee the issue let me know what I can do.",
+        "url": "https://github.com/dbeaver/dbeaver/issues/41514"
+    },
+    {
+        "id": 4861494591,
+        "number": 41512,
+        "title": "Add Windows installation packages in `.msixbundle` format",
+        "state": "open",
+        "created_at": "2026-07-11T08:57:56Z",
+        "updated_at": "2026-07-13T09:51:09Z",
+        "closed_at": null,
+        "author": "linghengqian",
+        "comments": 0,
+        "labels": [
+            "xo:windows",
+            "wait for review"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "**Is your feature request related to a problem? Please describe.**\nA clear and concise description of what the problem is. Ex. I'm always frustrated when [...]\n\n- No.\n\n**Describe the solution you'd like**\nA clear and concise description of what you want to happen.\n\n- Add Windows installation packages in `.msixbundle` format.\n\n**Describe alternatives you've considered**\nA clear and concise description of any alternative solutions or features you've considered.\n\n- Null.\n\n**Additional context**\nAdd any other context or screenshots about the feature request here.\n\n- Based on the actions described in https://github.com/PowerShell/PowerShell/discussions/27292 , Microsoft has decided that the `.msixbundle` format will replace the `.exe` and `.msi` formats for installers.",
+        "url": "https://github.com/dbeaver/dbeaver/issues/41512"
+    },
+    {
+        "id": 4859382125,
+        "number": 41510,
+        "title": "DBeaver CE Dump Fails when Workbench export/import works",
+        "state": "open",
+        "created_at": "2026-07-10T23:33:54Z",
+        "updated_at": "2026-07-13T09:51:24Z",
+        "closed_at": null,
+        "author": "Linda-A-LF",
+        "comments": 0,
+        "labels": [
+            "wait for review",
+            "xqa:need-testing"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Description\n\nI attempted to dump a MySQL database using the DBeaver v26.1.2 software.  \n\nThe MySQL dump progress log had these entries : \n2026-07-10 12:53:25.875 - Dump database into file:///C:/Exports/10.101.3.188_dump-forms-202607101253.sql\nC:\\Users\\lilorent\\AppData\\Roaming\\DBeaverData\\drivers\\clients\\mysql_8\\win\\mysqldump.exe --single-transaction --routines --add-drop-table --disable-keys --extended-insert -u MyChief --host=10.101.3.188 --port=7325 forms\nTask 'MySQL dump' started at Fri Jul 10 12:53:25 HST 2026\nmysqldump: Error in field count for table: `backupipu_bus` !  Aborting.\n\nTask 'MySQL dump' finished at Fri Jul 10 12:53:30 HST 2026\n2026-07-10 12:53:31.006 - IO error: Process failed (exit code = 3). See error log.\n2026-07-10 12:53:31.006 - java.io.IOException: Process failed (exit code = 3). See error log.\n\tat org.jkiss.dbeaver.tasks.nativetool.AbstractNativeToolHandler.validateErrorCode(AbstractNativeToolHandler.java:264)\n\tat org.jkiss.dbeaver.tasks.nativetool.AbstractNativeToolHandler.executeProcess(AbstractNativeToolHandler.java:242)\n\tat org.jkiss.dbeaver.tasks.nativetool.AbstractNativeToolHandler.doExecute(AbstractNativeToolHandler.java:285)\n\tat org.jkiss.dbeaver.ext.mysql.tasks.MySQLNativeToolHandler.doExecute(MySQLNativeToolHandler.java:47)\n\tat org.jkiss.dbeaver.tasks.nativetool.AbstractNativeToolHandler.lambda$executeTask$0(AbstractNativeToolHandler.java:88)\n\tat org.jkiss.dbeaver.runtime.RunnableContextDelegate.lambda$run$0(RunnableContextDelegate.java:39)\n\tat org.eclipse.jface.operation.ModalContext$ModalContextThread.run(ModalContext.java:123)\n\nI was unable to get the DBeaver export/dump to work.  These were my configuration settings.\n\n<img width=\"1165\" height=\"579\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/5e6e44d9-27e9-45b0-9f78-4f7279ced90d\" />\n\n<img width=\"535\" height=\"497\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/2aa84118-4567-4313-a454-ea8c1e9ecb61\" />\n\nI don't understand why the DBeaver backup failed.  I executed a mysqldump using MySQL Workbench for the source database, and it worked just fine.  I won't always have Workbench available as it is no longer certified after MySQL v8.0.  I need to get DBeaver exports/dumps working.  \n\nThanks for your assistance.\n\n\n\n### DBeaver Version\n\nCommunity Edition Version 26.1.2.202607051737\n\n### Operating System\n\nWindows 11 Enterprise\n\n### Database and driver\n\n<img width=\"892\" height=\"89\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/e939e925-0f16-4f64-abc9-09c6b00c8dbe\" />\n\n<img width=\"824\" height=\"569\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/448e745d-834d-478e-8b79-d1678a113c89\" />\n\n### Steps to reproduce\n\n1. I connected to the MySQL instance.\n2. I selected (right clicked) the source database to be copied.\n3. I selected [**Tools**] > **Dump database**  \n\n<img width=\"626\" height=\"315\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/1346b7c9-9674-4955-924e-2faff15cb452\" />\n\n4. I validated the database object and selected Next\n\n<img width=\"899\" height=\"702\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/89ec45d7-8216-4568-9bcb-b96d1832b562\" />\n5. I established the export configuration settings.\n\n<img width=\"894\" height=\"704\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/f689ce13-e2ea-46d4-9db4-e0496733cf1d\" />\n6.  I selected **Start**\n\n### Additional context\n\nI attempted to locate the DBeaver log in the %APPDATA%/Roaming/DBeaerData/workspace6/.metadata folder, but the files do not equate with the timestamp of my failed export.\n\n<img width=\"787\" height=\"262\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/53f96cb9-d300-4600-9c11-6b4c6d8b6975\" />",
+        "url": "https://github.com/dbeaver/dbeaver/issues/41510"
+    },
+    {
+        "id": 4857564657,
+        "number": 41509,
+        "title": "DBeaver forgets the currently selected Postgres schema upon hitting a query error under manual commit mode",
+        "state": "open",
+        "created_at": "2026-07-10T18:14:22Z",
+        "updated_at": "2026-07-10T19:36:27Z",
+        "closed_at": null,
+        "author": "lilacse",
+        "comments": 0,
+        "labels": [
+            "x:postgresql",
+            "wait for review",
+            "xf:sql editor"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Description\n\nA video that demonstrates the issue:\n\nhttps://github.com/user-attachments/assets/5994babb-6c5b-4ee3-bb78-1a77c3630237\n\nThe default schema for this database is `public`, which has no tables. \n\nRunning `show search_path` with the same steps:\n\nhttps://github.com/user-attachments/assets/c67d49c4-ce5a-4b5d-a8fe-93e23faf448e\n\nAs far as I recall this had been happening for quite a long time (probably several years), but I only managed to find a way to reliably reproduce it recently. In memory, this also happens when the connection is invalidated due to a network issue.  \n\n### DBeaver Version\n\nCommunity Edition 26.1.2.202607051737\n\n### Operating System\n\nWindows 11\n\n### Database and driver\n\nDatabase name: PostgreSQL 15.18\nDatabase driver: PostgreSQL JDBC Driver 42.7.11\n\n### Steps to reproduce\n\n_No response_\n\n### Additional context\n\n_No response_",
+        "url": "https://github.com/dbeaver/dbeaver/issues/41509"
+    },
+    {
+        "id": 4856530936,
+        "number": 41505,
+        "title": "Impossible to create new MySQL table [NPE]",
+        "state": "closed",
+        "created_at": "2026-07-10T15:49:36Z",
+        "updated_at": "2026-07-13T09:36:51Z",
+        "closed_at": "2026-07-13T09:36:51Z",
+        "author": "HellAmbro",
+        "comments": 1,
+        "labels": [
+            "x:mysql",
+            "external"
+        ],
+        "assignees": [
+            "uslss"
+        ],
+        "locked": false,
+        "body": "### Description\n\nWhen i try to create a new Table inMySQL NPE is thrown.\n\nhttps://github.com/user-attachments/assets/4891aaf5-0032-454d-bd7e-b79fc5ab947d\n\n.\n\n\n### DBeaver Version\n\nCommunity Edition 26.1.3 (develop)\n\n### Operating System\n\nWindows 11\n\n### Database and driver\n\nServer: MySQL 8.0.46\n\nDriver: MySQL Connector/J mysql-connector-j-8.2.0 (Revision: 06a1f724497fd81c6a659131fda822c9e5085b6c)\n\n### Steps to reproduce\n\n1. Connect to MySQL\n2. Choose a Database\n3. Right Click on Tables\n4. Create New Table\n\nOr Alt+Insert\n\n### Additional context\n\n_No response_",
+        "url": "https://github.com/dbeaver/dbeaver/issues/41505"
+    },
+    {
+        "id": 4855169815,
+        "number": 41501,
+        "title": "Support custom auth model in Custom (CSV/XML) connection import",
+        "state": "open",
+        "created_at": "2026-07-10T12:53:54Z",
+        "updated_at": "2026-07-10T12:53:54Z",
+        "closed_at": null,
+        "author": "weih-kahoot",
+        "comments": 0,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "**Feature request**\n\nThe Custom connection import wizard (File → Import → Custom) reads connections from CSV/XML files, mapping columns such as `name`, `host`, `port`, `database`, `user`, `password`. However, there is no way to specify the **authentication model** per connection, so every imported connection falls back to the driver's default (Database Native).\n\nThis means connections that should use a non-default auth model — e.g. PostgreSQL **PgPass** (`postgres_pgpass`), or Kerberos — cannot be set up through CSV/XML import and must be reconfigured by hand afterwards.\n\n**Proposal:** support an optional `authModelId` column/attribute in the Custom import format, applied to each imported connection when present. Other importers (e.g. SQLWorkbench) already set `authModelId` internally; this simply exposes it in the Custom format.",
+        "url": "https://github.com/dbeaver/dbeaver/issues/41501"
+    },
+    {
+        "id": 4853420243,
+        "number": 41498,
+        "title": "Winget Installer Hash does not match for DBeaver.Ultimate",
+        "state": "open",
+        "created_at": "2026-07-10T08:34:52Z",
+        "updated_at": "2026-07-10T14:00:20Z",
+        "closed_at": null,
+        "author": "Proxymite",
+        "comments": 1,
+        "labels": [
+            "xo:windows",
+            "wait for review",
+            "xf:installation"
+        ],
+        "assignees": [
+            "davestokes"
+        ],
+        "locked": false,
+        "body": "### Description\n\nHello,\n\nI encountered an issue where the installer hash does not match when trying to install DBeaver.DBeaver.Ultimate via winget.\n\n### DBeaver Version\n\nDBeaver.DBeaver.Ultimate\n\n### Operating System\n\nWindows 11\n\n### Database and driver\n\n_No response_\n\n### Steps to reproduce\n\nSteps to Reproduce:\n- Open Command Prompt or PowerShell.\n- Run the command: winget install DBeaver.DBeaver.Ultimate\n\n### Additional context\n\nExpected Behavior:\nThe package downloads and installs successfully.\n\nActual Behavior:\nThe installer (version 26.1.0) downloads completely (409 MB), but fails immediately after with the error:\nInstaller hash does not match.\n\nPlease see the attached console output in image_265a20.jpg for reference.\n\n<img width=\"1485\" height=\"980\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/d244d7ee-c9ae-4394-a103-51651656eff1\" />",
+        "url": "https://github.com/dbeaver/dbeaver/issues/41498"
+    },
+    {
+        "id": 4846041801,
+        "number": 41493,
+        "title": "Wrong \"Invalid column reference\" warning in PostgreSQL function/procedure parameter declaration",
+        "state": "open",
+        "created_at": "2026-07-09T12:03:19Z",
+        "updated_at": "2026-07-10T09:55:13Z",
+        "closed_at": null,
+        "author": "0MG-DEN",
+        "comments": 4,
+        "labels": [
+            "x:postgresql",
+            "wait for review",
+            "xf:sql editor"
+        ],
+        "assignees": [
+            "E1izabeth"
+        ],
+        "locked": false,
+        "body": "### Description\n\nWhen using both `OR REPLACE` and `IN` in PostgreSQL function/procedure declaration, DBeaver shows \"Invalid column reference\" warning at the parameter's datatype. This warning shows up only when both `OR REPLACE` and `IN` are present - it does not occur when either is omitted.\n\n### DBeaver Version\n\nDBeaver Community Edition 26.1.2.202607051737\n\n### Operating System\n\n_No response_\n\n### Database and driver\n\n1. Database name and version: PostgreSQL 13.12, PostgreSQL 18.4\n2. Driver name and version: PostgreSQL JDBC Driver 42.7.11\n\n### Steps to reproduce\n\n1. Create new script file.\n2. Copy and paste following function/procedure declarations:\n`create or replace function  test_func(in x int4) returns int4 language sql as $$ select x; $$;`\n`create or replace procedure test_proc(in x int4) language sql as $$ $$;`\n3. Observe the warning at `int4`.\n4. Remove any of `or replace` or `in` - warning disappears.\n\n### Additional context\n\nOutput of `version()` for both PostgreSQL installations:\n`PostgreSQL 13.12, compiled by Visual C++ build 1925, 64-bit`\n`PostgreSQL 18.4 on x86_64-windows, compiled by msvc-19.41.34120, 64-bit`",
+        "url": "https://github.com/dbeaver/dbeaver/issues/41493"
+    },
+    {
+        "id": 4844478407,
+        "number": 41489,
+        "title": "I want my Number columns show its data with decimal point and thosandseparaters",
+        "state": "open",
+        "created_at": "2026-07-09T08:11:15Z",
+        "updated_at": "2026-07-10T02:40:14Z",
+        "closed_at": null,
+        "author": "HOA18AO",
+        "comments": 2,
+        "labels": [
+            "wait for response",
+            "xf:ui",
+            "xf:data editor"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "Hi,\nI am using dbeaver, and I cannot show my number columns with thosand separaters. The default setting is very hard for working with big number (money related). I tried to config like in the image below, but nothing changed, even when I restart the app/device.\n\nThank you for your help\n\n**Additional context**\n\n<img width=\"799\" height=\"713\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/c8ce49d4-01e9-473c-9f7c-438cb3d0b116\" />\n\n<img width=\"593\" height=\"283\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/2cedfbe6-6727-4da9-8bf1-fc2bac45c7a0\" />",
+        "url": "https://github.com/dbeaver/dbeaver/issues/41489"
+    },
+    {
+        "id": 4844200161,
+        "number": 41488,
+        "title": "GBase 8s / Informix: \"Routine (read_defaultstr) can not be resolved\" when opening table Properties if the routine is missing",
+        "state": "open",
+        "created_at": "2026-07-09T07:31:45Z",
+        "updated_at": "2026-07-09T14:32:03Z",
+        "closed_at": null,
+        "author": "wjy940520",
+        "comments": 1,
+        "labels": [
+            "wait for review",
+            "xf:sql editor",
+            "xqa:need-testing",
+            "x:gbase"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Description\n\nDescription:\nWhen connecting DBeaver to a GBase 8s V8.8 database via the official gbasedbtjdbc driver,\nquerying table data works fine, but opening a table's Properties / Columns tab fails with:\nSQL error [IX000]: Routine (read_defaultstr) can not be resolved.\n  Routine (read_defaultstr) can not be resolved.\n    SQLException\nSteps to reproduce:\nCreate a GBase 8s (Informix-compatible) connection in DBeaver using gbasedbtjdbc (tested 3.3.0 / 3.5.1 / 3.6.3).\nConnect successfully; plain SELECT on tables works.\nRight-click a table → Properties → switch to the Columns tab (column metadata load).\nThe error is thrown and the Properties panel cannot load.\nEnvironment:\nDBeaver version: 26.1.2 (latest)\nDatabase: GBase 8s V8.8\nJDBC driver: gbasedbtjdbc_3.3.0, gbasedbtjdbc_3.5.1_3X2_1, gbasedbtjdbc_3.6.3 (all reproduce)\nError origin in log: org.jkiss.dbeaver.model (DBeaver's own metadata layer)\nRoot cause:\nDBeaver's Informix/GBase metadata adapter hard-codes a call to the read_defaultstr() stored procedure\nwhen reading column defaults. However, read_defaultstr is not guaranteed to exist in every GBase 8s V8.8 instance.\nEvidence:\nSELECT procname FROM sysprocedures WHERE LOWER(procname)='read_defaultstr'; returns 0 rows in the connected DB.\nGBase's own native client tools (dbaccess / GBaseDataStudio native path) open the same table's properties\nwithout any error, because they read syscolumns.default directly and never call read_defaultstr.\nToggling DBeaver metadata options (Generate DLLs with extra info, Do not read tables information, etc.) does not help.\nThe database cannot be modified (security policy), so creating the routine server-side is not an option.\nExpected behavior:\nDBeaver should not hard-fail the entire Properties panel when read_defaultstr is unresolvable.\nIt should either:\nRead the column default directly from syscolumns.default (consistent with GBase's own tooling), or\nWrap the read_defaultstr call in a try/catch and gracefully degrade (show empty/default value) instead of blocking the whole panel.\nSuggested fix:\nMake the column-default resolution in the Informix/GBase meta model resilient:\nPrefer reading syscolumns.default directly, OR\nFall back to it / leave the default blank when read_defaultstr cannot be resolved,\nrather than surfacing IX000 -674 and preventing table properties from opening.\nWorkarounds tried (none sufficient):\nSwitched JDBC driver versions (3.3.0 → 3.5.1 → 3.6.3): same error.\nDisabled DBeaver metadata options: no effect.\nCannot create the routine on the server (security policy).\nCurrent usable workaround: query syscolumns.default directly via SQL — but this should not be necessary.\n\n### DBeaver Version\n\n26.1.2\n\n### Operating System\n\nwindow 11\n\n### Database and driver\n\ngbase 8s  V8.8\n\n### Steps to reproduce\n\n_No response_\n\n### Additional context\n\n_No response_",
+        "url": "https://github.com/dbeaver/dbeaver/issues/41488"
+    },
+    {
+        "id": 4840310396,
+        "number": 41487,
+        "title": "ClickHouse: Support JSON/Value viewer for Map columns with String keys",
+        "state": "open",
+        "created_at": "2026-07-08T18:58:36Z",
+        "updated_at": "2026-07-09T12:15:08Z",
+        "closed_at": null,
+        "author": "julian-kofler",
+        "comments": 1,
+        "labels": [
+            "x:clickhouse",
+            "wait for votes",
+            "xf:sql editor"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "**Is your feature request related to a problem? Please describe.**\nJust like native `JSON` columns, ClickHouse `Map` columns with string keys are currently displayed as a flattened, raw string (e.g., `{env=prod, status=200}`). This makes telemetry data completely unreadable in the data grid. This is a massive headache when working with default OpenTelemetry/ClickStack schemas, which heavily rely on columns like:\n`SpanAttributes Map(LowCardinality(String), String) CODEC(ZSTD(1))`\n\n**Describe the solution you'd like**\nWhen a ClickHouse `Map` uses `String` or `LowCardinality(String)` as the key type, DBeaver should map it to the structured JSON/Text viewer in the Value panel (similar to the approach in #41315). This would allow users to cleanly read the attributes.\n\n**Describe alternatives you've considered**\nManually casting columns in every query using `cast(SpanAttributes, 'JSON')`. However, this is tedious and doesn't help when browsing the table directly via the Data tab.\n\n**Additional context**\nThis is a direct parallel to **#41315**. As highlighted in the official ClickHouse documentation on [Map vs JSON type for ClickStack](https://clickhouse.com/docs/use-cases/observability/clickstack/ingesting-data/schema/map-vs-json), the default and recommended schema for handling typical high-throughput observability workloads continues to use `Map(LowCardinality(String), String)`. Because the standard setup relies so heavily on this data type for attributes, improving the UX for string-keyed `Map` columns in DBeaver remains essential even with native `JSON` support available.",
+        "url": "https://github.com/dbeaver/dbeaver/issues/41487"
+    },
+    {
+        "id": 4840186931,
+        "number": 41486,
+        "title": "Upgrading to 26.1.2 from 26.1.1 causes bunch of open tabs to be lost",
+        "state": "closed",
+        "created_at": "2026-07-08T18:38:37Z",
+        "updated_at": "2026-07-09T10:25:10Z",
+        "closed_at": "2026-07-09T10:24:46Z",
+        "author": "CComparon",
+        "comments": 1,
+        "labels": [],
+        "assignees": [],
+        "locked": true,
+        "body": "### Description\n\nMy usual perspective looks as below - three rows of open tabs. \n\n<img width=\"2560\" height=\"1379\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/2b4f069f-0331-4360-9ffb-ac22943576ef\" />\n\nAll my tabs are usually reopened just fine after version updates except today after upgrading from 26.1.1 to 26.1.2: **the bottom row was completely gone.**\n\n### DBeaver Version\n\nCommunity Edition 26.1.2\n\n### Operating System\n\nlatest Windows 11 stable\n\n### Database and driver\n\n_No response_\n\n### Steps to reproduce\n\n_No response_\n\n### Additional context\n\n_No response_",
+        "url": "https://github.com/dbeaver/dbeaver/issues/41486"
+    },
+    {
+        "id": 4838756650,
+        "number": 41485,
+        "title": "No editor for jsonb",
+        "state": "open",
+        "created_at": "2026-07-08T15:14:27Z",
+        "updated_at": "2026-07-09T14:13:31Z",
+        "closed_at": null,
+        "author": "chrooti",
+        "comments": 4,
+        "labels": [
+            "x:postgresql",
+            "wait for response",
+            "xf:data editor"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Description\n\n<img width=\"395\" height=\"347\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/482bcf72-1520-4d1a-a4c8-7227699888d5\" />\n\nthis happens on Postgres (at least), used to work in 26.1.0\n\n### DBeaver Version\n\nCommunity edition 26.1.2 (snap)\n\n### Operating System\n\nUbuntu 22.04 \n\n### Database and driver\n\n_No response_\n\n### Steps to reproduce\n\n_No response_\n\n### Additional context\n\n_No response_",
+        "url": "https://github.com/dbeaver/dbeaver/issues/41485"
+    },
+    {
+        "id": 4838239616,
+        "number": 41484,
+        "title": "VECTOR type support Oracle DB",
+        "state": "open",
+        "created_at": "2026-07-08T14:11:20Z",
+        "updated_at": "2026-07-09T14:31:17Z",
+        "closed_at": null,
+        "author": "albertopasqualetto",
+        "comments": 1,
+        "labels": [
+            "x:oracle",
+            "xf:data editor"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "**Is your feature request related to a problem? Please describe.**\nVector type support for Oracle DB queries.\nBy default it does not show anything but an error.\n\n**Describe the solution you'd like**\nHave the type supported out of the box and fully explorable.\n\nI have seen there is a specifc visualization for VECTOR type in other PRs (#23391)\n\n<image src=\"https://private-user-images.githubusercontent.com/10857909/321640200-7237dc24-795d-4902-8641-a47436c1b742.png?jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3ODM1MTk3MDQsIm5iZiI6MTc4MzUxOTQwNCwicGF0aCI6Ii8xMDg1NzkwOS8zMjE2NDAyMDAtNzIzN2RjMjQtNzk1ZC00OTAyLTg2NDEtYTQ3NDM2YzFiNzQyLnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNjA3MDglMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjYwNzA4VDE0MDMyNFomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPWQzNjM1OTgyYjI3NGIyZTI5ZTc2NTgwYThiZDQyNTRiNDAwMGVmMTlkMGY2MzFhODc3Yzk5YmFkMmI3Yzk5Y2EmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0JnJlc3BvbnNlLWNvbnRlbnQtdHlwZT1pbWFnZSUyRnBuZyJ9.I2w-nG3D9xYIqBBbxgNewjarV2XybNemv90Bfiqbfnk\" />\n\n**Describe alternatives you've considered**\nSetting manually driver property `oracle.jdbc.vectorDefaultGetObjectType=double[]`, but at least it should be set by default.\nIn this way It shown in the column row, but in the Value panel it is showed as object address (I suppose), so the support is not complete.\n\n<img width=\"475\" height=\"120\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/bf1d7270-7dc4-4fd8-b721-be9d5c3e16bb\" />\n\n**Additional context**\nWhen selecting a column with a vector type, there is the error:\n```\norg.jkiss.dbeaver.model.exec.DBCException: SQL Error [17004] [99999]: ORA-17004: Invalid column type: JDBC 4.3 does not specify a default conversion for VECTOR. A default conversion may be configured using the  \"oracle.jdbc.vectorDefaultGetObjectType\" connection property\nhttps://docs.oracle.com/error-help/db/ora-17004/\n```\n\nOracle's relative documentation: https://docs.oracle.com/en/database/oracle/oracle-database/26/jjdbc/working-with-vectors.html",
+        "url": "https://github.com/dbeaver/dbeaver/issues/41484"
+    },
+    {
+        "id": 4829888704,
+        "number": 41476,
+        "title": "SQL Server semantic analyzer incorrectly validates datepart arguments as column references",
+        "state": "open",
+        "created_at": "2026-07-07T15:21:29Z",
+        "updated_at": "2026-07-11T17:41:06Z",
+        "closed_at": null,
+        "author": "4MaxR",
+        "comments": 3,
+        "labels": [
+            "x:mssql",
+            "xf:sql editor",
+            "xf:sql parser"
+        ],
+        "assignees": [
+            "E1izabeth"
+        ],
+        "locked": false,
+        "body": "### Description\n\n### DBeaver Version\n\n- DBeaver Community 26.1.2\n- Release date: July 6, 2026\n\n### Database\n\n- Microsoft SQL Server\n\n### Steps to reproduce\n\n1. Enable:\n   - SQL Editor → Query Analysis → Enable semantic analysis\n   - SQL Editor → Query Analysis → Read database table/columns for semantic analysis\n\n2. Execute the following query:\n\n```sql\nSELECT\n    DATENAME(month, o.CreationTime)\nFROM Sales.Orders o;\n```\n\n### Actual behavior\n\nThe editor underlines `month` and shows:\n\n```\nInvalid column reference\n```\n\nThe query executes successfully and SQL Server returns the correct result.\n\n### Expected behavior\n\nThe datepart argument (`month`, `day`, `weekday`, `dw`, etc.) should be recognized as a valid SQL Server datepart keyword and should not be validated as a column reference.\n\n### Additional information\n\nThe issue only occurs when the second argument is a table column.\n\nFor example:\n\n```sql\nSELECT DATENAME(month, GETDATE());\n```\n\nproduces **no warning**.\n\nBut:\n\n```sql\nSELECT DATENAME(month, o.CreationTime)\nFROM Sales.Orders o;\n```\n\nproduces the false warning.\n\nDisabling **\"Read database table/columns for semantic analysis\"** removes the warning.\n\n### DBeaver Version\n\nCommunity Edition 26.1.2\n\n### Operating System\n\nWindows 11 24H2 (64-bit)\n\n### Database and driver\n\nDatabase:\nMicrosoft SQL Server\n\nConnection:\nWindows Authentication\n\nDriver:\nMS SQL Server / SQL Server\n\n### Steps to reproduce\n\n1. Enable:\n   - SQL Editor → Query Analysis → Enable semantic analysis\n   - SQL Editor → Query Analysis → Read database table/columns for semantic analysis\n\n2. Execute:\n\n```sql\nSELECT\n    DATENAME(month, o.CreationTime)\nFROM Sales.Orders o;\n```\n\n<img width=\"298\" height=\"76\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/0e50c464-1001-4d3b-a910-72aca83ea9f6\" />\n\n3. Observe that `month` is underlined as an invalid column reference.\n\n### Additional context\n\nThe issue affects multiple SQL Server functions that accept a datepart argument, including:\n\n```sql\nDATENAME(WEEKDAY, order_date)\nDATEPART(DAY, order_date)\nDATETRUNC(DAY, order_date)\n```\n\nAll queries execute successfully in SQL Server.\n\nThe false validation only occurs when the date expression is a table column.\n\nFor example:\n\n```sql\nSELECT DATENAME(month, GETDATE());\n```\n\n<img width=\"310\" height=\"124\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/72b88e2b-171b-4613-a45d-729a84a29b01\" />\n\ndoes not produce the warning.\n\nDisabling **\"Read database table/columns for semantic analysis\"** removes the false warning.",
+        "url": "https://github.com/dbeaver/dbeaver/issues/41476"
+    },
+    {
+        "id": 4829586738,
+        "number": 41474,
+        "title": "Firebird: Quoted tables with leading spaces are not displayed correctly in the navigation tree",
+        "state": "open",
+        "created_at": "2026-07-07T14:43:11Z",
+        "updated_at": "2026-07-08T11:35:23Z",
+        "closed_at": null,
+        "author": "dariamarutkina",
+        "comments": 7,
+        "labels": [
+            "x:firebird",
+            "xf:sql editor"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "\n### DBeaver Version\n\nCE 26.1.2\n\n### Steps to reproduce\n\n1. Create two tables:\nTEST_DGR\n\" TEST_DGR\" (identifier with a leading space, created using quotes).\n2. Refresh the database navigator.\n3. Expand the schema in the navigation tree.\n\n\nActual result:\ncannot correctly display both tables in the navigation tree. Only one of them is shown, although both exist in the database.\n\n",
+        "url": "https://github.com/dbeaver/dbeaver/issues/41474"
+    }
+]

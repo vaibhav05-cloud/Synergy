@@ -1,0 +1,348 @@
+[
+    {
+        "id": 4095620285,
+        "number": 95,
+        "title": "Add Laravel 13 support",
+        "state": "closed",
+        "created_at": "2026-03-18T14:44:15Z",
+        "updated_at": "2026-05-13T02:24:23Z",
+        "closed_at": "2026-05-13T02:24:23Z",
+        "author": "dusp2k",
+        "comments": 0,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "Add Laravel 13 support",
+        "url": "https://github.com/rawilk/laravel-settings/issues/95"
+    },
+    {
+        "id": 3536977549,
+        "number": 92,
+        "title": "clear cache",
+        "state": "closed",
+        "created_at": "2025-10-21T15:05:16Z",
+        "updated_at": "2026-05-13T02:27:38Z",
+        "closed_at": "2026-05-13T02:27:38Z",
+        "author": "matiazar",
+        "comments": 2,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Laravel Settings\n\n3.4.1\n\n### Laravel Version\n\n10.x.x\n\n### Bug description\n\nHow can I clear Settings cache?\n\nIm on a multi tenant - multi db... and a setting is retrieving me false\nI run optimize:clear / cache:clear\nbut still in false\n\nwhen I disabled the cache from settings.php config file it returns true\n\nmy cache driver is redis\n",
+        "url": "https://github.com/rawilk/laravel-settings/issues/92"
+    },
+    {
+        "id": 3412731205,
+        "number": 90,
+        "title": "Tests are failing when using `set`",
+        "state": "closed",
+        "created_at": "2025-09-13T06:34:58Z",
+        "updated_at": "2026-05-16T16:44:10Z",
+        "closed_at": "2026-05-16T16:44:10Z",
+        "author": "CharlieEtienne",
+        "comments": 1,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Laravel Settings\n\nv3.4.1\n\n### Laravel Version\n\nv12.28.1\n\n### Bug description\n\nI can't make my tests work. My config is pretty standard. Or maybe it's related to pest 4?\n\n### Steps to reproduce\n\n```php\ntest('it can store and retrieve settings', function () {\n    settings()->set('test_a_new_setting', 'My value');\n    expect(settings('test_a_new_setting'))->toBe('My value');\n});\n\n// returns \"Failed asserting that null is identical to 'My value'.\"\n```",
+        "url": "https://github.com/rawilk/laravel-settings/issues/90"
+    },
+    {
+        "id": 3321891533,
+        "number": 88,
+        "title": "Context is reset when another setting is get from default parameter",
+        "state": "closed",
+        "created_at": "2025-08-14T11:33:25Z",
+        "updated_at": "2026-05-16T16:42:04Z",
+        "closed_at": "2026-05-16T16:42:03Z",
+        "author": "CharlieEtienne",
+        "comments": 1,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Laravel Settings\n\nv3.4.1\n\n### Laravel Version\n\nv12.24.0\n\n### Bug description\n\nWhen we get a setting passing another get in default parameter, the context of the first one is reset:\n\n```php\nSettings::context(new Context([]))\n    ->get(\n        'page_title', \n        Settings::context(new Context([]))->get('app_name', 'My App')\n    );\n```\n\nBecause of this piece of code in the `get` method (I think):\n\n```php\nif ($this->resetContext) {\n    $this->context();\n}\n\n$this->temporarilyDisableCache = false;\n$this->resetContext = true;\n```\n\nThe `page_title` key is generated **without context**.\n\nFor example when using `ReadableKeyGenerator` (but that's the same with MD5):\n\n```\n\"page-title\"\n```\n\ninstead of\n\n```\n\"page-title:c:::O:31:\"Rawilk\\Settings\\Support\\Context\":1:{s:12:\"\\x00*\\x00arguments\";a:0:{}}\"\n```\n\n### Steps to reproduce\n\n_No response_\n\n### Relevant log output\n\n```shell\n\n```",
+        "url": "https://github.com/rawilk/laravel-settings/issues/88"
+    },
+    {
+        "id": 2826058942,
+        "number": 76,
+        "title": "php artisan vendor:publish --tag=\"settings-migrations\" or --tag=\"settings-config\" of the component does not work for fresh install of 3.4.0",
+        "state": "closed",
+        "created_at": "2025-02-02T22:33:47Z",
+        "updated_at": "2026-05-13T02:28:51Z",
+        "closed_at": "2026-05-13T02:28:51Z",
+        "author": "simontechdev",
+        "comments": 2,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Laravel Settings\n\nv3.4.0\n\n### Laravel Version\n\nv10.10\n\n### Bug description\n\nError message when running either vendor:punlish tags described in the documentation produces\n\n\"No publishable resources for tag [settings-migration]\"\n\nI had to download the zip package and manually copy and rename database migration files to migration folder and the settings.php to config folder.\n\n### Steps to reproduce\n\n_No response_\n\n### Relevant log output\n\n```shell\n\n```",
+        "url": "https://github.com/rawilk/laravel-settings/issues/76"
+    },
+    {
+        "id": 2801758651,
+        "number": 74,
+        "title": "Query or ContextSerializer should be aware of  \"\\\"",
+        "state": "open",
+        "created_at": "2025-01-21T12:49:10Z",
+        "updated_at": "2025-02-26T20:55:33Z",
+        "closed_at": null,
+        "author": "756D61",
+        "comments": 3,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Laravel Settings\n\n3.4\n\n### Laravel Version\n\n11\n\n### Bug description\n\nThe query should escape the slashes in the context values. I'm passing a class name as value in a Context, which works in saving, but during retrieval it returns empty because it contains slashes. The following is an example query made by this library, which doesn't work because the SQL parameter for LIKE contains slashes\n\n```\nselect `value` from `settings` where `key` = ? and `settings`.`team_id` is null limit 1 [\"settings:c:::parameterizable_type:App\\Models\\IpHasPort\"]\n```\n\nFor now, as workaround I wrote my `ContextSerializer` by replacing \\ with dot. I hope there is more robust solution that handles all special SQL characters. I believe it is better to handle it at the query level by escaping \\.\n\n```php\n<?php\n\nnamespace App\\Serializers;\n\nuse Illuminate\\Support\\Str;\nuse Rawilk\\Settings\\Contracts\\ContextSerializer;\nuse Rawilk\\Settings\\Support\\Context;\n\nclass SettingsContextSerializer implements ContextSerializer\n{\n    public function serialize(?Context $context = null): string\n    {\n        if (is_null($context)) {\n            return '';\n        }\n\n        return collect($context->toArray())\n            ->map(function ($value, string $key) {\n                // Use the model's morph class when possible.\n                $value = match ($key) {\n                    'model' => rescue(fn() => app($value)->getMorphClass(), $value),\n\n                    // CHANGED THIS\n                    default => Str::of($value)->replace(\"\\\\\", \".\")->toString(),\n\n\n                };\n\n                if ($value === false) {\n                    $value = 0;\n                }\n\n                return \"{$key}:{$value}\";\n            })\n            ->implode('::');\n    }\n}\n```\n\n\n### Steps to reproduce\n\n_No response_\n\n### Relevant log output\n\n```shell\n\n```",
+        "url": "https://github.com/rawilk/laravel-settings/issues/74"
+    },
+    {
+        "id": 2777452201,
+        "number": 73,
+        "title": "[Feature Request]: CreatedAt and UpdatedAt fields",
+        "state": "closed",
+        "created_at": "2025-01-09T10:38:39Z",
+        "updated_at": "2025-02-25T20:38:00Z",
+        "closed_at": "2025-02-25T20:37:49Z",
+        "author": "ttimot24",
+        "comments": 1,
+        "labels": [
+            "wontfix"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Feature Description\n\nAdd the default timestamps that Laravel provides, created_at and updated_at to settings table.\n\n### Is this feature valuable for other users as well and why?\n\nIt would be really useful from production maintenance aspect to know when was the specific setting created or updated.\r\n\r\nIn an application where modules can register their own settings or a user can modify settings it is really important to have timestamps",
+        "url": "https://github.com/rawilk/laravel-settings/issues/73"
+    },
+    {
+        "id": 2601793940,
+        "number": 69,
+        "title": "set() function doesn't work without specifying `$teamId` if Teams is disabled",
+        "state": "closed",
+        "created_at": "2024-10-21T08:39:44Z",
+        "updated_at": "2024-10-21T15:36:46Z",
+        "closed_at": "2024-10-21T15:36:46Z",
+        "author": "alexvlrt",
+        "comments": 1,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Laravel Settings\n\nv3.4.0\n\n### Laravel Version\n\nv10.48.12\n\n### Bug description\n\nHaving Teams feature disabled, when using `Setting::set()` without specifying the `$teamId` parameter is resulting in `Column not found: 1054 Unknown column 'team_id' in 'where clause'` error\r\n\r\nFrom what I see, the `set` function of the Setting model is defaulting the `$teamId` parameter to `null`, while in the condition inside the function is checking with `!== false`\r\n\r\n![image](https://github.com/user-attachments/assets/fdd2a710-4daf-432b-8c0b-aafcd33187af)\r\n\n\n### Steps to reproduce\n\n- Install de package\r\n- Publish config and migrations\r\n- Migrate\r\n- Try to set a parameter with `Setting::set('key', $value)`\n\n### Relevant log output\n\n_No response_",
+        "url": "https://github.com/rawilk/laravel-settings/issues/69"
+    },
+    {
+        "id": 2529615311,
+        "number": 67,
+        "title": "[Feature Request]: Override config values",
+        "state": "closed",
+        "created_at": "2024-09-16T22:36:14Z",
+        "updated_at": "2024-10-16T15:33:16Z",
+        "closed_at": "2024-10-16T15:33:15Z",
+        "author": "HamasakiBrain",
+        "comments": 3,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "### Feature Description\n\n### Override Config Values\r\nYou can easily override default config values by adding them to the override option in config/setting.php, thereby eliminating the need to modify the default config files and also allowing you to change said values during production. Ex:\r\n\r\n```\r\n'override' => [\r\n    \"app.name\" => \"app_name\",\r\n    \"app.env\" => \"app_env\",\r\n    \"mail.driver\" => \"app_mail_driver\",\r\n    \"mail.host\" => \"app_mail_host\",\r\n],\r\n```\r\nThe values on the left corresponds to the respective config value (Ex: config('app.name')) and the value on the right is the name of the `key` in your settings table/json file.\n\n### Is this feature valuable for other users as well and why?\n\nIf the library supports redefinition of configuration values, it is easily integrated with other third-party packages that may also offer their own configuration capabilities. This reduces the likelihood of conflicts and makes the system more compatible and extensible.",
+        "url": "https://github.com/rawilk/laravel-settings/issues/67"
+    },
+    {
+        "id": 2381964519,
+        "number": 65,
+        "title": "all() method not working on Model",
+        "state": "closed",
+        "created_at": "2024-06-29T21:15:17Z",
+        "updated_at": "2024-10-16T15:54:20Z",
+        "closed_at": "2024-10-16T15:54:20Z",
+        "author": "ghost",
+        "comments": 1,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Laravel Settings\n\nlatest\n\n### Laravel Version\n\n11.x\n\n### Bug description\n\nI am trying to get all settings for a user. \r\n\r\n```php\r\n$user = Auth::user();\r\ndd($user->settings()->all());\r\n```\r\n\r\nReturns an empty collection.\r\n\r\n```\r\nIlluminate\\Support\\Collection {#2596 ▼\r\n  #items: []\r\n  #escapeWhenCastingToString: false\r\n}\r\n```\r\n\r\nbut this works:\r\n\r\n```php\r\n   dd($user->settings()->context('user')->all());\r\n```\r\n\r\nSo it looks like the context is not applied automatically when calling settings()->all() on the User model.\n\n### Steps to reproduce\n\n_No response_\n\n### Relevant log output\n\n_No response_",
+        "url": "https://github.com/rawilk/laravel-settings/issues/65"
+    },
+    {
+        "id": 2195786881,
+        "number": 61,
+        "title": "unserialize(): Error at offset 0 of 4 bytes",
+        "state": "closed",
+        "created_at": "2024-03-19T19:14:17Z",
+        "updated_at": "2024-03-19T20:24:10Z",
+        "closed_at": "2024-03-19T20:24:10Z",
+        "author": "stojankukrika",
+        "comments": 1,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Laravel Settings\n\n3.3.1\n\n### Laravel Version\n\n11.0\n\n### Bug description\n\nI have this line in code:\r\n`$settings = settings()->all();`\r\nand get this information in bugsnag.\n\n### Steps to reproduce\n\nI use a teams `'teams' = true,` and `'team_foreign_key' => 'current_team_id'`\r\n and use this custom middleware : https://randallwilk.dev/docs/laravel-settings/v3/advanced-usage/custom-generators\r\n and disabled encryption and cache.\n\n### Relevant log output\n\n```shell\nunserialize(): Error at offset 0 of 4 bytes and point this `$settings = settings()->all();` line in code\n```\n",
+        "url": "https://github.com/rawilk/laravel-settings/issues/61"
+    },
+    {
+        "id": 2159847464,
+        "number": 57,
+        "title": "[Feature Request]: Support Laravel 11.x",
+        "state": "closed",
+        "created_at": "2024-02-28T20:51:17Z",
+        "updated_at": "2025-12-05T20:15:46Z",
+        "closed_at": "2024-03-10T22:39:49Z",
+        "author": "demianottema",
+        "comments": 2,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "### Feature Description\n\nAlso adding support for Laravel 11.x\r\nAlso here are no expected errors\n\n### Is this feature valuable for other users as well and why?\n\n_No response_",
+        "url": "https://github.com/rawilk/laravel-settings/issues/57"
+    },
+    {
+        "id": 2088244186,
+        "number": 55,
+        "title": "multi tenant",
+        "state": "closed",
+        "created_at": "2024-01-18T13:02:03Z",
+        "updated_at": "2025-03-26T18:36:11Z",
+        "closed_at": "2024-03-10T22:34:27Z",
+        "author": "matiazar",
+        "comments": 8,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "### Laravel Settings\n\nv3.3\n\n### Laravel Version\n\nv10\n\n### Bug description\n\nHi. can any one tell me if I need to do anything to work with tenants?\r\n\r\nthanks in advance\n\n### Steps to reproduce\n\n_No response_\n\n### Relevant log output\n\n_No response_",
+        "url": "https://github.com/rawilk/laravel-settings/issues/55"
+    },
+    {
+        "id": 2086096970,
+        "number": 54,
+        "title": "issue setting a cached value",
+        "state": "closed",
+        "created_at": "2024-01-17T12:32:51Z",
+        "updated_at": "2024-01-17T12:36:59Z",
+        "closed_at": "2024-01-17T12:36:59Z",
+        "author": "matiazar",
+        "comments": 0,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Laravel Settings\n\nv3.3\n\n### Laravel Version\n\nv10\n\n### Bug description\n\nif some value is stored in cache. when you use Settings::set('xxx', 'zzz');\r\nthis will store zzz in cache for xxx key.. but there is no update in the DB.\r\n\r\nif cache is off it will update DB\n\n### Steps to reproduce\n\n_No response_\n\n### Relevant log output\n\n_No response_",
+        "url": "https://github.com/rawilk/laravel-settings/issues/54"
+    },
+    {
+        "id": 2085011785,
+        "number": 53,
+        "title": "how can I store key and value without any modification like md5?",
+        "state": "closed",
+        "created_at": "2024-01-16T21:44:07Z",
+        "updated_at": "2024-03-10T22:35:01Z",
+        "closed_at": "2024-03-10T22:35:01Z",
+        "author": "matiazar",
+        "comments": 5,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "### Laravel Settings\n\nv3\n\n### Laravel Version\n\nv10\n\n### Bug description\n\nhow can I store key and value without any modification like md5?\r\nplease.\n\n### Steps to reproduce\n\n_No response_\n\n### Relevant log output\n\n_No response_",
+        "url": "https://github.com/rawilk/laravel-settings/issues/53"
+    },
+    {
+        "id": 2007763438,
+        "number": 50,
+        "title": "[Feature Request]: Migrations do not support teams using UUIDs or ULIDs",
+        "state": "closed",
+        "created_at": "2023-11-23T09:07:02Z",
+        "updated_at": "2024-03-10T22:35:36Z",
+        "closed_at": "2024-03-10T22:35:36Z",
+        "author": "camerongermein",
+        "comments": 2,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "### Feature Description\n\nPretty straight forward, I just altered the add_settings_team_field migration file and it was fine, I'm not sure this is worth writing actual code for, but it might warrant a note in the documentation? \n\n### Is this feature valuable for other users as well and why?\n\n_No response_",
+        "url": "https://github.com/rawilk/laravel-settings/issues/50"
+    },
+    {
+        "id": 2007752290,
+        "number": 49,
+        "title": "all() method not working with context()? ",
+        "state": "closed",
+        "created_at": "2023-11-23T08:59:55Z",
+        "updated_at": "2024-10-16T15:50:54Z",
+        "closed_at": "2024-10-16T15:50:54Z",
+        "author": "camerongermein",
+        "comments": 6,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Laravel Settings\n\n3.3.0\n\n### Laravel Version\n\nv10.26.2\n\n### Bug description\n\nNot sure if I'm doing something wrong, or this isn't supported? The documentation doesn't seem to specify. \r\n\r\n```php\r\nSettings::context($model->context())->set('test', 'value');\r\nSettings::context($model->context())->get('test'); //returns 'value'\r\nSettings::context($model->context())->all(); //returns an empty Collection\r\n``` \n\n### Steps to reproduce\n\nUsing the code above, execute it with the context of any simple Eloquent Model. \n\n### Relevant log output\n\n_No response_",
+        "url": "https://github.com/rawilk/laravel-settings/issues/49"
+    },
+    {
+        "id": 1983425246,
+        "number": 46,
+        "title": "Serialization issues",
+        "state": "closed",
+        "created_at": "2023-11-08T11:53:26Z",
+        "updated_at": "2024-03-10T22:38:33Z",
+        "closed_at": "2024-03-10T22:38:33Z",
+        "author": "Vinze",
+        "comments": 5,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "Why does laravel-settings unserialize the stored value with the `['allowed_classes' => false]` option? This causes some issues when storing an object or class. For example:\r\n\r\n```php\r\n$project = Project::find(1);\r\n\r\nSettings::set('project', $project);\r\n\r\n$p = Settings::get('project');\r\n\r\ndd($p);\r\n```\r\n\r\nThis returns a `__PHP_Incomplete_Class(App\\Models\\Project)` object instead of the actual Project eloquent model. Now storing an object in the settings might not be very useful, but this also happens when storing a `Carbon` object (i.e. `Settings::set('last_import', Carbon::now())`)\r\n\r\nI would expect the Settings helper to work the same as the default Laravel `Cache` and `Session` helpers. These also (un)serialize data using the default PHP serialize() and unserialize() functions but without the allowed_classes option.",
+        "url": "https://github.com/rawilk/laravel-settings/issues/46"
+    },
+    {
+        "id": 1956444838,
+        "number": 43,
+        "title": "unable to use `Settings::all()` on larave 9.5 and package v2.2.2",
+        "state": "closed",
+        "created_at": "2023-10-23T06:28:07Z",
+        "updated_at": "2023-11-14T15:48:35Z",
+        "closed_at": "2023-11-14T15:48:35Z",
+        "author": "josiahke",
+        "comments": 4,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Laravel Settings\r\n\r\n2.2.2\r\n\r\n### Laravel Version\r\n\r\n9.52\r\n\r\n### Bug description\r\n\r\nunable to use `Settings::all()`\r\nunable to install v3 on Laravel 9\r\n\r\n\r\n### Steps to reproduce\r\n\r\n_No response_\r\n\r\n### Relevant log output\r\n\r\n_No response_",
+        "url": "https://github.com/rawilk/laravel-settings/issues/43"
+    },
+    {
+        "id": 1926016742,
+        "number": 39,
+        "title": "Getting unserialize(): Error at offset 0 of 228 bytes: on log file",
+        "state": "closed",
+        "created_at": "2023-10-04T11:37:03Z",
+        "updated_at": "2023-10-07T21:04:48Z",
+        "closed_at": "2023-10-07T21:04:48Z",
+        "author": "ichie-benjamin",
+        "comments": 13,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Laravel Settings\n\nv2.2\n\n### Laravel Version\n\n10\n\n### Bug description\n\nThis happens on laravel 10 using uuid as primary key\r\n\r\nOn log file i get unserialize(): Error at offset 0 of 228 bytes\r\n\r\n[2023-10-04 11:23:07] local.ERROR: unserialize(): Error at offset 0 of 228 bytes {\"userId\":\"9a2a4708-40f8-4384-98d9-00d54d7293b1\",\"exception\":\"[object] (ErrorException(code: 0): unserialize(): Error at offset 0 of 228 bytes at /vendor/rawilk/laravel-settings/src/Support/ValueSerializer.php:16)\r\n[stacktrace]\r\n#6 /vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php(254): Illuminate\\\\Foundation\\\\Bootstrap\\\\HandleExceptions->handleError(8, 'unserialize(): ...', '/Do...', 16)\r\n\r\nsettings are not user-based, am not making a setting for users, so don't knw why the userid\n\n### Steps to reproduce\n\nInstall in laravel 10 use UUID as primary key\r\ncreate a user and login\r\n\r\naccessing any page throws the error in log file\n\n### Relevant log output\n\n```shell\n[2023-10-04 11:23:07] local.ERROR: unserialize(): Error at offset 0 of 228 bytes {\"userId\":\"9a2a4708-40f8-4384-98d9-00d54d7293b1\",\"exception\":\"[object] (ErrorException(code: 0): unserialize(): Error at offset 0 of 228 bytes at /vendor/rawilk/laravel-settings/src/Support/ValueSerializer.php:16)\r\n[stacktrace]\r\n#0 /vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php(254): Illuminate\\\\Foundation\\\\Bootstrap\\\\HandleExceptions->handleError(8, 'unserialize(): ...', '/Users/benny/Do...', 16)\r\n#1 [internal function]: Illuminate\\\\Foundation\\\\Bootstrap\\\\HandleExceptions->Illuminate\\\\Foundation\\\\Bootstrap\\\\{closure}(8, 'unserialize(): ...', '/Do...', 16)\r\n#2 /vendor/rawilk/laravel-settings/src/Support/ValueSerializer.php(16): unserialize('eyJpdiI6ImMrT1V...')\r\n#3 /vendor/rawilk/laravel-settings/src/Settings.php(203): Rawilk\\\\Settings\\\\Support\\\\ValueSerializer->unserialize('eyJpdiI6ImMrT1V...')\n```\n",
+        "url": "https://github.com/rawilk/laravel-settings/issues/39"
+    }
+]

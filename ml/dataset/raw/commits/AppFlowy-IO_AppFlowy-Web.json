@@ -1,0 +1,242 @@
+[
+    {
+        "sha": "04779b21f6930fdad194efbb2bf051accd292b8e",
+        "author": "Nathan.fooo",
+        "email": "86001920+appflowy@users.noreply.github.com",
+        "date": "2026-07-11T12:24:06Z",
+        "message": "Gate share and view actions by effective permissions (#423)\n\n* Gate share and view actions by effective permissions\n\n* Fix effective permission review issues\n\n* Fix shared view action permissions\n\n* Address React best-practices review findings\n\n- Cache share access details (in-flight dedup + 10s TTL) and remember\n  when the v2 endpoint is unsupported to avoid repeated failed requests\n- Invalidate the cache after share mutations so refreshes stay fresh\n- Derive the invite access level during render instead of clamping in\n  an effect\n- Consolidate the duplicated current-user access level resolver\n- Hoist the CreateSpaceModal initialPage object to a module constant\n\nCo-Authored-By: Claude Fable 5 <noreply@anthropic.com>\n\n* Reduce page title rename request frequency\n\nRaise the title update debounce from 300ms to 3s so slow typing no\nlonger sends a request per keystroke, and flush pending updates on\nunmount so edits survive navigating away within the debounce window.\n\nCo-Authored-By: Claude Fable 5 <noreply@anthropic.com>\n\n---------\n\nCo-authored-by: Claude Fable 5 <noreply@anthropic.com>",
+        "url": "https://github.com/AppFlowy-IO/AppFlowy-Web/commit/04779b21f6930fdad194efbb2bf051accd292b8e"
+    },
+    {
+        "sha": "7486831bc591f8f8975734916df9bf5c9820025c",
+        "author": "Nathan.fooo",
+        "email": "86001920+appflowy@users.noreply.github.com",
+        "date": "2026-07-07T01:58:04Z",
+        "message": "fix: repair failing CI tests (gotrue prompt param, embedded trash detection) (#421)\n\nTwo main-branch CI failures, red since Jun 24:\n\n1. gotrue.test.ts: commit 98125bf9 added prompt=consent to the Google\n   OAuth authorize URL without updating the test's expected URL.\n\n2. database-sidebar-deletion Scenario 5: the view API no longer reports\n   a trashed ancestor as parent_view_id (returns null), so on a fresh\n   mount the embedded database block could not associate itself with its\n   trashed container and rendered the live grid instead of the trash\n   placeholder. Detect the trashed container by matching the block's\n   database_id against trash entries whose extra marks them as database\n   containers, which works regardless of whether the parent chain is\n   still reachable.\n\nVerified locally: gotrue jest suite 11/11 passed, full\ndatabase-sidebar-deletion e2e suite 6/6 passed.\n\nCo-authored-by: Claude Fable 5 <noreply@anthropic.com>",
+        "url": "https://github.com/AppFlowy-IO/AppFlowy-Web/commit/7486831bc591f8f8975734916df9bf5c9820025c"
+    },
+    {
+        "sha": "72e5fdd3ab937e75a114e614b1b2c384e508a081",
+        "author": "Nathan.fooo",
+        "email": "86001920+appflowy@users.noreply.github.com",
+        "date": "2026-07-06T01:07:04Z",
+        "message": "test: add BDD coverage for database view tab order after reopening (#420)\n\nAdds a Playwright BDD scenario covering the tab-order bug where new\ndatabase views created from the tab bar jumped to the first position\nafter navigating away and reopening the database: create a grid\ndatabase, add Board and Calendar views from the tab bar, rename them,\nverify order, reopen, verify order again.\n\nThe web client already sends prev_view_id (the container's last child)\nwhen creating a view; the server previously dropped the field and\nprepended. Server fix: AppFlowy-Cloud-Premium#786. Also updates the\nstale CreateDatabaseViewPayload comment — omitting prev_view_id now\nappends on the backend instead of prepending.\n\nReproduced the reversed order (Third View, Second View, Grid) against\nan unfixed server; passes against the fixed server.\n\nCo-authored-by: Claude Fable 5 <noreply@anthropic.com>",
+        "url": "https://github.com/AppFlowy-IO/AppFlowy-Web/commit/72e5fdd3ab937e75a114e614b1b2c384e508a081"
+    },
+    {
+        "sha": "7ee06689d2e7dbbf8eebc4051dacbab421129a54",
+        "author": "Nathan.fooo",
+        "email": "86001920+appflowy@users.noreply.github.com",
+        "date": "2026-07-03T13:26:17Z",
+        "message": "fix: send row document source when creating row pages (#418)\n\n* fix: send row document source when creating row pages\n\n* Fix favorite view sync\n\n* feat(sync): send before/after Yjs state vectors on collab updates\n\nAttach before_state_vector/after_state_vector (lib0 v1) to outbound collab\nUpdate messages so the server can detect missing updates. Adds proto\nfields 5/6 to Update (regenerated messages.js/.d.ts), captures the vectors\nfrom the Yjs transaction in sync-protocol onUpdate, and threads them\nthrough the persistent sync outbox (a merged drain spans the first\nrecord's before-vector to the last record's after-vector). Covered by new\noutbox tests. Backward compatible: empty vectors are treated as absent by\nthe server, so this is inert when the server feature is off.\n\nCo-Authored-By: Claude Opus 4.8 <noreply@anthropic.com>\nClaude-Session: https://claude.ai/code/session_01Lmq1LHFqqDTchv9K2bGEKR\n\n* perf(sync): drop after_state_vector from web collab updates\n\nThe server never trusts a client-provided after vector (it derives the\npost-update state from the update bytes itself), so sending it was wasted\nwork. Compute and send only before_state_vector: one Y.encodeStateVector\ncall per update instead of two, and fewer bytes on the wire. Removes the\nfield from the outbox record and all build sites (immediate/broadcast,\nIDB-fallback, merge-drain) and from handleSyncRequest. The Update proto\nstill declares field 6 to stay aligned with the server wire contract; it\nis simply left unset (serializes as absent -> None on the server).\n\nCo-Authored-By: Claude Opus 4.8 <noreply@anthropic.com>\nClaude-Session: https://claude.ai/code/session_01Lmq1LHFqqDTchv9K2bGEKR\n\n---------\n\nCo-authored-by: Claude Opus 4.8 <noreply@anthropic.com>",
+        "url": "https://github.com/AppFlowy-IO/AppFlowy-Web/commit/7ee06689d2e7dbbf8eebc4051dacbab421129a54"
+    },
+    {
+        "sha": "b615fa5a9fb195e972bbe0df2126d30a853180f7",
+        "author": "Nathan",
+        "email": "nathan@appflowy.io",
+        "date": "2026-06-26T07:35:43Z",
+        "message": "chore: update lint",
+        "url": "https://github.com/AppFlowy-IO/AppFlowy-Web/commit/b615fa5a9fb195e972bbe0df2126d30a853180f7"
+    },
+    {
+        "sha": "bf47f63a9c3c13265a54d184c9db32cf878e5ca0",
+        "author": "Nathan.fooo",
+        "email": "86001920+appflowy@users.noreply.github.com",
+        "date": "2026-06-26T07:10:22Z",
+        "message": "Align default document initialization ids (#370)\n\n* Align default document initialization ids\n\n* Use UUID view id in publish snapshot fixture\n\n* Fix embedded row document initialization",
+        "url": "https://github.com/AppFlowy-IO/AppFlowy-Web/commit/bf47f63a9c3c13265a54d184c9db32cf878e5ca0"
+    },
+    {
+        "sha": "0349102e7a086efcb7ee11c3e221e9ae09d034c8",
+        "author": "Nathan",
+        "email": "nathan@appflowy.io",
+        "date": "2026-06-25T12:46:13Z",
+        "message": "chore: update ci",
+        "url": "https://github.com/AppFlowy-IO/AppFlowy-Web/commit/0349102e7a086efcb7ee11c3e221e9ae09d034c8"
+    },
+    {
+        "sha": "98125bf944b650df84d9288c5a3786ab35b38b06",
+        "author": "Nathan.fooo",
+        "email": "86001920+appflowy@users.noreply.github.com",
+        "date": "2026-06-25T11:19:38Z",
+        "message": "chore: use prompt (#416)",
+        "url": "https://github.com/AppFlowy-IO/AppFlowy-Web/commit/98125bf944b650df84d9288c5a3786ab35b38b06"
+    },
+    {
+        "sha": "6feab985ef0d4b7a2f9bc1f1de14889e5a39601c",
+        "author": "Nathan.fooo",
+        "email": "86001920+appflowy@users.noreply.github.com",
+        "date": "2026-06-24T15:08:09Z",
+        "message": "fix: avoid forcing Google OAuth consent (#415)",
+        "url": "https://github.com/AppFlowy-IO/AppFlowy-Web/commit/6feab985ef0d4b7a2f9bc1f1de14889e5a39601c"
+    },
+    {
+        "sha": "13f3c3f9f5f7224fb213ea7da9200b0043f07fbe",
+        "author": "Nathan.fooo",
+        "email": "86001920+appflowy@users.noreply.github.com",
+        "date": "2026-06-23T15:09:35Z",
+        "message": "fix duplicate inline database in row pages (#414)",
+        "url": "https://github.com/AppFlowy-IO/AppFlowy-Web/commit/13f3c3f9f5f7224fb213ea7da9200b0043f07fbe"
+    },
+    {
+        "sha": "ffb7247d0380c3fecfe76768201e31899cba5ec3",
+        "author": "Nathan.fooo",
+        "email": "86001920+appflowy@users.noreply.github.com",
+        "date": "2026-06-23T00:26:13Z",
+        "message": "[codex] Fix row-page inline grid duplication (#412)\n\n* Fix row-page inline grid duplication\n\n* Fix row page inline grid duplication",
+        "url": "https://github.com/AppFlowy-IO/AppFlowy-Web/commit/ffb7247d0380c3fecfe76768201e31899cba5ec3"
+    },
+    {
+        "sha": "a07edff22ef7e4d97a859e568be2505679b39ca1",
+        "author": "Nathan.fooo",
+        "email": "86001920+appflowy@users.noreply.github.com",
+        "date": "2026-06-22T08:07:56Z",
+        "message": "fix: auto shrink embedded grid height (#411)",
+        "url": "https://github.com/AppFlowy-IO/AppFlowy-Web/commit/a07edff22ef7e4d97a859e568be2505679b39ca1"
+    },
+    {
+        "sha": "c679e8c2f7ad8528f6a3f4b13aaa48364d7fc20b",
+        "author": "Nathan.fooo",
+        "email": "86001920+appflowy@users.noreply.github.com",
+        "date": "2026-06-21T14:53:44Z",
+        "message": "fix: published database view test urls (#410)\n\n* fix published database view test urls\n\n* fix relation database page id selection\n\n* fix relation page id ambiguity",
+        "url": "https://github.com/AppFlowy-IO/AppFlowy-Web/commit/c679e8c2f7ad8528f6a3f4b13aaa48364d7fc20b"
+    },
+    {
+        "sha": "fae89130b55da14267013636bc391352df47f724",
+        "author": "Nathan.fooo",
+        "email": "86001920+appflowy@users.noreply.github.com",
+        "date": "2026-06-21T06:35:32Z",
+        "message": "fix: preserve block identity during type conversion (#325)\n\n* fix: shared block type\n\n* test: cover shared block conversion regressions",
+        "url": "https://github.com/AppFlowy-IO/AppFlowy-Web/commit/fae89130b55da14267013636bc391352df47f724"
+    },
+    {
+        "sha": "1da1f876c41e16e85a825de05134bf9885205e35",
+        "author": "Nathan.fooo",
+        "email": "86001920+appflowy@users.noreply.github.com",
+        "date": "2026-06-17T23:28:46Z",
+        "message": "fix: connect banner missing WebSocket status on late mount (#407)\n\n* fix: connect banner\n\n* refactor: read WS status via useSyncExternalStore in ConnectBanner\n\nReplace the manual lazy-useState init + useLayoutEffect subscribe/re-read\nwith useSyncExternalStore. The emitter caches the latest readyState, so the\nbanner's snapshot can no longer tear from its subscription and the\nlate-mount case is handled natively rather than via layout-effect timing.\nAlso drop the unreachable `!eventEmitter` guards (useEventEmitter throws\nwhen the context is missing).\n\nCo-Authored-By: Claude Opus 4.8 (1M context) <noreply@anthropic.com>\n\n* refactor: lazy-init eventEmitter ref in AppSyncLayer\n\nuseRef keeps only its first value but still evaluates `new EventEmitter()`\non every render. Initialize lazily and route consumers through a narrowed\nnon-null `eventEmitter` local (added to the relevant effect/memo deps; it's\nref-backed and stable, so no extra runs).\n\nCo-Authored-By: Claude Opus 4.8 (1M context) <noreply@anthropic.com>\n\n---------\n\nCo-authored-by: Claude Opus 4.8 (1M context) <noreply@anthropic.com>",
+        "url": "https://github.com/AppFlowy-IO/AppFlowy-Web/commit/1da1f876c41e16e85a825de05134bf9885205e35"
+    },
+    {
+        "sha": "ee06eedc633d890be8d43bc16cc4f5a6292a92ff",
+        "author": "Nathan.fooo",
+        "email": "86001920+appflowy@users.noreply.github.com",
+        "date": "2026-06-16T14:26:18Z",
+        "message": "Scope sidebar view cache by user (#405)",
+        "url": "https://github.com/AppFlowy-IO/AppFlowy-Web/commit/ee06eedc633d890be8d43bc16cc4f5a6292a92ff"
+    },
+    {
+        "sha": "a53f93e0d2b704b0cac271572c8f0f7ff0ca0241",
+        "author": "Lucas",
+        "email": "lucas.xu@appflowy.io",
+        "date": "2026-06-15T04:57:56Z",
+        "message": "fix: render desktop row comment mentions (#401)",
+        "url": "https://github.com/AppFlowy-IO/AppFlowy-Web/commit/a53f93e0d2b704b0cac271572c8f0f7ff0ca0241"
+    },
+    {
+        "sha": "d10d1cb6218d640d1880f2f48ef13bc8ac799fed",
+        "author": "Nathan.fooo",
+        "email": "86001920+appflowy@users.noreply.github.com",
+        "date": "2026-06-15T04:55:33Z",
+        "message": "fix: hydrate sidebar outline for notification targets (#399)",
+        "url": "https://github.com/AppFlowy-IO/AppFlowy-Web/commit/d10d1cb6218d640d1880f2f48ef13bc8ac799fed"
+    },
+    {
+        "sha": "79a23c9c0cc4a0f3eafa916c1221b36d03bea4dc",
+        "author": "mcollard0",
+        "email": "mcollard@gmail.com",
+        "date": "2026-06-15T04:54:54Z",
+        "message": "Handle shareWithMe failures non-fatally in useWorkspaceData (#157)\n\n* docs: clarify non-fatal handling of shareWithMe failures\n\n* chore: surface shareWithMe failures for debugging\n\n---------\n\nCo-authored-by: Nathan.fooo <86001920+appflowy@users.noreply.github.com>",
+        "url": "https://github.com/AppFlowy-IO/AppFlowy-Web/commit/79a23c9c0cc4a0f3eafa916c1221b36d03bea4dc"
+    },
+    {
+        "sha": "de9836829ae9076fd7fceeda93245c84bebd8dc4",
+        "author": "Nathan",
+        "email": "nathan@appflowy.io",
+        "date": "2026-06-12T13:46:29Z",
+        "message": "chore: update ci",
+        "url": "https://github.com/AppFlowy-IO/AppFlowy-Web/commit/de9836829ae9076fd7fceeda93245c84bebd8dc4"
+    },
+    {
+        "sha": "7fd2c54aeea2df16d8f4cb7095dbf74a69ea56cc",
+        "author": "Nathan.fooo",
+        "email": "86001920+appflowy@users.noreply.github.com",
+        "date": "2026-06-12T13:36:40Z",
+        "message": "fix: stabilize realtime sync reconnects (#397)",
+        "url": "https://github.com/AppFlowy-IO/AppFlowy-Web/commit/7fd2c54aeea2df16d8f4cb7095dbf74a69ea56cc"
+    },
+    {
+        "sha": "b01157354a4db3dbb876e463d14641bcb5cb5092",
+        "author": "Nathan.fooo",
+        "email": "86001920+appflowy@users.noreply.github.com",
+        "date": "2026-06-12T05:59:32Z",
+        "message": "Fix background sync retry retention and route cache headers (#395)\n\n* fix: serve app routes with safe cache headers\n\n* fix: retain dirty sync edits across backoff pauses\n\n* test: stabilize avatar priority e2e\n\n* fix: hydrate linked database views in editor\n\n* fix: refresh stale linked database views\n\n* test: stabilize emoji avatar rendering check\n\n* test: avoid stale emoji avatar awareness\n\n* test: stabilize remaining ci failures\n\n* test: stabilize embedded database picker flows",
+        "url": "https://github.com/AppFlowy-IO/AppFlowy-Web/commit/b01157354a4db3dbb876e463d14641bcb5cb5092"
+    },
+    {
+        "sha": "a4eeef19cbd3d271d989bec2757c06e8f4eebcf0",
+        "author": "Nathan.fooo",
+        "email": "86001920+appflowy@users.noreply.github.com",
+        "date": "2026-06-04T05:14:29Z",
+        "message": "fix: attach sidebar reorder auto-scroll to the scroll container (#391)\n\nThe space reorder monitor passed the sidebar's `folder-views` element\n(a non-scrolling `flex-1 flex-col`, overflow: visible) to\n`autoScrollForElements`. Pragmatic-drag-and-drop logs \"Auto scrolling has\nbeen attached to an element that appears not to be scrollable\" and skips\nit, so dragging a space near the list's top/bottom edge never auto-scrolled.\n\nResolve the nearest scrollable ancestor (the AFScroller view, overflow:\nauto) before attaching, falling back to no auto-scroll when none exists.\nOnly the sidebar Outline passes `autoScrollElementRef`, so no other\nreorderable list is affected.\n\nCo-authored-by: Claude Opus 4.8 (1M context) <noreply@anthropic.com>",
+        "url": "https://github.com/AppFlowy-IO/AppFlowy-Web/commit/a4eeef19cbd3d271d989bec2757c06e8f4eebcf0"
+    },
+    {
+        "sha": "0d92ff7e174050aa92ba7251d0c73e89771914b0",
+        "author": "Nathan.fooo",
+        "email": "86001920+appflowy@users.noreply.github.com",
+        "date": "2026-06-02T16:34:21Z",
+        "message": "fix: center landing-page error card when embedded in app shell (#390)\n\nThe \"Page not found\" and other RecordNotFound error states reuse the\nfull-page LandingPage component, whose outer container was sized with\n`h-screen w-screen`. When rendered embedded in the app content area\n(right of the sidebar), `w-screen` (100vw) starts at the content-area's\nleft edge and overflows the viewport by the sidebar width, so the card\ncentered ~half the sidebar width too far right instead of in the\navailable space.\n\n- LandingPage: add a `fitParent` prop that switches the container to\n  `h-full w-full` so it fills its parent. Standalone full-page routes\n  (InvalidLink, NotFound, ApproveRequest, etc.) keep the original\n  viewport sizing — no regression.\n- RecordNotFound: route all 12 embedded error states through a small\n  `EmbeddedLandingPage` wrapper that always passes `fitParent`\n  (matches the existing h-full/w-full pattern in RequestAccessContent).\n- warning.svg: nudge the exclamation mark down ~1.5 units so it is\n  optically centered within the triangle (was sitting ~7% high).\n\nCo-authored-by: Claude Opus 4.8 (1M context) <noreply@anthropic.com>",
+        "url": "https://github.com/AppFlowy-IO/AppFlowy-Web/commit/0d92ff7e174050aa92ba7251d0c73e89771914b0"
+    },
+    {
+        "sha": "f1774dfa96e61926a7f787411a8156ff4aa5643e",
+        "author": "Nathan.fooo",
+        "email": "86001920+appflowy@users.noreply.github.com",
+        "date": "2026-06-02T13:24:48Z",
+        "message": "fix: anchor slash menu at caret inside empty checklist items (#388)\n\nTyping \"/\" inside an empty checklist/to-do item opened the slash menu at\nthe viewport's top-left corner instead of next to the cursor.\n\nThe panel position comes from getRangeRect(), which calls\ngetBoundingClientRect() on the collapsed caret selection. In Chrome, a\ncollapsed range at an empty text node sitting next to a\ncontentEditable=false element returns a degenerate {0,0,0,0} rect. A\nto-do line hits this exactly: the empty editable leaf sits right after the\ncheckbox icon and the block placeholder, both contentEditable=false.\n\nBecause a zero DOMRect is still a truthy object, the existing fallback\nchain never fired and the panel anchored to {top:0,left:0}.\n\ngetRangeRect() now detects a degenerate rect and falls back to the nearest\nancestor element that has a real layout box, so the caret position resolves\ncorrectly. This fixes every consumer (slash / mention / page-reference /\npaste-as panels and the selection toolbar) at once.\n\nAdded a regression test that reproduces the degenerate-rect case and\nasserts the fallback resolves the caret position.\n\nCo-authored-by: Claude Opus 4.8 (1M context) <noreply@anthropic.com>",
+        "url": "https://github.com/AppFlowy-IO/AppFlowy-Web/commit/f1774dfa96e61926a7f787411a8156ff4aa5643e"
+    },
+    {
+        "sha": "5eb13bc11f26486b8ed120b8965e70bae3cc7727",
+        "author": "Nathan.fooo",
+        "email": "86001920+appflowy@users.noreply.github.com",
+        "date": "2026-06-02T13:23:38Z",
+        "message": "Fix stale Slate selection after link edits (#389)",
+        "url": "https://github.com/AppFlowy-IO/AppFlowy-Web/commit/5eb13bc11f26486b8ed120b8965e70bae3cc7727"
+    },
+    {
+        "sha": "a5ba5b2cb38c27dc3e48155bfb70d0f7194504fd",
+        "author": "Nathan.fooo",
+        "email": "86001920+appflowy@users.noreply.github.com",
+        "date": "2026-06-01T07:15:56Z",
+        "message": "fix: enforce inherited read-only access for pages in a view-only shared space (#386)\n\n* fix: enforce inherited read-only access for pages in a view-only shared space\n\nPages inside a private space shared with View-only access carried no\nexplicit access_level of their own, so getViewReadOnlyStatus treated them\nas editable. Resolve the effective access level by walking the ancestor\nchain inside the hidden \"Shared with me\" space and inheriting from the\nnearest ancestor that declares an access_level (an explicit child re-share\nstill overrides the inherited space level).\n\n- Add findSharedAccessLevel() to resolve inherited shared access\n- Consolidate getViewReadOnlyStatus traversal: findView already resolves\n  views inside the shared space, so drop the redundant findViewInShareWithMe\n  walk and its duplicate space lookup\n- Cover the inheritance logic with unit tests and assert the read-only\n  editor gate end-to-end in the public-to-private BDD scenario\n\nCo-Authored-By: Claude Opus 4.8 (1M context) <noreply@anthropic.com>\n\n* fix: show \"in Trash\" for embedded database whose container is trashed\n\nWhen an embedded database's container page is moved to trash, the block\nshowed \"permanently deleted\" instead of \"in Trash\". The block's viewId is\na child of the container, and once the container is trashed\nViewService.get(viewId) returns 404, so viewMeta becomes null and the\nparent id is lost. The trash list only contains the container id (never\nthe embedded child view id), so the trash match failed and the block was\nmisclassified as permanently deleted.\n\nCache the parent id (keyed by viewId) while the view is still reachable\nand fall back to it in the trash check when viewMeta is null. Fixes the\nconsistently-failing database-sidebar-deletion Scenario 1 and Scenario 6.\n\nCo-Authored-By: Claude Opus 4.8 (1M context) <noreply@anthropic.com>\n\n---------\n\nCo-authored-by: Claude Opus 4.8 (1M context) <noreply@anthropic.com>",
+        "url": "https://github.com/AppFlowy-IO/AppFlowy-Web/commit/a5ba5b2cb38c27dc3e48155bfb70d0f7194504fd"
+    },
+    {
+        "sha": "110e3813dfae1028b5b7cb26dcf13d7645fbf063",
+        "author": "Nathan.fooo",
+        "email": "86001920+appflowy@users.noreply.github.com",
+        "date": "2026-05-31T14:27:08Z",
+        "message": "fix: render embedded database in version history preview (#385)\n\nEmbedded databases inside a document showed an infinite loading spinner\nwhen previewed in Version history. The version-preview <Editor> was not\ngiven `loadView`/`bindViewSync` from the editor context, so the embedded\nDatabaseBlock's useDocumentLoader bailed out (\"loadView not available\")\nand the database collab doc never loaded, leaving DatabaseContent stuck\non a perpetual CircularProgress.\n\nForward `loadView` and `bindViewSync` (already exposed by useAppOperations\nand used by the normal ViewModal path) into the preview editor. The\npreview shows the database's live data, matching the normal view —\ndatabases are separate collab objects not captured in the document\nversion snapshot.\n\nAlso applies a few React best-practice cleanups in the same file:\n- hoist the static MUI Dialog PaperProps out of render\n- reuse the existing handleClose callback for Dialog onClose\n- drop the redundant handleSetDateFilter wrapper around setDateFilter\n\nTests:\n- unit (DocumentHistoryModal.test.tsx): asserts the preview Editor\n  receives loadView/bindViewSync; fails without the fix.\n- e2e (version-history-database.spec.ts): signs in to the seeded\n  account, opens the seeded page's Version history, and asserts the\n  embedded grid renders with rows (not an infinite spinner).\n\nCo-authored-by: Claude Opus 4.8 (1M context) <noreply@anthropic.com>",
+        "url": "https://github.com/AppFlowy-IO/AppFlowy-Web/commit/110e3813dfae1028b5b7cb26dcf13d7645fbf063"
+    },
+    {
+        "sha": "7cfb528cc78c062d187e921f3eeabd954db167a7",
+        "author": "Nathan.fooo",
+        "email": "86001920+appflowy@users.noreply.github.com",
+        "date": "2026-05-31T11:40:46Z",
+        "message": "fix(database): preserve cell data when converting field types (#384)\n\nConverting a field type in the grid could hide or drop cell values:\n- MultiSelect -> Text made values disappear, and switching back left them\n  hidden, because option resolution used the field's CURRENT type. After a\n  switch the type-option lookup missed the (retained) source options, so the\n  stored option IDs no longer mapped to names.\n- Chained switches (A -> B -> A) overwrote the cell's recorded origin type with\n  the intermediate hop, so the round-trip misread the data and rendered blank.\n\nMirror the desktop (flowy-database2) lazy-conversion model:\n- resolve select options by the cell's SOURCE field type, not the field's\n  current type (cell.parse.ts);\n- preserve the TRUE origin type across chained switches and only clear it when\n  the cell returns to its written-at type (useSwitchPropertyType);\n- clear source_field_type on a genuine cell edit, so an edited cell becomes\n  native at the current type (writeCellToRow).\n\nAlso close desktop-parity gaps in cell conversion:\n- SingleSelect <-> MultiSelect now keeps the option IDs instead of dropping them;\n- RichText -> DateTime parses the text into a unix-seconds timestamp;\n- Created/LastEditedTime -> DateTime materializes the row timestamp into the cell.\n\nAdds hook-driven tests covering the conversions and a parameterized round-trip\nsuite (A -> B -> A preserves the displayed value and raw data) mirroring\ndesktop's real_data_transform_test.\n\nCo-authored-by: Claude Opus 4.8 (1M context) <noreply@anthropic.com>",
+        "url": "https://github.com/AppFlowy-IO/AppFlowy-Web/commit/7cfb528cc78c062d187e921f3eeabd954db167a7"
+    },
+    {
+        "sha": "db69c8f404ba51e0690f98f3477bb86dbacce484",
+        "author": "Nathan.fooo",
+        "email": "86001920+appflowy@users.noreply.github.com",
+        "date": "2026-05-31T00:30:11Z",
+        "message": "Fix sidebar outline revalidation (#379)\n\n* fix: revalidate sidebar outline updates\n\n* perf: avoid sidebar view request waterfalls\n\n* fix: skip unchanged outline revalidation without rid\n\n* fix: ignore stale sidebar revalidation results\n\n* fix: revalidate after relaxed outline patches",
+        "url": "https://github.com/AppFlowy-IO/AppFlowy-Web/commit/db69c8f404ba51e0690f98f3477bb86dbacce484"
+    }
+]

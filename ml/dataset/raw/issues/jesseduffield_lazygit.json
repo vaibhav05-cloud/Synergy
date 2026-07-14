@@ -1,0 +1,356 @@
+[
+    {
+        "id": 4874846692,
+        "number": 5808,
+        "title": "Enable templating in the `runCommand` argument",
+        "state": "open",
+        "created_at": "2026-07-13T14:56:03Z",
+        "updated_at": "2026-07-14T05:06:13Z",
+        "closed_at": null,
+        "author": "bmrips",
+        "comments": 0,
+        "labels": [
+            "enhancement"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Is your feature request related to a problem? Please describe.\n\nI want to create a custom command to push a commit, as in the [Custom Commands Compendium](https://github.com/jesseduffield/lazygit/wiki/Custom-Commands-Compendium#pushing-a-specific-commit). However, the command shall also ask for confirmation if the push has to be forced. I deem a force-push to be required if the output of the following script is empty:\n\n```bash\ngit branch --no-merged <commit> <remote-tracking-branch>\ngit branch --contains <commit> <remote-tracking-branch>\n```\n\nI attempted to set a prompt condition that constructs this script with Go templates and executes it via `runCommand`:\n\n```yaml\ncondition: '{{runCommand \"git branch --no-merged {{.SelectedLocalCommit.Hash}} {{.SelectedLocalBranch.UpstreamRemote}}/{{.SelectedLocalBranch.UpstreamBranch}}; git branch --contains {{.SelectedLocalCommit.Hash}} {{.SelectedLocalBranch.UpstreamRemote}}/{{.SelectedLocalBranch.UpstreamBranch}}\"}}'\n```\n\nHowever, running this custom command fails with:\n\n<img width=\"648\" height=\"153\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/30c88e1b-6749-475b-b04c-ba0fece6263c\" />\n\n### Describe the solution you'd like\n\nI would like the script passed to `runCommand` to be subject to templating. This would allow the construction of dynamic, flexible conditions.\n\n### Describe alternatives you've considered\n\nAdding blocks of pre-computed scripts per custom command or per prompt:\n\n```yaml\ncustomCommands:\n  - description: Push commits\n    context: commits\n    key: P\n    prompts:\n      - title: Force push\n        type: confirm\n        values:\n          IsAncestor: git branch --no-merged {{.SelectedLocalCommit.Hash}} {{.SelectedLocalBranch.UpstreamRemote}}/{{.SelectedLocalBranch.UpstreamBranch}}\n          IsDiverged: git branch --contains {{.SelectedLocalCommit.Hash}} {{.SelectedLocalBranch.UpstreamRemote}}/{{.SelectedLocalBranch.UpstreamBranch}}\"}}\n        condition: {{ or .IsAncestor .IsDiverged }}\n\n```\n\n### Additional context\n\nNone.",
+        "url": "https://github.com/jesseduffield/lazygit/issues/5808"
+    },
+    {
+        "id": 4867149543,
+        "number": 5805,
+        "title": "Treat ASCII/non-ASCII boundaries as word boundaries in text editing (word deletion, word movement)",
+        "state": "open",
+        "created_at": "2026-07-12T13:08:40Z",
+        "updated_at": "2026-07-12T13:08:40Z",
+        "closed_at": null,
+        "author": "kyu08",
+        "comments": 0,
+        "labels": [
+            "enhancement"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "For context, I'm Japanese. And I work with Japanese people. So I use Japanese and English in commit messages. (we use English only for proper nouns and technical terms, by the way) \n\n### Is your feature request related to a problem? Please describe.\nWhen I write a commit message using Lazygit, `ctrl+w` deletes consecutive characters regardless of whether they are ASCII or non-ASCII characters.\n\nFor example, when the current commit message is `関数名をDoSomethingに変更` (which means `rename function name to DoSomething`), if I press `ctrl+w` at the end of the line, all the characters are deleted.\n\n### Describe the solution you'd like\n`ctrl+w` only deletes consecutive characters of the same kind (ASCII or non-ASCII).\n\nFor example, when the current commit message is `関数名をDoSomethingに変更`, if I press `ctrl+w` at the end of the line, only `に変更` is deleted. (`ctrl+w` deletes only the consecutive non-ASCII characters in this example.)\n\nIn addition to this, for consistenc word movement should respect ASCII/non-ASCII boundaries as well.\n\n### Describe alternatives you've considered\nN/A\n\n### Additional context\nMany tools I use delete only consecutive characters of the same kind (ASCII or non-ASCII) as the character immediately before the cursor. (e.g. `ctrl+w` in Vim/Neovim and Claude Code, `opt+delete` in macOS and Emacs)\n\nFor reference, as far as I know these tools delete consecutive characters regardless of whether they are ASCII or non-ASCII characters.\n\n- `ctrl+w` in zsh\n- `opt+delete` in VSCode\n\n---\n\n@stefanhaller\n\nI've opened a PR with an implementation.\n\nIf this sounds reasonable, I'd appreciate a review of my PR. https://github.com/jesseduffield/lazygit/pull/5804",
+        "url": "https://github.com/jesseduffield/lazygit/issues/5805"
+    },
+    {
+        "id": 4866019336,
+        "number": 5803,
+        "title": "Allow rebase custom patch options for subcommits-started patch if from current branch",
+        "state": "open",
+        "created_at": "2026-07-12T08:26:34Z",
+        "updated_at": "2026-07-12T08:26:34Z",
+        "closed_at": null,
+        "author": "brandondong",
+        "comments": 0,
+        "labels": [
+            "enhancement"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Is your feature request related to a problem? Please describe.\nI was really confused as to why sometimes after creating a custom patch, the custom patch options menu would be missing some options like \"Remove patch from original commit\" or \"Move patch out into index\" even though they should be possible.\n\nAfter playing around some more and looking at the code, it turns out this was due to my inconsistent muscle memory sometimes starting the custom patch from the branches -> subcommits view of the currently checked-out branch vs directly from the commits panel.\n\n### Describe the solution you'd like\nI don't think this discrepancy should exist. The two views are essentially semantically identical when drilling down on the current branch and all the rebase-related operations work in one versus the other.\n\n### Describe alternatives you've considered\nN/A\n\n### Additional context\nThis was originally opened as a PR: https://github.com/jesseduffield/lazygit/pull/5801. Only after creating it did I see lazygit's contribution policy changed recently. Feel free to close/use that PR.\n",
+        "url": "https://github.com/jesseduffield/lazygit/issues/5803"
+    },
+    {
+        "id": 4865849305,
+        "number": 5802,
+        "title": "Crash when using custom patch after switching branches",
+        "state": "open",
+        "created_at": "2026-07-12T07:25:13Z",
+        "updated_at": "2026-07-12T07:25:13Z",
+        "closed_at": null,
+        "author": "brandondong",
+        "comments": 0,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Describe the bug\nA custom patch started from the commits panel in one branch, then checking out some other branch, and then trying to use that custom patch can result in crashes/other incorrect behavior.\n\n### To Reproduce\nSteps to reproduce the behavior:\n\n```bash\ngit init\ngit checkout -b a\ntouch a.txt\ngit add .\ngit commit -m \"a\"\ngit checkout -b b\ntouch b.txt\ngit add .\ngit commit -m \"b\"\nlazygit\n```\n\n1. Navigate to the commits panel, select the `b` commit and start a custom patch by selecting the `b` file.\n2. Navigate to the branches panel and check out `a`.\n3. View custom patch options (`<c-p>`) -> Move patch out into index.\n4. Crash:\n\n```\npanic: runtime error: index out of range [-1]\n\ngoroutine 784 [running]:\ngithub.com/jesseduffield/lazygit/pkg/commands/git_commands.(*RebaseCommands).BeginInteractiveRebaseForCommit(0x400f70ee2b9e5?, {0xc00007e158?, 0x0?, 0x7ff700000000?}, 0x7ff70fb3a430?, 0x48?)\n        /home/runner/work/lazygit/lazygit/pkg/commands/git_commands/rebase.go:406 +0x185\ngithub.com/jesseduffield/lazygit/pkg/commands/git_commands.(*PatchCommands).MovePatchIntoIndex(0xc0000d8870, {0xc00007e158, 0x1, 0xc0007d1de0?}, 0xffffffffffffffff, 0x0)\n        /home/runner/work/lazygit/lazygit/pkg/commands/git_commands/patch.go:227 +0x12b\ngithub.com/jesseduffield/lazygit/pkg/gui/controllers.(*CustomPatchOptionsMenuAction).handleMovePatchIntoWorkingTree.func1.1({0x7ff70f8c3500?, 0xc0007d1e38?})\n        /home/runner/work/lazygit/lazygit/pkg/gui/controllers/custom_patch_options_menu_action.go:184 +0xca\ngithub.com/jesseduffield/lazygit/pkg/gui/controllers/helpers.(*AppStatusHelper).WithWaitingStatusImpl.func1(0xc000a3d5c0?)\n        /home/runner/work/lazygit/lazygit/pkg/gui/controllers/helpers/app_status_helper.go:69 +0x53\ngithub.com/jesseduffield/lazygit/pkg/gui/status.(*StatusManager).WithWaitingStatus(0xc0001f9e00, {0x7ff70f95b622, 0x8}, 0xc0007e7660, 0xc0007d1ee0)\n        /home/runner/work/lazygit/lazygit/pkg/gui/status/status_manager.go:56 +0xd7\ngithub.com/jesseduffield/lazygit/pkg/gui/controllers/helpers.(*AppStatusHelper).WithWaitingStatusImpl(0xc000221008, {0x7ff70f95b622, 0x8}, 0xc0007e9860, {0x7ff70fb3d6a0, 0xc0008ce4c0})\n        /home/runner/work/lazygit/lazygit/pkg/gui/controllers/helpers/app_status_helper.go:68 +0xc7\ngithub.com/jesseduffield/lazygit/pkg/gui.NewGui.func5.(*AppStatusHelper).WithWaitingStatus.1({0x7ff70fb3d6a0?, 0xc0008ce4c0?})\n        /home/runner/work/lazygit/lazygit/pkg/gui/controllers/helpers/app_status_helper.go:63 +0x39\ngithub.com/jesseduffield/gocui.(*Gui).onWorkerAux(0xc00030e000, 0x7ff70f589536?, {0x7ff70fb3d6a0?, 0xc0008ce4c0?})\n        /home/runner/work/lazygit/lazygit/vendor/github.com/jesseduffield/gocui/gui.go:721 +0x65\ngithub.com/jesseduffield/gocui.(*Gui).OnWorker.func1()\n        /home/runner/work/lazygit/lazygit/vendor/github.com/jesseduffield/gocui/gui.go:708 +0x2b\ncreated by github.com/jesseduffield/gocui.(*Gui).OnWorker in goroutine 1\n        /home/runner/work/lazygit/lazygit/vendor/github.com/jesseduffield/gocui/gui.go:707 +0x90\n```\n\n### Expected behavior\nThe rebase-related operations like \"Move patch out into index\" shouldn't even be available to select in this scenario. The `PatchBuilder` state including `CanRebase` is essentially snapshotted at the patch creation (true in this case because patch was started in commits view) but then not updated when the current branch changes.\n\n### Version info:\n\n```\ncommit=80223c7fbbd0b86631a988834cbe88e267bb0bd9, build date=2025-11-01T09:43:19Z, build source=binaryRelease, version=0.56.0, os=windows, arch=amd64, git version=2.46.0.windows.1\n```\n\n### Terminal info:\nWindows Terminal\n\n### Additional context\n\nCan repro on master.\n",
+        "url": "https://github.com/jesseduffield/lazygit/issues/5802"
+    },
+    {
+        "id": 4864458910,
+        "number": 5800,
+        "title": "`branchColorPatterns`: allow overlapping regexes by making evaluation order consistent",
+        "state": "open",
+        "created_at": "2026-07-11T22:45:22Z",
+        "updated_at": "2026-07-11T22:45:22Z",
+        "closed_at": null,
+        "author": "Djuuu",
+        "comments": 0,
+        "labels": [
+            "enhancement"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Description\n\nI tried to setup a detailed branch coloring for my projects, which led me to trying overlapping regexes.\n\nBut when a branch name matches **more than one** pattern, which pattern \"wins\" is non-deterministic, the same branch shows different colors across renders/restarts.\n\nExample config:\n```yaml\ngui:\n  branchColorPatterns:\n    '^task/JT-\\d+.*': 'green' # task branches of my team\n    '^task/.*':       'blue'  # other task branches\n```\n\nBranch `task/XY-456-other` matches only the second -> consistently blue.\n\nBranch `task/JT-123-example` matches **both** patterns -> I'd expect the first-listed one (green) to win\n(or the last - which I also tried - but I would expect for it to be consistent).\nActual behavior is seemingly random: sometimes green, sometimes blue, it flips across renders/restarts.\n\n|||\n|---|---|\n|<img width=\"515\" height=\"123\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/2df7ec9c-41b1-4b1d-8050-a9edb1c93aef\" />|<img width=\"515\" height=\"123\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/2523b317-455b-47d7-95b0-2d4338e209a2\" />|\n\n### Describe the solution you'd like\n\nHaving a well-defined precedence would be really nice for some fine-tuned branch-coloring scenarios, as shown in the example above.\n\n### Describe alternatives you've considered\n\nSince Go's regex engine doesn't support negative lookahead, overlapping patterns can't easily be made mutually exclusive as a workaround.",
+        "url": "https://github.com/jesseduffield/lazygit/issues/5800"
+    },
+    {
+        "id": 4855532632,
+        "number": 5794,
+        "title": "Localize the command-log random tips",
+        "state": "open",
+        "created_at": "2026-07-10T13:40:49Z",
+        "updated_at": "2026-07-10T14:53:49Z",
+        "closed_at": null,
+        "author": "axdlee",
+        "comments": 1,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "## Summary\n\nThe command-log random tips are still effectively English-only, even when the UI language is set to zh-CN / zh-TW. The command log header itself is localized, but the tip content shown underneath is not.\n\n## Why this matters\n\nThis makes the localized UI feel inconsistent: the surrounding labels are translated, while the random tip text remains in English.\n\n## Proposed direction\n\nI think the tips should be wired into the existing i18n flow so they can follow the selected language, with English as the fallback.\n\nFrom reading the codebase, the likely fit is to keep English as the source of truth in `pkg/i18n/english.go` and let the generated translation files / Crowdin workflow handle the other locales, rather than hard-coding locale checks in the GUI layer.\n\n## Notes\n\nI can prepare a follow-up patch if you think this is the right direction. I also tested the affected packages locally after making a proof-of-concept change.\n",
+        "url": "https://github.com/jesseduffield/lazygit/issues/5794"
+    },
+    {
+        "id": 4847447577,
+        "number": 5787,
+        "title": "Should GIT_EDITOR and GIT_SEQUENCE_EDITOR have quoted values?",
+        "state": "open",
+        "created_at": "2026-07-09T15:08:31Z",
+        "updated_at": "2026-07-09T15:48:06Z",
+        "closed_at": null,
+        "author": "toy",
+        "comments": 2,
+        "labels": [
+            "discussion"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "I was checking git hooks and noticed that GIT_EDITOR and GIT_SEQUENCE_EDITOR for post-checkout hook during rebase contain quoted path to lazygit, so they are not printed by env to be:\n\n```env\nGIT_SEQUENCE_EDITOR=/opt/local/bin/lazygit\nGIT_EDITOR=/opt/local/bin/lazygit\n```\n\nbut rather:\n\n```env\nGIT_SEQUENCE_EDITOR=\"/opt/local/bin/lazygit\"\nGIT_EDITOR=\"/opt/local/bin/lazygit\"\n```\n\nIs this correct behaviour?",
+        "url": "https://github.com/jesseduffield/lazygit/issues/5787"
+    },
+    {
+        "id": 4846044647,
+        "number": 5783,
+        "title": "Main panel stuck on displaying commit graph",
+        "state": "open",
+        "created_at": "2026-07-09T12:03:45Z",
+        "updated_at": "2026-07-09T17:29:18Z",
+        "closed_at": null,
+        "author": "Schuasda",
+        "comments": 2,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Describe the bug\nMain Panel ([0]) stuck on commit graph, no matter what is selected in left-side panels\n### To Reproduce\nSteps to reproduce the behavior:\n\n1. Go to any panel on the left side\n2. Select an entry (e.g. a file with changes in panel[2])\n3. Panel[0] still shows commit graph instead of changed lines\n\nmain panel is still responsive, i can press '0' and scroll the commit graph, but it is not what i want to see right now -.-\n\n### Expected behavior\nMain panel should show appropriate view for selection on the left (e.g. (un)staged changes)\n\n### Screenshots\nas you can see, i have a file with unstaged changes selected, but the main panel shows the commit graph\n<img width=\"1892\" height=\"994\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/71bd6f4f-df39-4402-b9da-2c543c239c7e\" />\n\n### Version info:\n\n`commit=ce5a8b61bdc9439f2137a1ce9c6a5981c412a0ad, build date=2026-07-04T12:45:51Z, build source=binaryRelease, version=0.63.0, os=windows, arch=amd64, git version=2.53.0.windows.2`\n\n### Terminal info:\nWhat terminal are you using, and which version? For some types of bugs this information can be relevant.\n\n### Additional context\nI am on windows 11, using Windows Terminal with Powershell 7.6.3\nI have not changed much in the config, just the theme, added delta and difftastic pagers and changed two keybinds\n\n> [!NOTE]\n> Please try updating to the latest version or [manually building](https://github.com/jesseduffield/lazygit/#manual) the latest `master` to see if the issue still occurs.\n\n<!--\nIf you want to try and debug this issue yourself, you can run `lazygit --debug` in one terminal panel and `lazygit --logs` in another to view the logs.\n-->\n",
+        "url": "https://github.com/jesseduffield/lazygit/issues/5783"
+    },
+    {
+        "id": 4845203429,
+        "number": 5781,
+        "title": "External Diff Command not detected",
+        "state": "closed",
+        "created_at": "2026-07-09T09:57:19Z",
+        "updated_at": "2026-07-09T10:24:59Z",
+        "closed_at": "2026-07-09T10:24:59Z",
+        "author": "risalfajar",
+        "comments": 2,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Describe the bug\nI've configured externalDiffCommand to use `difft` but lazygit doesn't detect it.\n```yml\ngit:\n  parseEmoji: true\n  pagers:\n    - pager: delta --line-numbers --hyperlinks --paging=never --side-by-side\n    - externalDiffCommand: difft --color=always\n```\n\n### Expected behavior\nIt should detect it.\n\n### Screenshots\n<img width=\"720\" height=\"88\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/ff38f9ba-a0ee-4b50-890a-74bae399779d\" />\n\n<img width=\"1287\" height=\"154\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/32be741c-2ff9-4285-933f-6990e6fbbf0c\" />\n\n### Version info:\ncommit=, build date=, build source=Homebrew, version=0.63.0, os=darwin, arch=arm64, git version=2.50.1 (Apple Git-155)\n\n### Terminal info:\nZed Terminal",
+        "url": "https://github.com/jesseduffield/lazygit/issues/5781"
+    },
+    {
+        "id": 4843806182,
+        "number": 5778,
+        "title": "[0.63.0] Amend to commit broken: Git command failed. Check command log for details (open with @)",
+        "state": "open",
+        "created_at": "2026-07-09T06:32:09Z",
+        "updated_at": "2026-07-10T10:07:08Z",
+        "closed_at": null,
+        "author": "ruudk",
+        "comments": 9,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Describe the bug\nWhen I do CMD + A to amend to a specific commit, I get:\n> Git command failed. Check command log for details (open with @)\n\n```\nAmend commit\n  git commit --amend --no-edit --allow-empty --allow-\nempty-message\n\nGit output:\nfatal: Unable to create\n'.git/index.lock': File exists.\n\nAnother git process seems to be running in this\nrepository, or the lock file may be stale\n```\n\nBut it's untrue, because:\n```\nls -la .git/index.lock\nls: .git/index.lock: No such file or directory\n```\n\nThis happened after I upgraded from 0.62.2 to 0.63.0.\n\n### Version info:\n\ncommit=, build date=, build source=Homebrew, version=0.63.0, os=darwin, arch=arm64, git version=2.55.0\n\n### Terminal info:\nGhostty\n\n",
+        "url": "https://github.com/jesseduffield/lazygit/issues/5778"
+    },
+    {
+        "id": 4842398179,
+        "number": 5776,
+        "title": "Enhance the functionality of the workspace",
+        "state": "open",
+        "created_at": "2026-07-09T01:38:31Z",
+        "updated_at": "2026-07-10T15:26:57Z",
+        "closed_at": null,
+        "author": "aiysya",
+        "comments": 1,
+        "labels": [
+            "enhancement"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "Enhance the functionality of the workspace\n\nexample:\ngit worktree list\ngit worktree add ..\\deploy\\test test\ngit worktree add ..\\deploy\\test tes\n\nQuickly switch to the workspace\n",
+        "url": "https://github.com/jesseduffield/lazygit/issues/5776"
+    },
+    {
+        "id": 4842368315,
+        "number": 5775,
+        "title": "Terminal text selection and copying",
+        "state": "open",
+        "created_at": "2026-07-09T01:32:34Z",
+        "updated_at": "2026-07-10T15:22:41Z",
+        "closed_at": null,
+        "author": "aiysya",
+        "comments": 1,
+        "labels": [
+            "enhancement"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "Terminal text selection and copying",
+        "url": "https://github.com/jesseduffield/lazygit/issues/5775"
+    },
+    {
+        "id": 4840908575,
+        "number": 5774,
+        "title": "Remember open/closed folder state across sessions",
+        "state": "open",
+        "created_at": "2026-07-08T20:36:15Z",
+        "updated_at": "2026-07-08T20:36:15Z",
+        "closed_at": null,
+        "author": "antinomie8",
+        "comments": 0,
+        "labels": [
+            "enhancement"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Is your feature request related to a problem? Please describe.\nSometimes, I do commits with quite a bunch of changes, and I stage some parts one-by-one, closing the irrelevant folders in the file tree, while keeping the ones with the changes I'm focusing on open. However, this isn't saved when quitting lazygit, so each time I reopen it I have to close some folders in the file tree.\n\n### Describe the solution you'd like\nI would like to have a config option for lazygit to save the open or closed state of each folder in the working tree before quitting, which can then be restored next time.",
+        "url": "https://github.com/jesseduffield/lazygit/issues/5774"
+    },
+    {
+        "id": 4837079036,
+        "number": 5772,
+        "title": "panic: gocui: userEvents channel full; refusing to block or reorder",
+        "state": "open",
+        "created_at": "2026-07-08T11:40:28Z",
+        "updated_at": "2026-07-13T12:49:33Z",
+        "closed_at": null,
+        "author": "rokkerruslan",
+        "comments": 8,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Describe the bug\n\nPanic\n\n### To Reproduce\nSteps to reproduce the behavior:\n\n1.  $ lazygit\n2. Press `1`\n3. Press `e`\n4. Close editor\n\n### Expected behavior\n\nProgram must work\n\n### Screenshots\n\n```\n ~/w/udf $ lazygit\n\n+ /bin/zsh -c hx -- \"/Users/rrokker/Library/Application Support/lazygit/config.yml\"\n\n\nPress enter to return to lazygit\npanic: gocui: userEvents channel full; refusing to block or reorder\n\ngoroutine 370 [running]:\ngithub.com/jesseduffield/lazygit/pkg/gocui.(*Gui).Update(0x367bec2d01e0, 0x367bed01b440)\n        /Users/rrokker/go/pkg/mod/github.com/jesseduffield/lazygit@v0.63.0/pkg/gocui/gui.go:636 +0x80\ngithub.com/jesseduffield/lazygit/pkg/gui.(*Gui).onUIThread(...)\n        /Users/rrokker/go/pkg/mod/github.com/jesseduffield/lazygit@v0.63.0/pkg/gui/gui.go:1187\ngithub.com/jesseduffield/lazygit/pkg/gui.(*guiCommon).OnUIThread(0x20?, 0x367bec5bf4e0)\n        /Users/rrokker/go/pkg/mod/github.com/jesseduffield/lazygit@v0.63.0/pkg/gui/gui_common.go:124 +0x7c\ngithub.com/jesseduffield/lazygit/pkg/gui/controllers/helpers.(*RefreshHelper).refreshView(...)\n        /Users/rrokker/go/pkg/mod/github.com/jesseduffield/lazygit@v0.63.0/pkg/gui/controllers/helpers/refresh_helper.go:1003\ngithub.com/jesseduffield/lazygit/pkg/gui/controllers/helpers.(*RefreshHelper).refreshStashEntries(0x367bec6a8960)\n        /Users/rrokker/go/pkg/mod/github.com/jesseduffield/lazygit@v0.63.0/pkg/gui/controllers/helpers/refresh_helper.go:960 +0x134\ngithub.com/jesseduffield/lazygit/pkg/gui/controllers/helpers.(*RefreshHelper).Refresh.func2.10()\n        /Users/rrokker/go/pkg/mod/github.com/jesseduffield/lazygit@v0.63.0/pkg/gui/controllers/helpers/refresh_helper.go:212 +0x20\ngithub.com/jesseduffield/lazygit/pkg/gui/controllers/helpers.(*RefreshHelper).Refresh.func2.1.1({0x367bec0b4000?, 0x33c85e994f60?})\n        /Users/rrokker/go/pkg/mod/github.com/jesseduffield/lazygit@v0.63.0/pkg/gui/controllers/helpers/refresh_helper.go:148 +0x24\ngithub.com/jesseduffield/lazygit/pkg/gocui.(*Gui).onWorkerAux(0x367bec2d01e0, 0x40ec284000000000?, {0x101d65cf8?, 0x367bec7841c0?})\n        /Users/rrokker/go/pkg/mod/github.com/jesseduffield/lazygit@v0.63.0/pkg/gocui/gui.go:668 +0x68\ngithub.com/jesseduffield/lazygit/pkg/gocui.(*Gui).OnWorker.func1()\n        /Users/rrokker/go/pkg/mod/github.com/jesseduffield/lazygit@v0.63.0/pkg/gocui/gui.go:655 +0x30\ncreated by github.com/jesseduffield/lazygit/pkg/gocui.(*Gui).OnWorker in goroutine 1\n        /Users/rrokker/go/pkg/mod/github.com/jesseduffield/lazygit@v0.63.0/pkg/gocui/gui.go:654 +0x90\n```\n\n### Version info:\n\n* _Run `lazygit --version` and paste the result here_\n\n```\n$ lazygit --version\ncommit=, build date=, build source=unknown, version=unversioned, os=darwin, arch=arm64, git version=2.50.1 (Apple Git-155)\n```\n\n### Terminal info:\nWhat terminal are you using, and which version? For some types of bugs this information can be relevant.\n\n```\nWave Terminal\nOpen-Source AI-Integrated Terminal\nBuilt for Seamless Workflows\nClient Version 0.14.5 (202604161535)\nUpdate Channel: latest\n```\n\n### Additional context\nAdd any other context about the problem here.\n\n> [!NOTE]\n> Please try updating to the latest version or [manually building](https://github.com/jesseduffield/lazygit/#manual) the latest `master` to see if the issue still occurs.\n\n<!--\nIf you want to try and debug this issue yourself, you can run `lazygit --debug` in one terminal panel and `lazygit --logs` in another to view the logs.\n-->\n",
+        "url": "https://github.com/jesseduffield/lazygit/issues/5772"
+    },
+    {
+        "id": 4835665963,
+        "number": 5770,
+        "title": "Scrolling changes tab",
+        "state": "open",
+        "created_at": "2026-07-08T08:22:27Z",
+        "updated_at": "2026-07-08T08:26:14Z",
+        "closed_at": null,
+        "author": "LogiQom-Marijn",
+        "comments": 0,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Describe the bug\nSometimes when you scroll through for example a files' unstaged changes it suddenly changes the tab from Files to Submodules. Same goes for Local branches to Tags.\n\n### To Reproduce\nSteps to reproduce the behavior:\n\n1. Go to unstaged changes or another long scrollable view\n2. Scroll until you're scrolled past like halfway at least\n3. See the tab change\n\n### Expected behavior\nContinue scrolling normally instead of changing the tab\n\n### Screenshots\nIf applicable, add screenshots to help explain your problem.\n\n### Version info:\ncommit=2f6d20275afd5fc9b623500c9194a2c732936014, build date=2026-03-09T19:51:31Z, build source=binaryRelease, version=0.60.0, os=windows, arch=amd64, git version=2.53.0.windows.2\n\n### Terminal info:\nWindows Terminal with CMD profile\nWhat terminal are you using, and which version? For some types of bugs this information can be relevant.\n\n### Additional context\nAdd any other context about the problem here.\n\n> [!NOTE]\n> Please try updating to the latest version or [manually building](https://github.com/jesseduffield/lazygit/#manual) the latest `master` to see if the issue still occurs.\n\nStill occurs on another windows PC with the newest version (i've had this issue on all 3 of my windows devices, but doesn't happen on macOS)\n\n<!--\nIf you want to try and debug this issue yourself, you can run `lazygit --debug` in one terminal panel and `lazygit --logs` in another to view the logs.\n-->\n",
+        "url": "https://github.com/jesseduffield/lazygit/issues/5770"
+    },
+    {
+        "id": 4826101411,
+        "number": 5766,
+        "title": "Crashes when folder/repo has a \"&\" in the name",
+        "state": "open",
+        "created_at": "2026-07-07T07:04:57Z",
+        "updated_at": "2026-07-07T07:04:57Z",
+        "closed_at": null,
+        "author": "Prometheos2",
+        "comments": 0,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Describe the bug\n\n**Lazygit** crashes when the folder has a \"&\" in the name (here, \"Rapports&Notes\" and \"test&aaa\"), even if opened in a junction named w/o the ampersand. \n\n### To Reproduce\nSteps to reproduce the behavior:\n1. Move to a folder which name contains an ampersand.\n2. Launch **Lazygit** in that folder.\n3. Crash happens.\n\nAlternatively (after the 1st attempt):\n1. Open **Lazygit** in a normal folder.\n2. Open recent repos (1 > Enter).\n3. Open a repo containing an ampersand.\n4. Crash happens.\n\n### Expected behavior\nNot crash.\n\n### Error message\n<details>\n2026/07/07 08:58:00 An error occurred! Please create an issue at: https://github.com/jesseduffield/lazygit/issues\n\n*errors.errorString 'aaa' n'est pas reconnu en tant que commande interne\nou externe, un programme ex�cutable ou un fichier de commandes.\n\n<em>[Translation: \"errors.errorString 'aaa' is not recognized as an internal or external command, executable program, or command file.\"]</em>\n\n/home/runner/work/lazygit/lazygit/pkg/commands/oscommands/cmd_obj_runner.go:213 (0x7ff667bb8db4)\n/home/runner/work/lazygit/lazygit/pkg/commands/oscommands/cmd_obj_runner.go:109 (0x7ff667bb7a78)\n/home/runner/work/lazygit/lazygit/pkg/commands/oscommands/cmd_obj_runner.go:46 (0x7ff667bb729d)\n/home/runner/work/lazygit/lazygit/pkg/commands/oscommands/cmd_obj.go:198 (0x7ff667bbd8c2)\n/home/runner/work/lazygit/lazygit/pkg/commands/oscommands/os_windows.go:41 (0x7ff667bbd87a)\n/home/runner/work/lazygit/lazygit/pkg/gui/gui.go:1072 (0x7ff667e01365)\n/home/runner/work/lazygit/lazygit/pkg/gui/layout.go:236 (0x7ff667e09bb9)\n/home/runner/work/lazygit/lazygit/pkg/gui/layout.go:171 (0x7ff667e094d9)\n/home/runner/work/lazygit/lazygit/pkg/gocui/gui.go:693 (0x7ff667b170f9)\n/home/runner/work/lazygit/lazygit/pkg/gocui/gui.go:1159 (0x7ff667b1923f)\n/home/runner/work/lazygit/lazygit/pkg/gocui/gui.go:787 (0x7ff667b17979)\n/home/runner/work/lazygit/lazygit/pkg/gocui/gui.go:743 (0x7ff667b1742a)\n/home/runner/work/lazygit/lazygit/pkg/gui/gui.go:947 (0x7ff667e0023d)\n/home/runner/work/lazygit/lazygit/pkg/gui/gui.go:958 (0x7ff667e00948)\n/home/runner/work/lazygit/lazygit/pkg/utils/utils.go:81 (0x7ff667b33b16)\n/home/runner/work/lazygit/lazygit/pkg/gui/gui.go:957 (0x7ff667e0087f)\n/home/runner/work/lazygit/lazygit/pkg/app/app.go:285 (0x7ff667e767ba)\n/home/runner/work/lazygit/lazygit/pkg/app/app.go:49 (0x7ff667e7674a)\n/home/runner/work/lazygit/lazygit/pkg/app/entry_point.go:177 (0x7ff667e78e45)\n/home/runner/work/lazygit/lazygit/main.go:23 (0x7ff667e7a198)\n/opt/hostedtoolcache/go/1.25.11/x64/src/internal/runtime/atomic/types.go:194 (0x7ff66774a1bd)\n/opt/hostedtoolcache/go/1.25.11/x64/src/runtime/asm_amd64.s:1693 (0x7ff667786901)\n</details>\n\n### Version info:\n\ncommit=ce5a8b61bdc9439f2137a1ce9c6a5981c412a0ad, build date=2026-07-04T12:45:51Z, build source=binaryRelease, version=0.63.0, os=windows, arch=amd64, git version=2.52.0.windows.1\n\n### Terminal info:\nPowerShell 7.6.3, Windows Terminal 1.23.251216003\n\n<!--\nIf you want to try and debug this issue yourself, you can run `lazygit --debug` in one terminal panel and `lazygit --logs` in another to view the logs.\n-->\n",
+        "url": "https://github.com/jesseduffield/lazygit/issues/5766"
+    },
+    {
+        "id": 4811725356,
+        "number": 5763,
+        "title": "Deprecated \"-alt\" keybindings are still defined internally and may conflict with actual user-defined keybinds.",
+        "state": "open",
+        "created_at": "2026-07-05T05:24:43Z",
+        "updated_at": "2026-07-05T19:57:41Z",
+        "closed_at": null,
+        "author": "nestor-custodio",
+        "comments": 2,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Describe the bug\nBecause the (now deprecated) \"-alt\" keybindings (e.g. `prevItem-alt` are still defined internally _and have a default key set_, it's possible that a keybinding the user explicitly sets is instead invisibly overwritten.\n\n### To Reproduce\nSteps to reproduce the behavior:\n\n1. Set the following minimal \"config.yml\":\n   ```yaml\n   keybinding:\n    universal:\n        prevItem: i\n        nextItem: k\n   ```\n2. `lazygit`\n3. Activate the \"commits\" pane.\n4. Press 'k'.\n5. \"Nothing\" happens.\n\nWhat's really happening here is you're triggering the hidden \"prevItem-alt\" keybinding, which defaults to 'k' and overrides your \"nextItem\" setting. (You can see this if you click on a commit down the list and _then_ press 'k', which moves your cursor **up** a line instead of down.)\n\nPer [the current docs](https://github.com/jesseduffield/lazygit/blob/master/docs/Config.md) (on both the \"master\" branch and the \"v0.63.0\" tag), the above config is how you set the \"prevItem\" and \"nextItem\" keybinds, but the (now undocumented but still active) \"-alt\" keybinds are working against you.\n\nMy suggestion would be to either:\n- fully remove (rather than just deprecating) the old \"-alt\" keybinds, or ...\n- deprioritize (I'm guessing this comes down to what order the config is processed in?) the \"-alt\" keybinds so that user-set bindings always override them\n\n### Version info:\n\n* `commit=ce5a8b61bdc9439f2137a1ce9c6a5981c412a0ad, build date=2026-07-04T12:45:51Z, build source=binaryRelease, version=0.63.0, os=linux, arch=amd64, git version=2.53.0`\n\n### Terminal info:\nI'm seeing this on a TTY login. No GUI = no terminal emulator.\n\n### Additional context\nI've verified this is still an issue even if you define the \"prevItem\" and \"nextItem\" as arrays, FWTW:\n   ```yaml\n   keybinding:\n    universal:\n        prevItem: [i]\n        nextItem: [k]\n   ```\n",
+        "url": "https://github.com/jesseduffield/lazygit/issues/5763"
+    },
+    {
+        "id": 4790895359,
+        "number": 5751,
+        "title": "Allow configuring the flexible split threshold for main panel layout",
+        "state": "open",
+        "created_at": "2026-07-02T03:07:17Z",
+        "updated_at": "2026-07-02T03:07:17Z",
+        "closed_at": null,
+        "author": "saadndm",
+        "comments": 0,
+        "labels": [
+            "enhancement"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Is your feature request related to a problem? Please describe.\nI use a tiling window manager. When lazygit is the only window open, my terminal is 193 columns wide, which is just below the hardcoded 200 column threshold that determines whether the main panel splits horizontally or vertically.\n\n### Describe the solution you'd like\nA way to configure the horizontal split threshold.\n\nThe current code is:\nhttps://github.com/jesseduffield/lazygit/blob/722239abd1edb756f4d6e65b8b7b0ba05c10011c/pkg/gui/controllers/helpers/window_arrangement_helper.go#L389-L390\n\nMaybe something like this:\n```\ngui:\n  mainPanelSplitMode: flexible\n  mainPanelSplitHorizontalThreshold: 150  # default 200\n```\n\n### Describe alternatives you've considered\nI tried setting `mainPanelSplitMode: horizontal`, and it works the way i want (horizontal split) when lazygit is the only window open, but if I open another window the terminal halves in width, and I dont want it stay a horizontal split at this smaller width.\n\nAnother alternative is for me to use `ctrl + -` to decrease my terminal font size, but I like my current size and don't want to have to decrease it just to meet the hardcoded value.\n\n### Additional context\nAt 193 columns wide, flexible mode splits vertically even though I'd prefer horizontal so that I can actually see more than a few lines of the diff:\n<img width=\"2545\" height=\"1369\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/ea184db5-444f-43d5-9b0f-48e7f89ac3ba\" />",
+        "url": "https://github.com/jesseduffield/lazygit/issues/5751"
+    },
+    {
+        "id": 4778625560,
+        "number": 5744,
+        "title": "Built-in action to generate the commit message from the staged diff with GitHub Copilot",
+        "state": "closed",
+        "created_at": "2026-06-30T16:31:13Z",
+        "updated_at": "2026-06-30T16:43:16Z",
+        "closed_at": "2026-06-30T16:43:16Z",
+        "author": "anxkhn",
+        "comments": 1,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "### Is your feature request related to a problem? Please describe.\n\nWriting a good commit message for a set of staged changes is repetitive, and many of us now have the GitHub Copilot CLI installed and signed in locally. Today the only ways to get a Copilot-generated message into lazygit's commit editor are to run `copilot` in a separate terminal and paste, or to wire a custom command that cannot cleanly prefill the commit message panel.\n\n### Describe the solution you'd like\n\nAn opt-in action in the commit message menu (the one opened with `<c-o>` from the commit message panel, next to \"Paste commit message from clipboard\") named \"Generate message (Copilot)\". It reads the staged diff, passes it to the Copilot CLI in non-interactive print mode, and prefills the commit subject/body in the existing editor for the user to review and edit before committing.\n\nHow it fits the codebase:\n- A menu item in the commit message menu, mirroring the existing \"Paste commit message from clipboard\" entry in `commits_helper.go`.\n- Reads the staged diff via the existing `DiffCommands.GetDiff(true)`; invokes the CLI by building argv directly (no shell, so no quoting/injection concerns): `copilot -p \"<prompt>\\n\\n<diff>\" -s --allow-all-tools --no-ask-user [--model <model>]`.\n- Runs behind a \"Generating commit message with Copilot\" waiting status, fills the message through the existing commit message context, and strips a single surrounding markdown code fence if present.\n- All user-facing strings go through `pkg/i18n/english.go`; edge cases (no staged changes, CLI missing or non-zero exit, empty result) surface as toasts.\n\nOn Simplicity / config bloat: I know the project is, rightly, conservative about new config options. This would be disabled by default behind a single `git.commit.generateMessage` block (`enabled`, `command`, `model`, `prompt`). When disabled the menu item still shows, greyed, with a reason, so it stays discoverable without adding visible surface for users who do not want it. I am happy to trim the config to just `enabled` if you would prefer the prompt/model not be configurable.\n\n### Describe alternatives you've considered\n\n- A custom command can shell out to `copilot`, but it cannot cleanly prefill the commit message editor, integrate into the commit menu with a disabled-reason, be internationalised, or give consistent toasts on failure. It is a reasonable workaround but a worse UX than a first-class action.\n- Keeping it fully external (run `copilot` in a terminal, then paste via the existing clipboard action) works but breaks the flow.\n\n### Additional context\n\nI have a working implementation following the above: `go build`, `go vet`, `golangci-lint`, and tests are green, and `Config.md`/`schema` were regenerated. I verified it end to end generating real commit messages from staged diffs with the Copilot CLI. Branch: https://github.com/anxkhn/lazygit/tree/feat/copilot-commit\n\nI know the default is to not take incoming PRs, so per CONTRIBUTING I am raising this first: would you be open to a PR for this, gated behind the opt-in config, or is built-in Copilot integration out of scope for lazygit's vision? Happy to adjust scope and config to fit.\n",
+        "url": "https://github.com/jesseduffield/lazygit/issues/5744"
+    },
+    {
+        "id": 4777173040,
+        "number": 5742,
+        "title": "Add lazyjira command to Custom Commands Compendium",
+        "state": "open",
+        "created_at": "2026-06-30T13:26:01Z",
+        "updated_at": "2026-06-30T13:26:01Z",
+        "closed_at": null,
+        "author": "Karlo-Vrdoljak",
+        "comments": 0,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "I'd like to add this to the bottom of the [Custom Commands Compendium](https://github.com/jesseduffield/lazygit/wiki/Custom-Commands-Compendium), but the wiki is not writable by my account.\n\n## Open lazyjira in a tmux popup\n\nLaunch [lazyjira](https://github.com/textfuel/lazyjira) from lazygit without switching terminal tabs. If inside tmux, it opens in a popup; otherwise it runs in lazygit's terminal output mode.\n\n```yaml\ncustomCommands:\n  - key: \"J\"\n    context: \"global\"\n    description: \"Open lazyjira\"\n    command: 'if [ -n \"$TMUX\" ]; then tmux popup -w 90% -h 90% -E lazyjira; else lazyjira; fi'\n    output: terminal\n```\n",
+        "url": "https://github.com/jesseduffield/lazygit/issues/5742"
+    }
+]

@@ -1,0 +1,242 @@
+[
+    {
+        "sha": "132aea4f236ccadc51590b38af0357a331d51fa2",
+        "author": "Alex Babrykovich",
+        "email": "abobrikovich@gmail.com",
+        "date": "2026-03-02T20:10:52Z",
+        "message": "Fix flatMap key path type inference for Package@swift-5.9.swift (#2689)",
+        "url": "https://github.com/ReactiveX/RxSwift/commit/132aea4f236ccadc51590b38af0357a331d51fa2"
+    },
+    {
+        "sha": "ed671427991cb6869d3e83fc10fafab5117511b0",
+        "author": "Adrian Schönig",
+        "email": "adrian@schoenig.me",
+        "date": "2026-03-02T19:50:23Z",
+        "message": "Fix macCatalyst compilation & add regression testing on CI (#2691)",
+        "url": "https://github.com/ReactiveX/RxSwift/commit/ed671427991cb6869d3e83fc10fafab5117511b0"
+    },
+    {
+        "sha": "5734ad2b6d7d4c0656df3d09ca4ce54fa3c09913",
+        "author": "Shai Mishali",
+        "email": "freak4pc@gmail.com",
+        "date": "2026-01-26T20:53:17Z",
+        "message": "Fix compilation for < Swift 6.2, add CI for Xcode 16  (#2688)",
+        "url": "https://github.com/ReactiveX/RxSwift/commit/5734ad2b6d7d4c0656df3d09ca4ce54fa3c09913"
+    },
+    {
+        "sha": "34e2c2575a9d202caef84246bb1bb3cb7c4cf778",
+        "author": "Spencer Jones",
+        "email": "67398650+mitschlagel@users.noreply.github.com",
+        "date": "2026-01-26T18:39:22Z",
+        "message": "Swift 5.9 manifest, remove trailing commas from function calls (#2685)\n\nSwift allows trailing commas in arrays and argument lists, but not after the last parameter in a function call when it's the final argument.",
+        "url": "https://github.com/ReactiveX/RxSwift/commit/34e2c2575a9d202caef84246bb1bb3cb7c4cf778"
+    },
+    {
+        "sha": "d65747c74ea0d6c07c6c03a17a9fa0e29a45117b",
+        "author": "Shai Mishali",
+        "email": "freak4pc@gmail.com",
+        "date": "2026-01-22T08:14:16Z",
+        "message": "Update Gemfile to address dependabot warnings",
+        "url": "https://github.com/ReactiveX/RxSwift/commit/d65747c74ea0d6c07c6c03a17a9fa0e29a45117b"
+    },
+    {
+        "sha": "b529ef9b7fa3ba2b38d299df23fc2165f21abbb9",
+        "author": "Shai Mishali",
+        "email": "freak4pc@gmail.com",
+        "date": "2026-01-22T07:29:14Z",
+        "message": "Fix recursive lock test",
+        "url": "https://github.com/ReactiveX/RxSwift/commit/b529ef9b7fa3ba2b38d299df23fc2165f21abbb9"
+    },
+    {
+        "sha": "719613a9f69abb1ee174ed3355c659bc529b7338",
+        "author": "Shai Mishali",
+        "email": "freak4pc@gmail.com",
+        "date": "2026-01-22T07:12:24Z",
+        "message": "Bump to 6.10",
+        "url": "https://github.com/ReactiveX/RxSwift/commit/719613a9f69abb1ee174ed3355c659bc529b7338"
+    },
+    {
+        "sha": "eb5a47ea2a3540053d6a9b003e128e1eae957c13",
+        "author": "Shai Mishali",
+        "email": "freak4pc@gmail.com",
+        "date": "2026-01-21T20:42:37Z",
+        "message": "Fix resource leak in AsyncSequence.asObservable() tests",
+        "url": "https://github.com/ReactiveX/RxSwift/commit/eb5a47ea2a3540053d6a9b003e128e1eae957c13"
+    },
+    {
+        "sha": "68bdf8efe90ee39b3a2951b8ca81ae935d4cd59d",
+        "author": "Shai Mishali",
+        "email": "freak4pc@gmail.com",
+        "date": "2026-01-21T17:49:28Z",
+        "message": "Cleanup, remove CHANGELOG.md",
+        "url": "https://github.com/ReactiveX/RxSwift/commit/68bdf8efe90ee39b3a2951b8ca81ae935d4cd59d"
+    },
+    {
+        "sha": "a0d98e3d9f6cb86af923b7cfbd35b90094e88fd8",
+        "author": "Shai Mishali",
+        "email": "freak4pc@gmail.com",
+        "date": "2026-01-21T17:47:14Z",
+        "message": "Fix AsyncSequence.asObservable() to always use Task.detached\n\nFixes #2553\n\nChanges AsyncSequence.asObservable() to always use Task.detached instead of\nTask, ensuring AsyncSequence iteration happens on the Swift concurrency\ncooperative thread pool rather than inheriting the calling context.\n\nThis is a breaking change but fixes a critical issue where subscribing from\n@MainActor code could cause AsyncSequence iteration to run on the main thread,\nblocking the UI with long-running operations.\n\nChanges:\n- Always use Task.detached for AsyncSequence iteration\n- Add priority parameter to control task priority (consistent with Single.create)\n- Update documentation to explain threading behavior and recommend using\n  .observe(on:) for controlling event delivery\n- Add comprehensive tests verifying background execution, error handling,\n  cancellation, and priority parameter\n\nBreaking Change:\nUsers who need main thread event delivery should now explicitly use:\n  asyncSequence.asObservable().observe(on: MainScheduler.instance)\n\nThis follows proper Rx practice of explicitly specifying threading via\nschedulers rather than relying on implicit context inheritance.",
+        "url": "https://github.com/ReactiveX/RxSwift/commit/a0d98e3d9f6cb86af923b7cfbd35b90094e88fd8"
+    },
+    {
+        "sha": "6e1ad1a8f2adbcbc32a390d960483d4c38402287",
+        "author": "Isaac Weisberg",
+        "email": "36449887+isaac-weisberg@users.noreply.github.com",
+        "date": "2026-01-21T16:57:21Z",
+        "message": "Fix deadlock in share(replay:) with concurrent subscriptions",
+        "url": "https://github.com/ReactiveX/RxSwift/commit/6e1ad1a8f2adbcbc32a390d960483d4c38402287"
+    },
+    {
+        "sha": "4fed05e8fa09d011795a2f183137a033a5f39596",
+        "author": "Shai Mishali",
+        "email": "freak4pc@gmail.com",
+        "date": "2026-01-21T16:13:54Z",
+        "message": "Remove legacy canImport(_Concurrency) checks",
+        "url": "https://github.com/ReactiveX/RxSwift/commit/4fed05e8fa09d011795a2f183137a033a5f39596"
+    },
+    {
+        "sha": "da79ceea96aae03f73cd1e3871fc47c49c0b27e0",
+        "author": "Jairon Terrero",
+        "email": "34900063+CrownedPhoenix@users.noreply.github.com",
+        "date": "2026-01-21T16:12:36Z",
+        "message": "feat: Enable Swift Concurrency for Linux (#2660)",
+        "url": "https://github.com/ReactiveX/RxSwift/commit/da79ceea96aae03f73cd1e3871fc47c49c0b27e0"
+    },
+    {
+        "sha": "4a35f630e9cf5a3ecac08588f2c1c8cb83df0238",
+        "author": "Marc Prud'hommeaux",
+        "email": "marc@appfair.org",
+        "date": "2026-01-21T15:39:58Z",
+        "message": "Android support in Package.swift and CI testing (#2663)",
+        "url": "https://github.com/ReactiveX/RxSwift/commit/4a35f630e9cf5a3ecac08588f2c1c8cb83df0238"
+    },
+    {
+        "sha": "87f3e77f4b9aa8cc64b5500298b72900b7ce926b",
+        "author": "Serhii Bykov",
+        "email": "esphynox@gmail.com",
+        "date": "2026-01-21T11:55:38Z",
+        "message": "VirtualTimeScheduler - fix typo (#2671)\n\nCo-authored-by: Serhii Bykov <serhiibykov@lyft.com>",
+        "url": "https://github.com/ReactiveX/RxSwift/commit/87f3e77f4b9aa8cc64b5500298b72900b7ce926b"
+    },
+    {
+        "sha": "9d65b1f7805507e71ec031984da8e56e829f8667",
+        "author": "Lody",
+        "email": "jpark0902@kookmin.ac.kr",
+        "date": "2026-01-21T11:53:51Z",
+        "message": "Fix typo: `MutlicastType` -> `MulticastType` (#2669)\n\n- No functional changes, only spelling correction",
+        "url": "https://github.com/ReactiveX/RxSwift/commit/9d65b1f7805507e71ec031984da8e56e829f8667"
+    },
+    {
+        "sha": "d560d3e27add2d90d89432af72185145b8414eac",
+        "author": "Kirill Yakimovich",
+        "email": "kirill.yakimovich@gmail.com",
+        "date": "2026-01-21T11:51:47Z",
+        "message": "Fix Swift 6.2 weak mutability warning in Binder (#2677)",
+        "url": "https://github.com/ReactiveX/RxSwift/commit/d560d3e27add2d90d89432af72185145b8414eac"
+    },
+    {
+        "sha": "d92fcc02085c65cf1712a434361bb3bf3bec4127",
+        "author": "Olexandr88",
+        "email": "radole1203@gmail.com",
+        "date": "2026-01-21T11:26:44Z",
+        "message": "Update README.md (#2675)",
+        "url": "https://github.com/ReactiveX/RxSwift/commit/d92fcc02085c65cf1712a434361bb3bf3bec4127"
+    },
+    {
+        "sha": "9bc18dc815e4eb057e90236b520e4c68d725ecad",
+        "author": "Shai Mishali",
+        "email": "freak4pc@gmail.com",
+        "date": "2026-01-20T22:30:29Z",
+        "message": "Unify version to xcconfig",
+        "url": "https://github.com/ReactiveX/RxSwift/commit/9bc18dc815e4eb057e90236b520e4c68d725ecad"
+    },
+    {
+        "sha": "eae57edfba260a39feda1fa2f11673e359186de9",
+        "author": "Shai Mishali",
+        "email": "freak4pc@gmail.com",
+        "date": "2026-01-20T22:19:54Z",
+        "message": "Update docs",
+        "url": "https://github.com/ReactiveX/RxSwift/commit/eae57edfba260a39feda1fa2f11673e359186de9"
+    },
+    {
+        "sha": "c756ecdd9f41b6bf14703d7e2abba339b08212ec",
+        "author": "Shai Mishali",
+        "email": "freak4pc@gmail.com",
+        "date": "2026-01-20T21:59:32Z",
+        "message": "Deprecate CocoaPods",
+        "url": "https://github.com/ReactiveX/RxSwift/commit/c756ecdd9f41b6bf14703d7e2abba339b08212ec"
+    },
+    {
+        "sha": "f49d86d30cd4e0f40ec1a9e918dc1e8cf4951244",
+        "author": "Shai Mishali",
+        "email": "freak4pc@gmail.com",
+        "date": "2026-01-20T21:48:23Z",
+        "message": "Fix tests",
+        "url": "https://github.com/ReactiveX/RxSwift/commit/f49d86d30cd4e0f40ec1a9e918dc1e8cf4951244"
+    },
+    {
+        "sha": "ab712dbc0d466d7935143c0daa4f44a6df6d30a3",
+        "author": "Shai Mishali",
+        "email": "freak4pc@gmail.com",
+        "date": "2026-01-20T21:48:03Z",
+        "message": "Format cleanup",
+        "url": "https://github.com/ReactiveX/RxSwift/commit/ab712dbc0d466d7935143c0daa4f44a6df6d30a3"
+    },
+    {
+        "sha": "ac0db94a1072903c34019a270e38cdb24d76d2d9",
+        "author": "Shai Mishali",
+        "email": "freak4pc@gmail.com",
+        "date": "2026-01-20T21:47:31Z",
+        "message": "Update tooling",
+        "url": "https://github.com/ReactiveX/RxSwift/commit/ac0db94a1072903c34019a270e38cdb24d76d2d9"
+    },
+    {
+        "sha": "d414ffe761c7f6d82f8050dc7983ecf9952bd2b5",
+        "author": "Shai Mishali",
+        "email": "freak4pc@gmail.com",
+        "date": "2026-01-20T21:47:03Z",
+        "message": "Upgrade Xcode 26",
+        "url": "https://github.com/ReactiveX/RxSwift/commit/d414ffe761c7f6d82f8050dc7983ecf9952bd2b5"
+    },
+    {
+        "sha": "5004a18539bd68905c5939aa893075f578f4f03d",
+        "author": "0xpablo",
+        "email": "pablos93@gmail.com",
+        "date": "2025-09-09T06:50:12Z",
+        "message": "Fix race conditions in PrimitiveSequence+Concurrency (#2641)\n\nThis caused continuations to be resumed more than once, crashing clients due to a violation of the Swift Concurrency contract",
+        "url": "https://github.com/ReactiveX/RxSwift/commit/5004a18539bd68905c5939aa893075f578f4f03d"
+    },
+    {
+        "sha": "7157523a367b254f0fc1be5170cd5f3c29d51092",
+        "author": "Shai Mishali",
+        "email": "freak4pc@gmail.com",
+        "date": "2025-06-18T01:28:32Z",
+        "message": "Signing updates",
+        "url": "https://github.com/ReactiveX/RxSwift/commit/7157523a367b254f0fc1be5170cd5f3c29d51092"
+    },
+    {
+        "sha": "5dd1907d64f0d36f158f61a466bab75067224893",
+        "author": "Shai Mishali",
+        "email": "freak4pc@gmail.com",
+        "date": "2025-02-17T14:13:17Z",
+        "message": "6.9.0",
+        "url": "https://github.com/ReactiveX/RxSwift/commit/5dd1907d64f0d36f158f61a466bab75067224893"
+    },
+    {
+        "sha": "67ff32cc1340743a12c13ff37344b4dbcf2e9196",
+        "author": "pallzoltan",
+        "email": "pallzoltan@gmail.com",
+        "date": "2025-02-17T09:21:48Z",
+        "message": "Include PrivacyInfo.xcprivacy in Xcode project (#2652)",
+        "url": "https://github.com/ReactiveX/RxSwift/commit/67ff32cc1340743a12c13ff37344b4dbcf2e9196"
+    },
+    {
+        "sha": "d2332a4861be4c88d455b451ab60995b7d6aebdc",
+        "author": "VAndrJ",
+        "email": "vandrju@gmail.com",
+        "date": "2025-02-15T18:50:28Z",
+        "message": "Set to Light Appearance in Info.plist. The navigationBar was configured programmatically for iOS > 13. (#2612)",
+        "url": "https://github.com/ReactiveX/RxSwift/commit/d2332a4861be4c88d455b451ab60995b7d6aebdc"
+    }
+]

@@ -1,0 +1,352 @@
+[
+    {
+        "id": 3845340646,
+        "number": 523,
+        "title": "Bug: You have requested a non-existent service \"stof_doctrine_extensions.uploadable_manager\".",
+        "state": "closed",
+        "created_at": "2026-01-23T00:43:32Z",
+        "updated_at": "2026-01-23T08:36:03Z",
+        "closed_at": "2026-01-23T08:36:03Z",
+        "author": "crtl",
+        "comments": 0,
+        "labels": [
+            "Bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "**Describe the bug**\nUpgrading to 15.2.2 throws exception:\n```\n                                                                                            \n  [Symfony\\Component\\DependencyInjection\\Exception\\ServiceNotFoundException]                \n  You have requested a non-existent service \"stof_doctrine_extensions.uploadable_manager\".  \n                                                                                            \n\nException trace:\n  at /var/www/vendor/symfony/dependency-injection/ContainerBuilder.php:1054\n Symfony\\Component\\DependencyInjection\\ContainerBuilder->getDefinition() at /var/www/vendor/symfony/dependency-injection/ContainerBuilder.php:1084\n Symfony\\Component\\DependencyInjection\\ContainerBuilder->findDefinition() at /var/www/vendor/symfony/dependency-injection/Compiler/AutowirePass.php:510\n Symfony\\Component\\DependencyInjection\\Compiler\\AutowirePass->canDefinitionBeAutowired() at /var/www/vendor/symfony/dependency-injection/Compiler/AutowirePass.php:497\n Symfony\\Component\\DependencyInjection\\Compiler\\AutowirePass->getAutowiredReference() at /var/www/vendor/symfony/dependency-injection/Compiler/AutowirePass.php:286\n Symfony\\Component\\DependencyInjection\\Compiler\\AutowirePass->Symfony\\Component\\DependencyInjection\\Compiler\\{closure}() at /var/www/vendor/symfony/dependency-injection/Compiler/AutowirePass.php:422\n Symfony\\Component\\DependencyInjection\\Compiler\\AutowirePass->autowireMethod() at /var/www/vendor/symfony/dependency-injection/Compiler/AutowirePass.php:212\n Symfony\\Component\\DependencyInjection\\Compiler\\AutowirePass->autowireCalls() at /var/www/vendor/symfony/dependency-injection/Compiler/AutowirePass.php:164\n Symfony\\Component\\DependencyInjection\\Compiler\\AutowirePass->doProcessValue() at /var/www/vendor/symfony/dependency-injection/Compiler/AutowirePass.php:98\n Symfony\\Component\\DependencyInjection\\Compiler\\AutowirePass->processValue() at /var/www/vendor/symfony/dependency-injection/Compiler/AbstractRecursivePass.php:84\n Symfony\\Component\\DependencyInjection\\Compiler\\AbstractRecursivePass->processValue() at /var/www/vendor/symfony/dependency-injection/Compiler/AutowirePass.php:140\n Symfony\\Component\\DependencyInjection\\Compiler\\AutowirePass->doProcessValue() at /var/www/vendor/symfony/dependency-injection/Compiler/AutowirePass.php:98\n Symfony\\Component\\DependencyInjection\\Compiler\\AutowirePass->processValue() at /var/www/vendor/symfony/dependency-injection/Compiler/AbstractRecursivePass.php:45\n Symfony\\Component\\DependencyInjection\\Compiler\\AbstractRecursivePass->process() at /var/www/vendor/symfony/dependency-injection/Compiler/AutowirePass.php:74\n Symfony\\Component\\DependencyInjection\\Compiler\\AutowirePass->process() at /var/www/vendor/symfony/dependency-injection/Compiler/Compiler.php:73\n Symfony\\Component\\DependencyInjection\\Compiler\\Compiler->compile() at /var/www/vendor/symfony/dependency-injection/ContainerBuilder.php:826\n Symfony\\Component\\DependencyInjection\\ContainerBuilder->compile() at /var/www/vendor/symfony/http-kernel/Kernel.php:499\n Symfony\\Component\\HttpKernel\\Kernel->initializeContainer() at /var/www/vendor/symfony/http-kernel/Kernel.php:744\n Symfony\\Component\\HttpKernel\\Kernel->preBoot() at /var/www/vendor/symfony/http-kernel/Kernel.php:120\n Symfony\\Component\\HttpKernel\\Kernel->boot() at /var/www/vendor/symfony/framework-bundle/Console/Application.php:177\n Symfony\\Bundle\\FrameworkBundle\\Console\\Application->registerCommands() at /var/www/vendor/symfony/framework-bundle/Console/Application.php:69\n Symfony\\Bundle\\FrameworkBundle\\Console\\Application->doRun() at /var/www/vendor/symfony/console/Application.php:195\n Symfony\\Component\\Console\\Application->run() at /var/www/vendor/symfony/runtime/Runner/Symfony/ConsoleApplicationRunner.php:49\n Symfony\\Component\\Runtime\\Runner\\Symfony\\ConsoleApplicationRunner->run() at /var/www/vendor/autoload_runtime.php:29\n require_once() at /var/www/bin/console:15\n```\n\n**To Reproduce**\nSteps to reproduce the behavior:\n1. run `composer update` or `composer update --no-scripts && php bin/console list`\n\n```\n\"gedmo/doctrine-extensions\": \"^3.17\",\n\"stof/doctrine-extensions-bundle\": \"^1.12\",\n```\n",
+        "url": "https://github.com/stof/StofDoctrineExtensionsBundle/issues/523"
+    },
+    {
+        "id": 3690118081,
+        "number": 517,
+        "title": "When can we expect a new release?",
+        "state": "closed",
+        "created_at": "2025-12-03T12:53:23Z",
+        "updated_at": "2025-12-11T22:06:57Z",
+        "closed_at": "2025-12-11T21:26:32Z",
+        "author": "rickyheijnen",
+        "comments": 5,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "First of all, thanks for maintaining this bundle.\n\nSince the last tagged release (`v1.14.0`), 7 months ago, several fixes and improvements have been merged into main. Some of these address issues we’re currently running into, and we’d prefer not to rely on `dev-main` in production.\n\nWould you be open to tagging a new stable release based on the current state of `main`?",
+        "url": "https://github.com/stof/StofDoctrineExtensionsBundle/issues/517"
+    },
+    {
+        "id": 3407122425,
+        "number": 511,
+        "title": "Loggable Listener broken in 1.14.0",
+        "state": "closed",
+        "created_at": "2025-09-11T15:42:54Z",
+        "updated_at": "2025-09-13T16:49:06Z",
+        "closed_at": "2025-09-13T16:49:06Z",
+        "author": "olivier1980",
+        "comments": 7,
+        "labels": [
+            "Bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "When upgrading from v1.13.0 to v1.14.0, the LoggerListener is not called anymore, and it's not setting the username (causing me to lose a month of logged usernames silently).\n\nThe service now contains a note: \n<deprecated package=\"stof/doctrine-extensions-bundle\" version=\"1.14\">The \"%service_id%\" service is deprecated and will be removed in 2.0. The \"stof_doctrine_extensions.tool.actor_provider\" service should be used to provide the user instead.</deprecated>\n\nI would expect a deprecated service to keep working until it's actually removed in a major-release, not a minor relase as described in semver docs: \"MINOR version when you add functionality in a backward compatible manner\".\n\nPlease add a patch for 1.14.0 that restores the behavior of the username setting, or provide instructions on how to use the actor provider instead.",
+        "url": "https://github.com/stof/StofDoctrineExtensionsBundle/issues/511"
+    },
+    {
+        "id": 3174407576,
+        "number": 510,
+        "title": "Dependency on abandoned package behat/transliterator",
+        "state": "closed",
+        "created_at": "2025-06-25T06:41:13Z",
+        "updated_at": "2025-06-25T06:45:44Z",
+        "closed_at": "2025-06-25T06:45:44Z",
+        "author": "kx7895",
+        "comments": 1,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "Hi\n\nThe current version of stof/doctrine-extensions-bundle (v1.14.0) requires gedmo/doctrine-extensions:^3.20.0, which in turn depends on behat/transliterator:^1.2.\n\nThe issue:\nThe [behat/transliterator](https://github.com/Behat/Transliterator) package is abandoned and will not receive any further updates:\n\"This package is now abandoned and will not receive further updates.\"\nThis may cause long-term problems with security audits, compatibility, and dependency maintenance (e.g. composer outdated, symfony security:check, etc.).\n\nThanks for maintaining this bundle!",
+        "url": "https://github.com/stof/StofDoctrineExtensionsBundle/issues/510"
+    },
+    {
+        "id": 3052305054,
+        "number": 509,
+        "title": "retreiving $this->username in LoggableListener got NULL",
+        "state": "closed",
+        "created_at": "2025-05-09T14:12:17Z",
+        "updated_at": "2025-06-25T11:15:35Z",
+        "closed_at": "2025-06-25T11:15:35Z",
+        "author": "waeldr84",
+        "comments": 1,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "**Describe the bug**\nCannot retreive `$this->username` in customLoggableListener after upgrade to v1.14. it works fine in v 1.13\n\n**To Reproduce**\nSteps to reproduce the behavior:\n1. Create CustomLoggableListener\n2. register it :   \n```App\\Shared\\Infrastructure\\EventListener\\CustomLoggableListener:\n    decorates: 'stof_doctrine_extensions.listener.loggable'\n    arguments:\n      $documentManager: '@doctrine_mongodb.odm.default_document_manager'\n```\n3. Try to dump `$this->username`\n4. shows `null`\n\n**Expected behavior**\nShows UserIdentifier declared in User Entity.\n\n**Additional context**\nWhen downgrade to v1.13 it works.\nSF7.2\n",
+        "url": "https://github.com/stof/StofDoctrineExtensionsBundle/issues/509"
+    },
+    {
+        "id": 3039144264,
+        "number": 508,
+        "title": "1.14.0 version does not call Blame listener",
+        "state": "closed",
+        "created_at": "2025-05-05T09:44:46Z",
+        "updated_at": "2025-06-25T11:18:16Z",
+        "closed_at": "2025-06-25T11:18:16Z",
+        "author": "fcharrier-okwind",
+        "comments": 1,
+        "labels": [
+            "Bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "**Describe the bug**\nWhen I update to 1.14.0 version of stof/StofDoctrineExtensionsBundle, my 'blame' listener is not called anymore.\n\n**To Reproduce**\n\nSteps to reproduce the behavior:\n1. Have a blame listener in your app :\nparameters:\n    stof_doctrine_extensions.event_listener.blame.class: \\App\\EventListener\\BlameListener\n2. Update stof/StofDoctrineExtensionsBundle to 1.14.0\n3. Listener is not called\n\n**Expected behavior**\nListener should be called\n\n**Additional context**\nIf I understand, this commit is causing the bug : https://github.com/stof/StofDoctrineExtensionsBundle/pull/500/files\nBlameListener is marked as deprecated, and will be removed in 2.0, but if I understand properly, it should be called\n",
+        "url": "https://github.com/stof/StofDoctrineExtensionsBundle/issues/508"
+    },
+    {
+        "id": 2856972158,
+        "number": 498,
+        "title": "BlameableListener memory leak with FrankenPHP and unauthenticated requests",
+        "state": "closed",
+        "created_at": "2025-02-17T07:10:38Z",
+        "updated_at": "2025-02-28T09:39:26Z",
+        "closed_at": "2025-02-28T09:39:26Z",
+        "author": "SherinBloemendaal",
+        "comments": 1,
+        "labels": [
+            "Bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "**Describe the bug**\nWhen using FrankenPHP in worker mode the `user` inside the BlameableListener leaks to the next request.\nIt happens when the user is unauthenticated or authenticated but not `IS_AUTHENTICATED_REMEMBERED`: \nhttps://github.com/stof/StofDoctrineExtensionsBundle/blob/bf00701bff3f2b7c4bf6d963101c9ea6968d694f/src/EventListener/BlameListener.php#L45\n\n**To Reproduce**\nSteps to reproduce the behavior:\n1. Create a Symfony project with FrankenPHP running in worker mode.\n2. Authenticate a user and execute any requests that triggers the `KernelEvents::REQUEST` so the BlameListener is called.\n3. Do an unauthenticated API-call that triggers the BlameListener and sets the `createdBy`.\n4. The unauthenticated API-call will result in a 500 error because the entity is detached that is being set as `createdBy`.\nAs you might see the BlameableListener still uses the previously authenticated user.\n\n**Expected behavior**\n- The `setUserValue` should be called with a `null` value on the `kernel.reset` event to prevent leaking.\nhttps://github.com/doctrine-extensions/DoctrineExtensions/blob/910c4ba96cc43153006cc46ba686a35b5231df69/src/Blameable/BlameableListener.php#L32\n\n**Additional context**\nI will work on a PR today.\n",
+        "url": "https://github.com/stof/StofDoctrineExtensionsBundle/issues/498"
+    },
+    {
+        "id": 2601546718,
+        "number": 496,
+        "title": "Deprecation warning on Symfony 7.1.5",
+        "state": "closed",
+        "created_at": "2024-10-21T06:55:33Z",
+        "updated_at": "2024-11-05T11:02:47Z",
+        "closed_at": "2024-11-05T11:02:47Z",
+        "author": "kov-lucas",
+        "comments": 1,
+        "labels": [
+            "Bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "**Describe the bug**\r\nOn the profiler a warning is shown for a deprecation\r\n\r\n> Method \"Symfony\\Component\\EventDispatcher\\EventSubscriberInterface::getSubscribedEvents()\" might add \"array\" as a native return type declaration in the future. Do the same in implementation \"Stof\\DoctrineExtensionsBundle\\EventListener\\LocaleListener\" now to avoid errors or add an explicit @return\r\n\r\n**To Reproduce**\r\nSteps to reproduce the behavior:\r\n1. Go to the profiler\r\n2. Check deprecation warnings\r\n\r\n**Expected behavior**\r\nNo warnings\r\n\r\n**Additional context**\r\n- Symfony `7.1.5`\r\n",
+        "url": "https://github.com/stof/StofDoctrineExtensionsBundle/issues/496"
+    },
+    {
+        "id": 2589258747,
+        "number": 495,
+        "title": "Gedmo Timestampable triggers prePersist events when using findBy",
+        "state": "closed",
+        "created_at": "2024-10-15T16:13:53Z",
+        "updated_at": "2025-02-28T09:48:33Z",
+        "closed_at": "2025-02-28T09:48:32Z",
+        "author": "Axel29",
+        "comments": 1,
+        "labels": [
+            "Bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "**Describe the bug**\r\n\r\nWhenever an entity has a Gedmo Timestampable field, if a simple `findBy` (SELECT) is made on this entity, Gedmo will trigger the `prePersist` event, even if there's no insert / update made on this entity.\r\n\r\n**To Reproduce**\r\n\r\n1. Create an Entity and add a `createdAt` + `updatedAt` field with the associated PHP Attributes for the Gedmo Timestampable\r\n2. Create an EventListener with the `prePersist` event listened\r\n3. Use a simple `findBy` on the Entity's Repository\r\n\r\n**Expected behavior**\r\n\r\nThe EventListener is not triggered by the `findBy` method.\r\n\r\n**Actual behaivour**\r\n\r\nThe EventListener is triggered by the `findBy` method.\r\n\r\n**Additional context**\r\n\r\nTested with Symfony 6.4 and PHP 8.3 on the latest version of this bundle + latest version of gedmo.",
+        "url": "https://github.com/stof/StofDoctrineExtensionsBundle/issues/495"
+    },
+    {
+        "id": 2494804756,
+        "number": 490,
+        "title": "Symfony 7.1 Deprecation of method EventSubscriberInterface::getSubscribedEvents()",
+        "state": "closed",
+        "created_at": "2024-08-29T15:14:07Z",
+        "updated_at": "2024-08-29T15:52:58Z",
+        "closed_at": "2024-08-29T15:52:58Z",
+        "author": "fundo-moretti",
+        "comments": 1,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "Method `Symfony\\Component\\EventDispatcher\\EventSubscriberInterface::getSubscribedEvents()` might add `array` as a native return type declaration in the future. Do the same in implementation `Stof\\DoctrineExtensionsBundle\\EventListener\\LocaleListener` now to avoid errors or add an explicit `@return` annotation to suppress this message.",
+        "url": "https://github.com/stof/StofDoctrineExtensionsBundle/issues/490"
+    },
+    {
+        "id": 2463330509,
+        "number": 488,
+        "title": "BlameListener causes Session to be used on a Stateless Route",
+        "state": "closed",
+        "created_at": "2024-08-13T13:15:37Z",
+        "updated_at": "2024-08-30T09:14:12Z",
+        "closed_at": "2024-08-30T08:37:32Z",
+        "author": "CyntaxDotDev",
+        "comments": 2,
+        "labels": [
+            "Bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "**Describe the bug**\r\nBlameListener kicking off on every request, ignoring stateless firewalls and routes.\r\n\r\n**To Reproduce**\r\nCreate a simple controller with the `make:command`, declare the route stateless with the option `stateless: true` and trigger a HTTP request. Naturally with this bundle installed. \r\n\r\n**Expected behavior**\r\n```json\r\n{\r\n  \"type\": \"https:\\/\\/tools.ietf.org\\/html\\/rfc2616#section-10\",\r\n  \"title\": \"An error occurred\",\r\n  \"status\": 500,\r\n  \"detail\": \"Session was used while the request was declared stateless.\",\r\n  \"class\": \"Symfony\\\\Component\\\\HttpKernel\\\\Exception\\\\UnexpectedSessionUsageException\"\r\n}\r\n```\r\n\r\nFix as supplied.\r\n\r\n```php   \r\npublic function onKernelRequest(RequestEvent $event): void\r\n    {\r\n        if (!$event->isMainRequest()) {\r\n            return;\r\n        }\r\n\r\n        if (true !== $event->getRequest()->attributes->getBoolean('_stateless')) {\r\n            return;\r\n        }\r\n\r\n        if (null === $this->tokenStorage || null === $this->authorizationChecker) {\r\n            return;\r\n        }\r\n\r\n        $token = $this->tokenStorage->getToken();\r\n        if (null !== $token && $this->authorizationChecker->isGranted('IS_AUTHENTICATED_REMEMBERED')) {\r\n            $this->blameableListener->setUserValue($token->getUser());\r\n        }\r\n    }\r\n```\r\n\r\nCouldn't create a pull req -- hope this helps.",
+        "url": "https://github.com/stof/StofDoctrineExtensionsBundle/issues/488"
+    },
+    {
+        "id": 2329607929,
+        "number": 483,
+        "title": "Symfony 7.1 Deprecation of Symfony\\Component\\HttpKernel\\DependencyInjection\\Extension",
+        "state": "closed",
+        "created_at": "2024-06-02T11:34:12Z",
+        "updated_at": "2024-06-10T12:20:49Z",
+        "closed_at": "2024-06-10T12:19:10Z",
+        "author": "tacman",
+        "comments": 3,
+        "labels": [
+            "Bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "The \"Symfony\\Component\\HttpKernel\\DependencyInjection\\Extension\" class is considered internal since Symfony 7.1, to be deprecated in 8.1; use Symfony\\Component\\DependencyInjection\\Extension\\Extension instead. It may change without further notice. You should not use it from \"Stof\\DoctrineExtensionsBundle\\DependencyInjection\\StofDoctrineExtensionsExtension\".\r\n",
+        "url": "https://github.com/stof/StofDoctrineExtensionsBundle/issues/483"
+    },
+    {
+        "id": 2305162278,
+        "number": 482,
+        "title": "SoftDeleteableFilter 'addFilterConstraint' not compatible",
+        "state": "closed",
+        "created_at": "2024-05-20T06:02:25Z",
+        "updated_at": "2024-06-10T12:18:51Z",
+        "closed_at": "2024-06-10T12:18:46Z",
+        "author": "RomainMILLAN",
+        "comments": 1,
+        "labels": [
+            "Bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "**Describe the bug**\r\nI'am on new project and now install SoftDeleteable, but an error is created on cache clear because the function `public function addFilterConstraint(ClassMetadata $targetEntity, $targetTableAlias)` are not compatible with the function of abstract class SQLFilter `abstract public function addFilterConstraint(ClassMetadata $targetEntity, string $targetTableAlias): string;`.\r\n\r\n**To Reproduce**\r\nSteps to reproduce the behavior:\r\n- Have a project on Symfony 7 version.\r\n- Try to install SoftDeleteable filter.\r\n\r\n**Expected behavior**\r\nIt's possible to add the return statement of the addFilterConstraint method to be compatible with the abstract class SQLFilter ?\r\n\r\n\r\n\r\n\r\n**Error** \r\n\r\n```\r\nsymfony console ca:cl -e 'dev'\r\n\r\n // Clearing the cache for the dev environment with debug true                                                          \r\n\r\nPHP Fatal error:  Declaration of Gedmo\\SoftDeleteable\\Filter\\SoftDeleteableFilter::addFilterConstraint(Doctrine\\ORM\\Mapping\\ClassMetadata $targetEntity, $targetTableAlias) must be compatible with Doctrine\\ORM\\Query\\Filter\\SQLFilter::addFilterConstraint(Doctrine\\ORM\\Mapping\\ClassMetadata $targetEntity, string $targetTableAlias): string in /Users/romainmillan/Sites/Develop/bteck/vendor/gedmo/doctrine-extensions/src/SoftDeleteable/Filter/SoftDeleteableFilter.php on line 54\r\n\r\nFatal error: Declaration of Gedmo\\SoftDeleteable\\Filter\\SoftDeleteableFilter::addFilterConstraint(Doctrine\\ORM\\Mapping\\ClassMetadata $targetEntity, $targetTableAlias) must be compatible with Doctrine\\ORM\\Query\\Filter\\SQLFilter::addFilterConstraint(Doctrine\\ORM\\Mapping\\ClassMetadata $targetEntity, string $targetTableAlias): string in /Users/romainmillan/Sites/Develop/bteck/vendor/gedmo/doctrine-extensions/src/SoftDeleteable/Filter/SoftDeleteableFilter.php on line 54\r\n05:58:03 CRITICAL  [php] Fatal Compile Error: Declaration of Gedmo\\SoftDeleteable\\Filter\\SoftDeleteableFilter::addFilterConstraint(Doctrine\\ORM\\Mapping\\ClassMetadata $targetEntity, $targetTableAlias) must be compatible with Doctrine\\ORM\\Query\\Filter\\SQLFilter::addFilterConstraint(Doctrine\\ORM\\Mapping\\ClassMetadata $targetEntity, string $targetTableAlias): string [\"exception\" => Symfony\\Component\\ErrorHandler\\Error\\FatalError { …}]\r\n\r\nIn SoftDeleteableFilter.php line 54:\r\n                                                                                                                                                                                                                                                                                 \r\n  Compile Error: Declaration of Gedmo\\SoftDeleteable\\Filter\\SoftDeleteableFilter::addFilterConstraint(Doctrine\\ORM\\Mapping\\ClassMetadata $targetEntity, $targetTableAlias) must be compatible with Doctrine\\ORM\\Query\\Filter\\SQLFilter::addFilterConstraint(Doctrine\\ORM\\Mappin  \r\n  g\\ClassMetadata $targetEntity, string $targetTableAlias): string                                                                                                                                                                                                               \r\n                                                                                                                                                                                                                                                                                 \r\n\r\ncache:clear [--no-warmup] [--no-optional-warmers]\r\n```",
+        "url": "https://github.com/stof/StofDoctrineExtensionsBundle/issues/482"
+    },
+    {
+        "id": 2197619233,
+        "number": 481,
+        "title": "Inject the attribute reader in place of the annotations reader when able",
+        "state": "closed",
+        "created_at": "2024-03-20T14:01:23Z",
+        "updated_at": "2024-06-10T12:27:28Z",
+        "closed_at": "2024-06-10T12:27:28Z",
+        "author": "mbabker",
+        "comments": 0,
+        "labels": [
+            "Bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "The `setAnnotationReader()` method on the event listeners accepts either a `Doctrine\\Common\\Annotations\\Reader` or a `Gedmo\\Mapping\\Driver\\AttributeReader`, and after https://github.com/doctrine-extensions/DoctrineExtensions/pull/2743 the attribute reader is (rightfully) no longer considered internal.  The bundle should be updated to provide the attribute reader when appropriate to avoid relying on the library's feature detection (which will default to annotations if `doctrine/annotations` is installed, even if Symfony doesn't have an `annotation_reader` service).",
+        "url": "https://github.com/stof/StofDoctrineExtensionsBundle/issues/481"
+    },
+    {
+        "id": 2171809096,
+        "number": 480,
+        "title": "Deprecation: Using ArrayAccess on Doctrine\\ORM\\Mapping\\FieldMapping",
+        "state": "closed",
+        "created_at": "2024-03-06T15:37:57Z",
+        "updated_at": "2024-03-06T15:48:28Z",
+        "closed_at": "2024-03-06T15:48:28Z",
+        "author": "tobias-r",
+        "comments": 1,
+        "labels": [
+            "Bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "With doctrine 3.1 Using ArrayAccess on Doctrine\\ORM\\Mapping\\FieldMapping is deprecated. Your bundle does use this. Please fix :). THX so much.\r\n\r\n",
+        "url": "https://github.com/stof/StofDoctrineExtensionsBundle/issues/480"
+    },
+    {
+        "id": 2160650905,
+        "number": 479,
+        "title": "How can I use Gedmo Translatable and Gedmo Loggable together?",
+        "state": "closed",
+        "created_at": "2024-02-29T08:04:45Z",
+        "updated_at": "2025-06-25T11:18:33Z",
+        "closed_at": "2025-06-25T11:18:33Z",
+        "author": "creator81",
+        "comments": 3,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "I use Smyfony 6.4 with Doctrine and stof/doctrine-extensions-bundle\r\n\r\n\r\n```\r\n<?php\r\n\r\nnamespace App\\Entity;\r\n\r\nuse App\\Repository\\TestRepository;\r\nuse Doctrine\\ORM\\Mapping as ORM;\r\nuse Gedmo\\Loggable\\Loggable;\r\nuse Gedmo\\Translatable\\Translatable;\r\nuse Gedmo\\Mapping\\Annotation as Gedmo;\r\n\r\n#[Gedmo\\Loggable]\r\n#[ORM\\Entity(repositoryClass: TestRepository::class)]\r\nclass Test implements Translatable, Loggable\r\n{\r\n    #[ORM\\Id]\r\n    #[ORM\\GeneratedValue]\r\n    #[ORM\\Column]\r\n    private ?int $id = null;\r\n\r\n    #[Gedmo\\Versioned]\r\n    #[Gedmo\\Translatable]\r\n    #[ORM\\Column(length: 255)]\r\n    private ?string $name = null;\r\n    \r\n}\r\n```\r\n\r\n\r\nVersioning does not take place once Translatable is activated. The instruction is simply ignored.\r\nThere are no log entries that indicate an error.\r\n\r\nIf I use Gedmo\\Versioned, it works.\r\nIf I use Gedmo\\Translatable, it works.\r\nIf I use both, only Gedmo\\Translatable works.\r\n\r\nIs that what you want?\r\n\r\nI also posted the question here\r\nhttps://stackoverflow.com/questions/77988068/how-can-i-use-gedmo-translatable-and-gedmo-loggable-together",
+        "url": "https://github.com/stof/StofDoctrineExtensionsBundle/issues/479"
+    },
+    {
+        "id": 2152341145,
+        "number": 478,
+        "title": "Timestampable not working when persisting data in database ( enable to set dateTime to createdAt & updatedAt )",
+        "state": "closed",
+        "created_at": "2024-02-24T14:32:28Z",
+        "updated_at": "2024-06-10T12:21:07Z",
+        "closed_at": "2024-06-10T12:21:07Z",
+        "author": "hyper112",
+        "comments": 1,
+        "labels": [
+            "Bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "Gedmo\\Timestampable\\Mapping\\Event\\Adapter\\ORM::getRawDateValue(): Argument #1 ($mapping) must be of type array, Doctrine\\ORM\\Mapping\\FieldMapping given, called in C:\\symfony\\symfony7\\vendor\\gedmo\\doctrine-extensions\\src\\Timestampable\\Mapping\\Event\\Adapter\\ORM.php on line 35\r\nenable to set dateTime values of createdAt and updatedAt automaticly when persisting data",
+        "url": "https://github.com/stof/StofDoctrineExtensionsBundle/issues/478"
+    },
+    {
+        "id": 2140903449,
+        "number": 477,
+        "title": "Incompatible with symfony v7.0.3",
+        "state": "closed",
+        "created_at": "2024-02-18T10:08:28Z",
+        "updated_at": "2024-06-27T13:42:47Z",
+        "closed_at": "2024-06-25T09:18:06Z",
+        "author": "lakshmana",
+        "comments": 13,
+        "labels": [
+            "Bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "The problem arises when attempting to install version 1.11.0 of the bundle or the latest version without specifying a version explicitly on Symfony v7.03 and PHP v8.3.2. \r\nThe error message indicates that the requirements cannot be resolved to an installable set of packages due to conflicts in dependencies.\r\n\r\n```\r\nYour requirements could not be resolved to an installable set of packages.\r\n\r\n  Problem 1\r\n    - doctrine/orm is locked to version 3.0.0 and an update of this package was not requested.\r\n    - stof/doctrine-extensions-bundle v1.11.0 requires gedmo/doctrine-extensions ^3.15.0 -> satisfiable by gedmo/doctrine-extensions[v3.15.0].\r\n    - gedmo/doctrine-extensions v3.15.0 conflicts with doctrine/orm <2.14.0 || 2.16.0 || 2.16.1 || >=3.0.\r\n    - Root composer.json requires stof/doctrine-extensions-bundle 1.11.0 -> satisfiable by stof/doctrine-extensions-bundle[v1.11.0].\r\n```\r\n\r\nThe issue likely stems from the incompatibility between the version constraints specified by gedmo/doctrine-extensions and those required by doctrine/orm.\r\n\r\nCan anyone take a look into this ? ",
+        "url": "https://github.com/stof/StofDoctrineExtensionsBundle/issues/477"
+    },
+    {
+        "id": 2130799106,
+        "number": 473,
+        "title": "Missing typed arguments in function NestedTreeRepository::__call()",
+        "state": "closed",
+        "created_at": "2024-02-12T19:17:21Z",
+        "updated_at": "2024-06-10T12:43:33Z",
+        "closed_at": "2024-06-10T12:25:59Z",
+        "author": "ducho",
+        "comments": 3,
+        "labels": [
+            "Bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "Missing typed arguments in function public function __call(string $method, array $args): mixed (edited). \r\n\r\n`SF64` `stof/doctrine-extensions-bundle 1.10.1` `doctrine/orm 3.0`\r\n\r\n```Fatal error: Declaration of Gedmo\\Tree\\Entity\\Repository\\NestedTreeRepository::__call($method, $args) must be compatible with Doctrine\\ORM\\EntityRepository::__call(string $method, array $arguments): mixed in /var/www/symfony/vendor/gedmo/doctrine-extensions/src/Tree/Entity/Repository/NestedTreeRepository.php on line 67\r\nSymfony\\Component\\ErrorHandler\\Error\\FatalError^ {#581\r\n  #message: \"Compile Error: Declaration of Gedmo\\Tree\\Entity\\Repository\\NestedTreeRepository::__call($method, $args) must be compatible with Doctrine\\ORM\\EntityRepository::__call(string $method, array $arguments): mixed\"\r\n  #code: 0\r\n  #file: \"./vendor/gedmo/doctrine-extensions/src/Tree/Entity/Repository/NestedTreeRepository.php\"\r\n  #line: 67\r\n  -error: array:4 [\r\n    \"type\" => 64\r\n    \"message\" => \"Declaration of Gedmo\\Tree\\Entity\\Repository\\NestedTreeRepository::__call($method, $args) must be compatible with Doctrine\\ORM\\EntityRepository::__call(string $method, array $arguments): mixed\"\r\n    \"file\" => \"/var/www/symfony/vendor/gedmo/doctrine-extensions/src/Tree/Entity/Repository/NestedTreeRepository.php\"\r\n    \"line\" => 67\r\n  ]\r\n}\r\n```",
+        "url": "https://github.com/stof/StofDoctrineExtensionsBundle/issues/473"
+    },
+    {
+        "id": 2129062830,
+        "number": 470,
+        "title": "Timestampable in new Symfony 7 Project throws error on migration",
+        "state": "closed",
+        "created_at": "2024-02-11T16:33:23Z",
+        "updated_at": "2024-06-25T09:19:01Z",
+        "closed_at": "2024-06-25T09:19:01Z",
+        "author": "GBeushausen",
+        "comments": 4,
+        "labels": [
+            "Bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "Hi,\r\n\r\ni'm trying to add TimeStampableEntity trait to the user Entity in a new Symfony 7 project. After adding the trait i want to create a migration. But it fails with this message:\r\n\r\n`[Semantical Error] The class \"Doctrine\\ORM\\Mapping\\Column\" is not annotated with @Annotation.\r\n  Are you sure this class can be used as annotation?\r\n  If so, then you need to add @Annotation to the _class_ doc comment of \"Doctrine\\ORM\\Mapping\\Column\".\r\n  If it is indeed no annotation, then you need to add @IgnoreAnnotation(\"ORM\\Column\") to the _class_ doc comment of property App\\Entity\\User::$createdAt.`\r\n\r\nWhat can i do to make it work?",
+        "url": "https://github.com/stof/StofDoctrineExtensionsBundle/issues/470"
+    }
+]

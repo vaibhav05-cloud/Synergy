@@ -1,0 +1,242 @@
+[
+    {
+        "sha": "2b2f58efdd4f07f181c7859c84595d3eec36023f",
+        "author": "elasticsearchmachine",
+        "email": "58790826+elasticsearchmachine@users.noreply.github.com",
+        "date": "2026-07-14T08:31:53Z",
+        "message": "Mute org.elasticsearch.index.codec.tsdb.ES819DocValuesDuelTests testDuel #153763",
+        "url": "https://github.com/elastic/elasticsearch/commit/2b2f58efdd4f07f181c7859c84595d3eec36023f"
+    },
+    {
+        "sha": "278481dd753e49c4b51a767d616d4fbce82333ac",
+        "author": "Jonas Kunz",
+        "email": "jonas.kunz@elastic.co",
+        "date": "2026-07-14T08:31:52Z",
+        "message": "ES|QL: Support == and != for histogram types (#153475)",
+        "url": "https://github.com/elastic/elasticsearch/commit/278481dd753e49c4b51a767d616d4fbce82333ac"
+    },
+    {
+        "sha": "2705fd04dd840ea05517dafa3c3c3ca5586ddce9",
+        "author": "Matteo Mazzola",
+        "email": "matteo.mazzola@elastic.co",
+        "date": "2026-07-14T08:24:24Z",
+        "message": "Test now sets a less verbose log level (#153683)",
+        "url": "https://github.com/elastic/elasticsearch/commit/2705fd04dd840ea05517dafa3c3c3ca5586ddce9"
+    },
+    {
+        "sha": "b0ffe0556a951641a74ae8a252bb3881f946a903",
+        "author": "Vismay",
+        "email": "89745751+vismaytiwari@users.noreply.github.com",
+        "date": "2026-07-14T08:23:25Z",
+        "message": "Fix flaky t-digest sparse Gaussian median test (#153534)",
+        "url": "https://github.com/elastic/elasticsearch/commit/b0ffe0556a951641a74ae8a252bb3881f946a903"
+    },
+    {
+        "sha": "8c235a82f70cf4a3bb7203bf6271d5f01e0e3810",
+        "author": "Luke Whiting",
+        "email": "luke.whiting@elastic.co",
+        "date": "2026-07-14T08:22:59Z",
+        "message": "Wait for disruption threads to fire before awaiting stable cluster to prevent waiting forever (#153663)",
+        "url": "https://github.com/elastic/elasticsearch/commit/8c235a82f70cf4a3bb7203bf6271d5f01e0e3810"
+    },
+    {
+        "sha": "598de270948a575c4331c98d0b09e2c0818bde47",
+        "author": "Nhat Nguyen",
+        "email": "nhat.nguyen@elastic.co",
+        "date": "2026-07-14T08:06:07Z",
+        "message": "Push down TopN into count aggregation (#153615)\n\nFor queries like\n\n```\nFROM .. | STATS c=COUNT(*), ... BY k1, k2... | SORT c | LIMIT N\n```\n\nWe can push down the TopN into the aggregation to avoid emitting a large \nnumber of keys and aggregated values. This skips the costly emit phase\nfor large keys/values and the TopN time - even though TopN itself has\nbeen sped up significantly with ParallelTopN.\n\nTo keep the PR small, only the count aggregation supports this pushdown for now.",
+        "url": "https://github.com/elastic/elasticsearch/commit/598de270948a575c4331c98d0b09e2c0818bde47"
+    },
+    {
+        "sha": "72135509edb3d1e1360fed5fa43a9f9f45392347",
+        "author": "elasticsearchmachine",
+        "email": "58790826+elasticsearchmachine@users.noreply.github.com",
+        "date": "2026-07-14T07:39:06Z",
+        "message": "Mute org.elasticsearch.xpack.esql.qa.single_node.GenerativeIT test {feature:BASELINE} #149746",
+        "url": "https://github.com/elastic/elasticsearch/commit/72135509edb3d1e1360fed5fa43a9f9f45392347"
+    },
+    {
+        "sha": "6c28f694ab7336da794ab0a46c6f1bc036b39532",
+        "author": "Charlotte Hoblik",
+        "email": "116336412+charlotte-hoblik@users.noreply.github.com",
+        "date": "2026-07-14T07:35:21Z",
+        "message": "[DOCS]: Document full project routing in ES|QL cross-project search (#152673)\n\n* add cps full project routing support\n\n* remove equivalent to `=`\n\n* add case sensitivity\n\n* changing to declarative voice\n\n* apply feedback\n\n* apply feedback",
+        "url": "https://github.com/elastic/elasticsearch/commit/6c28f694ab7336da794ab0a46c6f1bc036b39532"
+    },
+    {
+        "sha": "c5d082aba521797194e11c450ae12e05837a2dd3",
+        "author": "Dimitris Rempapis",
+        "email": "dimitris.rempapis@elastic.co",
+        "date": "2026-07-14T07:13:13Z",
+        "message": "Apply search timeout to the DFS phase query rewrite (#153479)",
+        "url": "https://github.com/elastic/elasticsearch/commit/c5d082aba521797194e11c450ae12e05837a2dd3"
+    },
+    {
+        "sha": "225207cab5c0f6088ccf9244f009c47776ae9ec7",
+        "author": "Ievgen Degtiarenko",
+        "email": "ievgen.degtiarenko@elastic.co",
+        "date": "2026-07-14T07:09:09Z",
+        "message": "Additional remote lookup and enrich tests (#153645)",
+        "url": "https://github.com/elastic/elasticsearch/commit/225207cab5c0f6088ccf9244f009c47776ae9ec7"
+    },
+    {
+        "sha": "9bedfc14a42ec88461f02ff019b26e8c547491e2",
+        "author": "elasticsearchmachine",
+        "email": "58790826+elasticsearchmachine@users.noreply.github.com",
+        "date": "2026-07-14T04:20:30Z",
+        "message": "Mute org.elasticsearch.xpack.esql.CsvIT test {csv-spec:inlinestats.groupByMultipleRenamedColumns_AndComplexEval} #153752",
+        "url": "https://github.com/elastic/elasticsearch/commit/9bedfc14a42ec88461f02ff019b26e8c547491e2"
+    },
+    {
+        "sha": "6173919601bf70f3c1242530206d89c82db54543",
+        "author": "Laura Trotta",
+        "email": "153528055+l-trotta@users.noreply.github.com",
+        "date": "2026-07-14T04:19:49Z",
+        "message": "fix deprecated fields in tests (#153637)\n\nCo-authored-by: John Wagster <john.wagster@elastic.co>",
+        "url": "https://github.com/elastic/elasticsearch/commit/6173919601bf70f3c1242530206d89c82db54543"
+    },
+    {
+        "sha": "9f1b97223f9f03b8f994d598ba0e8fde569f6ff9",
+        "author": "Mikhail Berezovskiy",
+        "email": "mikhail@elastic.co",
+        "date": "2026-07-14T02:55:06Z",
+        "message": "fix testUnreferencedCommitsAreReleasedAfterRecovery (#153730)",
+        "url": "https://github.com/elastic/elasticsearch/commit/9f1b97223f9f03b8f994d598ba0e8fde569f6ff9"
+    },
+    {
+        "sha": "b1bca7c724461357efb8bcc0c182b15337d12dd2",
+        "author": "elasticsearchmachine",
+        "email": "58790826+elasticsearchmachine@users.noreply.github.com",
+        "date": "2026-07-14T02:25:49Z",
+        "message": "Mute org.elasticsearch.xpack.esql.qa.ndjson.NdJsonCompressedFormatSpecIT test {csv-spec:external-basic.inlineStatsMaxSalary [ndjson.zst/GCS]} #153749",
+        "url": "https://github.com/elastic/elasticsearch/commit/b1bca7c724461357efb8bcc0c182b15337d12dd2"
+    },
+    {
+        "sha": "ab65ce698aec5e162f50ae3b306a9ca2dc9045f1",
+        "author": "elasticsearchmachine",
+        "email": "58790826+elasticsearchmachine@users.noreply.github.com",
+        "date": "2026-07-14T02:13:36Z",
+        "message": "Mute org.elasticsearch.repositories.gcs.GoogleCloudStorageBlobContainerStatsTests testResumableWrite #153748",
+        "url": "https://github.com/elastic/elasticsearch/commit/ab65ce698aec5e162f50ae3b306a9ca2dc9045f1"
+    },
+    {
+        "sha": "d2770e8e21547a2e5d730719ddb0817d880b6975",
+        "author": "elasticsearchmachine",
+        "email": "58790826+elasticsearchmachine@users.noreply.github.com",
+        "date": "2026-07-14T02:12:30Z",
+        "message": "Mute org.elasticsearch.xpack.encryption.KeyRotationIT testRotationCompletesWithMultipleHandlers #153747",
+        "url": "https://github.com/elastic/elasticsearch/commit/d2770e8e21547a2e5d730719ddb0817d880b6975"
+    },
+    {
+        "sha": "2208f6cebade2590c80a505c4425f120ec938af1",
+        "author": "elasticsearchmachine",
+        "email": "58790826+elasticsearchmachine@users.noreply.github.com",
+        "date": "2026-07-14T02:06:32Z",
+        "message": "Mute org.elasticsearch.xpack.esql.parser.ParamsParserTests testMixedSingleDoubleParams #153746",
+        "url": "https://github.com/elastic/elasticsearch/commit/2208f6cebade2590c80a505c4425f120ec938af1"
+    },
+    {
+        "sha": "b787683b266fe2e70414d8c092cc76007290fcaa",
+        "author": "elasticsearchmachine",
+        "email": "58790826+elasticsearchmachine@users.noreply.github.com",
+        "date": "2026-07-14T01:36:38Z",
+        "message": "Mute org.elasticsearch.simdvec.internal.IndexInputUtilsTests testES92ConstructorAcceptsPlainInput #153741",
+        "url": "https://github.com/elastic/elasticsearch/commit/b787683b266fe2e70414d8c092cc76007290fcaa"
+    },
+    {
+        "sha": "a33e010328261c158ad6425e267bf398b6515ec5",
+        "author": "elasticsearchmachine",
+        "email": "58790826+elasticsearchmachine@users.noreply.github.com",
+        "date": "2026-07-14T01:36:32Z",
+        "message": "Mute org.elasticsearch.simdvec.internal.IndexInputUtilsTests testES92ConstructorAcceptsDirectAccessInput #153740",
+        "url": "https://github.com/elastic/elasticsearch/commit/a33e010328261c158ad6425e267bf398b6515ec5"
+    },
+    {
+        "sha": "88cce931d57ffb68e2bd4a2ee7eba5b369c65224",
+        "author": "elasticsearchmachine",
+        "email": "58790826+elasticsearchmachine@users.noreply.github.com",
+        "date": "2026-07-14T01:36:16Z",
+        "message": "Mute org.elasticsearch.simdvec.internal.IndexInputUtilsTests testES92ConstructorAcceptsMMapInput #153739",
+        "url": "https://github.com/elastic/elasticsearch/commit/88cce931d57ffb68e2bd4a2ee7eba5b369c65224"
+    },
+    {
+        "sha": "c521ac856e60d53fba8d271cc046abb878962c7f",
+        "author": "elasticsearchmachine",
+        "email": "58790826+elasticsearchmachine@users.noreply.github.com",
+        "date": "2026-07-14T01:35:57Z",
+        "message": "Mute org.elasticsearch.simdvec.internal.IndexInputUtilsTests testES92ConstructorRejectsUnwrappedFilterIndexInput #153738",
+        "url": "https://github.com/elastic/elasticsearch/commit/c521ac856e60d53fba8d271cc046abb878962c7f"
+    },
+    {
+        "sha": "4ee7bd2be4a62dc68c9799f376d6499dae89e9a5",
+        "author": "Jack Conradson",
+        "email": "osjdconrad@gmail.com",
+        "date": "2026-07-13T22:48:38Z",
+        "message": "Painless: track def-dispatched string concat (#153436)\n\nCharge a def-dispatched '+' that resolves at runtime to a string\nconcatenation against the per-context allocation limit. The operand\ntypes are unknown at compile time, so the charge is emitted at the def\n'+' site (like the statically-typed concat pre-check): spill the\noperands, charge the concat estimate, then reload and run the real add.",
+        "url": "https://github.com/elastic/elasticsearch/commit/4ee7bd2be4a62dc68c9799f376d6499dae89e9a5"
+    },
+    {
+        "sha": "7b95babc84934599b707dac330b2b49841eced08",
+        "author": "Adam Demjen",
+        "email": "demjened@gmail.com",
+        "date": "2026-07-13T21:01:01Z",
+        "message": "Use ObjectParser for Amazon Bedrock service settings (#151881)\n\n* Add parsing to base class\n\n* Implement chat completion settings\n\n* Implement embeddings\n\n* Add parsing for dimensionsSetByUser\n\n* Use AWS-specific secret field names\n\n* Add tests for chat completion\n\n* Extract abstract superclass for tests\n\n* [CI] Auto commit changes from spotless\n\n* Fixing tests\n\n* Implement embedding update + fix some tests\n\n* Fix broken tests\n\n* [CI] Auto commit changes from spotless\n\n* Fix checkstyle warning\n\n* Remove eq/hc, fix style\n\n* Remove unused fromMap, use StatefulValue\n\n* Add tests for non-updatable fields\n\n* Fix some tests\n\n* Use enum for provider\n\n* [CI] Auto commit changes from spotless\n\n* Remove test case\n\n# Conflicts:\n#\tx-pack/plugin/inference/src/test/java/org/elasticsearch/xpack/inference/services/amazonbedrock/embeddings/AmazonBedrockEmbeddingsServiceSettingsTests.java\n\n* [CI] Auto commit changes from spotless\n\n* Initialize the stateful value\n\n* Remove extra semicolon\n\n* Add test case + remove comment per CR\n\n* [CI] Auto commit changes from spotless\n\n* Try to fix service tests\n\n* [CI] Auto commit changes from spotless\n\n* Update tests\n\n---------\n\nCo-authored-by: elasticsearchmachine <infra-root+elasticsearchmachine@elastic.co>",
+        "url": "https://github.com/elastic/elasticsearch/commit/7b95babc84934599b707dac330b2b49841eced08"
+    },
+    {
+        "sha": "212db0a3e3d2f5e8a699fc5120d1c50cefab1aec",
+        "author": "Oleg Lvovitch",
+        "email": "oleg.lvovitch@elastic.co",
+        "date": "2026-07-13T20:51:43Z",
+        "message": "ES|QL: relax hive-partition IT node-count assertion for pruning (#153721)\n\n* ES|QL: relax hive-partition IT node-count assertion for pruning\n\nThe external scan distributes to fewer nodes once partition pruning\n(#153640) reduces the split set, so >= 2 data nodes is no longer\nguaranteed. Relax to >= 1; row-count and parity assertions unchanged.\n\n* [CI] Auto commit changes from spotless\n\n---------\n\nCo-authored-by: elasticsearchmachine <infra-root+elasticsearchmachine@elastic.co>",
+        "url": "https://github.com/elastic/elasticsearch/commit/212db0a3e3d2f5e8a699fc5120d1c50cefab1aec"
+    },
+    {
+        "sha": "c810fc9df421b847362c358f27bb634e137590e4",
+        "author": "Nik Everett",
+        "email": "nik9000@gmail.com",
+        "date": "2026-07-13T20:03:42Z",
+        "message": "ESQL: Allow expression on LHS of match operator (`:`) (#151890)\n\nAllows expressions like:\n```\n| WHERE CONCAT(\"a\", field):\"something\"\n```\n\nPreviously the `:` operator only allowed a field. Now support expressions. These will only *work* if you set the runtime pragma.",
+        "url": "https://github.com/elastic/elasticsearch/commit/c810fc9df421b847362c358f27bb634e137590e4"
+    },
+    {
+        "sha": "27a10816d555287886d872340409b1aa141413e3",
+        "author": "Costin Leau",
+        "email": "costin@users.noreply.github.com",
+        "date": "2026-07-13T19:05:30Z",
+        "message": "[ESQL] Bypass permits for storage metadata ops (#153686)\n\nMetadata ops (length/lastModified/exists) took the same permit as data streams, which hold it for their whole minutes-long lifetime. Under load this parked metadata HEAD/stat calls behind held stream permits, starving the dedicated esql_external_io discovery/read pool (and stalling the esql_worker drivers waiting on it).",
+        "url": "https://github.com/elastic/elasticsearch/commit/27a10816d555287886d872340409b1aa141413e3"
+    },
+    {
+        "sha": "3c31a5a6505a4836cf6ab8427b1dcaf71f7f42bc",
+        "author": "Surya Pappoppula",
+        "email": "surya.pappoppula@elastic.co",
+        "date": "2026-07-13T18:59:25Z",
+        "message": "Expand internal architecture guides (#153026)\n\n* Expand internal architecture guides\n\n- Adds a wire serialization section\n- Adds concurrency section that talks about ThreadPool, AbstractRunnable/ActionRunnable, ActionListener\n- Expands on-disk shard layout\n- Adds a section on Settings\n- Updates the project structure in Agents.md",
+        "url": "https://github.com/elastic/elasticsearch/commit/3c31a5a6505a4836cf6ab8427b1dcaf71f7f42bc"
+    },
+    {
+        "sha": "69678afd7f313106a2418498066c152a64b1c006",
+        "author": "Jack Conradson",
+        "email": "osjdconrad@gmail.com",
+        "date": "2026-07-13T18:58:18Z",
+        "message": "Painless: allocation annotations for Elasticsearch field-access allocators (#153435)\n\nAnnotate the common field-access allocators in the ES base/context\nallowlists. Dynamic: BytesRef.utf8ToString (String sized to the ref's\nbyte length) and ScriptDocValues.GeoPoints.getLats/getLons (double[]\nsized to the point count). Constant: GeoPoint (32b), IPAddress (64b),\nCIDR (48b), ScriptTermStats.StatsSummary accessors (48b), and the\nsha1/sha256/sha512 augmentations (fixed 40/64/128-char hex strings).",
+        "url": "https://github.com/elastic/elasticsearch/commit/69678afd7f313106a2418498066c152a64b1c006"
+    },
+    {
+        "sha": "8db6b94064a0fd67c645c8624073cf8d623d1e32",
+        "author": "Nik Everett",
+        "email": "nik9000@gmail.com",
+        "date": "2026-07-13T18:54:22Z",
+        "message": "ESQL: Fix PushQueriesStringIT (#153527)\n\nIt matches on query descriptions which doesn't work for empty string. We\njust skip empty string in the test.",
+        "url": "https://github.com/elastic/elasticsearch/commit/8db6b94064a0fd67c645c8624073cf8d623d1e32"
+    },
+    {
+        "sha": "8c22800b9aa08e40cc5c33bff1f2033b861ab407",
+        "author": "Nik Everett",
+        "email": "nik9000@gmail.com",
+        "date": "2026-07-13T18:09:18Z",
+        "message": "ESQL: Extra tests for `IN` (#153611)\n\nAdd extra tests for `IN` and clean `NOT_IN` from the list. It doesn't \"run\", it just get rewritten into `NOT(IN)`",
+        "url": "https://github.com/elastic/elasticsearch/commit/8c22800b9aa08e40cc5c33bff1f2033b861ab407"
+    }
+]

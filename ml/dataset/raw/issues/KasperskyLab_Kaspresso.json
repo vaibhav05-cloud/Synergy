@@ -1,0 +1,360 @@
+[
+    {
+        "id": 4836003953,
+        "number": 747,
+        "title": "AdbServer: any command with stdout larger than the OS pipe buffer always fails with TIMEOUT — CmdCommandPerformer reads process output only after waitFor(), causing a deadlock",
+        "state": "open",
+        "created_at": "2026-07-08T09:07:24Z",
+        "updated_at": "2026-07-08T09:07:24Z",
+        "closed_at": null,
+        "author": "ZuevKirill95",
+        "comments": 0,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "**Describe the bug**\n\n`CmdCommandPerformer` in `adbserver-desktop` starts a process and reads its stdout only\n**after** waiting for its completion:\n\n```kotlin\n// adb-server/adbserver-desktop/src/main/java/com/kaspersky/adbserver/desktop/CmdCommandPerformer.kt\nval process = Runtime.getRuntime().exec(command)\n...\nif (process.waitFor(executionTimeoutSeconds, TimeUnit.SECONDS)) {\n    ...\n    process.inputStream.bufferedReader().readText() // <- stdout is read only AFTER waitFor\n```\n\nIf the command prints more than the OS pipe buffer can hold (~64 KB on Linux), the child\nprocess blocks on writing to stdout, `waitFor()` never completes, and after 120 s the test\nfails with `AdbServerException` (`CommandResult(status=TIMEOUT)`) — even though the command\nitself finishes instantly in a shell. This is the classic `Runtime.exec` deadlock described\nin the `java.lang.Process` javadoc.\n\nThe process is not slow — it is blocked forever, so raising the timeout (#745 / ISSUE-743)\ndoes not help.\n\nWe hit this on a trivial `ls -A1 <dir>` over a directory with ~1500 files:\n\n```\ncom.kaspersky.kaspresso.internal.exceptions.AdbServerException:\nAdbServer. The command=ls -A1 ... was performed with timeout exception.\n```\n\nDesktop log at the moment of failure (TIMEOUT exactly 120 s after the command was received;\ncommands before and after succeed, so the jar and the connection are healthy):\n\n```\n17:22:44.951  The received command to execute: CmdCommand(body=ls -A1 ..., arguments=[])\n17:24:44.953  The result: CommandResult(status=TIMEOUT, description=Command execution timeout (120 sec) overhead, ...)\n```\n\nThis is most likely also the actual root cause of #582: there `pm list packages` (large\noutput) timed out while `pm list packages <package>` (small output) worked — the filter\nreduced the output size, not the execution time.\n\n**To Reproduce**\n\nPure JDK demo (any machine, Java 9+) — the exact pattern used by `CmdCommandPerformer`:\n\n```bash\njshell - <<'EOF'\nvar p = Runtime.getRuntime().exec(\"seq 1 30000\");   // ~170 KB of stdout\nSystem.out.println(\"finished in 5s: \" + p.waitFor(5, java.util.concurrent.TimeUnit.SECONDS));\np.destroy();\nEOF\n```\n\nPrints `finished in 5s: false` — the process hangs. With `seq 1 100` it prints `true`.\n\nSame at the unit level (no device or emulator needed):\n\n```kotlin\nval performer = CmdCommandPerformer(\"test-desktop\", logger, executionTimeoutSeconds = 5)\nval result = performer.perform(\"seq 1 30000\")\n// Actual: CommandResult(status=TIMEOUT, \"Command execution timeout (5 sec) overhead\")\n// Expected: SUCCESS with the full output\n```\n\n**Expected behavior**\n\nCommands are only limited by the execution timeout, not by the size of their output.\nstdout/stderr should be consumed concurrently with `waitFor()` (background reader threads),\nor redirected to temp files via `ProcessBuilder.redirectOutput/redirectError`.\n\n**Additional context**\n\nReproduced on Kaspresso 1.5.4–1.6.1; the affected code is unchanged in master.\n",
+        "url": "https://github.com/KasperskyLab/Kaspresso/issues/747"
+    },
+    {
+        "id": 4671518067,
+        "number": 746,
+        "title": "Publish adbserver-desktop.jar to Maven repo",
+        "state": "open",
+        "created_at": "2026-06-16T06:04:04Z",
+        "updated_at": "2026-06-16T06:16:37Z",
+        "closed_at": null,
+        "author": "victorsmirnov",
+        "comments": 1,
+        "labels": [
+            "enhancement"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "Suggestion: **publish adbserver-desktop.jar in Maven** repository with name \"com.kaspersky.android-components:adb-server-desktop\".\n\nHow does it help?\n\n1. Use Gradle dependency management to download and cache `adbserver-desktop.jar` instead of custom scripts or manual updates.\n2. Use corporate Maven proxy in CI the same way as for other Kaspresso libraries, no need for any custom logic to get JAR file on corporate CI servers.\n\nExample for Gradle Kotlin DSL\n\n```\nval adbServerConfig by configurations.creating\ndependencies {\n    adbServerConfig(\"com.kaspersky.android-components:adb-server-desktop:1.6.0\")\n}\n```\n\nNow I publish `adbserver-desktop.jar` in our company Maven repo. Having it in the central Kaspresso repo would simplify our CI.\n\nThank you for your work and support!",
+        "url": "https://github.com/KasperskyLab/Kaspresso/issues/746"
+    },
+    {
+        "id": 4225800026,
+        "number": 743,
+        "title": "Adb server timeout setting",
+        "state": "closed",
+        "created_at": "2026-04-08T15:46:19Z",
+        "updated_at": "2026-06-04T10:06:16Z",
+        "closed_at": "2026-06-04T10:06:16Z",
+        "author": "Nikitae57",
+        "comments": 0,
+        "labels": [
+            "enhancement"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "Allow user to pass the timout through the command arguments",
+        "url": "https://github.com/KasperskyLab/Kaspresso/issues/743"
+    },
+    {
+        "id": 4016998270,
+        "number": 736,
+        "title": "Compose preview screnshot tests",
+        "state": "open",
+        "created_at": "2026-03-03T14:30:17Z",
+        "updated_at": "2026-03-15T17:44:10Z",
+        "closed_at": null,
+        "author": "Nikitae57",
+        "comments": 0,
+        "labels": [
+            "enhancement"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "Create a way to automate programming of a screenshot comparison tests for the compose previews",
+        "url": "https://github.com/KasperskyLab/Kaspresso/issues/736"
+    },
+    {
+        "id": 4016988553,
+        "number": 735,
+        "title": "Screenshot test for a single view\\composable",
+        "state": "open",
+        "created_at": "2026-03-03T14:28:29Z",
+        "updated_at": "2026-03-03T14:28:29Z",
+        "closed_at": null,
+        "author": "Nikitae57",
+        "comments": 0,
+        "labels": [
+            "enhancement"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "Context: screenshots comparison \n\nCapture a single view or a composable node instead of the whole screen",
+        "url": "https://github.com/KasperskyLab/Kaspresso/issues/735"
+    },
+    {
+        "id": 3994463551,
+        "number": 733,
+        "title": "Add configurable screenshotMaker to Kaspresso.Builder",
+        "state": "closed",
+        "created_at": "2026-02-26T09:48:43Z",
+        "updated_at": "2026-03-15T17:46:36Z",
+        "closed_at": "2026-03-15T17:46:36Z",
+        "author": "Twinsen81",
+        "comments": 0,
+        "labels": [
+            "enhancement"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "## Problem\n\n`InternalScreenshotMaker` uses `Activity.window.decorView.draw(Canvas)` which only captures the main activity window. Views rendered in separate popup windows — such as Material 3's `ModalBottomSheet` — are invisible in the resulting screenshot.\n\n`CombinedScreenshotMaker` falls back to `ExternalScreenshotMaker` (which uses `UiDevice.takeScreenshot()` and captures the full screen) only when the internal one throws an exception:\n\n```kotlin\nrunCatching {\n    preferredScreenshotMaker.takeScreenshot(file)\n}.onFailure {\n    fallbackScreenshotMaker.takeScreenshot(file)\n}\n```\n\nBut `InternalScreenshotMaker` doesn't throw — it succeeds and produces an incomplete image. So the fallback never runs.\n\n## Current workaround\n\nThere is no clean way to swap the screenshot maker. The `screenshotMaker` is constructed inline inside `postInitVariables()` and not exposed as a configurable property.\n\nThe only working workaround is to avoid `advanced()` entirely, use `simple()`, manually reconstruct `ScreenshotsImpl` with all its dependencies in `.apply`, and re-add interceptors by hand:\n\n```kotlin\nval E2ETestsBuilder = Kaspresso.Builder.simple {\n    flakySafetyParams = FlakySafetyParams.custom(timeoutMs = 1_000)\n}.apply {\n    screenshots = ScreenshotsImpl(\n        logger = libLogger,\n        resourceFilesProvider = resourceFilesProvider,\n        screenshotMaker = ExternalScreenshotMaker(\n            instrumentalDependencyProviderFactory.getComponentProvider<ExternalScreenshotMaker>(\n                instrumentation\n            ),\n            screenshotParams\n        ),\n        visualTestParams = visualTestParams,\n        screenshotsComparator = screenshotsComparator,\n        dirsProvider = dirsProvider,\n        resourceFileNamesProvider = resourceFileNamesProvider,\n        resourcesDirsProvider = resourcesDirsProvider,\n    )\n    stepWatcherInterceptors.add(ScreenshotStepWatcherInterceptor(screenshots))\n    testRunWatcherInterceptors.add(VideoRecordingInterceptor(videos))\n    stepParams.autonumber = true\n}\n```\n\nThis is fragile — it depends on Builder internals, and using `advanced()` or `withForcedAllureSupport()` instead of `simple()` doesn't work because those builders wire screenshot interceptors before `.apply` runs, capturing a stale reference to the old `screenshots` object.\n\n## Proposed fix\n\n1. Add a `lateinit var screenshotMaker: ScreenshotMaker` property to `Kaspresso.Builder`, following the same `if (!::prop.isInitialized)` pattern used by other Builder properties. The default behavior is unchanged — if not set, the existing `CombinedScreenshotMaker` is created.\n\n2. Add a secondary constructor to `ExternalScreenshotMaker` that accepts `Instrumentation` directly, so users don't need to deal with `InstrumentalDependencyProvider`.\n\n3. Fix `ExternalScreenshotMaker.takeFullWindowScreenshot` which currently throws `TODO(\"not yet implemented\")`. Since `UiDevice.takeScreenshot()` already captures the full screen, it can delegate to `takeScreenshot()`.\n\nThis reduces the workaround above to a single line that works with any builder — `simple()`, `advanced()`, or `withForcedAllureSupport()`:\n\n```kotlin\nKaspresso.Builder.advanced {\n    screenshotMaker = ExternalScreenshotMaker(instrumentation)\n}\n```",
+        "url": "https://github.com/KasperskyLab/Kaspresso/issues/733"
+    },
+    {
+        "id": 3843299009,
+        "number": 730,
+        "title": "Show step on the video",
+        "state": "closed",
+        "created_at": "2026-01-22T14:51:00Z",
+        "updated_at": "2026-04-08T10:13:27Z",
+        "closed_at": "2026-04-08T10:13:27Z",
+        "author": "Nikitae57",
+        "comments": 0,
+        "labels": [
+            "enhancement"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "We need a way to map whats is happenning on the video of the test to the test code",
+        "url": "https://github.com/KasperskyLab/Kaspresso/issues/730"
+    },
+    {
+        "id": 3587981782,
+        "number": 728,
+        "title": "Error: Invalid or corrupt jarfile adbserver-desktop.jar",
+        "state": "closed",
+        "created_at": "2025-11-04T19:54:56Z",
+        "updated_at": "2025-11-27T16:52:52Z",
+        "closed_at": "2025-11-27T16:52:51Z",
+        "author": "JordanLongstaff",
+        "comments": 1,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "I'm trying to work `adbserver-desktop.jar` [into my repo's CI workflow](https://github.com/JordanLongstaff/ArtemisAgent/pull/401) that runs instrumented tests, but I keep getting this error. Can anyone help me with this?",
+        "url": "https://github.com/KasperskyLab/Kaspresso/issues/728"
+    },
+    {
+        "id": 3486987850,
+        "number": 726,
+        "title": "Version 1.6.0 childWith bug",
+        "state": "closed",
+        "created_at": "2025-10-06T12:12:07Z",
+        "updated_at": "2025-11-27T16:53:48Z",
+        "closed_at": "2025-11-27T16:53:48Z",
+        "author": "GrieVeR-13",
+        "comments": 1,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "сhildWith, childAt in KRecyclerView contains an error\non the line\ninRoot { withMatcher(this@KRecyclerView.root) }\nAfter multiple сhildWith runs, the tests hang — recursion occurs in root matchers.\n\n\n<img width=\"1172\" height=\"303\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/86c8af36-8871-42f7-b05c-4cc48cb5ec42\" />",
+        "url": "https://github.com/KasperskyLab/Kaspresso/issues/726"
+    },
+    {
+        "id": 3163249665,
+        "number": 723,
+        "title": "Default flakiness behaviour stops after exception even though it's caught",
+        "state": "closed",
+        "created_at": "2025-06-20T12:57:32Z",
+        "updated_at": "2025-11-27T17:10:07Z",
+        "closed_at": "2025-11-27T17:10:07Z",
+        "author": "vvasilev-wyn",
+        "comments": 1,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "**Describe the bug**\nI have some logic to click an indeterminate number of times until the element is no longer visible:\n```\n        for (i in 0..50) {\n            val result = runCatching {\n                flakySafely(200) {\n                    SubstitutionPromptScreen.selectDifferentSubstitute.click()\n                }\n            }\n            if (result.isFailure) break\n        }\n```\nThis works as expected. However after that it seems the default flakiness behavior stops working correctly - the test fails with NoMatchingViewException on a view that appears definitely in time - and there is no retrying with the default timeout of 10 sec. If I manually add the flakySafely block where the test fails, it passes. If I make sure there is no exception - like repeating the click the exact number of times, after the test passes as well.\n\n**To Reproduce**\nSteps to reproduce the behavior:\n1. Make sure an exception is thrown from a Kakao element and is caught\n2. Perform a view assertion that will need to retry.\n3. Test fails with NoMatchingViewException\n\n**Expected behavior**\nCatching the exception should not remove the default flakiness behavior.\n\n**Screenshots**\nIf applicable, add screenshots to help explain your problem.\n\n**Desktop (please complete the following information):**\n - OS: [e.g. iOS]\n - Browser [e.g. chrome, safari]\n - Version [e.g. 22]\n\n**Smartphone (please complete the following information):**\n - Device: [e.g. iPhone6]\n - OS: [e.g. iOS8.1]\n - Browser [e.g. stock browser, safari]\n - Version [e.g. 22]\n\n**Additional context**\nAdd any other context about the problem here.\n",
+        "url": "https://github.com/KasperskyLab/Kaspresso/issues/723"
+    },
+    {
+        "id": 3132619743,
+        "number": 721,
+        "title": "Images are not being uploaded to the Allure report",
+        "state": "closed",
+        "created_at": "2025-06-10T08:20:34Z",
+        "updated_at": "2026-04-08T15:22:05Z",
+        "closed_at": "2026-04-08T15:22:05Z",
+        "author": "mathpi314159-fap",
+        "comments": 6,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "**Describe the bug**\nThe report generated by Allure does not contain images for failed tests.\nI use a custom builder in the tests:\n```\nval kaspressoBuilder = Kaspresso.Builder.withForcedAllureSupport().addComposeSupport(\n    lateComposeCustomize = { composeBuilder ->\n        composeBuilder.semanticsBehaviorInterceptors =\n            composeBuilder.semanticsBehaviorInterceptors.filter {\n                it !is SystemDialogSafetySemanticsBehaviorInterceptor\n            }.toMutableList()\n        flakySafetyParams = FlakySafetyParams.custom(timeoutMs = 10_000, intervalMs = 100)\n    }\n).apply {\n    testRunWatcherInterceptors.addAll((listOf(DumpViewsInterceptor(viewHierarchyDumper))))\n    screenshotParams = ScreenshotParams(quality = 0)\n}\n```\nI have granted all the necessary authorizations:\n```\nclass LoginTest : TestCase(kaspressoBuilder) {\n\n    @get:Rule\n    val grantPermissionRule: GrantPermissionRule = GrantPermissionRule.grant(\n        android.Manifest.permission.POST_NOTIFICATIONS,\n        android.Manifest.permission.READ_EXTERNAL_STORAGE,\n        android.Manifest.permission.WRITE_EXTERNAL_STORAGE\n    )\n\n    @get:Rule\n    val composeTestRule = createAndroidComposeRule(MainActivity::class.java)\n...\n```\nbuild.gradle.kts\n```\ndefaultConfig {\n  testInstrumentationRunner = \"com.kaspersky.kaspresso.runner.KaspressoRunner\"\n  testInstrumentationRunnerArguments[\"clearPackageData\"] = \"true\"\n  testInstrumentationRunnerArguments[\"useTestStorageService\"] = \"true\"\n}\n```\nAfter launching, I get the following:\n**Logcat**:\n```\njava.lang.AssertionError: Assert failed: The component is not displayed!\nat androidx.compose.ui.test.AssertionsKt.assertIsDisplayed(Assertions.kt: 34)\nat io.github.kakaocup.compose.node.assertion.NodeAssertions$assertIsDisplayed$1.invoke(NodeAssertions.kt: 13)\nat io.github.kakaocup.compose.node.assertion.NodeAssertions$assertIsDisplayed$1.invoke(NodeAssertions.kt: 13)\nat io.github.kakaocup.compose.intercept.operation.ComposeOperationImplsKt$produceComposeAssertion$1.execute(ComposeOperationImpls.kt: 29)\nat io.github.kakaocup.compose.intercept.operation.ComposeOperationImplsKt$produceComposeAssertion$1.execute(ComposeOperationImpls.kt: 26)\nat io.github.kakaocup.compose.intercept.interaction.ComposeInteraction.check(ComposeInteraction.kt: 16)\nat com.kaspersky.components.composesupport.interceptors.tolibrary.ComposeSemanticsInterceptor$interceptCheck$1.invoke(ComposeSemanticsInterceptor.kt: 29)\nat com.kaspersky.components.composesupport.interceptors.tolibrary.ComposeSemanticsInterceptor$interceptCheck$1.invoke(ComposeSemanticsInterceptor.kt: 24)\nat com.kaspersky.components.composesupport.autoscroll.SemanticsAutoScrollProviderImpl.withAutoScroll(SemanticsAutoScrollProviderImpl.kt: 27)\nat com.kaspersky.components.composesupport.interceptors.behavior.impl.autoscroll.AutoScrollSemanticsBehaviorInterceptor.withAutoScroll(Unknown Source: 12)\nat com.kaspersky.components.composesupport.interceptors.behavior.impl.autoscroll.AutoScrollSemanticsBehaviorInterceptor.interceptCheck(AutoScrollSemanticsBehaviorInterceptor.kt: 32)\nat com.kaspersky.components.composesupport.interceptors.behavior.impl.autoscroll.AutoScrollSemanticsBehaviorInterceptor.interceptCheck(AutoScrollSemanticsBehaviorInterceptor.kt: 16)\nat com.kaspersky.components.composesupport.interceptors.tolibrary.ComposeSemanticsInterceptor$interceptCheck$2$1.invoke(ComposeSemanticsInterceptor.kt: 33)\nat com.kaspersky.components.composesupport.interceptors.tolibrary.ComposeSemanticsInterceptor$interceptCheck$2$1.invoke(ComposeSemanticsInterceptor.kt: 33)\nat com.kaspersky.kaspresso.elementloader.ElementLoaderProviderImpl.passAction(ElementLoaderProviderImpl.kt: 36)\nat com.kaspersky.components.composesupport.interceptors.behavior.impl.elementloader.ElementLoaderSemanticsBehaviorInterceptor.passAction(Unknown Source: 12)\nat com.kaspersky.components.composesupport.interceptors.behavior.impl.elementloader.ElementLoaderSemanticsBehaviorInterceptor.interceptCheck(ElementLoaderSemanticsBehaviorInterceptor.kt: 32)\nat com.kaspersky.components.composesupport.interceptors.behavior.impl.elementloader.ElementLoaderSemanticsBehaviorInterceptor.interceptCheck(ElementLoaderSemanticsBehaviorInterceptor.kt: 16)\nat com.kaspersky.components.composesupport.interceptors.tolibrary.ComposeSemanticsInterceptor$interceptCheck$2$1.invoke(ComposeSemanticsInterceptor.kt: 33)\nat com.kaspersky.components.composesupport.interceptors.tolibrary.ComposeSemanticsInterceptor$interceptCheck$2$1.invoke(ComposeSemanticsInterceptor.kt: 33)\nat com.kaspersky.kaspresso.flakysafety.algorithm.FlakySafetyAlgorithm.invokeFlakySafely(FlakySafetyAlgorithm.kt: 32)\nat com.kaspersky.kaspresso.flakysafety.algorithm.FlakySafetyAlgorithm.invokeFlakySafely$default(FlakySafetyAlgorithm.kt: 22)\nat com.kaspersky.kaspresso.flakysafety.FlakySafetyProviderSimpleImpl.flakySafely(FlakySafetyProviderSimpleImpl.kt: 27)\nat com.kaspersky.components.composesupport.interceptors.behavior.impl.flakysafety.FlakySafeSemanticsBehaviorInterceptor.flakySafely(Unknown Source: 7)\nat com.kaspersky.components.composesupport.interceptors.behavior.impl.flakysafety.FlakySafeSemanticsBehaviorInterceptor.interceptCheck(FlakySafeSemanticsBehaviorInterceptor.kt: 33)\nat com.kaspersky.components.composesupport.interceptors.behavior.impl.flakysafety.FlakySafeSemanticsBehaviorInterceptor.interceptCheck(FlakySafeSemanticsBehaviorInterceptor.kt: 16)\n\n\n\nat com.kaspersky.components.composesupport.interceptors.tolibrary.ComposeSemanticsInterceptor$interceptCheck$2$1.invoke(ComposeSemanticsInterceptor.kt: 33)\nat com.kaspersky.components.composesupport.interceptors.tolibrary.ComposeSemanticsInterceptor.interceptCheck(ComposeSemanticsInterceptor.kt: 35)\nat com.kaspersky.components.composesupport.config.ComposeInterceptorsInjector$injectKaspressoInKakaoCompose$1$1$1.invoke(ComposeInterceptorsInjector.kt: 22)\nat com.kaspersky.components.composesupport.config.ComposeInterceptorsInjector$injectKaspressoInKakaoCompose$1$1$1.invoke(ComposeInterceptorsInjector.kt: 22)\nat io.github.kakaocup.compose.intercept.delegate.Delegate$DefaultImpls.interceptOnCheck(Delegate.kt: 68)\nat io.github.kakaocup.compose.intercept.delegate.Delegate$DefaultImpls.interceptCheck$intercept(Delegate.kt: 37)\nat io.github.kakaocup.compose.intercept.delegate.Delegate$DefaultImpls.interceptCheck(Delegate.kt: 41)\nat io.github.kakaocup.compose.intercept.delegate.Delegate$DefaultImpls.check(Delegate.kt: 26)\nat io.github.kakaocup.compose.intercept.delegate.ComposeDelegate.check(ComposeDelegate.kt: 13)\nat io.github.kakaocup.compose.intercept.delegate.ComposeDelegate.check(ComposeDelegate.kt: 13)\nat io.github.kakaocup.compose.intercept.delegate.ComposeDelegate.check(ComposeDelegate.kt: 34)\nat io.github.kakaocup.compose.intercept.delegate.ComposeDelegate.check$default(ComposeDelegate.kt: 30)\nat io.github.kakaocup.compose.node.assertion.NodeAssertions$DefaultImpls.assertIsDisplayed(NodeAssertions.kt: 13)\nat io.github.kakaocup.compose.node.core.BaseNode.assertIsDisplayed(BaseNode.kt: 15)\nat messenger.myproject.screen.WelcomeScreen.clickContinue$lambda$4(WelcomeScreen.kt: 32)\nat messenger.myproject.screen.WelcomeScreen.$r8$lambda$BEL - 5jGAHRkWq5iX9DxsJj25HEg(Unknown Source: 0)\nat messenger.myproject.screen.WelcomeScreen$$ExternalSyntheticLambda0.invoke(D8$$SyntheticClass: 0)\nat io.qameta.allure.kotlin.Allure.step(Allure.kt: 60)\nat messenger.myproject.screen.WelcomeScreen.clickContinue(WelcomeScreen.kt: 31)\nat messenger.myproject.test.LoginTest.testLoginWithSso$lambda$1$lambda$0(LoginTest.kt: 49)\nat messenger.myproject.test.LoginTest.$r8$lambda$ls2WZ_5uYpTebTWz7kfckdgH3g0(Unknown Source: 0)\nat messenger.myproject.test.LoginTest$$ExternalSyntheticLambda0.invoke(D8$$SyntheticClass: 0)\nat io.github.kakaocup.compose.node.core.KDSL$DefaultImpls.invoke(KDSL.kt: 7)\nat io.github.kakaocup.compose.node.core.BaseNode.invoke(BaseNode.kt: 15)\nat messenger.myproject.test.LoginTest.testLoginWithSso$lambda$1(LoginTest.kt: 86)\nat messenger.myproject.test.LoginTest.$r8$lambda$kV4g7gDSXL0Ky2KAZ_QFZKgB6oA(Unknown Source: 0)\nat messenger.myproject.test.LoginTest$$ExternalSyntheticLambda1.invoke(D8$$SyntheticClass: 0)\nat io.qameta.allure.kotlin.Allure.step(Allure.kt: 60)\nat messenger.myproject.test.LoginTest.testLoginWithSso(LoginTest.kt: 41)\nat java.lang.reflect.Method.invoke(Native Method)\nat org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java: 59)\nat org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java: 12)\nat org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java: 56)\nat org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java: 17)\nat org.junit.rules.ExternalResource$1.evaluate(ExternalResource.java: 54)\nat androidx.compose.ui.test.junit4.AndroidComposeTestRule$apply$1$evaluate$1.invoke(AndroidComposeTestRule.android.kt: 295)\nat androidx.compose.ui.test.junit4.AndroidComposeTestRule$apply$1$evaluate$1.invoke(AndroidComposeTestRule.android.kt: 295)\nat androidx.compose.ui.test.AndroidComposeUiTestEnvironment$AndroidComposeUiTestImpl.withDisposableContent(ComposeUiTest.android.kt: 565)\nat androidx.compose.ui.test.AndroidComposeUiTestEnvironment$runTest$1$1$1$1$1$1.invoke(ComposeUiTest.android.kt: 370)\n\n\nkotlin.io.NoSuchFileException: /data/user / 0 / myproject / files / original_screenshots: The source file doesn't exist.\nat kotlin.io.FilesKt__UtilsKt.copyRecursively(Utils.kt: 294)\nat kotlin.io.FilesKt__UtilsKt.copyRecursively$default(Utils.kt: 288)\nat com.kaspersky.components.alluresupport.results.AllureResultsHack.testRunFinished(AllureResultsHack.kt: 59)\nat com.kaspersky.kaspresso.runner.listener.KaspressoRunNotifierImpl.testRunFinished(KaspressoRunNotifier.kt: 73)\nat com.kaspersky.kaspresso.runner.listener.SpyRunListener.testRunFinished(SpyRunListener.kt: 92)\nat org.junit.runner.notification.SynchronizedRunListener.testRunFinished(SynchronizedRunListener.java: 42)\nat org.junit.runner.notification.RunNotifier$2.notifyListener(RunNotifier.java: 103)\nat org.junit.runner.notification.RunNotifier$SafeNotifier.run(RunNotifier.java: 72)\nat org.junit.runner.notification.RunNotifier.fireTestRunFinished(RunNotifier.java: 100)\nat org.junit.runner.JUnitCore.run(JUnitCore.java: 138)\nat org.junit.runner.JUnitCore.run(JUnitCore.java: 115)\nat androidx.test.internal.runner.TestExecutor.execute(TestExecutor.java: 68)\nat androidx.test.internal.runner.TestExecutor.execute(TestExecutor.java: 59)\nat androidx.test.runner.AndroidJUnitRunner.onStart(AndroidJUnitRunner.java: 463)\nat android.app.Instrumentation$InstrumentationThread.run(Instrumentation.java: 2361)\n```\nI don't know how to solve the problem.\n`kotlin.io.NoSuchFileException: /data/user / 0 / myproject / files / original_screenshots: The source file doesn't exist.`\n\n**Expected behavior**\nPictures will be attached to the allure report for failed tests.\n\n**Smartphone:**\n - kaspresso = \"1.6.0\"\n - kaspresso-allure-support = \"1.6.0\"\n - emulator Pixel 4a API 33\n",
+        "url": "https://github.com/KasperskyLab/Kaspresso/issues/721"
+    },
+    {
+        "id": 3023650887,
+        "number": 717,
+        "title": "Permissions.denyViaDialog() only works once",
+        "state": "closed",
+        "created_at": "2025-04-28T04:14:23Z",
+        "updated_at": "2025-06-09T15:34:56Z",
+        "closed_at": "2025-06-09T15:34:55Z",
+        "author": "JordanLongstaff",
+        "comments": 1,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "**Describe the bug**\nA user can click the **Deny** button in the permissions dialog to dismiss it without granting the permission. But as of Android 11, if the app asks about the permission again, the **Deny** button will have a different ID, one that Kaspresso currently doesn't know about, so trying to press it again fails.\n\n**To Reproduce**\nSteps to reproduce the behavior:\n1. The app should ask for a runtime permission.\n2. Call `denyViaDialog()`.\n3. The app should ask for the same permission again.\n4. Try to call `denyViaDialog()` again.\n\n**Expected behavior**\nThe **Deny** button gets clicked both times.\n\n**Actual behavior**\nThe second click of the **Deny** button never happens.\n\nhttps://github.com/user-attachments/assets/a6e40e90-a3b3-4d7b-a488-cebd84de3fce\n\n**Smartphone (please complete the following information):**\n - Device: Google Pixel 7\n - OS: Android 15\n\n**Additional context**\n#667 added an option to specify a different **Allow** button than the default. This issue can easily be fixed by adding a button with the resource ID `permission_deny_and_dont_ask_again_button` and an optional parameter to `denyViaDialog()`.\n",
+        "url": "https://github.com/KasperskyLab/Kaspresso/issues/717"
+    },
+    {
+        "id": 3009764957,
+        "number": 715,
+        "title": "Kotest support",
+        "state": "open",
+        "created_at": "2025-04-22T03:36:51Z",
+        "updated_at": "2025-04-22T03:36:51Z",
+        "closed_at": null,
+        "author": "JordanLongstaff",
+        "comments": 0,
+        "labels": [
+            "enhancement"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "[Kotest](https://kotest.io) is a testing framework designed for Kotlin. It's an alternative to Java that I really love using. It's more flexible and has coroutine support, and there's also an [Android runner for it](https://github.com/LeoColman/kotest-android).\n\nRight now I'm trying to switch all my instrumented tests over to Kaspresso. It'd be easier to do if I could integrate it with my previous efforts to switch from JUnit to Kotest, but I can't find a way to combine Kotest specs with Kaspresso provided objects, like Device.",
+        "url": "https://github.com/KasperskyLab/Kaspresso/issues/715"
+    },
+    {
+        "id": 2982756754,
+        "number": 712,
+        "title": "Add airplane mode turn on/off to device.network",
+        "state": "closed",
+        "created_at": "2025-04-09T13:00:35Z",
+        "updated_at": "2026-04-23T15:48:20Z",
+        "closed_at": "2026-04-23T15:48:20Z",
+        "author": "OvsyannikovMaksim",
+        "comments": 1,
+        "labels": [
+            "enhancement"
+        ],
+        "assignees": [
+            "OvsyannikovMaksim"
+        ],
+        "locked": false,
+        "body": "**Is your feature request related to a problem? Please describe.**\nA clear and concise description of what the problem is. Ex. I'm always frustrated when [...]\n\n**Describe the solution you'd like**\nA clear and concise description of what you want to happen.\n\n**Describe alternatives you've considered**\nA clear and concise description of any alternative solutions or features you've considered.\n\n**Additional context**\nAdd any other context or screenshots about the feature request here.\n",
+        "url": "https://github.com/KasperskyLab/Kaspresso/issues/712"
+    },
+    {
+        "id": 2969545308,
+        "number": 711,
+        "title": "android.enableAppCompileTimeRClass=true causes UiViewBuilder#withId(int) to crash",
+        "state": "closed",
+        "created_at": "2025-04-03T13:12:35Z",
+        "updated_at": "2026-03-16T07:38:12Z",
+        "closed_at": "2026-03-16T07:38:12Z",
+        "author": "Mexator",
+        "comments": 0,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "**Describe the bug**\n\nThe exception is\n```\njava.lang.ClassNotFoundException: com.example.ui.test.R$id\n at java.lang.Class.classForName(Native Method)\n at java.lang.Class.forName(Class.java:454)\n at java.lang.Class.forName(Class.java:379)\n at com.kaspersky.components.kautomator.common.resources.RClassProvider.provideClass(RClassProvider.kt:10)\n at com.kaspersky.components.kautomator.common.resources.ResourceNameProvider.resolveResName(ResourceNameProvider.kt:7)\n at com.kaspersky.components.kautomator.component.common.builders.UiViewBuilder.withId(UiViewBuilder.kt:51)\n...\n```\n\nThe code that causes exception to appear is simple interaction with any `UiView` using an R class:\n\n```kotlin\nUiScrollView {\n    withId(R.id.accountsListRecyclerView) // crashes\n    withResourceName(\"accountsListRecyclerView\") // works fine\n}.scrollToEnd()\n```\n\n**To Reproduce**\nSteps to reproduce the behavior:\n1. Add `android.enableAppCompileTimeRClass=true` into your `gradle.properties` \n2. Run any KAutomator test that uses UiView declared as above\n\n**Expected behavior**\nTest runs fine\n\n**Additional context**\nThe issue is that when this flag is set, the application R class does not exist in runtime. Instead, all constants are inlined.\n\nThe current implementation of `com.kaspersky.components.kautomator.common.resources.ResourceNameProvider` relies on reflection and parsing of R class fields. One possible solution (which we incorporated into client code) is to get resource name from target context resources. This goes as follows:\n```kotlin\nprivate fun getResourceName(id: Int): String {\n    return InstrumentationRegistry.getInstrumentation().targetContext.resources.getResourceName(id)\n}\n```",
+        "url": "https://github.com/KasperskyLab/Kaspresso/issues/711"
+    },
+    {
+        "id": 2952327664,
+        "number": 710,
+        "title": "Running Espresso AccessibilityChecks",
+        "state": "open",
+        "created_at": "2025-03-27T10:01:16Z",
+        "updated_at": "2025-03-28T09:53:55Z",
+        "closed_at": null,
+        "author": "hbrtose",
+        "comments": 0,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "I want to use the accessibility checks for Kaspresso test as described [here](https://developer.android.com/training/testing/espresso/accessibility-checking), but they are not performed or only see top level Compose view and not it's children. Has anyone managed to get them to work?",
+        "url": "https://github.com/KasperskyLab/Kaspresso/issues/710"
+    },
+    {
+        "id": 2919679472,
+        "number": 706,
+        "title": "Override video recorder resolution",
+        "state": "closed",
+        "created_at": "2025-03-14T09:16:34Z",
+        "updated_at": "2025-09-25T16:53:29Z",
+        "closed_at": "2025-09-25T16:53:29Z",
+        "author": "Nikitae57",
+        "comments": 0,
+        "labels": [
+            "enhancement"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "No way to configure the custom video recording resolution other than implementing another VideoRecorder",
+        "url": "https://github.com/KasperskyLab/Kaspresso/issues/706"
+    },
+    {
+        "id": 2913843011,
+        "number": 704,
+        "title": "Add ability to use logical OR in the declaration of selectors of views",
+        "state": "closed",
+        "created_at": "2025-03-12T12:41:27Z",
+        "updated_at": "2026-02-20T14:13:35Z",
+        "closed_at": "2026-02-20T14:13:35Z",
+        "author": "cobaltvo",
+        "comments": 1,
+        "labels": [
+            "enhancement"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "Sometimes you automate some external screens, which can have same elements but with different IDs, texts, content-desc, etc. It's especially noticeable when you are automating tests on real devices from different vendors, with different OS versions, etc.\n\n### Current implementation\n\nFor example, you have the one logical button but with 4 different locators due to environment changes:\n```kotlin\nval firstPossibleButton = UiButton { withId(\"packageName\", \"continue_button\") }\nval secondPossibleButton = UiButton { withId(\"packageName\", \"continue_redesigned_button\") }\nval thirdPossibleButton = UiButton { withId(\"packageName\", \"continue_new_button\") }\nval fourthPossibleButton = UiButton { withId(\"packageName\", \"continue_vendor_button\") }\n```\n\nThis declaration leads to complex appropriate checks in the test code:\n```kotlin\ncompose {\n    or (firstPossibleButton) { isDisplayed() } then { firstPossibleButton.click() }\n    or (secondPossibleButton) { isDisplayed() } then { secondPossibleButton.click() }\n    or (thirdPossibleButton) { isDisplayed() } then { thirdPossibleButton.click() }\n    or (fourthPossibleButton) { isDisplayed() } then { fourthPossibleButton.click() }\n}\n```\n\n\n### Proposed implementation\n\nI think it will be nice to have an ability to declare the only one button which can be found with the help of different selectors, like this way:\n```kotlin\nval continueButton = UiButton {\n    withId(\"packageName\", \"continue_button\")\n    or { withId(\"packageName\", \"continue_redesigned_button\") }\n    or { withId(\"packageName\", \"continue_new_button\") }\n    or { withId(\"packageName\", \"continue_vendor_button\") }\n}\n```\nAs a result we have the only one button with simple usage in the test logic: \n```kotlin\ncontinueButton {\n    isDisplayed()\n    click()\n}\n```\n",
+        "url": "https://github.com/KasperskyLab/Kaspresso/issues/704"
+    },
+    {
+        "id": 2880706891,
+        "number": 703,
+        "title": "Optional `expect` block as a part of framework",
+        "state": "open",
+        "created_at": "2025-02-26T08:33:04Z",
+        "updated_at": "2025-02-26T08:33:04Z",
+        "closed_at": null,
+        "author": "phansier",
+        "comments": 0,
+        "labels": [
+            "enhancement"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "**Is your feature request related to a problem? Please describe.**\nWe have discovered in support chat, that some users do their own blocks instead of `step` for making assertions after step.\n\nI suppose it could be helpful, if such option would be part of the framework and documentation on test structure.\n\nAdding this alternative to step can be also helpful for synchronisation of test code with TMS, like:\n- `step` - contains description of Action field\n- `expect` - contains description of Checks/Expected field\n\n<img width=\"250\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/006f26ba-edd2-4eb5-8e8c-6939953d0c6e\" />\n\nThe main goal of this issue is to start discussion of implementation variants.\n\n**Describe the solution you'd like**\nCurrent solution we have in my project is:\n\n```\nfun TestContext<*>.expect(description: String, actions: (StepInfo) -> Unit) = this.step(description, actions)\n```\n\nThis does not put any restrictions or obligations on test structure though.\n\nExpect block can be either at the same level as step, or inside of step.\n\n**Describe alternatives you've considered**\n№1: Use nested steps:\n```\nstep { // will be enumerated like 1\n    // actions\n    step {  // will be enumerated like 1.1\n        // asserions\n    }\n}\n```\n\n(to be continued) \n\n**Additional context**\n\n",
+        "url": "https://github.com/KasperskyLab/Kaspresso/issues/703"
+    },
+    {
+        "id": 2814962903,
+        "number": 699,
+        "title": "Views metadata is not recorded for compose screens",
+        "state": "closed",
+        "created_at": "2025-01-28T08:37:29Z",
+        "updated_at": "2025-02-17T13:16:02Z",
+        "closed_at": "2025-02-17T13:16:02Z",
+        "author": "Nikitae57",
+        "comments": 0,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "Doc loc tests do not record metadata xml files for compose screens",
+        "url": "https://github.com/KasperskyLab/Kaspresso/issues/699"
+    }
+]

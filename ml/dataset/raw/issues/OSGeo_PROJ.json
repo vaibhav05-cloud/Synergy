@@ -1,0 +1,358 @@
+[
+    {
+        "id": 4786188556,
+        "number": 4795,
+        "title": "Wrong transformation with PROJ 9.8.1",
+        "state": "closed",
+        "created_at": "2026-07-01T13:53:27Z",
+        "updated_at": "2026-07-01T14:00:25Z",
+        "closed_at": "2026-07-01T14:00:25Z",
+        "author": "knutfrode",
+        "comments": 1,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "The following code uses pyproj to transform coordinates between lonlat and eqc:\n```\nfrom pyproj import CRS, Transformer\n\ndcrs = CRS.from_proj4(\"+proj=lonlat +datum=WGS84 +ellps=WGS84 +no_defs\")\ngcrs = CRS.from_proj4(\"+proj=eqc +ellps=WGS84 +lon_0=0.0 +to_meter=111319.4907932736 +vto_meter=1 +no_defs\")\n\nt = Transformer.from_crs(dcrs, gcrs, always_xy=True)\nprint(t.transform(5, 60))\n```\nWith pyproj 3.7.2 and proj 9.7.1 the output is identical to input to decimal precision, as expected.\nHowever, with pyproj 3.7.2 and proj 9.8.1 the output latitude is 59.77, which is a large error from 60.0\n\n\n```\npyproj info:\n    pyproj: 3.7.2\nPROJ (runtime): 9.8.1\nPROJ (compiled): 9.8.0\n  data dir: /home/knutfd/micromamba/envs/trajan/share/proj\nuser_data_dir: /home/knutfd/.local/share/proj\nPROJ DATA (recommended version): 1.24\nPROJ Database: 1.6\nEPSG Database: v12.029 [2025-10-02]\nESRI Database: ArcGIS Pro 3.6 [2025-12-01]\nIGNF Database: 3.1.0 [2019-05-24]\n```\n\n#### Installation method\n`micromamba install -c conda-forge proj=9.8.1 pyproj=3.7.2`  (or proj=9.7.1)",
+        "url": "https://github.com/OSGeo/PROJ/issues/4795"
+    },
+    {
+        "id": 4750871435,
+        "number": 4794,
+        "title": "Support for generic Snyder Equal-Area Projection for Polyhedral Globes",
+        "state": "open",
+        "created_at": "2026-06-26T09:25:33Z",
+        "updated_at": "2026-07-05T10:51:15Z",
+        "closed_at": null,
+        "author": "jerstlouis",
+        "comments": 0,
+        "labels": [
+            "feature request"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "As discussed in https://github.com/OSGeo/PROJ/pull/4758#issuecomment-4804215608 (including an advanced eC prototype of all the necessary pieces), it would be great to be able to support e.g.\n\n`+proj=polyhedral +polyhedron={4,3} +net=0,1,2,3,4,5`\n\n(specifying a Cubic Snyder Equal-Area projection).\n\nThe `+polyhedron` could support:\n- common name,\n- extended Schlafli symbol, or\n- extended Wythoff symbol\n\n(code already written for this in prototype).\n\nThe `+net` would support the current internal face indices, and could automatically switch between the _kis_ or  _meta_ operation based on how many faces are listed. We should validate the net, and also support a default unfolding if no net is specified (code already written for this in the prototype as well).\n\nIn addition, we should introduce a `+transform` parameter (or individual parameters as in [`+proj=affine`](https://proj.org/en/stable/operations/transformations/affine.html)) allowing e.g., to define the 5x6 rhombic/icosahedral space in the form of applying an affine transformation (rotation/shearing/scaling) to the icosahedral net, or other arbitrary rotation to the net (without a need for `+proj=pipeline` which is not well supported in many contexts).\n\nWe could have various examples of these projections, including IVEA (https://github.com/felixpalmer/PROJ/pull/3) and R. Buckminster Fuller's [Dymaxion orientation](https://en.wikipedia.org/wiki/Dymaxion_map#/media/File:Dymaxion_projection.png) (aka [Airocean](https://proj.org/en/stable/operations/projections/airocean.html)) for ISEA/IVEA keeping all land contiguous (particularly useful since `ST_Area()` for any land polygons will then yield correct values, rather than crossing interruptions with e.g, ISEA/IVEA or DSEA).",
+        "url": "https://github.com/OSGeo/PROJ/issues/4794"
+    },
+    {
+        "id": 4696922839,
+        "number": 4789,
+        "title": "Scale of (r)HEALPix coordinate space",
+        "state": "open",
+        "created_at": "2026-06-19T00:33:11Z",
+        "updated_at": "2026-07-05T19:53:45Z",
+        "closed_at": null,
+        "author": "jerstlouis",
+        "comments": 5,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "<!-- Please search existing issues to avoid creating duplicates. -->\n\n#### AI usage\n\n - [X] Google AI supported the creation of this ticket.\n - [X] This ticket has been (mostly) written by myself (human), and is aimed at being read by humans.\n\n#### Example of problem\n\nSee https://github.com/AddressForAll/suporte/issues/86 for PostGIS output illustrating the ~15.12% discrepancy from `ST_Area()`\n\n#### Problem description\n\nThe current implementation of rHEALPix scales the radians coordinates (x ranging from -pi .. pi) by the semi-major axis. In order for the total area of the coordinate space to correspond to the true ellipsoid area, I believe this should be `semi-major axis X sqrt(8÷(3×pi))`. Alternatively, the x and y could be pre-multiplied by that factor in e.g. [healpix_sphere](https://github.com/OSGeo/PROJ/blob/master/src/projections/healpix.cpp#L254).\n\nNote that this likely also applies to HEALPix.\n\nI'm not sure whether this breaking change would be desired by the community, but at minimum this aspect should be properly documented, so that users know that the coordinates returned by PROJ are essentially scaled by a ~0.9213 factor compared to true meters (8÷(3×pi) = ~0.8488 factor for areas).\n\ncc. @rggibb @ppKrauss @tinaok @tik65536 @allixender",
+        "url": "https://github.com/OSGeo/PROJ/issues/4789"
+    },
+    {
+        "id": 4640014510,
+        "number": 4787,
+        "title": "Compilation failed (gcc14.3.1/fedora 41 linux)",
+        "state": "closed",
+        "created_at": "2026-06-11T11:35:58Z",
+        "updated_at": "2026-06-19T00:52:03Z",
+        "closed_at": "2026-06-19T00:52:03Z",
+        "author": "hadjiprocopis",
+        "comments": 1,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "I am trying to compile Proj (9.8.1) from source  obtained from here https://proj.org/en/stable/download.html on a Fedora 41 Linux with gcc 14.3.1\n\nWhen I do this:\n```\nmkdir build\ncd build\ncmake ..\nmake clean; make all\n```\nI get the following errors:\n```\n[  0%] Built target create_tmp_user_writable_dir\n[  0%] Generating proj.db\n[  0%] Built target generate_proj_db\n[  0%] Built target check_wkt1_grammar_md5\n[  0%] Built target check_wkt2_grammar_md5\n[  1%] Building CXX object src/CMakeFiles/proj.dir/aasincos.cpp.o\nc++: error: unrecognized command-line option ‘-Wcomma’; did you mean ‘-Wcomment’?\nc++: error: unrecognized command-line option ‘-Wdocumentation’\nc++: error: unrecognized command-line option ‘-Wlogical-op-parentheses’; did you mean ‘-Wlogical-not-parentheses’?\nc++: error: unrecognized command-line option ‘-Wshorten-64-to-32’\nc++: error: unrecognized command-line option ‘-Wunused-private-field’\nc++: error: unrecognized command-line option ‘-Wweak-vtables’\nmake[2]: *** [src/CMakeFiles/proj.dir/build.make:76: src/CMakeFiles/proj.dir/aasincos.cpp.o] Error 1\nmake[1]: *** [CMakeFiles/Makefile2:563: src/CMakeFiles/proj.dir/all] Error 2\nmake: *** [Makefile:166: all] Error 2\n```\n\nProblem solved if I remove `-Wcomma` et al from `CMakeLists.txt` in root dir.\n\n",
+        "url": "https://github.com/OSGeo/PROJ/issues/4787"
+    },
+    {
+        "id": 4581100931,
+        "number": 4786,
+        "title": "Wrong usage of POSITION_INDEPENDENT_CODE for resources",
+        "state": "open",
+        "created_at": "2026-06-03T15:07:12Z",
+        "updated_at": "2026-06-03T16:21:08Z",
+        "closed_at": null,
+        "author": "AlexandrePTJ",
+        "comments": 3,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "https://github.com/OSGeo/PROJ/blob/9579960df9318f3df986763ee1efb10c7719efde/src/lib_proj.cmake#L413\n\nShould be `NOT ${BUILD_SHARED_LIBS}`",
+        "url": "https://github.com/OSGeo/PROJ/issues/4786"
+    },
+    {
+        "id": 4508132365,
+        "number": 4783,
+        "title": "build instructions are missing from release tarballs",
+        "state": "open",
+        "created_at": "2026-05-23T12:32:49Z",
+        "updated_at": "2026-05-23T14:16:46Z",
+        "closed_at": null,
+        "author": "gdt",
+        "comments": 0,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "# AI usage\n\nNo AI!\n\n# Example of problem\n\nBuild instructions are missing from the release tarballs.  Look for `docs/source/install.rst` and notice that it is not present.\n\n# Problem description\n\nInstructions for building from source are needed by precisely those with source code.   The instructions need to correspond to the source version, as dependencies, build systems, etc. change over time.  They should be available to those with the sources and without internet access.\n\n# Expected Output\n\nThe file that explains what dependencies are needed and how to build from source is tin the source code release tarballs.\n\n# Environment Information\n\n- proj 9.8.1\n- NetBSD 10 amd64, but  this is about the tar file contents.\n\n# Suggested fix\n\nOne option is to move the list of dependencies and build commands to BUILDING.rst at top level in git,  and have it be in the tarball, and have the last section of install.rst be a super brief pointer to BUILDING.rst with a note that for older versions one should consult docs/source/install.rst in git. \n\nAnother would be to include install.rst in the tarball. All of docs is currently excluded.",
+        "url": "https://github.com/OSGeo/PROJ/issues/4783"
+    },
+    {
+        "id": 4506012258,
+        "number": 4781,
+        "title": "vendored nlohmann/json is used even if external was chosen",
+        "state": "open",
+        "created_at": "2026-05-22T23:00:08Z",
+        "updated_at": "2026-05-22T23:00:08Z",
+        "closed_at": null,
+        "author": "gdt",
+        "comments": 0,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "# AI\n\nNo AI!\n\n# Example of problem\n\nWith a proj source tree, I removed `include/proj/internal/vendor/nlohmann/json.hpp` and configured the build to use external nlohmann/json by having it present and passing\n`-DNLOHMANN_JSON_ORIGIN=EXTERNAL`.\n\nBuilding, all is well until:\n```\n[ 82%] Building CXX object src/apps/CMakeFiles/projsync.dir/projsync.cpp.o\nIn file included from /n0/gdt/SOFTWARE/GEO/PROJ/proj/src/apps/projsync.cpp:43:\n/n0/gdt/SOFTWARE/GEO/PROJ/proj/include/proj/internal/include_nlohmann_json.hpp:46:10: fatal error: vendor/nlohmann/json.hpp: No such file or directory\n   46 | #include \"vendor/nlohmann/json.hpp\"\n      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~\ncompilation terminated.\n*** Error code 1\n```\n\n# Problem description\n\nThe build of projsync did not pass the `EXTERNAL_NLOHMANN_JSON` define to the projsync build.  Reading CMakeLists, it is only passed to builds in lib.\n\nAfter adding cmake code to pass that define for projsync, observe that there is then a test program with the same problem.\n\n# Environment Information\n\n- proj master\n- NetBSD 10 amd64 with deps from pkgsrc\n\n# Installation method\n\n- source build\n\n# fix\n\nThe cleanest fix is to remove the vendored code, the selection logic for choosing it, and the conditionals, and just expect those building proj to have installed nlohmann/json, just as they have to install cmake, sqlite3, curl, tiff and so on.\n\nOtherwise, apply a patch like\n\n[patch-src-apps-bin_projsync.cmake.txt](https://github.com/user-attachments/files/28164802/patch-src-apps-bin_projsync.cmake.txt)\n\nand repeat for other build failures.\n\nIt would be nice to have a CI test that builds with external json and removes the vendored copy, to validate that the build doesn't reference it.   That's just an rm before the build - I found this by adding such an rm to the pkgsrc build recipe.",
+        "url": "https://github.com/OSGeo/PROJ/issues/4781"
+    },
+    {
+        "id": 4435533707,
+        "number": 4776,
+        "title": "Proposal: Support for Trapezoidal Map Projections in PROJ",
+        "state": "open",
+        "created_at": "2026-05-13T06:42:28Z",
+        "updated_at": "2026-05-14T09:40:09Z",
+        "closed_at": null,
+        "author": "gwahak",
+        "comments": 3,
+        "labels": [
+            "feature request"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "<!-- Describe the feature you'd like. -->\nPROJ supports a wide variety of map projections, yet provides almost no direct support for simple trapezoidal world map projections based on equidistant or equal-area principles. This is somewhat surprising considering that PROJ already supports projections such as Eckert I projection, Eckert II projection, Collignon projection, Albers equal-area projection, HEALPix projection, and Tissot's equidistant conic projection, many of which already exhibit trapezoidal geometric structures or related frame characteristics.\n\nCurrently, PROJ already supports several related projection families, including trapezoidal projections in which the pole collapses to a single point (effectively forming a triangular map), conic projections that can be interpreted as trapezoidal frames wrapped into a circular-sector shape, and world map projections in which the polar width is reduced to exactly half of the equatorial width.\n\n",
+        "url": "https://github.com/OSGeo/PROJ/issues/4776"
+    },
+    {
+        "id": 4348848795,
+        "number": 4768,
+        "title": "Expose EXE_SQLITE3 as CMake variable in order to allow using custom SQLite3 binaries",
+        "state": "open",
+        "created_at": "2026-04-29T08:03:08Z",
+        "updated_at": "2026-04-29T17:08:35Z",
+        "closed_at": null,
+        "author": "aleksandaratanasov",
+        "comments": 1,
+        "labels": [
+            "feature request"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "Currently the following CMake code covers the library and binary of SQLite3:\n\n```\nfind_program(EXE_SQLITE3 sqlite3)\nif(NOT EXE_SQLITE3)\n  message(SEND_ERROR \"sqlite3 binary not found!\")\nendif()\n\n# Deprecated variables since PROJ 9.4.0\nif(DEFINED SQLITE3_INCLUDE_DIR)\n  message(DEPRECATION \"Use SQLite3_INCLUDE_DIR instead of SQLITE3_INCLUDE_DIR\")\n  set(SQLite3_INCLUDE_DIR ${SQLITE3_INCLUDE_DIR})\nendif()\nif(DEFINED SQLITE3_LIBRARY)\n  message(DEPRECATION \"Use SQLite3_LIBRARY instead of SQLITE3_LIBRARY\")\n  set(SQLite3_LIBRARY ${SQLITE3_LIBRARY})\nendif()\n```\n\nThe strange thing here is that `SQLite3_INCLUDE_DIR` and `SQLite3_LIBRARY` indicate the ability to use a custom SQLite3 library. But the same logic does not apply to the executable. If one builds the SQLite3 from source (like I do by invoking `ExternalProject_Add()` in my own project), it is very easy to also produce the executable.\n\nFurther, I believe that it should not be possible to mix two different versions of the two components (the library and the binary), which is something that is also allowed right now.\n\nI suggest the following patch:\n\n```\nif(NOT DEFINED EXE_SQLITE3)\n  find_program(EXE_SQLITE3 sqlite3)\n  if(NOT EXE_SQLITE3)\n    message(SEND_ERROR \"sqlite3 binary not found!\")\n  endif()\nendif()\n```\n\n\nSince I am new to the PROJ project, I cannot tell if this will have any repercussions down the rest of the configuration and build process.",
+        "url": "https://github.com/OSGeo/PROJ/issues/4768"
+    },
+    {
+        "id": 4323938778,
+        "number": 4767,
+        "title": "Still ETRS89 problems after PR 4736",
+        "state": "closed",
+        "created_at": "2026-04-24T15:29:24Z",
+        "updated_at": "2026-04-28T04:59:27Z",
+        "closed_at": "2026-04-27T20:56:08Z",
+        "author": "Jochem-L",
+        "comments": 6,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "[PR 4736](https://github.com/OSGeo/PROJ/pull/4736) did not solve all problems with national ETRS89 realisations in EPSG, or it created a new problem.\n\nETRS89 ensemble to RD (Dutch projected CRS EPSG:28992) gives expected results again, but ETRF2000 to RD still doesn't give the expected results. \n\nI tested with Javier's WASM PROJ (release candidate version) the equivalent of:\n```\necho 53.148288321 7.180899528 46.0000 | cs2cs epsg:7931 epsg:28992 -d 4\n274999.9771 575000.2076 46.0000\n```\nPROJ seems to use a superseded transformation to the ETRS89 ensemble: https://epsg.org/transformation_4830/Amersfoort-to-ETRS89-5.html\ninstead of the transformation to the national ETRS89 realisation:\nhttps://epsg.org/transformation_9282/Amersfoort-to-ETRS89-NLD-AGRS2010-9.html\n\nExpected result:\n`275000.0000 575000.000`\n",
+        "url": "https://github.com/OSGeo/PROJ/issues/4767"
+    },
+    {
+        "id": 4302336986,
+        "number": 4763,
+        "title": "Two medium-severity API issues: ISEA inverse projection silently returns (inf,inf) without setting errno; proj_uom_get_info_from_database() returns a pointer that may be freed on the next call",
+        "state": "closed",
+        "created_at": "2026-04-21T11:42:50Z",
+        "updated_at": "2026-04-23T22:16:02Z",
+        "closed_at": "2026-04-21T11:46:24Z",
+        "author": "m1-llie",
+        "comments": 4,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "This report covers two independent medium-severity bugs, both found in the public C API.\n\n**PROJ version:** 9.8.1 (latest release, 2026-04-10); also confirmed on master commit `324ed2119011d74665548afe445eacb99afb9753` (2026-04-17)  \n**OS:** Linux x86_64  \n**Build:** Clang (Bug A: no sanitizer needed; Bug B: AddressSanitizer)\n\n## Bug A — ISEA inverse projection silently returns `(inf, inf)` without setting `errno`\n\n### Summary\n\nThe ISEA projection (`+proj=isea`) returns `{inf, inf}` from inverse projection for the majority of non-default parameter combinations, but **does not set any error code**. After the call, `proj_errno()` returns `0` (success), giving the caller no way to detect the failure programmatically. This causes silent coordinate corruption in any pipeline that checks `proj_errno()` rather than testing the coordinate values directly.\n\n### Root cause\n\n`pj_isea_data::initialize()` in `src/projections/isea.cpp` sets the fast-path pointer `Q->p` only for two hard-coded configurations (standard and polar ISEA_PLANE with `aperture==3`, `resolution==4`). For all other parameter combinations `Q->p` remains `nullptr`.\n\n```cpp\n// src/projections/isea.cpp (~line 1377-1390)\nif (p) {\n    ...\n    if (p->cartesianToGeo(input, Q, result))\n        return {result.lon, result.lat};\n    else\n        return {inf, inf};   // no errno set\n} else {\n    return {inf, inf};       // no errno set  ← BUG\n}\n```\n\nThe `else` branch — reached for any non-standard config — returns `{inf, inf}` without calling `pj_ctx_set_errno()`. The caller has no way to distinguish this from a legitimate \"point outside projection domain\" result (which would set errno).\n\n### Proof of Concept\n\nSave as `poc_isea.c`:\n\n```c\n#include \"proj.h\"\n#include <math.h>\n#include <stdio.h>\n\nstatic void test(PJ_CONTEXT *ctx, const char *def, const char *label) {\n    PJ *P = proj_create(ctx, def);\n    if (!P) { printf(\"  [%s] create failed\\n\", label); return; }\n    PJ_COORD fwd = proj_trans(P, PJ_FWD, proj_coord(0.5, 0.3, 0, 0));\n    proj_errno_reset(P);\n    PJ_COORD inv = proj_trans(P, PJ_INV, fwd);\n    int err = proj_errno(P);\n    int bad = (isinf(inv.lp.lam) || isinf(inv.lp.phi));\n    printf(\"  [%s] inv=(%.6f,%.6f) errno=%d %s\\n\",\n           label, inv.lp.lam, inv.lp.phi, err,\n           (bad && err == 0) ? \"*** SILENT FAILURE ***\" : \"ok\");\n    proj_destroy(P);\n}\n\nint main(void) {\n    PJ_CONTEXT *ctx = proj_context_create();\n    /* Default config — works correctly */\n    test(ctx, \"+proj=isea\", \"default\");\n    /* Non-default configs — silently return (inf,inf) with errno=0 */\n    test(ctx, \"+proj=isea +lat_0=30\", \"+lat_0=30\");\n    test(ctx, \"+proj=isea +azi=45\",   \"+azi=45\");\n    test(ctx, \"+proj=isea +aperture=4\", \"+aperture=4\");\n    test(ctx, \"+proj=isea +resolution=6\", \"+resolution=6\");\n    proj_context_destroy(ctx);\n    return 0;\n}\n```\n\n### Reproduction steps\n\n**Step 1 — Build PROJ 9.8.1** (shared setup; can skip ASAN for this bug):\n\n```bash\nwget https://download.osgeo.org/proj/proj-9.8.1.tar.gz\ntar xf proj-9.8.1.tar.gz && cd proj-9.8.1\ncmake -B build \\\n      -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++ \\\n      -DCMAKE_INSTALL_PREFIX=\"$PWD/install\"\ncmake --build build -j$(nproc)\ncmake --install build\ncd ..\n```\n\n**Step 2 — Compile and run:**\n\n```bash\nclang++ -std=c++17 -g -O1 \\\n    -I proj-9.8.1/install/include \\\n    poc_isea.c \\\n    -L proj-9.8.1/install/lib -lproj \\\n    -Wl,-rpath,proj-9.8.1/install/lib \\\n    -o poc_isea\n\nPROJ_DATA=proj-9.8.1/install/share/proj ./poc_isea\n```\n\n> **Note:** AddressSanitizer is not required; the bug is visible in plain stdout output.\n\n### Observed output\n\n```\n  [default]     inv=(0.500000,0.300000) errno=0 ok\n  [+lat_0=30]   inv=(inf,inf) errno=0 *** SILENT FAILURE ***\n  [+azi=45]     inv=(inf,inf) errno=0 *** SILENT FAILURE ***\n  [+aperture=4] inv=(inf,inf) errno=0 *** SILENT FAILURE ***\n  [+resolution=6] inv=(inf,inf) errno=0 *** SILENT FAILURE ***\n```\n\n### Impact\n\nAny geographic data pipeline that uses a non-default ISEA configuration and checks `proj_errno()` for error detection will silently produce `(inf, inf)` coordinates without any indication of failure.\n\n**Severity:** Medium — CVSS 3.1 base score **5.3** (`AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:L/A:N`). No crash; the impact is silent data integrity corruption — downstream consumers receive infinite coordinates with no error signal.  \n**CWE:** [CWE-393: Return of Wrong Status Code](https://cwe.mitre.org/data/definitions/393.html)\n\n### Suggested fix\n\nSet the projection error before returning `{inf, inf}`:\n\n```diff\n } else {\n+    pj_ctx_set_errno(P->ctx, PROJ_ERR_COORD_TRANSFM_OUTSIDE_PROJECTION_DOMAIN);\n     return {inf, inf};\n }\n```\n\n---\n\n## Bug B — `proj_uom_get_info_from_database()` returns a pointer that may be freed on the next call\n\n### Summary\n\n`proj_uom_get_info_from_database()` writes the unit-of-measure name into an internal `std::string` buffer (`lastUOMName_`) inside the PROJ context and returns `c_str()` of that buffer. If a subsequent call to the same function stores a **longer** string, the `std::string` reallocates its heap buffer, freeing the old one. Any pointer saved from the first call then points to freed memory — a use-after-free (UAF).\n\nThe documentation states the returned pointer is valid \"until the next call to `proj_uom_get_info_from_database()` or context destruction\", but it does not warn that the *buffer address itself* may change (and the old address become freed). Under ASAN the freed pointer reads back as empty or garbage.\n\n### Root cause\n\n```cpp\n// src/iso19111/c_api.cpp:922-923\nctx->get_cpp_context()->lastUOMName_ = obj->name();  // may reallocate\n*out_name = ctx->cpp_context->lastUOMName_.c_str();  // returns new address\n```\n\nWhen the second call writes a longer string, `std::string::operator=` may reallocate the internal buffer. The address returned to the caller from the first call is now a dangling pointer.\n\n### Proof of Concept\n\nSave as `poc_uom_uaf.c`:\n\n```c\n#include \"proj.h\"\n#include <stdio.h>\n#include <string.h>\n\nint main(void) {\n    PJ_CONTEXT *ctx = proj_context_create();\n\n    const char *name1 = NULL;\n    const char *name2 = NULL;\n    double conv1, conv2;\n    const char *auth1, *auth2;\n\n    /* First call — short name (\"metre\", 5 chars) */\n    proj_uom_get_info_from_database(ctx, \"EPSG\", \"9001\", &name1, &conv1, &auth1);\n    printf(\"[1] name='%s' at ptr=%p\\n\", name1 ? name1 : \"(null)\", (void *)name1);\n\n    /* Second call — longer name may cause reallocation of the string buffer */\n    proj_uom_get_info_from_database(ctx, \"EPSG\", \"9040\", &name2, &conv2, &auth2);\n    printf(\"[2] name='%s' at ptr=%p\\n\", name2 ? name2 : \"(null)\", (void *)name2);\n\n    if (name1 && name2 && name1 != name2) {\n        printf(\"DIFFERENT POINTERS — old buffer freed; name1 ptr is now dangling.\\n\");\n        printf(\"Dereferencing freed pointer: '%s'\\n\", name1);  /* UAF read */\n    } else {\n        printf(\"Pointers equal — reallocation did not occur in this run.\\n\");\n    }\n\n    proj_context_destroy(ctx);\n    return 0;\n}\n```\n\n### Reproduction steps\n\n**Step 1 — Build PROJ 9.8.1 with AddressSanitizer:**\n\n```bash\nwget https://download.osgeo.org/proj/proj-9.8.1.tar.gz\ntar xf proj-9.8.1.tar.gz && cd proj-9.8.1\ncmake -B build \\\n      -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++ \\\n      -DCMAKE_C_FLAGS=\"-fsanitize=address -g -O1\" \\\n      -DCMAKE_CXX_FLAGS=\"-fsanitize=address -g -O1\" \\\n      -DCMAKE_EXE_LINKER_FLAGS=\"-fsanitize=address\" \\\n      -DCMAKE_SHARED_LINKER_FLAGS=\"-fsanitize=address\" \\\n      -DCMAKE_INSTALL_PREFIX=\"$PWD/install\"\ncmake --build build -j$(nproc)\ncmake --install build\ncd ..\n```\n\n**Step 2 — Compile and run:**\n\n```bash\nclang++ -std=c++17 -fsanitize=address -g -O1 \\\n    -I proj-9.8.1/install/include \\\n    poc_uom_uaf.c \\\n    -L proj-9.8.1/install/lib -lproj \\\n    -Wl,-rpath,proj-9.8.1/install/lib \\\n    -o poc_uom_uaf\n\nASAN_OPTIONS=detect_stack_use_after_return=1:detect_leaks=0 \\\nPROJ_DATA=proj-9.8.1/install/share/proj \\\n./poc_uom_uaf\n```\n\n### Observed output\n\n```\n[1] name='metre' at ptr=0x7c8f46ee00e0\n[2] name='British yard (Sears 1922)' at ptr=0x7b9f46ef6fc0\nDIFFERENT POINTERS — old buffer freed; name1 ptr is now dangling.\nDereferencing freed pointer: ''\n```\n\nThe two pointers differ — `lastUOMName_` was reallocated — and reading through `name1` returns empty or garbage under ASAN quarantine.\n\n### Impact\n\nCode that saves the pointer from the first call and reads it after a second call has undefined behaviour. The returned empty/garbage string silently corrupts any comparison or display that uses `name1`.\n\n```c\nconst char *name1, *name2;\nproj_uom_get_info_from_database(ctx, \"EPSG\", \"9001\", &name1, NULL, NULL);\nproj_uom_get_info_from_database(ctx, \"EPSG\", \"9037\", &name2, NULL, NULL);\nstrcmp(name1, \"metre\");  /* undefined behaviour if buffer was reallocated */\n```\n\n**Severity:** Medium — CVSS 3.1 base score 4.9 (`AV:L/AC:H/PR:N/UI:N/S:U/C:L/I:L/A:L`). Exploitation requires a specific two-call sequence with strings of different lengths; the outcome is silent wrong data rather than an immediate crash.  \n**CWE:** [CWE-416: Use After Free](https://cwe.mitre.org/data/definitions/416.html)\n\n### Suggested fix\n\nEither document more prominently that the caller must copy the string immediately, or use a small ring buffer so multiple recent pointers remain valid:\n\n```diff\n-ctx->get_cpp_context()->lastUOMName_ = obj->name();\n-*out_name = ctx->cpp_context->lastUOMName_.c_str();\n+// Ring buffer keeps the last 8 returned strings alive\n+auto &slot = ctx->get_cpp_context()->uomNameBuffer[\n+    ctx->get_cpp_context()->uomNameIdx++ % 8];\n+slot = obj->name();\n+*out_name = slot.c_str();\n```",
+        "url": "https://github.com/OSGeo/PROJ/issues/4763"
+    },
+    {
+        "id": 4302288942,
+        "number": 4762,
+        "title": "Stack Overflow via Unbounded Recursion in `DerivedCRS::_exportToJSON()` and PROJJSON Parsing",
+        "state": "closed",
+        "created_at": "2026-04-21T11:33:17Z",
+        "updated_at": "2026-04-24T12:43:08Z",
+        "closed_at": "2026-04-24T12:43:08Z",
+        "author": "m1-llie",
+        "comments": 0,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [
+            "rouault"
+        ],
+        "locked": false,
+        "body": "## Summary\n\nTwo related unbounded-recursion paths exist in PROJ's PROJJSON handling:\n\n1. **Parser path** — `proj_create()` feeds deeply nested PROJJSON into `nlohmann::json`, whose recursive copy constructor exhausts the stack.\n2. **Export path** — `DerivedCRS::_exportToJSON()` (`crs.cpp:4234`) recursively calls `baseCRS()->_exportToJSON()` with no depth limit on chains of `DerivedGeographicCRS`.\n\nBoth paths crash with a stack overflow when nesting depth is large enough.\n\n- **Affected files:** `src/iso19111/crs.cpp` (line 4234), `src/iso19111/io.cpp`\n- **Confirmed on commit:** `324ed2119011d74665548afe445eacb99afb9753` (PROJ master, 2026-04-17); latest affected release: PROJ **9.8.1** (2026-04-10)\n- **Sanitizer required:** AddressSanitizer (ASAN) — also reproducible without sanitizer at higher depths\n- **Impact:** Denial of service — process crash (stack exhaustion)\n\n\n## Vulnerable Code\n\n### Path 1: JSON parsing (`proj_create`)\n\n`nlohmann::json` (bundled at `include/proj/internal/vendor/nlohmann/json.hpp`) has no explicit maximum nesting depth. A PROJJSON string with thousands of nested `\"base_crs\"` objects causes recursive construction/copy of the JSON value tree, exhausting the stack.\n\n### Path 2: JSON export (`crs.cpp:4234`)\n\n```cpp\n// src/iso19111/crs.cpp:4230-4240\nvoid DerivedCRS::_exportToJSON(JSONFormatter *formatter) const {\n    ...\n    auto &anchor = formatter->MakeObjectContext(...);\n    ...\n    baseCRS()->_exportToJSON(formatter);  // line 4234: UNBOUNDED RECURSION\n    derivingConversionRef()->_exportToJSON(formatter);\n    ...\n}\n```\n\nNo depth counter exists. A `DerivedGeographicCRS` whose `base_crs` is itself a `DerivedGeographicCRS` (and so on) recurses arbitrarily deep.\n\n\n## Proof of Concept\n\nThree PoCs are provided:\n\n[crs_SF01_gen.py](https://github.com/user-attachments/files/26931196/crs_SF01_gen.py)\n[crs_SF01_poc_capi.cpp](https://github.com/user-attachments/files/26931195/crs_SF01_poc_capi.cpp)\n[crs_SF01_poc_cppapi.cpp](https://github.com/user-attachments/files/26931194/crs_SF01_poc_cppapi.cpp)\n\n| File | Trigger |\n|------|---------|\n| `crs_SF01_gen.py` | Generates deeply nested PROJJSON (usage: `python3 crs_SF01_gen.py 5000 > input.json`) |\n| `crs_SF01_poc_capi.cpp` | Calls `proj_create()` + `proj_as_projjson()` with generated input |\n| `crs_SF01_poc_cppapi.cpp` | Builds chain via internal C++ API, calls `exportToJSON()` directly |\n\n### Reproduction Steps\n\n**Step 1 — Build PROJ 9.8.1 with AddressSanitizer**:\n\n```bash\nwget https://download.osgeo.org/proj/proj-9.8.1.tar.gz\ntar xf proj-9.8.1.tar.gz && cd proj-9.8.1\ncmake -B build \\\n      -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++ \\\n      -DCMAKE_C_FLAGS=\"-fsanitize=address -g -O1\" \\\n      -DCMAKE_CXX_FLAGS=\"-fsanitize=address -g -O1\" \\\n      -DCMAKE_EXE_LINKER_FLAGS=\"-fsanitize=address\" \\\n      -DCMAKE_SHARED_LINKER_FLAGS=\"-fsanitize=address\" \\\n      -DCMAKE_INSTALL_PREFIX=\"$PWD/install\"\ncmake --build build -j$(nproc)\ncmake --install build\ncd ..\n```\n\n**Step 2 — Generate deeply nested PROJJSON input:**\n\n```bash\npython3 crs_SF01_gen.py 1000 > /tmp/sf01_input.json\n```\n\n**Step 3 — Compile and run:**\n\n```bash\nclang++ -std=c++17 -fsanitize=address -g -O1 \\\n    -I proj-9.8.1/install/include \\\n    crs_SF01_poc_capi.cpp \\\n    -L proj-9.8.1/install/lib -lproj \\\n    -Wl,-rpath,proj-9.8.1/install/lib \\\n    -o poc_02\n\n# Reduce stack size to trigger the crash at lower nesting depth\n(ulimit -s 512; \\\n ASAN_OPTIONS=detect_leaks=0 \\\n PROJ_DATA=proj-9.8.1/install/share/proj \\\n ./poc_02 /tmp/sf01_input.json)\n```\n\n### Observed Output (parser path, 1000-depth JSON, 512 KB stack)\n\n```\nJSON length: 412393 bytes\nCreating object from JSON...\n==PID==ERROR: AddressSanitizer: stack-overflow on address 0x7ffc... (pc ...)\nSUMMARY: AddressSanitizer: stack-overflow\n==PID==ABORTING\n```\n\n## Impact\n\nAny application that accepts PROJJSON from untrusted sources and calls `proj_create()`, or that serializes deeply nested CRS chains via `proj_as_projjson()`, can be crashed. This is a denial-of-service vector.\n\n**Severity:** High — CVSS 3.1 base score **7.5** (`AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H`). Attackers can supply crafted PROJJSON input over any network channel that feeds into `proj_create()`.  \n**CWE:** [CWE-674: Uncontrolled Recursion](https://cwe.mitre.org/data/definitions/674.html)\n\n## Suggested Fix\n\n**Parser path:** Enforce a maximum nesting depth in the PROJJSON parser before passing the JSON to nlohmann, similar to the WKT parser's `recLevel == 16` guard.\n\n**Export path:** Add a depth counter to `DerivedCRS::_exportToJSON()`:\n\n```diff\n void DerivedCRS::_exportToJSON(JSONFormatter *formatter) const {\n+    if (formatter->depth() > MAX_EXPORT_DEPTH)\n+        throw io::FormattingException(\"CRS chain too deep to export\");\n     ...\n     baseCRS()->_exportToJSON(formatter);\n```",
+        "url": "https://github.com/OSGeo/PROJ/issues/4762"
+    },
+    {
+        "id": 4302253215,
+        "number": 4761,
+        "title": "NULL pointer dereference in proj_is_download_needed() and proj_download_file() when url_or_filename is NULL",
+        "state": "closed",
+        "created_at": "2026-04-21T11:25:56Z",
+        "updated_at": "2026-04-23T21:31:23Z",
+        "closed_at": "2026-04-21T11:41:08Z",
+        "author": "m1-llie",
+        "comments": 2,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "## Summary\n\nTwo public API functions crash with a NULL pointer read (SIGSEGV) when `NULL` is passed as the `url_or_filename` parameter. Both share the same root cause: the internal helper `nfm_is_tilde_slash()` dereferences `*name` without a prior NULL check.\n\n**Affected functions:**\n- `proj_is_download_needed(PJ_CONTEXT *ctx, const char *url_or_filename, int ignore_local_cache)`\n- `proj_download_file(PJ_CONTEXT *ctx, const char *url_or_filename, int ignore_local_cache, PJ_PROGRESS_CB prog_cbk, void *user_data)`\n\nBoth are declared in `proj.h` and are part of the documented public API.\n\n**PROJ version:** 9.8.1 (latest release, 2026-04-10); also confirmed on master commit `324ed2119011d74665548afe445eacb99afb9753` (2026-04-17)  \n**OS:** Linux x86_64  \n**Build:** Clang + AddressSanitizer (`-fsanitize=address -g -O1`)\n\n## Root cause\n\n`nfm_is_tilde_slash()` in `src/networkfilemanager.cpp` dereferences its argument at the very first instruction:\n\n```cpp\n// src/networkfilemanager.cpp:2268-2270\nstatic bool nfm_is_tilde_slash(const char *name) {\n    return *name == '~' && strchr(nfm_dir_chars, name[1]);  // CRASH: *name when name == NULL\n}\n```\n\n`build_url()` calls this function unconditionally, with no NULL guard:\n\n```cpp\n// src/networkfilemanager.cpp:2280-2292\nstatic std::string build_url(pj_ctx *ctx, const char *name) {\n    if (nfm_is_tilde_slash(name) || nfm_is_rel_or_absolute_filename(name))\n        ...\n}\n```\n\n`proj_is_download_needed()` passes its `url_or_filename` argument straight to `build_url()`. `proj_download_file()` calls `proj_is_download_needed()` first, reaching the same crash via a longer call chain:\n\n```\nproj_download_file(ctx, NULL, ...)        networkfilemanager.cpp:2680\n  → proj_is_download_needed(ctx, NULL)   networkfilemanager.cpp:2680\n    → build_url(ctx, NULL)               networkfilemanager.cpp:2533\n      → nfm_is_tilde_slash(NULL)         networkfilemanager.cpp:2281\n        → *name                          networkfilemanager.cpp:2269  CRASH\n```\n\nCompare: `proj_get_area_of_use()` and other API functions do guard their pointer parameters with `if (!obj) return …`. These two network functions do not.\n\n## Proof of Concept\n\nSave the following as `poc_net_null.c`:\n\n```c\n#include \"proj.h\"\n#include <stdio.h>\n\n/* Minimal stub callbacks — required to make proj_context_is_network_enabled()\n   return true; otherwise both functions return early before reaching build_url(). */\nstatic PROJ_NETWORK_HANDLE *stub_open(\n    PJ_CONTEXT *ctx, const char *url,\n    unsigned long long offset, size_t size_to_read, void *buffer,\n    size_t *out_size_read, size_t error_string_max_size,\n    char *out_error_string, void *user_data) { return NULL; }\nstatic size_t stub_read(PJ_CONTEXT *ctx, PROJ_NETWORK_HANDLE *handle,\n    unsigned long long offset, size_t size_to_read, void *buffer,\n    size_t error_string_max_size, char *out_error_string, void *user_data) { return 0; }\nstatic void stub_close(PJ_CONTEXT *ctx, PROJ_NETWORK_HANDLE *handle, void *user_data) {}\nstatic const char *stub_header(PJ_CONTEXT *ctx, PROJ_NETWORK_HANDLE *handle,\n    const char *header_name, void *user_data) { return NULL; }\n\nint main(void) {\n    PJ_CONTEXT *ctx = proj_context_create();\n    proj_context_set_network_callbacks(ctx, stub_open, stub_close, stub_header, stub_read, NULL);\n    proj_context_set_enable_network(ctx, 1);\n    printf(\"Network enabled: %d\\n\", proj_context_is_network_enabled(ctx));\n\n    printf(\"Bug A: proj_is_download_needed(ctx, NULL, 0)...\\n\");\n    proj_is_download_needed(ctx, NULL, 0);          /* CRASH here */\n\n    /* Bug B (same root cause, different entry point): */\n    printf(\"Bug B: proj_download_file(ctx, NULL, ...)...\\n\");\n    proj_download_file(ctx, NULL, 0, NULL, NULL);   /* CRASH here */\n\n    proj_context_destroy(ctx);\n    return 0;\n}\n```\n\n### Reproduction steps\n\n**Step 1 — Build PROJ 9.8.1 with AddressSanitizer**:\n\n```bash\ncmake -B build \\\n      -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++ \\\n      -DCMAKE_C_FLAGS=\"-fsanitize=address -g -O1\" \\\n      -DCMAKE_CXX_FLAGS=\"-fsanitize=address -g -O1\" \\\n      -DCMAKE_EXE_LINKER_FLAGS=\"-fsanitize=address\" \\\n      -DCMAKE_SHARED_LINKER_FLAGS=\"-fsanitize=address\" \\\n      -DCMAKE_INSTALL_PREFIX=\"$PWD/install\"\ncmake --build build -j$(nproc)\ncmake --install build\ncd ..\n```\n\n**Step 2 — Compile and run:**\n\n```bash\nclang++ -std=c++17 -fsanitize=address -g -O1 \\\n    -I proj-9.8.1/install/include \\\n    poc_net_null.c \\\n    -L proj-9.8.1/install/lib -lproj \\\n    -Wl,-rpath,proj-9.8.1/install/lib \\\n    -o poc_net_null\n\nASAN_OPTIONS=detect_leaks=0 \\\nPROJ_DATA=proj-9.8.1/install/share/proj \\\n./poc_net_null\n```\n\n> **Note:** AddressSanitizer is not strictly required — both bugs produce a plain SIGSEGV\n> without any sanitizer. ASAN is included here to provide an exact stack trace.\n\n### Observed output (ASAN)\n\n```\nNetwork enabled: 1\nBug A: proj_is_download_needed(ctx, NULL, 0)...\n==PID==ERROR: AddressSanitizer: SEGV on unknown address 0x000000000000\nThe signal is caused by a READ memory access.\n    #0 nfm_is_tilde_slash(char const*)      networkfilemanager.cpp:2269\n    #1 build_url(pj_ctx*, char const*)       networkfilemanager.cpp:2281\n    #2 proj_is_download_needed               networkfilemanager.cpp:2533\n    #3 main                                  poc_net_null.c:22\nSUMMARY: AddressSanitizer: SEGV networkfilemanager.cpp:2269 in nfm_is_tilde_slash\n```\n\n*(Bug B produces an identical trace with `proj_download_file` at frame # 3 and `proj_is_download_needed` at frame # 4.)*\n\n## Impact\n\nAny application that passes a NULL URL to either network API function, for example as a result of a failed lookup or an uninitialized pointer, will crash immediately. Both functions are documented as part of the public network-access API and callers may reasonably expect them to handle NULL gracefully (as many other PROJ API functions do).\n\n**Severity estimation:** Medium — CVSS 3.1 base score 6.2 (`AV:L/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H`). Rises to 7.5 High (`AV:N`) in deployments where the URL parameter is derived from untrusted network input (e.g., a web service that passes user-supplied paths to PROJ).  \n**CWE:** [CWE-476: NULL Pointer Dereference](https://cwe.mitre.org/data/definitions/476.html)\n\n\n## Suggested fix\n\nA single one-line guard in `nfm_is_tilde_slash()` fixes both entry points:\n\n```diff\n static bool nfm_is_tilde_slash(const char *name) {\n+    if (!name) return false;\n     return *name == '~' && strchr(nfm_dir_chars, name[1]);\n }\n```\n\nAlternatively, add `if (!url_or_filename) return 0;` / `return false;` at the top of `proj_is_download_needed()` and `proj_download_file()` for defence-in-depth.",
+        "url": "https://github.com/OSGeo/PROJ/issues/4761"
+    },
+    {
+        "id": 4278689191,
+        "number": 4756,
+        "title": "Minimum CMake version for PROJ 9.9 series",
+        "state": "open",
+        "created_at": "2026-04-16T21:45:04Z",
+        "updated_at": "2026-05-22T17:57:15Z",
+        "closed_at": null,
+        "author": "mwtoews",
+        "comments": 2,
+        "labels": [
+            "question"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "Every couple of years, it's generally good to increment CMake's minimum version used to build PROJ. It was 2 years ago for PROJ 9.4 that the minimum CMake was changed from 3.9 to 3.16 (#3997).\n\nThis issue is a general discussion to see if we can agree if PROJ's minimum CMake version should be increased for the PROJ 9.9.x series (anticipated September 2026), and what version it should go to. Note that [RFC 3](https://proj.org/en/stable/community/rfc/rfc-3.html) says that \"software packages will always be at least two years old\", so the upper limit could be [CMake 3.29](https://cmake.org/cmake/help/latest/release/3.29.html)-ish (released [March 21, 2024](https://www.kitware.com/cmake-3-29-0-available-for-download/)).\n\nRefer to [What’s new in CMake](https://cliutils.gitlab.io/modern-cmake/chapters/intro/newcmake.html) for a handy/quick view of features from CMake releases.\n\nFor example, I see a decent case in #4753 that the minimum should be moved to 3.18 (or even 3.22). Are there other case examples that would benefit from other modern versions of CMake?",
+        "url": "https://github.com/OSGeo/PROJ/issues/4756"
+    },
+    {
+        "id": 4275860273,
+        "number": 4754,
+        "title": "Memory leak after calling proj_info(), info.searchpath is never released",
+        "state": "closed",
+        "created_at": "2026-04-16T12:57:22Z",
+        "updated_at": "2026-04-17T14:01:50Z",
+        "closed_at": "2026-04-17T07:32:23Z",
+        "author": "petrsol",
+        "comments": 4,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "PROJ source file info.cpp contains: static PJ_INFO info\nproj_info(void) alocates info.searchpaths\ninfo.searchpaths is not released in proj_cleanup() so it leaks\n\nUsing PROJ 9.8",
+        "url": "https://github.com/OSGeo/PROJ/issues/4754"
+    },
+    {
+        "id": 4270388547,
+        "number": 4752,
+        "title": "Embedding a relative PROJ_DATA_PATH",
+        "state": "open",
+        "created_at": "2026-04-15T16:52:44Z",
+        "updated_at": "2026-04-16T21:20:07Z",
+        "closed_at": null,
+        "author": "dbs4261",
+        "comments": 1,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "I'm in the middle of some CMake updates to separate the build into components, and I ran into some unexpected behavior. `PROJ_DATA_PATH` is set to `${CMAKE_INSTALL_FULL_DATADIR}/proj` at configure time, and I haven't provided any install prefix, so `/usr/local/share/proj` is embedded into the binary. However, [CMake allows for changing the install prefix at install time](https://cmake.org/cmake/help/latest/manual/cmake.1.html#install-a-project). So, if I configure CMake with `-DCPACK_GENERATOR_DEB=ON` or something similar and run `cmake --build ./build --target package`, everything else that goes in a `DATADIR` like docs and man pages get installed to `/usr/share/` but PROJ_DATA installs to `/usr/local/share/proj` because the install prefix has changed.\n\nThis raises the question: Could a path relative to the `INSTALL_PREFIX` be provided instead? I've been looking at `filemanager.cpp` and if I'm honest, I can't tell. I think whats happening is we automatically check the hard coded relative path `../share/proj`, but PROJ_DATA_PATH must be an absolute path if provided.\n\nIf relative paths are allowed, the solution to my issue is easy, calculate the relative path between `${CMAKE_INSTALL_LIBDIR}` and `${CMAKE_INSTALL_DATADIR}` to use as my `PROJ_DATA_PATH`. If they aren't we should consider adding support for relative paths, as it would also help with the MacOS build as discussed in #4730. If we don't want to support relative embedded PROJ_DATA_PATHs, what if we changed the default behavior to not embed the PROJ_DATA_PATH unless the user provides a **specific** absolute path? We set the variable to the empty string by default and emit a warning that it wont be embedded because no path was given. The wild option would be to add a post install command that would patch the binary like Conda does as discussed in #4207.",
+        "url": "https://github.com/OSGeo/PROJ/issues/4752"
+    },
+    {
+        "id": 4245326392,
+        "number": 4747,
+        "title": "Test failure with sqlite-3.53.0",
+        "state": "closed",
+        "created_at": "2026-04-11T17:26:04Z",
+        "updated_at": "2026-04-11T17:47:28Z",
+        "closed_at": "2026-04-11T17:27:59Z",
+        "author": "hjaekel",
+        "comments": 2,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "<!-- Please search existing issues to avoid creating duplicates. -->\n\n#### Example of problem\n\nIn proj-9.8.1, the test `proj_test_cpp_api` fails with sqlite-3.53.0.\n\n#### Problem description\n\n```\n[ RUN      ] factory.objectInsertion\nunknown file: Failure\nC++ exception with description \"Cannot execute INSERT INTO geodetic_datum VALUES('HOBU','1','my datum','','EPSG','7030','EPSG','8901',NULL,NULL,NULL,'my anchor',,0); : near \",\": syntax error\" thrown in the test body.\n\n[  FAILED  ] factory.objectInsertion (561 ms)\n```\n\n#### Environment Information\n\n- PROJ version (`proj`): 9.8.1, same behaviour with 9.8.0\n- Operation System Information: Alpine Linux Edge\n\n#### Installation method\n\n- `cmake version 4.2.3` ",
+        "url": "https://github.com/OSGeo/PROJ/issues/4747"
+    },
+    {
+        "id": 4218325470,
+        "number": 4740,
+        "title": "gie: initialising operations using `crs_src` and `crs_dst` fail when several candidates are available",
+        "state": "closed",
+        "created_at": "2026-04-07T14:21:08Z",
+        "updated_at": "2026-04-09T10:55:59Z",
+        "closed_at": "2026-04-09T10:55:59Z",
+        "author": "kbevers",
+        "comments": 2,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [
+            "rouault"
+        ],
+        "locked": false,
+        "body": "Using the (unfortunately undocumented) `crs_src`/`crs_dst` way of initialising an operation in gie, it seems that any time a grid is required in the transformation results in an error.\n\nRunning the file below\n\n```\n<gie-strict>\n\n# ETRS89 -> ETRS89/UTM32\ncrs_src         EPSG:4258\ncrs_dst         EPSG:25832\n\naccept          55.0            12.0\nexpect          691875.6321     6098907.8250\n\n\n# ETRS89 -> ETRS89+DVR90(2023)\ncrs_src         EPSG:4937\ncrs_dst         EPSG:10488\ntolerance       1 cm\nrequire_grid    dk_sdfi_dvr90_2023.tif\n\naccept          55.0        12.0        40.0\nexpect          55.0        12.0        2.39\n\n</gie-strict>\n```\n\nthrough gie results in an error in the last test case. Output here:\n\n```\n> set PROJ_NETWORK=ON\n> gie epsg_verification_dk.gie\n-------------------------------------------------------------------------------\nReading file 'epsg_verification_dk.gie'\n     -----\n     FAILURE in epsg_verification_dk.gie(18):\n     expected: 55.0 12.0 2.39\n     got:      inf   inf   inf\n     deviation:  999999999.999000 mm,  expected:  10.000000 mm\n-------------------------------------------------------------------------------\ntotal:  1 tests succeeded,  0 tests skipped,  1 tests FAILED!\n-------------------------------------------------------------------------------\n\n> echo 55.0 12.0 40.0 | cs2cs EPSG:4937 EPSG:10488\n55.00   12.00 2.39 \n```\n\nUsing cs2cs, the transformation goes through as expected, so something seems to be going wrong in gie. Not sure what, but seems to be related to needing the grid.\n\nBelow the same file is processed with full debug output. Here it looks like the grid file is picked up but somehow the resulting coordinates end up as a bunch of `inf`s.\n\nI've tested this with both PROJ 9.7.1 and 9.8.0 with similar results.\n\n```\n> set PROJ_DEBUG=3\n> gie epsg_verification_dk.gie\n-------------------------------------------------------------------------------\nReading file 'epsg_verification_dk.gie'\npj_open_lib(proj.ini): call fopen(C:\\Users\\b012349\\AppData\\Local\\mambaforge\\envs\\transformo-dev\\Library\\share\\proj\\proj.ini) - succeeded\npj_open_lib(proj.db): call fopen(C:\\Users\\b012349\\AppData\\Local\\mambaforge\\envs\\transformo-dev\\Library\\share\\proj\\proj.db) - succeeded\npipeline: pj_ellipsoid - final: a=6378137.000 f=1/298.257, errno=0\npipeline: pj_ellipsoid - final:    ellps=GRS80\npipeline: pj_ellipsoid - final: a=6378137.000 f=1/298.257, errno=0\npipeline: pj_ellipsoid - final:\npipeline: Pipeline: Building arg list for step no. 0\npipeline: Pipeline: init - proj=axisswap, 2\npipeline:     order=2,1\naxisswap: pj_ellipsoid - final: a=6378137.000 f=1/298.257, errno=0\naxisswap: pj_ellipsoid - final:    ellps=GRS80\npipeline: Pipeline: Step 0 (proj=axisswap) at 00000247F1D41420\npipeline: Pipeline at [00000247F1D410C0]:    step at [00000247F1D41420] (proj=axisswap) done\npipeline: Pipeline: Building arg list for step no. 1\npipeline: Pipeline: init - proj=unitconvert, 3\npipeline:     xy_in=deg\npipeline:     xy_out=rad\nunitconvert: pj_ellipsoid - final: a=6378137.000 f=1/298.257, errno=0\nunitconvert: pj_ellipsoid - final:    ellps=GRS80\nunitconvert: xy_in unit: Degree\nunitconvert: xy_out unit: Radian\npipeline: Pipeline: Step 1 (proj=unitconvert) at 00000247F1DC8160\npipeline: Pipeline at [00000247F1D410C0]:    step at [00000247F1DC8160] (proj=unitconvert) done\npipeline: Pipeline: Building arg list for step no. 2\npipeline: Pipeline: init - proj=utm, 3\npipeline:     zone=32\npipeline:     ellps=GRS80\nutm: pj_ellipsoid - final: a=6378137.000 f=1/298.257, errno=0\nutm: pj_ellipsoid - final:    ellps=GRS80\npipeline: Pipeline: Step 2 (proj=utm) at 00000247F1DC8660\npipeline: Pipeline at [00000247F1D410C0]:    step at [00000247F1DC8660] (proj=utm) done\npipeline: Pipeline: 3 steps built. Determining i/o characteristics\npj_open_lib(dk_sdfi_dvr90_2023.tif): call fopen(C:\\Users\\b012349\\AppData\\Local/proj\\dk_sdfi_dvr90_2023.tif) - succeeded\npj_open_lib(dk_sdfi_dvr90_2023.tif): call fopen(C:\\Users\\b012349\\AppData\\Local/proj\\dk_sdfi_dvr90_2023.tif) - succeeded\npipeline: pj_ellipsoid - final: a=6378137.000 f=1/298.257, errno=0\npipeline: pj_ellipsoid - final:    \npipeline: Pipeline: Building arg list for step no. 0\npipeline: Pipeline: init - proj=axisswap, 2\npipeline:     order=2,1\naxisswap: pj_ellipsoid - final: a=6378137.000 f=1/298.257, errno=0\naxisswap: pj_ellipsoid - final:    ellps=GRS80\npipeline: Pipeline: Step 0 (proj=axisswap) at 00000247F1DC8A30\npipeline: Pipeline at [00000247F1DC8D90]:    step at [00000247F1DC8A30] (proj=axisswap) done\npipeline: Pipeline: Building arg list for step no. 1\npipeline: Pipeline: init - proj=unitconvert, 3\npipeline:     xy_in=deg\npipeline:     xy_out=rad\nunitconvert: pj_ellipsoid - final: a=6378137.000 f=1/298.257, errno=0\nunitconvert: pj_ellipsoid - final:    ellps=GRS80\nunitconvert: xy_in unit: Degree\nunitconvert: xy_out unit: Radian\npipeline: Pipeline: Step 1 (proj=unitconvert) at 00000247F1DC86D0\npipeline: Pipeline at [00000247F1DC8D90]:    step at [00000247F1DC86D0] (proj=unitconvert) done\npipeline: Pipeline: Building arg list for step no. 2\npipeline: Pipeline: init - inv, 4\npipeline:     proj=vgridshift\npipeline:     grids=dk_sdfi_dvr90_2023.tif\npipeline:     multiplier=1\nvgridshift: pj_ellipsoid - final: a=6378137.000 f=1/298.257, errno=0\nvgridshift: pj_ellipsoid - final:    ellps=GRS80\npipeline: Pipeline: Step 2 (inv) at 00000247F1DC90F0\npipeline: Pipeline at [00000247F1DC8D90]:    step at [00000247F1DC90F0] (inv) done\npipeline: Pipeline: Building arg list for step no. 3\npipeline: Pipeline: init - proj=unitconvert, 3\npipeline:     xy_in=rad\npipeline:     xy_out=deg\nunitconvert: pj_ellipsoid - final: a=6378137.000 f=1/298.257, errno=0\nunitconvert: pj_ellipsoid - final:    ellps=GRS80\nunitconvert: xy_in unit: Radian\nunitconvert: xy_out unit: Degree\npipeline: Pipeline: Step 3 (proj=unitconvert) at 00000247F1DC9B10\npipeline: Pipeline at [00000247F1DC8D90]:    step at [00000247F1DC9B10] (proj=unitconvert) done\npipeline: Pipeline: Building arg list for step no. 4\npipeline: Pipeline: init - proj=axisswap, 2\npipeline:     order=2,1\naxisswap: pj_ellipsoid - final: a=6378137.000 f=1/298.257, errno=0\naxisswap: pj_ellipsoid - final:    ellps=GRS80\npipeline: Pipeline: Step 4 (proj=axisswap) at 00000247F1E7F760\npipeline: Pipeline at [00000247F1DC8D90]:    step at [00000247F1E7F760] (proj=axisswap) done\npipeline: Pipeline: 5 steps built. Determining i/o characteristics\naxisswap: pj_ellipsoid - final: a=6378137.000 f=1/298.257, errno=0\naxisswap: pj_ellipsoid - final:    ellps=GRS80\naxisswap: pj_ellipsoid - final: a=6378137.000 f=1/298.257, errno=0\naxisswap: pj_ellipsoid - final:    ellps=GRS80\npipeline: pj_ellipsoid - final: a=6378137.000 f=1/298.257, errno=0\npipeline: pj_ellipsoid - final:\npipeline: Pipeline: Building arg list for step no. 0\npipeline: Pipeline: init - proj=axisswap, 2\npipeline:     order=2,1\naxisswap: pj_ellipsoid - final: a=6378137.000 f=1/298.257, errno=0\naxisswap: pj_ellipsoid - final:    ellps=GRS80\npipeline: Pipeline: Step 0 (proj=axisswap) at 00000247F1E80840\npipeline: Pipeline at [00000247F1E804E0]:    step at [00000247F1E80840] (proj=axisswap) done\npipeline: Pipeline: Building arg list for step no. 1\npipeline: Pipeline: init - proj=unitconvert, 3\npipeline:     xy_in=deg\npipeline:     xy_out=rad\nunitconvert: pj_ellipsoid - final: a=6378137.000 f=1/298.257, errno=0\nunitconvert: pj_ellipsoid - final:    ellps=GRS80\nunitconvert: xy_in unit: Degree\nunitconvert: xy_out unit: Radian\npipeline: Pipeline: Step 1 (proj=unitconvert) at 00000247F1E81260\npipeline: Pipeline at [00000247F1E804E0]:    step at [00000247F1E81260] (proj=unitconvert) done\npipeline: Pipeline: Building arg list for step no. 2\npipeline: Pipeline: init - inv, 4\npipeline:     proj=vgridshift\npipeline:     grids=dk_sdfi_dvr90_2023.tif\npipeline:     multiplier=1\nvgridshift: pj_ellipsoid - final: a=6378137.000 f=1/298.257, errno=0\nvgridshift: pj_ellipsoid - final:    ellps=GRS80\npipeline: Pipeline: Step 2 (inv) at 00000247F1E80BA0\npipeline: Pipeline at [00000247F1E804E0]:    step at [00000247F1E80BA0] (inv) done\npipeline: Pipeline: Building arg list for step no. 3\npipeline: Pipeline: init - proj=unitconvert, 3\npipeline:     xy_in=rad\npipeline:     xy_out=deg\nunitconvert: pj_ellipsoid - final: a=6378137.000 f=1/298.257, errno=0\nunitconvert: pj_ellipsoid - final:    ellps=GRS80\nunitconvert: xy_in unit: Radian\nunitconvert: xy_out unit: Degree\npipeline: Pipeline: Step 3 (proj=unitconvert) at 00000247F1E815C0\npipeline: Pipeline at [00000247F1E804E0]:    step at [00000247F1E815C0] (proj=unitconvert) done\npipeline: Pipeline: Building arg list for step no. 4\npipeline: Pipeline: init - proj=axisswap, 2\npipeline:     order=2,1\naxisswap: pj_ellipsoid - final: a=6378137.000 f=1/298.257, errno=0\naxisswap: pj_ellipsoid - final:    ellps=GRS80\npipeline: Pipeline: Step 4 (proj=axisswap) at 00000247F1E7FE20\npipeline: Pipeline at [00000247F1E804E0]:    step at [00000247F1E7FE20] (proj=axisswap) done\npipeline: Pipeline: 5 steps built. Determining i/o characteristics\nnoop: pj_ellipsoid - final: a=6378137.000 f=1/298.257, errno=0\nnoop: pj_ellipsoid - final:    ellps=GRS80\npj_open_lib(dk_sdfi_dvr90_2023.tif): call fopen(C:\\Users\\b012349\\AppData\\Local/proj\\dk_sdfi_dvr90_2023.tif) - succeeded\npj_open_lib(dk_sdfi_dvr90_2023.tif): call fopen(C:\\Users\\b012349\\AppData\\Local/proj\\dk_sdfi_dvr90_2023.tif) - succeeded\n     -----\n     FAILURE in epsg_verification_dk.gie(18):\n     expected: 55.0 12.0 2.39\n     got:      inf   inf   inf\n     deviation:  999999999.999000 mm,  expected:  10.000000 mm\n-------------------------------------------------------------------------------\ntotal:  1 tests succeeded,  0 tests skipped,  1 tests FAILED!\n-------------------------------------------------------------------------------\n```",
+        "url": "https://github.com/OSGeo/PROJ/issues/4740"
+    },
+    {
+        "id": 4187423612,
+        "number": 4730,
+        "title": "proj.db location when bundling for macOS",
+        "state": "open",
+        "created_at": "2026-04-01T14:36:27Z",
+        "updated_at": "2026-05-22T17:49:54Z",
+        "closed_at": null,
+        "author": "mwestphal",
+        "comments": 2,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "<!-- Please search existing issues to avoid creating duplicates. -->\n\n#### Example of problem\n\nIt looks like the expected location of proj.db `./share/proj` is not a valid location when installing a macOS package .dmg containing the libproj.\n\nIndeed, macOS package uses completelly different directory architectures, such a file would be expected to be put in `./Resources`.\n\nWhile proj consumer would probably be able to handle that by specifying to proj where to look for proj.db, I think this may the PROJ responsability to pick the right location, or at least to offer a CMake option to select the default behavior.\n\n\nCurrent code `src/filemanager.cpp`:\n\n```\n    // The initial path was something like foo/bin/libproj.so\"\n    out += \"/share/proj\";\n    return out; \n```\n\nCould be something like:\n\n```\n    // The initial path was something like foo/bin/libproj.so\"\n#if PROJ_MACOS_BUNDLE\n    out += \"/Resources\";\n#else\n    out += \"/share/proj\";\n#endif\n    return out; \n```\n\nLet me know if this is something PROJ should be supporting.",
+        "url": "https://github.com/OSGeo/PROJ/issues/4730"
+    },
+    {
+        "id": 4109634357,
+        "number": 4721,
+        "title": "COMPD_CS with LAT depth grabs wrong UTM zone in some cases",
+        "state": "closed",
+        "created_at": "2026-03-20T19:06:01Z",
+        "updated_at": "2026-03-20T19:11:19Z",
+        "closed_at": "2026-03-20T19:10:53Z",
+        "author": "hobu",
+        "comments": 2,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "Using PROJ 9.8.0...\n\nUsing `projinfo` on WKT with LAT depth causes UTM 54 to be selected instead of the expected 59.\n\n```\n\nprojinfo -o PROJ 'COMPD_CS[\"WGS 84 / UTM zone 59N + LAT depth\",PROJCS[\"WGS 84 / UTM zone 59N\",GEOGCS[\"WGS 84\",DATUM[\"WGS_1984\",SPHEROID[\"WGS 84\",6378137,298.257223563,AUTHORITY[\"EPSG\",\"7030\"]],AUTHORITY[\"EPSG\",\"6326\"]],PRIMEM[\"Greenwich\",0,AUTHORITY[\"EPSG\",\"8901\"]],UNIT[\"degree\",0.0174532925199433,AUTHORITY[\"EPSG\",\"9122\"]],AUTHORITY[\"EPSG\",\"4326\"]],PROJECTION[\"Transverse_Mercator\"],PARAMETER[\"latitude_of_origin\",0],PARAMETER[\"central_meridian\",141],PARAMETER[\"scale_factor\",0.9996],PARAMETER[\"false_easting\",500000],PARAMETER[\"false_northing\",0],UNIT[\"metre\",1,AUTHORITY[\"EPSG\",\"9001\"]],AXIS[\"Easting\",EAST],AXIS[\"Northing\",NORTH],AUTHORITY[\"EPSG\",\"32659\"]],VERT_CS[\"LAT depth\",VERT_DATUM[\"Lowest Astronomical Tide\",2005,AUTHORITY[\"EPSG\",\"1080\"]],UNIT[\"metre\",1,AUTHORITY[\"EPSG\",\"9001\"]],AXIS[\"Depth\",DOWN],AUTHORITY[\"EPSG\",\"5861\"]]]'\n\n```\n\n```\nPROJ.4 string:\n+proj=utm +zone=54 +datum=WGS84 +units=m +vunits=m +no_defs +type=crs\n```\n\n#### PROJJSON \n\n```\n      \"conversion\": {\n        \"name\": \"UTM zone 54N\",\n        \"method\": {\n          \"name\": \"Transverse Mercator\",\n          \"id\": {\n            \"authority\": \"EPSG\",\n            \"code\": 9807\n          }\n        },\n```\n\n\n#### Expected Output\n\nExpected UTM Zone 59N\n\n#### Environment Information\n\n- PROJ 9.8.0 (from Conda Forge)\n\n",
+        "url": "https://github.com/OSGeo/PROJ/issues/4721"
+    }
+]

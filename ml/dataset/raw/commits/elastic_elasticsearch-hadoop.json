@@ -1,0 +1,242 @@
+[
+    {
+        "sha": "f3113ed78616ed715867864225670400b40dad7a",
+        "author": "Keith Massey",
+        "email": "keith.massey@elastic.co",
+        "date": "2026-07-09T17:13:22Z",
+        "message": "Consolidate shared Spark SQL sources into sql-shared (#2539)",
+        "url": "https://github.com/elastic/elasticsearch-hadoop/commit/f3113ed78616ed715867864225670400b40dad7a"
+    },
+    {
+        "sha": "f6785d02c47a4267787b816a2085d83827d5df74",
+        "author": "elasticsearchmachine",
+        "email": "infra-root+elasticsearchmachine@elastic.co",
+        "date": "2026-07-08T00:38:43Z",
+        "message": "Bump to version 9.6.0",
+        "url": "https://github.com/elastic/elasticsearch-hadoop/commit/f6785d02c47a4267787b816a2085d83827d5df74"
+    },
+    {
+        "sha": "06c5031f5a3dfcb326a204f47127ebc4c735dc57",
+        "author": "Rene Groeschke",
+        "email": "rene@elastic.co",
+        "date": "2026-07-06T06:18:00Z",
+        "message": "Enable Renovate auto-updates for Gradle wrapper (#2528)",
+        "url": "https://github.com/elastic/elasticsearch-hadoop/commit/06c5031f5a3dfcb326a204f47127ebc4c735dc57"
+    },
+    {
+        "sha": "7733624933ba39bb28b1216b46fc0dfbb99ec63e",
+        "author": "Rene Groeschke",
+        "email": "rene@elastic.co",
+        "date": "2026-06-23T07:48:21Z",
+        "message": "Update Gradle wrapper to 9.6.0 (#2532)\n\n* Fix Gradle 9.6 deprecation warnings\n\n- Replace deprecated Project.getProperties().containsKey() with\n  project.hasProperty() in buildSrc/build.gradle, qa/build.gradle,\n  and qa/kerberos/build.gradle\n- Remove deprecated EclipseJdt.javaRuntimeName from BuildPlugin.groovy;\n  modern Eclipse uses Buildship's direct Gradle import so this\n  generated-file-only property is no longer needed\n\n* Update Gradle wrapper to 9.6.0\n\n* Update Gradle wrapper to 9.6.0",
+        "url": "https://github.com/elastic/elasticsearch-hadoop/commit/7733624933ba39bb28b1216b46fc0dfbb99ec63e"
+    },
+    {
+        "sha": "aa2b648b9da7c896fab74971fb3f99bb4483ae34",
+        "author": "ninalee12",
+        "email": "nina.lee@elastic.co",
+        "date": "2026-06-16T11:43:43Z",
+        "message": "ci: add team Slack mention to version bump pipeline notifications (#2531)\n\nCo-authored-by: Claude Sonnet 4.6 <noreply@anthropic.com>",
+        "url": "https://github.com/elastic/elasticsearch-hadoop/commit/aa2b648b9da7c896fab74971fb3f99bb4483ae34"
+    },
+    {
+        "sha": "0fcdd4319032859835fda2381f15942c04522e3c",
+        "author": "Rene Groeschke",
+        "email": "rene@elastic.co",
+        "date": "2026-05-05T17:15:39Z",
+        "message": "Update Gradle wrapper to 9.5.0 (#2522)",
+        "url": "https://github.com/elastic/elasticsearch-hadoop/commit/0fcdd4319032859835fda2381f15942c04522e3c"
+    },
+    {
+        "sha": "51dfe2d572856f48a03bbef4eaa5d27fc5546a97",
+        "author": "elasticsearchmachine",
+        "email": "infra-root+elasticsearchmachine@elastic.co",
+        "date": "2026-04-10T17:05:07Z",
+        "message": "Bump to version 9.5.0",
+        "url": "https://github.com/elastic/elasticsearch-hadoop/commit/51dfe2d572856f48a03bbef4eaa5d27fc5546a97"
+    },
+    {
+        "sha": "1acbba14e5cdc9b7d558e8242fd5350843f58aff",
+        "author": "Rene Groeschke",
+        "email": "rene@elastic.co",
+        "date": "2026-04-08T19:20:54Z",
+        "message": "[CI] Resolve pom name and description fields lazy (#2514)\n\nto ensure this is picked up correctly",
+        "url": "https://github.com/elastic/elasticsearch-hadoop/commit/1acbba14e5cdc9b7d558e8242fd5350843f58aff"
+    },
+    {
+        "sha": "6f04b10fd2f693804a054861d47129da9b951bad",
+        "author": "Martijn Laarman",
+        "email": "Mpdreamz@gmail.com",
+        "date": "2026-04-02T09:54:34Z",
+        "message": "Migrate docs workflows from preview-build to docs-actions (#2502)\n\nMoves docs CI/CD from elastic/docs-builder to elastic/docs-actions.\nPart of elastic/docs-eng-team#474",
+        "url": "https://github.com/elastic/elasticsearch-hadoop/commit/6f04b10fd2f693804a054861d47129da9b951bad"
+    },
+    {
+        "sha": "9a4828e276fe43b73015ad668cc07734c5863767",
+        "author": "Rene Groeschke",
+        "email": "rene@elastic.co",
+        "date": "2026-03-31T12:49:15Z",
+        "message": "Fix DRA build deprecation warning (#2509)",
+        "url": "https://github.com/elastic/elasticsearch-hadoop/commit/9a4828e276fe43b73015ad668cc07734c5863767"
+    },
+    {
+        "sha": "5355d3c48dd9dfb590272d365f6b74c514f1925d",
+        "author": "Rene Groeschke",
+        "email": "rene@elastic.co",
+        "date": "2026-03-30T19:50:29Z",
+        "message": "Update Gradle wrapper to 9.4.1 (#2500)",
+        "url": "https://github.com/elastic/elasticsearch-hadoop/commit/5355d3c48dd9dfb590272d365f6b74c514f1925d"
+    },
+    {
+        "sha": "c15f4ce0dc62b47740d1dc019498dd191d5f196c",
+        "author": "Rene Groeschke",
+        "email": "rene@elastic.co",
+        "date": "2026-03-30T13:44:25Z",
+        "message": "Fix deprecation warning in DependencyInfo task (#2501)",
+        "url": "https://github.com/elastic/elasticsearch-hadoop/commit/c15f4ce0dc62b47740d1dc019498dd191d5f196c"
+    },
+    {
+        "sha": "59b7c20cbe9572d127336bad872ebf1fe00a8698",
+        "author": "ninalee12",
+        "email": "nina.lee@elastic.co",
+        "date": "2026-03-26T20:19:00Z",
+        "message": "update pipeline setting (#2499)",
+        "url": "https://github.com/elastic/elasticsearch-hadoop/commit/59b7c20cbe9572d127336bad872ebf1fe00a8698"
+    },
+    {
+        "sha": "579d357947709151b62e392461ab57c7b4cfe4af",
+        "author": "ninalee12",
+        "email": "nina.lee@elastic.co",
+        "date": "2026-03-12T20:06:30Z",
+        "message": "Add DRA version bump (#2496)",
+        "url": "https://github.com/elastic/elasticsearch-hadoop/commit/579d357947709151b62e392461ab57c7b4cfe4af"
+    },
+    {
+        "sha": "30dddf5754face4edb72f4bcaaefb46e0dd73d2b",
+        "author": "Rene Groeschke",
+        "email": "rene@elastic.co",
+        "date": "2026-03-05T06:30:33Z",
+        "message": "Update Gradle wrapper to 9.4.0 (#2497)",
+        "url": "https://github.com/elastic/elasticsearch-hadoop/commit/30dddf5754face4edb72f4bcaaefb46e0dd73d2b"
+    },
+    {
+        "sha": "758621556a41a5a140010a03c77f30af3b46b0fb",
+        "author": "Rene Groeschke",
+        "email": "rene@elastic.co",
+        "date": "2026-02-06T15:07:15Z",
+        "message": "Update Gradle wrapper to 9.3.1 (#2489)\n\n* Update Gradle wrapper to 9.3.1\n\n* Some cleanup on env variables for JAVA_HOME\n\n---------\n\nCo-authored-by: Rene Groeschke <infra-root+elasticsearchmachine@elastic.co>",
+        "url": "https://github.com/elastic/elasticsearch-hadoop/commit/758621556a41a5a140010a03c77f30af3b46b0fb"
+    },
+    {
+        "sha": "eb3f0f5b5062a563d2b1490e3a5b7c8e68b00a24",
+        "author": "Vlada Chirmicci",
+        "email": "vlada.chirmicci@elastic.co",
+        "date": "2026-01-26T14:28:37Z",
+        "message": "[Docs] Adding auth header as an authentication method (#2486)\n\n* Adding auth header as an authentication method\n\nFixes [#61](https://github.com/elastic/docs-content-internal/issues/62) Examples provided in the issue.\n\n* Fix link\n\n* A few further improvements + claude suggestions\n\n* Apply review suggestions from Edu\n\n* Add note about placeholder substitution",
+        "url": "https://github.com/elastic/elasticsearch-hadoop/commit/eb3f0f5b5062a563d2b1490e3a5b7c8e68b00a24"
+    },
+    {
+        "sha": "cf0c34c9c95d4bc3645e905566c694a086753986",
+        "author": "Grant Patterson",
+        "email": "43742537+DasUberLeo@users.noreply.github.com",
+        "date": "2026-01-26T11:00:59Z",
+        "message": "Note the maturity and increasingly predominent use of Apache Spark (#2485)\n\n* Updated index.md\n\nUpdated to note the maturity and increasingly predominent use of Apache Spark\n\n* fix typo\n\nCo-authored-by: Vlada Chirmicci <vlada.chirmicci@elastic.co>\n\n---------\n\nCo-authored-by: Liam Thompson <leemthompo@gmail.com>\nCo-authored-by: Vlada Chirmicci <vlada.chirmicci@elastic.co>",
+        "url": "https://github.com/elastic/elasticsearch-hadoop/commit/cf0c34c9c95d4bc3645e905566c694a086753986"
+    },
+    {
+        "sha": "a9f6e0ec6158fa0cc3e7ffa507fdd74c506ed361",
+        "author": "Colleen McGinnis",
+        "email": "colleen.mcginnis@elastic.co",
+        "date": "2026-01-12T21:39:56Z",
+        "message": "add products to docset.yml (#2387)",
+        "url": "https://github.com/elastic/elasticsearch-hadoop/commit/a9f6e0ec6158fa0cc3e7ffa507fdd74c506ed361"
+    },
+    {
+        "sha": "d14b7112cdab06abdc8ada5d0eb8744afbc33afd",
+        "author": "elasticsearchmachine",
+        "email": "infra-root+elasticsearchmachine@elastic.co",
+        "date": "2025-12-17T22:44:01Z",
+        "message": "Bump to version 9.4.0",
+        "url": "https://github.com/elastic/elasticsearch-hadoop/commit/d14b7112cdab06abdc8ada5d0eb8744afbc33afd"
+    },
+    {
+        "sha": "300aea9a065e3a14edf4b2d7bcc5cace4b53b6aa",
+        "author": "Rene Groeschke",
+        "email": "rene@elastic.co",
+        "date": "2025-11-28T18:48:25Z",
+        "message": "[Build] Update develocity plugin to 4.2.2 (#2481)\n\nKeep uptodate with latest release",
+        "url": "https://github.com/elastic/elasticsearch-hadoop/commit/300aea9a065e3a14edf4b2d7bcc5cace4b53b6aa"
+    },
+    {
+        "sha": "2ca91cda3011095de8f7b202ded0e37170b3e19a",
+        "author": "Rene Groeschke",
+        "email": "rene@elastic.co",
+        "date": "2025-11-25T22:45:27Z",
+        "message": "Update Gradle wrapper to 9.2.1 (#2477)",
+        "url": "https://github.com/elastic/elasticsearch-hadoop/commit/2ca91cda3011095de8f7b202ded0e37170b3e19a"
+    },
+    {
+        "sha": "4ed7959f85bef05a578ccc97cbcf1a4028a3b20c",
+        "author": "Rene Groeschke",
+        "email": "rene@elastic.co",
+        "date": "2025-11-13T15:57:43Z",
+        "message": "Update Gradle wrapper to 9.2.0 (#2473)",
+        "url": "https://github.com/elastic/elasticsearch-hadoop/commit/4ed7959f85bef05a578ccc97cbcf1a4028a3b20c"
+    },
+    {
+        "sha": "4177bef3722d75f77d2582f5e9ab3f67bf167c02",
+        "author": "Vlada Chirmicci",
+        "email": "vlada.chirmicci@elastic.co",
+        "date": "2025-11-12T18:31:42Z",
+        "message": "Update index.md (#2472)\n\nAdding the Serverless unavailable tag, as per the [Elasticsearch table](https://www.elastic.co/docs/deploy-manage/deploy/elastic-cloud/differences-from-other-elasticsearch-offerings#elasticsearch) in the comparison doc.\r\n\r\nRelates to [#1198](https://github.com/elastic/docs-content/issues/1198)",
+        "url": "https://github.com/elastic/elasticsearch-hadoop/commit/4177bef3722d75f77d2582f5e9ab3f67bf167c02"
+    },
+    {
+        "sha": "7a251ccf45faefc51419eec35fb6710a77b64af1",
+        "author": "Keith Massey",
+        "email": "keith.massey@elastic.co",
+        "date": "2025-10-22T18:03:12Z",
+        "message": "[DOCS] Add 9.2.0 release notes (#2468)",
+        "url": "https://github.com/elastic/elasticsearch-hadoop/commit/7a251ccf45faefc51419eec35fb6710a77b64af1"
+    },
+    {
+        "sha": "3f0839644d0e63e288985cb19d9758cd60f0cc40",
+        "author": "elasticsearchmachine",
+        "email": "infra-root+elasticsearchmachine@elastic.co",
+        "date": "2025-10-02T07:18:40Z",
+        "message": "Bump to version 9.3.0",
+        "url": "https://github.com/elastic/elasticsearch-hadoop/commit/3f0839644d0e63e288985cb19d9758cd60f0cc40"
+    },
+    {
+        "sha": "b68e3f499f6cec3ab7e27ad85cc8b7223b6aa96d",
+        "author": "Rene Groeschke",
+        "email": "rene@elastic.co",
+        "date": "2025-09-26T13:20:29Z",
+        "message": "Fix test trigger pipeline for 9.0 branch (#2465)",
+        "url": "https://github.com/elastic/elasticsearch-hadoop/commit/b68e3f499f6cec3ab7e27ad85cc8b7223b6aa96d"
+    },
+    {
+        "sha": "d9dced4cb684fcf4788668929d2cf42858a6e726",
+        "author": "Rene Groeschke",
+        "email": "rene@elastic.co",
+        "date": "2025-09-25T17:16:51Z",
+        "message": "Update apache archive mirror url for faster artifact resolution (#2460)\n\n* Update apache archive mirror url for faster artifact resolution\n\n* Use mirror in addition to existing archive repo",
+        "url": "https://github.com/elastic/elasticsearch-hadoop/commit/d9dced4cb684fcf4788668929d2cf42858a6e726"
+    },
+    {
+        "sha": "cde55dd4130a807da7b0aea9b3360b6189c663d9",
+        "author": "Rene Groeschke",
+        "email": "rene@elastic.co",
+        "date": "2025-09-19T14:26:55Z",
+        "message": "Update Gradle wrapper to 9.1.0 (#2455)\n\n* Update Gradle wrapper to 9.1.0\n\n* Fix deprecation warnings",
+        "url": "https://github.com/elastic/elasticsearch-hadoop/commit/cde55dd4130a807da7b0aea9b3360b6189c663d9"
+    },
+    {
+        "sha": "eb2ee6e2bf019a1c0dc0979e4a7bb1a03fbda795",
+        "author": "James Baiera",
+        "email": "james.baiera@gmail.com",
+        "date": "2025-08-29T21:21:50Z",
+        "message": "[DOCS] Add 9.1.0 release notes (#2443)",
+        "url": "https://github.com/elastic/elasticsearch-hadoop/commit/eb2ee6e2bf019a1c0dc0979e4a7bb1a03fbda795"
+    }
+]

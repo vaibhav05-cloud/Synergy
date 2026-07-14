@@ -1,0 +1,352 @@
+[
+    {
+        "id": 4569678942,
+        "number": 320,
+        "title": "Please roll back pdf viewer",
+        "state": "closed",
+        "created_at": "2026-06-02T08:09:30Z",
+        "updated_at": "2026-06-13T08:28:55Z",
+        "closed_at": "2026-06-13T08:28:55Z",
+        "author": "Vogelmensch",
+        "comments": 3,
+        "labels": [
+            "enhancement"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "I'm just a regular user and no developer, but I rely on the Mega Android app and specifically the PDF viewer on a daily basis. The new user interface is annoying because the new buttons and the top bar block my view on the file. The way the PDF viewer was before was perfect. I don't know how other users see this, but I would love the old viewer back.\n",
+        "url": "https://github.com/meganz/android/issues/320"
+    },
+    {
+        "id": 4340547381,
+        "number": 319,
+        "title": "NETOFLIX",
+        "state": "closed",
+        "created_at": "2026-04-28T04:16:51Z",
+        "updated_at": "2026-04-29T23:42:34Z",
+        "closed_at": "2026-04-29T23:42:34Z",
+        "author": "radarsist-lang",
+        "comments": 1,
+        "labels": [
+            "enhancement"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Describe the feature you'd like\nProvide a description of the feature request.\n\n### Additional context\nAdd any other context or screenshots about the feature request.\n",
+        "url": "https://github.com/meganz/android/issues/319"
+    },
+    {
+        "id": 4215680566,
+        "number": 317,
+        "title": "File/Folder picker permissions broken on Android 16",
+        "state": "closed",
+        "created_at": "2026-04-07T05:37:27Z",
+        "updated_at": "2026-04-07T05:41:31Z",
+        "closed_at": "2026-04-07T05:41:31Z",
+        "author": "doyle31",
+        "comments": 1,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Environment:\n- MEGA app Version(s): 16.2(260860537)(8482052cd3)\n- OS Version(s): LineageOS 23.2-20260325-NIGHTLY-akita (Android 16)\n- Devices/Simulators: Pixel\n\n### Describe the bug\nWhen you pick a location to save files to, the file picker will say:\nCan't use this folder\nTo protect your privacy, please use another folder\n\n### Reproduction Steps\n1. Go to the media tab\n2. Click on a file\n3. Click on the save button\n4. The file/folder picker opens, but you are unable to select a folder to save stuff in\n\n### Expected behavior\nThe file picker should allow you to choose somewhere in `/sdcard` \n\n### Screenshots / Logs\n<img width=\"1080\" height=\"2400\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/d3f9a1de-f471-4866-b267-eef2f3628a1c\" />\n\n### Additional context\n`MANAGE_EXTERNAL_STORAGE` is not set in the manifest, is that why this is broken? \n<img width=\"734\" height=\"41\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/51c1a2f2-ea0e-451e-a823-99af4635eea5\" />\n`Internal storage/Download/MEGA Downloads` seems to be created by the MEGA app, but it is never used and the picker won't let you select it.\n\n<img width=\"1080\" height=\"2400\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/e66c9ddb-6b75-4371-b210-7522cbf5d10a\" />\nThis also might be helpful information:\n\n<img width=\"1500\" height=\"543\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/48ac47a5-2534-475f-999d-1f4093010867\" />",
+        "url": "https://github.com/meganz/android/issues/317"
+    },
+    {
+        "id": 4159732293,
+        "number": 316,
+        "title": "help",
+        "state": "closed",
+        "created_at": "2026-03-28T12:43:06Z",
+        "updated_at": "2026-03-29T07:26:22Z",
+        "closed_at": "2026-03-29T07:26:22Z",
+        "author": "aluisgel-ops",
+        "comments": 1,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "https://github.com/meganz/android/commit/08e3ed667dff6f93a851dce3df08f02662f5d2f8",
+        "url": "https://github.com/meganz/android/issues/316"
+    },
+    {
+        "id": 4006776727,
+        "number": 314,
+        "title": "Android 16 background play hangs randomly",
+        "state": "open",
+        "created_at": "2026-03-01T09:43:18Z",
+        "updated_at": "2026-03-03T01:35:18Z",
+        "closed_at": null,
+        "author": "benonymus",
+        "comments": 2,
+        "labels": [
+            "question"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "Hey,\n\nOn android 16, I observed that the music playback in the background hangs after some time. It is not constant sometimes faster, sometimes slower and sometimes even restarts. I see it on a google pixel 9a and a Sony Xperia 1 mk6. \n\nI used the latest version from the play store. \n\nI tried to disable all optimizations for network and battery and still the same. The app is allowed to run in the background. \n\nIf I reopen the app into the foreground the media resumes. \n\nTo reproduce start a song in mega, and put the app in the background. Can lock the phone but not necessarily. After a bit of time the song will stop. As the time varies it is hard to say how long to wait but I never had to wait more than 1-2 mins sometimes even faster. \n\nAny idea why this happens?",
+        "url": "https://github.com/meganz/android/issues/314"
+    },
+    {
+        "id": 3958283814,
+        "number": 313,
+        "title": "When using the Android file picker to select a file from Mega, it gets stuck on \"preparing\" unless the file is marked as \"offline\"",
+        "state": "closed",
+        "created_at": "2026-02-18T15:00:39Z",
+        "updated_at": "2026-02-18T15:13:11Z",
+        "closed_at": "2026-02-18T15:07:59Z",
+        "author": "eylenburg",
+        "comments": 2,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Environment:\n- MEGA app Version(s): 15.26.1\n- OS Version(s): Android 16 (GrapheneOS)\n- Devices/Simulators: Pixel 8\n\n### Describe the bug\nWhen using the Android file picker to select a file from Mega, it gets stuck on \"preparing\" unless the file is marked as \"offline\"\n\n### Reproduction Steps\nAdd the different steps to reproduce the behavior.\n1. Open a browser and go to a website where you can upload a file (e.g. online2pdf.com as an example)\n2. The Android file manager opens. In the menu on the left you have the different apps that are integrated as a storage, e.g. you can select the Gallery app or the Mega app. Select Mega.\n3. Pick a file from Mega that you want to upload to the website\n4. It says \"Preparing\" with a spinning circle animation. But nothing ever happens.\n\n### Expected behavior\nFile is temporarily downloaded from Mega and uploaded to the website. or more generally, a file is being opened directly from Mega without having to download/save it beforehand.\n\n### Additional context\nTested with Firefox and Chrome browsers\nIf a file is marked as \"offline\" in the Mega app, then it works. But from the UI there's no indication that this is the case as all cloud files are shown and you can select any file from Mega. Also, it would be much more useful if you could select any file.\n\n[Expose offline files via SAF](https://github.com/meganz/android/commit/144219e008c8b27dd018ac37112b005a8d624f01)\n\nMaybe it's by design, but can it be extended to all files, or otherwise at least make it clear in the UI by e.g. greying out all non-offline files?",
+        "url": "https://github.com/meganz/android/issues/313"
+    },
+    {
+        "id": 3943121215,
+        "number": 312,
+        "title": "Shit app, sync not work as expected, huge shit code latest release size...",
+        "state": "open",
+        "created_at": "2026-02-15T04:57:26Z",
+        "updated_at": "2026-02-15T07:32:16Z",
+        "closed_at": null,
+        "author": "itmagpro",
+        "comments": 1,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "- huge shit code latest release size 15.26.1 (300 mb instead 200 mb on v15.19);\n- shit code growing, but functional not;\n- not understand how sync in this app must work;\n- when I add sync folder we see update icon, but not have any activity on transfer tab;\n- in this time on mega tab we see under recent files some upload local changed files to remote mega host;\n- in this time some files, that I remove on local host but steel exist on remote, again download from remote to local ;(( and NOT LOGED this activity on any transfer or mega tab;\n- deleted local files not deleted on remote, and after delete remote files not deleted him on local;\n- on device tab I see many duplicate records of my device like `device (1); device (2)`;\n- after reinstall shit app and add sync folder that not changed after shit app reinstall, then we get many many sync error aka file conflict;\n- ...and many other problem with this shit app for files sync ;(\n\n<img width=\"720\" height=\"672\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/164caa7e-6060-4260-9479-b1964d32a0ca\" />\n<img width=\"720\" height=\"991\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/e5c81dd8-1e61-4d6d-a85a-c0debd0ad4d4\" />\n<img width=\"720\" height=\"481\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/d740cbf4-baad-4689-a668-b9157f7c6f08\" />\n<img width=\"720\" height=\"1353\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/8849e122-bf99-46ee-8fcb-f24eb7e0d49d\" />\n\nconclusion: shit app code and CPU/RAM requirements growing, but functional not, sync not work as expected - ONLY 2-WAY SYNC without any choose, with many bugs and not understand behaviors\n\nI guess, that this shit app writen dy stupid GPT chat.., or somebody like this",
+        "url": "https://github.com/meganz/android/issues/312"
+    },
+    {
+        "id": 3862662254,
+        "number": 311,
+        "title": "Sort item in folder",
+        "state": "open",
+        "created_at": "2026-01-27T22:17:32Z",
+        "updated_at": "2026-01-27T22:31:23Z",
+        "closed_at": null,
+        "author": "Godwhitelight",
+        "comments": 1,
+        "labels": [
+            "enhancement"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Describe the feature you'd like\nI would like to be able to sort the items in a folder by the size, date added, type and more like you can on the web version.\n\n### Additional context\nWhy would it not be a feature already? it already exsits in the web version it should be built into the api",
+        "url": "https://github.com/meganz/android/issues/311"
+    },
+    {
+        "id": 3829075795,
+        "number": 310,
+        "title": "Extreme battery drain due to stuck sync",
+        "state": "open",
+        "created_at": "2026-01-19T10:36:45Z",
+        "updated_at": "2026-04-03T19:29:08Z",
+        "closed_at": null,
+        "author": "RomanBf",
+        "comments": 5,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Environment:\n- MEGA app Version(s): 15.24\n- OS Version(s): Android 16\n- Devices/Simulators: Google Pixel 7 Pro\n\n### Describe the bug\nSyncing a folder on my Android phone (Obsidian notes vault) with MEGA does not finish, and churns through CPU - draining the battery even if App is running in the background.\nI attached a screenshot from adb shell top command where you can see that it probably is in an infinite loop or something when interacting with the Android media module.\n\nThe folder I am syncing does contain a hidden \".obsidian\" folder and just some markdown files, could the hidden folder possibly be the reason?\nThe same folder I also sync with MEGA sync Desktop app, where on the desktop MEGA sync App at least, I have to delete an automatically included sync exclusion rule when creating the sync so folders beginning with \".\" (dot) are synced. Maybe an edge case that is not properly tested when syncing that with Android too.\nFrom the desktop there is then a .megaignore file created too which gets auto-synced to Android.\n\n### Reproduction Steps\nAdd the different steps to reproduce the behavior.\n1. Create an Obsidian vault and store it on Android internal storage -> Documents folder\n2. Sync it to MEGA via Android App\n3. Create a Mega sync Desktop sync to sync to PC\n4. Configure the sync exclusions on desktop to allow folders and files beginning with dot \".\" to be synced\n5. When changing a file in the vault, and MEGA Android syncs it, it stays in \"Syncing\" state and never finishes, while draining battery non stop (10-20% in one hour) of the phone.\n\n### Expected behavior\nSync should complete properly and no battery drain afterwards.\n\n### Screenshots / Logs\n<img width=\"854\" height=\"157\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/ef59920f-d0e9-4e10-b336-2bfefa8cae0e\" />",
+        "url": "https://github.com/meganz/android/issues/310"
+    },
+    {
+        "id": 3702628836,
+        "number": 308,
+        "title": "[Drawio] Will Mega add NATIVE support for diagrams.net file (and other website specific cloud provider features)?",
+        "state": "open",
+        "created_at": "2025-12-06T22:58:12Z",
+        "updated_at": "2025-12-06T23:09:31Z",
+        "closed_at": null,
+        "author": "GAC-Machine",
+        "comments": 0,
+        "labels": [
+            "enhancement"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Describe the feature you'd like\n\nAs in the title.\nI'm using a FOSS software (available both as web and desktop app)\n[Drawio] Will Mega add NATIVE support for diagrams.net file (and other website specific cloud provider features)?\n\n### Screenshot\n\nSee below screenshot to understand what I'm referring to when I say Mega support for Draw.io (Driagrams.net) website.\n\n<img width=\"2560\" height=\"1440\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/6d9c435d-0ee9-441e-8ba1-ff2bd16b09f7\" />\n\n### Additional context\n\nA little bit unrelated to the issue. but I'm not sure if Mega has support (can handle, both my reading and editing) for .drawio files. ",
+        "url": "https://github.com/meganz/android/issues/308"
+    },
+    {
+        "id": 3640309477,
+        "number": 305,
+        "title": "[BUG] App shows \"syncing\" even if sync process has \"finished\" correctly.",
+        "state": "open",
+        "created_at": "2025-11-18T22:58:36Z",
+        "updated_at": "2025-12-01T22:42:34Z",
+        "closed_at": null,
+        "author": "GAC-Machine",
+        "comments": 4,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Environment:\n\n- MEGA app Version(s): `15.21(253110247)(09b5b0a0cf)`\n- OS Version(s): `Android 15`\n- Devices/Simulators: `Lenovo Tab M11`\n\n### Describe the bug\n\nApp shows \"`syncing`\" status even if sync process has \"`finished`\" correctly.\n\n### Reproduction Steps\n\nAdd the different steps to reproduce the behavior.\n1. Set a sync in mega App (select local and remote folder to sync and sync method);\n2. Add some files;\n3. Let it sync;\n4. On another device, do again step 1 (either a phone or a computer is fine);\n6. Verify issue (even if both devices have same files (`device1 > mega_server > devices2` :=to have same files in both devices, mega server must be on the same version, up-to-date, so sync must finish with no error), status in first device is \"`syncing`\" not something like \"`sync ended successfully`\").\n \n### Expected behavior\n\nShow finished status either a in-app message or a notification. \n\n### Screenshots / Logs\n\nSee below screenshot to better understand what I'm referring to.\n\n`mega_tablet_sync_message.png`\n\n### Additional context\n\nN/A",
+        "url": "https://github.com/meganz/android/issues/305"
+    },
+    {
+        "id": 3595867426,
+        "number": 304,
+        "title": "incorrect last modified time in downloaded files from sync",
+        "state": "closed",
+        "created_at": "2025-11-06T13:37:38Z",
+        "updated_at": "2025-11-07T11:44:12Z",
+        "closed_at": "2025-11-07T11:44:12Z",
+        "author": "jiping-s",
+        "comments": 1,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Environment:\n- MEGA app Version(s): 15.20\n- OS Version(s): 16\n- Devices/Simulators: Samsung Galaxy S25 Enterprise\n\n### Describe the bug\nThe last modified time of downloaded files by sync is always set to the current time.\n\n### Reproduction Steps\nAdd the different steps to reproduce the behavior.\n1. Add a sync to an empty local folder and a remote folder that contains files\n2. Check the modification time of synced files\n\n### Expected behavior\nTimestamps of local files should be identical to that of files on MEGA website and PC.\n\n### Screenshots / Logs\nIf applicable, add screenshots or logs to help explain your problem.\n\n### Additional context\nThis makes the sync feature very unreliable - I don't know how it's tracking files exactly, but e.g. If I remove the sync and then add it back to the same local folder, it shows conflict errors on everything.\n\nThis does not happen to the windows client.",
+        "url": "https://github.com/meganz/android/issues/304"
+    },
+    {
+        "id": 3505020623,
+        "number": 302,
+        "title": "11",
+        "state": "closed",
+        "created_at": "2025-10-11T02:27:20Z",
+        "updated_at": "2025-10-13T20:19:50Z",
+        "closed_at": "2025-10-13T20:19:50Z",
+        "author": "Jekyle94444",
+        "comments": 1,
+        "labels": [
+            "enhancement"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Describe the feature you'd like\nProvide a description of the feature request.\n\n### Additional context\nAdd any other context or screenshots about the feature request.\n",
+        "url": "https://github.com/meganz/android/issues/302"
+    },
+    {
+        "id": 3389051912,
+        "number": 301,
+        "title": "Mywateeny.get",
+        "state": "closed",
+        "created_at": "2025-09-05T23:47:24Z",
+        "updated_at": "2025-09-05T23:49:01Z",
+        "closed_at": "2025-09-05T23:49:01Z",
+        "author": "wateen319",
+        "comments": 0,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Environment:\n- MEGA app Version(s): \n- OS Version(s):\n- Devices/Simulators:\n\n### Describe the bug\nProvide a description of the bug.\n\n### Reproduction Steps\nAdd the different steps to reproduce the behavior.\n1. Go to '...'\n2. Click on '....'\n3. Scroll down to '....'\n4. See error\n\n### Expected behavior\nDescribe what you expect to happen.\n\n### Screenshots / Logs\nIf applicable, add screenshots or logs to help explain your problem.\n\n### Additional context\nAdd any other context or screenshots about the bug.\n",
+        "url": "https://github.com/meganz/android/issues/301"
+    },
+    {
+        "id": 3323222040,
+        "number": 300,
+        "title": "New 2025",
+        "state": "closed",
+        "created_at": "2025-08-14T18:40:44Z",
+        "updated_at": "2025-08-14T18:40:55Z",
+        "closed_at": "2025-08-14T18:40:55Z",
+        "author": "neli9inety3-rgb",
+        "comments": 0,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": null,
+        "url": "https://github.com/meganz/android/issues/300"
+    },
+    {
+        "id": 3310028393,
+        "number": 299,
+        "title": "Insecure AES Usage: Defaults to ECB Mode",
+        "state": "closed",
+        "created_at": "2025-08-11T13:18:51Z",
+        "updated_at": "2025-08-12T23:35:13Z",
+        "closed_at": "2025-08-12T23:35:13Z",
+        "author": "EhsanFir",
+        "comments": 1,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "We are security researchers at Digit Institute in Germany. While reviewing [app/src/main/java/mega/privacy/android/app/utils/Util.java], we identified the following cryptographic issues:\n\nAt line 333, **Cipher.getInstance(\"AES\")** is used.\nThis defaults to **\"AES/ECB/PKCS5Padding\"**, which is insecure because ECB mode leaks data patterns.\nNo initialization vector (IV) is used, which breaks semantic security and makes multiple encryptions of the same data vulnerable.\nRecommendations:\n\nSpecify a secure mode, such as \"AES/CBC/PKCS5Padding\" or, preferably, use \"AES/GCM/NoPadding\" for authenticated encryption.\nWhen using CBC mode, always generate a random IV per encryption, prepend it to the ciphertext, and use the same IV to initialize the cipher for decryption.\nAddressing these issues will enhance the security of your cryptographic implementation.",
+        "url": "https://github.com/meganz/android/issues/299"
+    },
+    {
+        "id": 3307581273,
+        "number": 298,
+        "title": "Inappropriate ads in android app",
+        "state": "closed",
+        "created_at": "2025-08-10T13:35:38Z",
+        "updated_at": "2025-08-11T03:31:39Z",
+        "closed_at": "2025-08-11T03:31:39Z",
+        "author": "PaulWebb",
+        "comments": 1,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Environment:\n- MEGA app Version(s): 15.14\n- OS Version(s): Android 15\n- Devices/Simulators: Samsung A35\n\n### Describe the bug\nInappropriate advertising.\n\n### Reproduction Steps\nOpen app.\nInappropriate ad content at bottom of screen.\n\n### Expected behavior\nNot ads for sex toys etc.\n\n### Screenshots / Logs\nIf applicable, add screenshots or logs to help explain your problem.\n\n### Additional context\nThis is coming from Temu\nI have never bought anything from Temu (and will not) and especially not sex toys (nor from anywhere else).\nThis might be a lol but I don't want my kids seeing this sh1te.\n",
+        "url": "https://github.com/meganz/android/issues/298"
+    },
+    {
+        "id": 3247953815,
+        "number": 296,
+        "title": "[Issue]: Mega app synchronization bulk error ;(",
+        "state": "open",
+        "created_at": "2025-07-20T20:18:06Z",
+        "updated_at": "2025-07-21T09:55:25Z",
+        "closed_at": null,
+        "author": "itmagpro",
+        "comments": 2,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "Hello,\n\nI use mega app v15.12 on android 10\n\nAfter I move folder with 300 files from internal to sd card storage and add synchronization in mega app, then I see all files in error tab ;(\n\nSelect variant:\n1) Select local files - local file upload to mega and wasted my internet trafic ;(\n2) Select file in mega - NOT WORK AND NOT SOLVED ANY WAY ;(\n3) Select last changed file - NOT WORK AND NOT SOLVED ANY WAY ;(\n\nIn case 2-3, conflict marked as solved BUT STAY IN ERROR TAB! ;(\n\nI MUST DO THIS FOR EACH FILES FROM 300 ITEMS!?\n\nMust be BULK option for sync error operation!\n\nMEGA APP NOT COMPARE FILE HASH IN SYNC PROCESS?\n\nI read this\nhttps://help.mega.io/installs-apps/mobile/resolve-android-sync-issues\n\nbut this not help! ;(\n\nI don`t know what do now...\n\nremove all local files and run sync from blank page and wasted internet trafic..?!? ;((",
+        "url": "https://github.com/meganz/android/issues/296"
+    },
+    {
+        "id": 3208728536,
+        "number": 295,
+        "title": "Open https://mega.nz link by default in MEGA app",
+        "state": "closed",
+        "created_at": "2025-07-07T11:55:59Z",
+        "updated_at": "2025-07-08T08:27:53Z",
+        "closed_at": "2025-07-08T08:16:43Z",
+        "author": "owocado",
+        "comments": 8,
+        "labels": [
+            "enhancement"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Describe the feature you'd like\nHello and greetings,\n\nCurrently MEGA app only opens these two links by default in app:\n- www.mega.nz\n- www.mega.co.nz\n\nbut more often than not, people on various social media share links in \"https://mega.nz/...\" format, which when clicked should ideally open in MEGA app but opens in default browser first then we have to click \"Open in app\" at the bottom to open in MEGA app. This tend to get tedious and frustrating if you're active MEGA user like me opening many mega.nz links everyday.\n\nMy request to you guys is to add \"mega.nz\" as valid deeplink for Android app so we users can open mega.nz links directly in MEGA app.\n\n### Additional context\nAdd any other context or screenshots about the feature request.\n\n![Image](https://github.com/user-attachments/assets/35f24348-4d86-43eb-b9bf-539675866eb4)\n",
+        "url": "https://github.com/meganz/android/issues/295"
+    },
+    {
+        "id": 3042702687,
+        "number": 293,
+        "title": "Option to customize download location missing on Android 11+",
+        "state": "closed",
+        "created_at": "2025-05-06T12:40:27Z",
+        "updated_at": "2025-05-19T07:54:33Z",
+        "closed_at": "2025-05-19T07:54:33Z",
+        "author": "abel1502",
+        "comments": 1,
+        "labels": [
+            "enhancement"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Environment:\n- MEGA app Version(s): 15.4.1\n- OS Version(s): Android 12\n- Devices/Simulators: Samsung Galaxy M31\n\n### Describe the bug\nApparently, the option to change the default download location is missing on devices with API version 30 and higher. This is clearly due to https://github.com/meganz/android/blob/master/app/src/main/res/xml-v30/preferences.xml not specifying the same `<androidx.preference.Preference>` `\"settings_nested_download_location\"` as https://github.com/meganz/android/blob/master/app/src/main/res/xml/preferences.xml does. I am unsure if this is intentional or not, but I believe it should be treated as a bug and fixed.\n\n### Reproduction Steps\n1. Go to Settings > Storage\n2. See only \"File management\"\n\n### Expected behavior\nA \"Download location\" option in \"Settings > Storage\", which would allow changing the download location.\n\n",
+        "url": "https://github.com/meganz/android/issues/293"
+    }
+]

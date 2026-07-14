@@ -1,0 +1,369 @@
+[
+    {
+        "id": 3210875569,
+        "number": 2118,
+        "title": "Typo in method name",
+        "state": "closed",
+        "created_at": "2025-07-08T03:20:01Z",
+        "updated_at": "2025-07-13T13:18:55Z",
+        "closed_at": "2025-07-13T13:18:55Z",
+        "author": "Imran-imtiaz48",
+        "comments": 0,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "The getter method isEmeddable is misspelled. It should be isEmbeddable (with two 'b's in \"Embeddable\").\nDetails\n// Current code:\n```\nget isEmeddable() {\n  return this.isSnippet ? this.isPublished : true;\n}\n```\nCorrect spelling:\n```\nget isEmbeddable() {\n  return this.isSnippet ? this.isPublished : true;\n}\n```\n Why it matters\nThis typo can cause confusion or bugs when attempting to check if the content is embeddable using content.isEmbeddable. Since the method is misnamed, any reference to the correctly spelled version will return undefined.\n",
+        "url": "https://github.com/Chalarangelo/30-seconds-of-code/issues/2118"
+    },
+    {
+        "id": 3081885175,
+        "number": 2115,
+        "title": "Excessive side margins affect responsiveness",
+        "state": "closed",
+        "created_at": "2025-05-22T02:56:12Z",
+        "updated_at": "2025-05-22T13:38:53Z",
+        "closed_at": "2025-05-22T13:38:43Z",
+        "author": "michellestrey",
+        "comments": 1,
+        "labels": [
+            "ui/ux",
+            "web"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "Hi there! 👋\n\nI noticed that on certain screen resolutions like 1366x768, the homepage displays very wide side margins, which limits the usable content area. This affects readability and the overall user experience, especially on smaller laptop screens.\n\nIt might be helpful to consider adjusting the layout or applying more responsive design principles for better adaptation across devices.\n\nHere's a screenshot for reference:\n\n![Image](https://github.com/user-attachments/assets/2256d8a9-1bb6-49ca-a48a-1a282e2d8388)\n\nThanks for the amazing project! 🙌\n\n",
+        "url": "https://github.com/Chalarangelo/30-seconds-of-code/issues/2115"
+    },
+    {
+        "id": 3055629284,
+        "number": 2113,
+        "title": "RSS feed is broken",
+        "state": "closed",
+        "created_at": "2025-05-12T04:57:11Z",
+        "updated_at": "2025-05-12T18:09:45Z",
+        "closed_at": "2025-05-12T18:09:45Z",
+        "author": "niLPotential",
+        "comments": 0,
+        "labels": [
+            "bug",
+            "web"
+        ],
+        "assignees": [
+            "Chalarangelo"
+        ],
+        "locked": false,
+        "body": "I was trying to subscribe via RSS but the xml was broken. It turns out that under `src/lib/feed.js`, `Feed.node()` does not close the `<item>` tag properly. The tag at the end is another opening one, instead of closing. Hopefully fixing that solves the issue.",
+        "url": "https://github.com/Chalarangelo/30-seconds-of-code/issues/2113"
+    },
+    {
+        "id": 3006792118,
+        "number": 2109,
+        "title": "Mistake in example code for TF-IDF search",
+        "state": "closed",
+        "created_at": "2025-04-20T04:08:59Z",
+        "updated_at": "2025-04-20T12:28:39Z",
+        "closed_at": "2025-04-20T08:46:11Z",
+        "author": "JulioC",
+        "comments": 1,
+        "labels": [
+            "bug",
+            "content"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "In the [TF-IDF article](https://www.30secondsofcode.org/js/s/tf-idf-inverted-index/), the [first example in Arbitrary Search section](https://www.30secondsofcode.org/js/s/tf-idf-inverted-index/#arbitrary-search) appears to have a unnecessary call of `removeStopwords` in `parseDocument` as shown below:\n\n```javascript\nconst parseDocument = document => {\n  const tokens = removeStopwords(commonStopWords, tokenize(document)); // I believe this should be `tokenize(document)`\n  const filteredTokens = removeStopwords(commonStopWords, tokens);\n  const stemmedTokens = filteredTokens.map(porterStemmer);\n  return stemmedTokens;\n}\n```\n\nI don't think this extra call would do any harm, but it might be confusing for the reader.\n\nThanks for the hard work on these posts!",
+        "url": "https://github.com/Chalarangelo/30-seconds-of-code/issues/2109"
+    },
+    {
+        "id": 2825597927,
+        "number": 2099,
+        "title": "Collections is not sorted by any means",
+        "state": "closed",
+        "created_at": "2025-02-02T04:36:42Z",
+        "updated_at": "2025-02-02T17:36:07Z",
+        "closed_at": "2025-02-02T17:25:33Z",
+        "author": "aakarsh-2004",
+        "comments": 3,
+        "labels": [
+            "wontfix"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "When the user goes to the `collections` tab by clicking the `hamburger` icon on the navbar, the blogs are not sorted in any means.\n\nI think the blogs should be sorted as per the number of articles it has under each category.\n\nHere is the image preview \n\n![Image](https://github.com/user-attachments/assets/2bce4ff6-2909-46c4-ba36-2e2a7fc8b94f)",
+        "url": "https://github.com/Chalarangelo/30-seconds-of-code/issues/2099"
+    },
+    {
+        "id": 2771165315,
+        "number": 2095,
+        "title": "Mistake in brackets in Promise timeout",
+        "state": "closed",
+        "created_at": "2025-01-06T18:00:06Z",
+        "updated_at": "2025-01-06T23:30:03Z",
+        "closed_at": "2025-01-06T18:09:06Z",
+        "author": "mjaggard",
+        "comments": 2,
+        "labels": [
+            "bug",
+            "js"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "I have more than once copied code from https://www.30secondsofcode.org/js/s/resolve-promise-after-amount-of-time/ and then had to fix the bug.\r\n\r\nThe issue is in [this snippet](https://github.com/Chalarangelo/30-seconds-of-code/blob/master/content/snippets/js/s/resolve-promise-after-amount-of-time.md):\r\n```\r\nconst resolveAfter = (value, delay) =>\r\n  new Promise(resolve => {\r\n    setTimeout(() => resolve(value, delay));\r\n  });\r\n\r\nresolveAfter('Hello', 1000);\r\n// Returns a promise that resolves to 'Hello' after 1s\r\n```\r\n\r\nThe 3rd line should read `setTimeout(() => resolve(value), delay);`",
+        "url": "https://github.com/Chalarangelo/30-seconds-of-code/issues/2095"
+    },
+    {
+        "id": 1954964985,
+        "number": 2057,
+        "title": "Typo on the website",
+        "state": "closed",
+        "created_at": "2023-10-20T20:20:31Z",
+        "updated_at": "2023-10-21T04:18:32Z",
+        "closed_at": "2023-10-21T04:18:32Z",
+        "author": "PesBandi",
+        "comments": 0,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "There's a typo on [this page](https://www.30secondsofcode.org/js/s/hash-sha-256/#:~:text=As%20the%20promise-,reslves,-to%20an%20ArrayBuffer).\r\n\r\nIn the sentence \"*As the promise reslves to an `ArrayBuffer`, you will need to read the data using `DataView.prototype.getUint32()`.*\", \"*reslvs*\" was probably supposed to be \"*resolves*\".",
+        "url": "https://github.com/Chalarangelo/30-seconds-of-code/issues/2057"
+    },
+    {
+        "id": 1929870056,
+        "number": 2035,
+        "title": "[Feature Request] : The border of search bar is not clearly visible .",
+        "state": "closed",
+        "created_at": "2023-10-06T10:26:58Z",
+        "updated_at": "2023-10-06T11:34:43Z",
+        "closed_at": "2023-10-06T11:34:43Z",
+        "author": "letscodedanish",
+        "comments": 0,
+        "labels": [
+            "wontfix"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "-Is your feature request related to a problem? Please describe\r\n  When i was new here in the website [30secondsofcode.org] and when i decided to search something I found little difficulty seeing \r\n  the search bar and its border outline. \r\n\r\n-Describe the solution you'd like.\r\n  we can add a border to our search bar to make it attractive and visually appealing for a better UI experience.\r\n\r\n-Screenshot\r\n![Screenshot (488)](https://github.com/30-seconds/30-seconds-of-code/assets/112203113/7e417189-8ae2-4020-8211-892ed55a675f)\r\n\r\n\r\n\r\n\r\n",
+        "url": "https://github.com/Chalarangelo/30-seconds-of-code/issues/2035"
+    },
+    {
+        "id": 1927534501,
+        "number": 2032,
+        "title": "Kindly add hacktoberfest label to your repo. ",
+        "state": "closed",
+        "created_at": "2023-10-05T07:09:11Z",
+        "updated_at": "2023-10-05T07:14:38Z",
+        "closed_at": "2023-10-05T07:11:28Z",
+        "author": "TechGuySaad",
+        "comments": 1,
+        "labels": [
+            "wontfix"
+        ],
+        "assignees": [],
+        "locked": true,
+        "body": "I am looking to contribute to this repo in the react module, because I think this repo has impact. I am kindly requesting to add the hactoberfest label to this so that my contributions can also be recognized by hacktoberfest.",
+        "url": "https://github.com/Chalarangelo/30-seconds-of-code/issues/2032"
+    },
+    {
+        "id": 1924053783,
+        "number": 2029,
+        "title": ":bug: Fix Footer settingsPath (GithHub,CC ,30-sec-of-code Link)",
+        "state": "closed",
+        "created_at": "2023-10-03T12:35:51Z",
+        "updated_at": "2023-10-03T13:14:25Z",
+        "closed_at": "2023-10-03T13:14:25Z",
+        "author": "Dhruvn-patel",
+        "comments": 0,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "**What is issue ??**\r\n\r\n- whenever I click to footer section in GitHub link not redirected actual URL as well not showing 30-sec-of-code (heading) and Licence URL Not Working)\r\n\r\nAttachment :\r\n![30secofcodeError](https://github.com/30-seconds/30-seconds-of-code/assets/87563885/5664ccde-c5d9-469c-8595-f11e1421abaf)\r\n\r\n",
+        "url": "https://github.com/Chalarangelo/30-seconds-of-code/issues/2029"
+    },
+    {
+        "id": 1915875234,
+        "number": 2021,
+        "title": "Terminology issue in blog",
+        "state": "closed",
+        "created_at": "2023-09-27T15:51:07Z",
+        "updated_at": "2023-10-06T17:17:56Z",
+        "closed_at": "2023-10-06T17:17:56Z",
+        "author": "kamtoeddy",
+        "comments": 4,
+        "labels": [
+            "js"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "Hi maintainers,\r\n\r\nGoing through the interview prep. resource on [variable hoisting](https://github.com/30-seconds/30-seconds-of-code/blob/master/content/snippets/js/s/variable-hoisting.md), I noticed that the first sentence of the first paragraph had an issue.\r\n\r\nIt goes \"Before your JavaScript code is executed, it is first parsed and `compiled`\". My problem here is *`compiled`*. JavaScript is an interpreted language.\r\n\r\nThanks",
+        "url": "https://github.com/Chalarangelo/30-seconds-of-code/issues/2021"
+    },
+    {
+        "id": 1912536345,
+        "number": 2019,
+        "title": "fix: Unnecessary parameter in Queue class methods",
+        "state": "closed",
+        "created_at": "2023-09-26T01:46:29Z",
+        "updated_at": "2023-09-28T06:38:12Z",
+        "closed_at": "2023-09-28T06:38:12Z",
+        "author": "kevinweejh",
+        "comments": 2,
+        "labels": [
+            "bug",
+            "js",
+            "content"
+        ],
+        "assignees": [
+            "kevinweejh"
+        ],
+        "locked": false,
+        "body": "Hello maintainers/contributors,\r\n\r\nWhile going through the [JavaScript Data Structures - Queue](https://www.30secondsofcode.org/js/s/data-structures-queue/) page, I found a couple of oversights in the markdown content, specifically in the file located at content/snippets/js/s/data-structures-queue.md.\r\n\r\nOn lines 38 and 42, the implementation of the `dequeue()` and `peek()` methods do not use the `item` parameter. This is because unlike a priority queue, a typical FIFO-based queue will dequeue strictly from the start of the queue, same with the peeking method.\r\n\r\nTo fix this, the `item` parameter needs to be removed from both the `dequeue()` and `peek()` methods in lines 38 and 42 respectively.\r\n\r\nI have searched through the open issues and found no duplicates of this issue. As such, may I work on this issue?\r\n\r\nOnce again, thank you for maintaining this resource! Let me know if I should go ahead and create a PR to fix this oversight.",
+        "url": "https://github.com/Chalarangelo/30-seconds-of-code/issues/2019"
+    },
+    {
+        "id": 1910497437,
+        "number": 2015,
+        "title": "Typo in the event-loop-explained.md snippet",
+        "state": "closed",
+        "created_at": "2023-09-25T01:30:53Z",
+        "updated_at": "2023-09-25T08:38:43Z",
+        "closed_at": "2023-09-25T08:38:43Z",
+        "author": "kevinweejh",
+        "comments": 2,
+        "labels": [
+            "bug",
+            "content"
+        ],
+        "assignees": [
+            "kevinweejh"
+        ],
+        "locked": false,
+        "body": "Hello maintainers/contributors,\r\n\r\nWhile going through the [Event Loop Explained](https://www.30secondsofcode.org/js/s/event-loop-explained/) page, I found a typo in the markdown content, specifically in the file located at content/snippets/js/s/event-loop-explained.md.\r\n\r\nOn line 96, the content reads:\r\n\r\n`10. The Event Loop checks the Microtask Queue. As it’s not empty, it executes the first Microtask, which is the callback of Promise.prototype.then() that was queued in step 10.`\r\n\r\nHowever, the callback for Promise.prototype.then() was queued in step 9, not step 10. For reference, step 9 states:\r\n\r\n`9. Promise.prototype.then() is pushed to the Call Stack and executed. This creates a new entry for its callback function in the Microtask Queue.`\r\n\r\nTo fix this, the end of the sentence in step 10 should be corrected to \"... that was queued in step 9.\"\r\n\r\nI have searched through the open issues and found no duplicates of this issue. As such, may I work on this issue?\r\n\r\nThank you for maintaining this resource! Let me know if I should go ahead and create a PR to fix this typo.",
+        "url": "https://github.com/Chalarangelo/30-seconds-of-code/issues/2015"
+    },
+    {
+        "id": 1868352507,
+        "number": 1994,
+        "title": "[ BUG ] Missing space in footer section",
+        "state": "closed",
+        "created_at": "2023-08-27T04:33:26Z",
+        "updated_at": "2023-09-27T17:13:42Z",
+        "closed_at": "2023-09-27T17:13:27Z",
+        "author": "RuthwikReddy09",
+        "comments": 17,
+        "labels": [
+            "ui/ux",
+            "web"
+        ],
+        "assignees": [
+            "Chalarangelo"
+        ],
+        "locked": false,
+        "body": "There is a space missing after \"2017-2023\" in the footer section. \r\n\r\nScreenshot : \r\n<img width=\"329\" alt=\"Screenshot 2023-08-27 095913\" src=\"https://github.com/30-seconds/30-seconds-of-code/assets/126862059/15415360-02d0-4584-b5b7-401d9fa46f90\">\r\n\r\nSteps to Reproduce : \r\n1. Open https://www.30secondsofcode.org/\r\n2. Go to the footer section",
+        "url": "https://github.com/Chalarangelo/30-seconds-of-code/issues/1994"
+    },
+    {
+        "id": 1862570300,
+        "number": 1992,
+        "title": "cookie parsing containing a `=` in value",
+        "state": "closed",
+        "created_at": "2023-08-23T05:00:17Z",
+        "updated_at": "2023-09-27T17:23:00Z",
+        "closed_at": "2023-09-27T17:22:49Z",
+        "author": "cmgchess",
+        "comments": 5,
+        "labels": [
+            "js"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "https://github.com/30-seconds/30-seconds-of-code/blob/master/snippets/js/s/parse-cookie.md\r\n\r\nif a cookie value contains an `=` would this break",
+        "url": "https://github.com/Chalarangelo/30-seconds-of-code/issues/1992"
+    },
+    {
+        "id": 1853731161,
+        "number": 1976,
+        "title": "Website Navigation Bar",
+        "state": "closed",
+        "created_at": "2023-08-16T18:38:59Z",
+        "updated_at": "2023-08-17T06:42:36Z",
+        "closed_at": "2023-08-17T06:42:30Z",
+        "author": "mtendekuyokwa",
+        "comments": 0,
+        "labels": [
+            "invalid"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "the website navigation moves with the page which is a bad UI practice. The website navigation should be fixed. \r\nassign this to me.",
+        "url": "https://github.com/Chalarangelo/30-seconds-of-code/issues/1976"
+    },
+    {
+        "id": 1838646575,
+        "number": 1974,
+        "title": "style: Centering the footer section ⏡",
+        "state": "closed",
+        "created_at": "2023-08-07T04:21:01Z",
+        "updated_at": "2023-08-10T03:05:23Z",
+        "closed_at": "2023-08-09T09:39:24Z",
+        "author": "bharathkalyans",
+        "comments": 2,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "* As you can see in the below snapshot, the footer is aligned to the left part of the page.\r\n* Aligning it to the center would make the page cleaner.\r\n<img width=\"1439\" alt=\"Screenshot 2023-08-07 at 9 46 17 AM\" src=\"https://github.com/30-seconds/30-seconds-of-code/assets/49526472/21acbaa0-22a9-4fc7-abb1-e81a850ac03e\">\r\n",
+        "url": "https://github.com/Chalarangelo/30-seconds-of-code/issues/1974"
+    },
+    {
+        "id": 1807400644,
+        "number": 1965,
+        "title": "Regarding the throttle function's question.",
+        "state": "closed",
+        "created_at": "2023-07-17T09:50:14Z",
+        "updated_at": "2023-09-27T17:06:21Z",
+        "closed_at": "2023-09-27T17:06:21Z",
+        "author": "HiChen404",
+        "comments": 9,
+        "labels": [],
+        "assignees": [],
+        "locked": true,
+        "body": "> https:www.30secondsofcode.org/js/s/throttle-function/\r\n\r\n```js\r\nconst throttle = (fn, wait) => {\r\n  let inThrottle, lastFn, lastTime;\r\n  return function() {\r\n    const context = this,\r\n      args = arguments;\r\n    if (!inThrottle) {\r\n      fn.apply(context, args);\r\n      lastTime = Date.now();\r\n      inThrottle = true;\r\n    } else {\r\n      clearTimeout(lastFn);\r\n      lastFn = setTimeout(function() {\r\n// Can I ignore the following line of code?\r\n//        if (Date.now() - lastTime >= wait) {\r\n          fn.apply(context, args);\r\n          lastTime = Date.now();\r\n//        }\r\n      }, Math.max(wait - (Date.now() - lastTime), 0));\r\n    }\r\n  };\r\n};\r\n```\r\n\r\nI don't understand why the same condition needs to be checked inside setTimeout. \r\n\r\nCan it be omitted?",
+        "url": "https://github.com/Chalarangelo/30-seconds-of-code/issues/1965"
+    },
+    {
+        "id": 1806436650,
+        "number": 1964,
+        "title": "passive-scroll-listener-performance has obsolete/incorrect advice",
+        "state": "closed",
+        "created_at": "2023-07-16T05:34:09Z",
+        "updated_at": "2023-09-27T17:08:10Z",
+        "closed_at": "2023-09-27T17:02:35Z",
+        "author": "rebelmusic",
+        "comments": 3,
+        "labels": [
+            "wontfix",
+            "js"
+        ],
+        "assignees": [],
+        "locked": true,
+        "body": "Hello there, this is the page in question: https://www.30secondsofcode.org/js/s/passive-scroll-listener-performance/\r\n\r\nAccording to the specifications, adding passive: true to scroll is not necessary:\r\n\r\nhttps://developer.mozilla.org/en-US/docs/Web/API/EventTarget/addEventListener#improving_scrolling_performance_with_passive_listeners",
+        "url": "https://github.com/Chalarangelo/30-seconds-of-code/issues/1964"
+    },
+    {
+        "id": 1732226180,
+        "number": 1947,
+        "title": "New snippet ideas",
+        "state": "closed",
+        "created_at": "2023-05-30T13:02:52Z",
+        "updated_at": "2023-06-02T18:08:43Z",
+        "closed_at": "2023-06-02T18:08:27Z",
+        "author": "caeltarifa",
+        "comments": 1,
+        "labels": [
+            "invalid"
+        ],
+        "assignees": [],
+        "locked": true,
+        "body": "### Discussed in https://github.com/30-seconds/30-seconds-of-code/discussions/1925\r\n\r\n<div type='discussions-op-text'>\r\n<h3> Scatter plot on linear regression, less code and effort </h3>\r\n<sup>Originally posted by **cael** May 30, 2023</sup>\r\nThis snippet would show how to plot a linear regression in few lines by Seaborn over Matplotlib. By the example, it illustrates the difference between both libraries doing the same, highlighting the simpleness of Seaborn for scatter plots. Seaborn's higher-level function and integration with underlying Matplotlib functionality provides a direct function of linear regression. Without using third-party libraries to perform the calculation, Seaborn makes it more convenient for creating advanced statistical plots with less code and effort.\r\n\r\nThe dataset illustrated on the plot below shows the comparative that belongs to Seaborn and Matplotlib, respectively.\r\n\r\n```\r\n# Create a scatter plot with regression lines calculated using Seaborn\r\nsns.lmplot(x=\"sepal_length\", y=\"sepal_width\", hue=\"species\", data=iris)\r\nplt.show()\r\n```\r\n\r\n![image](https://github.com/30-seconds/30-seconds-of-code/assets/23003922/de084d45-2cb0-44fa-9422-ee520f9b6e42)\r\n\r\n```\r\n# Create a scatter plot using Matplotlib\r\nplt.scatter(iris[\"sepal_length\"], iris[\"sepal_width\"], c=iris[\"species\"].cat.codes)\r\nplt.xlabel('sepal_length')\r\nplt.ylabel('sepal_width')\r\n\r\n# Calculate and plot regression lines for each category\r\nfor species, group in iris.groupby(\"species\"):\r\n    x = group[\"sepal_length\"]\r\n    y = group[\"sepal_width\"]\r\n    m, b = np.polyfit(x, y, 1)\r\n    plt.plot(x, m * x + b, label=species)\r\n```\r\n![image](https://github.com/30-seconds/30-seconds-of-code/assets/23003922/487b7149-474c-4020-98bf-5f3090454f95)\r\n\r\n</div>\r\n\r\n\r\n",
+        "url": "https://github.com/Chalarangelo/30-seconds-of-code/issues/1947"
+    }
+]

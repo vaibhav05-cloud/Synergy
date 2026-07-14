@@ -1,0 +1,242 @@
+[
+    {
+        "sha": "5e4a13569301d35beb72f4ff7c5e67e9cd289f4b",
+        "author": "Ryan Hanson",
+        "email": "ryan@ryanhanson.dev",
+        "date": "2026-07-14T02:08:13Z",
+        "message": "Add option for sorting screens by midX",
+        "url": "https://github.com/rxhanson/Rectangle/commit/5e4a13569301d35beb72f4ff7c5e67e9cd289f4b"
+    },
+    {
+        "sha": "1dea4199ddc9764a5686a6f7e30b335796112c83",
+        "author": "Ryan Hanson",
+        "email": "ryan@ryanhanson.dev",
+        "date": "2026-07-14T01:19:01Z",
+        "message": "Update SECURITY.md",
+        "url": "https://github.com/rxhanson/Rectangle/commit/1dea4199ddc9764a5686a6f7e30b335796112c83"
+    },
+    {
+        "sha": "96b4b74569e79c176fba69ecc2c7accc69cbae46",
+        "author": "Ryan Hanson",
+        "email": "ryan@ryanhanson.dev",
+        "date": "2026-07-14T01:17:51Z",
+        "message": "Add SECURITY.md",
+        "url": "https://github.com/rxhanson/Rectangle/commit/96b4b74569e79c176fba69ecc2c7accc69cbae46"
+    },
+    {
+        "sha": "304e2cbb466ed5d5e8467e5ecdc26ce7f5621048",
+        "author": "Ryan Hanson",
+        "email": "ryan@ryanhanson.dev",
+        "date": "2026-07-14T00:51:47Z",
+        "message": "Remove side/section nomenclature for half actions",
+        "url": "https://github.com/rxhanson/Rectangle/commit/304e2cbb466ed5d5e8467e5ecdc26ce7f5621048"
+    },
+    {
+        "sha": "873ccdae3827b28505351bacaaac87e7011e828e",
+        "author": "culpen90",
+        "email": "sinnomine@duck.com",
+        "date": "2026-07-14T00:12:12Z",
+        "message": "Align clamped windows to snap edges by default (#1789)",
+        "url": "https://github.com/rxhanson/Rectangle/commit/873ccdae3827b28505351bacaaac87e7011e828e"
+    },
+    {
+        "sha": "5c95a544d65849e5fecf8934f20123c7028738b6",
+        "author": "John Carmack",
+        "email": "johncarmack@me.com",
+        "date": "2026-07-14T00:11:51Z",
+        "message": "Execute window actions when the window id is unavailable (#1788)\n\n* Execute window actions when the window id is unavailable\n\nAfter a session transition (waking to the login window, or an\nidle-induced logout), macOS can stop vending window ids and window\nlists to accessibility clients until the screen is locked and unlocked\nagain (#640, #1244, #1325, #1673). Rectangle treated the window id as\nrequired for every action, so keyboard, menu, and URL actions beeped\nand did nothing, and drag to snap went dead, even though the per-app\naccessibility connection still worked.\n\nThe window id is only used for history bookkeeping (restore rects,\nrepeated-action cycling, todo and stage checks). Make it optional:\nactions now execute without it and skip only the id-keyed bookkeeping.\nRestore still requires an id since it is entirely history-driven.\n\nAlso add a last-resort window-under-cursor fallback that hit-tests the\nfrontmost app's own accessibility windows, since both existing lookups\n(the window list and the system-wide hit test) depend on window server\ninfo that is unavailable in this state.\n\n* Derive a fallback window id from accessibility element identity\n\nWhen both real sources fail (the broken session state in #640), derive\na bookkeeping-only id from CFHash of the window's AXUIElement, which is\nstable for the same window across fetches and unaffected by moves or\nresizes. The high bit keeps derived ids out of the real window id\nspace. Restores cycling, restore rects, and unsnap history in the\nbroken state.\n\n* Fix nil errors from merge from main\n\n---------\n\nCo-authored-by: Ryan Hanson <ryan@ryanhanson.dev>",
+        "url": "https://github.com/rxhanson/Rectangle/commit/5c95a544d65849e5fecf8934f20123c7028738b6"
+    },
+    {
+        "sha": "2c662c134b2560636e63eed5e5c3def7c886cddf",
+        "author": "epicdistraction",
+        "email": "daniel@epicdistraction.com",
+        "date": "2026-07-13T14:10:28Z",
+        "message": "Cooperative Window Resizer Feature (#1780)\n\n* Add cooperative window planner to corner actions\n\n* Cooperative cycles on side actions.\n\n* Allow the cooperative window manager to resize both corner and side actions\n\n* Fix issue where a corner window doesn't resize when hidden by side window\n\n* Fix issue where <50% side split ratios would invoke a cyclic action at the time of moving window to a different corner.\n\n* Update Main.xcstrings to upstream/main and add branch changes\n\n* refactor cooperative resize behavior so it is constraint-aware and applies the entire resize plan once.\n\n* Logic refactor WIP gate. Respects min size on refresh. wider tolerance for smaller apps. Allows for gap resize feature\n\n* Wider tolerances for nearby matches for windows not exactly grid size.\nMin width will force the split ratio to be moved to the nearest successful split.\nLogic to picking up nearby windows that are cutoff by the side split and wider range capture.\nIncorporates gap between windows feature.\n\n* Fix outer perimeter to prevent window creep into gap area\n\n* If enabled, use cooperative resizer in dragggable snap areas.\n\n* Add a window target resolver to avoid pushing to default size and capturing the opposite windows.\n\n* Refactor Cooperative Resizer functionality in Window Manager into an extension\n\n* Refine cooperative corner resize preflight and cleanup\nUse realized constrained/cyclic corner boundaries for initial placement, avoid cleanup from reduced adjacent corners, and make repeated cycling recognize cooperative gap-adjusted frames.\n\n* Dynamic Side Split Ratio\n\n* Revert \"Dynamic Side Split Ratio\"\n\nThis reverts commit 299a73f2d229f96f1142f1e8761d35f9b06294a6.\n\n* Fix cleanup resize for focused adjacent corner\n\n* Reapply \"Dynamic Side Split Ratio\"\n\nThis reverts commit 315f0f03e3d2201dd896e71343d8021ad1217dc5.\n\n* * WindowCalculationResult.initialRect can now be updated after calculation.\n* Cooperative corner resizing now skips a cycle step when an adjacent window is already min-height restricted.\n* Side-split ratio recording now uses the intended raw cycle size when a cycle step is skipped.\n* Cleanup logic is stricter so valid cycled corners are not resized by mistake.\n* Cleanup can still shrink a corner when that old source corner is stuck between cycle sizes because of a min-height restriction.\n* Added tests for the new cycling and cleanup edge cases.\n\n* * resize cleaup on side-by side windows\n* Fix logging history of cooperative actions\n* Update window state when neighbor resizes it to prevent duplicate actions/cyclic actions out of order.\n\n* Handle resizing adjacent min-size restricted window when min-size window moves away and there is nothing behind it.\n\n* * Update runtime split ratios from the final cooperative layout after macOS applies window minimum-size constraints. Preserve gap-aware boundaries without changing saved preferences.\n* Also refine cycle handling so windows opposite a minimum-height-restricted window can wrap past an impossible maximum size, and resize remaining corner windows toward the next smaller cycle size when a restricted corner is vacated.\n* Add regression coverage for constrained widths/heights, symmetric corners, gaps, cyclic continuation, preference preservation, blocked maximum cycling, and corner cleanup.\n\n---------\n\nCo-authored-by: Daniel <daniel@trainoperator.co>",
+        "url": "https://github.com/rxhanson/Rectangle/commit/2c662c134b2560636e63eed5e5c3def7c886cddf"
+    },
+    {
+        "sha": "7d6b4c5a48b72b1fa9d2a5fe5d127c5f12264bf1",
+        "author": "Ryan Hanson",
+        "email": "ryan@ryanhanson.dev",
+        "date": "2026-06-18T05:22:06Z",
+        "message": "Update moveFixedSizeToEdge setting to allow more granular controls for edge vs corner",
+        "url": "https://github.com/rxhanson/Rectangle/commit/7d6b4c5a48b72b1fa9d2a5fe5d127c5f12264bf1"
+    },
+    {
+        "sha": "1f6af7a4aa8119d368a19e34f5243593acf24b49",
+        "author": "Lorenzo Tiraboschi",
+        "email": "loritire@gmail.com",
+        "date": "2026-06-16T21:11:40Z",
+        "message": "Anchor clamped windows to the snap edge instead of leaving a gap (#1778)\n\n* Add ClampedWindowAligner pure placement helper with tests\n\n* Route FixedSizeWindowMover through ClampedWindowAligner (fix half-snap edge anchoring)\n\n* Add EdgeAlignmentWindowMover to standard chain (fix FaceTime gap on half snaps)\n\n* Document moveFixedSizeToEdge flag",
+        "url": "https://github.com/rxhanson/Rectangle/commit/1f6af7a4aa8119d368a19e34f5243593acf24b49"
+    },
+    {
+        "sha": "1108284d0a5ec679e70eb6baf0ab1197c39240d7",
+        "author": "Khairullah",
+        "email": "mkhairullah430@gmail.com",
+        "date": "2026-06-16T20:22:17Z",
+        "message": "add feature override green button (#1777)\n\n* add feature override green button\n\n* Adjusted wording setting labels\n\n---------\n\nCo-authored-by: Ryan Hanson <ryan@ryanhanson.dev>",
+        "url": "https://github.com/rxhanson/Rectangle/commit/1108284d0a5ec679e70eb6baf0ab1197c39240d7"
+    },
+    {
+        "sha": "db8574e8a94b5df68eb70f7ea6adc96d1718fcb1",
+        "author": "epicdistraction",
+        "email": "daniel@epicdistraction.com",
+        "date": "2026-06-16T18:56:56Z",
+        "message": "Apply Half-Split ratio to corner actions and snap areas (#1776)\n\n* Half size updates\n\n* Use half Ratio sizes in Corner Calculations\n\n* Add lock horizontal/vertical axis feature. Fix cyclic hotkeys hitting repeating the same state. Fix moving window flash after resize.\n\n* Prefer user-centric label over implementation.\n\n* Allow 1/2 size to be deselected from cyclic commands\n\n* Rename Half to Side. Affects  Shortcuts, Snap Areas, and General. Added migrations\n\n* Use legacy half names internally. Add aliases to create hooks for new side name to work for future progrmatic invocations.\n\n* Allow alias (leftSide for leftHalf, etc) to be used in the url api\n\n* Remove conflicting constraints for split % text input fields\n\n* A little more spacing for cycle sizes settings\n\n---------\n\nCo-authored-by: Daniel <daniel@trainoperator.co>\nCo-authored-by: Ryan Hanson <ryan@ryanhanson.dev>",
+        "url": "https://github.com/rxhanson/Rectangle/commit/db8574e8a94b5df68eb70f7ea6adc96d1718fcb1"
+    },
+    {
+        "sha": "bb65a2850a177ef1a7afa28ed1c5d6d2e1ee83ad",
+        "author": "Ryan Hanson",
+        "email": "ryan@ryanhanson.dev",
+        "date": "2026-06-10T15:25:28Z",
+        "message": "Update CONTRIBUTING.md",
+        "url": "https://github.com/rxhanson/Rectangle/commit/bb65a2850a177ef1a7afa28ed1c5d6d2e1ee83ad"
+    },
+    {
+        "sha": "9f5c4deda86b0516c22997b4de1c9559474bab00",
+        "author": "Gunnar Von Bergen",
+        "email": "36426938+GVonB@users.noreply.github.com",
+        "date": "2026-06-05T15:48:25Z",
+        "message": "Adds a \"Skip gap on top screen edge\" checkbox in Settings (#1773)\n\n* Adds a \"Skip gap on top screen edge\" checkbox in Settings (near the gap size slider).\nWhen enabled, windows positioned at the top of the screen will sit flush against the menu bar area rather than having the gap applied there. Gaps between windows and on all other screen edges are unaffected. Default is off, preserving existing behavior.\n\n* Rename \"Skip gap\" to \"Remove gap\" on top screen edge option label",
+        "url": "https://github.com/rxhanson/Rectangle/commit/9f5c4deda86b0516c22997b4de1c9559474bab00"
+    },
+    {
+        "sha": "10ab2f3289449dd1e8c9b14f42587375387eb938",
+        "author": "Ryan Hanson",
+        "email": "ryan@ryanhanson.dev",
+        "date": "2026-05-31T17:47:35Z",
+        "message": "v0.96",
+        "url": "https://github.com/rxhanson/Rectangle/commit/10ab2f3289449dd1e8c9b14f42587375387eb938"
+    },
+    {
+        "sha": "72863443b6f5d8b1876f454b69ba96c6afe4d914",
+        "author": "Ryan Hanson",
+        "email": "ryan@ryanhanson.dev",
+        "date": "2026-05-31T17:33:55Z",
+        "message": "Update LICENSE",
+        "url": "https://github.com/rxhanson/Rectangle/commit/72863443b6f5d8b1876f454b69ba96c6afe4d914"
+    },
+    {
+        "sha": "2c1b5aa24424143d0c371ac92415c3c069c0f6bd",
+        "author": "Ryan Hanson",
+        "email": "ryan@ryanhanson.dev",
+        "date": "2026-05-31T17:29:54Z",
+        "message": "Reduced header comment to filename",
+        "url": "https://github.com/rxhanson/Rectangle/commit/2c1b5aa24424143d0c371ac92415c3c069c0f6bd"
+    },
+    {
+        "sha": "a61a908d7ce790902eac67a987e6396b01c1f980",
+        "author": "Ryan Hanson",
+        "email": "ryan@ryanhanson.dev",
+        "date": "2026-05-31T17:20:42Z",
+        "message": "Updated template for new files",
+        "url": "https://github.com/rxhanson/Rectangle/commit/a61a908d7ce790902eac67a987e6396b01c1f980"
+    },
+    {
+        "sha": "109cbc62198c52c5c15867135c10045c3a243c4e",
+        "author": "Ryan Hanson",
+        "email": "ryan@ryanhanson.dev",
+        "date": "2026-05-31T17:06:06Z",
+        "message": "Main strings auto-update",
+        "url": "https://github.com/rxhanson/Rectangle/commit/109cbc62198c52c5c15867135c10045c3a243c4e"
+    },
+    {
+        "sha": "c3e2dbe944c4fbbce943b578ce0dcd3252484805",
+        "author": "Ryan Hanson",
+        "email": "ryan@ryanhanson.dev",
+        "date": "2026-05-31T17:05:07Z",
+        "message": "Remove QuantizedWindowMover from project",
+        "url": "https://github.com/rxhanson/Rectangle/commit/c3e2dbe944c4fbbce943b578ce0dcd3252484805"
+    },
+    {
+        "sha": "ab0ed4c9786bbab75f2dcafedb27c9a230af1c06",
+        "author": "Ryan Hanson",
+        "email": "ryan@ryanhanson.dev",
+        "date": "2026-05-31T17:00:14Z",
+        "message": "Remove QuantizedWindowMover",
+        "url": "https://github.com/rxhanson/Rectangle/commit/ab0ed4c9786bbab75f2dcafedb27c9a230af1c06"
+    },
+    {
+        "sha": "59147d9e46db4c7ea974cf3d5bb943053df2be41",
+        "author": "Ryan Hanson",
+        "email": "ryan@ryanhanson.dev",
+        "date": "2026-05-31T16:56:42Z",
+        "message": "For fixed size windows, actions that result in a corner can be configured to go to that corner instead of centered in the proposed area",
+        "url": "https://github.com/rxhanson/Rectangle/commit/59147d9e46db4c7ea974cf3d5bb943053df2be41"
+    },
+    {
+        "sha": "3441fae18fb1ca072f351972932fe261d53c43df",
+        "author": "Ryan Hanson",
+        "email": "ryan@ryanhanson.dev",
+        "date": "2026-05-31T14:06:27Z",
+        "message": "Refactored WindowMover to take a parameter struct instead of individual parameters",
+        "url": "https://github.com/rxhanson/Rectangle/commit/3441fae18fb1ca072f351972932fe261d53c43df"
+    },
+    {
+        "sha": "be01013603c3a4c065727a65c17b3e22f1b03a3f",
+        "author": "Tomas",
+        "email": "tmsdnl@users.noreply.github.com",
+        "date": "2026-05-31T04:43:05Z",
+        "message": "feat(shortcuts): add duplicate shortcut cycling (#1759)\n\n- Suspend shortcut bindings while recording shortcuts\n- Reject todo shortcut conflicts without already-used alerts\n- Cover overlapping shortcut recording state",
+        "url": "https://github.com/rxhanson/Rectangle/commit/be01013603c3a4c065727a65c17b3e22f1b03a3f"
+    },
+    {
+        "sha": "c9c61178be17bbf970f130c9aaf6186e4fce9abf",
+        "author": "Ryan Hanson",
+        "email": "ryan@ryanhanson.dev",
+        "date": "2026-05-31T04:26:39Z",
+        "message": "Refactoring and code cleanup in Todo mode",
+        "url": "https://github.com/rxhanson/Rectangle/commit/c9c61178be17bbf970f130c9aaf6186e4fce9abf"
+    },
+    {
+        "sha": "55d919dce054a52745ad1d3f4cfa7c7f0ce3cfc9",
+        "author": "dooyeoung.ryu",
+        "email": "38338977+dooyeoung@users.noreply.github.com",
+        "date": "2026-05-31T04:22:52Z",
+        "message": "feat: add Combined Display Mode (#1763)\n\n* feat: add Combined Display Mode\n\nAdd a setting to treat multiple monitors as a single virtual display,\nso window actions (half, center, maximize, corners, etc.) operate across\nall connected monitors at once.\n\nSettings window: \"Treat multiple monitors as one\" checkbox with description,\nseparated by a divider line from other options. Localized via NSLocalizedString\nwith Korean translation in Main.xcstrings.\n\nWhen enabled:\n- All window calculations receive a combined bounding frame of all monitors\n- BestEffortWindowMover uses the combined frame to avoid single-screen clamping\n- Left/Right half, Center, CenterProminently respect the combined frame\n- Next/Previous Display menu items are hidden\n\nImplementation:\n- Defaults.combinedDisplayMode (BoolDefault) persists the setting\n- WindowCalculationParameters carries combinedDisplayFrame: CGRect?\n- WindowManager computes the union of all screen visible frames when enabled\n\nCo-Authored-By: Claude Sonnet 4.6 <noreply@anthropic.com>\n\n* refactor: move combined display logic into adjustedVisibleFrame\n\nPer maintainer feedback, compute the union of all screens inside\nadjustedVisibleFrame so every calculation picks it up automatically\nwithout threading a combinedDisplayFrame parameter through\nWindowCalculationParameters and each individual calculation file.\n\nCo-Authored-By: Claude Sonnet 4.6 <noreply@anthropic.com>\n\n* fix: early return in combined display mode to skip per-screen adjustments\n\nWhen combined display mode is active, return the union immediately so\nstage strip, todo sidebar, and screen edge gap adjustments (all derived\nfrom self, a single NSScreen) are not incorrectly applied to the\nmulti-screen combined frame.\n\nCo-Authored-By: Claude Sonnet 4.6 <noreply@anthropic.com>\n\n* refactor: move combined display logic into adjustedVisibleFrame\n\nPer maintainer feedback, compute the union of all screens inside\nadjustedVisibleFrame so every calculation picks it up automatically.\nEarly return after the union to avoid incorrectly applying per-screen\nadjustments (stage strip, todo sidebar, edge gaps) to the combined frame.\n\nCo-Authored-By: Claude Sonnet 4.6 <noreply@anthropic.com>\n\n* Remove whitespace changes\n\n* Switch to optional bool default & move checkbox logic into function\n\n* Accommodate todo mode\n\n---------\n\nCo-authored-by: mgrv-dooyeoung <dy.ryu@mgrv.company>\nCo-authored-by: Claude Sonnet 4.6 <noreply@anthropic.com>\nCo-authored-by: Ryan Hanson <ryan@ryanhanson.dev>",
+        "url": "https://github.com/rxhanson/Rectangle/commit/55d919dce054a52745ad1d3f4cfa7c7f0ce3cfc9"
+    },
+    {
+        "sha": "eabe84eeaaed7a93d8cf7ae6a9b7dddbcb27dec8",
+        "author": "Nguyễn Huỳnh Anh Khoa",
+        "email": "113995598+anhkhoakz@users.noreply.github.com",
+        "date": "2026-05-29T19:49:44Z",
+        "message": "feat(lang): add more Vietnamese localize (#1770)",
+        "url": "https://github.com/rxhanson/Rectangle/commit/eabe84eeaaed7a93d8cf7ae6a9b7dddbcb27dec8"
+    },
+    {
+        "sha": "3bf93f46aca1fd9f0b0f49d07c90eae2c3a087ea",
+        "author": "TJ. Appleby",
+        "email": "tjaemails@gmail.com",
+        "date": "2026-05-27T04:12:25Z",
+        "message": "fix: restore snap after session has ended from log out/sleep (#1768)\n\n- Add session change handling to SnappingManager\n- Added session change handling to hopefully deal with the issue where Rectangle no longer snaps after idling and session ends\n- Added tests for session lock, sleep, cycling",
+        "url": "https://github.com/rxhanson/Rectangle/commit/3bf93f46aca1fd9f0b0f49d07c90eae2c3a087ea"
+    },
+    {
+        "sha": "584ea557fe5204430a292511c0a2fcf78b077647",
+        "author": "Jakub Anderwald",
+        "email": "jakub@anderwald.info",
+        "date": "2026-05-26T05:26:51Z",
+        "message": "Delete SECURITY_AUDIT.md (#1767)\n\nThis was a one-off report to elaborate on a security fix PR I pushed. No need to keep it permanently in the repo.",
+        "url": "https://github.com/rxhanson/Rectangle/commit/584ea557fe5204430a292511c0a2fcf78b077647"
+    },
+    {
+        "sha": "85f92c04c7964aba085d108a5d0dc01ea3897bfd",
+        "author": "Jakub Anderwald",
+        "email": "jakub@anderwald.info",
+        "date": "2026-05-26T04:19:34Z",
+        "message": "security: pin MASShortcut, confirm URL tasks, harden config auto-load (#1765)\n\nAddresses three issues identified in a source-level security audit\n(see SECURITY_AUDIT.md for the full report):\n\n1. [High] MASShortcut SPM dependency was pinned to `branch = master`,\n   meaning every build pulled the latest tip with no review gate. Pin\n   to the current HEAD revision SHA so future upstream changes require\n   an explicit bump.\n\n2. [Medium] `rectangle://execute-task=ignore-app/unignore-app` URL\n   actions silently mutated the disabled-apps defaults when triggered\n   from outside Rectangle (e.g. a web page). Require an NSAlert\n   confirmation, surfacing the bundle-id, unless Rectangle itself is\n   frontmost.\n\n3. [Medium] `Config.loadFromSupportDir()` silently auto-loaded any\n   RectangleConfig.json dropped in Application Support on launch. Add\n   a confirmation prompt, reject symlinks and world-writable files,\n   and apply a 1 MiB size cap to the loader (defense against OOM via\n   giant config).\n\nAlso includes SECURITY_AUDIT.md documenting the full review, including\nconfirmation that the app contains no telemetry, analytics, or crash\nreporting and that the only outbound network channel is the\nEdDSA-signed Sparkle update feed.\n\nCo-authored-by: Copilot <223556219+Copilot@users.noreply.github.com>",
+        "url": "https://github.com/rxhanson/Rectangle/commit/85f92c04c7964aba085d108a5d0dc01ea3897bfd"
+    },
+    {
+        "sha": "6aa825fc3f5c4ea6153ab3a659d8bbb3fd5a0f33",
+        "author": "Myron Koch",
+        "email": "126993133+MyronKoch@users.noreply.github.com",
+        "date": "2026-05-26T03:59:30Z",
+        "message": "Fix false positive overlap detection for half/third actions (#1766)\n\nOrigin-only matching caused false positives when a larger window\n(e.g. maximized or near-fullscreen) shared the same origin as the\ntarget position. Now excludes windows that cover more than 90% of\nthe screen on both axes from overlap detection, while preserving\noffset behavior for mixed-size grid windows at the same position\n(e.g. an eighth behind a quarter).\n\nCo-authored-by: Claude Opus 4.6 (1M context) <noreply@anthropic.com>",
+        "url": "https://github.com/rxhanson/Rectangle/commit/6aa825fc3f5c4ea6153ab3a659d8bbb3fd5a0f33"
+    }
+]

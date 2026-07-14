@@ -1,0 +1,242 @@
+[
+    {
+        "sha": "2fe8e9b1f5605862f67d7bc1e6c8ee780b8b3ef1",
+        "author": "Jan Krassnigg",
+        "email": "jan@krassnigg.de",
+        "date": "2026-07-13T07:40:34Z",
+        "message": "ezPluginBundles can now configure their own data directories to use (#1985)\n\nMoved plugin specific data into their own directories. The editor now automatically sets up data directories for the plugins that are selected.\n\nFixes #773.",
+        "url": "https://github.com/ezEngine/ezEngine/commit/2fe8e9b1f5605862f67d7bc1e6c8ee780b8b3ef1"
+    },
+    {
+        "sha": "aecf32fe82634bc0409fdb44dd912e964f563255",
+        "author": "C-Core",
+        "email": "clemenskern@gmail.com",
+        "date": "2026-07-11T08:43:52Z",
+        "message": "RmlUI debugger and gradient support (#1984)",
+        "url": "https://github.com/ezEngine/ezEngine/commit/aecf32fe82634bc0409fdb44dd912e964f563255"
+    },
+    {
+        "sha": "ab7258f9dde647f27dc844a714e59c342ed92a87",
+        "author": "Jan Krassnigg",
+        "email": "jan@krassnigg.de",
+        "date": "2026-07-10T10:55:00Z",
+        "message": "Data fixes (#1983)\n\n* Fixed all assets\n* Resaved most assets",
+        "url": "https://github.com/ezEngine/ezEngine/commit/ab7258f9dde647f27dc844a714e59c342ed92a87"
+    },
+    {
+        "sha": "03b63d729d3ebc6429388c3a36a1d018a3b64d29",
+        "author": "Jan Krassnigg",
+        "email": "jan@krassnigg.de",
+        "date": "2026-07-10T08:44:28Z",
+        "message": "Added asset check panel (#1982)\n\nFixes #1846.\n\nAdded a \"Check Assets\" panel that allows you to run validation rules on all assets in the project.\nThis can be used to find errors in the data. The rules can theoretically be quite complex, though for now the built-in rules do very basic checks:\n* check for unknown tags (fixes #1649)\n* find empty objects\n* find invalid required references (assets / files / strings)\n\nCustom editor plugins can add custom validation rules as well.",
+        "url": "https://github.com/ezEngine/ezEngine/commit/03b63d729d3ebc6429388c3a36a1d018a3b64d29"
+    },
+    {
+        "sha": "111b7a7bd0ccbead35ef976fe9df448489c53a03",
+        "author": "Jan Krassnigg",
+        "email": "jan@krassnigg.de",
+        "date": "2026-07-09T16:48:09Z",
+        "message": "Introduced attribute to mark properties as required (#1981)\n\nThe asset browser widget and text widget now display a warning icon when a property is empty that is marked as required.",
+        "url": "https://github.com/ezEngine/ezEngine/commit/111b7a7bd0ccbead35ef976fe9df448489c53a03"
+    },
+    {
+        "sha": "f4412ca7160405b9dd9617fa3a02861a39edf53b",
+        "author": "Jan Krassnigg",
+        "email": "jan@krassnigg.de",
+        "date": "2026-07-09T04:26:55Z",
+        "message": "Improved tag UI, data dir dialog, data fix (#1980)\n\n* Changing data directory config now allows to restart editor automatically\n\n* Fixed #1660: The reason was a badly rotated parent object.\n\nThe rotation was just so not normalized, which resulted in a slight de-sync between physics and rendering. Nothing that needs a code fix, just unfortunate scene setup.\n\n* Improved tag UI widget\n\nThe tags UI widget now shows when an unknown tag is in use and allows to clear invalid tags.\nAlso added automatic selection refresh on config changes, to refresh the UI.",
+        "url": "https://github.com/ezEngine/ezEngine/commit/f4412ca7160405b9dd9617fa3a02861a39edf53b"
+    },
+    {
+        "sha": "4d4f120d9a0c04ff1772cebf475e894589762f5c",
+        "author": "Jan Krassnigg",
+        "email": "jan@krassnigg.de",
+        "date": "2026-07-07T20:12:31Z",
+        "message": "Automatic LOD for terrain patches (#1979)\n\nAdds a new CVar \"Terrain.LodTargetCoverage\" which specifies how detailed terrain patches should appear on screen.\nTerrain patches that are more detailed than that, fade to LOD1 or LOD2.\nAt the edges, a \"skirt region\" is rendered (with some offset downwards. This is supposed to overlap with nearby terrain patches. When patches are at different densities (due to LOD or different resolutions), this skirt prevents cracks from showing up.\nThe LOD selection can be tweaked per patch to push it further out or pull it closer. LOD2 (1/16th triangle count) is the maximum LOD level, the skirt region isn't large enough for more reduction, and also the quality degrades too much after that.",
+        "url": "https://github.com/ezEngine/ezEngine/commit/4d4f120d9a0c04ff1772cebf475e894589762f5c"
+    },
+    {
+        "sha": "dee8f6a5a6e463c8ba47de38b47613cf73eaf7f5",
+        "author": "C-Core",
+        "email": "clemenskern@gmail.com",
+        "date": "2026-07-07T19:25:06Z",
+        "message": "Added missing per line color for 2d debug lines",
+        "url": "https://github.com/ezEngine/ezEngine/commit/dee8f6a5a6e463c8ba47de38b47613cf73eaf7f5"
+    },
+    {
+        "sha": "c2d54464ac333f3b1340c21a9b875ef9c919549e",
+        "author": "Sanakan8472",
+        "email": "Sanakan8472@users.noreply.github.com",
+        "date": "2026-07-07T05:56:49Z",
+        "message": "Fixed revert to default of exposed parameters (#1978)\n\n* Fixed revert to default of exposed parameters\n\nFixes #1946\n* Revert incorrect previous fix to crash when undoing prefab creation in `ezExposedParametersAsTypeDefaultStateProvider::GetDefaultValueInternal`. The problem was the the GUI was updating its state on deleted objects. Correct fix is to implement `ezQtExposedParametersPropertyWidget::DoPrepareToDie` correctly so that the child type widget is marked as dead.\n* Fixed a small bug in `ezExposedParametersAsTypeDefaultStateProvider::GetDefaultValueInternal`: The super array was reduced when passing to the base class. However, the base class is still operating on the same level so the same provider so the same super array needs to be passed in.\n* Added unit tests for prefab default state and undo / redo while selected. Added a new SphereTest prefab with exposed parameters for this purpose.\n\n* Applied code formatting rules\n\n---------\n\nCo-authored-by: ezEngine Automation <ezEngineProject@gmail.com>",
+        "url": "https://github.com/ezEngine/ezEngine/commit/c2d54464ac333f3b1340c21a9b875ef9c919549e"
+    },
+    {
+        "sha": "b1f37ac55760fde1b41745f0c0adc07df8af4138",
+        "author": "Sanakan8472",
+        "email": "Sanakan8472@users.noreply.github.com",
+        "date": "2026-07-06T17:49:37Z",
+        "message": "Vulkan Validation Fixes (#1977)\n\n* Vulkan Validation Fixes\n\n* Reduce number of allocations in the render graph during stable frames.\n* Added `-debugdevice` command line argument to tests and engine. This enables the GAL device debug flag. This will enable Vulkan validation.\n* CI tests now run with Vulkan validation.\n* Fixed Vulkan validation issue with swapchain textures being touched before being acquired. Initial layout is not set on first acquire.\n\n* Applied code formatting rules\n\n* build fix\n\n* ring buffer fix\n\n* Applied code formatting rules\n\n* review fixes\n\n* Review fixes\n\n* Applied code formatting rules\n\n---------\n\nCo-authored-by: ezEngine Automation <ezEngineProject@gmail.com>",
+        "url": "https://github.com/ezEngine/ezEngine/commit/b1f37ac55760fde1b41745f0c0adc07df8af4138"
+    },
+    {
+        "sha": "73f28df93c9163e90703a46848f291ef3f2e4906",
+        "author": "Jan Krassnigg",
+        "email": "jan@krassnigg.de",
+        "date": "2026-07-06T12:16:42Z",
+        "message": "Added terrain documentation links",
+        "url": "https://github.com/ezEngine/ezEngine/commit/73f28df93c9163e90703a46848f291ef3f2e4906"
+    },
+    {
+        "sha": "5715bdc9c37be5704d4612d95c4cd9bdff8395e6",
+        "author": "C-Core",
+        "email": "clemenskern@gmail.com",
+        "date": "2026-07-06T10:55:27Z",
+        "message": "Render Pipeline Blackboards (#1974)",
+        "url": "https://github.com/ezEngine/ezEngine/commit/5715bdc9c37be5704d4612d95c4cd9bdff8395e6"
+    },
+    {
+        "sha": "4274dc22a007ca504f097c7a3cb2a1689678f3b3",
+        "author": "C-Core",
+        "email": "clemenskern@gmail.com",
+        "date": "2026-07-03T15:15:27Z",
+        "message": "Enable access to extracted render data in extraction callbacks; direct access to spline to avoid additional allocations and copies",
+        "url": "https://github.com/ezEngine/ezEngine/commit/4274dc22a007ca504f097c7a3cb2a1689678f3b3"
+    },
+    {
+        "sha": "51b63b9eb902c1d60267fc8889fe5a37573a4a44",
+        "author": "Sanakan8472",
+        "email": "Sanakan8472@users.noreply.github.com",
+        "date": "2026-07-03T14:05:39Z",
+        "message": "Added resource bindings to extractors (#1976)\n\n* Added resource bindings to extractors\n\n## RendererCore\n\n- Added sampler, buffer and texture binding function to `ezExtractedRenderData` and `ezMsgExtractRenderData`, similiar to the `ezBindGroupBuilder` interface.\n    - Bindings are applied to the `EZ_GAL_BIND_GROUP_FRAME` at the start of rendering.\n    - Bindings are cached alongside dependencies for static objects.\n- Moved clustered and simplified lighting GPU resource ownership and uploads into their extractors. The extractors now update GPU buffers with `ezGALDevice::UpdateBufferForNextFrame`, add their view dependencies and record the bindings needed by the render pipeline.\n- Removed `ezClusteredDataProvider`, `ezSimplifiedDataProvider`, and the render pipeline pass provider binding/dependency hooks that are no longer needed.\n\n## RendererFoundation\n\n- Fixed Vulkan crash as `ezGALDevice::UpdateTextureQuality` was invalidating samplers used in bind groups. Fixed by invalidation all bind groups as well.\n- Enabled `VK_KHR_GET_SURFACE_CAPABILITIES_2_EXTENSION_NAME` as it is a prerequisite for `VK_KHR_SURFACE_MAINTENANCE_1_EXTENSION_NAME`.\n\n## Assets\n\n- Updated the terrain heightfield test scene as the `HeightImageScale` property name had changed, causing test failures.\n\n* Applied code formatting rules\n\n* build fix\n\n* remove ezMsgExtractRenderData binding support. Bindings should be handled by ezRenderer if needed.\n\n---------\n\nCo-authored-by: ezEngine Automation <ezEngineProject@gmail.com>",
+        "url": "https://github.com/ezEngine/ezEngine/commit/51b63b9eb902c1d60267fc8889fe5a37573a4a44"
+    },
+    {
+        "sha": "f814ffe51330d7834a39c5eb15bc4af75df41e89",
+        "author": "Evan Fish",
+        "email": "125333084+Mr-Fishy@users.noreply.github.com",
+        "date": "2026-07-02T07:17:46Z",
+        "message": "Feature: Animated Sprite Component Addition (#1967)",
+        "url": "https://github.com/ezEngine/ezEngine/commit/f814ffe51330d7834a39c5eb15bc4af75df41e89"
+    },
+    {
+        "sha": "9f49191b9fb40a755d6b7662ecf3b07739ceb10a",
+        "author": "Jan Krassnigg",
+        "email": "jan@krassnigg.de",
+        "date": "2026-06-30T13:44:14Z",
+        "message": "Updated Jolt (#1973)",
+        "url": "https://github.com/ezEngine/ezEngine/commit/9f49191b9fb40a755d6b7662ecf3b07739ceb10a"
+    },
+    {
+        "sha": "b5e2100c5b5424a23c7108007528298a9719233f",
+        "author": "Jan Krassnigg",
+        "email": "jan@krassnigg.de",
+        "date": "2026-06-29T12:51:38Z",
+        "message": "Fixed #1971: Export asset package dependencies (#1972)\n\nDetect RmlUI package and thumbnail dependencies.\nExport asset package dependencies during project export.",
+        "url": "https://github.com/ezEngine/ezEngine/commit/b5e2100c5b5424a23c7108007528298a9719233f"
+    },
+    {
+        "sha": "a64012c95add597a7a22e560969beddfdce894f7",
+        "author": "Jan Krassnigg",
+        "email": "Jan@Krassnigg.de",
+        "date": "2026-06-29T05:45:06Z",
+        "message": "Fixed missing export dependencies",
+        "url": "https://github.com/ezEngine/ezEngine/commit/a64012c95add597a7a22e560969beddfdce894f7"
+    },
+    {
+        "sha": "cbb1175204f81b2a5f5ecc55c544d90a989d34ea",
+        "author": "Sanakan8472",
+        "email": "Sanakan8472@users.noreply.github.com",
+        "date": "2026-06-25T06:22:38Z",
+        "message": "Simple console actions and generalized ImGui resources (#1969)\n\n* Simple console actions and generalized ImGui resources\n\n- Added `ezConsoleActions`, a central registry for input-backed console actions that keeps actions sorted by menu and action name, executes pressed shortcuts, and clears registered actions during shutdown.\n    - Wired the default game application developer actions into `ezConsoleActions`, replacing the hard-coded per-action input handling path with a shared `HandleInput()` call.\n    - Moved the ImGui console controls into a main menu bar with window toggles, layout reset, shortcut labels, and menu entries for registered console actions.\n    - Added a new action to open the ezInspector with F10 key.\n- Added support for registering custom ImGui console windows that can be toggled from the console menu and rendered while the console is open.\n- Reworked Dear ImGui resource registration to use stable handle IDs backed by an ID table, with support for texture resources, raw GAL textures, and material resources. For this `ImTextureID` was changed to the handle size (uint32).\n\n* Applied code formatting rules\n\n* build fix\n\n* clang tidy fix\n\n---------\n\nCo-authored-by: ezEngine Automation <ezEngineProject@gmail.com>",
+        "url": "https://github.com/ezEngine/ezEngine/commit/cbb1175204f81b2a5f5ecc55c544d90a989d34ea"
+    },
+    {
+        "sha": "e9cca37f18a9aceaf4dd21713160cb14094cb45b",
+        "author": "Sanakan8472",
+        "email": "Sanakan8472@users.noreply.github.com",
+        "date": "2026-06-24T07:00:46Z",
+        "message": "Render Graph Inspector (#1968)\n\n* Render Graph Inspector\n\nIntroduces a live render graph inspection and texture preview system that\nsends compiled render graph data from a running application to the Inspector\ntool over telemetry, including per-pass resource access visualization and\ninteractive texture previews with histogram, min/max and per-pixel readback.\n\n## RendererCore / RenderGraph\n\n- Add `ezRenderGraphInspectionInfo`, `ezRenderGraphExecutionSummary`,\n  `ezRenderGraphSwapChainSummary` and `ezRenderGraphInspectionSummary` as\n  read-only snapshots of a compiled graph (passes, textures, buffers and\n  flattened resource accesses), plus stream serialization operators\n  (`RenderGraphInspectionInfo.h`, `RenderGraphSerialization.cpp`).\n- Add `ezRenderGraphPassObserver`: observes a specific texture access within a\n  pass by copying it into a persistent texture after the pass executes. Supports\n  preview blit to a swap chain, sub-resource/channel/sample selection, value\n  range clamping, zoom/pan, GPU histogram and min/max computation, and\n  per-pixel readback.\n- Extend `ezRenderGraphManager` with observer management and inspection queries:\n  `GetExecutionSummary`, `GetRenderGraphInspectionInfo`, `CreateObserver`.\n\n## RendererFoundation\n\n- Add `ezGALTextureCreationDescription::GetNumberOfSlices` and `GetMipMapSize`. Reuse the latter from `ezGALTexture::GetMipMapSize`.\n- Add `ezGALDevice::GetAllSwapChains` and make `GetBackBufferTextureFromSwapChain` const.\n\n## InspectorPlugin\n\n- Add `RenderGraphObserver.cpp` to broadcast execution summaries, inspection info and observer responses over telemetry, and to apply observer requests received from the Inspector tool.\n\n## Inspector tool\n\n- Add render graph UI: `RenderGraphWidget`, `RenderGraphOverviewWidget`, `RenderGraphPreviewWidget` and `RenderGraphHistogramWidget`, wired into the\n  main window, actions and menus.\n\n## Shaders\n\n- Add compute/preview shaders for the observer: histogram clear/build, min/max clear/build, pixel readback and texture preview, with associated constant buffer and helper headers.\n\n* Applied code formatting rules\n\n* Fixes\n\n* Applied code formatting rules\n\n* clang tidy fixes\n\n---------\n\nCo-authored-by: ezEngine Automation <ezEngineProject@gmail.com>",
+        "url": "https://github.com/ezEngine/ezEngine/commit/e9cca37f18a9aceaf4dd21713160cb14094cb45b"
+    },
+    {
+        "sha": "4889bea081aadecd4b8ba10b5cdf7943dff55388",
+        "author": "C-Core",
+        "email": "clemenskern@gmail.com",
+        "date": "2026-06-20T08:40:36Z",
+        "message": "Don't delete empty parents when deleting prefab children, otherwise the prefab can delete itself",
+        "url": "https://github.com/ezEngine/ezEngine/commit/4889bea081aadecd4b8ba10b5cdf7943dff55388"
+    },
+    {
+        "sha": "e4ba71acf673208b50fec6e71d85e56b0be5c219",
+        "author": "C-Core",
+        "email": "clemenskern@gmail.com",
+        "date": "2026-06-18T19:20:01Z",
+        "message": "Mesh decals fixes and unit tests (#1966)",
+        "url": "https://github.com/ezEngine/ezEngine/commit/e4ba71acf673208b50fec6e71d85e56b0be5c219"
+    },
+    {
+        "sha": "2c0d62b8cef59463ec403c74389f9588072f667e",
+        "author": "Jan Krassnigg",
+        "email": "jan@krassnigg.de",
+        "date": "2026-06-16T07:48:36Z",
+        "message": "Updated Jolt (#1965)",
+        "url": "https://github.com/ezEngine/ezEngine/commit/2c0d62b8cef59463ec403c74389f9588072f667e"
+    },
+    {
+        "sha": "ad4119954bdb79a912bb92e13a9e843e0cd8584c",
+        "author": "Jan Krassnigg",
+        "email": "jan@krassnigg.de",
+        "date": "2026-06-13T07:13:26Z",
+        "message": "Added voxel functionality to Terrain System for volumetric editing (#1964)\n\nExtends the terrain system by a \"Terrain Volume\" component.\nThis represents 3D space that is fully volumetrically editable using the existing terrain brushes.\n\nThis works basically the same as the heightmap based terrain patch component, but allows to create overhangs, caves and other complex geometry.",
+        "url": "https://github.com/ezEngine/ezEngine/commit/ad4119954bdb79a912bb92e13a9e843e0cd8584c"
+    },
+    {
+        "sha": "b50d6f1babb1ea73c89cdbb1a789ee7a1d68848e",
+        "author": "Sanakan8472",
+        "email": "Sanakan8472@users.noreply.github.com",
+        "date": "2026-06-11T15:07:11Z",
+        "message": "Copy / Readback fixes (#1963)\n\n* Copy / Readback fixes\n\n## Renderer Changes\n\n- Removed states from the render graph state machine that were only relevent under the assumption that we would cache graphs at some point.\n- Fixed various bugs around sub-resources and block compression in texture upload / readback in `UpdateTextureForNextFrame` and Vulkan implementations.\n- Fixed command encoder update semantics: buffer and texture updates perform their own upload work and no longer require the destination texture to already be in `CopyDestination` state.\n\n## Tests\n- Adds the `CopyUpdate` renderer test covering buffer copies, buffer updates, texture copies, texture region copies, texture updates, next-frame texture updates, array/cube/cube-array textures, NPOT textures, mip chains, padded source data, and BC1 textures.\n- Adds the `IndirectDraw` renderer test covering indirect draw, indexed indirect draw, start instance handling, indirect argument offsets, and indirect dispatch.\n\n* Applied code formatting rules\n\n* clang tidy fixes\n\n* build fix\n\n* build fix\n\n* reverting stuff, clang tidy broke build\n\n* clang-tidy attempt 3\n\n* Applied code formatting rules\n\n---------\n\nCo-authored-by: ezEngine Automation <ezEngineProject@gmail.com>",
+        "url": "https://github.com/ezEngine/ezEngine/commit/b50d6f1babb1ea73c89cdbb1a789ee7a1d68848e"
+    },
+    {
+        "sha": "6bc80c1cefffc9121618e79577c2f67fd44ce52f",
+        "author": "Jan Krassnigg",
+        "email": "jan@krassnigg.de",
+        "date": "2026-06-11T11:36:10Z",
+        "message": "Non-destructive Brush Based Terrain System (#1962)\n\nAdded a Terrain plugin which implements non-destructive terrain editing functionality.\n\nThe \"terrain patch\" component represents a heightfield, which can be modified by placing \"terrain brushes\".\nThese are objects with brush components attached, which define how to modify (raise, lower, paint) the terrain.\nWhen moving a brush, the affected terrain patches are updated in real-time.\n\nPatches can also be initialized from image data, to import height information from external sources.\n\nCollision meshes are pre-baked on scene export, making the system compatible with the procedural placement system.\n\nTerrain patches require dedicated shaders for rendering. The necessary infrastructure can easily be included in a custom shader. The system supports many different layers, since the shader simply uses a 2D array texture. The exact defails are up to the shader. On the heightfields themselves, up to 5 layers may be blended over a single vertex without artifacts (can be lowered to 4 or 3 to make the shader faster).\n\nBrushes use \"rounded rect\" signed-distance fields, so they can be rectangular, circular and anything in between. They also allow to use noise. Brushes can be placed in prefabs to easily adjust terrain below an object (e.g. a building). When an object has both a brush and a spline component attached, the brush will follow the spline curve, to easily generate trails and mountains.\n\nFunctionality that's NOT available at the moment:\n* LOD - all terrain patches are always rendered at full detail. May be added later.\n* Erosion - not really suitable for this kind of system.\n* Caves / overhangs - not possible with heightfields.\n* Great terrain material shader - there is a lot that could be improved to make the terrain look better (noise, height base layer blending).",
+        "url": "https://github.com/ezEngine/ezEngine/commit/6bc80c1cefffc9121618e79577c2f67fd44ce52f"
+    },
+    {
+        "sha": "1f2d206de35320cd6ea79212e17bad43043dc10b",
+        "author": "C-Core",
+        "email": "clemenskern@gmail.com",
+        "date": "2026-06-09T13:07:47Z",
+        "message": "Set CMake policy CMP0194 to \"old\" since \"new\" it breaks cmake configure on some machines",
+        "url": "https://github.com/ezEngine/ezEngine/commit/1f2d206de35320cd6ea79212e17bad43043dc10b"
+    },
+    {
+        "sha": "4166e5713183b52e6400ec4f77352cbecce478d1",
+        "author": "C-Core",
+        "email": "clemenskern@gmail.com",
+        "date": "2026-06-09T12:00:30Z",
+        "message": "Restored data conversion logic that was lost during RmlUI 6.2 update (#1961)",
+        "url": "https://github.com/ezEngine/ezEngine/commit/4166e5713183b52e6400ec4f77352cbecce478d1"
+    },
+    {
+        "sha": "ac4488421c01383a11a08b3d7fb4d99db4371484",
+        "author": "Sanakan8472",
+        "email": "Sanakan8472@users.noreply.github.com",
+        "date": "2026-06-09T11:55:47Z",
+        "message": "Improved IPC connection state handling (#1960)\n\n* Improved IPC connection state handling\n\n## IPC Connections\n\n* Made `ezIpcChannel::Connect()` report whether a connection attempt was actually started and move channels into `Connecting` state before the platform-specific connect work is queued. The state machine will then either transition to `Connected` or `Disconnected` after a timeout on a client and the server will stay in `Connecting` until a client connects.\n* Added protocol message ids so the added IPC send/receive telemetry in `ezIpcProcessMessageProtocol` can be correlated across processes.\n* Fixed Enet-based IPC channel and re-enabled testing.\n* Reworked asset processor startup. Processor clients now start from a dedicated `StartClient` state which transitions to `WaitingForConnection` if the process could be started and eventually switches to `LookingForWork` if the IPC channel is connected.\n\n## Linux\n\n* Added Linux process group support using parent-death signals so launched child processes are terminated when the parent exits.\n* Fixed deadlock when starting process as the old code did try to enter a lock in the allocator.\n* Make POSIX process waiting more robust against interrupted waitpid calls and signaled exits. Mainly surfaced in `<defunct>` processes staying around.\n\n* Applied code formatting rules\n\n* build fixes\n\n* Clang tidy\n\n---------\n\nCo-authored-by: ezEngine Automation <ezEngineProject@gmail.com>\nCo-authored-by: Jan Krassnigg <jan@krassnigg.de>",
+        "url": "https://github.com/ezEngine/ezEngine/commit/ac4488421c01383a11a08b3d7fb4d99db4371484"
+    },
+    {
+        "sha": "ea06777759896de4281587a4851de93dd71b0871",
+        "author": "Jan Krassnigg",
+        "email": "jan@krassnigg.de",
+        "date": "2026-06-09T08:14:45Z",
+        "message": "Fixed some links",
+        "url": "https://github.com/ezEngine/ezEngine/commit/ea06777759896de4281587a4851de93dd71b0871"
+    }
+]

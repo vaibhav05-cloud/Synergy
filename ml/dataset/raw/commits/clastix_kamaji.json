@@ -1,0 +1,242 @@
+[
+    {
+        "sha": "3e5439488b678e8827c6bcc4733f2017ed2d59fc",
+        "author": "Francesco Brunello",
+        "email": "francesco@clastix.io",
+        "date": "2026-07-11T07:50:26Z",
+        "message": "fix(docs): general improvements to alternative datastore guide (#1233)",
+        "url": "https://github.com/clastix/kamaji/commit/3e5439488b678e8827c6bcc4733f2017ed2d59fc"
+    },
+    {
+        "sha": "99cea553c83c4b9f615b48ba5e9ecae008e54992",
+        "author": "Antonio B.",
+        "email": "116297488+SorteFatale@users.noreply.github.com",
+        "date": "2026-07-11T07:48:11Z",
+        "message": "chore(samples): improvements of sample Makefiles for MySQL and PostgreSQL datastores (#1234)\n\n* fix(docs): update command to collect the external IP address of the TCP service\n\n* chore(samples): improvements of sample Makefiles for MySQL and PostgreSQL datastores",
+        "url": "https://github.com/clastix/kamaji/commit/99cea553c83c4b9f615b48ba5e9ecae008e54992"
+    },
+    {
+        "sha": "b99609a435e77193a6d6df8e03f719b312a56df7",
+        "author": "dependabot[bot]",
+        "email": "49699333+dependabot[bot]@users.noreply.github.com",
+        "date": "2026-07-03T15:06:01Z",
+        "message": "feat(deps): bump the etcd group across 1 directory with 2 updates (#1217)\n\nBumps the etcd group with 2 updates in the / directory: [go.etcd.io/etcd/api/v3](https://github.com/etcd-io/etcd) and [go.etcd.io/etcd/client/v3](https://github.com/etcd-io/etcd).\n\n\nUpdates `go.etcd.io/etcd/api/v3` from 3.6.12 to 3.6.13\n- [Release notes](https://github.com/etcd-io/etcd/releases)\n- [Commits](https://github.com/etcd-io/etcd/compare/v3.6.12...v3.6.13)\n\nUpdates `go.etcd.io/etcd/client/v3` from 3.6.12 to 3.6.13\n- [Release notes](https://github.com/etcd-io/etcd/releases)\n- [Commits](https://github.com/etcd-io/etcd/compare/v3.6.12...v3.6.13)\n\n---\nupdated-dependencies:\n- dependency-name: go.etcd.io/etcd/api/v3\n  dependency-version: 3.6.13\n  dependency-type: direct:production\n  update-type: version-update:semver-patch\n  dependency-group: etcd\n- dependency-name: go.etcd.io/etcd/client/v3\n  dependency-version: 3.6.13\n  dependency-type: direct:production\n  update-type: version-update:semver-patch\n  dependency-group: etcd\n...\n\nSigned-off-by: dependabot[bot] <support@github.com>\nCo-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>",
+        "url": "https://github.com/clastix/kamaji/commit/b99609a435e77193a6d6df8e03f719b312a56df7"
+    },
+    {
+        "sha": "a3cb6d4a32dd14b41410a01ba8065c2bfc8e160a",
+        "author": "Antonio B.",
+        "email": "116297488+SorteFatale@users.noreply.github.com",
+        "date": "2026-07-02T15:35:37Z",
+        "message": "fix(docs): update command to collect the external IP address of the TCP service (#1218)",
+        "url": "https://github.com/clastix/kamaji/commit/a3cb6d4a32dd14b41410a01ba8065c2bfc8e160a"
+    },
+    {
+        "sha": "b48941e7eb29313bc4fa14137d16fc2fc0468993",
+        "author": "Dario Tranchitella",
+        "email": "dario@tranchitella.eu",
+        "date": "2026-07-01T16:18:11Z",
+        "message": "docs: goreportcard is sunset (#1216)\n\nSigned-off-by: Dario Tranchitella <dario@tranchitella.eu>",
+        "url": "https://github.com/clastix/kamaji/commit/b48941e7eb29313bc4fa14137d16fc2fc0468993"
+    },
+    {
+        "sha": "1756a7bccbcd358edbcfccc88374c328f9537d77",
+        "author": "Dario Tranchitella",
+        "email": "dario@tranchitella.eu",
+        "date": "2026-06-27T13:53:41Z",
+        "message": "fix: trigger rollout upon datastore certificate rotation (#1213)\n\nSigned-off-by: Dario Tranchitella <dario@tranchitella.eu>",
+        "url": "https://github.com/clastix/kamaji/commit/1756a7bccbcd358edbcfccc88374c328f9537d77"
+    },
+    {
+        "sha": "3955a78f787d68f25c87cacdacfe8ed1a3e477ea",
+        "author": "Jakob",
+        "email": "jakob.hahn@hetzner.com",
+        "date": "2026-06-26T12:43:44Z",
+        "message": "feat: make allocateLoadBalancerNodePorts configurable on TenantControlPlane Service (#1205)\n\n* feat(api): add allocateLoadBalancerNodePorts to ServiceSpec\n\nOptional *bool, nil keeps the Kubernetes default (true) so existing\nTenantControlPlanes are unchanged.\n\nRefs #1204\n\nCo-authored-by: Claude <noreply@anthropic.com>\n\n* feat(service): honor allocateLoadBalancerNodePorts in LoadBalancer service\n\nPropagate ServiceSpec.AllocateLoadBalancerNodePorts to the generated\nService and clear any already-assigned NodePort when allocation is\ndisabled, since Kubernetes does not deallocate it automatically.\n\nCloses #1204\n\nCo-authored-by: Claude <noreply@anthropic.com>\n\n* feat(service): treat unset allocateLoadBalancerNodePorts as the default\n\nAn unset (nil) AllocateLoadBalancerNodePorts field in the TCP spec now\nmeans \"use the Kubernetes LoadBalancer default\" (true). The builder\nwrites that default explicitly (ptr.To(true)) so that:\n\n- Clearing the field reverts the Service to the default declaratively,\n  rather than leaving it at whatever value was previously configured.\n- Writing the same `true` the API server already defaults to produces no\n  diff on DeepEqual, preventing perpetual reconcile churn.\n\nThe previous \"nil means do not touch\" semantics made it impossible to\nrevert a previously-false allocation without an explicit `true` in the\nspec, and had no effect on a freshly-created Service since the API\nserver would just re-default the field to true anyway.\n\nUpdated tests to cover all five cases: false (clears NodePort), true\n(preserves NodePort), unset defaults to true (preserves NodePort),\nunset does not churn against a server-defaulted true, and clearing a\npreviously-false field reverts to the default.\n\nCo-authored-by: Claude <noreply@anthropic.com>\nSigned-off-by: Jakob Hahn <jakob.hahn@hetzner.com>\n\n* feat(service): require LoadBalancer for allocateLoadBalancerNodePorts\n\nAdd a CEL validation rejecting allocateLoadBalancerNodePorts unless serviceType is LoadBalancer, mirroring the loadBalancerClass/loadBalancerSourceRanges guards. Update the field doc, regenerate CRDs and API docs, and cover the rule with an envtest case.\n\nCo-authored-by: Claude <noreply@anthropic.com>\n\n* refactor(service): use ptr.Deref for allocateLoadBalancerNodePorts default\n\nAddresses review feedback: replace the manual nil-check with ptr.Deref, the established pattern in the codebase, and avoid aliasing the TCP spec pointer into the Service spec.\n\nCo-authored-by: Claude <noreply@anthropic.com>\nSigned-off-by: Jakob Hahn <jakob.hahn@hetzner.com>\n\n---------\n\nSigned-off-by: Jakob Hahn <jakob.hahn@hetzner.com>\nCo-authored-by: Claude <noreply@anthropic.com>",
+        "url": "https://github.com/clastix/kamaji/commit/3955a78f787d68f25c87cacdacfe8ed1a3e477ea"
+    },
+    {
+        "sha": "56a4abb717623b3d39e9be34e0c295636d1c284a",
+        "author": "Jakob",
+        "email": "jakob.hahn@hetzner.com",
+        "date": "2026-06-25T17:53:48Z",
+        "message": "test(api): cover advertiseAddress IP validation (#1211)\n\nAdd envtest cases for the isIP CEL rule introduced in #1202: valid IPv4/IPv6 and an unset value are accepted; a DNS hostname and a malformed IP are rejected with the expected message.\n\nCo-authored-by: Claude <noreply@anthropic.com>",
+        "url": "https://github.com/clastix/kamaji/commit/56a4abb717623b3d39e9be34e0c295636d1c284a"
+    },
+    {
+        "sha": "b831e749befc33455afcf7af14c73ee27843f8c2",
+        "author": "Aleksei Sviridkin",
+        "email": "f@lex.la",
+        "date": "2026-06-24T19:19:30Z",
+        "message": "fix(deps): bump go.opentelemetry.io/otel to v1.43.0 (#1210)\n\ngo.opentelemetry.io/otel/sdk in the range >=1.15.0,<1.43.0 is affected\nby GHSA-hfvc-g4fc-pqhx (CVE-2026-39883): a PATH-lookup hijack in the\nbatch span processor's self-observability path on BSD/Solaris. The\nmodule is currently pinned at v1.41.0 via the dependency graph.\n\nBump the otel core, metric, sdk, and trace modules together to v1.43.0\nso the v1 module set stays aligned and the advisory is cleared. The\nchange is limited to go.mod and go.sum; build, vet, lint, and the unit\ntest suite pass unchanged.\n\nSigned-off-by: Aleksei Sviridkin <f@lex.la>",
+        "url": "https://github.com/clastix/kamaji/commit/b831e749befc33455afcf7af14c73ee27843f8c2"
+    },
+    {
+        "sha": "04667061c552c1a1cb5996788c771b41156510ae",
+        "author": "Sebastian Diez",
+        "email": "sebastian.diez.88@gmail.com",
+        "date": "2026-06-24T15:34:25Z",
+        "message": "fix(kubeadm): call AllowAPIServerToAccessKubeletAPI in BootstrapToken added in k8s v1.36.1 (#1172)",
+        "url": "https://github.com/clastix/kamaji/commit/04667061c552c1a1cb5996788c771b41156510ae"
+    },
+    {
+        "sha": "1bca1f97dcf95899b61fa9e99a8cf8b6ba787560",
+        "author": "Dario Tranchitella",
+        "email": "dario@tranchitella.eu",
+        "date": "2026-06-24T15:31:19Z",
+        "message": "fix(soot): restarting manager when cert rotates (#1191)\n\n* refactor(kubeconfig): considering content for checksum\n\nSigned-off-by: Dario Tranchitella <dario@tranchitella.eu>\n\n* fix(soot): restarting manager when cert rotates\n\nSigned-off-by: Dario Tranchitella <dario@tranchitella.eu>\n\n---------\n\nSigned-off-by: Dario Tranchitella <dario@tranchitella.eu>",
+        "url": "https://github.com/clastix/kamaji/commit/1bca1f97dcf95899b61fa9e99a8cf8b6ba787560"
+    },
+    {
+        "sha": "0144f0471707bb54439cb3097a1a211e5698d5f3",
+        "author": "dependabot[bot]",
+        "email": "49699333+dependabot[bot]@users.noreply.github.com",
+        "date": "2026-06-24T14:40:00Z",
+        "message": "feat(deps): bump github.com/onsi/gomega from 1.42.0 to 1.42.1 (#1201)\n\nBumps [github.com/onsi/gomega](https://github.com/onsi/gomega) from 1.42.0 to 1.42.1.\n- [Release notes](https://github.com/onsi/gomega/releases)\n- [Changelog](https://github.com/onsi/gomega/blob/master/CHANGELOG.md)\n- [Commits](https://github.com/onsi/gomega/compare/v1.42.0...v1.42.1)\n\n---\nupdated-dependencies:\n- dependency-name: github.com/onsi/gomega\n  dependency-version: 1.42.1\n  dependency-type: direct:production\n  update-type: version-update:semver-patch\n...\n\nSigned-off-by: dependabot[bot] <support@github.com>\nCo-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>",
+        "url": "https://github.com/clastix/kamaji/commit/0144f0471707bb54439cb3097a1a211e5698d5f3"
+    },
+    {
+        "sha": "8f612d6cfac63203fdf1f2787e2786096b3546d6",
+        "author": "Antonio B.",
+        "email": "116297488+SorteFatale@users.noreply.github.com",
+        "date": "2026-06-24T12:22:44Z",
+        "message": "fix(docs): typo correction within kamaji-kind.md and kamaji-generic.md (#1206)\n\n* fix(docs): update CRDs installation flag in kamaji-aws.md\n\nRestored cert-manager flag to be version-compliant with v1.11.0\n\n* docs: update all cert-manager helm charts by leveraging a pinned version as declared within the Makefile\n\n* fix(docs): typo correction within kamaji-kind.md and kamaji-generic.md",
+        "url": "https://github.com/clastix/kamaji/commit/8f612d6cfac63203fdf1f2787e2786096b3546d6"
+    },
+    {
+        "sha": "e843c82fb7ed1227937ceb88f7d82235406e9ca0",
+        "author": "Dario Tranchitella",
+        "email": "dario@tranchitella.eu",
+        "date": "2026-06-24T09:27:24Z",
+        "message": "fix(test): avoiding flakiness for migration test case (#1203)\n\nSigned-off-by: Dario Tranchitella <dario@tranchitella.eu>",
+        "url": "https://github.com/clastix/kamaji/commit/e843c82fb7ed1227937ceb88f7d82235406e9ca0"
+    },
+    {
+        "sha": "825b39a2df9e61ae14ffdb176c47b172a343c10a",
+        "author": "Jakob",
+        "email": "jakob.hahn@hetzner.com",
+        "date": "2026-06-24T07:45:10Z",
+        "message": "feat(api): validate advertiseAddress is an IP and clarify its docs (#1202)\n\nadvertiseAddress is passed verbatim to the API server's --advertise-address\nflag, which only accepts an IP address. A DNS name was silently admitted and\nonly surfaced as a tenant API server CrashLoopBackOff (\"failed to parse IP\"),\nthree layers removed from the misconfiguration.\n\nAdd a CEL validation (consistent with the existing isCIDR rules on\nserviceCidr/podCidr in the same struct) so the value is rejected at admission\ntime, and clarify the field documentation: it must be an IP, it feeds\n--advertise-address, and the supported way to use a hostname is a DNS record\npointing at a stable VIP plus networkProfile.certSANs.\n\nCloses #1197\n\nSigned-off-by: Jakob Hahn <jakob.hahn@hetzner.com>\nCo-authored-by: Claude <noreply@anthropic.com>",
+        "url": "https://github.com/clastix/kamaji/commit/825b39a2df9e61ae14ffdb176c47b172a343c10a"
+    },
+    {
+        "sha": "c7c08b7d187ab8bd58842c8c0d2986d930e94837",
+        "author": "Jakob",
+        "email": "jakob.hahn@hetzner.com",
+        "date": "2026-06-23T19:53:20Z",
+        "message": "fix(deployment): render readiness probe for scheduler and controller-manager (#1193)\n\n* fix(deployment): guard applyProbeOverrides against nil probe\n\nCo-Authored-By: Claude <noreply@anthropic.com>\n\n* fix(deployment): render readiness probe for scheduler and controller-manager (#1192)\n\nCo-Authored-By: Claude <noreply@anthropic.com>\n\n* docs(api): readiness probe defaults apply to all control plane components\n\nThe global probes.readiness now cascades to scheduler and controller-manager\nas well as kube-apiserver, matching liveness/startup. Update the godoc and\nregenerate the CRD descriptions accordingly.\n\nCo-Authored-By: Claude <noreply@anthropic.com>\n\n---------\n\nCo-authored-by: Claude <noreply@anthropic.com>",
+        "url": "https://github.com/clastix/kamaji/commit/c7c08b7d187ab8bd58842c8c0d2986d930e94837"
+    },
+    {
+        "sha": "23ac07231ba95dad3a714fdba6881126b042c04d",
+        "author": "dependabot[bot]",
+        "email": "49699333+dependabot[bot]@users.noreply.github.com",
+        "date": "2026-06-23T18:31:51Z",
+        "message": "feat(deps): bump github.com/onsi/ginkgo/v2 from 2.31.0 to 2.32.0 (#1195)\n\nBumps [github.com/onsi/ginkgo/v2](https://github.com/onsi/ginkgo) from 2.31.0 to 2.32.0.\n- [Release notes](https://github.com/onsi/ginkgo/releases)\n- [Changelog](https://github.com/onsi/ginkgo/blob/master/CHANGELOG.md)\n- [Commits](https://github.com/onsi/ginkgo/compare/v2.31.0...v2.32.0)\n\n---\nupdated-dependencies:\n- dependency-name: github.com/onsi/ginkgo/v2\n  dependency-version: 2.32.0\n  dependency-type: direct:production\n  update-type: version-update:semver-minor\n...\n\nSigned-off-by: dependabot[bot] <support@github.com>\nCo-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>",
+        "url": "https://github.com/clastix/kamaji/commit/23ac07231ba95dad3a714fdba6881126b042c04d"
+    },
+    {
+        "sha": "55e82e67a88844f62397d2a2129595b74fc376d8",
+        "author": "Francesco Brunello",
+        "email": "f.brunello@studenti.unina.it",
+        "date": "2026-06-23T18:31:36Z",
+        "message": "docs: update velero hyperlink (#1199)",
+        "url": "https://github.com/clastix/kamaji/commit/55e82e67a88844f62397d2a2129595b74fc376d8"
+    },
+    {
+        "sha": "b3068f8c4312088aafcd2890a18e9c07038a8319",
+        "author": "Francesco Brunello",
+        "email": "f.brunello@studenti.unina.it",
+        "date": "2026-06-23T13:15:37Z",
+        "message": "docs: update delete cluster command with the CLUSTER_NAME env variable (#1198)",
+        "url": "https://github.com/clastix/kamaji/commit/b3068f8c4312088aafcd2890a18e9c07038a8319"
+    },
+    {
+        "sha": "ad85daec28ab7460bcb96a0077ffdc09cb8004b5",
+        "author": "Antonio B.",
+        "email": "116297488+SorteFatale@users.noreply.github.com",
+        "date": "2026-06-23T12:54:17Z",
+        "message": "fix(docs): update all cert-manager helm charts with a pinned version (#1196)\n\n* fix(docs): update CRDs installation flag in kamaji-aws.md\n\nRestored cert-manager flag to be version-compliant with v1.11.0\n\n* docs: update all cert-manager helm charts by leveraging a pinned version as declared within the Makefile",
+        "url": "https://github.com/clastix/kamaji/commit/ad85daec28ab7460bcb96a0077ffdc09cb8004b5"
+    },
+    {
+        "sha": "b227a34a6c189823ab100bd7fe11254a283cece0",
+        "author": "Francesco Brunello",
+        "email": "francesco@clastix.io",
+        "date": "2026-06-22T15:51:16Z",
+        "message": "fix(docs): cert-manager values and cluster api kind hyperlink (#1194)\n\n* docs: updated helm chart variable (#1186)\n\n* docs: updated KamajiControlPlane Reference API link to newer version (v1alpha2)",
+        "url": "https://github.com/clastix/kamaji/commit/b227a34a6c189823ab100bd7fe11254a283cece0"
+    },
+    {
+        "sha": "5e576071f010baa587f8de9027b66324dcea7af5",
+        "author": "Fabian Breckle",
+        "email": "39595706+fbreckle@users.noreply.github.com",
+        "date": "2026-06-20T08:35:43Z",
+        "message": "feat: configurable securityContext for containers and pod (#1181)\n\n* feat: add securityContexts to control plane components\n\n* feat: add configurable security context to Konnectivity server component\n\n* test: add e2e test for tcp security contexts\n\n* test(refactor): use getControlPlanePods function where possible\n\n---------\n\nCo-authored-by: Sebastian Diez <sebastian.diez@breuninger.de>",
+        "url": "https://github.com/clastix/kamaji/commit/5e576071f010baa587f8de9027b66324dcea7af5"
+    },
+    {
+        "sha": "e20ec65156bf7499cfb92207e4db50a22eff4fe8",
+        "author": "dependabot[bot]",
+        "email": "49699333+dependabot[bot]@users.noreply.github.com",
+        "date": "2026-06-20T08:21:28Z",
+        "message": "feat(deps): bump github.com/moby/moby/api from 1.54.2 to 1.55.0 (#1185)\n\nBumps [github.com/moby/moby/api](https://github.com/moby/moby) from 1.54.2 to 1.55.0.\n- [Release notes](https://github.com/moby/moby/releases)\n- [Commits](https://github.com/moby/moby/compare/api/v1.54.2...api/v1.55.0)\n\n---\nupdated-dependencies:\n- dependency-name: github.com/moby/moby/api\n  dependency-version: 1.55.0\n  dependency-type: direct:production\n  update-type: version-update:semver-minor\n...\n\nSigned-off-by: dependabot[bot] <support@github.com>\nCo-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>",
+        "url": "https://github.com/clastix/kamaji/commit/e20ec65156bf7499cfb92207e4db50a22eff4fe8"
+    },
+    {
+        "sha": "99b7fe489639f0c8690fe0e0abc9c38b2f937f2a",
+        "author": "dependabot[bot]",
+        "email": "49699333+dependabot[bot]@users.noreply.github.com",
+        "date": "2026-06-20T07:45:52Z",
+        "message": "chore(ci): bump actions/checkout from 6 to 7 (#1184)\n\nBumps [actions/checkout](https://github.com/actions/checkout) from 6 to 7.\n- [Release notes](https://github.com/actions/checkout/releases)\n- [Changelog](https://github.com/actions/checkout/blob/main/CHANGELOG.md)\n- [Commits](https://github.com/actions/checkout/compare/v6...v7)\n\n---\nupdated-dependencies:\n- dependency-name: actions/checkout\n  dependency-version: '7'\n  dependency-type: direct:production\n  update-type: version-update:semver-major\n...\n\nSigned-off-by: dependabot[bot] <support@github.com>\nCo-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>",
+        "url": "https://github.com/clastix/kamaji/commit/99b7fe489639f0c8690fe0e0abc9c38b2f937f2a"
+    },
+    {
+        "sha": "654f7a59a8dd98668a4ffe66a1014034f0baf408",
+        "author": "dependabot[bot]",
+        "email": "49699333+dependabot[bot]@users.noreply.github.com",
+        "date": "2026-06-20T07:45:21Z",
+        "message": "feat(deps): bump github.com/testcontainers/testcontainers-go (#1188)\n\nBumps [github.com/testcontainers/testcontainers-go](https://github.com/testcontainers/testcontainers-go) from 0.42.0 to 0.43.0.\n- [Release notes](https://github.com/testcontainers/testcontainers-go/releases)\n- [Commits](https://github.com/testcontainers/testcontainers-go/compare/v0.42.0...v0.43.0)\n\n---\nupdated-dependencies:\n- dependency-name: github.com/testcontainers/testcontainers-go\n  dependency-version: 0.43.0\n  dependency-type: direct:production\n  update-type: version-update:semver-minor\n...\n\nSigned-off-by: dependabot[bot] <support@github.com>\nCo-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>",
+        "url": "https://github.com/clastix/kamaji/commit/654f7a59a8dd98668a4ffe66a1014034f0baf408"
+    },
+    {
+        "sha": "484ab402d6af80fa74f8e57a8282dbbad129f7c1",
+        "author": "Francesco Brunello",
+        "email": "francesco@clastix.io",
+        "date": "2026-06-19T15:45:25Z",
+        "message": "docs: updated helm chart variable (#1186) (#1187)",
+        "url": "https://github.com/clastix/kamaji/commit/484ab402d6af80fa74f8e57a8282dbbad129f7c1"
+    },
+    {
+        "sha": "69feeb0b44096c128481e987f966e27e09283818",
+        "author": "Davey Van Huffelen",
+        "email": "109965364+daveyvh@users.noreply.github.com",
+        "date": "2026-06-18T13:25:24Z",
+        "message": "feat: dual stack support for pod and service cidrs (#1176)\n\n* Add support for multiple service and pod CIDRs and dualstack controlplanes\n\n* Added backwards compatability as to not break existing control planes which do not set the new cidr fields\n\n* Added helper functions in utilities.go\n\n* Cleanup unique strings function. Cleanup tests. Generated manifests\n\n* issued make apidocs",
+        "url": "https://github.com/clastix/kamaji/commit/69feeb0b44096c128481e987f966e27e09283818"
+    },
+    {
+        "sha": "a35a2cb267697099c74cd5274bc6e117e09c329c",
+        "author": "dependabot[bot]",
+        "email": "49699333+dependabot[bot]@users.noreply.github.com",
+        "date": "2026-06-16T12:39:44Z",
+        "message": "feat(deps): bump github.com/onsi/gomega from 1.41.0 to 1.42.0 (#1182)\n\nBumps [github.com/onsi/gomega](https://github.com/onsi/gomega) from 1.41.0 to 1.42.0.\n- [Release notes](https://github.com/onsi/gomega/releases)\n- [Changelog](https://github.com/onsi/gomega/blob/master/CHANGELOG.md)\n- [Commits](https://github.com/onsi/gomega/compare/v1.41.0...v1.42.0)\n\n---\nupdated-dependencies:\n- dependency-name: github.com/onsi/gomega\n  dependency-version: 1.42.0\n  dependency-type: direct:production\n  update-type: version-update:semver-minor\n...\n\nSigned-off-by: dependabot[bot] <support@github.com>\nCo-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>",
+        "url": "https://github.com/clastix/kamaji/commit/a35a2cb267697099c74cd5274bc6e117e09c329c"
+    },
+    {
+        "sha": "f2f1b35ed72d793347db5dba1af7f3c8f6e12617",
+        "author": "dependabot[bot]",
+        "email": "49699333+dependabot[bot]@users.noreply.github.com",
+        "date": "2026-06-16T07:07:50Z",
+        "message": "feat(deps): bump github.com/onsi/ginkgo/v2 from 2.30.0 to 2.31.0 (#1183)\n\nBumps [github.com/onsi/ginkgo/v2](https://github.com/onsi/ginkgo) from 2.30.0 to 2.31.0.\n- [Release notes](https://github.com/onsi/ginkgo/releases)\n- [Changelog](https://github.com/onsi/ginkgo/blob/master/CHANGELOG.md)\n- [Commits](https://github.com/onsi/ginkgo/compare/v2.30.0...v2.31.0)\n\n---\nupdated-dependencies:\n- dependency-name: github.com/onsi/ginkgo/v2\n  dependency-version: 2.31.0\n  dependency-type: direct:production\n  update-type: version-update:semver-minor\n...\n\nSigned-off-by: dependabot[bot] <support@github.com>\nCo-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>",
+        "url": "https://github.com/clastix/kamaji/commit/f2f1b35ed72d793347db5dba1af7f3c8f6e12617"
+    },
+    {
+        "sha": "49b49cc7daa61f2a7641151e30768ed8fee3c13a",
+        "author": "dependabot[bot]",
+        "email": "49699333+dependabot[bot]@users.noreply.github.com",
+        "date": "2026-06-14T16:00:43Z",
+        "message": "feat(deps): bump the k8s group with 2 updates (#1180)\n\nBumps the k8s group with 2 updates: [k8s.io/apimachinery](https://github.com/kubernetes/apimachinery) and [k8s.io/kubernetes](https://github.com/kubernetes/kubernetes).\n\n\nUpdates `k8s.io/apimachinery` from 0.36.1 to 0.36.2\n- [Commits](https://github.com/kubernetes/apimachinery/compare/v0.36.1...v0.36.2)\n\nUpdates `k8s.io/kubernetes` from 1.36.1 to 1.36.2\n- [Release notes](https://github.com/kubernetes/kubernetes/releases)\n- [Commits](https://github.com/kubernetes/kubernetes/compare/v1.36.1...v1.36.2)\n\n---\nupdated-dependencies:\n- dependency-name: k8s.io/apimachinery\n  dependency-version: 0.36.2\n  dependency-type: direct:production\n  update-type: version-update:semver-patch\n  dependency-group: k8s\n- dependency-name: k8s.io/kubernetes\n  dependency-version: 1.36.2\n  dependency-type: direct:production\n  update-type: version-update:semver-patch\n  dependency-group: k8s\n...\n\nSigned-off-by: dependabot[bot] <support@github.com>\nCo-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>",
+        "url": "https://github.com/clastix/kamaji/commit/49b49cc7daa61f2a7641151e30768ed8fee3c13a"
+    }
+]

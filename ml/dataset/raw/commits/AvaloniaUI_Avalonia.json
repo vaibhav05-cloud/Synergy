@@ -1,0 +1,242 @@
+[
+    {
+        "sha": "11564814b32a844145ed1450b5ea42e53889bf3a",
+        "author": "Nikita Tsukanov",
+        "email": "keks9n@gmail.com",
+        "date": "2026-07-13T15:41:00Z",
+        "message": "Fixed copypasta-induced bug with custom-hit-test housekeeping (#21769)",
+        "url": "https://github.com/AvaloniaUI/Avalonia/commit/11564814b32a844145ed1450b5ea42e53889bf3a"
+    },
+    {
+        "sha": "bc3001bf77329f9f8d1db14a2d952d46cfe0414c",
+        "author": "Julien Lebosquain",
+        "email": "julien@lebosquain.net",
+        "date": "2026-07-11T06:38:37Z",
+        "message": "Keep page in NavigationPage's logical tree until animation is complete (#21751)\n\n* Keep page in NavigationPage's logical tree until animation is complete\n\n* Share templates in NavigationPageTests",
+        "url": "https://github.com/AvaloniaUI/Avalonia/commit/bc3001bf77329f9f8d1db14a2d952d46cfe0414c"
+    },
+    {
+        "sha": "3bdc149c488f588b6fdf26127952ec902ad3dbda",
+        "author": "Julien Lebosquain",
+        "email": "julien@lebosquain.net",
+        "date": "2026-07-11T06:37:08Z",
+        "message": "Position popup using the screen containing the anchor point (#21750)",
+        "url": "https://github.com/AvaloniaUI/Avalonia/commit/3bdc149c488f588b6fdf26127952ec902ad3dbda"
+    },
+    {
+        "sha": "984b6428c6310addbdc3d72f5990734297a07b6d",
+        "author": "Julien Lebosquain",
+        "email": "julien@lebosquain.net",
+        "date": "2026-07-10T12:51:26Z",
+        "message": "Fix AutoCompleteBox popup not closing on focus lost (#21749)\n\n* Add failing test for AutoCompleteBox\n\n* Fix AutoCompleteBox popup not closing on focus lost",
+        "url": "https://github.com/AvaloniaUI/Avalonia/commit/984b6428c6310addbdc3d72f5990734297a07b6d"
+    },
+    {
+        "sha": "c00a2f23750a2a5e649073e663952482bf2babb7",
+        "author": "Nathan Nguyen",
+        "email": "nathannguyen927151@gmail.com",
+        "date": "2026-07-10T11:08:46Z",
+        "message": "Fix CommandBar secondary visibility during overflow open (#21742)",
+        "url": "https://github.com/AvaloniaUI/Avalonia/commit/c00a2f23750a2a5e649073e663952482bf2babb7"
+    },
+    {
+        "sha": "cc08405da9511bd554308eeeab8c7b63f598bbc3",
+        "author": "Alexander Marek",
+        "email": "gentledepp@gmail.com",
+        "date": "2026-07-10T10:46:30Z",
+        "message": "@ (#21741)\n\n#21740 - SplitView must not steal BackRequested when its pane is closed\n\nWhen the SplitView is in Overlay or CompactOverlay mode it handled the\nTopLevel.BackRequested event even if its pane was not open, which broke\nsystem back navigation. Now it only closes the pane and marks the event\nhandled when the pane is actually open; otherwise the event bubbles on.\n\nAdds unit tests covering both overlay modes.\n@\n\nCo-authored-by: alexander.marek <alexander.marek@opti-q.com>",
+        "url": "https://github.com/AvaloniaUI/Avalonia/commit/cc08405da9511bd554308eeeab8c7b63f598bbc3"
+    },
+    {
+        "sha": "4862e605f10f0362aa416fd7115e46f9f0ce919b",
+        "author": "Isabelle Santin",
+        "email": "isabelle@chosenfewsoftware.com",
+        "date": "2026-07-10T10:38:04Z",
+        "message": "Fix: BuildToNuGetCache target should not open duplicate file handles (#21745)",
+        "url": "https://github.com/AvaloniaUI/Avalonia/commit/4862e605f10f0362aa416fd7115e46f9f0ce919b"
+    },
+    {
+        "sha": "59355cb58d825833ebdd2c84a4948a60caad61f7",
+        "author": "Nikita Tsukanov",
+        "email": "keks9n@gmail.com",
+        "date": "2026-07-10T10:25:33Z",
+        "message": "Added UseWaylandWithFallback to opt-in for wayland support (#21734)\n\nCo-authored-by: Julien Lebosquain <julien@lebosquain.net>",
+        "url": "https://github.com/AvaloniaUI/Avalonia/commit/59355cb58d825833ebdd2c84a4948a60caad61f7"
+    },
+    {
+        "sha": "fc9679491a1a395a6c24316a3bbbf24336bab85f",
+        "author": "Nikita Tsukanov",
+        "email": "keks9n@gmail.com",
+        "date": "2026-07-09T15:53:48Z",
+        "message": "Fixes a dispatcher bug that loses background processing state if jobs were submitted before ReplaceImplementation (#21735)",
+        "url": "https://github.com/AvaloniaUI/Avalonia/commit/fc9679491a1a395a6c24316a3bbbf24336bab85f"
+    },
+    {
+        "sha": "e8a82f113c8798e7067b862da96259516a52f169",
+        "author": "Julien Lebosquain",
+        "email": "julien@lebosquain.net",
+        "date": "2026-07-09T13:57:53Z",
+        "message": "Bump development version to 12.2",
+        "url": "https://github.com/AvaloniaUI/Avalonia/commit/e8a82f113c8798e7067b862da96259516a52f169"
+    },
+    {
+        "sha": "b451fc7a413c37bcc1a24f2a2824695092942d6a",
+        "author": "Julien Lebosquain",
+        "email": "julien@lebosquain.net",
+        "date": "2026-07-09T10:20:42Z",
+        "message": "Fix AvaloniaView double root creation on Android (#21738)",
+        "url": "https://github.com/AvaloniaUI/Avalonia/commit/b451fc7a413c37bcc1a24f2a2824695092942d6a"
+    },
+    {
+        "sha": "a6dbeb7d9cbe50bcbc978c0b2485036f6134e208",
+        "author": "Jumar Macato",
+        "email": "16554748+jmacato@users.noreply.github.com",
+        "date": "2026-07-08T11:20:55Z",
+        "message": "Fix empty automation bounds for custom root providers (#21730)\n\n* Add AutomationPeer.ToScreen so each peer converts its own bounding rectangle to screen coordinates, fixing empty UIA bounds for root providers that are not ControlAutomationPeers.\n\n* Update AutomationPeer.cs\n\n* Update AutomationPeer.cs",
+        "url": "https://github.com/AvaloniaUI/Avalonia/commit/a6dbeb7d9cbe50bcbc978c0b2485036f6134e208"
+    },
+    {
+        "sha": "3290fd1ad93e8f36e327f9d4c35401cba432e66b",
+        "author": "Max Katz",
+        "email": "maxkatz6@outlook.com",
+        "date": "2026-07-08T09:45:08Z",
+        "message": "Don't include non-text files in Roslyn's AdditionalFiles (#21729)\n\n* Only include XAML/AXAML AvaloniaResource in the AdditionalFiles\n\n* Expose AvaloniaResourcePaths for the source generators and Roslyn\n\n* Typo\n\n* Update Generators.Sandbox, include some test assets",
+        "url": "https://github.com/AvaloniaUI/Avalonia/commit/3290fd1ad93e8f36e327f9d4c35401cba432e66b"
+    },
+    {
+        "sha": "121d354af84287f569e57aa9af96b77509809f0e",
+        "author": "Mike Goatly",
+        "email": "4577868+mikegoatly@users.noreply.github.com",
+        "date": "2026-07-08T07:00:38Z",
+        "message": "Fix Android crash populating accessibility node for peers that conditionally hide a provider (#21726)\n\nCo-authored-by: Steven Kirk <grokys@users.noreply.github.com>",
+        "url": "https://github.com/AvaloniaUI/Avalonia/commit/121d354af84287f569e57aa9af96b77509809f0e"
+    },
+    {
+        "sha": "94a5671d584ae0becd8a8ddecb2c922334c7e1bc",
+        "author": "yoyo",
+        "email": "zrt2399@163.com",
+        "date": "2026-07-08T06:33:45Z",
+        "message": "Fix typo in PART_OnContentPresenter name (#21728)",
+        "url": "https://github.com/AvaloniaUI/Avalonia/commit/94a5671d584ae0becd8a8ddecb2c922334c7e1bc"
+    },
+    {
+        "sha": "6ef2d0b708cb3dcccb0fff52246106cf0b30b4d8",
+        "author": "Julien Lebosquain",
+        "email": "julien@lebosquain.net",
+        "date": "2026-07-07T10:18:20Z",
+        "message": "Implement Bitmap.Save with a format (#21455)\n\n* Implement Bitmap.Save with format options\n\n* Rename BitmapEncoderOptions.cs to match its type\n\n* Update API suppressions",
+        "url": "https://github.com/AvaloniaUI/Avalonia/commit/6ef2d0b708cb3dcccb0fff52246106cf0b30b4d8"
+    },
+    {
+        "sha": "a0e17b69581fcfd72cfddf7e82f5e7a2dc2ee884",
+        "author": "Julien Lebosquain",
+        "email": "julien@lebosquain.net",
+        "date": "2026-07-07T07:36:08Z",
+        "message": "Implement TableView (#21511)\n\n* Implemented TableView\n\n* TableView: reuse cells\n\n* TableView: invalidate on column size change\n\n* TableView: add unit tests\n\n* TableView: fix replacing whole Columns collection\n\n* TableView: add more cell tests\n\n* TableView: add column resizing\n\n* TableView: enable text trimming\n\n* TableView: add TableViewColumn.CanResize\n\n* TableView: add more column tests\n\n* TableView: add TableViewColumn.HorizontalColumnAlignment\n\n* TableView: update cells when column properties change\n\n* TableView: use similar logic to update header and cells\n\n* TableView: adjust resizer position\n\n* TableView: compact density\n\n* TableView: simple theme\n\n* TableView: extract dedicated brush resources\n\n* TableView: rename TableViewRowPresenter to TableViewCellsPresenter\n\n* TableView: document that there is no column virtualization\n\n* Update AvaloniaUI.DiagnosticsSupport to 2.2.2\n\n* Remove DataGridPage from ControlCatalog\n\n* TableView: make TableViewCell a logical child of TableViewRow\n\n* Address copilot review\n\n* Use layout rounding for columns\n\n* Fix row retemplating\n\n* Remove extra table border\n\n* Verify that column can be resized on thumb drag\n\n* Clear unused column header properties\n\n* Make TableView.DisplayMemberBinding/ItemTemplate obsolete\n\n* Rename CanResizeColumns to CanUserResizeColumns\n\n* Fix samples",
+        "url": "https://github.com/AvaloniaUI/Avalonia/commit/a0e17b69581fcfd72cfddf7e82f5e7a2dc2ee884"
+    },
+    {
+        "sha": "04e8b20e4767ce7a607ec61efe7699af514242ac",
+        "author": "Jaex",
+        "email": "Jaex@users.noreply.github.com",
+        "date": "2026-07-06T17:43:30Z",
+        "message": "Show checkerboard background for transparent color palette items (#21613)",
+        "url": "https://github.com/AvaloniaUI/Avalonia/commit/04e8b20e4767ce7a607ec61efe7699af514242ac"
+    },
+    {
+        "sha": "176b2b892d67f59187aab915d84ff17377e37a63",
+        "author": "Misaka_L",
+        "email": "lipww1234@foxmail.com",
+        "date": "2026-07-06T17:30:21Z",
+        "message": "Fix `BclLauncher.Exec` throw exception instead of return false (#21704)\n\n* Fix BclLauncher throw exception instead of return false when Process.Start thrown\n\n* Add logging message when BclLauncher.Exec fail",
+        "url": "https://github.com/AvaloniaUI/Avalonia/commit/176b2b892d67f59187aab915d84ff17377e37a63"
+    },
+    {
+        "sha": "50ad0828704354c08c19c64956380a7123b1abd6",
+        "author": "Misaka_L",
+        "email": "lipww1234@foxmail.com",
+        "date": "2026-07-06T14:41:08Z",
+        "message": "Fix working area changed on windows platform won't update screen (#21707)\n\n* Fix working area changed on windows platform won't trigger screens changed\n\n* Fix ScreensPage on IntegrationTestApp won't remove Screens.Changed listener\n\n* Add SystemParametersInfo.SPI_SETWORKAREA to Win32 UnmanagedMethods class\n\n* Move notify screen working area changed to Win32Platform.WndProc instead of WindowImpl.AppWndProc\n\n* Notify working area changed to screens without check PlatformSettings is Win32PlatformSettings",
+        "url": "https://github.com/AvaloniaUI/Avalonia/commit/50ad0828704354c08c19c64956380a7123b1abd6"
+    },
+    {
+        "sha": "4e0632cf4280adf6d5ec0d5bf2e86b4488a3ec0f",
+        "author": "yoyo",
+        "email": "zrt2399@163.com",
+        "date": "2026-07-06T11:32:37Z",
+        "message": "Allow copying and cutting revealed TextBox passwords (#21710)",
+        "url": "https://github.com/AvaloniaUI/Avalonia/commit/4e0632cf4280adf6d5ec0d5bf2e86b4488a3ec0f"
+    },
+    {
+        "sha": "9becf5d6345621707e10cac038465eb5e4f078a9",
+        "author": "JoshuaRowePhantom",
+        "email": "49595589+JoshuaRowePhantom@users.noreply.github.com",
+        "date": "2026-07-06T11:13:38Z",
+        "message": "Fix SelectableTextBlock selection offset with InlineUIContainer (#21646)\n\n* Fix SelectableTextBlock selection offset with InlineUIContainer (#15880)\n\nEmbeddedControlRun inherits TextRun.DefaultTextSourceLength = 1, so each\nInlineUIContainer occupies one position in TextLayout. However,\nInlineUIContainer.AppendText was a no-op, causing Inlines.Text to have\nzero characters for each embedded control. This made TextLayout.HitTestPoint\nreturn positions that were ahead of Inlines.Text indices by one per\nInlineUIContainer, breaking SelectedText for any text after an embedded\ncontrol.\n\nFix: append the Unicode Object Replacement Character (U+FFFC) — the\nstandard placeholder for embedded objects — in AppendText so that\nInlines.Text character offsets stay in sync with the TextLayout positions.\n\nCo-authored-by: Copilot <223556219+Copilot@users.noreply.github.com>\n\n* Expand InlineUIContainer selection tests with fencepost cases\n\nReplace single assertion with a [Theory] covering all boundary positions\naround the embedded control in 'foo\\uFFFCbar':\n- entirely before the container\n- exactly the container character\n- up to and including the container\n- starting exactly after the container\n- container through end\n- one character either side of the container\n- entire content\n\nCo-authored-by: Copilot <223556219+Copilot@users.noreply.github.com>\n\n---------\n\nCo-authored-by: Copilot <223556219+Copilot@users.noreply.github.com>",
+        "url": "https://github.com/AvaloniaUI/Avalonia/commit/9becf5d6345621707e10cac038465eb5e4f078a9"
+    },
+    {
+        "sha": "20c1d6a2e2bc8a6d9502c4f2c2bc3011bb66da23",
+        "author": "Benedikt Stebner",
+        "email": "Gillibald@users.noreply.github.com",
+        "date": "2026-07-06T10:05:12Z",
+        "message": "[Text] InterWordJustification fixes (#21701)\n\n* Fix inter-word justification distribution and safety\n\nTextAlignment.Justify was incorrect or a no-op in several common cases.\nThis corrects glyph targeting, buffer safety, run partitioning, the fill\ntarget, and which lines get justified.\n\n- Target the glyph ending each break boundary; step zero-width breaks\n  (CJK/Korean ideograph boundaries, hyphens) back one so the widened gap\n  sits on the break and the last visible glyph is never stretched.\n- Copy-on-write the shaped buffer before adjusting advances and swap in a\n  fresh run, so justification never mutates glyph storage shared with a\n  TextRunCache entry, a Split sibling or a WithBidiLevel alias. Adds\n  ShapedBuffer.CloneWritable and TextLineImpl.ReplaceTextRun, which also\n  repoints the bidi-reordered runs used by draw and hit-test.\n- Consume break opportunities per run instead of draining the whole queue\n  against the first run.\n- Fill the visible Width to the paragraph width rather than the width\n  including trailing whitespace, so wrapped lines with trailing whitespace\n  justify instead of being left un-justified.\n- Target MaxWidth for wrapped text rather than the widest produced line.\n- Skip the last line, newline-terminated lines and hard-break lines.\n\nAdds justification test coverage: CJK, mixed Latin+CJK, Arabic buffer\nintegrity, Latin wrapping, trailing whitespace and multi-run lines.\n\n* Add failing test for trailing-whitespace overcount across runs\n\n- TextLineImpl.CreateLineMetrics walks a line's runs backward to\n  compute trailing whitespace, stopping only when a run has none of\n  its own - not when a run is only partly whitespace.\n- On a multi-run line where an interior run also ends in a space\n  (common at a script boundary, since each script run tends to end at\n  the following space), that space gets wrongly counted as trailing\n  too, even though visible content follows it later in the line.\n- This shrinks Width, which InterWordJustification uses to decide how\n  much space a line still needs to reach the target width.\n\n* Fix trailing-whitespace overcount across runs\n\n- Only continue accumulating trailing whitespace from an earlier run\n  when the current run is entirely whitespace; otherwise the current\n  run's own visible content is the line's true end, and an earlier\n  run's trailing space is interior, not trailing.\n- Width now correctly includes interior, non-trailing whitespace, so\n  wrapped multi-run lines (e.g. mixed-script text) no longer get\n  stretched past the target width when justified.\n\n* Ignore CLAUDE.md",
+        "url": "https://github.com/AvaloniaUI/Avalonia/commit/20c1d6a2e2bc8a6d9502c4f2c2bc3011bb66da23"
+    },
+    {
+        "sha": "63a5f830c4d2496c795752a90f011e4295672cf0",
+        "author": "Steven Kirk",
+        "email": "grokys@users.noreply.github.com",
+        "date": "2026-07-06T09:26:06Z",
+        "message": "Generate a CycloneDX SBOM per published NuGet package (#21681)\n\n* Generate a CycloneDX SBOM per published NuGet package\n\nGitHub's dependency-graph SBOM export reports unresolved version ranges\nfor most packages and can't see which source projects get merged into\nwhich final package by Numerge. Add a CreateSbom Nuke target that runs\nCycloneDX against each project's already-restored assets, reassembles\nthe Numerge merge groups from numerge.json, and publishes one accurate\nSBOM per shipped package as a pipeline artifact.\n\nCo-Authored-By: Claude Sonnet 5 <noreply@anthropic.com>\n\n* Fix SBOM dependency graph merge and cover bundled npm packages\n\nThe per-package SBOM merge only kept the dependency-graph (dependsOn)\nedges from the first-scanned constituent project, so the flagship\nAvalonia package listed 38 components but wired only 3 into its graph.\nUnion dependsOn edges by ref (each constituent's -sn/-sv override makes\nits root collapse onto the shared final-package ref) so all edges are\nretained - the Avalonia root now reports 17 direct dependencies.\n\ncyclonedx-dotnet only walks the NuGet graph, so JS that ships inside a\npackage via a Bun/npm-built webapp was invisible: Avalonia.Browser's\nstaticwebassets and Avalonia.DesignerSupport's embedded previewer (which\nmerges into Avalonia). Scan each constituent's webapp/package.json\nproduction dependencies, resolving versions from the installed\nnode_modules (git-pinned deps become pkg:github purls), so those shipped\ncomponents appear in the SBOM.\n\nCo-Authored-By: Claude Opus 4.8 (1M context) <noreply@anthropic.com>\n\n* Enrich npm SBOM components to match NuGet component fidelity\n\nPreviously the bundled-webapp npm packages were added as bare inventory\nentries: no bom-ref, no license, no hashes, direct-only, and orphaned\nfrom the dependency graph - second-class next to the fully-formed NuGet\ncomponents cyclonedx-dotnet emits.\n\nWalk the installed node_modules transitively so npm depth matches the\nNuGet side (e.g. react-dom now pulls in scheduler, loose-envify,\nobject-assign; loose-envify pulls in js-tokens), assign each component a\nbom-ref, resolve its license from the installed package.json (SPDX id or\nexpression, with legacy license/licenses object fallback), and wire the\nwhole tree into the CycloneDX dependency graph - the shipped package now\ndeclares its direct npm deps and every transitive edge below them.\n\nHashes are intentionally omitted for npm: the verifiable integrity\nhashes live in bun's binary lockfile, not the installed tree, and a hash\nof the unpacked directory couldn't be checked against a registry.\n\nCo-Authored-By: Claude Opus 4.8 (1M context) <noreply@anthropic.com>\n\n* Enrich SBOM root component and verify package contents\n\nTwo gaps remained after the npm work. First, cyclonedx-dotnet emits only\ntype/name/version for the root metadata.component - no manufacturer,\nlicense, or provenance, which a CRA-facing SBOM is expected to carry.\nRead the shipped .nuspec and fill in purl, publisher/supplier (also set\nas the document-level manufacturer), SPDX license, description,\ncopyright, and website/vcs external references.\n\nSecond, nothing checked what the package actually ships against the\ncomponents derived from the dependency graph. Scan the final .nupkg's\nbinaries: Avalonia's own Numerge-merged modules (e.g. Avalonia.Base,\nAvalonia.Controls folded into Avalonia; Avalonia.Win32.Automation into\nAvalonia.Win32) are recorded as manufacturer-supplied components with a\nSHA-512 of the shipped bytes, and any third-party binary that no\nrestored dependency accounts for is added and flagged - a regression\nguard so bundled binaries can't silently escape the SBOM. Reference\nassemblies under ref/ and the package's own primary assembly are skipped.\n\nCo-Authored-By: Claude Opus 4.8 (1M context) <noreply@anthropic.com>\n\n* Exclude type-only @types/* packages from the SBOM\n\nThe DesignerSupport previewer's package.json lists @types/react and\n@types/react-dom under \"dependencies\" rather than \"devDependencies\", so\nthey were being scanned in. TypeScript declaration packages are stripped\nby esbuild and never appear in the shipped bytes, so they fall outside\nthe SBOM's scope of delivery. Skip @types/* at both the direct and\ntransitive level (which also drops csstype, only reachable via\n@types/react), leaving the SBOM listing exactly the npm packages that\nare actually bundled and delivered.\n\nCo-Authored-By: Claude Opus 4.8 (1M context) <noreply@anthropic.com>\n\n* Add SBOM coverage rules to Copilot review instructions\n\nInstruct code review to flag two cases that would otherwise let a\npackage ship without accurate SBOM coverage (EU CRA): a newly published\nNuGet package not covered by CreateSbom, and a change to what\ndependencies are delivered with a component - notably adding npm/JS to a\npreviously .NET-only component, bundling third-party binaries directly,\nor new Numerge merge groups - without a corresponding update to\nnukebuild/SbomGenerator.cs.\n\nCo-Authored-By: Claude Opus 4.8 (1M context) <noreply@anthropic.com>\n\n* Link package-content binaries into the dependency graph\n\nThe binary:* components from the .nupkg content scan were added to\ncomponents but had no dependency node or root edge, leaving them\nunreachable for SBOM consumers that traverse the graph from the root -\nso the shipped merged modules (and any flagged third-party binary)\ndidn't appear in the delivered dependency tree. Give each its own leaf\nnode and a dependsOn edge from the root component.\n\nCo-Authored-By: Claude Opus 4.8 (1M context) <noreply@anthropic.com>\n\n* Prune dangling dependency edges from generated SBOMs\n\ncyclonedx-dotnet leaves dependsOn edges pointing at packages it excluded\nas dev dependencies (e.g. analyzers stripped by -ed), so after exclusion\nthe graph references components that aren't in the SBOM. Drop any\ndependsOn target that doesn't resolve to a present component, keeping the\ndependency graph internally consistent - consistent with treating those\nbuild-only dev dependencies as out of scope of delivery.\n\nCo-Authored-By: Claude Opus 4.8 (1M context) <noreply@anthropic.com>\n\n* Reference upstream issue for dangling-edge prune\n\nCite CycloneDX/cyclonedx-dotnet#761 in the PruneDanglingDependencyEdges\ncomment so a future reader knows the dangling dependsOn edges are an\nupstream bug (still reproducing in 6.2.0), not something introduced here.\n\nCo-Authored-By: Claude Opus 4.8 (1M context) <noreply@anthropic.com>\n\n* Resolve CycloneDX via NuGetPackage instead of a global tool install\n\n`dotnet tool update --global CycloneDX` mutated the developer's (and CI\nagent's) global tool set as a side effect of running the build. Follow the\nsame pattern as the other build tools (ApiCompat, ApiDiff, ilrepack): pin\nthe package via PackageDownload in _build.csproj and resolve it through a\n[NuGetPackage] Tool, passed into SbomGenerator.\n\nCo-Authored-By: Claude Opus 4.8 (1M context) <noreply@anthropic.com>\n\n* Reuse existing nuspec/numerge parsing helpers in the SBOM generator\n\nDrop the hand-rolled Numerge* POCOs in favour of Numerge.MergeConfiguration.\nLoadFile (already used by CreateNugetPackages), and have BuildToNuGetCache\ncall SbomGenerator.ReadPackageId instead of duplicating the nuspec-id\nextraction inline, so the two can't drift.\n\nCo-Authored-By: Claude Opus 4.8 (1M context) <noreply@anthropic.com>\n\n* Resolve each package's nupkg from a prebuilt id->path map\n\nGenerateForPackage's fallback re-globbed and re-parsed every nupkg in the\noutput directory once per final package whenever the versioned-filename glob\nmissed - O(n^2) archive reads. Build the id->path map once in Generate\n(reading each nupkg's id a single time) and look each package up in it.\n\nCo-Authored-By: Claude Opus 4.8 (1M context) <noreply@anthropic.com>\n\n* Degrade unrecognised git/URL npm specifiers instead of throwing\n\nResolveNpmComponent routed any git/URL dependency range to a GitHub-only\nparser that threw NotSupportedException on anything else (GitLab/Bitbucket,\na raw tarball URL, ...). Because CreateSbom is a hard release dependency,\none such spec would fail the whole build. Fall back to a generic component\n(preferring the installed on-disk version) with a warning instead.\n\nCo-Authored-By: Claude Opus 4.8 (1M context) <noreply@anthropic.com>\n\n* Guard against an npm package.json with no version field\n\nA package.json without a \"version\" (valid for private packages) made the\nnull-forgiving [\"version\"]! throw an NRE, aborting the build. Fall back to\nthe declared range with a warning instead.\n\nCo-Authored-By: Claude Opus 4.8 (1M context) <noreply@anthropic.com>\n\n* Don't emit a file-license path as an SPDX id\n\nA nuspec <license type=\"file\"> (from PackageLicenseFile) stores a file path,\nnot an SPDX id. It was being fed to SpdxToLicenses and emitted as\n{license:{id:\"licenses/LICENSE\"}}, an invalid SPDX id that can fail license\nvalidation. Map type=\"file\" to a license name instead. (Avalonia's own\npackages all use PackageLicenseExpression=MIT, so this is a latent-correctness\nfix rather than a live bug.)\n\nCo-Authored-By: Claude Opus 4.8 (1M context) <noreply@anthropic.com>\n\n* Generate and publish SBOMs from the macOS CI job too\n\nCreateSbom was only wired into CiAzureWindows, so the macOS job's NuGetOSX\nartifact - which carries the real macOS-native binaries the Windows build\ncan't produce - shipped without matching SBOMs. Wire CreateSbom into\nCiAzureOSX and publish its output as a SBOMOSX artifact.\n\nCo-Authored-By: Claude Opus 4.8 (1M context) <noreply@anthropic.com>\n\n* Embed each package's CycloneDX SBOM inside its .nupkg\n\nThe SBOM previously existed only as a detached build artifact. Also embed\nit at _manifest/cyclonedx/bom.cdx.json inside the shipped .nupkg so it\ntravels with the package, mirroring the _manifest/ layout Microsoft.Sbom.\nTargets uses for SPDX. A .nupkg is an OPC package, so [Content_Types].xml\ngains a json default or strict OPC readers (including NuGet signature\nverification) would reject the modified package. Skips already-signed\npackages to avoid invalidating their signature.\n\nCo-Authored-By: Claude Opus 4.8 (1M context) <noreply@anthropic.com>\n\n* Address Copilot review: SBOM zip ordering, nuspec read, component key\n\n- Order ZipFiles after CreateSbom so zipped NuGet artifacts include the\n  embedded SBOM.\n- Read the .nuspec entry with an ordinal EndsWith and dispose its stream.\n- Key components by purl/bom-ref, falling back to name+version so distinct\n  versions sharing a name aren't de-duplicated.\n\nCo-Authored-By: Claude Opus 4.8 (1M context) <noreply@anthropic.com>\n\n* Model bundled assemblies as a composition, not dependencies\n\nThe numerge-folded first-party assemblies (Avalonia.Base, Avalonia.Controls,\netc.) are constituents of the package, not dependencies of it. Represent them\nas a CycloneDX \"assembly\" via a top-level compositions entry with\naggregate=complete instead of drawing dependsOn edges from the root - contains\nand depends-on are distinct relationships. They stay flat top-level components\nso their per-assembly hashes remain visible to scanners that ignore nested\ncomponents, and the dependency graph is left holding only genuine dependencies.\n\nAlso carry the package's licence onto these first-party components, which\npreviously came out blank (cyclonedx-dotnet only sets it on the root).\n\nCo-Authored-By: Claude Opus 4.8 (1M context) <noreply@anthropic.com>\n\n---------\n\nCo-authored-by: Claude Sonnet 5 <noreply@anthropic.com>",
+        "url": "https://github.com/AvaloniaUI/Avalonia/commit/63a5f830c4d2496c795752a90f011e4295672cf0"
+    },
+    {
+        "sha": "fa3f4978ce15f0f19374dd59651aad56648de6a5",
+        "author": "Julien Lebosquain",
+        "email": "julien@lebosquain.net",
+        "date": "2026-07-06T07:40:41Z",
+        "message": "Implement IStorageProvider.OpenFileWithResultAsync (#21418)\n\n* Implement IStorageProvider.OpenFileWithResult\n\n* Update API suppressions",
+        "url": "https://github.com/AvaloniaUI/Avalonia/commit/fa3f4978ce15f0f19374dd59651aad56648de6a5"
+    },
+    {
+        "sha": "bc5d32dca7e3d7756281e834d39c16262a04509a",
+        "author": "lambgoesbaa",
+        "email": "lamb.goes.baa@gmail.com",
+        "date": "2026-07-03T15:39:52Z",
+        "message": "X11: re-read _NET_WORKAREA on WM PropertyNotify (#21651)\n\nCo-authored-by: lucas <lucas@rxmusic.com>",
+        "url": "https://github.com/AvaloniaUI/Avalonia/commit/bc5d32dca7e3d7756281e834d39c16262a04509a"
+    },
+    {
+        "sha": "ee767d5de19b6efffc5fc7d079867932166009d8",
+        "author": "Julien Lebosquain",
+        "email": "julien@lebosquain.net",
+        "date": "2026-07-03T09:11:22Z",
+        "message": "Composition-aware geometries and drawing change detection (#21682)\n\n* Composition-aware geometries\n\n* Propagate resource changes in DrawingBrush\n\n* Change detection in Drawing\n\n* Make IRenderDataGeometry a private API",
+        "url": "https://github.com/AvaloniaUI/Avalonia/commit/ee767d5de19b6efffc5fc7d079867932166009d8"
+    },
+    {
+        "sha": "0f4fb6e71a8440878a9917d7a31bdf6c22442aea",
+        "author": "Isabelle Santin",
+        "email": "isabelle@chosenfewsoftware.com",
+        "date": "2026-07-03T08:20:24Z",
+        "message": "Fix: TalkBack should highlight controls instead of their ancestors (#21654)\n\n* Fix: TalkBack should highlight controls instead of their ancestors\n\n* Fix: make parent controls navigable for specific types\n\n---------\n\nCo-authored-by: Julien Lebosquain <julien@lebosquain.net>",
+        "url": "https://github.com/AvaloniaUI/Avalonia/commit/0f4fb6e71a8440878a9917d7a31bdf6c22442aea"
+    },
+    {
+        "sha": "88a1fc14e0698600b9c22034d7a0dea36c44dda5",
+        "author": "freddiesmartbox",
+        "email": "Freddie.Nash@thinksmartbox.com",
+        "date": "2026-07-03T08:03:19Z",
+        "message": "Return false by default from FocusManager.CanHaveFocusableChildren (#21640)\n\n* Add tests around skipping controls for FocusManager #21620\n\n* Return false by default in CanHaveFocusableChildren #21620\n\nImportantly, this will return false for controls that are not focusable (e.g. TextBlock) or that have no focusable childen (e.g. an empty StackPanel)\n\n* Add skip tests for FindFirstFocusableElement and FindLastFocusableElement #21620",
+        "url": "https://github.com/AvaloniaUI/Avalonia/commit/88a1fc14e0698600b9c22034d7a0dea36c44dda5"
+    },
+    {
+        "sha": "bfa2319e77d5a828a11f2e6b3bead596a113e585",
+        "author": "Nick Nassiri",
+        "email": "nick@knnlabs.com",
+        "date": "2026-07-03T06:52:36Z",
+        "message": "Win32/ARM64: let GraphicsAdapterSelectionCallback see unfiltered adapters and warn on Adreno WARP fallback (#21695)\n\n* win32: let GraphicsAdapterSelectionCallback see unfiltered adapters on ARM64\n\nThe ARM64 Adreno blocklist in AngleWin32EglDisplay removed every Adreno\nadapter from the list before it was handed to GraphicsAdapterSelectionCallback,\nso an application had no way to opt back into hardware acceleration and no\nindication that WARP (the Microsoft Basic Render Driver) was being forced.\n\nStop mutating the adapter list. The blocklist now only moves the *default*\nselection to the first non-Adreno adapter when no callback is supplied, and\nlogs a warning about the CPU-usage impact and the available workarounds. When\na callback is present it receives the full, unfiltered adapter list and its\nchoice is used as-is.\n\nAs a side effect this also removes a latent IndexOutOfRange: the old code\ncould empty the list when every enumerated adapter was Adreno.\n\nRefs #21689\n\n* Update src/Windows/Avalonia.Win32/OpenGl/Angle/AngleWin32EglDisplay.cs\n\nCo-authored-by: Max Katz <maxkatz6@outlook.com>\n\n---------\n\nCo-authored-by: nickna <nick@nassiri.xyz>\nCo-authored-by: Max Katz <maxkatz6@outlook.com>",
+        "url": "https://github.com/AvaloniaUI/Avalonia/commit/bfa2319e77d5a828a11f2e6b3bead596a113e585"
+    }
+]

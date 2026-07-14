@@ -1,0 +1,417 @@
+[
+    {
+        "id": 4878730760,
+        "number": 1008,
+        "title": "Gemma-4-E2B-it (TPU) fails to initialize on Pixel 10 (12GB): TPU dma-buf import fails with ENOSPC during warmup prefill (works on Pixel 10 Pro 16GB)",
+        "state": "open",
+        "created_at": "2026-07-14T00:17:38Z",
+        "updated_at": "2026-07-14T00:18:26Z",
+        "closed_at": null,
+        "author": "yoshi-m-ai",
+        "comments": 0,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "**Describe the bug:**    \nOn a **Pixel 10 (base model, 12GB RAM, Tensor G5)**, selecting the TPU variant of Gemma-4-E2B-it always fails to initialize with:\n\n```\nFailed to create engine: INTERNAL: RET_CHECK failure\n(third_party/odml/litert_lm/runtime/executor/llm_litert_npu_compiled_model_executor.cc:1286)\nresult Inference warmup run for Gemma3 (prefill) failed. Failed to invoke the compiled model\n```\n\nThe same model works fine on a **Pixel 10 Pro (16GB)** (decode ~15 tok/s, consistent with the Gallery benchmark numbers).\n\nThe root cause is visible in logcat when reproducing the same failure with the LiteRT-LM runtime (same `.litertlm` model, same dispatch library) outside Gallery: the TPU driver (Tachyon) refuses to map the ~1.9GB `tf_lite_prefill_decode` weight section as a dma-buf — twice (once for prefill, once for decode) — with `errno=No space left on device`:\n\n```\nE native: Error in Tachyon response: FAILED_PRECONDITION: [S1 ImportMemoryFromFd 1] Could not map dma-buf 23 (index 0, flags=00000000). errno=No space left on device. Ignored params: size 1899216768, offset 0)\nE native: Error in Tachyon response: FAILED_PRECONDITION: [S1 ImportMemoryFromFd 8] Could not map dma-buf 42 (index 0, flags=00000000). errno=No space left on device. Ignored params: size 1899216768, offset 0)\nE native: file.cc:965] INTERNAL: Error found in FMQ response.\nE litert: [litert_dispatch_invocation_context.cc:230] Failed to invoke SB invocation context\nE tflite: Node number 1 (DELEGATE) failed to invoke.\nE native: llm_litert_npu_compiled_model_executor.cc:1286] INTERNAL: RET_CHECK failure ... Inference warmup run for Gemma3 (prefill) failed.\n```\n\nEverything before the warmup succeeds: `libLiteRtDispatch_GoogleTensor.so` loads, the SouthBound context is created (`Found GoogleTensorOptions`), and the DispatchDelegate is applied to the prefill/decode subgraphs. Only the actual invocation fails, so this looks like the 12GB device cannot satisfy 2 × 1.9GB TPU dma-buf mappings for this model, rather than an integration problem.\n\nNotes:\n\n- Reproduces with **AICore force-stopped**, i.e. it is not caused by another TPU client holding memory.\n- Since Gallery removes the GPU accelerator option on Pixel 10 devices, there is no fallback and the model is simply unusable on this device.\n- The model allowlist gates NPU-only models by SoC (`socToModelFiles`) only, and Pixel 10 (base) is also Tensor G5, so the TPU model is offered to a device where it cannot run. (`minDeviceMemoryInGb` exists in the allowlist schema but does not appear to filter delivery.)\n\n**To Reproduce:**      \nSteps to reproduce the behavior:\n1. Use a Pixel 10 **base** model (12GB RAM).\n2. In Gallery, download the Gemma-4-E2B-it TPU variant (`gemma-4-E2B-it_Google_Tensor_G5.litertlm`).\n3. Start a chat / trigger model initialization.\n4. Error dialog appears after ~10s with the RET_CHECK message above.\n\n**Expected behavior:**        \nEither the TPU variant is not offered on devices that cannot map its weight buffers (e.g. memory-based gating for the 12GB Pixel 10), or initialization fails with a message explaining the device limitation.\n\n**Screenshots:**    \nGallery error dialog screenshot attached.\n\n<img width=\"1080\" height=\"2424\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/65ae8be1-613b-4bff-8e1e-23fb25fca248\" />\n\n<img width=\"1080\" height=\"2424\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/a8dbb4b4-5996-45bd-b2e9-04620efc17f0\" />\n\n<img width=\"1080\" height=\"2424\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/5b17bc60-fa3d-4cb5-aeed-c89aa7423e24\" />\n\n\n**Device & App Information (Please complete the following):**\n- Device: Google Pixel 10 (base, 12GB RAM, Tensor G5) — fails; Google Pixel 10 Pro (16GB) — works\n- Android Version: Android 16 (API 36)\n- App Version: 1.0.16 (Play Store)\n\n**Additional context:**    \nFull logcat of the failing initialization available on request. \nThe southbound runtime on this device also logs `Skipped applying edgetpu_performance_mode (5) - unsupported feature on older southbound runtime version (got: 0.9, requires: >=0.18)`, but that warning appears on the Pixel 10 Pro as well and does not prevent initialization there.",
+        "url": "https://github.com/google-ai-edge/gallery/issues/1008"
+    },
+    {
+        "id": 4840781703,
+        "number": 992,
+        "title": "Gemma 4 (E2B / E4B) fails to load with INTERNAL compiled model executor error on POCO M8 5G",
+        "state": "closed",
+        "created_at": "2026-07-08T20:14:40Z",
+        "updated_at": "2026-07-12T02:34:21Z",
+        "closed_at": "2026-07-12T02:34:21Z",
+        "author": "newuptechai",
+        "comments": 1,
+        "labels": [
+            "type:bug"
+        ],
+        "assignees": [
+            "dpknag"
+        ],
+        "locked": false,
+        "body": "### Device Info\n- **Device:** POCO M8 5G\n- **SoC:** Qualcomm Snapdragon 6 Gen 3\n- **RAM:** 8 GB\n- **Storage:** 256 GB ROM\n- **OS:** Android 15\n- **App:** Google AI Edge Gallery\n\n### Models Tested\n- `gemma-4-E2B` (.litertlm)\n- `gemma-4-E4B` (.litertlm)\n\n### Description\nBoth Gemma-4 E2B and E4B models fail during engine creation/initialization on the POCO M8 5G. I have explicitly attempted to switch execution backends between CPU, GPU, and NPU, but the failure occurs consistently across all three.\n\nDepending on the backend/run attempt, the engine throws either an `INVALID_ARGUMENT` error loading from buffer or an `INTERNAL` error inside the compiled model executor.\n\n### Error Logs\n**Primary Compiled Model Error:**\n\nFailed to create engine: INTERNAL: ERROR:\n[third_party/odml/litert_lm/runtime/executor/llm_litert_compiled_model_executor.cc:1936]\n└ ERROR: [./third_party/odml/litert/litert/cc/litert_compiled_model.h:1487]\n\n**Alternative Buffer Error (previously thrown):**\n\nFailed to create engine: INVALID_ARGUMENT:\nERROR: [third_party/odml/litert_lm/runtime/components/model_resources_litert_lm.cc:122]\n└ Failed to load model from buffer\n\n### Steps to Reproduce\n1. Open Google AI Edge Gallery on POCO M8 5G (Android 15).\n2. Select Gemma 4 (E2B or E4B).\n3. Try initializing the model on CPU, GPU, or NPU backends.\n4. Engine creation fails with the specified C++ runtime errors.\n",
+        "url": "https://github.com/google-ai-edge/gallery/issues/992"
+    },
+    {
+        "id": 4814516550,
+        "number": 987,
+        "title": "Chat Continuity for Foldables",
+        "state": "open",
+        "created_at": "2026-07-05T21:32:39Z",
+        "updated_at": "2026-07-07T17:46:21Z",
+        "closed_at": null,
+        "author": "Doggocram",
+        "comments": 1,
+        "labels": [
+            "type:feature",
+            "platform:Android"
+        ],
+        "assignees": [
+            "dpknag"
+        ],
+        "locked": false,
+        "body": "Problem:\nHi google edge gallery team, I use the app on a Samsung Z Flip 6 as I thought it would be cool to be able to ask quick questions on the outside cover screen, and then open the fold to keep the chat going for more in depth questions. But whenever I unfold the phone, the app immediately resets and unloads the gemma model, causing me to have to spend 30-45s to reload the model before I'm able to continue.\n\n\nSolution:\nSince Samsung's cover screen customization is so limited and is app dependant, please look into supporting app continuity for foldable devices. So we can use the chat on the cover screen, and continue after unfolding without having to reload the model.\n\nAlternatives:\nThis is a very specific problem for foldables, and I believe that on the Z fold this is already supported through samsung's app continuity. But every workaround I've tried on the Z Flip simply doesn't work (app always reloads on unfold)\n\nAdditiona Context:\nI know that this is an incredibly niche issue thanks to Samsung's poor cover screen app and app continuity support, but if this is something you guys could fix I would be so happy to use this Z flip as my dedicated offline AI edge gallery device.\n",
+        "url": "https://github.com/google-ai-edge/gallery/issues/987"
+    },
+    {
+        "id": 4796692119,
+        "number": 986,
+        "title": "[Support]: hindi translate for 440 page",
+        "state": "open",
+        "created_at": "2026-07-02T17:15:09Z",
+        "updated_at": "2026-07-09T18:09:41Z",
+        "closed_at": null,
+        "author": "shishpalbhola-tech",
+        "comments": 1,
+        "labels": [
+            "status:awaiting user response",
+            "type:support"
+        ],
+        "assignees": [
+            "dpknag"
+        ],
+        "locked": false,
+        "body": "<!--\nThanks for reaching out for help! To assist you efficiently, please provide as much detail as possible.\n-->\n\n**What do you need help with?**\n\nIs this a question about how to do something, a configuration problem, or a general issue you can't solve?\n\n**Describe the issue/question:**\n\nClearly describe what you are trying to achieve, what problem you are facing, or what question you have.\n\n**What have you tried so far? (Optional):**\n\nList any steps you've already taken to troubleshoot, find information, or attempt a solution.\n\n**Expected outcome (Optional):**\n\nIf applicable, what did you hope would happen, or what solution are you looking for?\n\n**Screenshots/Videos (Optional):**\n\nIf applicable, add screenshots or a short video that might help explain your situation.\n\n**Environment & Details:**\n\nPlease provide details about your operating environment, relevant URLs, or any messages you see.\n\n- **Operating System:**\n- **Browser & Version (if applicable):**\n- **Any relevant messages (e.g., from UI, console):**\n    ```\n    PASTE_ANY_MESSAGES_HERE\n    ```\n\n**Any additional context?:**\n\nIs there anything else that might be useful for us to know?\n",
+        "url": "https://github.com/google-ai-edge/gallery/issues/986"
+    },
+    {
+        "id": 4791127766,
+        "number": 985,
+        "title": "App crashes on devices without camera aparently",
+        "state": "open",
+        "created_at": "2026-07-02T03:59:46Z",
+        "updated_at": "2026-07-07T18:06:31Z",
+        "closed_at": null,
+        "author": "waltercool",
+        "comments": 2,
+        "labels": [
+            "type:bug",
+            "platform:Android"
+        ],
+        "assignees": [
+            "dpknag"
+        ],
+        "locked": false,
+        "body": "**Describe the bug:**    \nAs title says. App crashes due camera not found\n\n**To Reproduce:**      \nSteps to reproduce the behavior:\n1. Use a device without camera. I'm using an Odin 3 device with Snapdragon 8XX.\n2. Try to load any model\n3. Crashes\n\n**Expected behavior:**        \nIt should work\n\n**Crash Log:**\n    ```\n07-01 23:56:43.713 22785 22801 I AdrenoGLES-0: Build Date                       : 10/08/25\n07-01 23:56:43.713 22785 22801 I AdrenoGLES-0: OpenGL ES Shader Compiler Version: E031.47.18.42\n07-01 23:56:43.713 22785 22801 I AdrenoGLES-0: Local Branch                     : \n07-01 23:56:43.713 22785 22801 I AdrenoGLES-0: Remote Branch                    : refs/tags/AU_LINUX_ANDROID_LA.VENDOR.15.4.0.11.00.00.1088.743\n07-01 23:56:43.713 22785 22801 I AdrenoGLES-0: Remote Branch                    : NONE\n07-01 23:56:43.713 22785 22801 I AdrenoGLES-0: Reconstruct Branch               : NOTHING\n07-01 23:56:43.713 22785 22801 I AdrenoGLES-0: Build Config                     : S P 18.0.0 AArch64\n07-01 23:56:43.713 22785 22801 I AdrenoGLES-0: Driver Path                      : /vendor/lib64/egl/libGLESv2_adreno.so\n07-01 23:56:43.713 22785 22801 I AdrenoGLES-0: Driver Version                   : 0800.58\n07-01 23:56:43.713 22785 22801 I AdrenoGLES-0: Process Name                     : com.google.ai.edge.gallery\n07-01 23:56:43.714 22785 22801 I AdrenoGLES-0: PFP: 0x01500077, ME: 0x01500014\n07-01 23:56:43.714  1603  1603 I qspmHal : enter getGpuProf at: 553175874\n07-01 23:56:43.714  1603  1603 I qspmHal : Coudn't match the GFX PID 22785 to AT PID 22861. Checking in local cache.\n07-01 23:56:43.714  1603  1603 I qspmHal : Found the GFX PID in cache\n07-01 23:56:43.714  1603  1603 I qspmHal : PID 22785 from GFX matched.\n07-01 23:56:43.714  1603  1603 I qspmHal : gpuProfName:com.google.ai.edge.gallery-gpu - gpu prof_info.path:/data/vendor/gaming/com.google.ai.edge.gallery-gpu\n07-01 23:56:43.714  1603  1603 E qspmHal : GPU profile file NOT found !!\n07-01 23:56:43.715 22785 22801 E libEGL  : call to OpenGL ES API with no current context (logged once per thread)\n07-01 23:56:43.719 22785 22801 I litert  : [environment.cc:41] Adding options to the existing LiteRT environment\n07-01 23:56:43.719 22785 22801 I tflite  : Loaded OpenCL library with dlopen.\n07-01 23:56:43.719 22785 22801 I litert  : [gpu_environment.cc:220] Created OpenCL device from provided device id and platform id.\n07-01 23:56:43.719 22785 22801 I litert  : [gpu_environment.cc:283] Reusing provided EGL environment.\n07-01 23:56:43.719 22785 22801 I litert  : [gpu_environment.h:155] Created LiteRT GpuEnvironment.\n07-01 23:56:43.719 22785 22801 I litert  : [environment.cc:41] Adding options to the existing LiteRT environment\n07-01 23:56:43.722 22785 22801 I tflite  : Replacing 2712 out of 2712 node(s) with delegate (LITERT_CL) node, yielding 1 partitions for subgraph 0.\n07-01 23:56:44.079 22785 23089 W CXCP    : Failed to query camera ID list: Invalid list returned: [].\n07-01 23:56:44.079 22785 23089 W CXCP    : Failed to query camera ID list: Invalid list returned: [].\n07-01 23:56:44.079 22785 23089 W CameraValidator: Camera LENS_FACING_BACK verification failed\n07-01 23:56:44.079 22785 23089 W CameraValidator: java.lang.IllegalArgumentException: No available camera can be found. Cams:0 PhyId:null  Filters:1 Id:Identifier{value=java.lang.Object@f31dbf1} LensFilter:1\n07-01 23:56:44.079 22785 23089 W CameraValidator:       at androidx.camera.core.CameraSelector.select(PG:240)\n07-01 23:56:44.079 22785 23089 W CameraValidator:       at androidx.camera.core.impl.CameraValidatorImpl.validateOnFirstInit(PG:28)\n07-01 23:56:44.079 22785 23089 W CameraValidator:       at androidx.camera.core.CameraX$$ExternalSyntheticLambda2.run(PG:446)\n07-01 23:56:44.079 22785 23089 W CameraValidator:       at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:487)\n07-01 23:56:44.079 22785 23089 W CameraValidator:       at java.util.concurrent.FutureTask.run(FutureTask.java:264)\n07-01 23:56:44.079 22785 23089 W CameraValidator:       at java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.run(ScheduledThreadPoolExecutor.java:307)\n07-01 23:56:44.079 22785 23089 W CameraValidator:       at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1145)\n07-01 23:56:44.079 22785 23089 W CameraValidator:       at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:644)\n07-01 23:56:44.079 22785 23089 W CameraValidator:       at androidx.camera.camera2.pipe.compat.AudioRestrictionControllerImpl$$ExternalSyntheticLambda0.run(PG:225)\n07-01 23:56:44.079 22785 23089 W CameraValidator:       at java.lang.Thread.run(Thread.java:1012)\n07-01 23:56:44.079 22785 23089 W CameraValidator: Camera LENS_FACING_FRONT verification failed\n07-01 23:56:44.079 22785 23089 W CameraValidator: java.lang.IllegalArgumentException: No available camera can be found. Cams:0 PhyId:null  Filters:1 Id:Identifier{value=java.lang.Object@f31dbf1} LensFilter:0\n07-01 23:56:44.079 22785 23089 W CameraValidator:       at androidx.camera.core.CameraSelector.select(PG:240)\n07-01 23:56:44.079 22785 23089 W CameraValidator:       at androidx.camera.core.impl.CameraValidatorImpl.validateOnFirstInit(PG:55)\n07-01 23:56:44.079 22785 23089 W CameraValidator:       at androidx.camera.core.CameraX$$ExternalSyntheticLambda2.run(PG:446)\n07-01 23:56:44.079 22785 23089 W CameraValidator:       at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:487)\n07-01 23:56:44.079 22785 23089 W CameraValidator:       at java.util.concurrent.FutureTask.run(FutureTask.java:264)\n07-01 23:56:44.079 22785 23089 W CameraValidator:       at java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.run(ScheduledThreadPoolExecutor.java:307)\n07-01 23:56:44.079 22785 23089 W CameraValidator:       at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1145)\n07-01 23:56:44.079 22785 23089 W CameraValidator:       at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:644)\n07-01 23:56:44.079 22785 23089 W CameraValidator:       at androidx.camera.camera2.pipe.compat.AudioRestrictionControllerImpl$$ExternalSyntheticLambda0.run(PG:225)\n07-01 23:56:44.079 22785 23089 W CameraValidator:       at java.lang.Thread.run(Thread.java:1012)\n07-01 23:56:44.079 22785 23089 W CameraX : Retry init. Start time 43798166 current time 43798672\n07-01 23:56:44.079 22785 23089 W CameraX : androidx.camera.core.impl.CameraValidator$CameraIdListIncorrectException: Expected camera missing from device.\n07-01 23:56:44.079 22785 23089 W CameraX :      at androidx.camera.core.impl.CameraValidatorImpl.validateOnFirstInit(PG:85)\n07-01 23:56:44.079 22785 23089 W CameraX :      at androidx.camera.core.CameraX$$ExternalSyntheticLambda2.run(PG:446)\n07-01 23:56:44.079 22785 23089 W CameraX :      at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:487)\n07-01 23:56:44.079 22785 23089 W CameraX :      at java.util.concurrent.FutureTask.run(FutureTask.java:264)\n07-01 23:56:44.079 22785 23089 W CameraX :      at java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.run(ScheduledThreadPoolExecutor.java:307)\n07-01 23:56:44.079 22785 23089 W CameraX :      at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1145)\n07-01 23:56:44.079 22785 23089 W CameraX :      at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:644)\n07-01 23:56:44.079 22785 23089 W CameraX :      at androidx.camera.camera2.pipe.compat.AudioRestrictionControllerImpl$$ExternalSyntheticLambda0.run(PG:225)\n07-01 23:56:44.079 22785 23089 W CameraX :      at java.lang.Thread.run(Thread.java:1012)\n07-01 23:56:44.079 22785 23089 W CameraX : Caused by: java.lang.IllegalArgumentException: No available camera can be found. Cams:0 PhyId:null  Filters:1 Id:Identifier{value=java.lang.Object@f31dbf1} LensFilter:1\n07-01 23:56:44.079 22785 23089 W CameraX :      at androidx.camera.core.CameraSelector.select(PG:240)\n07-01 23:56:44.079 22785 23089 W CameraX :      at androidx.camera.core.impl.CameraValidatorImpl.validateOnFirstInit(PG:28)\n07-01 23:56:44.079 22785 23089 W CameraX :      ... 8 more\n```\n\n\n**Device & App Information (Please complete the following):**\n- Device: Ayn Odin 3\n- Android Version: Android 15\n- App Version: 1.0.16\n\n\n",
+        "url": "https://github.com/google-ai-edge/gallery/issues/985"
+    },
+    {
+        "id": 4749187658,
+        "number": 978,
+        "title": "will the gemma4 e2b and e4b qat mobile at edgegallery app",
+        "state": "open",
+        "created_at": "2026-06-26T04:11:30Z",
+        "updated_at": "2026-07-09T21:31:12Z",
+        "closed_at": null,
+        "author": "padmanabanSampath",
+        "comments": 1,
+        "labels": [
+            "type:support"
+        ],
+        "assignees": [
+            "dpknag"
+        ],
+        "locked": false,
+        "body": "will the gemma4 e2b and e4b both versions qat mobile will be supported at edge gallery app, or a conversion script for how to convert the qat  and qat mobile models to litert will be useful, ",
+        "url": "https://github.com/google-ai-edge/gallery/issues/978"
+    },
+    {
+        "id": 4741808496,
+        "number": 976,
+        "title": "Typo in the \"Model Management\" demo picture on the Play Store and in the GitHub repository",
+        "state": "open",
+        "created_at": "2026-06-25T07:44:53Z",
+        "updated_at": "2026-06-25T18:24:54Z",
+        "closed_at": null,
+        "author": "HehehBoiii78",
+        "comments": 1,
+        "labels": [
+            "type:bug",
+            "area: documentaion"
+        ],
+        "assignees": [
+            "dpknag"
+        ],
+        "locked": false,
+        "body": "**Describe the bug:**    \nThe word \"performances\" has been spelled as \"performnances\".\n\n**Screenshots:**    \n![573168892-061564ed-030f-4630-810b-13a7863fce4c.jpg](https://github.com/user-attachments/assets/c1ea70c3-fab4-4464-a57b-cc9c55e9bd99)",
+        "url": "https://github.com/google-ai-edge/gallery/issues/976"
+    },
+    {
+        "id": 4740063336,
+        "number": 975,
+        "title": "[Bug] Random response load loop since 1.0.16",
+        "state": "open",
+        "created_at": "2026-06-25T02:27:59Z",
+        "updated_at": "2026-06-26T13:43:23Z",
+        "closed_at": null,
+        "author": "effinmr",
+        "comments": 3,
+        "labels": [
+            "type:bug",
+            "area:crashes",
+            "platform:Android"
+        ],
+        "assignees": [
+            "dpknag"
+        ],
+        "locked": false,
+        "body": "**Describe the bug:**    \nafter updating to 1.0.16 randomly the response just won't generate ll need to close the app. \n\n**To Reproduce:**      \nSteps to reproduce the behavior:\n1. 2-3 responses \n2. random stuck on generating until restart app\n\n**Expected behavior:**        \nthink it was fine in 1.0.15\n\n**Screenshots:**    \nIf applicable, add screenshots to help explain your problem.\n\n**Device & App Information (Please complete the following):**\n- Device: Oneplus 9RT\n- Android Version: 14\n- App Version: 1.0.16",
+        "url": "https://github.com/google-ai-edge/gallery/issues/975"
+    },
+    {
+        "id": 4737205856,
+        "number": 973,
+        "title": "N[FEATURE]",
+        "state": "closed",
+        "created_at": "2026-06-24T17:57:39Z",
+        "updated_at": "2026-06-25T19:09:22Z",
+        "closed_at": "2026-06-25T19:09:22Z",
+        "author": "note990090-byte",
+        "comments": 1,
+        "labels": [
+            "type:other"
+        ],
+        "assignees": [
+            "dpknag"
+        ],
+        "locked": false,
+        "body": "**Is your feature request related to a problem? Please describe.**    \nA clear and concise description of what the problem is. Ex. I'm always frustrated when [...]\n\n**Describe the solution you'd like**       \nA clear and concise description of what you want to happen.\n\n**Describe alternatives you've considered**     \nA clear and concise description of any alternative solutions or features you've considered.\n\n**Additional context**     \nAdd any other context or screenshots about the feature request here.\n",
+        "url": "https://github.com/google-ai-edge/gallery/issues/973"
+    },
+    {
+        "id": 4731226041,
+        "number": 971,
+        "title": "[Bug] Choosing GPU fails for a lot of models.",
+        "state": "open",
+        "created_at": "2026-06-24T02:49:10Z",
+        "updated_at": "2026-07-08T05:00:54Z",
+        "closed_at": null,
+        "author": "effinmr",
+        "comments": 2,
+        "labels": [
+            "type:bug",
+            "context:gpu-specific",
+            "platform:Android"
+        ],
+        "assignees": [
+            "dpknag"
+        ],
+        "locked": false,
+        "body": "**Describe the bug:**    \nExcept for popular models like gemma e2b or the ones in default catalogue in app, the community models available on huggingface fails with gpu accelerator even the ones recently published by litert-community. these models work fine for CPU and this issue is consistent.\n\n**To Reproduce:**      \nSteps to reproduce the behavior:\n1. Download any litert compatible model from huggingface for ex - Smollm3-3b or Falcon3-3b\n2. add in app\n3. choose the model with gpu\n4. failed to create engine \n\n**Expected behavior:**        \nlike gemma 4 it should work with gpu I guess which gives far better speed or tokens/s\n\n**Screenshots:**    \n\n<img width=\"1080\" height=\"2400\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/1fd048ab-b0bd-4a0a-8b3b-d38562ade397\" />\n\n**Device & App Information (Please complete the following):**\n- Device: Oneplus 9RT\n- Android Version: Android 14\n- App Version: 1.0.16",
+        "url": "https://github.com/google-ai-edge/gallery/issues/971"
+    },
+    {
+        "id": 4715556975,
+        "number": 964,
+        "title": "[BUG] Gemini Nano 4 fast [Preview, NPU] stopped working on Samsung S26 Ultra",
+        "state": "open",
+        "created_at": "2026-06-22T10:06:40Z",
+        "updated_at": "2026-06-24T18:15:11Z",
+        "closed_at": null,
+        "author": "masscoder37",
+        "comments": 0,
+        "labels": [
+            "type:bug"
+        ],
+        "assignees": [
+            "dpknag"
+        ],
+        "locked": false,
+        "body": "​**Describe the bug:**\nWhen attempting to run inference using the Gemini Nano 4 Fast model via AICore, the inference immediately fails with the error: AICore failed with error type 2-INFERENCE_ERROR and error code 5-COMPUTE_ERROR: Inference failed..\n​This issue is strictly isolated to the Nano 4 Fast model. Both the Gemini Nano 4 Full model and Gemini Nano v3 model continue to initialize and execute inference perfectly on the same device.\nV4 fast was able to run for multiple days up until June 19th, and no software update could be identified which broke the intended behavior.\nThe error occurs globally across multiple client applications, including the official Edge Gallery app, the AI Core Beta app, and custom development code. This happens regardless of model settings. \nBoth other NPU models, as well as the Gemma E2B-it model work as expected.\n​**To Reproduce:**\nSteps to reproduce the behavior:\n​Open the Edge Gallery app (or the AI Core Beta app).\n​Select or toggle the target model to Gemini Nano 4 Fast.\n​Input any basic text prompt (e.g., \"Hello\") and execute inference.\n​See error: AICore failed with error type 2-INFERENCE_ERROR and error code 5-COMPUTE_ERROR: Inference failed.\n​**Expected behavior:**\nThe model should successfully utilize NPU acceleration to process the prompt and return the generated text response.\n\n**Screenshots:**    \nScreenshot added.\n\n**Device & App Information (Please complete the following):**\n- Device: Samsung Galaxy S26 Ultra \n- Android Version: 16, One UI: 8.5\n- App Version: AI Core beta: Version 0.thirdpartyexperimental.qc.ffdf_aicore_20260 528.01_RC08.928876964\n- Edge Gallery: 1.0.15\n\n**Additional context:**    \nTriage Steps Already Attempted: Cleared application cache, redownloaded the foundation models, performed a full system app data wipe of AICore, and fully uninstalled AICore system updates back to the factory stub before reinstalling. The 5-COMPUTE_ERROR persists on the Fast model immediately after clean installation.\nHardware Isolation: Because Nano 4 Full and Nano v3 execute flawlessly, physical hardware degradation can be ruled out.\n\nPlease let me know if I can provide any further information. Hope I'm in the right spot, was guided here by Gemini :D\n\n<img width=\"1080\" height=\"2340\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/e82313e1-e11d-4e43-ac43-41a8fc9ba105\" />\n",
+        "url": "https://github.com/google-ai-edge/gallery/issues/964"
+    },
+    {
+        "id": 4687270799,
+        "number": 958,
+        "title": "[FEATURE] Audio Scribe: accept any audio format (auto-convert to 16 kHz mono PCM)",
+        "state": "closed",
+        "created_at": "2026-06-17T21:43:16Z",
+        "updated_at": "2026-07-01T19:03:25Z",
+        "closed_at": "2026-07-01T19:03:25Z",
+        "author": "ghadiali",
+        "comments": 1,
+        "labels": [
+            "type:feature"
+        ],
+        "assignees": [
+            "dpknag"
+        ],
+        "locked": false,
+        "body": "**Is your feature request related to a problem? Please describe.**    \nA clear and concise description of what the problem is. Ex. I'm always frustrated when [...]\n\n**Describe the solution you'd like**       \nA clear and concise description of what you want to happen.\n\n**Describe alternatives you've considered**     \nA clear and concise description of any alternative solutions or features you've considered.\n\n**Additional context**     \nAdd any other context or screenshots about the feature request here.\n",
+        "url": "https://github.com/google-ai-edge/gallery/issues/958"
+    },
+    {
+        "id": 4684278213,
+        "number": 957,
+        "title": "[FEATURE] Audio Scribe: accept mp3/m4a/aac in the file picker, not only .wav",
+        "state": "open",
+        "created_at": "2026-06-17T14:37:30Z",
+        "updated_at": "2026-07-01T18:45:20Z",
+        "closed_at": null,
+        "author": "ghadiali",
+        "comments": 1,
+        "labels": [
+            "type:feature",
+            "area:ui-ux"
+        ],
+        "assignees": [
+            "dpknag"
+        ],
+        "locked": false,
+        "body": "## Is your feature request related to a problem?\n\nAudio Scribe's \"pick audio file\" flow only accepts `.wav`. Most audio people actually have on their phones — voice memos, podcast clips, recordings shared over messaging apps — is `.mp3`, `.m4a`/AAC, etc. Today those files either can't be selected or are rejected, so users have to convert them externally first.\n\n## Describe the solution you'd like\n\nLet the audio picker accept common audio formats and convert the chosen file to the format the model expects (16 kHz mono PCM WAV) inside the app, so the user never has to convert anything manually.\n\nOn **Android** this is a small change (a working reference implementation is described below). I'd like the same behavior on **iOS**, where the picker similarly limits selection to `.wav`.\n\n## Reference implementation (Android)\n\nI implemented this locally and it works end-to-end on a physical device:\n\n- **New file `AudioConverter.kt`** — converts the picked file to 16 kHz mono WAV before handing it to the model.\n- **`ui/common/chat/MessageInputText.kt`** — broadened the picker's accepted MIME types and relabeled the action from \"Pick wav file\" to \"Pick audio file\".\n\nHappy to open a PR for the Android side.\n\n## iOS specifics\n\nThe iOS app appears to gate the picker to `.wav` as well. On iOS the conversion is straightforward with `AVAudioConverter`/`AVAudioFile` (decode the picked file, resample to 16 kHz mono, write a PCM WAV), and the picker can use `UTType.audio` to allow mp3/m4a/aac/etc.\n\n> Note for maintainers: the iOS app is currently closed-source (the public repo only contains the `Android/` tree), so external contributors can't send an iOS PR. Filing this so the team can apply the equivalent change on the iOS side.\n\n## Describe alternatives you've considered\n\n- Asking users to pre-convert files to `.wav` — poor UX and a frequent point of confusion.\n- Documenting the `.wav`-only limitation — doesn't solve the underlying friction.\n\n## Additional context\n\n- Tested the Android change on a Samsung SM-X736B; confirmed mp3 and m4a select and transcribe correctly, and `.wav` still works (no regression).\n- Same friction exists on iOS; requesting parity.",
+        "url": "https://github.com/google-ai-edge/gallery/issues/957"
+    },
+    {
+        "id": 4658724324,
+        "number": 949,
+        "title": "Potential path traversal and secret leakage in skill management",
+        "state": "open",
+        "created_at": "2026-06-14T10:11:54Z",
+        "updated_at": "2026-07-01T18:06:37Z",
+        "closed_at": null,
+        "author": "magudeshhmw",
+        "comments": 1,
+        "labels": [
+            "type:bug",
+            "platform:Android",
+            "area: agent-skills"
+        ],
+        "assignees": [
+            "dpknag"
+        ],
+        "locked": false,
+        "body": "I was poking around the skill management code today and noticed a couple of security spots that look\na bit risky.\n\n  The first one is in SkillManagerViewModel.kt. When we import a local skill, the app takes the\n  directory name and \"normalizes\" it by replacing spaces with dashes, but it doesn't seem to strip out\n  path traversal characters like ... This means a malicious skill directory could potentially be used\n  to write files into other parts of the app's internal storage that it shouldn't have access to.\n\n  The second issue is in AgentTools.kt. Right now, the runJs function injects the user's saved secret\n  into the WebView regardless of whether the skill is local or remote. If a user adds a skill from a\n  URL they don't fully trust, that remote site can easily grab the API key or token as soon as the JS\n  runs.\n\n  To Reproduce:\n  For the path traversal:\n   1. Try importing a local skill folder that has .. in its name.\n   2. Check the file system logs or the destination path in getSkillDestinationDir. It doesn't block\n      the traversal.\n\n  For the secret exposure:\n   1. Add a skill from a remote URL (like a random GitHub pages site).\n   2. Save a dummy API key as a secret for that skill.\n   3. If that remote page has a script that looks at the arguments in ai_edge_gallery_get_result,\n      it'll see the plain-text secret.\n\n  Expected behavior:\n  I'd expect the normalizedName logic to be a lot stricter—maybe just stripping out everything that\n  isn't alphanumeric or a simple dash.\n\n  On the secret side, we probably shouldn't be sending sensitive tokens to remote URLs at all. It\n  might be safer to only inject those secrets if the URL starts with our LOCAL_URL_BASE.\n\n  Device & App Information:\n   - Device: Pixel 7 (but seems like a general logic issue)\n   - OS: Android 14\n   - App Version: Main branch/latest build\n\n  Additional context:\n  I was looking specifically at the getSkillDestinationDir function and the runJs tool call logic. It\n  looks like a relatively quick fix in SkillManagerViewModel.kt to sanitize those strings better, but\n  the secret injection might need a bit more thought on how we want to handle \"trusted\" remote skills\n  vs local ones.",
+        "url": "https://github.com/google-ai-edge/gallery/issues/949"
+    },
+    {
+        "id": 4632165244,
+        "number": 945,
+        "title": "[BUG] Can't delete skills on MacOS client",
+        "state": "open",
+        "created_at": "2026-06-10T14:26:03Z",
+        "updated_at": "2026-06-15T07:26:14Z",
+        "closed_at": null,
+        "author": "Wilson-CS",
+        "comments": 1,
+        "labels": [
+            "type:bug",
+            "platform:iOS",
+            "area: agent-skills"
+        ],
+        "assignees": [
+            "dpknag"
+        ],
+        "locked": false,
+        "body": "**Describe the bug:**    \nAfter adding a skill to the agent, I can't remove it anymore.\n\n**To Reproduce:**      \nSteps to reproduce the behavior:\n1. Go to the Agent Skills menu\n2. Click on the skills button in the chat box\n3. Search for a skill and add it\n4. After you use it for a while, attempt to delete the skill\n\n**Expected behavior:**        \nI expected the skill to automatically be removed after we click the delete button.\n\n\n",
+        "url": "https://github.com/google-ai-edge/gallery/issues/945"
+    },
+    {
+        "id": 4619117450,
+        "number": 941,
+        "title": "gemma4 12b not avaliable on a m5（16g） device",
+        "state": "closed",
+        "created_at": "2026-06-09T05:28:17Z",
+        "updated_at": "2026-06-15T07:11:14Z",
+        "closed_at": "2026-06-15T07:11:14Z",
+        "author": "yushangmin2005",
+        "comments": 2,
+        "labels": [
+            "type:support",
+            "area:model-mgmt",
+            "platform:iOS"
+        ],
+        "assignees": [
+            "dpknag"
+        ],
+        "locked": false,
+        "body": "as the title said, it said that the device has not enough ram and would not allow me to download, but the model is designed for a 16g ram device, and my mac with 16g ram really needs that.\n",
+        "url": "https://github.com/google-ai-edge/gallery/issues/941"
+    },
+    {
+        "id": 4615209820,
+        "number": 934,
+        "title": "GPU acceleration not working for A12Z Gemma-4-E2B-it",
+        "state": "open",
+        "created_at": "2026-06-08T17:41:07Z",
+        "updated_at": "2026-06-15T05:48:06Z",
+        "closed_at": null,
+        "author": "nlynch31",
+        "comments": 1,
+        "labels": [
+            "type:bug",
+            "platform:iOS",
+            "area:hardware"
+        ],
+        "assignees": [
+            "dpknag"
+        ],
+        "locked": false,
+        "body": "**Describe the bug:**    \nThis model fails to return any text on iPad Pro 4th Gen 12.9 inch (A12Z chip). Benchmarking on CPU works (slowly) but fails completely on GPU acceleration. Other models that meet memory requirements work fine.\n\n**To Reproduce:**      \nSteps to reproduce the behavior:\n1. Try chat or agent mode in Edge Gallery. \n2. Attempt to use recommended Gemma-4-E2B model.\n\n**Expected behavior:**        \nExpected similar or better performance to other models.\n\n**Screenshots:**    \nWill include benchmark screenshots.\n\n**Device & App Information (Please complete the following):**\n- Device: iPad Pro 4th gen\n- App Version: 1.0.6",
+        "url": "https://github.com/google-ai-edge/gallery/issues/934"
+    },
+    {
+        "id": 4615062928,
+        "number": 933,
+        "title": "Feature Request: Add message actions (Copy, Edit, Regenerate)",
+        "state": "closed",
+        "created_at": "2026-06-08T17:21:06Z",
+        "updated_at": "2026-06-14T03:17:06Z",
+        "closed_at": "2026-06-14T03:16:48Z",
+        "author": "funnyMonkey18",
+        "comments": 2,
+        "labels": [
+            "type:feature"
+        ],
+        "assignees": [
+            "dpknag"
+        ],
+        "locked": false,
+        "body": "**Is your feature request related to a problem? Please describe.**    \nCurrently, interacting with messages in the chat is frustrating for three main reasons:\n\n1. No editing: If you make a typo or want to rephrase a prompt, you have to start an entirely new conversation, which wastes time.\n2. No regeneration: If the model hallucinates or gives a poor response, you cannot regenerate it. You are stuck with the bad output that future responses will refer to.\n3. Poor copying experience: There is no one-click copy option. You have to use Android's native long-press text selection, which is clunky and performs poorly when copying text that is longer than the screen.\n\n**Describe the solution you'd like**       \nAdd contextual action buttons beneath each message:\nUnder User Prompts: Add Copy and Edit buttons. Editing a prompt should branch the conversation, generating a new response from that point forward.\nUnder Model Responses: Add Copy and Regenerate buttons.\n\n**Describe alternatives you've considered**     \nInstead of visible mini-buttons, implement a long-press gesture on any prompt or response that opens a floating menu with these actions. This would keep the UI cleaner while still providing the functionality.\n\n**Additional context**     \n**Critical**: Before this feature is implemented, Issue #817 must be fixed. Currently, a bug causes the model to greedily decode regardless of sampling parameters (like temperature), resulting in identical outputs every time. Until that is fixed, a \"Regenerate\" button will be useless, as it will just produce the exact same response.",
+        "url": "https://github.com/google-ai-edge/gallery/issues/933"
+    },
+    {
+        "id": 4607753358,
+        "number": 932,
+        "title": "support for gemma4:12b-it-qat",
+        "state": "open",
+        "created_at": "2026-06-07T15:11:43Z",
+        "updated_at": "2026-06-14T01:36:34Z",
+        "closed_at": null,
+        "author": "ryaker",
+        "comments": 3,
+        "labels": [
+            "type:feature",
+            "area:model-mgmt"
+        ],
+        "assignees": [
+            "dpknag"
+        ],
+        "locked": false,
+        "body": "12B is not runnable on a M4 Apple Silicon with 16Gb of RAM.",
+        "url": "https://github.com/google-ai-edge/gallery/issues/932"
+    },
+    {
+        "id": 4606308175,
+        "number": 931,
+        "title": "Feature request: Enable MTP (speculative decoding) by default on model load",
+        "state": "open",
+        "created_at": "2026-06-07T05:40:41Z",
+        "updated_at": "2026-06-13T20:54:09Z",
+        "closed_at": null,
+        "author": "funnyMonkey18",
+        "comments": 1,
+        "labels": [
+            "type:feature",
+            "area:ui-ux"
+        ],
+        "assignees": [
+            "dpknag"
+        ],
+        "locked": false,
+        "body": "**Is your feature request related to a problem? Please describe.**\nCurrently, models load without MTP (Multi-Token Prediction / speculative decoding) enabled. Since MTP provides significantly faster generation speeds, I want to use it every time. However, to enable it, I have to wait for the model to load, go into settings, toggle MTP on, and then wait for the model to reload. This means waiting twice before I can start chatting, which is frustrating and wastes time.\n\n**Describe the solution you'd like**\nAdd a \"Load with MTP by default\" toggle in the Model Management screen. When this is enabled, the model should initialize with MTP active right from the start, eliminating the need for a secondary reload.\n\n**Describe alternatives you've considered**\n\n**Remember last state**: Save the MTP toggle state per model so that if a user enables it, it stays enabled the next time that model is loaded. This still requires the initial double-load the first time, but solves it for subsequent sessions.\n\n**Global settings toggle**: A global setting to \"Always enable MTP on load\" instead of a per-model toggle. This would work for users who exclusively use MTP-capable models, but a per-model toggle is safer as it accommodates mixed model setups where some models might not support MTP.",
+        "url": "https://github.com/google-ai-edge/gallery/issues/931"
+    }
+]

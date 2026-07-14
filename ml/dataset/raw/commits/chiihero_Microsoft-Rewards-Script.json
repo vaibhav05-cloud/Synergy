@@ -1,0 +1,242 @@
+[
+    {
+        "sha": "c7a1b74eb2c552e780ed0c82be3039269eadb8cb",
+        "author": "chiihero",
+        "email": "chii.herolt@gmail.com",
+        "date": "2026-07-02T02:52:35Z",
+        "message": "Update README.md",
+        "url": "https://github.com/chiihero/Microsoft-Rewards-Script/commit/c7a1b74eb2c552e780ed0c82be3039269eadb8cb"
+    },
+    {
+        "sha": "e8f1a7fce2b42ec15420f3c404c46657fecc3e19",
+        "author": "chiihero",
+        "email": "chii.herolt@gmail.com",
+        "date": "2026-06-29T07:17:43Z",
+        "message": "fix(query): 热搜源为主、本地词兜底，达阈值即停\n\n原逻辑把 sourceOrder 所有源无条件合并，导致 china(98) 与 local(392)\n一起进池，本地词占 80% 淹没热搜词。\n\n改为：按 sourceOrder 顺序累加，累计原始词达 FALLBACK_THRESHOLD(20)\n即停止取后续源；主源全量纳入，后续源随机抽样 FALLBACK_LOCAL_SAMPLE(50)\n个补充。china 正常时只用热搜，挂了或偏少才由 local 兜底。\n\n阈值判断在扩展前（原始词阶段），避免扩展后词数虚高使兜底失效。",
+        "url": "https://github.com/chiihero/Microsoft-Rewards-Script/commit/e8f1a7fce2b42ec15420f3c404c46657fecc3e19"
+    },
+    {
+        "sha": "58b0d84c56e70ceeb1e07a57badf6e3ea012fac9",
+        "author": "chiihero",
+        "email": "chii.herolt@gmail.com",
+        "date": "2026-06-26T02:18:12Z",
+        "message": "fix(server-action): 弱化部署版本守卫，hash 失效才降级\n\n部署 ID 更新频繁但 Server Action hash 通常不变（实测 20260624-3 部署\n下两个 hash 与 20260612-3 完全一致）。原逻辑把\"部署版本不匹配\"当作\n拦截判据,导致每次微软重新部署都误降级,连击保护和领取积分长期被跳过。\n\n改动：\n- BrowserFunc.extractDeploymentId: 版本不匹配不再 return null，仅记\n  warning 后正常返回；仅提取不到 dpl 时才返回 null\n- BrowserFunc.callServerAction: 硬守卫改为仅当 deploymentId 为空时\n  跳过；x-deployment-id 请求头改用实际 dpl 而非硬编码常量\n- index.ts: 同步注释与日志措辞，避免与弱化守卫语义矛盾\n- SUPPORTED_DEPLOYMENT_ID 更新为 20260624-3，定位为日志对照参考值\n- QueryEngine: 中国热搜源覆盖 accept-encoding 避免 axios 无法解码 zstd",
+        "url": "https://github.com/chiihero/Microsoft-Rewards-Script/commit/58b0d84c56e70ceeb1e07a57badf6e3ea012fac9"
+    },
+    {
+        "sha": "f89ab50aa57318fc55a26cff58465ad47d6752ee",
+        "author": "chiihero",
+        "email": "chii.herolt@gmail.com",
+        "date": "2026-06-24T09:30:01Z",
+        "message": "Update README.md",
+        "url": "https://github.com/chiihero/Microsoft-Rewards-Script/commit/f89ab50aa57318fc55a26cff58465ad47d6752ee"
+    },
+    {
+        "sha": "415049575019b25e34da31d2396219100cc43f0c",
+        "author": "chiihero",
+        "email": "chii.herolt@gmail.com",
+        "date": "2026-06-24T07:53:59Z",
+        "message": "Update package.json",
+        "url": "https://github.com/chiihero/Microsoft-Rewards-Script/commit/415049575019b25e34da31d2396219100cc43f0c"
+    },
+    {
+        "sha": "419f267caa3cb36843327ad38ca0b9dd50501edc",
+        "author": "chiihero",
+        "email": "chii.herolt@gmail.com",
+        "date": "2026-06-24T07:51:28Z",
+        "message": "fix: 修复 Docker 构建与启动问题，完善文档与日志诊断\n\nDocker 修复（核心）:\n- .dockerignore: 忽略 src/config.json/accounts.json，防止账号信息进入镜像\n- scripts/docker/entrypoint.sh: shebang 改为 bash，修复 ${!var} bashism 导致的容器启动崩溃\n- Dockerfile: 移除未使用的 log-forwarder.sh COPY\n- 删除死代码 scripts/docker/log-forwarder.sh\n- compose.yaml: 改为本地构建(build: .)，补充国内特性注释(queryEngines/chinaApi/pushplus)\n- env.example: 补充国内推荐配置说明(geoLocale=cn/langCode=zh)\n- 删除根目录旧版 entrypoint.sh，统一使用 scripts/docker/entrypoint.sh\n\n文档:\n- README.md: 重写 Docker 章节(.env 账号配置/--build 说明/headless 机制/数据持久化)\n- README.md: 注意事项区分 Win/Docker 环境\n- README.md: Docker 可选项补充 CONFIG_CHINA_API_APPKEY\n\n其他:\n- QueryEngine.ts: 检测非 UTF-8 响应体(gzip/二进制/GBK错误页)，避免日志乱码污染\n- 删除未使用的 Nix 文件(flake.nix/flake.lock/scripts/nix/run.sh)\n- .gitignore: 忽略 /.omo",
+        "url": "https://github.com/chiihero/Microsoft-Rewards-Script/commit/419f267caa3cb36843327ad38ca0b9dd50501edc"
+    },
+    {
+        "sha": "47668d1742f66c990e178bde1a069fff833ae9da",
+        "author": "chiihero",
+        "email": "chii.herolt@gmail.com",
+        "date": "2026-06-17T00:39:15Z",
+        "message": "Update QueryEngine.ts",
+        "url": "https://github.com/chiihero/Microsoft-Rewards-Script/commit/47668d1742f66c990e178bde1a069fff833ae9da"
+    },
+    {
+        "sha": "ca6ca6721f1178de3d9999036410494a041bfbf9",
+        "author": "chiihero",
+        "email": "chii.herolt@gmail.com",
+        "date": "2026-06-16T08:01:46Z",
+        "message": "docs: README 补充 chinaApi.appkey 配置及热搜源限流策略说明",
+        "url": "https://github.com/chiihero/Microsoft-Rewards-Script/commit/ca6ca6721f1178de3d9999036410494a041bfbf9"
+    },
+    {
+        "sha": "d1c91db0a58381593554c001708510021fdcbcd2",
+        "author": "chiihero",
+        "email": "chii.herolt@gmail.com",
+        "date": "2026-06-16T07:59:46Z",
+        "message": "chore: bump version to 3.1.6.2",
+        "url": "https://github.com/chiihero/Microsoft-Rewards-Script/commit/d1c91db0a58381593554c001708510021fdcbcd2"
+    },
+    {
+        "sha": "b602870dbbd4151e8d18185a57ed480b08fffb3b",
+        "author": "chiihero",
+        "email": "chii.herolt@gmail.com",
+        "date": "2026-06-16T07:20:35Z",
+        "message": "fix: 修复中国热搜源免费档限流误报为格式异常",
+        "url": "https://github.com/chiihero/Microsoft-Rewards-Script/commit/b602870dbbd4151e8d18185a57ed480b08fffb3b"
+    },
+    {
+        "sha": "9e7a95e6b4b6983a4042f39498d36e9d92a3aa93",
+        "author": "chiihero",
+        "email": "chii.herolt@gmail.com",
+        "date": "2026-06-16T01:26:40Z",
+        "message": "refactor: 规范日志文案与代码命名",
+        "url": "https://github.com/chiihero/Microsoft-Rewards-Script/commit/9e7a95e6b4b6983a4042f39498d36e9d92a3aa93"
+    },
+    {
+        "sha": "756224b3ab1ac360128b29d7e36e8b506389026c",
+        "author": "chiihero",
+        "email": "chii.herolt@gmail.com",
+        "date": "2026-06-16T01:15:17Z",
+        "message": "Update README.md",
+        "url": "https://github.com/chiihero/Microsoft-Rewards-Script/commit/756224b3ab1ac360128b29d7e36e8b506389026c"
+    },
+    {
+        "sha": "90c74b6e8bee6719d0c38689bbb4326ceeb1008e",
+        "author": "chiihero",
+        "email": "chii.herolt@gmail.com",
+        "date": "2026-06-16T01:14:20Z",
+        "message": "Update README.md",
+        "url": "https://github.com/chiihero/Microsoft-Rewards-Script/commit/90c74b6e8bee6719d0c38689bbb4326ceeb1008e"
+    },
+    {
+        "sha": "1f4f4235f1ea8c873e98b33f33e409cb795d3966",
+        "author": "chiihero",
+        "email": "chii.herolt@gmail.com",
+        "date": "2026-06-15T09:16:56Z",
+        "message": "清理无用文件",
+        "url": "https://github.com/chiihero/Microsoft-Rewards-Script/commit/1f4f4235f1ea8c873e98b33f33e409cb795d3966"
+    },
+    {
+        "sha": "31400de8111ec4b5d4fdd0e2ed2d9ae740302943",
+        "author": "chiihero",
+        "email": "chii.herolt@gmail.com",
+        "date": "2026-06-15T08:33:10Z",
+        "message": "docs: 同步 README 配置表至魔改后实际功能",
+        "url": "https://github.com/chiihero/Microsoft-Rewards-Script/commit/31400de8111ec4b5d4fdd0e2ed2d9ae740302943"
+    },
+    {
+        "sha": "f3d6f52da6d38ed2b5c04df8dd191d9b89f0ac65",
+        "author": "chiihero",
+        "email": "chii.herolt@gmail.com",
+        "date": "2026-06-15T08:20:12Z",
+        "message": "docs: 更新 README，补充本次魔改内容",
+        "url": "https://github.com/chiihero/Microsoft-Rewards-Script/commit/f3d6f52da6d38ed2b5c04df8dd191d9b89f0ac65"
+    },
+    {
+        "sha": "e2e398db3528a397af2d888c56376d3415915d3e",
+        "author": "chiihero",
+        "email": "chii.herolt@gmail.com",
+        "date": "2026-06-15T08:20:01Z",
+        "message": "fix: Workers.doClaimBonusPoints 不再用旧版 banner 字段拦截领取",
+        "url": "https://github.com/chiihero/Microsoft-Rewards-Script/commit/e2e398db3528a397af2d888c56376d3415915d3e"
+    },
+    {
+        "sha": "cf8eda55c9889b369040813845c1e2b9c8ee3701",
+        "author": "chiihero",
+        "email": "chii.herolt@gmail.com",
+        "date": "2026-06-15T07:29:44Z",
+        "message": "feat: getChinaTrends 随机取 2 个源聚合，增加 ZhiHuHot",
+        "url": "https://github.com/chiihero/Microsoft-Rewards-Script/commit/cf8eda55c9889b369040813845c1e2b9c8ee3701"
+    },
+    {
+        "sha": "c550e2c84b4d6271957d303878a3c993bfcff429",
+        "author": "chiihero",
+        "email": "chii.herolt@gmail.com",
+        "date": "2026-06-15T07:23:18Z",
+        "message": "refactor: 修复 getChinaTrends 的 fallback Bug 并架构对齐",
+        "url": "https://github.com/chiihero/Microsoft-Rewards-Script/commit/c550e2c84b4d6271957d303878a3c993bfcff429"
+    },
+    {
+        "sha": "793208d03f16c85b5a7996509890ba747beb3f66",
+        "author": "chiihero",
+        "email": "chii.herolt@gmail.com",
+        "date": "2026-06-15T07:21:59Z",
+        "message": "refactor: 聚合搜索查询扩展日志，输出热搜词清单",
+        "url": "https://github.com/chiihero/Microsoft-Rewards-Script/commit/793208d03f16c85b5a7996509890ba747beb3f66"
+    },
+    {
+        "sha": "def4d2afbbef76b21d66c027c22365ce6bfd7a97",
+        "author": "chiihero",
+        "email": "chii.herolt@gmail.com",
+        "date": "2026-06-15T06:57:49Z",
+        "message": "连击保护迁移出来单独文件",
+        "url": "https://github.com/chiihero/Microsoft-Rewards-Script/commit/def4d2afbbef76b21d66c027c22365ce6bfd7a97"
+    },
+    {
+        "sha": "1f8b4965004a556e631f05016f33be11ae216302",
+        "author": "chiihero",
+        "email": "chii.herolt@gmail.com",
+        "date": "2026-06-15T06:48:52Z",
+        "message": "feat: 连击保护/领取积分迁移到新版 UI 的 Server Action",
+        "url": "https://github.com/chiihero/Microsoft-Rewards-Script/commit/1f8b4965004a556e631f05016f33be11ae216302"
+    },
+    {
+        "sha": "ab7ecd2f9a17617fb4e0bb3c23965c60a0bb1153",
+        "author": "chiihero",
+        "email": "chii.herolt@gmail.com",
+        "date": "2026-06-15T03:58:17Z",
+        "message": "新接口问题暂时修复",
+        "url": "https://github.com/chiihero/Microsoft-Rewards-Script/commit/ab7ecd2f9a17617fb4e0bb3c23965c60a0bb1153"
+    },
+    {
+        "sha": "44d60c86460e0ec4f762d4309cab26745cb50627",
+        "author": "chiihero",
+        "email": "chii.herolt@gmail.com",
+        "date": "2026-06-15T02:31:11Z",
+        "message": "i18n: 汉化 merge 后新增功能的英文日志（38处）",
+        "url": "https://github.com/chiihero/Microsoft-Rewards-Script/commit/44d60c86460e0ec4f762d4309cab26745cb50627"
+    },
+    {
+        "sha": "1ab427d43c4833efcf697200b9f09bb161f1fadd",
+        "author": "chiihero",
+        "email": "chii.herolt@gmail.com",
+        "date": "2026-06-15T02:05:36Z",
+        "message": "Merge upstream v3 (至 3.1.6): 同步新特性并保留国内补丁",
+        "url": "https://github.com/chiihero/Microsoft-Rewards-Script/commit/1ab427d43c4833efcf697200b9f09bb161f1fadd"
+    },
+    {
+        "sha": "162209a68569d16f75bc2eca2158c0ae7ad15d6f",
+        "author": "chiihero",
+        "email": "chii.herolt@gmail.com",
+        "date": "2026-06-15T01:16:47Z",
+        "message": "chore: 本地 config.example.json 调整（合并 upstream 前保存）",
+        "url": "https://github.com/chiihero/Microsoft-Rewards-Script/commit/162209a68569d16f75bc2eca2158c0ae7ad15d6f"
+    },
+    {
+        "sha": "5ffb49c4027640bff0667a79104fd504ce60149b",
+        "author": "chiihero",
+        "email": "chii.herolt@gmail.com",
+        "date": "2026-04-10T16:56:42Z",
+        "message": "Update README.md",
+        "url": "https://github.com/chiihero/Microsoft-Rewards-Script/commit/5ffb49c4027640bff0667a79104fd504ce60149b"
+    },
+    {
+        "sha": "6aea93180ffea400cfd02915f35b09e9b10c11ec",
+        "author": "chiihero",
+        "email": "chii.herolt@gmail.com",
+        "date": "2026-04-10T16:35:44Z",
+        "message": "每日任务的临时解决办法",
+        "url": "https://github.com/chiihero/Microsoft-Rewards-Script/commit/6aea93180ffea400cfd02915f35b09e9b10c11ec"
+    },
+    {
+        "sha": "1ddf659140333be31b9912eb32bb3cd6a4cb7722",
+        "author": "chiihero",
+        "email": "chii.herolt@gmail.com",
+        "date": "2026-04-10T15:43:19Z",
+        "message": "修复识别不到仪表盘界面",
+        "url": "https://github.com/chiihero/Microsoft-Rewards-Script/commit/1ddf659140333be31b9912eb32bb3cd6a4cb7722"
+    },
+    {
+        "sha": "7e6e2b13278f867a034e790bfe52efce02f02584",
+        "author": "chiihero",
+        "email": "chii.herolt@gmail.com",
+        "date": "2026-04-10T11:27:47Z",
+        "message": "Merge remote-tracking branch 'upstream/v3'",
+        "url": "https://github.com/chiihero/Microsoft-Rewards-Script/commit/7e6e2b13278f867a034e790bfe52efce02f02584"
+    }
+]

@@ -1,0 +1,437 @@
+[
+    {
+        "id": 4881340327,
+        "number": 42973,
+        "title": "grpc.aio.Metadata: __delitem__ leaves ghost keys that break __contains__ and the Python container protocol",
+        "state": "open",
+        "created_at": "2026-07-14T08:37:03Z",
+        "updated_at": "2026-07-14T08:39:49Z",
+        "closed_at": null,
+        "author": "RudraDudhat2509",
+        "comments": 0,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "### Description\n\n`grpc.aio.Metadata.__delitem__` does not remove a key from the internal `OrderedDict` when the last value for that key is deleted,  it sets the key to an empty list instead. This causes `__contains__` (`in` operator) to return `True` for a key that has no retrievable values,  diverging from both `delete_all` and every other language SDK.\n\n### Reproduction\n\n```python\nfrom grpc.aio import Metadata\n\nmd = Metadata((\"foo\", \"bar\"))\ndel md[\"foo\"]\n\nprint(\"foo\" in md)     # True  ← BUG: ghost key\nprint(md.get(\"foo\"))   # None\nprint(list(md))        # []\nprint(len(md))         # 0\n\n# Breaks the standard Python container contract:\n# \"if x in container: container[x]\" must not raise KeyError\nif \"foo\" in md:\n    md[\"foo\"]          # KeyError!\n```\n\nMulti-value case:\n\n```python\nmd = Metadata((\"foo\", \"bar\"), (\"foo\", \"baz\"))\ndel md[\"foo\"]  # removes \"bar\"\ndel md[\"foo\"]  # removes \"baz\", empty list remains\n\nprint(\"foo\" in md)    # True  ← ghost key\nprint(md.get(\"foo\"))  # None\nprint(list(md))       # []\n```\n\n### Root cause\n\n`__delitem__` in `src/python/grpcio/grpc/aio/_metadata.py`:\n\n```python\ndef __delitem__(self, key: MetadataKey) -> None:\n    current_values = self.get_all(key)\n    if not current_values:\n        raise KeyError(repr(key))\n    self._metadata[key] = current_values[1:]  # ← leaves empty list when last value removed\n```\n\n`__contains__` checks `key in self._metadata` (whether the key exists in the dict at all), not whether there are values. After the last value is deleted, the key remains as `[]`, so `__contains__` returns `True`.\n\n### Inconsistency with `delete_all`\n\nThe two deletion methods leave the object in inconsistent states:\n\n```python\nmd1 = Metadata((\"foo\", \"bar\"))\ndel md1[\"foo\"]\nprint(\"foo\" in md1)   # True  ← ghost key\n\nmd2 = Metadata((\"foo\", \"bar\"))\nmd2.delete_all(\"foo\")\nprint(\"foo\" in md2)   # False ← correct\n```\n\n`delete_all` uses `del self._metadata[key]` which removes the key entirely. `__delitem__` does not.\n\n### How other language SDKs handle this\n\n**Go (`grpc-go`)**  uses real map deletion, no ghost keys possible:\n```go\nfunc (md MD) Delete(k string) {\n    k = strings.ToLower(k)\n    delete(md, k)  // key fully removed\n}\n```\n\n**Java (`grpc-java`)**  compacts the internal array, key is physically removed:\n```java\npublic <T> Iterable<T> removeAll(Key<T> key) {\n    // entries for that key are removed from the namesAndValues array entirely\n    // containsKey scans the array — if absent, returns false\n}\n```\n\nPython `grpc.aio.Metadata` is the only implementation that leaves a ghost key after deletion.\n\n### Proposed fix\n\nIn `__delitem__`, remove the key entirely when the remaining list is empty:\n\n```python\ndef __delitem__(self, key: MetadataKey) -> None:\n    current_values = self.get_all(key)\n    if not current_values:\n        raise KeyError(repr(key))\n    remaining = current_values[1:]\n    if remaining:\n        self._metadata[key] = remaining\n    else:\n        del self._metadata[key]\n```\n\n### Environment\n\n- grpcio version: 1.80.0\n- Python: 3.x\n- File: `src/python/grpcio/grpc/aio/_metadata.py`",
+        "url": "https://github.com/grpc/grpc/issues/42973"
+    },
+    {
+        "id": 4858592583,
+        "number": 42951,
+        "title": "[CI] Upgrade debian-based docker image to 12/13",
+        "state": "open",
+        "created_at": "2026-07-10T20:55:57Z",
+        "updated_at": "2026-07-13T00:25:05Z",
+        "closed_at": null,
+        "author": "yuanweiz",
+        "comments": 1,
+        "labels": [
+            "lang/c++",
+            "area/build"
+        ],
+        "assignees": [
+            "yuanweiz"
+        ],
+        "locked": false,
+        "body": "Context: foundational C++ policy will be [updated](https://github.com/google/oss-policies-info/pull/68) and we only need to support debian 13 (currently we're using debian11/12 images). To make things easier, I think we can upgrade most tests from debian 11 -> 12 first and then evaluate the difficulty of upgrading from 12 -> 13.\n\nRationale: debian 12 already comes with compilers/toolings that are:\n* new enough for us to build against latest dependencies:\n  * boringssl@0.20260616.0  (requires cmake 3.22)\n  * absl@20260526.0 (expliclity requires gcc 10, and implicitly clang > 10 due to compiler bug)\n  * protobuf@35.1\n* old enough to cover some lower bounds of fundational requirement\n  * clang 14\n* Works well with existing tests\n  * some debian11/12 based python tests are relying on downgrading system pip to 19.3.1. This may not work on debian 13.\n\nThe default package versions on debian 12. This should should suffice the need of most of our tests.\n\n```\nroot@ff9f2e2803e1:/var/tmp# dpkg-query --showformat='${Package}: ${Version}\\n' --show cmake ccache clang gcc python3\nccache: 4.8+really4.7.5-1\nclang: 1:14.0-55.7~deb12u1\ncmake: 3.25.1-1\ngcc: 4:12.2.0-3\npython3: 3.11.2-1+b1\n```",
+        "url": "https://github.com/grpc/grpc/issues/42951"
+    },
+    {
+        "id": 4858464207,
+        "number": 42950,
+        "title": "[CI][2026Q3] Comply with OSS Foundational C++ Support policies",
+        "state": "open",
+        "created_at": "2026-07-10T20:33:05Z",
+        "updated_at": "2026-07-13T00:24:42Z",
+        "closed_at": null,
+        "author": "yuanweiz",
+        "comments": 0,
+        "labels": [
+            "lang/c++",
+            "area/build"
+        ],
+        "assignees": [
+            "yuanweiz"
+        ],
+        "locked": false,
+        "body": "## Requirements\n\n* Debian (next change 2026-06-30)\n* macOS (next change 2026-07-01)\n* Cmake >= 3.22\n* GCC (next change 2026-06-30)\n* Apple Clang (next change 2026-07-01)\n* MSVC 2022 (drop all references to 2019)\n",
+        "url": "https://github.com/grpc/grpc/issues/42950"
+    },
+    {
+        "id": 4837141826,
+        "number": 42926,
+        "title": "[Python] xds-protos bundles a stale copy of opentelemetry-proto, breaking the opentelemetry-proto package",
+        "state": "open",
+        "created_at": "2026-07-08T11:49:47Z",
+        "updated_at": "2026-07-08T15:47:49Z",
+        "closed_at": null,
+        "author": "avelychko12",
+        "comments": 1,
+        "labels": [
+            "kind/bug",
+            "lang/Python",
+            "priority/P2"
+        ],
+        "assignees": [
+            "sreenithi"
+        ],
+        "locked": false,
+        "body": "### What version of gRPC and what language are you using?\n\n`xds-protos 1.76.0` and `opentelemetry-proto 1.39.0`, Python.\n\n### What operating system (Linux, Windows,...) and version?\n\nNot OS-specific — reproducible on any platform (originally seen on Linux, Python 3.13).\n\n### What runtime / compiler are you using (e.g. python version or version of gcc)\n\nPython 3.13\n\n### What did you do?\n\nThe `xds-protos` package ships generated modules under the `opentelemetry.proto.*` namespace — see [`opentelemetry/proto/trace/v1/trace_pb2.py`](https://github.com/grpc/grpc/blob/46b1795eacc99065c46e3fb60fad808c19f71a87/tools/distrib/python/xds_protos/opentelemetry/proto/trace/v1/trace_pb2.py#L29). These same modules are the entire contents of the standalone [`opentelemetry-proto`](https://pypi.org/project/opentelemetry-proto/) package, a common dependency across the OpenTelemetry Python ecosystem.\n\nThe copy bundled in `xds-protos` is based on a **much older** revision of [open-telemetry/opentelemetry-proto](https://github.com/open-telemetry/opentelemetry-proto). For example, its `common.proto` still defines `InstrumentationLibrary`, whereas current `opentelemetry-proto` defines `InstrumentationScope`.\n\nBecause both distributions claim the same import path (`opentelemetry/proto/...`), whichever is installed **last** overwrites the other's files. Installing `xds-protos` after `opentelemetry-proto` replaces the current generated code with the stale copy:\n\n```bash\n$ docker run --rm -it ghcr.io/astral-sh/uv:python3.13-alpine /bin/sh\n\n# opentelemetry-proto alone — fine\n/ # uvx --python 3.13 --with opentelemetry-proto \\\n    python -c \"from opentelemetry.proto.common.v1.common_pb2 import InstrumentationScope; print('ok')\"\nok\n\n# add xds-protos — the import now breaks\n/ # uvx --python 3.13 --with opentelemetry-proto --with xds-protos \\\n    python -c \"from opentelemetry.proto.common.v1.common_pb2 import InstrumentationScope; print('ok')\"\nTraceback (most recent call last):\n  File \"<string>\", line 1, in <module>\nImportError: cannot import name 'InstrumentationScope' from 'opentelemetry.proto.common.v1.common_pb2'\n\n# the stale copy provides the old symbol instead\n/ # uvx --python 3.13 --with opentelemetry-proto --with xds-protos \\\n    python -c \"from opentelemetry.proto.common.v1.common_pb2 import InstrumentationLibrary; print('ok')\"\nok\n```\n\nReinstalling `opentelemetry-proto` afterwards restores the correct files and fixes the import — confirming this is last-writer-wins on the shared files, not a logic bug in either package.\n\n### What did you expect to see?\n\nInstalling or uninstalling `xds-protos` should not affect modules provided by `opentelemetry-proto`. Imports from `opentelemetry.proto.*` should resolve to the same code regardless of install order.\n\n### What did you see instead?\n\nThree failure modes (identical in nature to #42830, which covers the `google.*` overlap):\n\n1. **Last writer wins** — the same `opentelemetry.proto.*` import resolves to different generated code depending on install order, and can break entirely (missing symbols, e.g. `InstrumentationScope`).\n2. **Uninstall breaks the survivor** — removing `xds-protos` deletes the shared files and breaks `opentelemetry-proto` even though it's still installed.\n3. **Silent version skew / descriptor conflicts** — the bundled protos diverge from the real `opentelemetry-proto` version.\n\n### Anything else we should know about your project / environment?\n\nThis is the same root cause as #42830 (`xds-protos` bundling externally-owned namespaces), but for `opentelemetry.*` rather than `google.*`. Note that #42830's proposed fix lists `opentelemetry.*` among the namespaces \"unique to xds-protos\" that should keep being bundled — it isn't unique; it's owned by the standalone `opentelemetry-proto` package, so it needs the same treatment as `google.*`.\n\nSuggested fix: add `opentelemetry-proto` as a dependency of `xds-protos` and stop bundling the overlapping `opentelemetry.proto.*` modules, shipping only the namespaces genuinely unique to xds-protos (`envoy.*`, `xds.*`, `udpa.*`, `cel.*`, `validate.*`, etc.).\n\nOriginally reported at open-telemetry/opentelemetry-python#4843, where the maintainers confirmed the collision originates in `xds-protos`.\n",
+        "url": "https://github.com/grpc/grpc/issues/42926"
+    },
+    {
+        "id": 4836958241,
+        "number": 42925,
+        "title": "[Python] xds-protos bundles a stale copy of opentelemetry-proto, breaking the opentelemetry-proto package",
+        "state": "closed",
+        "created_at": "2026-07-08T11:22:08Z",
+        "updated_at": "2026-07-08T11:50:03Z",
+        "closed_at": "2026-07-08T11:50:03Z",
+        "author": "avelychko12",
+        "comments": 1,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "### What version of gRPC and what language are you using?\n\n`xds-protos 1.76.0` and `opentelemetry-proto 1.39.0`, Python.\n\n### What operating system (Linux, Windows,...) and version?\n\nNot OS-specific — reproducible on any platform (originally seen on Linux, Python 3.13).\n\n### What runtime / compiler are you using (e.g. python version or version of gcc)\n\nPython 3.13\n\n### What did you do?\n\nThe `xds-protos` package ships generated modules under the `opentelemetry.proto.*` namespace — see [`opentelemetry/proto/trace/v1/trace_pb2.py`](https://github.com/grpc/grpc/blob/46b1795eacc99065c46e3fb60fad808c19f71a87/tools/distrib/python/xds_protos/opentelemetry/proto/trace/v1/trace_pb2.py#L29). These same modules are the entire contents of the standalone [`opentelemetry-proto`](https://pypi.org/project/opentelemetry-proto/) package, a common dependency across the OpenTelemetry Python ecosystem.\n\nThe copy bundled in `xds-protos` is based on a **much older** revision of [open-telemetry/opentelemetry-proto](https://github.com/open-telemetry/opentelemetry-proto). For example, its `common.proto` still defines `InstrumentationLibrary`, whereas current `opentelemetry-proto` defines `InstrumentationScope`.\n\nBecause both distributions claim the same import path (`opentelemetry/proto/...`), whichever is installed **last** overwrites the other's files. Installing `xds-protos` after `opentelemetry-proto` replaces the current generated code with the stale copy:\n\n```bash\n$ docker run --rm -it ghcr.io/astral-sh/uv:python3.13-alpine /bin/sh\n\n# opentelemetry-proto alone — fine\n/ # uvx --python 3.13 --with opentelemetry-proto \\\n    python -c \"from opentelemetry.proto.common.v1.common_pb2 import InstrumentationScope; print('ok')\"\nok\n\n# add xds-protos — the import now breaks\n/ # uvx --python 3.13 --with opentelemetry-proto --with xds-protos \\\n    python -c \"from opentelemetry.proto.common.v1.common_pb2 import InstrumentationScope; print('ok')\"\nTraceback (most recent call last):\n  File \"<string>\", line 1, in <module>\nImportError: cannot import name 'InstrumentationScope' from 'opentelemetry.proto.common.v1.common_pb2'\n\n# the stale copy provides the old symbol instead\n/ # uvx --python 3.13 --with opentelemetry-proto --with xds-protos \\\n    python -c \"from opentelemetry.proto.common.v1.common_pb2 import InstrumentationLibrary; print('ok')\"\nok\n```\n\nReinstalling `opentelemetry-proto` afterwards restores the correct files and fixes the import — confirming this is last-writer-wins on the shared files, not a logic bug in either package.\n\n### What did you expect to see?\n\nInstalling or uninstalling `xds-protos` should not affect modules provided by `opentelemetry-proto`. Imports from `opentelemetry.proto.*` should resolve to the same code regardless of install order.\n\n### What did you see instead?\n\nThree failure modes (identical in nature to #42830, which covers the `google.*` overlap):\n\n1. **Last writer wins** — the same `opentelemetry.proto.*` import resolves to different generated code depending on install order, and can break entirely (missing symbols, e.g. `InstrumentationScope`).\n2. **Uninstall breaks the survivor** — removing `xds-protos` deletes the shared files and breaks `opentelemetry-proto` even though it's still installed.\n3. **Silent version skew / descriptor conflicts** — the bundled protos diverge from the real `opentelemetry-proto` version.\n\n### Anything else we should know about your project / environment?\n\nThis is the same root cause as #42830 (`xds-protos` bundling externally-owned namespaces), but for `opentelemetry.*` rather than `google.*`. Note that #42830's proposed fix lists `opentelemetry.*` among the namespaces \"unique to xds-protos\" that should keep being bundled — it isn't unique; it's owned by the standalone `opentelemetry-proto` package, so it needs the same treatment as `google.*`.\n\nSuggested fix: add `opentelemetry-proto` as a dependency of `xds-protos` and stop bundling the overlapping `opentelemetry.proto.*` modules, shipping only the namespaces genuinely unique to xds-protos (`envoy.*`, `xds.*`, `udpa.*`, `cel.*`, `validate.*`, etc.).\n\nOriginally reported at open-telemetry/opentelemetry-python#4843, where the maintainers confirmed the collision originates in `xds-protos`.\n",
+        "url": "https://github.com/grpc/grpc/issues/42925"
+    },
+    {
+        "id": 4824638778,
+        "number": 42906,
+        "title": "grpc==1.82.0 errors at runtime with protobuf < 7 but pip lets you install this combination",
+        "state": "closed",
+        "created_at": "2026-07-07T02:23:16Z",
+        "updated_at": "2026-07-08T13:09:49Z",
+        "closed_at": "2026-07-08T13:09:49Z",
+        "author": "harry-dnv",
+        "comments": 3,
+        "labels": [
+            "kind/bug",
+            "lang/Python",
+            "priority/P0/RELEASE BLOCKER"
+        ],
+        "assignees": [
+            "sergiitk",
+            "asheshvidyut"
+        ],
+        "locked": false,
+        "body": "<!--\nPLEASE DO NOT POST A QUESTION HERE.\nThis form is for bug reports and feature requests ONLY!\n\nFor general questions and troubleshooting, please ask/look for answers at StackOverflow, with \"grpc\" tag: https://stackoverflow.com/questions/tagged/grpc\n\nFor questions that specifically need to be answered by gRPC team members, please ask/look for answers at grpc.io mailing list: https://groups.google.com/forum/#!forum/grpc-io\n\nIssues specific to *grpc-java*, *grpc-go*, *grpc-node*, *grpc-dart*, *grpc-web* should be created in the repository they belong to (e.g. https://github.com/grpc/grpc-LANGUAGE/issues/new)\n-->\n\n### What version of gRPC and what language are you using?\ngRPC=1.82.0\n\n### What operating system (Linux, Windows,...) and version?\nLinux Ubuntu LTS\n\n### What runtime / compiler are you using (e.g. python version or version of gcc)\npython=3.11\n\n### What did you do?\n```\n$ uv venv \\\n&& source .venv/bin/activate \\\n&& uv pip install \"protobuf<7\" \"grpcio-health-checking\" \\\n&& python -c 'import google.protobuf; print(\"protobuf runtime:\", google.protobuf.__version__); from grpc_health.v1 import health_pb2'\n```\n\n\n\n### What did you expect to see?\nNo error on import, OR for grpcio to report on `pip install` that it was not compatible with `protobuf<7`\n\n### What did you see instead?\n```\nUsing CPython 3.11.15 interpreter at: /usr/local/bin/python\nCreating virtual environment at: .venv\nResolved 4 packages in 10ms\nInstalled 4 packages in 62ms\n + grpcio==1.82.0\n + grpcio-health-checking==1.82.0\n + protobuf==6.33.6\n + typing-extensions==4.16.0\nprotobuf runtime: 6.33.6\nTraceback (most recent call last):\n  File \"<string>\", line 1, in <module>\n  File \"/app/tmp/.venv/lib/python3.11/site-packages/grpc_health/v1/health_pb2.py\", line 12, in <module>\n    _runtime_version.ValidateProtobufRuntimeVersion(\n  File \"/app/tmp/.venv/lib/python3.11/site-packages/google/protobuf/runtime_version.py\", line 100, in ValidateProtobufRuntimeVersion\n    _ReportVersionError(\n  File \"/app/tmp/.venv/lib/python3.11/site-packages/google/protobuf/runtime_version.py\", line 50, in _ReportVersionError\n    raise VersionError(msg)\ngoogle.protobuf.runtime_version.VersionError: Detected incompatible Protobuf Gencode/Runtime versions when loading grpc_health/v1/health.proto: gencode 7.35.0 runtime 6.33.6. Runtime version cannot be older than the linked gencode version. See Protobuf version guarantees at https://protobuf.dev/support/cross-version-runtime-guarantee.\n```\n\n\n### Anything else we should know about your project / environment?\n```\n(tmp) $ uv pip list\nPackage                Version\n---------------------- -------\ngrpcio                 1.82.0\ngrpcio-health-checking 1.82.0\nprotobuf               6.33.6\ntyping-extensions      4.16.0\n```",
+        "url": "https://github.com/grpc/grpc/issues/42906"
+    },
+    {
+        "id": 4821659809,
+        "number": 42902,
+        "title": "[Core] Update the BoringSSLto a version from at least August 2025 when MLKEM-1024 was added",
+        "state": "open",
+        "created_at": "2026-07-06T17:44:05Z",
+        "updated_at": "2026-07-07T20:03:06Z",
+        "closed_at": null,
+        "author": "yuanweiz",
+        "comments": 3,
+        "labels": [
+            "lang/all wrapped languages",
+            "lang/core"
+        ],
+        "assignees": [
+            "yuanweiz"
+        ],
+        "locked": false,
+        "body": "We're still using boringSSL `0.20250415.0` which is old. The documentation in `third_party/README.md` is also outdated and doesn't reflect the new upstream changes. I've did a bit of research and seems like we'll need to do a few things:\n\n## Build System Requirements\n* Upgrade cmake to >= 3.22\n* Prefix header isn't needed anymore, `tools/distrib/generate_boringssl_prefix_header.sh` should be deleted.\n* Schema of `gen/sources.json` is changed so build system needs to be updated accordingly.\n\n## Platform/Language Specific Issues\n* Fix android large-file-support error: `error: no member named 'fseeko' in the global namespace; did you mean 'fseek'`\n  * `fseeko` and `ftello` isn't available in some platform. See bionic [doc](https://android.googlesource.com/platform/bionic/+/master/docs/32-bit-abi.md)\n  * Example failure https://btx.cloud.google.com/invocations/76b31bf2-4c7e-4e1b-9f63-07df5a61bee6/targets/grpc%2Fcore%2Fpull_request%2Flinux%2Fgrpc_android/log\n* Ruby Distrubution Test.\n  * `error: member reference base type 'Span' is not a structure or union`, Example [failure](https://btx.cloud.google.com/invocations/e681c163-2a8f-499c-ae8f-1a088e680ec3/targets)\n  * Root cause unclear, might have to do with gcc cross compiler version too old (9.4)",
+        "url": "https://github.com/grpc/grpc/issues/42902"
+    },
+    {
+        "id": 4778827783,
+        "number": 42831,
+        "title": "gRPC 1.81+ shared libraries incompatible with ASAN: ODR violation when instrumented, false container-overflow when not",
+        "state": "open",
+        "created_at": "2026-06-30T16:57:54Z",
+        "updated_at": "2026-06-30T17:00:05Z",
+        "closed_at": null,
+        "author": "TedLyngmo",
+        "comments": 0,
+        "labels": [
+            "kind/bug",
+            "lang/core",
+            "priority/P2",
+            "untriaged"
+        ],
+        "assignees": [
+            "pawbhard"
+        ],
+        "locked": false,
+        "body": "### What version of gRPC and what language are you using?\ngRPC 1.81.1 (built with `-DBUILD_SHARED_LIBS=ON`, CMake, all providers as module), C++\n\n### What operating system (Linux, Windows,...) and version?\nDebian GNU/Linux 13 (trixie)\n\n### What runtime / compiler are you using (e.g. python version or version of gcc)\nGCC 14.2, Python 3.13.5\n\n### What did you do (1)?\nBuilt the gRPC 1.81.1 stack from source with cmake **without** ASan and **without** UBSan.\nCompiled our own code using ASan and UBSan and linked with the gRPC libraries.\n\n### What did you expect to see (1)?\nNo ASan and UBSan errors in the gRPC related code.\n\n### What did you see instead (1)?\nFalse container-overflows. If consumer code includes protobuf/abseil headers and IS compiled with ASAN, false container-overflow errors occur when iterating `google::protobuf::RepeatedField`.\n\nPossible root cause: `absl/base/config.h` defines `ABSL_HAVE_ADDRESS_SANITIZER` based on `__SANITIZE_ADDRESS__`, which is set by the compiler when `-fsanitize=address` is active. This causes `ABSL_ANNOTATE_CONTIGUOUS_CONTAINER` (in `absl/base/dynamic_annotations.h`) to expand to `__sanitizer_annotate_contiguous_container()` in inline functions within the protobuf headers (e.g., `RepeatedField::AnnotateSize()`).\n\nThe result:\n- Consumer code compiles inline `RepeatedField` methods WITH annotations active\n- The library populates `RepeatedField` data WITHOUT annotations (because library was built without `-fsanitize=address`)\n- ASAN sees annotated boundaries from the inline header code but missing annotations from the library, and reports container-overflow\n\nExample:\n```\n==7988==ERROR: AddressSanitizer: container-overflow on address 0x50c000118a10\nREAD of size 4 at 0x50c000118a10\n    #0 in getGrpcOptionSet (iterating const RepeatedField<int>& via range-for)\nSUMMARY: AddressSanitizer: container-overflow\n```\nAnd memcpy interceptor hits:\n```\nSUMMARY: AddressSanitizer: container-overflow .../sanitizer_common_interceptors_memintrinsics.inc:115 in memcpy\n```\n### What did you do (2)?\nBuilt the gRPC 1.81.1 stack from source with cmake **with** ASan and UBSan.\nCompiled our own code using ASan and UBSan and linked with the gRPC libraries.\n\n### What did you expect to see (2)?\nNo ODR violations in gRPC\n\n### What did you see instead (2)?\n```\n==26749==ERROR: AddressSanitizer: odr-violation (0x7fd6e69371c0):\n  [1] size=40 'google_protobuf_descriptor_proto_upb_file_layout' .../descriptor.upb_minitable.c:1439 in libgrpc.so.53\n  [2] size=40 'google_protobuf_descriptor_proto_upb_file_layout' .../descriptor.upb_minitable.c:1439 in libupb_reflection_lib.so.53\n```\n\n### Impact\nThere is no working configuration for ASAN + gRPC 1.81 shared libraries:\n- Build gRPC with ASAN: ODR violation aborts\n- Build gRPC without ASAN: container-overflow false positives abort\n\n### Wanted solution\nBeing able to compile gRPC with ASAN _or_ without ASAN and be able to use it without suppressions like `ASAN_OPTIONS=detect_container_overflow=0`.\n\n### Related\n- https://github.com/grpc/grpc/issues/41808 (ODR violation in shared lib builds)\nWe've already given up on compiling gRPC with UBSan because of https://github.com/abseil/abseil-cpp/issues/1634 but that doesn't seem to cause issues when our consumer code uses UBSan. \n",
+        "url": "https://github.com/grpc/grpc/issues/42831"
+    },
+    {
+        "id": 4775694833,
+        "number": 42830,
+        "title": "[Python] `xds-protos` ships `google.*` modules that conflict with `googleapis-common-protos`",
+        "state": "open",
+        "created_at": "2026-06-30T10:00:28Z",
+        "updated_at": "2026-07-08T19:47:16Z",
+        "closed_at": null,
+        "author": "mahlberg",
+        "comments": 2,
+        "labels": [
+            "kind/bug",
+            "lang/Python",
+            "priority/P2"
+        ],
+        "assignees": [
+            "sreenithi"
+        ],
+        "locked": false,
+        "body": "### What version of gRPC and what language are you using?\n\n`xds-protos 1.81.1` and `googleapis-common-protos 1.75.0`, Python.\n\n### What operating system (Linux, Windows,...) and version?\n\nNot OS-specific — reproducible on any platform.\n\n### What runtime / compiler are you using (e.g. python version or version of gcc)\n\nPython 3.13\n\n### What did you do?\n\nThe `xds-protos` package ships 97 generated modules under `google.api`, `google.rpc`, `google.type`, `google.longrunning`, and `google.logging`. These same modules are provided by `googleapis-common-protos`, which is a common transitive dependency (e.g. via `google-cloud-bigquery`, `grpcio-status`, etc.).\n\nWhen both packages are installed, whichever is installed **last** overwrites the other's files. The generated code differs between the two packages (different protoc versions / proto source revisions), so users get different runtime behavior depending on install order.\n\nTo reproduce:\n\n```bash\n# Install in order A\npip install googleapis-common-protos xds-protos\npython -c \"import hashlib; f=open(__import__('google.rpc.status_pb2',fromlist=['.']).status_pb2.__file__,'rb'); print(hashlib.md5(f.read()).hexdigest()[:12])\"\n# prints: 090c9b83e5b8 (from xds-protos)\n\n# Install in order B\npip install xds-protos googleapis-common-protos\npython -c \"import hashlib; f=open(__import__('google.rpc.status_pb2',fromlist=['.']).status_pb2.__file__,'rb'); print(hashlib.md5(f.read()).hexdigest()[:12])\"\n# prints: 4f8f5c7ebd8a (from googleapis-common-protos)\n```\n\nAdditionally, uninstalling either package removes the shared files and breaks the other — even though it's still installed:\n\n```bash\npip install googleapis-common-protos xds-protos\npip uninstall xds-protos\npython -c \"import google.rpc.status_pb2\"\n# ModuleNotFoundError: No module named 'google.rpc.status_pb2'\n# ...despite googleapis-common-protos still being installed\n```\n\n### What did you expect to see?\n\nDeterministic behavior regardless of install order. Installing or uninstalling `xds-protos` should not affect modules provided by `googleapis-common-protos`.\n\n### What did you see instead?\n\nThree failure modes:\n1. **Last writer wins** — the same import resolves to different generated code depending on install order.\n2. **Uninstall breaks the survivor** — removing one package deletes shared files, breaking the other.\n3. **Silent version skew** — if the bundled protos diverge from the `googleapis-common-protos` versions, users can hit protobuf descriptor conflicts at runtime.\n\n### Anything else we should know about your project / environment?\n\nI've verified that all 97 `google.*` modules shipped by `xds-protos` are also available in `googleapis-common-protos`. A possible fix would be to add `googleapis-common-protos` as a dependency of `xds-protos` and stop bundling the overlapping `google.*` modules — only shipping the namespaces unique to xds-protos (`envoy.*`, `xds.*`, `udpa.*`, `opencensus.*`, `opentelemetry.*`, `cel.*`, `validate.*`).\n\nI'm happy to submit a PR for this if the approach sounds reasonable to the team.",
+        "url": "https://github.com/grpc/grpc/issues/42830"
+    },
+    {
+        "id": 4749039637,
+        "number": 42798,
+        "title": "PIE vs PECL minimal PHP version inconsistency",
+        "state": "closed",
+        "created_at": "2026-06-26T03:32:57Z",
+        "updated_at": "2026-06-26T11:46:16Z",
+        "closed_at": "2026-06-26T08:12:27Z",
+        "author": "remicollet",
+        "comments": 6,
+        "labels": [
+            "kind/bug",
+            "lang/php",
+            "priority/P2"
+        ],
+        "assignees": [
+            "pawbhard"
+        ],
+        "locked": false,
+        "body": "In package.xml for PECL minimal version is 7.0 => https://pecl.php.net/package/gRPC\n\nIn composer.json for PIE minimal version is 8.0 => https://packagist.org/packages/grpc/grpc-php-ext\n\n\nPlease clarify",
+        "url": "https://github.com/grpc/grpc/issues/42798"
+    },
+    {
+        "id": 4724028316,
+        "number": 42763,
+        "title": "MSC build failed",
+        "state": "open",
+        "created_at": "2026-06-23T08:29:23Z",
+        "updated_at": "2026-06-23T09:00:05Z",
+        "closed_at": null,
+        "author": "torsten48",
+        "comments": 0,
+        "labels": [
+            "kind/bug",
+            "lang/core",
+            "priority/P2",
+            "untriaged"
+        ],
+        "assignees": [
+            "aadikapur"
+        ],
+        "locked": false,
+        "body": "gRPC commit 8bdf11e5097abecbe6cffb70866625a0b8044948 (tag: v1.81.0)\n\nWindows Server 2025\nVS 2026, MSC 19.51.36247.0 (building for x86, 32bit)\ncmake/ninja\n\nAbseil commit 5650e9cf76d3be4318d5fa3af38ee483ddfd5e4a (HEAD, tag: 20260526.rc2, tag: 20260526.0, origin/lts_2026_05_26)\nProtobuf commit 35cd01f9fe9afbeea38cc7b979a3b6bfcde82c03 (HEAD, tag: v5.35.1-objectivec, tag: v35.1)\n\n```\nC:\\dev\\gi2\\extern\\grpc\\src/core/call/call_filters.h(1635): error C3539: a template-argument cannot be a type that contains 'auto'\nC:\\dev\\gi2\\extern\\grpc\\src/core/call/call_filters.h(1636): error C3539: a template-argument cannot be a type that contains 'auto'\nC:\\dev\\gi2\\extern\\grpc\\src/core/call/call_filters.h(1637): error C3539: a template-argument cannot be a type that contains 'auto'\nC:\\dev\\gi2\\extern\\grpc\\src/core/call/call_filters.h(1638): error C3539: a template-argument cannot be a type that contains 'auto'\nC:\\dev\\gi2\\extern\\grpc\\src/core/call/call_filters.h(1640): error C3539: a template-argument cannot be a type that contains 'auto'\nC:\\dev\\gi2\\extern\\grpc\\src/core/lib/channel/promise_based_filter.h(1197): error C3539: a template-argument cannot be a type that contains 'auto'\nC:\\dev\\gi2\\extern\\grpc\\src/core/lib/channel/promise_based_filter.h(1202): error C3539: a template-argument cannot be a type that contains 'auto'\nC:\\dev\\gi2\\extern\\grpc\\src/core/lib/channel/promise_based_filter.h(1202): error C2027: use of undefined type 'grpc_core::promise_filter_detail::InterceptServerInitialMetadata<Derived,<error>,void>'\nC:\\dev\\gi2\\extern\\grpc\\src/core/lib/channel/promise_based_filter.h(1202): error C3861: 'Run': identifier not found\nC:\\dev\\gi2\\extern\\grpc\\src/core/lib/channel/promise_based_filter.h(1206): error C3539: a template-argument cannot be a type that contains 'auto'\nC:\\dev\\gi2\\extern\\grpc\\src/core/lib/channel/promise_based_filter.h(1206): error C2027: use of undefined type 'grpc_core::promise_filter_detail::InterceptServerToClientMessage<Derived,<error>,void>'\n...\n```\n\nMSC/Windows is officially supported !?\nClaude says that this is a compiler limitation, and 1.71.2 is the last version which is usable with MSC\nI guess it's time to switch to Clang.",
+        "url": "https://github.com/grpc/grpc/issues/42763"
+    },
+    {
+        "id": 4676559868,
+        "number": 42686,
+        "title": "proto file not found issue when compiled using grpc_tools.protoc.main",
+        "state": "closed",
+        "created_at": "2026-06-16T17:45:21Z",
+        "updated_at": "2026-06-17T10:02:44Z",
+        "closed_at": "2026-06-17T10:02:36Z",
+        "author": "sri-harish-k",
+        "comments": 3,
+        "labels": [
+            "kind/bug",
+            "lang/Python",
+            "priority/P2"
+        ],
+        "assignees": [
+            "sergiitk",
+            "sreenithi",
+            "asheshvidyut"
+        ],
+        "locked": false,
+        "body": "> - You haven't done the fix in protoc.main() \n> - It is just passing the arguments passed to the compiler\n> \n> Below is the code snippet from grpc_tools/protoc.py module\n> ```def main(command_arguments):\n>     \"\"\"Run the protocol buffer compiler with the given command-line arguments.\n> \n>     Args:\n>       command_arguments: a list of strings representing command line arguments to\n>           `protoc`.\n>     \"\"\"\n>     command_arguments = [argument.encode() for argument in command_arguments]\n>     return _protoc_compiler.run_main(command_arguments)``` \n\n _Originally posted by @sri-harish-k in [#24457](https://github.com/grpc/grpc/issues/24457#issuecomment-4721588322)_",
+        "url": "https://github.com/grpc/grpc/issues/42686"
+    },
+    {
+        "id": 4627589802,
+        "number": 42623,
+        "title": "[Python] Go client hangs sending unary RPC on long-lived Unix socket connection after ~100k requests (Go v1.57.1, Python grpcio 1.60.0)",
+        "state": "closed",
+        "created_at": "2026-06-10T03:09:54Z",
+        "updated_at": "2026-06-11T03:10:25Z",
+        "closed_at": "2026-06-11T00:00:06Z",
+        "author": "evanxx2902-cloud",
+        "comments": 2,
+        "labels": [
+            "kind/question",
+            "lang/Python",
+            "priority/P3"
+        ],
+        "assignees": [
+            "sreenithi",
+            "asheshvidyut"
+        ],
+        "locked": false,
+        "body": "### What is the issue?\n\nWe are observing a reproducible hang when a Go gRPC client sends a unary RPC over a long-lived Unix domain socket connection to a Python gRPC server. The issue manifests consistently in **one specific customer environment** after the connection has been open for about 10 days and handled roughly 100,000 requests: a new unary call blocks and never returns. Creating a brand new connection to the same server works immediately.\n\nThe problem **does not occur** in our own lab environments, even under higher load (1,000,000+ requests per connection). Because the affected environment belongs to a customer, we have **very limited access and cannot perform extended live debugging** (e.g., no long-running packet captures or pprof sessions). Our diagnosis is therefore based on occasional thread dumps and logs.\n\n### Environment\n\n- **Client:** Go, `google.golang.org/grpc` **v1.57.1**\n- **Server:** Python, `grpcio` **1.60.0** (CPython)\n- **Transport:** Unix domain socket (local, no network middleboxes)\n- **RPCs:** Unary calls\n- **Load pattern:** Steady low-frequency traffic, roughly one request every 8–9 seconds over the affected connection\n\n### Symptoms\n\n1. After ~10 days of normal operation, a unary RPC call blocks (the calling goroutine hangs; no timeout is configured).\n2. The server’s Python thread stacks (dumped at the time of the hang) show **no deadlock** – all threads appear to be in normal I/O waits or idle.\n3. **A brand new Unix socket connection** to the same server process succeeds immediately; only the old connection is affected.\n4. The issue reproduces **reliably every ~10 days** in this environment, but never in others.\n5. We are unable to collect long-term live data (goroutine stacks, socket buffer snapshots, HTTP/2 frame logs) from the customer system, making deep diagnosis challenging.\n\n### What we’ve checked / tried\n\n- Server-side Python thread dump does not show any handler hang or lock contention.\n- No network middleboxes are involved – it’s a local Unix socket.\n- No RST or GOAWAY frames are logged by either side at the time of the hang.\n\n### Our current suspicion\n\nWe suspect something related to HTTP/2 flow control on the extremely long-lived connection, possibly a lost `WINDOW_UPDATE` frame or a stream leak that exhausts the send window over time, causing the client to block when trying to write a new request. The fact that a new connection works perfectly suggests the problem is isolated to the old connection’s state.\n\n### Questions\n\n1. Are there any known flow-control or connection management bugs in `grpcio==1.60.0` or `google.golang.org/grpc` v1.57.1 that could cause a send-side hang after ~10 days of low-frequency traffic?\n2. Given our limited access to the customer environment, is there a recommended **lightweight diagnostic approach** we can implement beforehand (e.g., specific debug logging, metrics, or connection lifecycle monitoring) that would capture the necessary information when the hang occurs next time?\n3. Would upgrading the server to the latest `grpcio` (e.g., 1.65.x) and/or the client to the latest `google.golang.org/grpc` be the most sensible immediate step, even without a definitive root cause?\n4. If upgrading is the suggested path, are there specific release notes or known fixes that we should reference to justify the update to the customer?\n\nAny pointers, known issues, or diagnostic recommendations for such constrained environments would be greatly appreciated. Thank you.",
+        "url": "https://github.com/grpc/grpc/issues/42623"
+    },
+    {
+        "id": 4625894684,
+        "number": 42619,
+        "title": "[C++] Expose and install health.proto in standard CMake installation targets",
+        "state": "open",
+        "created_at": "2026-06-09T21:50:49Z",
+        "updated_at": "2026-06-16T03:33:42Z",
+        "closed_at": null,
+        "author": "b-corry",
+        "comments": 1,
+        "labels": [
+            "kind/enhancement",
+            "lang/c++",
+            "priority/P2",
+            "untriaged"
+        ],
+        "assignees": [
+            "yuanweiz"
+        ],
+        "locked": false,
+        "body": "### Is your feature request related to a problem? Please describe.\nWhen building C++ clients that consume the standard gRPC Health Checking Protocol, developers need access to the client-side stubs (`Health::NewStub`) and protobuf message classes (`HealthCheckRequest`, `HealthCheckResponse`).\n\nCurrently, the standard gRPC C++ CMake installation layout does not export or install:\n1. The raw `health.proto` file (e.g., to a `share/grpc/` directory).\n2. The generated C++ stub headers (`health.pb.h` and `health.grpc.pb.h`).\n3. A client-side library containing the compiled symbols for the health check service.\n\nAs a result, downstream projects and package managers (e.g. `conda-forge`) that package `libgrpc`/`grpc-cpp` from the standard install targets do not contain any files relating to `health.proto`, making it impossible to write C++ client channel health checks without checking in/copying the `.proto` file manually.\n\n### Describe the solution you'd like\nWe would like upstream gRPC to install `health.proto` (and other standard service `.proto` files) to a standard path (e.g. `${CMAKE_INSTALL_PREFIX}/share/grpc/protos/`) as part of the standard CMake installation targets. \n\nThis would allow package managers to bundle the proto files, making them easily queryable or importable by downstream CMake build configurations using standard CMake directories.\n\n### Describe alternatives you've considered\n1. **Copy-pasting the `health.proto` file:** This is our current workaround, but it forces downstream projects to check in third-party files and maintain them manually.\n2. **Exporting pre-compiled C++ client stubs:** Compiling and exporting a public client-side health target (e.g., `gRPC::grpcpp_health_client` containing the compiled stubs and headers) as part of the public C++ API.\n\n### Additional context\nThis problem is further demonstrated by the official C++ health check example:\n- [grpc/examples/cpp/health/CMakeLists.txt](https://github.com/grpc/grpc/blob/0a8376ecfc0aa1e56a8b77ab29852c3c14b81243/examples/cpp/health/CMakeLists.txt#L26-L60)\n\nIn this example, the build assumes access to the full gRPC source code repository (`gRPC_SOURCE_DIR`) to find and compile `health.proto` locally. However, this is not possible when consuming gRPC via a precompiled package manager.\n",
+        "url": "https://github.com/grpc/grpc/issues/42619"
+    },
+    {
+        "id": 4617169339,
+        "number": 42607,
+        "title": "[CI] Some RBE windows tests won't build with bazel 8.7.0 + rules_go",
+        "state": "closed",
+        "created_at": "2026-06-08T22:44:16Z",
+        "updated_at": "2026-07-06T17:42:20Z",
+        "closed_at": "2026-07-06T17:39:14Z",
+        "author": "yuanweiz",
+        "comments": 2,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "I noticed this when upgrading bazel from 8.0.1 -> 8.7.0. And example is https://btx.cloud.google.com/invocations/e80bf291-6374-4ee2-9518-6680e8017988/details\n\nsome intermediate target `@@rules_go++go_sdk+envoy_api__download_0//:builder` can't be build remotely and that causes other windows tests to fail. (but local build works fine).\n\n```\nERROR: T:/_bazel_output/pjdymepj/external/rules_go++go_sdk+envoy_api__download_0/BUILD.bazel:79:15: GoToolchainBinaryBuild external/rules_go++go_sdk+envoy_api__download_0/builder.exe [for tool] failed: (Exit 34): mandatory output external/rules_go++go_sdk+envoy_api__download_0/gotmp was not created\njava.io.IOException: mandatory output external/rules_go++go_sdk+envoy_api__download_0/gotmp was not created\n\n\tat com.google.devtools.build.lib.remote.RemoteExecutionService.downloadOutputs(RemoteExecutionService.java:1522)\n\n\tat com.google.devtools.build.lib.remote.RemoteSpawnRunner.downloadAndFinalizeSpawnResult(RemoteSpawnRunner.java:494)\n\n\tat com.google.devtools.build.lib.remote.RemoteSpawnRunner.lambda$exec$2(RemoteSpawnRunner.java:334)\n\n\tat com.google.devtools.build.lib.remote.Retrier.execute(Retrier.java:245)\n\n\tat com.google.devtools.build.lib.remote.RemoteRetrier.execute(RemoteRetrier.java:120)\n\n\tat com.google.devtools.build.lib.remote.RemoteRetrier.execute(RemoteRetrier.java:109)\n\n\tat com.google.devtools.build.lib.remote.RemoteSpawnRunner.exec(RemoteSpawnRunner.java:275)\n\n\tat com.google.devtools.build.lib.exec.AbstractSpawnStrategy.exec(AbstractSpawnStrategy.java:161)\n\n\tat com.google.devtools.build.lib.exec.AbstractSpawnStrategy.exec(AbstractSpawnStrategy.java:121)\n\n\tat com.google.devtools.build.lib.exec.SpawnStrategyResolver.exec(SpawnStrategyResolver.java:46)\n\n\tat com.google.devtools.build.lib.analysis.actions.SpawnAction.execute(SpawnAction.java:253)\n\n\tat com.google.devtools.build.lib.skyframe.SkyframeActionExecutor$ActionRunner.executeAction(SkyframeActionExecutor.java:1186)\n\n\tat com.google.devtools.build.lib.skyframe.SkyframeActionExecutor$ActionRunner.run(SkyframeActionExecutor.java:1089)\n\n\tat com.google.devtools.build.lib.skyframe.ActionExecutionState.runStateMachine(ActionExecutionState.java:166)\n\n\tat com.google.devtools.build.lib.skyframe.ActionExecutionState.getResultOrDependOnFuture(ActionExecutionState.java:95)\n\n\tat com.google.devtools.build.lib.skyframe.SkyframeActionExecutor.executeAction(SkyframeActionExecutor.java:566)\n\n\tat com.google.devtools.build.lib.skyframe.ActionExecutionFunction.checkCacheAndExecuteIfNeeded(ActionExecutionFunction.java:946)\n\n\tat com.google.devtools.build.lib.skyframe.ActionExecutionFunction.computeInternal(ActionExecutionFunction.java:377)\n\n\tat com.google.devtools.build.lib.skyframe.ActionExecutionFunction.compute(ActionExecutionFunction.java:218)\n\n\tat com.google.devtools.build.skyframe.AbstractParallelEvaluator$Evaluate.run(AbstractParallelEvaluator.java:467)\n\n\tat com.google.devtools.build.lib.concurrent.AbstractQueueVisitor$WrappedRunnable.run(AbstractQueueVisitor.java:435)\n\n\tat java.base/java.util.concurrent.ForkJoinTask$RunnableExecuteAction.compute(Unknown Source)\n\n\tat java.base/java.util.concurrent.ForkJoinTask$RunnableExecuteAction.compute(Unknown Source)\n\n\tat java.base/java.util.concurrent.ForkJoinTask$InterruptibleTask.exec(Unknown Source)\n\n\tat java.base/java.util.concurrent.ForkJoinTask.doExec(Unknown Source)\n\n\tat java.base/java.util.concurrent.ForkJoinPool$WorkQueue.topLevelExec(Unknown Source)\n\n\tat java.base/java.util.concurrent.ForkJoinPool.runWorker(Unknown Source)\n\n\tat java.base/java.util.concurrent.ForkJoinWorkerThread.run(Unknown Source)\n```\n\n`gotmp` is a folder created on windows hosts by `rules_go` to dynamically generate repositories, see [go/private/rules/binary.bzl](https://github.com/bazel-contrib/rules_go/blob/master/go/private/rules/binary.bzl) . Not sure why it suddenly becomes broken on 8.7.0 only (i've tested from 8.0 through 8.6 and non of them has this issue). I suspect 8.7 introduced some [changes](https://github.com/bazelbuild/bazel/releases/tag/8.7.0) to RBE but I don't have time to dive deeper.\n",
+        "url": "https://github.com/grpc/grpc/issues/42607"
+    },
+    {
+        "id": 4560764267,
+        "number": 42541,
+        "title": "Ruby C extension crashes with `completion_queue.cc:344` check failure on interrupted pluck",
+        "state": "open",
+        "created_at": "2026-06-01T06:08:05Z",
+        "updated_at": "2026-06-01T06:08:05Z",
+        "closed_at": null,
+        "author": "ganesh-tn",
+        "comments": 0,
+        "labels": [
+            "kind/bug",
+            "lang/ruby",
+            "area/test",
+            "priority/P2"
+        ],
+        "assignees": [
+            "zarinn3pal",
+            "asheshvidyut"
+        ],
+        "locked": false,
+        "body": "### What version of gRPC and what language are you using?\nVersion: grpc-1.81.0\nLanguage: Ruby\n### What operating system (Linux, Windows,...) and version?\nOS: Linux (Ubuntu 20.04 compatible environment)\n### What runtime / compiler are you using (e.g. python version or version of gcc)\nRuntime: Ruby 3.3.8\n### What did you do?\nWe ran gRPC Ruby QPS workers in a load test scenario where calls are cancelled or interrupted during execution or shutdown. Specifically, running the `ruby_protobuf_sync_streaming_ping_pong` scenario using `qps_json_driver`.\n\n### What did you expect to see?\nThe Ruby worker should shut down cleanly without crashing after the test completes or is cancelled.\n\n### What did you see instead?\nThe Ruby worker process crashes with a segmentation fault or a fatal check failure in gRPC core:\n\n> `F0000 00:00:1780038769.193187  979624 completion_queue.cc:344] Check failed: completed_head.next == reinterpret_cast<uintptr_t>(&completed_head)`\n\nThis happens because Ruby exceptions (like `GRPC::Cancelled`) interrupt the thread while it is waiting in `rb_thread_call_without_gvl` to pluck an event in `rb_completion_queue_pluck`. The thread jumps out of the C loop directly, leaving the event in the completion queue undrained, which triggers the assertion when the queue is destroyed.\n\n### Anything else we should know about your project / environment?\nThe issue was exposed after updating the Ruby version to 3.3 in the test environment Dockerfiles.",
+        "url": "https://github.com/grpc/grpc/issues/42541"
+    },
+    {
+        "id": 4560764128,
+        "number": 42540,
+        "title": "Ruby QPS worker fails with `NoMethodError` on Facter and deadlock on streaming shutdown",
+        "state": "open",
+        "created_at": "2026-06-01T06:08:03Z",
+        "updated_at": "2026-06-01T06:08:03Z",
+        "closed_at": null,
+        "author": "ganesh-tn",
+        "comments": 0,
+        "labels": [
+            "kind/bug",
+            "lang/ruby",
+            "area/test",
+            "priority/P2"
+        ],
+        "assignees": [
+            "zarinn3pal",
+            "asheshvidyut"
+        ],
+        "locked": false,
+        "body": "### What version of gRPC and what language are you using?\nVersion: grpc-1.81.0\nLanguage: Ruby\n### What operating system (Linux, Windows,...) and version?\nOS: Linux\n### What runtime / compiler are you using (e.g. python version or version of gcc)\nRuntime: Ruby 3.3.8\n### What did you do?\nRan the Ruby QPS worker (`qps/worker.rb`) in a test environment where `Facter` does not provide a processors fact or it returns `nil`. Also ran a streaming ping-pong scenario that requires clean shutdown.\n\n### What did you expect to see?\nThe worker should successfully determine the CPU count or fallback gracefully.\nThe streaming test should complete and threads should join cleanly on shutdown.\n### What did you see instead?\n\n1. A `NoMethodError` occurred in `worker.rb`:\n\n> ruby\n> qps/worker.rb:36:in `cpu_cores': undefined method `[]' for nil (NoMethodError)\n>     Facter.value('processors')['count']\n\n2. A deadlock occurred in `client.rb` during `streaming_ping_ponger` shutdown. The thread was blocked waiting on responses that would never arrive because the sentinel was not pushed to the queue from the `shutdown` method outside the loop.\n\n### Anything else we should know about your project / environment?\nThese issues were also observed after updating to Ruby 3.3.",
+        "url": "https://github.com/grpc/grpc/issues/42540"
+    },
+    {
+        "id": 4547655298,
+        "number": 42531,
+        "title": "Seeing SIGABRT in combiner.cc:220 in grpc v1.76",
+        "state": "open",
+        "created_at": "2026-05-29T10:18:28Z",
+        "updated_at": "2026-06-25T12:40:53Z",
+        "closed_at": null,
+        "author": "KrishnAgrawal1",
+        "comments": 2,
+        "labels": [
+            "kind/bug",
+            "lang/c++",
+            "priority/P2",
+            "untriaged"
+        ],
+        "assignees": [
+            "murgatroid99"
+        ],
+        "locked": false,
+        "body": "<!--\nPLEASE DO NOT POST A QUESTION HERE.\nThis form is for bug reports and feature requests ONLY!\n\nFor general questions and troubleshooting, please ask/look for answers at StackOverflow, with \"grpc\" tag: https://stackoverflow.com/questions/tagged/grpc\n\nFor questions that specifically need to be answered by gRPC team members, please ask/look for answers at grpc.io mailing list: https://groups.google.com/forum/#!forum/grpc-io\n\nIssues specific to *grpc-java*, *grpc-go*, *grpc-node*, *grpc-dart*, *grpc-web* should be created in the repository they belong to (e.g. https://github.com/grpc/grpc-LANGUAGE/issues/new)\n-->\n\n### What version of gRPC and what language are you using?\ngRPC v1.76.0\nProtobuf v6.33.0\n\n### What operating system (Linux, Windows,...) and version?\nPRETTY_NAME=\"Debian GNU/Linux 12 (bookworm)\"\nNAME=\"Debian GNU/Linux\"\nVERSION_ID=\"12\"\nVERSION=\"12 (bookworm)\"\nVERSION_CODENAME=bookworm\nID=debian\n6.1.0-48-amd64\n\n### What runtime / compiler are you using (e.g. python version or version of gcc)\ngcc (Debian 12.2.0-14+deb12u1) 12.2.0\n\n### What did you do?\nWe observe an intermittent crash in the gRPC server during node upgrade, under load from multiple clients.\nThe issue is not consistently reproducible and cannot be triggered via unit tests.\n \n### What did you expect to see?\nNo Crashes\n\n### What did you see instead?\n F0000 00:00:1779979865.707852   10054 combiner.cc:220] Check failed: c != nullptr ((null) vs. (null))\n *** Check failure stack trace: ***\n     @     0xffff94e97050  absl::lts_20250814::log_internal::LogMessage::SendToLog()\n     @     0xffff95b6d280  grpc_combiner_continue_exec_ctx()\n     @     0xffff95b78484  grpc_core::ExecCtx::Flush()\n     @     0xffff95b770d0  grpc_event_engine::experimental::(anonymous namespace)::EventEngineEndpointWrapper::FinishPendingRead()\n     @     0xffff95b77720  absl::lts_20250814::internal_any_invocable::LocalInvoker<>()\n     @     0xffff95b3ff64  grpc_event_engine::experimental::PosixEndpointImpl::HandleRead()\n     @     0xffff95b403dc  absl::lts_20250814::internal_any_invocable::LocalInvoker<>()\n     @     0xffff95b40a0c  grpc_event_engine::experimental::PosixEngineClosure::Run()\n     @     0xffff95b61864  grpc_event_engine::experimental::WorkStealingThreadPool::ThreadState::Step()\n     @     0xffff95b61958  grpc_event_engine::experimental::WorkStealingThreadPool::ThreadState::ThreadBody()\n     @     0xffff95b61d54  grpc_event_engine::experimental::WorkStealingThreadPool::WorkStealingThreadPoolImpl::StartThread()::{lambda()#1}::_FUN()\n     @     0xffff953937d0  grpc_core::(anonymous namespace)::ThreadInternalsPosix::ThreadInternalsPosix()::{lambda()#1}::_FUN()\n     @     0xffff94732030  (unknown)\n signal 6[SIGABRT] caught by process HalServer\n\n### Anything else we should know about your project / environment?\n",
+        "url": "https://github.com/grpc/grpc/issues/42531"
+    },
+    {
+        "id": 4535919022,
+        "number": 42511,
+        "title": "Publish pre-built grpcio wheels for ppc64le and s390x on PyPI",
+        "state": "closed",
+        "created_at": "2026-05-27T21:38:35Z",
+        "updated_at": "2026-06-17T15:41:51Z",
+        "closed_at": "2026-06-11T03:07:21Z",
+        "author": "joao00001",
+        "comments": 2,
+        "labels": [
+            "kind/enhancement",
+            "lang/Python",
+            "priority/P2"
+        ],
+        "assignees": [
+            "sergiitk",
+            "sreenithi",
+            "asheshvidyut"
+        ],
+        "locked": false,
+        "body": "\n### Is your feature request related to a problem? Please describe.\n\nPre-built grpcio wheels are not available on PyPI for ppc64le and s390x architectures. Building from source requires GRPC_PYTHON_BUILD_SYSTEM_OPENSSL=1 (since BoringSSL does not support these architectures) and takes over 1 hour under QEMU emulation, making it impractical for CI/CD packaging pipelines.\n\n### Describe the solution you'd like\n\nPublish pre-built grpcio wheels to PyPI for ppc64le and s390x architectures, similar to what was done for aarch64 (arm64).\n\n### Describe alternatives you've considered\n\nBuilding from source on every packaging run, impractical due to build times (1h+ under emulation, 30-45min on native hardware).\nOut-of-tree packaging (self-hosting wheels in a private repository, similar to the piwheels model), viable but adds maintenance overhead for downstream packagers.\n### Additional context\n\nThis was previously discussed in #30492 (2022) and #23797. The gRPC team suggested out-of-tree packaging as a workaround at the time. We are reopening this to check if there has been any progress or if there is appetite to add official support, given that aarch64 wheels were successfully added since then as a precedent.",
+        "url": "https://github.com/grpc/grpc/issues/42511"
+    },
+    {
+        "id": 4526859896,
+        "number": 42498,
+        "title": "Feature request: Select valid cert when tie breaking",
+        "state": "open",
+        "created_at": "2026-05-26T19:20:32Z",
+        "updated_at": "2026-07-06T14:40:55Z",
+        "closed_at": null,
+        "author": "AntonKanug",
+        "comments": 3,
+        "labels": [
+            "kind/enhancement",
+            "lang/c++",
+            "area/security",
+            "priority/P2",
+            "untriaged"
+        ],
+        "assignees": [
+            "gtcooke94"
+        ],
+        "locked": false,
+        "body": "<!--\nPLEASE DO NOT POST A QUESTION HERE.\nThis form is for bug reports and feature requests ONLY!\n\nFor general questions and troubleshooting, please ask/look for answers at StackOverflow, with \"grpc\" tag: https://stackoverflow.com/questions/tagged/grpc\n\nFor questions that specifically need to be answered by gRPC team members, please ask/look for answers at grpc.io mailing list: https://groups.google.com/forum/#!forum/grpc-io\n\nIssues specific to *grpc-java*, *grpc-go*, *grpc-node*, *grpc-dart*, *grpc-web* should be created in the repository they belong to (e.g. https://github.com/grpc/grpc-LANGUAGE/issues/new)\n-->\n\n### Is your feature request related to a problem? Please describe.\nSee https://github.com/envoyproxy/envoy/issues/45210 for context.\n\n When both expired and valid root certs exist in the chain, invalid certificate can get picked failing the handshake.\n\n### Describe the solution you'd like\nSelect valid cert when tie breaking (which might require a boringssl change). Alternatively, allow configuring [X509_V_FLAG_NO_CHECK_TIME](https://docs.openssl.org/1.1.1/man3/X509_VERIFY_PARAM_set_flags/#verification-flags:~:text=X509_V_FLAG_NO_CHECK_TIME) via [TlsCredentialsOptions](https://github.com/grpc/grpc/blob/master/include/grpcpp/security/tls_credentials_options.h#L39) with a new option like `check_validity_period: false` (default true)\n",
+        "url": "https://github.com/grpc/grpc/issues/42498"
+    }
+]

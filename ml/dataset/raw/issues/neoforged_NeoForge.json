@@ -1,0 +1,377 @@
+[
+    {
+        "id": 4876437478,
+        "number": 3299,
+        "title": "Some pixels are not rendered on the armor trims",
+        "state": "open",
+        "created_at": "2026-07-13T18:21:01Z",
+        "updated_at": "2026-07-14T00:53:11Z",
+        "closed_at": null,
+        "author": "Lolothepro",
+        "comments": 2,
+        "labels": [
+            "bug",
+            "area: rendering",
+            "26.2"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "**Minecraft Version:** 26.2\n\n**NeoForge Version:** 26.2.0.12-beta\n\n**Steps to Reproduce:**\n 1. Execute `/give @p diamond_leggings[trim={material:\"minecraft:amethyst\",pattern:\"minecraft:spire\"}] 1`\n 2. Compare Vanilla and NeoForge\n\n**Description of issue:**\nSome pixels are not rendered on the armor trims\nVanilla:\n\n<img width=\"1920\" height=\"1080\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/ab65f697-6410-4818-b3ee-387d94581ff2\" />\n\n<img width=\"270\" height=\"270\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/ab1935e3-609a-4e4b-b266-984c4a28eb73\" />\n\nNeoForge:\n\n<img width=\"1920\" height=\"1080\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/912aa619-e874-424f-b433-675eaace9d05\" />\n\n<img width=\"243\" height=\"258\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/1222acef-95ff-45d8-9469-9dce9ac2a4e3\" />",
+        "url": "https://github.com/neoforged/NeoForge/issues/3299"
+    },
+    {
+        "id": 4874344965,
+        "number": 3296,
+        "title": "[26.1.2] There is no patch implementing `GameRuleEntryFactoryManager#appendGameRuleEntry`",
+        "state": "open",
+        "created_at": "2026-07-13T13:59:09Z",
+        "updated_at": "2026-07-13T14:04:39Z",
+        "closed_at": null,
+        "author": "ChrysanthCow",
+        "comments": 0,
+        "labels": [
+            "triage"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "<!-- Thank you for reporting! -->\n\n<!-- For support with crashes and issues, please make a post in #user-support channel in NeoForge Discord instead: -->\n<!-- https://discord.gg/UvedJ9m -->\n\n**Minecraft Version:** 26.1.2\n\n**NeoForge Version:** 26.1.2.78\n\n**Logs:** N/A\n\n**Steps to Reproduce:**\n 1. Try using `RegisterGameRuleEntryFactoryEvent` to register a client game rule GUI entry.\n 2. Look for implementations of `GameRuleEntryFactoryManager#appendGameRuleEntry`.\n 3. Look at the GitHub repository to find a `.patch` file.\n 4. Nothing is found.\n\n**Description of issue:**\n`GameRuleEntryFactoryManager#appendGameRuleEntry` is not implemented within a relevant method. This makes all `RegisterGameRuleEntryFactoryEvent`s not count.",
+        "url": "https://github.com/neoforged/NeoForge/issues/3296"
+    },
+    {
+        "id": 4873553474,
+        "number": 3295,
+        "title": "Hourly reminder incorrectly appears on reload after settings changed",
+        "state": "open",
+        "created_at": "2026-07-13T12:19:02Z",
+        "updated_at": "2026-07-14T01:29:26Z",
+        "closed_at": null,
+        "author": "kwon0408",
+        "comments": 0,
+        "labels": [
+            "triage"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "<!-- Thank you for reporting! -->\n\n<!-- For support with crashes and issues, please make a post in #user-support channel in NeoForge Discord instead: -->\n<!-- https://discord.gg/UvedJ9m -->\n\n**Minecraft Version:** 26.2\n\n**NeoForge Version:** 26.2.0.12-beta\n\n**Logs:** https://mclo.gs/cJhJQ0T\n\n**Steps to Reproduce:**\n 1. At startup, the uptime reminder with zero hours (\"You've been playing for 0 hours\") appears. (This does not occur on the vanilla version.)\n 2. Change any settings causing a reload (the reddish loading screen with the Mojang logo), such as changing the UI language or (un)loading a resource pack.\n\n**Description of issue:**\n\nVideo: https://youtu.be/Bwp-Fsj533M (It shows version 26.2.0.11-beta but it also occurs in .12)\n\nEvery time the Mojang logo screen appears, the uptime reminder (\"You've been playing for X hours\") appears with one hour added each time.\n",
+        "url": "https://github.com/neoforged/NeoForge/issues/3295"
+    },
+    {
+        "id": 4867538596,
+        "number": 3294,
+        "title": "lightning pipeline",
+        "state": "open",
+        "created_at": "2026-07-12T15:05:56Z",
+        "updated_at": "2026-07-12T15:05:56Z",
+        "closed_at": null,
+        "author": "irisovo22-create",
+        "comments": 0,
+        "labels": [
+            "triage"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "\n**Minecraft Version:** 1.21.1\n\n**NeoForge Version:** 21.1.235\n\n**Steps to Reproduce:**\n enable lightning pipeline\npress f5\n...\nplace a copycats+ byte on simulated contraptions and they share color\n\n**Description of issue:**\nwhen enabling the lightning pipeline i turn invisible and bytes from copycats+ end up sharing the texture idk why",
+        "url": "https://github.com/neoforged/NeoForge/issues/3294"
+    },
+    {
+        "id": 4852922733,
+        "number": 3289,
+        "title": "[26.1.2]Loot Modifier not work correctly",
+        "state": "closed",
+        "created_at": "2026-07-10T07:17:11Z",
+        "updated_at": "2026-07-10T20:39:06Z",
+        "closed_at": "2026-07-10T20:39:06Z",
+        "author": "baguchi",
+        "comments": 0,
+        "labels": [
+            "triage"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "\n**Minecraft Version:** 26.1.2\n\n**NeoForge Version:** 26.1.2.70-beta\n\n**Logs:** none\n\n**Steps to Reproduce:**\n 1. make same loot modifier json as work in 26.2\n 2. check loot table with loot command\n 3. nothing happened\n\n**Description of issue:** I tried using the same loot modifiers that I created before version 26.2 in version 26.1.2, and they worked in 26.2 but not in 26.1.2.\n",
+        "url": "https://github.com/neoforged/NeoForge/issues/3289"
+    },
+    {
+        "id": 4847316044,
+        "number": 3287,
+        "title": "Singleplayer is losing non-synched data maps on the server-side",
+        "state": "open",
+        "created_at": "2026-07-09T14:52:48Z",
+        "updated_at": "2026-07-09T16:54:56Z",
+        "closed_at": null,
+        "author": "SiverDX",
+        "comments": 2,
+        "labels": [
+            "triage"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "<!-- Thank you for reporting! -->\n\n<!-- For support with crashes and issues, please make a post in #user-support channel in NeoForge Discord instead: -->\n<!-- https://discord.gg/UvedJ9m -->\n\n**Minecraft Version:**\n26.1.2\n\n**NeoForge Version:**\n26.1.2.78\n\n**Logs:**\nN/A\n\n**Steps to Reproduce:**\nSee description\n\n**Description of issue:**\n\nWe have some non-synched (server only) datamaps\nIn 21.1 things were working fine\n\nBut with 26.1 they are not available on the server\nThey do appear if we mark them as synched though\n\nSounds like the problem mentioned in this PR\nhttps://github.com/neoforged/NeoForge/pull/2164\n\nThese are the data maps on the server while debugging\n(Only the synched ones attached to the specific registry appear)\n\n<img width=\"1308\" height=\"368\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/18968585-078b-4ff0-946a-63ed6f30040f\" />\n\n<img width=\"1072\" height=\"171\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/3c97e49b-c1bc-4992-8c45-9bba111766d0\" />\n\nData Maps:\nhttps://github.com/DragonSurvivalTeam/DragonSurvival/blob/26.1/src/main/java/by/dragonsurvivalteam/dragonsurvival/registry/DSDataMaps.java\n\nUsage:\nhttps://github.com/DragonSurvivalTeam/DragonSurvival/blob/a0dcd8c0a551fdc6e8ba5adbf1f317a2e7b983b6/src/main/java/by/dragonsurvivalteam/dragonsurvival/common/blocks/DragonBeacon.java#L119\n\n(accessed through a `Holder`)\n",
+        "url": "https://github.com/neoforged/NeoForge/issues/3287"
+    },
+    {
+        "id": 4834113003,
+        "number": 3285,
+        "title": "NeoForge does not detect double registration across multiple deferred registries",
+        "state": "open",
+        "created_at": "2026-07-08T03:38:32Z",
+        "updated_at": "2026-07-08T03:53:06Z",
+        "closed_at": null,
+        "author": "jcotton42",
+        "comments": 0,
+        "labels": [
+            "triage"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "**Minecraft Version:** 1.21.1\n\n**NeoForge Version:** 21.1.235\n\n**Logs:** https://github.com/jcotton42/double-registration-sync-error-repro/tree/main/logs\n\n**Example code:** https://github.com/jcotton42/double-registration-sync-error-repro\n\n**Steps to Reproduce:**\n1. Create two DeferredRegisters to the same registry, and register an item to each with the same ID\nhttps://github.com/jcotton42/double-registration-sync-error-repro/blob/292291562fdff28f08fc535659d7d69f02a9119f/src/main/java/com/example/examplemod/DoubleRegistrationError.java#L18-L23\n2. Force enumeration of the registry at runtime\nhttps://github.com/jcotton42/double-registration-sync-error-repro/blob/292291562fdff28f08fc535659d7d69f02a9119f/src/main/java/com/example/examplemod/DoubleRegistrationErrorClient.java#L34-L36\n3. Join a dedicated server from the client (the internal server used for singleplayer does not trip this bug) and force the above enumeration (the example repo does this when you press <kbd>C</kbd>)\n\n**Description of issue:**\nNeoForge appears to not catch duplicated registrations when those registrations are spread across multiple DeferredRegisters. During the registry sync when connecting to a multiplayer server, this results in a null hole in the registry where one of duplicates used to be. Anything that looks up the registry then risks a NullPointerException crash since the iterator invokes `Holder::value()` on every entry.\n\nhttps://github.com/jcotton42/double-registration-sync-error-repro/blob/292291562fdff28f08fc535659d7d69f02a9119f/logs/client-latest.log#L1742-L1805\n\nThe crash does not occur in singleplayer, unless the player joined a multiplayer server and left without crashing.",
+        "url": "https://github.com/neoforged/NeoForge/issues/3285"
+    },
+    {
+        "id": 4817135808,
+        "number": 3283,
+        "title": "26.2 AddSectionGeometryEvent AdditionalSectionRenderer is never called",
+        "state": "open",
+        "created_at": "2026-07-06T07:58:22Z",
+        "updated_at": "2026-07-06T07:58:22Z",
+        "closed_at": null,
+        "author": "andi-makes",
+        "comments": 0,
+        "labels": [
+            "triage"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "<!-- Thank you for reporting! -->\n\n<!-- For support with crashes and issues, please make a post in #user-support channel in NeoForge Discord instead: -->\n<!-- https://discord.gg/UvedJ9m -->\n\n**Minecraft Version:** 26.2\n\n**NeoForge Version:** 26.2.0.8-beta\n\n**Logs:** None\n\n**Steps to Reproduce:**\n 1. Start the client tests\n 2. Type \"diamond block\" in chat\n 3. Observe that no diamond block gets rendered above the players position\n\n**Description of issue:**\nThe renderers registered in the SectionGeometryAddEvent are never called.\nTherefore, no custom geometry is rendered.",
+        "url": "https://github.com/neoforged/NeoForge/issues/3283"
+    },
+    {
+        "id": 4816759707,
+        "number": 3282,
+        "title": "Enabling certain debug property can cause packet parsing to fail.",
+        "state": "open",
+        "created_at": "2026-07-06T07:01:00Z",
+        "updated_at": "2026-07-06T07:01:00Z",
+        "closed_at": null,
+        "author": "Jan-Arbus",
+        "comments": 0,
+        "labels": [
+            "triage"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "<!-- Thank you for reporting! -->\n\n<!-- For support with crashes and issues, please make a post in #user-support channel in NeoForge Discord instead: -->\n<!-- https://discord.gg/UvedJ9m -->\n\n**Minecraft Version:** 26.1.2\n\n**NeoForge Version:** 26.1.2.77\n\n**Logs:**\n\n[latest.log](https://github.com/user-attachments/files/29690807/latest.log)\n\n[debug.log](https://github.com/user-attachments/files/29690810/debug.log)\n\n**Steps to Reproduce:**\n1. Add `-DMC_DEBUG_ENABLED -DMC_DEBUG_POI` to the Java parameters.\n2. Start the game.\n3. Generate a superflat world using the Redstone Ready preset.\n4. Place a bell.\n5. Get kicked.\nNote: A superflat world is used for easier observation; otherwise, you will be kicked the moment you enter the world.\n\n**Description of issue:**\nThis bug causes the following error when the `-DMC_DEBUG_POI` parameter is enabled: `\n[14:53:04] [Netty Local IO #1/ERROR] [minecraft/Connection]: Exception caught in connection io.netty.handler.codec.EncoderException: Failed to encode packet 'clientbound/minecraft:debug/block_value'`",
+        "url": "https://github.com/neoforged/NeoForge/issues/3282"
+    },
+    {
+        "id": 4809784747,
+        "number": 3278,
+        "title": "The spacing between BossBars is too large.",
+        "state": "open",
+        "created_at": "2026-07-04T16:40:31Z",
+        "updated_at": "2026-07-04T17:16:11Z",
+        "closed_at": null,
+        "author": "Mgazul",
+        "comments": 1,
+        "labels": [
+            "bug",
+            "regression",
+            "26.1",
+            "26.2"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "**Minecraft Version:** 26.2\n\n**NeoForge Version:** 26.2.0.7-bata\n\n**Logs:** None\n\n**Steps to Reproduce:**\n 1. Two Wither bosses will spawn in the new world.\n\n**Description of issue:**\n\nVanilla\n\n<img width=\"2560\" height=\"1392\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/a660a167-3126-4bd9-93b9-550f94f7542c\" />\n\nNeoForge\n\n<img width=\"2560\" height=\"1392\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/0f509ddc-0f4b-45ed-a91b-99032ec569d0\" />",
+        "url": "https://github.com/neoforged/NeoForge/issues/3278"
+    },
+    {
+        "id": 4787873103,
+        "number": 3275,
+        "title": "Common network protocol setup skipped due to race condition",
+        "state": "closed",
+        "created_at": "2026-07-01T17:33:49Z",
+        "updated_at": "2026-07-04T18:26:29Z",
+        "closed_at": "2026-07-04T18:22:27Z",
+        "author": "Su5eD",
+        "comments": 1,
+        "labels": [
+            "bug",
+            "area: networking",
+            "26.1",
+            "26.2"
+        ],
+        "assignees": [
+            "Su5eD"
+        ],
+        "locked": false,
+        "body": "**Minecraft Version:** 26.1.2\n**NeoForge Version:** 26.1.2.76\n\nOther versions are most likely affected as well.\n\n## The problem\n\nThere is race condition in the network code due to which client channel registration is only received by the server after configuration tasks have been registered (see `ConfigurationInitialization::configureModdedClient`).\n\nThis results in the common version and register config tasks being skipped, and therefore the peers not exchanging information on sendable channels through the common `c` protocol.\n\nIn my case this happens with a mod running on Forgified Fabric API, but it can be easily reproduced by trying to join a Fabric server using a NeoForge client (see steps to reproduce below).\n\nIn a diagram, our flow looks like this:\n```\nServer                                           Client\n======                                           ======\n  |                                                 |\n  | -------- REGISTER ----------------------------> |\n  | -------- QUERY -------------------------------> |\n  | -------- PING --------------------------------> |\n  |                                                 |\n  |                              (REGISTER received,|\n  |                               but no response)  |\n  |                                                 |\n  | <------------------------------- QUERY -------- |\n  | <-------------------------------- PONG -------- |\n  | -------- PAYLOAD -----------------------------> |  (response to QUERY)\n  | -------- REGISTER ----------------------------> |  (response to QUERY)\n  |                                                 |\n  | (Handles PONG and                               |\n  |  schedules registration tasks)                  |  <-- (A) should only happen after (B) handled by server\n  |                                                 |\n  | <---------------------------- REGISTER -------- |  <-- (B) too late now, must happen before (A)\n  | (Processes client registration                  |\n  |  after deadline)                                |\n  |                                                 |\n```\n\nIn comparison, Fabric starts its configurations phase ONLY when it receives a registration payload from the client, which guarantees it has information on all payload types the client understands. Their flow looks as follows:\n```\nServer                                           Client\n======                                           ======\n  |                                                 |\n  | -------- REGISTER ----------------------------> |\n  | -------- PING --------------------------------> |\n  | <---------------------------- REGISTER -------- |  <-- server detects modded connection\n  |                                                 |\n  | (Begins configuration safely)                   |\n  |                                                 |\n  | <-------------------------------- PONG -------- |\n  | (PONG discarded — this is a modded connection)  |\n  |                                                 |\n```\n\n## Steps to Reproduce\n\n 1. Prepare a Fabric dev environment (you can use the official [example mod](https://github.com/FabricMC/fabric-example-mod/tree/26.1.2))\n 2. Prepare a NeoForge client\n 3. Start the Fabric server\n 4. On the server, place a breakpoint into `net.fabricmc.fabric.impl.networking.CommonPacketsImpl#init` on the line that says `listener.addTask(new CommonVersionConfigurationTask(addon));` (~77). The point of this is that the code runs only if the common packets have been registered by the NeoForge client in time.\n 6. Connect to the server from the NeoForge client\n 7. Wait for the breakpoint to be triggered\n 8. If it does NOT trigger before the neoforge client enters the world, you have successfully reproduced the issue\n> [!WARNING]\n> This is a data race issue, and will not occur constantly. If it does not work for you immediately, keep retrying or switching environments.\n\n## Expected result\n\nThe breakpoint is triggered - this means the server is aware the client understands the common protocol.\n\n## Actual result\n\nThe breakpoint MIGHT NOT be triggered - this happens due to the race condition described above.\n\n## Proposed solution\n\nA simple solution I tried and fixed the issue with is responding to the registration payload in `ClientConfigurationPacketListenerImpl::handleCustomPayload` with our builtin channels.\n\nThis is a non-breaking change with no side effects and due to the sending order it guarantees the server has information on the channels before PONG arrives.\n\n```patch\n  @Override\n  public void handleCustomPayload(net.minecraft.network.protocol.common.ClientboundCustomPayloadPacket packet) {\n    // ...\n+   if (packet.payload() instanceof net.neoforged.neoforge.network.payload.MinecraftRegisterPayload registerPayload) {\n+      net.neoforged.neoforge.client.network.registration.ClientNetworkRegistry.sendInitialListeningChannels(this);\n+      return;\n+   }\n    // ...\n  }\n```\n\n## Relevant sources\n\n- https://github.com/neoforged/NeoForge/pull/277\n- https://github.com/neoforged/NeoForge/pull/1483\n- `net.minecraft.client.multiplayer.ClientConfigurationPacketListenerImpl`\n- `net.minecraft.server.network.ServerConfigurationPacketListenerImpl`",
+        "url": "https://github.com/neoforged/NeoForge/issues/3275"
+    },
+    {
+        "id": 4785447372,
+        "number": 3273,
+        "title": "Request for BlockItemId feature (26.2+)",
+        "state": "closed",
+        "created_at": "2026-07-01T12:19:11Z",
+        "updated_at": "2026-07-01T14:11:48Z",
+        "closed_at": "2026-07-01T14:11:48Z",
+        "author": "skirazavr",
+        "comments": 1,
+        "labels": [
+            "enhancement"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "```java\npublic record BlockItemId(ResourceKey<Block> block, ResourceKey<Item> item) {\n\n    public static BlockItemId create(Identifier blockId, Identifier itemId) {\n        return new BlockItemId(\n                ResourceKey.create(Registries.BLOCK, blockId),\n                ResourceKey.create(Registries.ITEM, itemId)\n        );\n    }\n\n    public static BlockItemId create(String blockName, String itemName) {\n        return create(\n                Identifier.withDefaultNamespace(blockName),\n                Identifier.withDefaultNamespace(itemName)\n        );\n    }\n\n    public static BlockItemId create(String name) {\n        Identifier id = Identifier.withDefaultNamespace(name);\n        return create(id, id);\n    }\n}\n```\n\nShould be parsed for custom mod_id",
+        "url": "https://github.com/neoforged/NeoForge/issues/3273"
+    },
+    {
+        "id": 4783969379,
+        "number": 3272,
+        "title": "`IRecipeOutputExtension` makes it impossible to extend `RecipeOutput` in a multi-loader project",
+        "state": "open",
+        "created_at": "2026-07-01T08:48:48Z",
+        "updated_at": "2026-07-01T08:50:08Z",
+        "closed_at": null,
+        "author": "Fuzss",
+        "comments": 0,
+        "labels": [
+            "triage"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "<!-- Thank you for reporting! -->\n\n<!-- For support with crashes and issues, please make a post in #user-support channel in NeoForge Discord instead: -->\n<!-- https://discord.gg/UvedJ9m -->\n\n**Minecraft Version:** 26.2\n\n**NeoForge Version:** 26.2.0.6-beta\n\n**Description of issue:**\n[This](https://github.com/neoforged/NeoForge/blob/4a632391aa4df8ef9b8b0521ab84da5a90bbfc94/src/main/java/net/neoforged/neoforge/common/extensions/IRecipeOutputExtension.java#L27) abstract method added to `RecipeOutput` by NeoForge makes it impossible to implement the `RecipeOutput` interface in a common multi-loader project.\n\nThe issue is present as far back as at least 1.21.1.\n\n**Example:**\nThis class is placed in common and compiles fine on Fabric (Minecraft 1.21.1).\n```java\npublic record TransformingRecipeOutput(RecipeOutput recipeOutput,\n                                       UnaryOperator<Recipe<?>> operator) implements RecipeOutput {\n\n    public static RecipeOutput transformed(RecipeOutput recipeOutput, UnaryOperator<Recipe<?>> operator) {\n        return new TransformingRecipeOutput(recipeOutput, operator);\n    }\n\n    @Override\n    public void accept(ResourceLocation resourceLocation, Recipe<?> recipe, @Nullable AdvancementHolder advancement) {\n        this.recipeOutput.accept(resourceLocation, this.operator().apply(recipe), advancement);\n    }\n\n    @Override\n    public Advancement.Builder advancement() {\n        return this.recipeOutput.advancement();\n    }\n}\n```\n\nOn NeoForge, compilation fails due to this error.\n```\n./puzzles-lib/1.21.1/Common/src/main/java/fuzs/puzzleslib/api/data/v2/recipes/TransformingRecipeOutput.java:15: Fehler: TransformingRecipeOutput ist nicht abstrakt und setzt die abstrakte Methode accept(ResourceLocation,Recipe<?>,AdvancementHolder,ICondition...) in IRecipeOutputExtension nicht außer Kraft\npublic record TransformingRecipeOutput(RecipeOutput recipeOutput,\n       ^\n```",
+        "url": "https://github.com/neoforged/NeoForge/issues/3272"
+    },
+    {
+        "id": 4778880564,
+        "number": 3270,
+        "title": "`@Overwrite` mixin visibility ignores access transformer changes",
+        "state": "open",
+        "created_at": "2026-06-30T17:05:26Z",
+        "updated_at": "2026-06-30T17:05:26Z",
+        "closed_at": null,
+        "author": "SuperMartijn642",
+        "comments": 0,
+        "labels": [
+            "triage"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "**Minecraft Version:** 26.2\n\n**NeoForge Version:** 26.2.0.7-beta\n\n**Logs:** https://gist.github.com/SuperMartijn642/b1b53d2ba28a5d4f6a1843093c2d3c21\n\n**Steps to Reproduce:**\n 1. Add the following access transformer entry to change the visibility of `PoseStack$Pose#computeNormalMatrix` from package-private to public:\n```\npublic com.mojang.blaze3d.vertex.PoseStack$Pose computeNormalMatrix()V\n```\n 2. Add the following mixin that overwrites `PoseStack$Pose#computeNormalMatrix`:\n```java\n@Mixin(PoseStack.Pose.class)\npublic class PoseMixin {\n\n    @Overwrite\n    void computeNormalMatrix(){\n        throw new RuntimeException(\"Accessed!\");\n    }\n}\n```\n 3. Set `conformVisibility` to `true` in the mixin config file:\n```json\n  \"overwrites\": {\n    \"conformVisibility\": true\n  }\n```\n 4. Run the following snippet that calls `PoseStack$Pose#computeNormalMatrix`:\n```java\nPoseStack.Pose pose = new PoseStack().last();\npose.computeNormalMatrix();\n```\n 5. Observe an `IllegalAccessError` gets thrown.\n\n**Description of issue:**\n\nWhen `conformVisibility` is true, `@Overwrite`s seem to use the original visibility of a method, ignoring any visibility change from access transformer entries.\nIn the reproduction steps, the access transformer changes the method's visibility to public which is then changed back to package-private by the `@Overwrite`.\nThe behaviour is the same in dev and in production.",
+        "url": "https://github.com/neoforged/NeoForge/issues/3270"
+    },
+    {
+        "id": 4759635432,
+        "number": 3266,
+        "title": "Vanilla client disconnects when receiving an item with a NeoForge added attribute",
+        "state": "open",
+        "created_at": "2026-06-27T19:23:26Z",
+        "updated_at": "2026-06-27T19:23:26Z",
+        "closed_at": null,
+        "author": "pupnewfster",
+        "comments": 0,
+        "labels": [
+            "triage"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "**Minecraft Version:** 26.2\n\n**NeoForge Version:** 26.2.0.7-beta\n\n**Logs:** https://gist.github.com/pupnewfster/9113765f3e00e95f19a13be056792ff3\n\n**Steps to Reproduce:**\n 1. Start a Neo Server\n 2. Start a vanilla client\n 3. Connect to the Neo server with the vanilla client\n 4. Give yourself op or adjust the following command to be given to the player from the console\n 5. Run `/give @s minecraft:stick[minecraft:attribute_modifiers=[{id:\"neo:test\",type:\"neoforge:creative_flight\",slot:\"any\",operation:\"add_value\",amount:1}]]` (The command will be red on the client, but hit enter anyway)\n 6. Client will disconnect with the reason `Internal Exception: io.netty.handler.codec.DecoderException: Failed to decode packet 'clientbound/minecraft:set_entity_data'`\n\n**Description of issue:**\nI discovered this while testing vanilla compat for #3192, and when a vanilla client is given an item with a neoforge added attribute, they crash. Presumably because `VanillaConnectionNetworkFilter` is filtering `ClientboundUpdateAttributesPacket` but not packets that contain stacks that might include those attributes.",
+        "url": "https://github.com/neoforged/NeoForge/issues/3266"
+    },
+    {
+        "id": 4748143279,
+        "number": 3265,
+        "title": "Prism Launcher FPS issues",
+        "state": "open",
+        "created_at": "2026-06-25T23:36:50Z",
+        "updated_at": "2026-07-04T16:44:23Z",
+        "closed_at": null,
+        "author": "shaweel",
+        "comments": 10,
+        "labels": [
+            "triage"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "**Minecraft Version:** 26.1 and above\n\n**Steps to Reproduce:**\n 1. Create a new instance with NeoForge in Prism Launcher.\n 2. Test and write down the FPS\n 3. Remove NeoForge \n 4. Test and write down the FPS\n\n**Description of issue:**\nNeoForge on Minecraft 26.1 and above performs around 1.4-2.2x worse than vanilla Minecraft in Prism Launcher, this issue isn't present in the official Minecraft Launcher",
+        "url": "https://github.com/neoforged/NeoForge/issues/3265"
+    },
+    {
+        "id": 4740364749,
+        "number": 3264,
+        "title": "Clicking links in mod description out of a world leads into NPE",
+        "state": "open",
+        "created_at": "2026-06-25T03:31:58Z",
+        "updated_at": "2026-06-28T02:12:24Z",
+        "closed_at": null,
+        "author": "burningtnt",
+        "comments": 1,
+        "labels": [
+            "bug",
+            "26.1",
+            "26.2"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "<!-- Thank you for reporting! -->\n\n<!-- For support with crashes and issues, please make a post in #user-support channel in NeoForge Discord instead: -->\n<!-- https://discord.gg/UvedJ9m -->\n\n**Minecraft Version:** 26.1.2\n\n**NeoForge Version:** 26.1.2.75\n\n**Steps to Reproduce:**\n 1. Install a mod, whose description contains valid URL(s).\n 2. Open the game, click 'Mod' in the main screen.\n 3. Select the mod, and click the URL.\n\n**Description of issue:**\n\nNF invokes defaultHandleGameClickEvent to handle click event. However, this function requires Minecraft is in a specific world.\n\n**Logs:**\n```\n[11:23:49] [Render thread/ERROR] [minecraft/BlockableEventLoop]: Error executing task on Client\nnet.minecraft.ReportedException: mouseClicked event handler\n\tat TRANSFORMER/minecraft@26.1.2/net.minecraft.client.MouseHandler.onButton(MouseHandler.java:126) ~[minecraft-patched-26.1.2.75.jar:?] {}\n\tat TRANSFORMER/minecraft@26.1.2/net.minecraft.client.MouseHandler.lambda$setup$3(MouseHandler.java:266) ~[minecraft-patched-26.1.2.75.jar:?] {}\n\tat TRANSFORMER/minecraft@26.1.2/net.minecraft.util.thread.BlockableEventLoop.doRunTask(BlockableEventLoop.java:163) [minecraft-patched-26.1.2.75.jar:?] {neoforge:access_transformer,neoforge:access_transformer}\n\tat TRANSFORMER/minecraft@26.1.2/net.minecraft.util.thread.ReentrantBlockableEventLoop.doRunTask(ReentrantBlockableEventLoop.java:24) [minecraft-patched-26.1.2.75.jar:?] {}\n\tat TRANSFORMER/minecraft@26.1.2/net.minecraft.util.thread.BlockableEventLoop.execute(BlockableEventLoop.java:108) [minecraft-patched-26.1.2.75.jar:?] {neoforge:access_transformer,neoforge:access_transformer}\n\tat TRANSFORMER/minecraft@26.1.2/net.minecraft.client.MouseHandler.lambda$setup$2(MouseHandler.java:266) [minecraft-patched-26.1.2.75.jar:?] {}\n\tat org.lwjgl.system.JNI.invokeV(JNI.java:1664) [lwjgl-3.4.1.jar:build 2] {}\n\tat org.lwjgl.glfw.GLFW.glfwPollEvents(GLFW.java:1600) [lwjgl-glfw-3.4.1.jar:build 2] {}\n\tat TRANSFORMER/minecraft@26.1.2/com.mojang.blaze3d.systems.RenderSystem.pollEvents(RenderSystem.java:108) [minecraft-patched-26.1.2.75.jar:?] {}\n\tat TRANSFORMER/minecraft@26.1.2/net.minecraft.client.Minecraft.run(Minecraft.java:936) [minecraft-patched-26.1.2.75.jar:?] {neoforge:access_transformer,neoforge:access_transformer,neoforge:mixin[APP:live_helper.mixins.json:MinecraftMixin from mod live_helper]}\n\tat TRANSFORMER/minecraft@26.1.2/net.minecraft.client.main.Main.main(Main.java:246) [minecraft-patched-26.1.2.75.jar:?] {}\n\tat net.neoforged.fml.startup.Client.main(Client.java:19) [loader-11.0.13.jar:11.0] {}\n\tat java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:104) ~[?:?] {}\n\tat java.base/java.lang.reflect.Method.invoke(Method.java:565) ~[?:?] {}\n\tat net.neoforged.devlaunch.Main.main(Main.java:57) [DevLaunch-1.0.2.jar:?] {}\nCaused by: java.lang.NullPointerException: Player not available\n\tat java.base/java.util.Objects.requireNonNull(Objects.java:246) ~[?:?] {}\n\tat TRANSFORMER/minecraft@26.1.2/net.minecraft.client.gui.screens.Screen.defaultHandleGameClickEvent(Screen.java:251) ~[minecraft-patched-26.1.2.75.jar:?] {neoforge:access_transformer}\n\tat TRANSFORMER/neoforge@26.1.2.75/net.neoforged.neoforge.client.gui.ModListScreen.access$1000(ModListScreen.java:68) ~[neoforge-26.1.2.75-universal.jar:?] {}\n\tat TRANSFORMER/neoforge@26.1.2.75/net.neoforged.neoforge.client.gui.ModListScreen$InfoPanel.mouseClicked(ModListScreen.java:242) ~[neoforge-26.1.2.75-universal.jar:?] {}\n\tat TRANSFORMER/minecraft@26.1.2/net.minecraft.client.gui.components.events.ContainerEventHandler.mouseClicked(ContainerEventHandler.java:48) ~[minecraft-patched-26.1.2.75.jar:?] {}\n\tat TRANSFORMER/minecraft@26.1.2/net.minecraft.client.MouseHandler.onButton(MouseHandler.java:113) ~[minecraft-patched-26.1.2.75.jar:?] {}\n\t... 14 more\n```\n",
+        "url": "https://github.com/neoforged/NeoForge/issues/3264"
+    },
+    {
+        "id": 4727144520,
+        "number": 3263,
+        "title": "Help my minecraft world crashes / i become a message minecraft crashed when i join the world",
+        "state": "closed",
+        "created_at": "2026-06-23T15:18:22Z",
+        "updated_at": "2026-06-28T02:10:24Z",
+        "closed_at": "2026-06-28T02:10:23Z",
+        "author": "maxkohli015-ai",
+        "comments": 2,
+        "labels": [
+            "triage",
+            "support"
+        ],
+        "assignees": [],
+        "locked": true,
+        "body": "<!-- Thank you for reporting! -->\n\n<!-- For support with crashes and issues, please make a post in #user-support channel in NeoForge Discord instead: -->\n<!-- https://discord.gg/UvedJ9m -->\n\n**Minecraft Version:** {Minecraft version}\n\n**NeoForge Version:** {NeoForge version. *Version number, not latest/rb*}\n\n**Logs:** {Link(s) to GitHub Gist with full latest.log and/or crash report}\n\n**Steps to Reproduce:**\n 1. Do this\n 2. Then do that\n 3. ...\n\n**Description of issue:**\n",
+        "url": "https://github.com/neoforged/NeoForge/issues/3263"
+    },
+    {
+        "id": 4726449763,
+        "number": 3262,
+        "title": "DoubleValue config screen prevents entering decimal separator after deleting it",
+        "state": "open",
+        "created_at": "2026-06-23T13:44:55Z",
+        "updated_at": "2026-06-23T13:44:55Z",
+        "closed_at": null,
+        "author": "mossssfet",
+        "comments": 0,
+        "labels": [
+            "triage"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "<!-- Thank you for reporting! -->\n\n<!-- For support with crashes and issues, please make a post in #user-support channel in NeoForge Discord instead: -->\n<!-- https://discord.gg/UvedJ9m -->\n\n**Minecraft Version:** 26.2\n\n**NeoForge Version:** 26.2.0.6-beta\n\n**Logs:** N/A\n\n**Steps to Reproduce:**\n1. Create a `ModConfigSpec.DoubleValue` config entry, for example:\n\n```java\npublic static final ModConfigSpec.DoubleValue EXAMPLE = BUILDER\n        .comment(\"xyzw\")\n        .defineInRange(\"example\", 20.0, 0.0, Double.MAX_VALUE);\n```\n\n2. Launch the game and open the config screen.\n3. Locate the `DoubleValue` entry and edit its value.\n4. Remove the decimal point from the existing value (for example, change `20.0` to `20`).\n5. Attempt to type `.` again to enter a decimal value.\n\n**Expected Behavior**: The decimal point should be accepted, allowing values such as `20.5` to be entered.\n**Actual Behavior**: After the decimal point has been removed, pressing `.` has no effect and the field no longer accepts decimal separators. The value can only be edited as an integer unless the screen is reopened or the value is reset.\n\n**Description of issue:**\n`ModConfigSpec.DoubleValue` entries appear to stop accepting decimal separators once the existing decimal point has been deleted. This makes it impossible to enter a new fractional value during the same editing session.",
+        "url": "https://github.com/neoforged/NeoForge/issues/3262"
+    },
+    {
+        "id": 4722569377,
+        "number": 3261,
+        "title": "Remove NeoForge's `nametag_distance` attribute in favor of vanilla's `name_tag_distance`",
+        "state": "open",
+        "created_at": "2026-06-23T04:15:36Z",
+        "updated_at": "2026-06-23T04:15:36Z",
+        "closed_at": null,
+        "author": "sciwhiz12",
+        "comments": 0,
+        "labels": [
+            "bug",
+            "breaking change",
+            "26.2"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "NeoForge adds the `neoforge:nametag_distance` attribute to control the distance at which name tags (above entity/player heads) are visible to the user. \n\nHowever in 26.2, Minecraft added the `minecraft:name_tag_distance` which effectively replaces our attribute. It seems this was noticed in porting, as almost nothing references the NeoForge-added attribute.\n\nThe one remaining place it is mentioned is in `LivingEntity#shouldShowName`, where it takes the place of a fixed max-distance check used for discreet entities (e.g., crouching players):\n\nhttps://github.com/neoforged/NeoForge/blob/4a632391aa4df8ef9b8b0521ab84da5a90bbfc94/patches/net/minecraft/client/renderer/entity/LivingEntityRenderer.java.patch#L19-L27\n\nAdditionally, `EntityRenderer#extractNameTags` is bugged because it was not properly fixed to use the MC attribute value, probably as a consequence of the NeoForge-added attribute being ripped out. It should be using the `nameTagDistance` parameter, which is set to the value of the attribute:\n\nhttps://github.com/neoforged/NeoForge/blob/4a632391aa4df8ef9b8b0521ab84da5a90bbfc94/patches/net/minecraft/client/renderer/entity/EntityRenderer.java.patch#L36-L48",
+        "url": "https://github.com/neoforged/NeoForge/issues/3261"
+    }
+]

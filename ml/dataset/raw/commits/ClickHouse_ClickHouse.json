@@ -1,0 +1,242 @@
+[
+    {
+        "sha": "5e701d515fe6dc7e867c7aa70b6e0de39c476649",
+        "author": "Han Fei",
+        "email": "hanfei19910905@gmail.com",
+        "date": "2026-07-14T07:59:18Z",
+        "message": "Merge pull request #108879 from groeneai/fix-empty-part-stale-tmp-dir\n\nReclaim stale empty-part directory instead of LOGICAL_ERROR",
+        "url": "https://github.com/ClickHouse/ClickHouse/commit/5e701d515fe6dc7e867c7aa70b6e0de39c476649"
+    },
+    {
+        "sha": "0840bc6f06c36d98eedebe112c26f75329ea1a0f",
+        "author": "Azat Khuzhin",
+        "email": "a3at.mail@gmail.com",
+        "date": "2026-07-14T05:51:30Z",
+        "message": "Merge pull request #110174 from groeneai/groeneai-fix-asyncloader-spawn-noexcept\n\nAllow allocations in NOEXCEPT_SCOPE catch handler",
+        "url": "https://github.com/ClickHouse/ClickHouse/commit/0840bc6f06c36d98eedebe112c26f75329ea1a0f"
+    },
+    {
+        "sha": "80eea0c32ea75efe4baea1117f0abe410007a2a3",
+        "author": "Pedro Ferreira",
+        "email": "PedroTadim@users.noreply.github.com",
+        "date": "2026-07-14T03:22:52Z",
+        "message": "Merge pull request #110201 from groeneai/groeneai/test-80893-lowcardinality-const-key\n\nAdd regression test for LowCardinality const key in distributed merge aggregation",
+        "url": "https://github.com/ClickHouse/ClickHouse/commit/80eea0c32ea75efe4baea1117f0abe410007a2a3"
+    },
+    {
+        "sha": "2d90f6752fe9172531bfae4d6eac1ff2f5c2a9a0",
+        "author": "Shaohua Wang",
+        "email": "shaohua.wang@clickhouse.com",
+        "date": "2026-07-14T02:31:36Z",
+        "message": "Merge pull request #109792 from ClickHouse/fix-cancellation-checker-stale-deadline\n\nFix a query's `max_execution_time` never firing when the timeout watcher was armed for a later deadline",
+        "url": "https://github.com/ClickHouse/ClickHouse/commit/2d90f6752fe9172531bfae4d6eac1ff2f5c2a9a0"
+    },
+    {
+        "sha": "e67157b943b762c8dcc5fb84f0034b53234757c2",
+        "author": "murphy-4o",
+        "email": "murphy.wang@clickhouse.com",
+        "date": "2026-07-14T02:02:30Z",
+        "message": "Merge pull request #109876 from murphy-4o/lightweight-restore-cloud-guards\n\nAdd cloud hook blocks to RestorerFromBackup::createTable",
+        "url": "https://github.com/ClickHouse/ClickHouse/commit/e67157b943b762c8dcc5fb84f0034b53234757c2"
+    },
+    {
+        "sha": "a1e9dd9f8d2d137eb63fbb51eae4a7514bd1f5af",
+        "author": "Alexey Milovidov",
+        "email": "milovidov@clickhouse.com",
+        "date": "2026-07-14T02:23:02Z",
+        "message": "Merge pull request #108788 from ClickHouse/revive-sz3-codec\n\nRevive SZ3 compression codec",
+        "url": "https://github.com/ClickHouse/ClickHouse/commit/a1e9dd9f8d2d137eb63fbb51eae4a7514bd1f5af"
+    },
+    {
+        "sha": "67cc47a01774265a6be1e8bda59fbfaf05efb857",
+        "author": "Alexey Milovidov",
+        "email": "milovidov@clickhouse.com",
+        "date": "2026-07-14T00:10:58Z",
+        "message": "Merge pull request #108074 from ClickHouse/integrate-libdeflate\n\nUse libdeflate for gzip/zlib/deflate compression and decompression",
+        "url": "https://github.com/ClickHouse/ClickHouse/commit/67cc47a01774265a6be1e8bda59fbfaf05efb857"
+    },
+    {
+        "sha": "74a5579c12fae085ae2e94d88138aeed1e7ad230",
+        "author": "Alexey Milovidov",
+        "email": "milovidov@clickhouse.com",
+        "date": "2026-07-14T00:07:57Z",
+        "message": "Merge pull request #110287 from ClickHouse/fix/wait-ready-timeout-debug-builds\n\nGive the server up to 120 seconds to become ready in CI",
+        "url": "https://github.com/ClickHouse/ClickHouse/commit/74a5579c12fae085ae2e94d88138aeed1e7ad230"
+    },
+    {
+        "sha": "ab0328223c2d48a4cd7e53a32b46049238d31b70",
+        "author": "Alexey Milovidov",
+        "email": "milovidov@clickhouse.com",
+        "date": "2026-07-14T00:05:51Z",
+        "message": "Merge pull request #110236 from groeneai/groeneai/fix-109972-materialize-index-block-offset\n\nFix UNKNOWN_IDENTIFIER when materializing implicit minmax index over _block_offset on 0-level parts",
+        "url": "https://github.com/ClickHouse/ClickHouse/commit/ab0328223c2d48a4cd7e53a32b46049238d31b70"
+    },
+    {
+        "sha": "06cab3b4ca88618e70e7e5f2fabfe0912b3566e4",
+        "author": "Alexey Milovidov",
+        "email": "milovidov@clickhouse.com",
+        "date": "2026-07-14T00:04:16Z",
+        "message": "Merge pull request #110252 from groeneai/fix-planner-with-fill-const-fold-bad-cast\n\nCover WITH FILL STALENESS/negative bounds in distributed const-to-scalar test",
+        "url": "https://github.com/ClickHouse/ClickHouse/commit/06cab3b4ca88618e70e7e5f2fabfe0912b3566e4"
+    },
+    {
+        "sha": "df65978e28243c6c9f68909c85cbf52de808e2ef",
+        "author": "Alexey Milovidov",
+        "email": "milovidov@clickhouse.com",
+        "date": "2026-07-14T00:03:41Z",
+        "message": "Merge pull request #110306 from groeneai/groeneai/praktika-hooks-surface-failure-info\n\nSurface Pre/Post Hooks failure reason in report and CIDB",
+        "url": "https://github.com/ClickHouse/ClickHouse/commit/df65978e28243c6c9f68909c85cbf52de808e2ef"
+    },
+    {
+        "sha": "5030cfa0d7a502dc43d33d7ab07421fceda31cf6",
+        "author": "Alexey Milovidov",
+        "email": "milovidov@clickhouse.com",
+        "date": "2026-07-14T00:02:54Z",
+        "message": "Merge pull request #110280 from groeneai/docs-analyzer-compat-having-version\n\nDocs: correct version for analyzer_compatibility_allow_non_aggregate_in_having (26.5 -> 26.7)",
+        "url": "https://github.com/ClickHouse/ClickHouse/commit/5030cfa0d7a502dc43d33d7ab07421fceda31cf6"
+    },
+    {
+        "sha": "d2da309e2694389094481787e2696bc293c57f49",
+        "author": "Azat Khuzhin",
+        "email": "a3at.mail@gmail.com",
+        "date": "2026-07-13T23:32:02Z",
+        "message": "Merge pull request #110297 from groeneai/fix-02907-suggestions-readonly-expect-timeout\n\nFix flaky 02907_suggestions_readonly_user: wait for prompt before next command",
+        "url": "https://github.com/ClickHouse/ClickHouse/commit/d2da309e2694389094481787e2696bc293c57f49"
+    },
+    {
+        "sha": "a63a425c48d3123d28bef2ad60511c9fc0583468",
+        "author": "Alexey Milovidov",
+        "email": "milovidov@clickhouse.com",
+        "date": "2026-07-13T23:02:46Z",
+        "message": "Merge pull request #107907 from ClickHouse/feature/datelut-extended-datetime64-range\n\nSupport DateTime64 values before 1900 and after 2299",
+        "url": "https://github.com/ClickHouse/ClickHouse/commit/a63a425c48d3123d28bef2ad60511c9fc0583468"
+    },
+    {
+        "sha": "812e765b376fcf9019b3ec065f11c3a76c2ca833",
+        "author": "Dominic Tran",
+        "email": "dominic.tran@clickhouse.com",
+        "date": "2026-07-13T22:39:48Z",
+        "message": "Merge pull request #110322 from ClickHouse/mintlify/72b33b1b\n\nDocs (migration sync): port PR6525",
+        "url": "https://github.com/ClickHouse/ClickHouse/commit/812e765b376fcf9019b3ec065f11c3a76c2ca833"
+    },
+    {
+        "sha": "11a083ae511a81bca5cdb33f09d0c1a65a9185fa",
+        "author": "Alexey Milovidov",
+        "email": "milovidov@clickhouse.com",
+        "date": "2026-07-13T22:39:41Z",
+        "message": "Merge pull request #108055 from ClickHouse/fix-values-float32-conversion-43144\n\nFix values() table function rejecting lossy floats for narrow float columns",
+        "url": "https://github.com/ClickHouse/ClickHouse/commit/11a083ae511a81bca5cdb33f09d0c1a65a9185fa"
+    },
+    {
+        "sha": "3c6c9246808147bf12d8c4c7ccbc5fdcd6e78637",
+        "author": "Shaun Struwig",
+        "email": "41984034+Blargian@users.noreply.github.com",
+        "date": "2026-07-13T21:59:25Z",
+        "message": "Merge pull request #110273 from Blargian/codex/fix-migration-legacy-redirects\n\nDocs: Mintlify migration QA",
+        "url": "https://github.com/ClickHouse/ClickHouse/commit/3c6c9246808147bf12d8c4c7ccbc5fdcd6e78637"
+    },
+    {
+        "sha": "e0418aa92c5a786c7182e54ca6f7d06ea86c2508",
+        "author": "mintlify[bot]",
+        "email": "109931778+mintlify[bot]@users.noreply.github.com",
+        "date": "2026-07-13T21:43:28Z",
+        "message": "docs: port PR6525 - add July 13, 2026 Cloud changelog entry",
+        "url": "https://github.com/ClickHouse/ClickHouse/commit/e0418aa92c5a786c7182e54ca6f7d06ea86c2508"
+    },
+    {
+        "sha": "269e921fd08d7fa8aa33734db5b6cbafe0a25120",
+        "author": "Anton Popov",
+        "email": "anton@clickhouse.com",
+        "date": "2026-07-13T21:42:31Z",
+        "message": "Merge pull request #108323 from ofeliacode/fix-lwu-condition-evaluated-twice-86032\n\nFix lightweight update condition evaluated twice",
+        "url": "https://github.com/ClickHouse/ClickHouse/commit/269e921fd08d7fa8aa33734db5b6cbafe0a25120"
+    },
+    {
+        "sha": "d89bbe1593b10dc5a4747b9f60f38b7a72cc6c4d",
+        "author": "Alexey Milovidov",
+        "email": "milovidov@clickhouse.com",
+        "date": "2026-07-13T21:31:45Z",
+        "message": "Merge pull request #110122 from ClickHouse/fix/ci-kill-leftover-server-processes\n\nCI: kill leftover clickhouse server processes before the first server start",
+        "url": "https://github.com/ClickHouse/ClickHouse/commit/d89bbe1593b10dc5a4747b9f60f38b7a72cc6c4d"
+    },
+    {
+        "sha": "81f54fb1c14f169ac068f066a896b2e570245ee8",
+        "author": "Alexey Milovidov",
+        "email": "milovidov@clickhouse.com",
+        "date": "2026-07-13T21:29:23Z",
+        "message": "Merge pull request #109310 from ClickHouse/query-condition-cache-object-storage-etag\n\nQuery Condition Cache: key object-storage entries by ETag",
+        "url": "https://github.com/ClickHouse/ClickHouse/commit/81f54fb1c14f169ac068f066a896b2e570245ee8"
+    },
+    {
+        "sha": "688371b94ce6e777e8182f9f0cccb4d3005967fd",
+        "author": "Shaun Struwig",
+        "email": "41984034+Blargian@users.noreply.github.com",
+        "date": "2026-07-13T20:20:19Z",
+        "message": "Merge pull request #110315 from Blargian/codex/use-steps-for-numbered-headings\n\nDocs: use `Steps` components for procedural guides",
+        "url": "https://github.com/ClickHouse/ClickHouse/commit/688371b94ce6e777e8182f9f0cccb4d3005967fd"
+    },
+    {
+        "sha": "39ba617c269f3fb5f184b9fdc48e25e8549f4f71",
+        "author": "Shaun Struwig",
+        "email": "41984034+Blargian@users.noreply.github.com",
+        "date": "2026-07-13T19:51:10Z",
+        "message": "Preserve code formatting in step titles",
+        "url": "https://github.com/ClickHouse/ClickHouse/commit/39ba617c269f3fb5f184b9fdc48e25e8549f4f71"
+    },
+    {
+        "sha": "e0b330416721af6b82df8c259e7ce98321d7351c",
+        "author": "Alexey Milovidov",
+        "email": "milovidov@clickhouse.com",
+        "date": "2026-07-13T19:38:04Z",
+        "message": "Merge pull request #106952 from ClickHouse/parquet-dictionary-filter-push-down\n\nParquet: dictionary-based row group filtering",
+        "url": "https://github.com/ClickHouse/ClickHouse/commit/e0b330416721af6b82df8c259e7ce98321d7351c"
+    },
+    {
+        "sha": "0045434b6528a89d6c8f9815f32f1b68d2e21fd0",
+        "author": "Shaun Struwig",
+        "email": "41984034+Blargian@users.noreply.github.com",
+        "date": "2026-07-13T19:36:01Z",
+        "message": "Use Steps components for procedural guides",
+        "url": "https://github.com/ClickHouse/ClickHouse/commit/0045434b6528a89d6c8f9815f32f1b68d2e21fd0"
+    },
+    {
+        "sha": "8e85e5d5bf3c0c2337677182c21a4ce4ee856167",
+        "author": "Shaun Struwig",
+        "email": "41984034+Blargian@users.noreply.github.com",
+        "date": "2026-07-13T19:27:27Z",
+        "message": "Address Mintlify migration review feedback",
+        "url": "https://github.com/ClickHouse/ClickHouse/commit/8e85e5d5bf3c0c2337677182c21a4ce4ee856167"
+    },
+    {
+        "sha": "1ad86ae1006dc8b9ee38df4c3576f42e4d1045ab",
+        "author": "Shaun Struwig",
+        "email": "41984034+Blargian@users.noreply.github.com",
+        "date": "2026-07-13T19:00:31Z",
+        "message": "Fix Mintlify snippet image rendering",
+        "url": "https://github.com/ClickHouse/ClickHouse/commit/1ad86ae1006dc8b9ee38df4c3576f42e4d1045ab"
+    },
+    {
+        "sha": "4bd6f6e80158f1c4b7909f780445d594362db987",
+        "author": "Konstantin Bogdanov",
+        "email": "thevar1able@users.noreply.github.com",
+        "date": "2026-07-13T18:54:02Z",
+        "message": "Merge pull request #109012 from 1000ms/digits_function\n\nDigits function",
+        "url": "https://github.com/ClickHouse/ClickHouse/commit/4bd6f6e80158f1c4b7909f780445d594362db987"
+    },
+    {
+        "sha": "0a98bc43557171714abdee98141f92c45deacf02",
+        "author": "Alexey Milovidov",
+        "email": "milovidov@clickhouse.com",
+        "date": "2026-07-13T18:38:07Z",
+        "message": "Give the fuzzer server the same 120s readiness budget\n\nAddress review: the AST/BuzzHouse fuzzer bootstrap in `run-fuzzer.sh`\ngave the server only ~30 seconds to answer `select 1` before the next\n`clickhouse-client` under `set -e` aborted the job, while the fuzzer\njobs run the same `amd_debug` and sanitizer artifacts that motivated\nraising the `wait_ready` deadline in `clickhouse_proc.py`. Raise the\nloop to 120 attempts and break early when the server process died, as\n`wait_for_server` in `perf/compare.sh` does, so crashed servers are\nstill detected quickly.\n\nPR: https://github.com/ClickHouse/ClickHouse/pull/110287\n\nCo-Authored-By: Claude Fable 5 <noreply@anthropic.com>",
+        "url": "https://github.com/ClickHouse/ClickHouse/commit/0a98bc43557171714abdee98141f92c45deacf02"
+    },
+    {
+        "sha": "05f126082a7c1178c23f74c850e91a127b3ff674",
+        "author": "Groene AI",
+        "email": "270696204+groeneai@users.noreply.github.com",
+        "date": "2026-07-13T17:26:58Z",
+        "message": "Fix 02907_suggestions_readonly_user flakiness: wait for prompt before next command\n\nThe .expect script matched the query result (\"Ok.\") and immediately sent the\nnext command without waiting for the interactive prompt to be redrawn. Under\nsanitizer + parallel CI load the send could race the readline redraw and get\nlost, so a later \"expect eof\" never completed and the test timed out.\n\nAdd \"expect \":) \"\" after each command's result, matching the idiom already\nused by 02417_repeat_input_commands and 01945_show_debug_warning. Revert the\nearlier timeout bump (60s is sufficient once the sequencing is correct).\n\nCo-Authored-By: Claude Opus 4.8 <noreply@anthropic.com>",
+        "url": "https://github.com/ClickHouse/ClickHouse/commit/05f126082a7c1178c23f74c850e91a127b3ff674"
+    }
+]

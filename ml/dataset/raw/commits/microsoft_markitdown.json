@@ -1,0 +1,242 @@
+[
+    {
+        "sha": "e144e0a2be95b34df17433bac904e635f2c5e551",
+        "author": "afourney",
+        "email": "adamfo@microsoft.com",
+        "date": "2026-05-26T22:40:20Z",
+        "message": "Bump version to 0.1.6 (#1914)",
+        "url": "https://github.com/microsoft/markitdown/commit/e144e0a2be95b34df17433bac904e635f2c5e551"
+    },
+    {
+        "sha": "a01d74dda70de866c563256015fb4f036271af46",
+        "author": "Chien Yuan Chang",
+        "email": "ds.chienyuanchang@gmail.com",
+        "date": "2026-05-22T04:59:41Z",
+        "message": "feat: Add Azure Content Understanding converter (#1865)\n\n* inital version\n\n* improve mime type detection\n\n* prebuilt-image custom analzyer route to image\n\n* enhance cu priority over di\n\n* fix: apply black formatting\n\n* update cache of known prebuilt name and README improvement\n\n* add test cases, run black\n\n* update readme and deriving content_type from the resolved file_type\n\n* update readme",
+        "url": "https://github.com/microsoft/markitdown/commit/a01d74dda70de866c563256015fb4f036271af46"
+    },
+    {
+        "sha": "a51f725d7ff4cdfe3bb6ad2ce2c04d98bf5f1f00",
+        "author": "afourney",
+        "email": "adamfo@microsoft.com",
+        "date": "2026-04-20T17:52:17Z",
+        "message": "Clarify security posture in READMEs (#1807)",
+        "url": "https://github.com/microsoft/markitdown/commit/a51f725d7ff4cdfe3bb6ad2ce2c04d98bf5f1f00"
+    },
+    {
+        "sha": "604bba13da2f43b756b49122cb65bdedb85b1dff",
+        "author": "jigangz",
+        "email": "115519042+jigangz@users.noreply.github.com",
+        "date": "2026-04-15T22:26:44Z",
+        "message": "fix: handle deeply nested HTML that triggers RecursionError (#1644)\n\n* fix: handle deeply nested HTML that triggers RecursionError (#1636)\n\nLarge HTML files with deep DOM nesting (e.g., SEC EDGAR filings) cause\nmarkdownify's recursive DOM traversal to exceed Python's default\nrecursion limit (1000). Previously this RecursionError was caught by\nthe top-level _convert() dispatcher, which then fell through to\nPlainTextConverter — silently returning the raw HTML as 'markdown'\nwith no warning.\n\nThis fix catches RecursionError in HtmlConverter.convert() and falls\nback to BeautifulSoup's iterative get_text() method, which handles\narbitrary nesting depths. A warning is emitted so callers know the\noutput is plain text rather than full markdown.\n\nRoot cause chain:\n1. HtmlConverter.convert() calls markdownify.convert_soup() (recursive)\n2. Deeply nested HTML (>~400 levels) triggers RecursionError\n3. _convert() catches all Exceptions, stores in failed_attempts\n4. PlainTextConverter.accepts() matches text/html via 'text/' prefix\n5. PlainTextConverter.convert() returns raw HTML bytes as text\n6. Caller receives 'markdown' that is actually unconverted HTML\n\n* refactor: address review feedback on RecursionError fallback\n\n- Move 'import warnings' to module top level (was inside except block)\n- Make test environment-independent by temporarily lowering\n  sys.setrecursionlimit(200) instead of relying on depth=500 being\n  sufficient on all platforms; original limit restored in finally block\n- Add strict=True keyword argument to opt out of the plain-text\n  fallback and let RecursionError propagate to the caller\n\n* test: use result.markdown instead of deprecated result.text_content\n\n---------\n\nCo-authored-by: jigangz <jigangz@github.com>",
+        "url": "https://github.com/microsoft/markitdown/commit/604bba13da2f43b756b49122cb65bdedb85b1dff"
+    },
+    {
+        "sha": "63cbbd9de6afa01ee3b97127e4945c5706a29472",
+        "author": "afourney",
+        "email": "adamfo@microsoft.com",
+        "date": "2026-03-30T17:17:52Z",
+        "message": "Updated warning about binding to non-local interfaces. (#1653)",
+        "url": "https://github.com/microsoft/markitdown/commit/63cbbd9de6afa01ee3b97127e4945c5706a29472"
+    },
+    {
+        "sha": "a6c8ac46a684bac4b4a2377d67ff615264eb8f27",
+        "author": "lesyk",
+        "email": "lesyk@users.noreply.github.com",
+        "date": "2026-03-16T17:35:24Z",
+        "message": "Fix O(n) memory growth in PDF conversion by calling page.close() afte… (#1612)\n\n* Fix O(n) memory growth in PDF conversion by calling page.close() after each page\n\n* Refactor PDF memory optimization tests for improved readability and consistency\n\n* Add memory benchmarking tests for PDF conversion with page.close() fix\n\n* Remove unnecessary blank lines in PDF memory optimization tests for cleaner code\n\n* Bump version to 0.1.6b2 in __about__.py\n\n* Update PDF conversion tests to include mimetype in StreamInfo",
+        "url": "https://github.com/microsoft/markitdown/commit/a6c8ac46a684bac4b4a2377d67ff615264eb8f27"
+    },
+    {
+        "sha": "c6308dc8227cb496f981c8451350fdc2cecd017a",
+        "author": "lesyk",
+        "email": "lesyk@users.noreply.github.com",
+        "date": "2026-03-10T16:17:17Z",
+        "message": "[MS] Add OCR layer service for embedded images and PDF scans (#1541)\n\n* Add OCR test data and implement tests for various document formats\n\n- Created HTML file with multiple images for testing OCR extraction.\n- Added several PDF files with different layouts and image placements to validate OCR functionality.\n- Introduced PPTX files with complex layouts and images at various positions for comprehensive testing.\n- Included XLSX files with multiple images and complex layouts to ensure accurate OCR extraction.\n- Implemented a new test suite in `test_ocr.py` to validate OCR functionality across all document types, ensuring context preservation and accuracy.\n\n* Enhance OCR functionality and validation in document converters\n\n- Refactor image extraction and processing in PDF, PPTX, and XLSX converters for improved readability and consistency.\n- Implement detailed validation for OCR text positioning relative to surrounding text in test cases.\n- Introduce comprehensive tests for expected OCR results across various document types, ensuring no base64 images are present.\n- Improve error handling and logging for better debugging during OCR extraction.\n\n* Add support for scanned PDFs with full-page OCR fallback and implement tests\n\n* Bump version to 0.1.6b1 in __about__.py\n\n* Refactor OCR services to support LLM Vision, update README and tests accordingly\n\n* Add OCR-enabled converters and ensure consistent OCR format across document types\n\n* Refactor converters to improve import organization and enhance OCR functionality across DOCX, PDF, PPTX, and XLSX converters\n\n* Refactor exception imports for consistency across converters and tests\n\n* Fix OCR tests to match MockOCRService output and fix cross-platform file URI handling\n\n* Bump version to 0.1.6b1 in __about__.py\n\n* Skip DOCX/XLSX/PPTX OCR tests when optional dependencies are missing\n\n* Add comprehensive OCR test suite for various document formats\n\n- Introduced multiple test documents for PDF, DOCX, XLSX, and PPTX formats, covering scenarios with images at the start, middle, and end.\n- Implemented tests for complex layouts, multi-page documents, and documents with multiple images.\n- Created a new test script `test_ocr.py` to validate OCR functionality, ensuring context preservation and accurate text extraction.\n- Added expected OCR results for validation against ground truth.\n- Included tests for scanned documents to verify OCR fallback mechanisms.\n\n* Remove obsolete HTML test files and refactor test cases for file URIs and OCR format consistency\n\n- Deleted `html_image_start.html` and `html_multiple_images.html` as they are no longer needed.\n- Updated `test_file_uris` in `test_module_misc.py` to simplify assertions by removing unnecessary `url2pathname` usage.\n- Removed `test_ocr_format_consistency.py` as it is no longer relevant to the current testing framework.\n\n* Refactor OCR processing in PdfConverterWithOCR and enhance unit tests for multipage PDFs\n\n* Revert\n\n* Revert\n\n* Update REDMEs\n\n* Refactor import statements for consistency and improve formatting in converter and test files",
+        "url": "https://github.com/microsoft/markitdown/commit/c6308dc8227cb496f981c8451350fdc2cecd017a"
+    },
+    {
+        "sha": "4a5340f93b2bf1dc11641f921fbfd6d5f016924b",
+        "author": "afourney",
+        "email": "adamfo@microsoft.com",
+        "date": "2026-02-20T19:40:57Z",
+        "message": "Bump version for release. (#1564)",
+        "url": "https://github.com/microsoft/markitdown/commit/4a5340f93b2bf1dc11641f921fbfd6d5f016924b"
+    },
+    {
+        "sha": "6b0fd15e6002039dacac6779c417ea9f80eb842c",
+        "author": "Bas Nijholt",
+        "email": "basnijholt@gmail.com",
+        "date": "2026-02-16T23:05:37Z",
+        "message": "Remove onnxruntime<=1.20.1 Windows pin (#1551)",
+        "url": "https://github.com/microsoft/markitdown/commit/6b0fd15e6002039dacac6779c417ea9f80eb842c"
+    },
+    {
+        "sha": "2b6ec9f315654aea1190f09f9bbebd617021d171",
+        "author": "afourney",
+        "email": "adamfo@microsoft.com",
+        "date": "2026-02-13T19:53:01Z",
+        "message": "Add text/markdown to Accept header (#1554)",
+        "url": "https://github.com/microsoft/markitdown/commit/2b6ec9f315654aea1190f09f9bbebd617021d171"
+    },
+    {
+        "sha": "c83de14a9c87698ac41b5c433fb7e82df938abcf",
+        "author": "lesyk",
+        "email": "lesyk@users.noreply.github.com",
+        "date": "2026-02-13T18:45:39Z",
+        "message": "[MS] Extend table support for wide tables (#1552)\n\n* feat: enhance PDF table extraction to support complex forms and add new test cases\n* feat: enhance PDF table extraction with adaptive column clustering and add comprehensive test cases\n* fix: correct formatting and improve assertions in PDF table tests",
+        "url": "https://github.com/microsoft/markitdown/commit/c83de14a9c87698ac41b5c433fb7e82df938abcf"
+    },
+    {
+        "sha": "7fdaefb724d08a999f8d30647e8ce8f2ad1c5795",
+        "author": "lesyk",
+        "email": "lesyk@users.noreply.github.com",
+        "date": "2026-01-08T23:15:22Z",
+        "message": "Fix: PDF parsing doesn't support partially numbered lists (#1525)\n\n* Fix: PDF parsing doesn't support partially numbered lists\n\n* Refactor: Move import of PARTIAL_NUMBERING_PATTERN to the top of the test file\n\n* Refactor: Improve assertion formatting in partial numbering tests",
+        "url": "https://github.com/microsoft/markitdown/commit/7fdaefb724d08a999f8d30647e8ce8f2ad1c5795"
+    },
+    {
+        "sha": "251dddcf0cffec467d72837fc5dd0b10f08df98e",
+        "author": "lesyk",
+        "email": "lesyk@users.noreply.github.com",
+        "date": "2026-01-08T00:38:45Z",
+        "message": "[MS] Update PDF table extraction to support aligned Markdown (#1499)\n\n* Added PDF table extraction feature with aligned Markdown (#1419)\n\n* Add PDF test files and enhance extraction tests\n\n- Added a medical report scan PDF for testing scanned PDF handling.\n- Included a retail purchase receipt PDF to validate receipt extraction functionality.\n- Introduced a multipage invoice PDF to test extraction of complex invoice structures.\n- Added a borderless table PDF for testing inventory reconciliation report extraction.\n- Implemented comprehensive tests for PDF table extraction, ensuring proper structure and data integrity.\n- Enhanced existing tests to validate the order and presence of extracted content across various PDF types.\n\n* fix: update dependencies for PDF processing and improve table extraction logic\n\n* Bumped version of pdfminer.six\n---------\n\nAuthored-by: Ashok <ashh010101@gmail.com>",
+        "url": "https://github.com/microsoft/markitdown/commit/251dddcf0cffec467d72837fc5dd0b10f08df98e"
+    },
+    {
+        "sha": "dde250a456d178fe344fce17ef10d00fe929f680",
+        "author": "afourney",
+        "email": "adamfo@microsoft.com",
+        "date": "2025-12-01T18:11:24Z",
+        "message": "Bump versions of mammoth and pdfminer.six (#1492)\n\n* Updated pyproject to require a minimum version of pdfminer.six to ensure CVE-2025-64512 is patched.",
+        "url": "https://github.com/microsoft/markitdown/commit/dde250a456d178fe344fce17ef10d00fe929f680"
+    },
+    {
+        "sha": "3d4fe3cdcced195c7f6ce6d266dbf508aa147e54",
+        "author": "afourney",
+        "email": "adamfo@microsoft.com",
+        "date": "2025-10-20T23:07:39Z",
+        "message": "Upgrade mammoth to 1.11.0 (#1452)",
+        "url": "https://github.com/microsoft/markitdown/commit/3d4fe3cdcced195c7f6ce6d266dbf508aa147e54"
+    },
+    {
+        "sha": "447c047731974efc82257770b4e9308a6607425b",
+        "author": "afourney",
+        "email": "adamfo@microsoft.com",
+        "date": "2025-10-20T22:54:05Z",
+        "message": "Test if mammoth resolves rlinks. (#1451)",
+        "url": "https://github.com/microsoft/markitdown/commit/447c047731974efc82257770b4e9308a6607425b"
+    },
+    {
+        "sha": "8a9d8f15936b2068bcb39ccc8d3b317f93784d86",
+        "author": "Meirna",
+        "email": "61427701+Meirna-kamal@users.noreply.github.com",
+        "date": "2025-08-26T22:30:47Z",
+        "message": "feat: add checkbox support to Markdown converter (#1208)\n\nThis change introduces functionality to convert HTML checkbox input elements\n(<input type=checkbox>) into Markdown checkbox syntax ([ ] or [x]).\nCo-authored-by: Meirna Kamal <meirna.kamal@vodafone.com>",
+        "url": "https://github.com/microsoft/markitdown/commit/8a9d8f15936b2068bcb39ccc8d3b317f93784d86"
+    },
+    {
+        "sha": "17365654c93c0002971cca7b171eafb8ef6e39e1",
+        "author": "Richard Ye",
+        "email": "33409792+richardye101@users.noreply.github.com",
+        "date": "2025-08-26T22:28:17Z",
+        "message": "Handle PPTX shapes where position is None (#1161)\n\n* Handle shapes where position is None\n* Fixed recursion error, and place no-coord shapes at front",
+        "url": "https://github.com/microsoft/markitdown/commit/17365654c93c0002971cca7b171eafb8ef6e39e1"
+    },
+    {
+        "sha": "59eb60f8cba78103dd0004ec68785587d02d4f2a",
+        "author": "Yuzhong Zhang",
+        "email": "141388234+BetterAndBetterII@users.noreply.github.com",
+        "date": "2025-08-26T22:20:17Z",
+        "message": "fix docx parse error(\\n in alt) (#1163)",
+        "url": "https://github.com/microsoft/markitdown/commit/59eb60f8cba78103dd0004ec68785587d02d4f2a"
+    },
+    {
+        "sha": "459d462f29c672866e140594daafadfbdc7e30e4",
+        "author": "Dmitry",
+        "email": "98899785+mdqst@users.noreply.github.com",
+        "date": "2025-08-26T22:15:23Z",
+        "message": "docs: correct minor typos (#1173)",
+        "url": "https://github.com/microsoft/markitdown/commit/459d462f29c672866e140594daafadfbdc7e30e4"
+    },
+    {
+        "sha": "c3f6cb356c9e722098212e9f8b7a879e5c3eb23b",
+        "author": "Noah Zhu",
+        "email": "118643158+Noah-Zhuhaotian@users.noreply.github.com",
+        "date": "2025-08-26T22:11:53Z",
+        "message": "Adding support for data-src Attribute (#1226)\n\n* supportfordata-src",
+        "url": "https://github.com/microsoft/markitdown/commit/c3f6cb356c9e722098212e9f8b7a879e5c3eb23b"
+    },
+    {
+        "sha": "0c4d3945a0a8d947615130dc91ceaa227c4d8841",
+        "author": "Ebrahim Tayabali",
+        "email": "47640402+ebrahimHakimuddin@users.noreply.github.com",
+        "date": "2025-08-26T22:07:27Z",
+        "message": "Update README.md (#1191)\n\nFix: Subtle spelling mistake fixed.",
+        "url": "https://github.com/microsoft/markitdown/commit/0c4d3945a0a8d947615130dc91ceaa227c4d8841"
+    },
+    {
+        "sha": "f8b60b54031c0292d20d9d7dd7275973d0121f3c",
+        "author": "Utkarsh kumar",
+        "email": "m83610278@gmail.com",
+        "date": "2025-08-26T22:02:56Z",
+        "message": "Update README.md (#1350)\n\nISSUE #1339",
+        "url": "https://github.com/microsoft/markitdown/commit/f8b60b54031c0292d20d9d7dd7275973d0121f3c"
+    },
+    {
+        "sha": "16ca285d3073bbe90c7eca8ce63ae9347a57536b",
+        "author": "[W]DOS_",
+        "email": "40659600+W-DOS0@users.noreply.github.com",
+        "date": "2025-08-26T21:55:58Z",
+        "message": "Update README.md (#1335)\n\nFix typo in README.md",
+        "url": "https://github.com/microsoft/markitdown/commit/16ca285d3073bbe90c7eca8ce63ae9347a57536b"
+    },
+    {
+        "sha": "b81a3876162373108eb14c4c0075096548239fc1",
+        "author": "Stefan Rink",
+        "email": "stefan-rink@users.noreply.github.com",
+        "date": "2025-08-26T21:51:10Z",
+        "message": "fix: correctly pass custom llm prompt parameter (#1319)\n\n* fix: correctly pass custom llm prompt parameter",
+        "url": "https://github.com/microsoft/markitdown/commit/b81a3876162373108eb14c4c0075096548239fc1"
+    },
+    {
+        "sha": "ea1a3dfb60fde71c4b2fb0a6cfa1f46e9e741f7f",
+        "author": "safen0s",
+        "email": "99965118+safen0s@users.noreply.github.com",
+        "date": "2025-08-26T21:34:43Z",
+        "message": "Add HTML support to DocumentIntelligenceConverter (#1352)",
+        "url": "https://github.com/microsoft/markitdown/commit/ea1a3dfb60fde71c4b2fb0a6cfa1f46e9e741f7f"
+    },
+    {
+        "sha": "b6e5da88740fd07d5a36054a451f06c35c7f5fd7",
+        "author": "dependabot[bot]",
+        "email": "49699333+dependabot[bot]@users.noreply.github.com",
+        "date": "2025-08-26T21:27:38Z",
+        "message": "Bump actions/checkout from 4 to 5 (#1394)\n\nBumps [actions/checkout](https://github.com/actions/checkout) from 4 to 5.",
+        "url": "https://github.com/microsoft/markitdown/commit/b6e5da88740fd07d5a36054a451f06c35c7f5fd7"
+    },
+    {
+        "sha": "fb1ad2483303022c75e6b620a69df17e944fc4b0",
+        "author": "t3tra",
+        "email": "admin@t3tra.net",
+        "date": "2025-08-26T21:25:13Z",
+        "message": "Ensure safe ExifTool usage: require >= 12.24 (#1399)\n\n* feat: add version verification for ExifTool to ensure security compliance\n* fix: improve ExifTool version verification\n\n---------",
+        "url": "https://github.com/microsoft/markitdown/commit/fb1ad2483303022c75e6b620a69df17e944fc4b0"
+    },
+    {
+        "sha": "1178c2e21182eb26504589170e5916f537137070",
+        "author": "JonahDelman",
+        "email": "jonah.delman@gmail.com",
+        "date": "2025-08-26T21:23:10Z",
+        "message": "Fixed documentation typos in _base_converter.py (#1393)",
+        "url": "https://github.com/microsoft/markitdown/commit/1178c2e21182eb26504589170e5916f537137070"
+    },
+    {
+        "sha": "9278119bb382103f1cb5062de05fe8224b9dbfe9",
+        "author": "afourney",
+        "email": "adamfo@microsoft.com",
+        "date": "2025-08-26T21:20:29Z",
+        "message": "Resolved an issue with linked images in docx [mammoth] (#1405)",
+        "url": "https://github.com/microsoft/markitdown/commit/9278119bb382103f1cb5062de05fe8224b9dbfe9"
+    }
+]

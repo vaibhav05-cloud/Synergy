@@ -1,0 +1,242 @@
+[
+    {
+        "sha": "68faae5cc8fe736a8454c19c0cc88fce53b629cd",
+        "author": "Jian-Hong Pan",
+        "email": "jhp@endlessos.org",
+        "date": "2026-04-14T08:39:37Z",
+        "message": "Merge pull request #640 from ramcq/claude/rebase-kernel-sva-patches-EPDPb\n\niommu/sva: Cherry-pick upstream patches to reinstate SVA on x86",
+        "url": "https://github.com/endlessm/linux/commit/68faae5cc8fe736a8454c19c0cc88fce53b629cd"
+    },
+    {
+        "sha": "d1c1deb5aeb56c5196dc0895132eef64db9b0ec7",
+        "author": "Lu Baolu",
+        "email": "baolu.lu@linux.intel.com",
+        "date": "2025-10-22T08:26:34Z",
+        "message": "iommu/sva: invalidate stale IOTLB entries for kernel address space\n\nIntroduce a new IOMMU interface to flush IOTLB paging cache entries for\nthe CPU kernel address space.  This interface is invoked from the x86\narchitecture code that manages combined user and kernel page tables,\nspecifically before any kernel page table page is freed and reused.\n\nThis addresses the main issue with vfree() which is a common occurrence\nand can be triggered by unprivileged users.  While this resolves the\nprimary problem, it doesn't address some extremely rare case related to\nmemory unplug of memory that was present as reserved memory at boot, which\ncannot be triggered by unprivileged users.  The discussion can be found at\nthe link below.\n\nEnable SVA on x86 architecture since the IOMMU can now receive\nnotification to flush the paging cache before freeing the CPU kernel page\ntable pages.\n\nLink: https://lkml.kernel.org/r/20251022082635.2462433-9-baolu.lu@linux.intel.com\nLink: https://lore.kernel.org/linux-iommu/04983c62-3b1d-40d4-93ae-34ca04b827e5@intel.com/\nCo-developed-by: Jason Gunthorpe <jgg@nvidia.com>\nSigned-off-by: Jason Gunthorpe <jgg@nvidia.com>\nSigned-off-by: Lu Baolu <baolu.lu@linux.intel.com>\nSuggested-by: Jann Horn <jannh@google.com>\nReviewed-by: Jason Gunthorpe <jgg@nvidia.com>\nReviewed-by: Vasant Hegde <vasant.hegde@amd.com>\nReviewed-by: Kevin Tian <kevin.tian@intel.com>\nCc: Alistair Popple <apopple@nvidia.com>\nCc: Andy Lutomirski <luto@kernel.org>\nCc: Borislav Betkov <bp@alien8.de>\nCc: Dave Hansen <dave.hansen@linux.intel.com>\nCc: David Hildenbrand <david@redhat.com>\nCc: Ingo Molnar <mingo@redhat.com>\nCc: Jean-Philippe Brucker <jean-philippe@linaro.org>\nCc: Joerg Roedel <joro@8bytes.org>\nCc: Liam Howlett <liam.howlett@oracle.com>\nCc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>\nCc: Matthew Wilcox (Oracle) <willy@infradead.org>\nCc: Michal Hocko <mhocko@kernel.org>\nCc: Mike Rapoport (Microsoft) <rppt@kernel.org>\nCc: Peter Zijlstra <peterz@infradead.org>\nCc: Robin Murohy <robin.murphy@arm.com>\nCc: Thomas Gleinxer <tglx@linutronix.de>\nCc: \"Uladzislau Rezki (Sony)\" <urezki@gmail.com>\nCc: Vinicius Costa Gomes <vinicius.gomes@intel.com>\nCc: Vlastimil Babka <vbabka@suse.cz>\nCc: Will Deacon <will@kernel.org>\nCc: Yi Lai <yi1.lai@intel.com>\nSigned-off-by: Andrew Morton <akpm@linux-foundation.org>\n(cherry picked from commit e37d5a2d60a338c5917c45296bac65da1382eda5)",
+        "url": "https://github.com/endlessm/linux/commit/d1c1deb5aeb56c5196dc0895132eef64db9b0ec7"
+    },
+    {
+        "sha": "ee17f8694245779ed63300c184f894e7f1df0d9f",
+        "author": "Dave Hansen",
+        "email": "dave.hansen@linux.intel.com",
+        "date": "2025-10-22T08:26:33Z",
+        "message": "mm: introduce deferred freeing for kernel page tables\n\nThis introduces a conditional asynchronous mechanism, enabled by\nCONFIG_ASYNC_KERNEL_PGTABLE_FREE.  When enabled, this mechanism defers the\nfreeing of pages that are used as page tables for kernel address mappings.\nThese pages are now queued to a work struct instead of being freed\nimmediately.\n\nThis deferred freeing allows for batch-freeing of page tables, providing a\nsafe context for performing a single expensive operation (TLB flush) for a\nbatch of kernel page tables instead of performing that expensive operation\nfor each page table.\n\nLink: https://lkml.kernel.org/r/20251022082635.2462433-8-baolu.lu@linux.intel.com\nSigned-off-by: Dave Hansen <dave.hansen@linux.intel.com>\nSigned-off-by: Lu Baolu <baolu.lu@linux.intel.com>\nReviewed-by: Jason Gunthorpe <jgg@nvidia.com>\nReviewed-by: Kevin Tian <kevin.tian@intel.com>\nAcked-by: David Hildenbrand <david@redhat.com>\nAcked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>\nCc: Alistair Popple <apopple@nvidia.com>\nCc: Andy Lutomirski <luto@kernel.org>\nCc: Borislav Betkov <bp@alien8.de>\nCc: Ingo Molnar <mingo@redhat.com>\nCc: Jann Horn <jannh@google.com>\nCc: Jean-Philippe Brucker <jean-philippe@linaro.org>\nCc: Joerg Roedel <joro@8bytes.org>\nCc: Liam Howlett <liam.howlett@oracle.com>\nCc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>\nCc: Matthew Wilcox (Oracle) <willy@infradead.org>\nCc: Michal Hocko <mhocko@kernel.org>\nCc: Peter Zijlstra <peterz@infradead.org>\nCc: Robin Murohy <robin.murphy@arm.com>\nCc: Thomas Gleinxer <tglx@linutronix.de>\nCc: \"Uladzislau Rezki (Sony)\" <urezki@gmail.com>\nCc: Vasant Hegde <vasant.hegde@amd.com>\nCc: Vinicius Costa Gomes <vinicius.gomes@intel.com>\nCc: Vlastimil Babka <vbabka@suse.cz>\nCc: Will Deacon <will@kernel.org>\nCc: Yi Lai <yi1.lai@intel.com>\nSigned-off-by: Andrew Morton <akpm@linux-foundation.org>\n(cherry picked from commit 5ba2f0a1556479638ac11a3c201421f5515e89f5)",
+        "url": "https://github.com/endlessm/linux/commit/ee17f8694245779ed63300c184f894e7f1df0d9f"
+    },
+    {
+        "sha": "9c5c9056541f3d52479dee936458b81922427c0d",
+        "author": "Lu Baolu",
+        "email": "baolu.lu@linux.intel.com",
+        "date": "2025-10-22T08:26:32Z",
+        "message": "x86/mm: use pagetable_free()\n\nThe kernel's memory management subsystem provides a dedicated interface,\npagetable_free(), for freeing page table pages.  Updates two call sites to\nuse pagetable_free() instead of the lower-level __free_page() or\nfree_pages().  This improves code consistency and clarity, and ensures the\ncorrect freeing mechanism is used.\n\nLink: https://lkml.kernel.org/r/20251022082635.2462433-7-baolu.lu@linux.intel.com\nSigned-off-by: Lu Baolu <baolu.lu@linux.intel.com>\nReviewed-by: Jason Gunthorpe <jgg@nvidia.com>\nAcked-by: David Hildenbrand <david@redhat.com>\nAcked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>\nCc: Alistair Popple <apopple@nvidia.com>\nCc: Andy Lutomirski <luto@kernel.org>\nCc: Borislav Betkov <bp@alien8.de>\nCc: Dave Hansen <dave.hansen@intel.com>\nCc: Ingo Molnar <mingo@redhat.com>\nCc: Jann Horn <jannh@google.com>\nCc: Jean-Philippe Brucker <jean-philippe@linaro.org>\nCc: Joerg Roedel <joro@8bytes.org>\nCc: Kevin Tian <kevin.tian@intel.com>\nCc: Liam Howlett <liam.howlett@oracle.com>\nCc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>\nCc: Matthew Wilcox (Oracle) <willy@infradead.org>\nCc: Michal Hocko <mhocko@kernel.org>\nCc: Peter Zijlstra <peterz@infradead.org>\nCc: Robin Murohy <robin.murphy@arm.com>\nCc: Thomas Gleinxer <tglx@linutronix.de>\nCc: \"Uladzislau Rezki (Sony)\" <urezki@gmail.com>\nCc: Vasant Hegde <vasant.hegde@amd.com>\nCc: Vinicius Costa Gomes <vinicius.gomes@intel.com>\nCc: Vlastimil Babka <vbabka@suse.cz>\nCc: Will Deacon <will@kernel.org>\nCc: Yi Lai <yi1.lai@intel.com>\nSigned-off-by: Andrew Morton <akpm@linux-foundation.org>\n(cherry picked from commit bf9e4e30f3538391745a99bc2268ec4f5e4a401e)",
+        "url": "https://github.com/endlessm/linux/commit/9c5c9056541f3d52479dee936458b81922427c0d"
+    },
+    {
+        "sha": "b5276350a4d8254fffb812dd522ab71222b58210",
+        "author": "Dave Hansen",
+        "email": "dave.hansen@linux.intel.com",
+        "date": "2025-10-22T08:26:31Z",
+        "message": "mm: introduce pure page table freeing function\n\nThe pages used for ptdescs are currently freed back to the allocator in a\nsingle location.  They will shortly be freed from a second location.\n\nCreate a simple helper that just frees them back to the allocator.\n\nLink: https://lkml.kernel.org/r/20251022082635.2462433-6-baolu.lu@linux.intel.com\nSigned-off-by: Dave Hansen <dave.hansen@linux.intel.com>\nSigned-off-by: Lu Baolu <baolu.lu@linux.intel.com>\nReviewed-by: Jason Gunthorpe <jgg@nvidia.com>\nReviewed-by: Kevin Tian <kevin.tian@intel.com>\nAcked-by: David Hildenbrand <david@redhat.com>\nAcked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>\nCc: Alistair Popple <apopple@nvidia.com>\nCc: Andy Lutomirski <luto@kernel.org>\nCc: Borislav Betkov <bp@alien8.de>\nCc: Ingo Molnar <mingo@redhat.com>\nCc: Jann Horn <jannh@google.com>\nCc: Jean-Philippe Brucker <jean-philippe@linaro.org>\nCc: Joerg Roedel <joro@8bytes.org>\nCc: Liam Howlett <liam.howlett@oracle.com>\nCc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>\nCc: Matthew Wilcox (Oracle) <willy@infradead.org>\nCc: Michal Hocko <mhocko@kernel.org>\nCc: Peter Zijlstra <peterz@infradead.org>\nCc: Robin Murohy <robin.murphy@arm.com>\nCc: Thomas Gleinxer <tglx@linutronix.de>\nCc: \"Uladzislau Rezki (Sony)\" <urezki@gmail.com>\nCc: Vasant Hegde <vasant.hegde@amd.com>\nCc: Vinicius Costa Gomes <vinicius.gomes@intel.com>\nCc: Vlastimil Babka <vbabka@suse.cz>\nCc: Will Deacon <will@kernel.org>\nCc: Yi Lai <yi1.lai@intel.com>\nSigned-off-by: Andrew Morton <akpm@linux-foundation.org>\n(cherry picked from commit 01894295672335ff304beed4359f30d14d5765f2)",
+        "url": "https://github.com/endlessm/linux/commit/b5276350a4d8254fffb812dd522ab71222b58210"
+    },
+    {
+        "sha": "20308dd80de6d0f0eb089c0b257145e6485af1d4",
+        "author": "Dave Hansen",
+        "email": "dave.hansen@linux.intel.com",
+        "date": "2025-10-22T08:26:30Z",
+        "message": "x86/mm: use 'ptdesc' when freeing PMD pages\n\nThere are a billion ways to refer to a physical memory address.  One of\nthe x86 PMD freeing code location chooses to use a 'pte_t *' to point to a\nPMD page and then call a PTE-specific freeing function for it.  That's a\nbit wonky.\n\nJust use a 'struct ptdesc *' instead.  Its entire purpose is to refer to\npage table pages.  It also means being able to remove an explicit cast.\n\nRight now, pte_free_kernel() is a one-liner that calls\npagetable_dtor_free().  Effectively, all this patch does is remove one\nsuperfluous __pa(__va(paddr)) conversion and then call\npagetable_dtor_free() directly instead of through a helper.\n\nLink: https://lkml.kernel.org/r/20251022082635.2462433-5-baolu.lu@linux.intel.com\nSigned-off-by: Dave Hansen <dave.hansen@linux.intel.com>\nSigned-off-by: Lu Baolu <baolu.lu@linux.intel.com>\nReviewed-by: Jason Gunthorpe <jgg@nvidia.com>\nReviewed-by: Kevin Tian <kevin.tian@intel.com>\nCc: Alistair Popple <apopple@nvidia.com>\nCc: Andy Lutomirski <luto@kernel.org>\nCc: Borislav Betkov <bp@alien8.de>\nCc: David Hildenbrand <david@redhat.com>\nCc: Ingo Molnar <mingo@redhat.com>\nCc: Jann Horn <jannh@google.com>\nCc: Jean-Philippe Brucker <jean-philippe@linaro.org>\nCc: Joerg Roedel <joro@8bytes.org>\nCc: Liam Howlett <liam.howlett@oracle.com>\nCc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>\nCc: Matthew Wilcox (Oracle) <willy@infradead.org>\nCc: Michal Hocko <mhocko@kernel.org>\nCc: Mike Rapoport (Microsoft) <rppt@kernel.org>\nCc: Peter Zijlstra <peterz@infradead.org>\nCc: Robin Murohy <robin.murphy@arm.com>\nCc: Thomas Gleinxer <tglx@linutronix.de>\nCc: \"Uladzislau Rezki (Sony)\" <urezki@gmail.com>\nCc: Vasant Hegde <vasant.hegde@amd.com>\nCc: Vinicius Costa Gomes <vinicius.gomes@intel.com>\nCc: Vlastimil Babka <vbabka@suse.cz>\nCc: Will Deacon <will@kernel.org>\nCc: Yi Lai <yi1.lai@intel.com>\nSigned-off-by: Andrew Morton <akpm@linux-foundation.org>\n(cherry picked from commit 412d000346ea38ac4b9bb715a86c73ef89d90dea)",
+        "url": "https://github.com/endlessm/linux/commit/20308dd80de6d0f0eb089c0b257145e6485af1d4"
+    },
+    {
+        "sha": "f7811b703a4fd8db973f29baf6a39756b83c3177",
+        "author": "Dave Hansen",
+        "email": "dave.hansen@linux.intel.com",
+        "date": "2025-10-22T08:26:29Z",
+        "message": "mm: actually mark kernel page table pages\n\nNow that the API is in place, mark kernel page table pages just after they\nare allocated.  Unmark them just before they are freed.\n\nNote: Unconditionally clearing the 'kernel' marking (via\nptdesc_clear_kernel()) would be functionally identical to what is here.\nBut having the if() makes it logically clear that this function can be\nused for kernel and non-kernel page tables.\n\nLink: https://lkml.kernel.org/r/20251022082635.2462433-4-baolu.lu@linux.intel.com\nSigned-off-by: Dave Hansen <dave.hansen@linux.intel.com>\nSigned-off-by: Lu Baolu <baolu.lu@linux.intel.com>\nReviewed-by: Jason Gunthorpe <jgg@nvidia.com>\nReviewed-by: Kevin Tian <kevin.tian@intel.com>\nAcked-by: David Hildenbrand <david@redhat.com>\nAcked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>\nCc: Alistair Popple <apopple@nvidia.com>\nCc: Andy Lutomirski <luto@kernel.org>\nCc: Borislav Betkov <bp@alien8.de>\nCc: Ingo Molnar <mingo@redhat.com>\nCc: Jann Horn <jannh@google.com>\nCc: Jean-Philippe Brucker <jean-philippe@linaro.org>\nCc: Joerg Roedel <joro@8bytes.org>\nCc: Liam Howlett <liam.howlett@oracle.com>\nCc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>\nCc: Matthew Wilcox (Oracle) <willy@infradead.org>\nCc: Michal Hocko <mhocko@kernel.org>\nCc: Peter Zijlstra <peterz@infradead.org>\nCc: Robin Murohy <robin.murphy@arm.com>\nCc: Thomas Gleinxer <tglx@linutronix.de>\nCc: \"Uladzislau Rezki (Sony)\" <urezki@gmail.com>\nCc: Vasant Hegde <vasant.hegde@amd.com>\nCc: Vinicius Costa Gomes <vinicius.gomes@intel.com>\nCc: Vlastimil Babka <vbabka@suse.cz>\nCc: Will Deacon <will@kernel.org>\nCc: Yi Lai <yi1.lai@intel.com>\nSigned-off-by: Andrew Morton <akpm@linux-foundation.org>\n(cherry picked from commit 977870522af34359b461060597ee3a86f27450d6)",
+        "url": "https://github.com/endlessm/linux/commit/f7811b703a4fd8db973f29baf6a39756b83c3177"
+    },
+    {
+        "sha": "f0b375de86350d08892d5f52dfe886b8185b0473",
+        "author": "Dave Hansen",
+        "email": "dave.hansen@linux.intel.com",
+        "date": "2025-10-22T08:26:28Z",
+        "message": "mm: add a ptdesc flag to mark kernel page tables\n\nThe page tables used to map the kernel and userspace often have very\ndifferent handling rules.  There are frequently *_kernel() variants of\nfunctions just for kernel page tables.  That's not great and has lead to\ncode duplication.\n\nInstead of having completely separate call paths, allow a 'ptdesc' to be\nmarked as being for kernel mappings.  Introduce helpers to set and clear\nthis status.\n\nNote: this uses the PG_referenced bit.  Page flags are a great fit for\nthis since it is truly a single bit of information.  Use PG_referenced\nitself because it's a fairly benign flag (as opposed to things like\nPG_lock).  It's also (according to Willy) unlikely to go away any time\nsoon.\n\nPG_referenced is not in PAGE_FLAGS_CHECK_AT_FREE.  It does not need to be\ncleared before freeing the page, and pages coming out of the allocator\nshould have it cleared.  Regardless, introduce an API to clear it anyway.\nHaving symmetry in the API makes it easier to change the underlying\nimplementation later, like if there was a need to move to a\nPAGE_FLAGS_CHECK_AT_FREE bit.\n\nLink: https://lkml.kernel.org/r/20251022082635.2462433-3-baolu.lu@linux.intel.com\nSigned-off-by: Dave Hansen <dave.hansen@linux.intel.com>\nSigned-off-by: Lu Baolu <baolu.lu@linux.intel.com>\nReviewed-by: Jason Gunthorpe <jgg@nvidia.com>\nReviewed-by: Kevin Tian <kevin.tian@intel.com>\nAcked-by: David Hildenbrand <david@redhat.com>\nAcked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>\nCc: Alistair Popple <apopple@nvidia.com>\nCc: Andy Lutomirski <luto@kernel.org>\nCc: Borislav Betkov <bp@alien8.de>\nCc: Ingo Molnar <mingo@redhat.com>\nCc: Jann Horn <jannh@google.com>\nCc: Jean-Philippe Brucker <jean-philippe@linaro.org>\nCc: Joerg Roedel <joro@8bytes.org>\nCc: Liam Howlett <liam.howlett@oracle.com>\nCc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>\nCc: Matthew Wilcox (Oracle) <willy@infradead.org>\nCc: Michal Hocko <mhocko@kernel.org>\nCc: Peter Zijlstra <peterz@infradead.org>\nCc: Robin Murohy <robin.murphy@arm.com>\nCc: Thomas Gleinxer <tglx@linutronix.de>\nCc: \"Uladzislau Rezki (Sony)\" <urezki@gmail.com>\nCc: Vasant Hegde <vasant.hegde@amd.com>\nCc: Vinicius Costa Gomes <vinicius.gomes@intel.com>\nCc: Vlastimil Babka <vbabka@suse.cz>\nCc: Will Deacon <will@kernel.org>\nCc: Yi Lai <yi1.lai@intel.com>\nSigned-off-by: Andrew Morton <akpm@linux-foundation.org>\n(cherry picked from commit 27bfafac65d87c58639f5d7af1353ec1e7886963)",
+        "url": "https://github.com/endlessm/linux/commit/f0b375de86350d08892d5f52dfe886b8185b0473"
+    },
+    {
+        "sha": "a44479a6a8a503750152139e2928fa1f309b4af7",
+        "author": "Jian-Hong Pan",
+        "email": "jhp@endlessos.org",
+        "date": "2026-03-16T13:01:19Z",
+        "message": "Merge pull request #639 from endlessm/fix-LIVA14N305-s2idle\n\nfixup! wifi: rtw89: 8852be: disable PCI D3Cold by quirk for ECS & Endless SE40AN",
+        "url": "https://github.com/endlessm/linux/commit/a44479a6a8a503750152139e2928fa1f309b4af7"
+    },
+    {
+        "sha": "3acf457ab6df3c11124a172d5632a52e403c860c",
+        "author": "Jian-Hong Pan",
+        "email": "jhp@endlessaccess.org",
+        "date": "2026-03-16T10:57:08Z",
+        "message": "fixup! wifi: rtw89: 8852be: disable PCI D3Cold by quirk for ECS & Endless SE40AN\n\nNotice ECS' SE40AN series current products' name are variant during this\ndeveloping time. So, modify the DMI match with the board name, which is\nconsistent.\n\nhttps://app.asana.com/1/1203676861188277/project/1211949321657103/task/1213598444155677\n\nSigned-off-by: Jian-Hong Pan <jhp@endlessaccess.org>",
+        "url": "https://github.com/endlessm/linux/commit/3acf457ab6df3c11124a172d5632a52e403c860c"
+    },
+    {
+        "sha": "c62f3cacc55c794d62b4fb105ba16f7f59594a85",
+        "author": "Jian-Hong Pan",
+        "email": "jhp@endlessos.org",
+        "date": "2026-03-16T07:51:18Z",
+        "message": "Merge pull request #638 from endlessm/fix-rtl8852be-suspend\n\nwifi: rtw89: 8852be: disable PCI D3Cold by quirk for certain platform",
+        "url": "https://github.com/endlessm/linux/commit/c62f3cacc55c794d62b4fb105ba16f7f59594a85"
+    },
+    {
+        "sha": "0286154c03e89b97896fb604505a11cee1ea985f",
+        "author": "Jian-Hong Pan",
+        "email": "jhp@endlessaccess.org",
+        "date": "2026-03-16T06:59:06Z",
+        "message": "wifi: rtw89: 8852be: disable PCI D3Cold by quirk for ECS & Endless SE40AN\n\nThe RTL8852BE blocks system resume from suspend (s2idle) for a long\ntime, more than 70 seconds. And, the RTL8852BE wireless becomes\nunavailable with D3cold power state. Notice kernel shows error messages:\n\n[   76.323245] ACPI: EC: interrupt unblocked\n[   77.744597] pcieport 0000:00:1c.0: broken device, retraining non-functional downstream link at 2.5GT/s\n[   78.902711] pcieport 0000:00:1c.0: broken device, retraining non-functional downstream link at 2.5GT/s\n[   79.990706] rtw89_8852be 0000:01:00.0: not ready 1023ms after resume; waiting\n[   81.078661] rtw89_8852be 0000:01:00.0: not ready 2047ms after resume; waiting\n[   83.190687] rtw89_8852be 0000:01:00.0: not ready 4095ms after resume; waiting\n[   87.734697] rtw89_8852be 0000:01:00.0: not ready 8191ms after resume; waiting\n[   96.438768] rtw89_8852be 0000:01:00.0: not ready 16383ms after resume; waiting\n[  113.334715] rtw89_8852be 0000:01:00.0: not ready 32767ms after resume; waiting\n[  147.638697] rtw89_8852be 0000:01:00.0: not ready 65535ms after resume; giving up\n[  147.705135] rtw89_8852be 0000:01:00.0: failed to write DBI register, addr=0xB48\n[  147.705376] rtw89_8852be 0000:01:00.0: failed to write DBI register, addr=0xB48\n[  147.705378] rtw89_8852be 0000:01:00.0: failed to read PCI cap, ret=134\n[  147.777603] rtw89_8852be 0000:01:00.0: xtal si not ready(W): offset=90 val=10 mask=10\n[  147.798612] rtw89_8852be 0000:01:00.0: mac preinit fail, ret: -110\n\nThis patch follows \"wifi: rtw89: 8852be: disable PCI D3Cold by quirk for\ncertain platform\" [1] to disallow RTL8852BE's D3cold on ECS & Endless\nSE40AN laptops to solve the resume from suspend issue.\n\n[1]: https://patchwork.kernel.org/project/linux-wireless/patch/20250812004326.8582-1-pkshih@realtek.com/\n\nBugLink: https://bugzilla.kernel.org/show_bug.cgi?id=221213\nSigned-off-by: Jian-Hong Pan <jhp@endlessaccess.org>",
+        "url": "https://github.com/endlessm/linux/commit/0286154c03e89b97896fb604505a11cee1ea985f"
+    },
+    {
+        "sha": "8bec7b85bac8ea7b61ca84fc03aa10a0c3481ec6",
+        "author": "Ping-Ke Shih",
+        "email": "pkshih@realtek.com",
+        "date": "2025-08-12T00:43:26Z",
+        "message": "wifi: rtw89: 8852be: disable PCI D3Cold by quirk for certain platform\n\nOn a platform, RTL8852BE gets lost from suspending, and kernel throws\n\n  Unable to change power state from D3cold to D0, device inaccessible\n\nthen driver throws\n\n  0000:39:00.0: failed to write DBI register, addr=0xB48\n  0000:39:00.0: failed to write DBI register, addr=0xB48\n  0000:39:00.0: failed to read PCI cap, ret=134\n  0000:39:00.0: xtal si not ready(W): offset=90 val=10 mask=10\n  0000:39:00.0: mac init fail, ret:-110\n\nAn solution is to disable d3cold via sysfs to write 1 to\n\n  /sys/bus/pci/devices/0000:39:00.0/d3cold_allowed\n\nSince it's hard to measure hardware signals to find cause, add a quirk to\ndisable d3cold for the platform.\n\nReported-by: Marcin Wojcik <wojcikmarcin49@gmail.com>\nCloses: https://lore.kernel.org/linux-wireless/CAE3x6Qi8Nku26B4aWE+jtJmHb=hO8C743_myNrrBzUAGyuUw9A@mail.gmail.com/\nCloses: https://github.com/morrownr/rtw89/issues/18\nSigned-off-by: Ping-Ke Shih <pkshih@realtek.com>",
+        "url": "https://github.com/endlessm/linux/commit/8bec7b85bac8ea7b61ca84fc03aa10a0c3481ec6"
+    },
+    {
+        "sha": "8438fb3d672d9a855de888f3dab81f7f24c95789",
+        "author": "Daniel Drake",
+        "email": "drake@endlessm.com",
+        "date": "2017-08-11T15:19:06Z",
+        "message": "PCI: Disable AER for Skylake/Kabylake systems with Realtek wifi\n\nRealtek cards on Skylake/Kabylake systems cause a huge amount of PCIe\nAER error spam, so much that the mouse can't even be moved.\n\n     pcieport 0000:00:1c.5: PCIe Bus Error: severity=Corrected, type=Physical Layer, id=00e5(Receiver ID)\n     pcieport 0000:00:1c.5:   device [8086:9d15] error status/mask=00000001/00002000\n     pcieport 0000:00:1c.5:    [ 0] Receiver Error\n     pcieport 0000:00:1c.5: AER: Corrected error received: id=00e5\n     pcieport 0000:00:1c.5: can't find device of ID00e5\n     pcieport 0000:00:1c.5: AER: Corrected error received: id=00e5\n     pcieport 0000:00:1c.5: can't find device of ID00e5\n\nWe think this is a pcieport bug - it can't find the device so it\ndoesn't clear the error condition - but for now we just add a workaround.\n\nThis workaround is intentionally restricted to SKL/KBL systems where the\nrealtek hardware is present behind the quirked PCI bridge, in order to\navoid side effects on other systems.\n\nhttps://phabricator.endlessm.com/T12766\nhttps://phabricator.endlessm.com/T15946\nhttps://phabricator.endlessm.com/T16032\nhttps://phabricator.endlessm.com/T17655\nhttps://phabricator.endlessm.com/T18688\nhttps://phabricator.endlessm.com/T34992",
+        "url": "https://github.com/endlessm/linux/commit/8438fb3d672d9a855de888f3dab81f7f24c95789"
+    },
+    {
+        "sha": "5c40ea430ba2d0f6171e247e752e27d90d658415",
+        "author": "Jian-Hong Pan",
+        "email": "jhp@endlessos.org",
+        "date": "2022-08-25T09:28:40Z",
+        "message": "rtw88: Disable lps_deep_mode and ASPM for RTL8821CE\n\nRealtek RTL8821CE wireless keeps failed from time to time. All clues\npoint to power management things between rtw88 and the firmware. We do\nnot have a better solution currently. So, disable the lps_deep_mode and\nASPM for RTL8821CE as a workaround now.\n\nNote: RTL8821CE is the chip on one of Endless laptop: Asus X515EA\n\nhttps://phabricator.endlessm.com/T33794",
+        "url": "https://github.com/endlessm/linux/commit/5c40ea430ba2d0f6171e247e752e27d90d658415"
+    },
+    {
+        "sha": "2032673f1d31cdc78497e775a4fcd62b0f3ed890",
+        "author": "Jian-Hong Pan",
+        "email": "jhp@endlessos.org",
+        "date": "2023-10-20T10:07:48Z",
+        "message": "[Endless] packaging: Drop Rust packages from Build-Depends\n\nFollows commit (\"[Endless] config: Disable Rust\").\n\nDrop Rust packages from Build-Depends:\n* rustc\n* rust-src\n* rustfmt\n* bindgen\n\nhttps://phabricator.endlessm.com/T34954",
+        "url": "https://github.com/endlessm/linux/commit/2032673f1d31cdc78497e775a4fcd62b0f3ed890"
+    },
+    {
+        "sha": "4c38146ab02c3e714a0ebd8bd3fefdabbc890d9d",
+        "author": "Jian-Hong Pan",
+        "email": "jhp@endlessos.org",
+        "date": "2023-10-20T09:56:50Z",
+        "message": "[Endless] config: Disable Rust\n\nThe Rust language is a new feature in Linux kernel. However, current EOS\ndoes not have compatible Rust version. Besides, EOS does not use Rust in\nkernel right now. So, disable CONFIG_RUST.\n\nhttps://phabricator.endlessm.com/T34954\nhttps://app.asana.com/1/1203676861188277/project/1211949321657103/task/1212760656967804",
+        "url": "https://github.com/endlessm/linux/commit/4c38146ab02c3e714a0ebd8bd3fefdabbc890d9d"
+    },
+    {
+        "sha": "75c6a760c116c0d846ff5bc12da30f83a2c20bc7",
+        "author": "Derek Foreman",
+        "email": "derek@endlessm.com",
+        "date": "2020-08-06T14:31:19Z",
+        "message": "[Endless] endlesspayg: Block ntpd's hwclock synching on payg systems\n\nWhen PAYG is active, we don't want ntpd to be able to trigger hwclock\nupdates.\n\nhttps://phabricator.endlessm.com/T30571",
+        "url": "https://github.com/endlessm/linux/commit/75c6a760c116c0d846ff5bc12da30f83a2c20bc7"
+    },
+    {
+        "sha": "0bec8d6d2fefe374003e53f4f8597fd60b68cd6b",
+        "author": "Derek Foreman",
+        "email": "derek@endlessm.com",
+        "date": "2020-08-06T14:25:48Z",
+        "message": "[Endless] endlesspayg: Block RTC access\n\nStop direct RTC manipulation by tools such as hwclock. NTP's synched mode\ncan still cause 11m updates.\n\nhttps://phabricator.endlessm.com/T30571",
+        "url": "https://github.com/endlessm/linux/commit/0bec8d6d2fefe374003e53f4f8597fd60b68cd6b"
+    },
+    {
+        "sha": "49eee5e0d51733cafebf9185b2d3d06794f693d6",
+        "author": "Matthew Leeds",
+        "email": "matthew.leeds@endlessm.com",
+        "date": "2020-06-03T03:59:44Z",
+        "message": "[Endless] endlesspayg: Deactivate LSM after permanent unlock\n\nAfter a PAYG computer is permanently unlocked, the EOSPAYG_active EFI\nvariable is deleted. With that variable gone, on the next boot eos-paygd\nwill no longer activate the LSM, so it makes sense for the LSM to\ndeactivate itself; otherwise some other process could theoretically\nactivate it. See the ticket for more discussion.\n\nhttps://phabricator.endlessm.com/T30284",
+        "url": "https://github.com/endlessm/linux/commit/49eee5e0d51733cafebf9185b2d3d06794f693d6"
+    },
+    {
+        "sha": "d21c07006994e58a105bf80fd574b1b06e40a1b2",
+        "author": "Derek Foreman",
+        "email": "derek@endlessm.com",
+        "date": "2019-10-03T21:09:16Z",
+        "message": "[Endless] endlesspayg: Protect SecureBootOption EFI variable\n\nSome incredibly misguided EFI implementations have a vendor specific\nSecureBootOption EFI variable that allows disabling secure boot\nfrom userspace even when not in setup mode.\n\nBlock access to that for payg systems.\n\nhttps://phabricator.endlessm.com/T27913",
+        "url": "https://github.com/endlessm/linux/commit/d21c07006994e58a105bf80fd574b1b06e40a1b2"
+    },
+    {
+        "sha": "a48e0d9ad8c90205a3ae2445c84ecd61e4983351",
+        "author": "Derek Foreman",
+        "email": "derek@endlessm.com",
+        "date": "2019-09-13T21:40:09Z",
+        "message": "[Endless] endlesspayg: Block proc populating for LSM user\n\nStop the pid directory in proc from being populated for the holder\nof the LSM\n\nhttps://phabricator.endlessm.com/T27044",
+        "url": "https://github.com/endlessm/linux/commit/a48e0d9ad8c90205a3ae2445c84ecd61e4983351"
+    },
+    {
+        "sha": "509b571498fa5b574abd98cfbfd7a3339aeafd9f",
+        "author": "Derek Foreman",
+        "email": "derek@endlessm.com",
+        "date": "2019-09-05T16:07:25Z",
+        "message": "[Endless] endlesspayg: Block signals\n\nThis prevents signal delivery to the payg LSM owner. But, allows paygd\nto receive SIGTERM so it can properly cleanup during shutdown.\n\nhttps://phabricator.endlessm.com/T27663\nhttps://phabricator.endlessm.com/T32959\nhttps://phabricator.endlessm.com/T27663\nhttps://phabricator.endlessm.com/T33088\nhttps://phabricator.endlessm.com/T32815",
+        "url": "https://github.com/endlessm/linux/commit/509b571498fa5b574abd98cfbfd7a3339aeafd9f"
+    },
+    {
+        "sha": "0f1be9630af5e320c86d0c16fef262244c11d78f",
+        "author": "João Paulo Rechi Vita",
+        "email": "jprvita@endlessm.com",
+        "date": "2020-08-26T03:55:53Z",
+        "message": "[Endless] config: Enable endlesspayg LSM",
+        "url": "https://github.com/endlessm/linux/commit/0f1be9630af5e320c86d0c16fef262244c11d78f"
+    },
+    {
+        "sha": "a4397f4559bdece985d39d219b0842fd3843dc4c",
+        "author": "Daniel Drake",
+        "email": "drake@endlessm.com",
+        "date": "2019-07-02T09:09:25Z",
+        "message": "[Endless] Create endlesspayg LSM\n\nRequire paygd to hold open a pidfile, enabling security measures.\n\nhttps://phabricator.endlessm.com/T27045\nhttps://phabricator.endlessm.com/T27346\nhttps://phabricator.endlessm.com/T27046\nhttps://phabricator.endlessm.com/T27048\nhttps://phabricator.endlessm.com/T33261\nhttps://phabricator.endlessm.com/T34954\nhttps://phabricator.endlessm.com/T35783",
+        "url": "https://github.com/endlessm/linux/commit/a4397f4559bdece985d39d219b0842fd3843dc4c"
+    },
+    {
+        "sha": "b9bfa450afa710d4aa100869c007468fed4ac53f",
+        "author": "João Paulo Rechi Vita",
+        "email": "jprvita@endlessm.com",
+        "date": "2020-08-26T03:56:41Z",
+        "message": "[Endless] config: Enabled endless watchdog",
+        "url": "https://github.com/endlessm/linux/commit/b9bfa450afa710d4aa100869c007468fed4ac53f"
+    },
+    {
+        "sha": "2c7be94df52ece6d9d4112d1c2471b5afb8246e5",
+        "author": "Derek Foreman",
+        "email": "derek@endlessm.com",
+        "date": "2019-07-24T21:46:43Z",
+        "message": "[Endless] watchdog: Endless software watchdog support\n\nAdd a simple software watchdog timer.\n\nThis watchdog uses a timeout of 20 minutes, per reasons detailed on\nhttps://phabricator.endlessm.com/T27051#750436,\nhttps://phabricator.endlessm.com/T27051#750443 and\nhttps://phabricator.endlessm.com/T27051#751803\n\nhttps://phabricator.endlessm.com/T27174\nhttps://phabricator.endlessm.com/T27051",
+        "url": "https://github.com/endlessm/linux/commit/2c7be94df52ece6d9d4112d1c2471b5afb8246e5"
+    },
+    {
+        "sha": "04557a1627f3f41585a2ea029d881efb18ba2ddc",
+        "author": "Daniel Drake",
+        "email": "drake@endlessm.com",
+        "date": "2019-12-18T10:53:45Z",
+        "message": "[Endless] arm64 defconfig: Add options to enable RPi4 build\n\nSimilar to our changes to x86_64_defconfig, add some option\ndefaults that let you build a kernel image that is easy to boot\nwhen doing kernel dev.",
+        "url": "https://github.com/endlessm/linux/commit/04557a1627f3f41585a2ea029d881efb18ba2ddc"
+    },
+    {
+        "sha": "83168da55f06fbf646c96169c6e25e463c8a0b31",
+        "author": "Daniel Drake",
+        "email": "drake@endlessm.com",
+        "date": "2015-03-11T22:37:33Z",
+        "message": "[Endless] x86_64 defconfig: add development options",
+        "url": "https://github.com/endlessm/linux/commit/83168da55f06fbf646c96169c6e25e463c8a0b31"
+    },
+    {
+        "sha": "de4b8bad1da994e6d19840360221ee9e71a5ed09",
+        "author": "João Paulo Rechi Vita",
+        "email": "jprvita@endlessm.com",
+        "date": "2020-08-05T20:39:21Z",
+        "message": "[Endless] config: Include EOS Driver Signing 2025 certificate\n\nEndless OS has EOS Driver Signing 2020 certificate to verify out-of-tree\nmodules under Secure Boot.  https://phabricator.endlessm.com/T30607\n\nHowever, the Endless Secure Boot CA certificate was reissued to extend\nthe expiration date, and that causes the existing EOS Driver Signing\n2020 certificate to appear invalid since it was issued before the CA\ncertificate.\n\nThis includes the new EOS Driver Signing 2025 certificate as part of\nCONFIG_SYSTEM_TRUSTED_KEYS, so it can be used to verify out-of-tree\nmodules under Secure Boot.\n\nThis certificate is different than the one used to sign the kernel to\nprevent PAYG systems from executing EOS kernels and breaking out of the\nPAYG security domain. It will be used to sign out of tree modules such\nas the nvidia driver.\n\n```\n$ openssl x509 -noout -subject -issuer -dates -in certs/endless.pem\nsubject=CN = EOS Driver Signing 2025\nissuer=CN = Endless Secure Boot CA\nnotBefore=Feb  5 22:30:31 2025 GMT\nnotAfter=Feb  4 22:30:31 2030 GMT\n```\n\nNote that once this is merged any out of tree modules should be resigned\nso that they're signatures match the certificate embedded here.\n\nhttps://phabricator.endlessm.com/T33537\nhttps://phabricator.endlessm.com/T35751",
+        "url": "https://github.com/endlessm/linux/commit/de4b8bad1da994e6d19840360221ee9e71a5ed09"
+    }
+]

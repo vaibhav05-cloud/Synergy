@@ -1,0 +1,325 @@
+[
+    {
+        "id": 4667398203,
+        "number": 28,
+        "title": "Could you please implement support for the 101 API for new lposed?",
+        "state": "open",
+        "created_at": "2026-06-15T17:32:30Z",
+        "updated_at": "2026-06-15T17:33:08Z",
+        "closed_at": null,
+        "author": "suhermanrsky",
+        "comments": 0,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "I was hoping if you could continue developing this modules for recent lposed versions. The current ones are no longer work, and many older lposed versions are already broken.",
+        "url": "https://github.com/neoblackxt/AnyWebView/issues/28"
+    },
+    {
+        "id": 3692544378,
+        "number": 26,
+        "title": "[Bug] not installing on Android 11",
+        "state": "open",
+        "created_at": "2025-12-04T02:07:28Z",
+        "updated_at": "2025-12-04T07:17:25Z",
+        "closed_at": null,
+        "author": "BD9Max",
+        "comments": 1,
+        "labels": [
+            "bug",
+            "enhancement",
+            "need more information"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "Module not installing on Android 11 \n\nFeature suggestion: block ads in WebView by filterlists",
+        "url": "https://github.com/neoblackxt/AnyWebView/issues/26"
+    },
+    {
+        "id": 3472935906,
+        "number": 25,
+        "title": "Metadata",
+        "state": "open",
+        "created_at": "2025-10-01T10:19:32Z",
+        "updated_at": "2025-10-01T10:19:32Z",
+        "closed_at": null,
+        "author": "IzzySoft",
+        "comments": 0,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "Hi @neoblackxt, would you accept a PR shipping the app's metadata (description, screenshots) as used with AnyWebView's [listing at IzzyOnDroid](https://apt.izzysoft.de/packages/com.thinkdifferent.anywebview), using the standard Fastlane structure? That's easy to maintain (just a few text and graphic files in a standardized directory structure, no special tooling needed) – and would help to keep the app's listing up-to-date (e.g. I just now noticed the screenshot we were using at IzzyOnDroid was outdated; with fastlane structures established here, it would have been automatically synchronized whenever a new release is being pulled in).\n\nThanks in advance for considering!",
+        "url": "https://github.com/neoblackxt/AnyWebView/issues/25"
+    },
+    {
+        "id": 3165491107,
+        "number": 24,
+        "title": "true",
+        "state": "closed",
+        "created_at": "2025-06-21T23:04:31Z",
+        "updated_at": "2025-06-22T07:27:56Z",
+        "closed_at": "2025-06-22T07:27:38Z",
+        "author": "Mac74marvelous",
+        "comments": 0,
+        "labels": [
+            "wontfix"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "https://github.com/neoblackxt/AnyWebView/blame/89b62f6eed4bc64ce7a95cca996ecf3af4cdc6ad/app/build.gradle#L15",
+        "url": "https://github.com/neoblackxt/AnyWebView/issues/24"
+    },
+    {
+        "id": 2743094919,
+        "number": 22,
+        "title": "Reproducible Builds broke with v1.3",
+        "state": "closed",
+        "created_at": "2024-12-16T18:28:18Z",
+        "updated_at": "2025-01-21T10:28:20Z",
+        "closed_at": "2024-12-18T15:14:45Z",
+        "author": "IzzySoft",
+        "comments": 2,
+        "labels": [
+            "wontfix"
+        ],
+        "assignees": [],
+        "locked": true,
+        "body": "It looks like the APK attached to release v1.3 was built from a \"dirty tree\" with local changes on top of the commit the tag points to, could that be? The dex diff (see inside [anywebview_diffs.zip](https://github.com/user-attachments/files/18155268/anywebview_diffs.zip)) looks like an entire class was removed (but that change not committed). Start of the relevant part:\r\n\r\n```diff\r\n access_flags        : 17 (0x0011)\r\n+static_fields_size  : 5\r\n+instance_fields_size: 0\r\n+direct_methods_size : 1\r\n+virtual_methods_size: 0\r\n+\r\n+  Class descriptor  : 'Lcom/thinkdifferent/anywebview/BuildConfig;'\r\n+  Access flags      : 0x0011 (PUBLIC FINAL)\r\n+  Superclass        : 'Ljava/lang/Object;'\r\n+  Interfaces        -\r\n+  Static fields     -\r\n+    #0              : (in Lcom/thinkdifferent/anywebview/BuildConfig;)\r\n+      name          : 'APPLICATION_ID'\r\n+      type          : 'Ljava/lang/String;'\r\n+      access        : 0x0019 (PUBLIC STATIC FINAL)\r\n+      value         : \"com.thinkdifferent.anywebview\"\r\n+    #1              : (in Lcom/thinkdifferent/anywebview/BuildConfig;)\r\n+      name          : 'BUILD_TYPE'\r\n+      type          : 'Ljava/lang/String;'\r\n+      access        : 0x0019 (PUBLIC STATIC FINAL)\r\n+      value         : \"release\"\r\n+    #2              : (in Lcom/thinkdifferent/anywebview/BuildConfig;)\r\n+      name          : 'DEBUG'\r\n+      type          : 'Z'\r\n```\r\n\r\n(the leading `+` indicates this was included with our build, which was made from the commit the tag points to – but was not present in the APK attached to your release)\r\n\r\nNow that this APK has been distributed already, it should not be replaced at the tag – but you might wish to take care for the next release. For some background:\r\n\r\nAt IzzyOnDroid we support [Reproducible Builds](https://reproducible-builds.org/) (see: [Reproducible Builds, special client support and more at IzzyOnDroid](https://android.izzysoft.de/articles/named/iod-rbs-mirrors-clients)). Your app was established as Reproducible Build with version v2.1 here.\r\n\r\nWe'd appreciate if you could help keeping your build reproducible. We've also prepared some [hints on reproducible builds](https://gitlab.com/IzzyOnDroid/repo/-/wikis/Reproducible-Builds) for that.\r\n\r\nThanks in advance for your help – and looking forward to your reply!",
+        "url": "https://github.com/neoblackxt/AnyWebView/issues/22"
+    },
+    {
+        "id": 2619829501,
+        "number": 21,
+        "title": "Crashes zygote on boot with Android 15 ",
+        "state": "open",
+        "created_at": "2024-10-29T00:15:08Z",
+        "updated_at": "2024-12-28T05:23:32Z",
+        "closed_at": null,
+        "author": "Buggen82",
+        "comments": 5,
+        "labels": [
+            "bug",
+            "need more information"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "Crashes zygote on boot.\r\nPixel 9\r\nMagisk 28.0\r\nLsPosed_mod 1.9.3",
+        "url": "https://github.com/neoblackxt/AnyWebView/issues/21"
+    },
+    {
+        "id": 2225357552,
+        "number": 18,
+        "title": "Thorium system WebView's undetected",
+        "state": "closed",
+        "created_at": "2024-04-04T12:26:30Z",
+        "updated_at": "2024-04-04T16:17:07Z",
+        "closed_at": "2024-04-04T16:17:07Z",
+        "author": "brian6932",
+        "comments": 0,
+        "labels": [
+            "need more information"
+        ],
+        "assignees": [],
+        "locked": true,
+        "body": "Package name: `com.thorium.webview`",
+        "url": "https://github.com/neoblackxt/AnyWebView/issues/18"
+    },
+    {
+        "id": 2204790608,
+        "number": 17,
+        "title": "Android 14 Compatibility",
+        "state": "closed",
+        "created_at": "2024-03-25T03:08:28Z",
+        "updated_at": "2024-03-26T11:29:24Z",
+        "closed_at": "2024-03-26T11:29:24Z",
+        "author": "BingoKingo",
+        "comments": 0,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": null,
+        "url": "https://github.com/neoblackxt/AnyWebView/issues/17"
+    },
+    {
+        "id": 1954481865,
+        "number": 15,
+        "title": "Request: add other Chromium browsers",
+        "state": "closed",
+        "created_at": "2023-10-20T15:03:56Z",
+        "updated_at": "2023-10-21T03:54:47Z",
+        "closed_at": "2023-10-21T03:48:12Z",
+        "author": "BD9Max",
+        "comments": 3,
+        "labels": [
+            "invalid"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "Vivaldi, Edge, Kiwi browser, Opera, Via Browser and even Yandex?\r\n\r\nhttps://github.com/kiwibrowser/src.next\r\n\r\nhttps://github.com/tuyafeng/Via",
+        "url": "https://github.com/neoblackxt/AnyWebView/issues/15"
+    },
+    {
+        "id": 1953440256,
+        "number": 13,
+        "title": "Updates for the project?",
+        "state": "closed",
+        "created_at": "2023-10-20T03:27:40Z",
+        "updated_at": "2023-10-20T05:12:07Z",
+        "closed_at": "2023-10-20T05:12:07Z",
+        "author": "BD9Max",
+        "comments": 0,
+        "labels": [
+            "invalid"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": null,
+        "url": "https://github.com/neoblackxt/AnyWebView/issues/13"
+    },
+    {
+        "id": 1813528556,
+        "number": 12,
+        "title": "No \"native\" Chrome in Experimental ",
+        "state": "closed",
+        "created_at": "2023-07-20T09:11:10Z",
+        "updated_at": "2023-09-24T06:17:48Z",
+        "closed_at": "2023-09-24T06:17:48Z",
+        "author": "gjf",
+        "comments": 11,
+        "labels": [
+            "documentation"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "v1.2 \"experimental\" does not show \"Chrome\" (I mean native Chrome, not Android System Wevbview) in webview settings while v1.1 does.\r\nNot too critical but whatever.\r\n\r\nIf any additional information is necessary - let me know what you need.\r\n\r\n![Screenshot 2023-07-20 121020](https://github.com/neoblackxt/AnyWebView/assets/322186/6367beb6-9daf-4e8a-9871-172f26a96aa8)\r\n",
+        "url": "https://github.com/neoblackxt/AnyWebView/issues/12"
+    },
+    {
+        "id": 1812737155,
+        "number": 11,
+        "title": "Adding Mulch",
+        "state": "closed",
+        "created_at": "2023-07-19T21:09:10Z",
+        "updated_at": "2023-07-20T02:15:03Z",
+        "closed_at": "2023-07-20T02:15:03Z",
+        "author": "gjf",
+        "comments": 1,
+        "labels": [
+            "duplicate"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "As [future development of Bromite is unclear](https://github.com/bromite/bromite/issues/2610), it would be nice to add [Mulch](https://gitlab.com/divested-mobile/mulch) support in this module.\r\n\r\nCurrently it is possible [only using patch from recovery or using Magisk module](https://github.com/A4Alpha/mulch-webview-overlay).\r\n\r\nI love AnyWebview concept and would like stay on it, but it should add some current WebView variants,",
+        "url": "https://github.com/neoblackxt/AnyWebView/issues/11"
+    },
+    {
+        "id": 1771366284,
+        "number": 10,
+        "title": "Adding Brave",
+        "state": "closed",
+        "created_at": "2023-06-23T12:20:29Z",
+        "updated_at": "2023-09-24T05:43:21Z",
+        "closed_at": "2023-09-24T05:43:21Z",
+        "author": "Yoannjap",
+        "comments": 2,
+        "labels": [
+            "wontfix"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "Hey, your module is brilliant!\r\n\r\nMaya you add Brave support to it?\r\n\r\nThanks a lot.\r\n\r\nYoannjap",
+        "url": "https://github.com/neoblackxt/AnyWebView/issues/10"
+    },
+    {
+        "id": 1688028607,
+        "number": 8,
+        "title": "Vanadium, Mulch and any other Chromium based system webviews support.",
+        "state": "closed",
+        "created_at": "2023-04-28T07:12:28Z",
+        "updated_at": "2023-09-24T05:42:48Z",
+        "closed_at": "2023-09-24T05:42:48Z",
+        "author": "xplshn",
+        "comments": 3,
+        "labels": [
+            "enhancement",
+            "good first issue"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "Could you add support for Vanadium Webview? Binaries here: https://gitlab.com/grapheneos/platform_external_vanadium/-/tree/13/prebuilt/arm64 also, for Mulch webview? https://github.com/GitGitro/AnyWebView this fork has support for Mulch added, but not for Vanadium.",
+        "url": "https://github.com/neoblackxt/AnyWebView/issues/8"
+    },
+    {
+        "id": 1643274944,
+        "number": 7,
+        "title": "Does this work with the mulch webview?",
+        "state": "closed",
+        "created_at": "2023-03-28T06:18:48Z",
+        "updated_at": "2023-07-20T02:21:48Z",
+        "closed_at": "2023-05-03T04:47:53Z",
+        "author": "Venderbad",
+        "comments": 2,
+        "labels": [
+            "duplicate",
+            "enhancement"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "I tried to install the mulch webview apk from divestOS fdroid repo and attempted to get it working with this module, but somehow it did not show up in the selectable webview implementation list even if the mulch webview apk is installed for all users. Any clue?\r\n\r\nAndroid 13, LineageOS 20, OnePlus 8, Rooted with Magisk, LSPosed framework.\r\n\r\n\r\nThanks for all the work so far by the way 🧡, the module is amazing, and it has enabled me to use bromite webview for several months.😁",
+        "url": "https://github.com/neoblackxt/AnyWebView/issues/7"
+    },
+    {
+        "id": 1393467815,
+        "number": 5,
+        "title": "Broke on A13",
+        "state": "closed",
+        "created_at": "2022-10-01T16:39:47Z",
+        "updated_at": "2023-09-24T07:15:31Z",
+        "closed_at": "2022-10-21T13:12:12Z",
+        "author": "tay200k",
+        "comments": 4,
+        "labels": [
+            "invalid"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "Not working on A13, can select bromite in WebView selection under dev options but bromite wont load and breaks WebView content.\r\n\r\nSorry not detailed report.",
+        "url": "https://github.com/neoblackxt/AnyWebView/issues/5"
+    },
+    {
+        "id": 487748738,
+        "number": 2,
+        "title": "Not work on Android 5~7",
+        "state": "closed",
+        "created_at": "2019-08-31T09:00:11Z",
+        "updated_at": "2024-04-04T15:32:18Z",
+        "closed_at": "2024-04-04T15:32:18Z",
+        "author": "neoblackxt",
+        "comments": 1,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": true,
+        "body": "Android 8 and 9 are same. \r\nAndroid 7 is similar to 8 and 9.\r\nAndroid 5 and 6 are same but much different with the above.",
+        "url": "https://github.com/neoblackxt/AnyWebView/issues/2"
+    },
+    {
+        "id": 487109123,
+        "number": 1,
+        "title": "Bromite",
+        "state": "closed",
+        "created_at": "2019-08-29T18:24:24Z",
+        "updated_at": "2023-09-24T05:42:21Z",
+        "closed_at": "2023-09-24T05:42:21Z",
+        "author": "F-i-f",
+        "comments": 7,
+        "labels": [
+            "question"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "Would you mind adding the [Bromite system WebView](https://www.bromite.org/system_web_view) to the list?",
+        "url": "https://github.com/neoblackxt/AnyWebView/issues/1"
+    }
+]

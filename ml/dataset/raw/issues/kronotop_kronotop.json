@@ -1,0 +1,243 @@
+[
+    {
+        "id": 4839019527,
+        "number": 15,
+        "title": "Unique index constraint",
+        "state": "open",
+        "created_at": "2026-07-08T15:48:25Z",
+        "updated_at": "2026-07-08T15:48:25Z",
+        "closed_at": null,
+        "author": "buraksezer",
+        "comments": 0,
+        "labels": [
+            "enhancement",
+            "Bucket"
+        ],
+        "assignees": [
+            "buraksezer"
+        ],
+        "locked": false,
+        "body": "Buckets can only enforce uniqueness on the primary `_id` field today. There is no way to require that a value in another indexed field is unique across documents. This issue adds an optional `unique` constraint to single-field and compound indexes.\n\nVector indexes are out of scope.\n\n## Goal\n\nWhen an index is marked `unique`, two documents cannot hold the same value for that index. An insert or update that would create a duplicate is rejected with a duplicate-key error. The document is not written.\n\n## How it works\n\nA unique check reads the index to see if another document already has the same value:\n\n- Primary `_id`: a single point read on the key.\n- Single-field and compound: a range read over the value prefix, because the entry key also holds the `ObjectId`.\n\nAll checks for one write are started together and awaited once, just before the volume append. This keeps the reads off the critical path and rejects duplicates before anything is written to disk.\n\nCross-transaction safety comes for free: the reads add a conflict range, so two transactions writing the same value cannot both commit. One is rejected.\n\nWithin a single insert batch, duplicates are caught in memory before the reads.\n\n## Scope\n\n- Add a `unique` flag to single-field and compound index definitions. The primary index is unique by default.\n- Enforce the constraint on the insert path and the upsert - update paths.\n- Decide null handling: whether a missing or null value counts toward uniqueness.\n- Reject duplicates with a clear error that names the field and value.\n\n## Out of scope\n\n- Vector index uniqueness. This is not about the search side. The vector value is stored in FDB inside the transaction, so a unique check is possible in principle. It is left out because the vector index key is `(ENTRIES, ObjectId)`, with the vector on the value side. There is no value-ordered prefix to range-scan, so the mechanism above does not fit. It would need a separate reverse index keyed by the vector, and exact-equality on a float vector is a weak constraint anyway.\n- Converting an existing non-unique index to unique on live data.\n\n## Tests\n\n- Insert two documents with the same unique value: second is rejected.\n- Insert a batch that contains the same unique value twice: rejected.\n- Update a document to a value already held by another: rejected.\n- Two concurrent inserts of the same value: only one commits.\n- Null or missing value behaves as decided above.\n\n## Notes\n\nThe primary `_id` check was already moved to a shared batched-await collector, which is the base this builds on.\n",
+        "url": "https://github.com/kronotop/kronotop/issues/15"
+    },
+    {
+        "id": 4754831485,
+        "number": 14,
+        "title": "Add sharded Pub/Sub: SSUBSCRIBE, SUNSUBSCRIBE, SPUBLISH",
+        "state": "open",
+        "created_at": "2026-06-26T20:07:19Z",
+        "updated_at": "2026-06-26T20:07:19Z",
+        "closed_at": null,
+        "author": "buraksezer",
+        "comments": 0,
+        "labels": [
+            "enhancement",
+            "Bucket"
+        ],
+        "assignees": [
+            "buraksezer"
+        ],
+        "locked": false,
+        "body": "Add primary-only sharded Pub/Sub. A channel maps to a bucket shard, the same way a key does. Subscribe and publish for a channel both route to the primary of that shard, so delivery stays on one node and in memory. \n\n**Syntax**\n\n```\nSSUBSCRIBE channel [channel ...]\nSUNSUBSCRIBE [channel ...]\nSPUBLISH channel message\n```\n\n**Semantics**\n\n- A channel maps to a bucket shard with `shardId = floorMod(CRC16(channel), bucket.shards)`. If the local node is not the primary of that shard, the command returns `MOVED <slot> <host>:<port>` for the owner.\n- `SSUBSCRIBE` registers the connection on each channel and replies `[ssubscribe, channel, count]` per channel, where count is the connection's total subscriptions.\n- `SUNSUBSCRIBE` with no channel removes every subscription of the connection. It replies `[sunsubscribe, channel, count]` per channel.\n- `SPUBLISH` sends `[smessage, channel, payload]` to each local subscriber and returns the number of receivers. The payload is binary safe.\n- RESP3 connections get push frames. RESP2 connections get plain arrays.\n- While a RESP2 connection is subscribed it accepts only SSUBSCRIBE, SUNSUBSCRIBE, PING, QUIT, RESET. RESP3 connections have no such limit. The connection leaves subscription mode when its last channel is removed.\n- Subscriptions are per connection and live only while it is open. They are dropped on disconnect.\n\n**Tasks**\n\n- Extract slot math (`NUM_HASH_SLOTS`, slot, distribute) into a shared helper and use it from the registry.\n- Add `SSUBSCRIBE`, `SUNSUBSCRIBE`, `SPUBLISH` to the command type and parser.\n- Add per connection subscription state (channel set, subscription mode flag) and initialize it on session start.\n- Add a node-local subscription registry: channel to sessions, with subscribe, unsubscribe, unsubscribe-all, publish, and the MOVED owner check on bucket shards.\n- Add the three handlers and their protocol messages in CoreService, and register them.\n- Gate commands in subscription mode for RESP2 in the request path; clean up subscriptions on disconnect.\n- Build replies per protocol version (push frame for RESP3, array for RESP2) for confirmations and messages.\n- Tests: subscribe, publish, unsubscribe, counts, fan-out, channel isolation, subscription mode, RESP2/RESP3 reply shapes, disconnect cleanup, wrong argument count.\n- Tests: two-member cluster, assert `MOVED` for `SSUBSCRIBE` and `SPUBLISH` when the channel's shard is remote.\n",
+        "url": "https://github.com/kronotop/kronotop/issues/14"
+    },
+    {
+        "id": 4710622699,
+        "number": 13,
+        "title": "Index cardinality can be over-counted when documents are written during index creation",
+        "state": "closed",
+        "created_at": "2026-06-21T13:23:49Z",
+        "updated_at": "2026-06-21T13:37:10Z",
+        "closed_at": "2026-06-21T13:37:10Z",
+        "author": "buraksezer",
+        "comments": 1,
+        "labels": [
+            "bug",
+            "Bucket"
+        ],
+        "assignees": [
+            "buraksezer"
+        ],
+        "locked": false,
+        "body": "An index keeps a cardinality statistic that records how many entries it holds. When documents are written to a bucket while a secondary or vector index is being built, that statistic can be inflated above the real number of entries. The index entries themselves stay correct, one per document, but the counter is advanced twice for the same document. Query results are unaffected because an index is only an accelerator, however the query planner relies on cardinality for selectivity estimates, so an inflated value skews plan selection with no error reported and no recovery over time.\n\nThe cause is an overlap between two writers. While an index is being built, the online write path already maintains it for newly written documents, and the background builder scans the same range to backfill existing documents. When both touch the same document, the entry is written once, but each path increments the cardinality counter, so the count drifts above the entry count.\n\nThe defect appears in the same way across single-field, compound, and vector indexes.\n\n## `BUCKET.INDEX` on an existing bucket\n\nWhen an index is added to an existing bucket and documents are written concurrently from another node while the index is being built, the documents that fall in the overlap between the online write path and the builder are counted twice. Once the index reaches its ready state the cardinality stays inflated.\n\n## Impact\n\nThe cardinality statistic diverges from the true entry count. The planner reads an inflated cardinality and can pick a worse plan than the data warrants. Documents and query results remain correct, so the divergence is silent until plan quality is examined.\n\n## Notes\n\n- The build skips documents that already have an entry, so the entry set and the cardinality both stay exact under overlap.\n- The skip is enforced with a read that conflicts against a concurrent write to the same document. The build retries the affected batch in place when such a conflict aborts a commit, so a steady stream of online writes does not stall or fail the build.\n- No backward compatibility handling is needed.\n",
+        "url": "https://github.com/kronotop/kronotop/issues/13"
+    },
+    {
+        "id": 4703433580,
+        "number": 12,
+        "title": "Add $elemMatch projection operator",
+        "state": "open",
+        "created_at": "2026-06-19T20:37:30Z",
+        "updated_at": "2026-06-19T20:37:30Z",
+        "closed_at": null,
+        "author": "buraksezer",
+        "comments": 0,
+        "labels": [
+            "enhancement",
+            "Bucket"
+        ],
+        "assignees": [
+            "buraksezer"
+        ],
+        "locked": false,
+        "body": "**What**\n\nSupport `$elemMatch` in projection so queries can return the first array element that matches a condition, instead of the whole array.\n\n```\n  BUCKET.QUERY students {} PROJECTION '{ \"grades\": { \"$elemMatch\": { \"score\": { \"$gt\": 80 } } } }'\n```\n\n**Behavior**\n\n- `{ \"field\": { \"$elemMatch\": { <condition> } } }` returns a single-element array holding the first element (by array index) that matches `<condition>`.\n- When an array element is a document, `<condition>` is matched against that document's fields. When elements are scalars, it is matched against the value itself.\n- If no element matches, the field is omitted from the result.\n- If the field is missing or is not an array, the field is omitted.\n- `<condition>` uses the same predicate semantics as a query filter: `$eq`, `$ne`, `$gt/$gte/$lt/$lte`, `$in/$nin`, `$exists`, `$regex`, `$and/$or/$not`, and nested `$elemMatch`. `$regex` applies to string values only. Type matching is strict, with no coercion, as in queries.\n- Matching is evaluated against the elements of the projected array. It does not descend into nested arrays unless expressed with a nested `$elemMatch`.\n- The condition lives in the projection and is independent of the query filter. This is the difference from the positional `$` operator, which derives the element from the query.\n- Counts as an inclusion and combines with other inclusion fields:\n\n  ```\n  { \"name\": 1, \"grades\": { \"$elemMatch\": { \"score\": { \"$gt\": 80 } } } }\n  ```\n\n  Cannot be mixed with exclusion (`0`), except `_id: 0`. `_id` is returned by default.\n\n**Scope**\n\nProjection only. `$elemMatch` shapes the result after documents are selected; it does not affect matching.",
+        "url": "https://github.com/kronotop/kronotop/issues/12"
+    },
+    {
+        "id": 4703113186,
+        "number": 11,
+        "title": "Add $slice projection operator",
+        "state": "closed",
+        "created_at": "2026-06-19T19:32:15Z",
+        "updated_at": "2026-06-26T19:51:24Z",
+        "closed_at": "2026-06-26T19:51:23Z",
+        "author": "buraksezer",
+        "comments": 1,
+        "labels": [
+            "enhancement",
+            "Bucket"
+        ],
+        "assignees": [
+            "buraksezer"
+        ],
+        "locked": false,
+        "body": "**What**\n\nSupport `$slice` in projection so queries can return a subset of an array field instead of the whole array.\n\n```\n  BUCKET.QUERY users {} PROJECTION '{ \"comments\": { \"$slice\": 5 } }'\n  BUCKET.QUERY users {} PROJECTION '{ \"comments\": { \"$slice\": [10, 5] } }'\n```\n\n**Behavior**\n\n- `{ \"field\": { \"$slice\": n } }`:\n  - `n > 0` returns the first `n` elements.\n  - `n < 0` returns the last `n` elements.\n  - `n` larger than the array returns the whole array.\n- `{ \"field\": { \"$slice\": [skip, limit] } }`:\n  - `skip >= 0` skips from the start; `skip < 0` skips backward from the end.\n  - `skip` past the array length returns an empty array.\n  - `limit` must be positive; it caps the number of returned elements.\n- Applies to array fields only. Non-array values pass through unchanged.\n- Works on nested paths via dot notation: `{ \"details.colors\": { \"$slice\": 1 } }`.\n- `$slice` by itself is an exclusion: all other fields are returned, with the named array sliced. When the spec also has inclusion fields, it behaves within that inclusion. `_id` is returned by default unless `_id: 0`.\n- Error: a spec cannot both `$slice` an array and project a field embedded in that same array (path collision).\n\n**Scope**\n\nProjection only. `$slice` shapes the result after documents are selected; it does not affect matching.",
+        "url": "https://github.com/kronotop/kronotop/issues/11"
+    },
+    {
+        "id": 4667874901,
+        "number": 10,
+        "title": "Documents can be permanently missing from a secondary index when written during index creation",
+        "state": "closed",
+        "created_at": "2026-06-15T18:39:20Z",
+        "updated_at": "2026-06-17T22:04:41Z",
+        "closed_at": "2026-06-17T22:04:41Z",
+        "author": "buraksezer",
+        "comments": 1,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [
+            "buraksezer"
+        ],
+        "locked": false,
+        "body": "Documents written to a bucket while a single-field secondary index is being created can be permanently dropped from that index. The documents are stored correctly, but the index ends up holding fewer entries than the number of stored documents. This breaks the invariant that an index is only an accelerator and never changes query semantics: an index-backed query returns fewer rows than a full scan over the same bucket, with no recovery over time. No error is reported.\n\nThe defect appears in two situations, with the same observable result.\n\n## Inline index on `BUCKET.CREATE`\n\nWhen a bucket is created with an inline single-field index, documents inserted right after creation can be absent from the index. The earliest writes are the ones affected, and the number missing is small and varies. A full scan returns every document; an index-backed query returns fewer.\n\n## `BUCKET.INDEX` on an existing bucket\n\nWhen an index is added to an existing bucket and documents are written concurrently from another node while the index is being built, some of those concurrent writes never make it into the index. Once the index reaches its ready state the missing entries do not appear, so the loss is permanent.\n\n## Impact\n\nSilent divergence between a full scan and an index-backed scan. The documents are never lost, only their index entries, so the bucket looks consistent until a query relies on the index and quietly returns an incomplete result.",
+        "url": "https://github.com/kronotop/kronotop/issues/10"
+    },
+    {
+        "id": 4655469490,
+        "number": 9,
+        "title": "Add $regex query operator - Phase 1",
+        "state": "closed",
+        "created_at": "2026-06-13T12:18:31Z",
+        "updated_at": "2026-06-18T21:16:23Z",
+        "closed_at": "2026-06-18T21:16:23Z",
+        "author": "buraksezer",
+        "comments": 0,
+        "labels": [
+            "enhancement"
+        ],
+        "assignees": [
+            "buraksezer"
+        ],
+        "locked": false,
+        "body": "**What**\n\nSupport `$regex` in BQL so queries can match string fields by pattern.\n\n```\n  { name: { $regex: \"^user\", $options: \"i\" } }\n```\n\nNative BSON regex values should work too: `{ name: <regex> }`.\n\n**Behavior**\n \n- Matches string fields only. Non-string values do not match. No type coercion.\n- On array fields, matches if any string element matches.\n- Options: `i` (case-insensitive), `m` (multiline), `s` (dotall). Anything else is an error.\n- Invalid patterns return an error.\n- Pattern dialect is RE2, not PCRE. No backreferences or lookaround.\n\n**Scope**\n\nPhase 1 only: `$regex` works as a filter, evaluated against every document in scope. No index acceleration in this phase.\n\n**Out of scope**\n \n- Using an index to avoid scanning every document (separate issue).\n- Prefix-anchored patterns (`^literal`) narrowing the scan range (separate issue).",
+        "url": "https://github.com/kronotop/kronotop/issues/9"
+    },
+    {
+        "id": 4642061713,
+        "number": 8,
+        "title": "Add ZWATCH command",
+        "state": "closed",
+        "created_at": "2026-06-11T15:46:38Z",
+        "updated_at": "2026-06-13T21:17:28Z",
+        "closed_at": "2026-06-13T21:17:28Z",
+        "author": "buraksezer",
+        "comments": 0,
+        "labels": [
+            "enhancement"
+        ],
+        "assignees": [
+            "buraksezer"
+        ],
+        "locked": false,
+        "body": "Add a `ZWATCH` command that blocks the connection until the value at a key changes, then returns. The notification is backed by a FoundationDB watch.\n\n**Syntax**\n\n```\n  ZWATCH <key>\n```\n\nOne key per call. Returns a RESP simple string (OK) once the watch fires.\n\n**Semantics**\n\n- `ZWATCH` blocks the connection until the value at key changes, then returns OK. It does not return the value.\n- The key is scoped to the connection's namespace. A change to the same raw key in another namespace does not wake the watch.\n- `ZWATCH` cannot run inside a transaction. Inside BEGIN it returns an error, because the watch commits its own snapshot and cannot share an open one.\n- Clients waiting on the same key share a single underlying watch. The watch count is bounded by the number of distinct watched keys, not the number of waiters.\n\n**Guarantees**\n\n- A wake means the key changed at or after the watch was registered. Writes are coalesced: several changes between registration and the wake collapse into one OK, and a later read sees only the latest value. ZWATCH is not a change stream and does not replay missed transitions.\n- A wake can be early. Treat `ZWATCH` as \"re-read and re-check the condition\", not \"the value is now X\". Use it inside a loop that reads the key and tests the condition.\n- The watch holds the connection for its whole lifetime. Dedicate a connection to watching, or follow a watch, read, re-watch cycle.",
+        "url": "https://github.com/kronotop/kronotop/issues/8"
+    },
+    {
+        "id": 4634682348,
+        "number": 7,
+        "title": "GETREADVERSION returns the read version as a simple string instead of a RESP integer",
+        "state": "closed",
+        "created_at": "2026-06-10T20:20:39Z",
+        "updated_at": "2026-06-10T21:42:51Z",
+        "closed_at": "2026-06-10T21:42:24Z",
+        "author": "buraksezer",
+        "comments": 1,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [
+            "buraksezer"
+        ],
+        "locked": false,
+        "body": "Currently, `GETREADVERSION` returns the transaction read version encoded as a RESP simple string. The read version is a 64-bit integer assigned by FoundationDB. RESP has a native integer type that represents signed 64-bit values exactly, and the Response interface already exposes `writeInteger(long)`.\n\n**Current behavior:**\n\n```\n> BEGIN\nOK\n> GETREADVERSION\n476128587678\n```\n\nThe reply type is a simple string (`+476128587678\\r\\n` on the wire).\n\n**Expected behavior:**\n\nThe reply should be a RESP integer:\n\n```\n> BEGIN\nOK\n> GETREADVERSION\n(integer) 476128587678\n```\n\n**Notes** \n- `docs/transactions/commands/getreadversion.md` documents the return value as \"Simple string: the read version as a numeric string\" and must be updated together with the fix.\n- No backward compatibility handling is needed.",
+        "url": "https://github.com/kronotop/kronotop/issues/7"
+    },
+    {
+        "id": 4634426536,
+        "number": 6,
+        "title": "Add TIME command",
+        "state": "closed",
+        "created_at": "2026-06-10T19:42:58Z",
+        "updated_at": "2026-06-10T21:43:43Z",
+        "closed_at": "2026-06-10T21:43:43Z",
+        "author": "buraksezer",
+        "comments": 1,
+        "labels": [
+            "enhancement"
+        ],
+        "assignees": [
+            "buraksezer"
+        ],
+        "locked": false,
+        "body": "Add a `TIME` command that returns the current server time. The interface matches the `gettimeofday` system call.\n\n### Syntax\n\n```  \nTIME\n```\n\nTakes no arguments. Returns a RESP array of two bulk strings. No active transaction required.\n1. Unix timestamp in seconds\n2. Microseconds already elapsed in the current second\n\n```\n> TIME\n1) \"1781119691\"\n2) \"14102\"\n```\n\n### Semantics\n\n* The value comes from the system clock of the node that handles the connection. Different nodes can report different times.\n* Wall-clock time is not monotonic. It can move backwards on clock adjustments. Callers that need a monotonic value should use `TICK` instead.",
+        "url": "https://github.com/kronotop/kronotop/issues/6"
+    },
+    {
+        "id": 4634364677,
+        "number": 5,
+        "title": "Add TICK command",
+        "state": "closed",
+        "created_at": "2026-06-10T19:33:25Z",
+        "updated_at": "2026-06-10T21:43:21Z",
+        "closed_at": "2026-06-10T21:43:21Z",
+        "author": "buraksezer",
+        "comments": 1,
+        "labels": [
+            "enhancement"
+        ],
+        "assignees": [
+            "buraksezer"
+        ],
+        "locked": false,
+        "body": "Add a `TICK` command that returns a monotonically increasing 64-bit integer. The value is a FoundationDB read version.\n\n### Syntax\n\n```\n  TICK <FRESH | CACHED>\n```\n\nThe mode is mandatory and case-insensitive. Returns a RESP integer. No active transaction required.\n\n### Semantics\n\n- `TICK FRESH` fetches the latest read version from the cluster, one round trip per call.\n- `TICK CACHED` serves the value from a node-local cache shared by all connections. If the cached value is younger than one second, the cluster is not contacted. Otherwise the value is fetched again and the cache is refreshed. Cache refreshes are monotonic, a refresh never replaces the cached value with a smaller one. `CACHED` targets high-volume, low-precision callers that can tolerate up to one second of slack.\n\n### Guarantees:\n- The value never decreases. `FRESH` is monotonic across the cluster, `CACHED` is monotonic per node.\n- The same value can be returned more than once, even with `FRESH`. Read versions advance only when commits arrive, so the value stands still on an idle cluster. `TICK` is not a unique ID generator.",
+        "url": "https://github.com/kronotop/kronotop/issues/5"
+    },
+    {
+        "id": 2821978362,
+        "number": 2,
+        "title": "Are there any good first issues to work on?",
+        "state": "closed",
+        "created_at": "2025-01-30T22:50:47Z",
+        "updated_at": "2025-01-31T08:12:58Z",
+        "closed_at": "2025-01-31T08:12:57Z",
+        "author": "fire",
+        "comments": 1,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "Please list.",
+        "url": "https://github.com/kronotop/kronotop/issues/2"
+    }
+]

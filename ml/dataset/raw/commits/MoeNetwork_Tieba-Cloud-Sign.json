@@ -1,0 +1,242 @@
+[
+    {
+        "sha": "73755756fbf1f1c154608efc7d9c2ef9be1cf529",
+        "author": "BANKA2017",
+        "email": "17263253+BANKA2017@users.noreply.github.com",
+        "date": "2026-05-28T05:03:09Z",
+        "message": "更新 alpine@3.21.0 > @3.23.4",
+        "url": "https://github.com/MoeNetwork/Tieba-Cloud-Sign/commit/73755756fbf1f1c154608efc7d9c2ef9be1cf529"
+    },
+    {
+        "sha": "959a1cfb812459d6042f0728cebf60e9c53224f9",
+        "author": "BANKA2017",
+        "email": "17263253+BANKA2017@users.noreply.github.com",
+        "date": "2026-05-13T16:43:46Z",
+        "message": "Bump to 5.05",
+        "url": "https://github.com/MoeNetwork/Tieba-Cloud-Sign/commit/959a1cfb812459d6042f0728cebf60e9c53224f9"
+    },
+    {
+        "sha": "713c62ddf5be49e016f5be52e6f7b441786f2124",
+        "author": "BANKA2017",
+        "email": "17263253+BANKA2017@users.noreply.github.com",
+        "date": "2026-05-13T16:40:16Z",
+        "message": "提高安全性\n\n* 禁止非开发者模式指定 commit id 更新\n* 更新 commit id 的提交方式 GET->POST\n* 验证 commit id 格式，禁止使用短位 id",
+        "url": "https://github.com/MoeNetwork/Tieba-Cloud-Sign/commit/713c62ddf5be49e016f5be52e6f7b441786f2124"
+    },
+    {
+        "sha": "bfbee3c578d56385e289dc46a3aac1f84a4fdea7",
+        "author": "BANKA2017",
+        "email": "17263253+BANKA2017@users.noreply.github.com",
+        "date": "2026-04-30T16:56:45Z",
+        "message": "Bump to 5.04",
+        "url": "https://github.com/MoeNetwork/Tieba-Cloud-Sign/commit/bfbee3c578d56385e289dc46a3aac1f84a4fdea7"
+    },
+    {
+        "sha": "3df1f23cb95d9433aad0d9117a64bd88b327839e",
+        "author": "BANKA2017",
+        "email": "17263253+BANKA2017@users.noreply.github.com",
+        "date": "2026-04-30T16:51:12Z",
+        "message": "优化贴吧相关请求\n\n* 新增函数 `getTieba3` 获取贴吧列表，同时检查贴吧是否被封和本日是否已签到\n* 每次运行 php 时缓存每个 bduss 的 tbs 避免重复获取\n* 修复账号中存在空白贴吧列表时展示错误的贴吧列表和提示",
+        "url": "https://github.com/MoeNetwork/Tieba-Cloud-Sign/commit/3df1f23cb95d9433aad0d9117a64bd88b327839e"
+    },
+    {
+        "sha": "318de7c0e81c6555508ca36e3aae62b12b0f19c1",
+        "author": "BANKA2017",
+        "email": "17263253+BANKA2017@users.noreply.github.com",
+        "date": "2026-04-30T16:44:26Z",
+        "message": "尝试修复循环封禁插件\n\n* 禁止非 `post` 请求删除/清空封禁列表\n* 移除吧务权限检查\n* 修复网站账号没有绑定贴吧账号时页面报错问题",
+        "url": "https://github.com/MoeNetwork/Tieba-Cloud-Sign/commit/318de7c0e81c6555508ca36e3aae62b12b0f19c1"
+    },
+    {
+        "sha": "81cfc7b89930a092df45f4d261c488bcfdfb1bef",
+        "author": "BANKA2017",
+        "email": "17263253+BANKA2017@users.noreply.github.com",
+        "date": "2026-04-30T16:40:54Z",
+        "message": "移除新浪 SAE 相关",
+        "url": "https://github.com/MoeNetwork/Tieba-Cloud-Sign/commit/81cfc7b89930a092df45f4d261c488bcfdfb1bef"
+    },
+    {
+        "sha": "b759173047f72b70cf244de910c5c786cc93c8a7",
+        "author": "BANKA2017",
+        "email": "17263253+BANKA2017@users.noreply.github.com",
+        "date": "2026-04-30T16:32:38Z",
+        "message": "Merge commit from fork\n\n* fix: check role for `admin:` prefix requests\nremove: page `/ajax.php?mod=admin:update:changeServer`\nupdate: check user role before request server info\n\n* remove: admin:cloud in setting.php\n\n* remove: custom upgrade server from templates/admin-update.php\n\n* chore: update some variable name\n\n* update: use strpos to replace stristr\n\n* fix: wrong admin checker",
+        "url": "https://github.com/MoeNetwork/Tieba-Cloud-Sign/commit/b759173047f72b70cf244de910c5c786cc93c8a7"
+    },
+    {
+        "sha": "d4494e27bca8921a550ed843556aa89e458bbaf0",
+        "author": "BANKA2017",
+        "email": "17263253+BANKA2017@users.noreply.github.com",
+        "date": "2026-04-30T16:19:22Z",
+        "message": "当 php 版本大于等于 8.0.0 时不再调用 `curl_close` (#303)\n\nCo-authored-by: n0099 <github@n0099.com>",
+        "url": "https://github.com/MoeNetwork/Tieba-Cloud-Sign/commit/d4494e27bca8921a550ed843556aa89e458bbaf0"
+    },
+    {
+        "sha": "8b84aa793bdac38e0cd609e645d694b171e3055a",
+        "author": "BANKA2017",
+        "email": "17263253+BANKA2017@users.noreply.github.com",
+        "date": "2026-04-30T15:59:43Z",
+        "message": "smtp 验证方式增加 PLAIN (#301)",
+        "url": "https://github.com/MoeNetwork/Tieba-Cloud-Sign/commit/8b84aa793bdac38e0cd609e645d694b171e3055a"
+    },
+    {
+        "sha": "d2111538ed9c49df5d03c573692c59c0872e6a19",
+        "author": "kenvix",
+        "email": "kenvixzure@live.com",
+        "date": "2026-01-26T05:33:38Z",
+        "message": "Merge pull request #298 from kdnetwork/fix-ver4-lottery\n\n修复知道抽奖插件 '网络错误，请稍后再试~'",
+        "url": "https://github.com/MoeNetwork/Tieba-Cloud-Sign/commit/d2111538ed9c49df5d03c573692c59c0872e6a19"
+    },
+    {
+        "sha": "6f7873cd0c12e5ede43db9f35c55111655b17288",
+        "author": "BANKA2017",
+        "email": "kdwnil@hotmail.com",
+        "date": "2026-01-25T10:36:21Z",
+        "message": "fix: lottery request method in plugin `ver4_lottery` changed from `get` to `post`",
+        "url": "https://github.com/MoeNetwork/Tieba-Cloud-Sign/commit/6f7873cd0c12e5ede43db9f35c55111655b17288"
+    },
+    {
+        "sha": "5a374093e2f0559bf590bbff3263e5df41adaeda",
+        "author": "BANKA2017",
+        "email": "17263253+BANKA2017@users.noreply.github.com",
+        "date": "2025-11-20T14:03:51Z",
+        "message": "Bump to 5.03",
+        "url": "https://github.com/MoeNetwork/Tieba-Cloud-Sign/commit/5a374093e2f0559bf590bbff3263e5df41adaeda"
+    },
+    {
+        "sha": "3d3960616e6d4325cdfbdb4fed77361144692c38",
+        "author": "BANKA2017",
+        "email": "17263253+BANKA2017@users.noreply.github.com",
+        "date": "2025-11-20T13:55:42Z",
+        "message": "Merge pull request #296 from cpuer/patch-3\n\n修复在 PHP 8.4 中废弃E_STRICT常量的警告",
+        "url": "https://github.com/MoeNetwork/Tieba-Cloud-Sign/commit/3d3960616e6d4325cdfbdb4fed77361144692c38"
+    },
+    {
+        "sha": "8266509c1dab044f575c2fc403d2382795d3c2f8",
+        "author": "cpuer",
+        "email": "lastczj@gmail.com",
+        "date": "2025-11-20T12:03:09Z",
+        "message": "修复在 PHP 8.4 中废弃E_STRICT常量的警告\n\n因为在 PHP 8.4 版本已经废弃了 E_STRICT 这个常量，所以在执行do.php的时候会显示废弃E_STRICT常量的警告，E_STRICT 的内部整数值一直是 2048。在 PHP 8.4 中，官方不建议直接在代码里写 E_STRICT 这个单词了，但其代表的错误代码数值依然有效。改成数字可以直接绕过“常量已废弃”的警告。",
+        "url": "https://github.com/MoeNetwork/Tieba-Cloud-Sign/commit/8266509c1dab044f575c2fc403d2382795d3c2f8"
+    },
+    {
+        "sha": "ab8f83e61aaf87dec82ad8c5e540d0c91933a8da",
+        "author": "n0099",
+        "email": "n@n0099.net",
+        "date": "2025-03-10T23:53:56Z",
+        "message": "Merge pull request #287 from kdnetwork/fix-no-error-code\n\nfix: #284",
+        "url": "https://github.com/MoeNetwork/Tieba-Cloud-Sign/commit/ab8f83e61aaf87dec82ad8c5e540d0c91933a8da"
+    },
+    {
+        "sha": "b3c18cb48e29f58210aace576107f3b019bd0f89",
+        "author": "n0099",
+        "email": "n@n0099.net",
+        "date": "2025-03-10T23:53:39Z",
+        "message": "Merge pull request #286 from kdnetwork/fix-same-pid\n\nfix: 更新 BDUSS 和 Stoken 前检查 pid 的拥有者",
+        "url": "https://github.com/MoeNetwork/Tieba-Cloud-Sign/commit/b3c18cb48e29f58210aace576107f3b019bd0f89"
+    },
+    {
+        "sha": "3e09e871643cfef32f883e22881b89eada8bebb1",
+        "author": "BANKA2017",
+        "email": "kdwnil@hotmail.com",
+        "date": "2025-03-10T17:55:50Z",
+        "message": "fix: do not update checkin status when variable $error_code is empty",
+        "url": "https://github.com/MoeNetwork/Tieba-Cloud-Sign/commit/3e09e871643cfef32f883e22881b89eada8bebb1"
+    },
+    {
+        "sha": "e86ff9e7a4f620c7adc21c63ef8a10799d8af46a",
+        "author": "BANKA2017",
+        "email": "kdwnil@hotmail.com",
+        "date": "2025-03-10T17:32:23Z",
+        "message": "fix: check the owner of a pid before updating bduss and stoken",
+        "url": "https://github.com/MoeNetwork/Tieba-Cloud-Sign/commit/e86ff9e7a4f620c7adc21c63ef8a10799d8af46a"
+    },
+    {
+        "sha": "fcad3292190b8758d404adef6a3fd2b7b4d3f645",
+        "author": "BANKA2017",
+        "email": "17263253+BANKA2017@users.noreply.github.com",
+        "date": "2024-12-26T09:14:57Z",
+        "message": "Merge pull request #279 from boris1993/master\n\n修正`real_connect`传参",
+        "url": "https://github.com/MoeNetwork/Tieba-Cloud-Sign/commit/fcad3292190b8758d404adef6a3fd2b7b4d3f645"
+    },
+    {
+        "sha": "1a0d395f6d79bc6d8e01a19378ccdc3aae2f6da5",
+        "author": "Boris Zhao",
+        "email": "boris1993@live.cn",
+        "date": "2024-12-26T09:09:51Z",
+        "message": "修正`real_connect`传参\n\n62行少传了`socket`参数，导致`$flags`实际上被传给了`socket`",
+        "url": "https://github.com/MoeNetwork/Tieba-Cloud-Sign/commit/1a0d395f6d79bc6d8e01a19378ccdc3aae2f6da5"
+    },
+    {
+        "sha": "f48ffd01aaccfcb372040425dd86147688918c2e",
+        "author": "BANKA2017",
+        "email": "kdwnil@hotmail.com",
+        "date": "2024-12-22T19:46:53Z",
+        "message": "Bump to 5.02",
+        "url": "https://github.com/MoeNetwork/Tieba-Cloud-Sign/commit/f48ffd01aaccfcb372040425dd86147688918c2e"
+    },
+    {
+        "sha": "29e0c84a74428774328d9f6acb121f77b461a9c4",
+        "author": "BANKA2017",
+        "email": "kdwnil@hotmail.com",
+        "date": "2024-12-22T19:31:55Z",
+        "message": "fix: 将文件 `docker/s6-overlay/etc/services.d/php-fpm/run` 的换行符从 `crlf` 修改为 `lf`\nfix: 将文件 `docker/s6-overlay/etc/cont-init.d/30-set-crontab` 中的 `php` 修改为 `php84`\nfix: 构建 Docker 镜像时使用本地文件替代远程 git clone\nupdate: 更新 Actions 工作流的依赖\nupdate: 增加带当前版本号的 Docker 镜像构建",
+        "url": "https://github.com/MoeNetwork/Tieba-Cloud-Sign/commit/29e0c84a74428774328d9f6acb121f77b461a9c4"
+    },
+    {
+        "sha": "782894b657adb56886a2635940e6a2bff097f032",
+        "author": "BANKA2017",
+        "email": "17263253+BANKA2017@users.noreply.github.com",
+        "date": "2024-12-21T17:59:55Z",
+        "message": "Merge pull request #276 from kdnetwork/upgrade-php-version\n\n- 提高未来需要向下兼容的 PHP 版本 (5.x -> 8.1)",
+        "url": "https://github.com/MoeNetwork/Tieba-Cloud-Sign/commit/782894b657adb56886a2635940e6a2bff097f032"
+    },
+    {
+        "sha": "ec864f03033ce15fc0c89d7ca902eb8b567076ef",
+        "author": "BANKA2017",
+        "email": "17263253+BANKA2017@users.noreply.github.com",
+        "date": "2024-12-21T10:18:05Z",
+        "message": "Merge pull request #274 from kdnetwork/fix-docker\n\n- 修复 Dockerfile 配置导致的 docker build 失败",
+        "url": "https://github.com/MoeNetwork/Tieba-Cloud-Sign/commit/ec864f03033ce15fc0c89d7ca902eb8b567076ef"
+    },
+    {
+        "sha": "6335691b08a99599e217ee7314dbf29ec282deac",
+        "author": "BANKA2017",
+        "email": "17263253+BANKA2017@users.noreply.github.com",
+        "date": "2024-12-21T10:16:36Z",
+        "message": "Merge pull request #275 from kdnetwork/fix-mysql-class\n\n- 修改 `wmysql` 中大小写错误的变量名，将 `$useSsl` 改为 `$useSSL`\r\n- 移除 `wmysql` 中出现的命名参数",
+        "url": "https://github.com/MoeNetwork/Tieba-Cloud-Sign/commit/6335691b08a99599e217ee7314dbf29ec282deac"
+    },
+    {
+        "sha": "276a8c467b9b2e08f52bc99e04ebc3cb921e09b5",
+        "author": "BANKA2017",
+        "email": "kdwnil@hotmail.com",
+        "date": "2024-12-20T20:27:21Z",
+        "message": "remove: duplicate form items\nupdate: php version in setup check",
+        "url": "https://github.com/MoeNetwork/Tieba-Cloud-Sign/commit/276a8c467b9b2e08f52bc99e04ebc3cb921e09b5"
+    },
+    {
+        "sha": "feb01693ee5f05e430517fcc116b6d717074842b",
+        "author": "BANKA2017",
+        "email": "kdwnil@hotmail.com",
+        "date": "2024-12-20T19:38:31Z",
+        "message": "fix: wrong variable name `$useSsl` -> `$useSSL` from #273\nupdate: remove named arguments from class `wmysql` to support old php versions",
+        "url": "https://github.com/MoeNetwork/Tieba-Cloud-Sign/commit/feb01693ee5f05e430517fcc116b6d717074842b"
+    },
+    {
+        "sha": "7c5a4c67de569d8a0f0d83b80d8a156d6ee8c546",
+        "author": "BANKA2017",
+        "email": "kdwnil@hotmail.com",
+        "date": "2024-12-20T18:35:29Z",
+        "message": "fix: docker build",
+        "url": "https://github.com/MoeNetwork/Tieba-Cloud-Sign/commit/7c5a4c67de569d8a0f0d83b80d8a156d6ee8c546"
+    },
+    {
+        "sha": "e1b6d1dd3cc26a74477d6cd31f8ea54163e57e0c",
+        "author": "n0099",
+        "email": "n@n0099.net",
+        "date": "2024-12-20T17:11:41Z",
+        "message": "Merge pull request #273 from boris1993/mysql-ssl-support\n\n添加MySQL SSL连接的支持",
+        "url": "https://github.com/MoeNetwork/Tieba-Cloud-Sign/commit/e1b6d1dd3cc26a74477d6cd31f8ea54163e57e0c"
+    }
+]

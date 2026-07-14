@@ -1,0 +1,362 @@
+[
+    {
+        "id": 4472944776,
+        "number": 7944,
+        "title": "Status of this project?",
+        "state": "open",
+        "created_at": "2026-05-18T22:14:57Z",
+        "updated_at": "2026-07-13T08:43:21Z",
+        "closed_at": null,
+        "author": "brycehans",
+        "comments": 8,
+        "labels": [
+            "enhancement"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "Hello @djaiss, I've been watching the development of Monica and Chandler for a while now. As per your instructions on #6626:\n\n> The project is not dead. Far from it.\n\n> So, please be patient. We'll post a new issue when Chandler is ready for testing.\n\nI'm wondering if this is still the case? It's been a few years since the last status update I could find, and the https://github.com/monicahq/chandler repo has been archived. So my question in this:\n\nIn 2026, is this project still under active development? The user community you've built with this wonderful project would really benefit from a status update.",
+        "url": "https://github.com/monicahq/monica/issues/7944"
+    },
+    {
+        "id": 4458831023,
+        "number": 7943,
+        "title": "Create account by approval or by invite only",
+        "state": "open",
+        "created_at": "2026-05-16T06:00:17Z",
+        "updated_at": "2026-05-16T18:03:39Z",
+        "closed_at": null,
+        "author": "aaron01-dev",
+        "comments": 0,
+        "labels": [
+            "enhancement"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "<!--- Please keep this note for other contributors -->\n\n### How to use GitHub\n\n- Please use the 👍 [reaction](https://blog.github.com/2016-03-10-add-reactions-to-pull-requests-issues-and-comments/) to show that you are interested into the same feature.\n- Please don't comment if you have no relevant information to add. It's just extra noise for everyone subscribed to this issue.\n- Subscribe to receive notifications on status change and new comments.\n\n<!--- FEATURE REQUEST: -->\n\n**Is your feature request related to a problem? Please describe.**\nA clear and concise description of what the problem is. Ex.\n\n- In a self hosted environment, it is usually for private use and exposed to the internet.\n- In the current setup, Monica lets you create accounts freely through email verification. This means, anyone in the world can freely create an account without the knowledge of the admin, unless the admin looks through logs, checks the database, or see what the mail server sent the emails to.\n- Although, turning off mailing service is possible, it would be a hassle to ask an admin to give you the verification link from their Monica logs when the user has time to create an account.\n\n**Describe the solution you'd like**\nA timed and or N amount of use invite link to let users have access to the register page to create their account.\n\n**Describe alternatives you've considered (optional)**\nNormal registration but upon verifying, needs admin approval to gain access. Though it could have unwanted random approvals from random people in the event the domain was accidentally publicly revealed and spread in the internet..\n\n**Additional context**\nAdd any other context or screenshots about the feature request here. The more context, the better.\nJFA-Go does something similar for Jellyfin, it creates an invite link for users to freely create their Jellyfin account.",
+        "url": "https://github.com/monicahq/monica/issues/7943"
+    },
+    {
+        "id": 4298045910,
+        "number": 7936,
+        "title": "Add translation key consistency check command and CI workflow",
+        "state": "open",
+        "created_at": "2026-04-20T19:09:20Z",
+        "updated_at": "2026-04-20T19:09:20Z",
+        "closed_at": null,
+        "author": "MohamedHamed12",
+        "comments": 0,
+        "labels": [
+            "enhancement"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "Add an automated translation consistency checker and run it in CI for pull requests.\n\nProposed scope:\n1. Add a new Artisan command to compare translation keys against English.\n2. Validate both JSON translations and nested PHP translation files.\n3. Report missing keys per locale.\n4. Report extra keys per locale (warning by default).\n5. Return non-zero exit code when missing keys are found.\n6. Optionally support failing on extra keys (for stricter mode).\n7. Add unit tests for matching, missing, and extra key scenarios.\n8. Run this check in a dedicated GitHub Actions workflow on pull requests.\n\nI can prepare and submit a pull request for this feature if the maintainers agree with the proposed scope.",
+        "url": "https://github.com/monicahq/monica/issues/7936"
+    },
+    {
+        "id": 4027126915,
+        "number": 7928,
+        "title": "Feature Request: Add JSON Export for Contacts",
+        "state": "open",
+        "created_at": "2026-03-05T09:49:49Z",
+        "updated_at": "2026-03-05T09:49:49Z",
+        "closed_at": null,
+        "author": "JavierBonillaFernandez",
+        "comments": 0,
+        "labels": [
+            "enhancement"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "Hi! We are a group of Computer Engineering students taking a course on Software Architecture (AISS). \n\nAs part of our final project, we would like to contribute to Monica.\nWe noticed Monica exports contacts in VCard format. We would like to add a simple feature to export a contact in JSON format to improve system interoperability and extensibility. \nWe plan to create a ContactJsonExportController and add a button next to the VCard one.\nWould you be open to a Pull Request for this?",
+        "url": "https://github.com/monicahq/monica/issues/7928"
+    },
+    {
+        "id": 4026933297,
+        "number": 7927,
+        "title": "Docs: Add local development instructions using Laravel Sail",
+        "state": "open",
+        "created_at": "2026-03-05T09:15:36Z",
+        "updated_at": "2026-03-05T09:15:36Z",
+        "closed_at": null,
+        "author": "GKQ8638",
+        "comments": 0,
+        "labels": [
+            "enhancement"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "Hi team! 👋\n\nI'm doing an architecture analysis of Monica for my Software Engineering degree. I noticed that the repository includes `docker-compose.yml` and `sail-init.sh` files, which is awesome for local development using Laravel Sail. However, this option is not currently documented in the `README.md`.\n\nI think adding a short \"Local Development\" section to the README would greatly improve the Developer Experience (DX) for new contributors. \n\nI would love to contribute by opening a Pull Request to add this documentation. Let me know if you agree with this!\n",
+        "url": "https://github.com/monicahq/monica/issues/7927"
+    },
+    {
+        "id": 3882559577,
+        "number": 7921,
+        "title": "API Contact Details should return middle name information",
+        "state": "open",
+        "created_at": "2026-02-01T17:52:39Z",
+        "updated_at": "2026-02-01T17:52:39Z",
+        "closed_at": null,
+        "author": "antonini",
+        "comments": 0,
+        "labels": [
+            "enhancement"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "I was integrating Monica CRM on my days activities and found that the API that retrieves the details of the contact do not return the middle name of the contact.\n\nAddress: /api/contacts/{{ id }} \nVersion: 4.1.2\n\nIt would be nice to add that information to the json that is returned.\n",
+        "url": "https://github.com/monicahq/monica/issues/7921"
+    },
+    {
+        "id": 3800351943,
+        "number": 7920,
+        "title": "Issue Report: Native PostgreSQL Support Failures (Docker)",
+        "state": "open",
+        "created_at": "2026-01-10T21:07:33Z",
+        "updated_at": "2026-01-10T21:07:33Z",
+        "closed_at": null,
+        "author": "stephanemar",
+        "comments": 0,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### ⚠️ This issue respects the following points: ⚠️\n\n- [x] This is a **bug**, not a question or a configuration/webserver/proxy issue.\n- [x] This issue is **not** already reported on [Github](https://github.com/monicahq/monica/issues?q=is%3Aopen+is%3Aissue+label%3Abug) _(I've searched it)_.\n- [x] I agree to follow Monica's [Code of Conduct](https://github.com/monicahq/monica/blob/main/CODE_OF_CONDUCT.md).\n\n### Bug description\n\nNative PostgreSQL Support Failures (Docker)\n\n### Steps to reproduce\n\nEnvironment:\n\nImage: monica:latest\nDatabase: PostgreSQL 15+ (Native, not via MySQL/MariaDB container)\nDriver: pdo_pgsql (Extensions verified present in container)\n1. Entrypoint Compatibility Check\nThe stock /usr/local/bin/entrypoint.sh includes a \n\nwaitfordb\n function that forces a MySQL connection check using mysqli.\n\nIssue: This check fails hard when DB_CONNECTION=pgsql is set, preventing the container from starting even if the Postgres database is ready.\n\nWorkaround Applied: We replaced \n\nentrypoint.sh\n with a custom script that skips the \n\nwaitfordb\n check or uses a generic TCP check.\n\nRecommendation: The entrypoint should check the DB_CONNECTION variable and either:\n\nSkip the check if not mysql.\nUse a driver-agnostic check (e.g., php artisan db:monitor or a simple TCP socket check).\n2. Migration Syntax Error (PostgreSQL Incompatibility)\nFile: database/migrations/2017_06_07_173437_add_multiple_genders_choices.php\n\nIssue: The \n\nalterEnum\n method manually constructs SQL statements using backticks (`) to escape table and constraint names:\n\n$check = \"${table}_${field}_check\"; // Result: `contacts`_gender_check\n// and\nDB::statement(sprintf('ALTER TABLE %s DROP CONSTRAINT %s;', $table, $check));\nBackticks are MySQL-specific. On PostgreSQL, this throws a syntax error: SQLSTATE[42601]: Syntax error: 7 ERROR: syntax error at or near \"\"`\n\nWorkaround Applied: We patched the file to strip backticks from the $table variable before constructing the constraint name:\n\n$table = str_replace('`', '', $table);\nRecommendation: The migration should use the query builder or properly quote identifiers based on the active driver, rather than hardcoding backticks.\n\n### Expected behavior\n\nIssue Report: Native PostgreSQL Support Failures (Docker)\nEnvironment:\n\nImage: monica:latest\nDatabase: PostgreSQL 15+ (Native, not via MySQL/MariaDB container)\nDriver: pdo_pgsql (Extensions verified present in container)\n1. Entrypoint Compatibility Check\nThe stock /usr/local/bin/entrypoint.sh includes a \n\nwaitfordb\n function that forces a MySQL connection check using mysqli.\n\nIssue: This check fails hard when DB_CONNECTION=pgsql is set, preventing the container from starting even if the Postgres database is ready.\n\nWorkaround Applied: We replaced \n\nentrypoint.sh\n with a custom script that skips the \n\nwaitfordb\n check or uses a generic TCP check.\n\nRecommendation: The entrypoint should check the DB_CONNECTION variable and either:\n\nSkip the check if not mysql.\nUse a driver-agnostic check (e.g., php artisan db:monitor or a simple TCP socket check).\n2. Migration Syntax Error (PostgreSQL Incompatibility)\nFile: database/migrations/2017_06_07_173437_add_multiple_genders_choices.php\n\nIssue: The \n\nalterEnum\n method manually constructs SQL statements using backticks (`) to escape table and constraint names:\n\n$check = \"${table}_${field}_check\"; // Result: `contacts`_gender_check\n// and\nDB::statement(sprintf('ALTER TABLE %s DROP CONSTRAINT %s;', $table, $check));\nBackticks are MySQL-specific. On PostgreSQL, this throws a syntax error: SQLSTATE[42601]: Syntax error: 7 ERROR: syntax error at or near \"\"`\n\nWorkaround Applied: We patched the file to strip backticks from the $table variable before constructing the constraint name:\n\n$table = str_replace('`', '', $table);\nRecommendation: The migration should use the query builder or properly quote identifiers based on the active driver, rather than hardcoding backticks.\n\n### Environment\n\napp.monicahq.com (monica v4)\n\n### Version of Monica\n\n_No response_\n\n### Installation method\n\nNone\n\n### Web server\n\nNone\n\n### Database engine version\n\nNone\n\n### Additional info\n\n_No response_",
+        "url": "https://github.com/monicahq/monica/issues/7920"
+    },
+    {
+        "id": 3770387062,
+        "number": 7918,
+        "title": "[Feature Request] - UploadCare Custom CDN",
+        "state": "open",
+        "created_at": "2025-12-30T14:32:50Z",
+        "updated_at": "2025-12-30T14:34:09Z",
+        "closed_at": null,
+        "author": "senechalloic",
+        "comments": 0,
+        "labels": [
+            "enhancement"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "# Context\n\nI use Version 5.0.0-beta.5 — commit [e08e917]\n\nI configured as ENV the public and secret for UploadCare.\n\nI can upload profile image, but I can't access it.\n\n# Impact\n\nHigh in someway, no file can be used for a new deployment (new uploadcare account) through Monica platform.\n\n# Analysis\n\nThe url generated is under:\n`https://ucarecdn.com/d2d8a156-48e7-4650-b7f9-ff660e296221/-/scale_crop/300x300/smart/-/format/auto/-/quality/smart_retina/`\n\nWhich is a 404\n\nhttps://2fxelce9su.ucarecd.net/d2d8a156-48e7-4650-b7f9-ff660e296221/aurlien.jpg\n\nWhich works\n\nNote: I updated uuid and private subdmain to keep it secret.\n\n# Proposition\n\nAdd setting UPLOADCARE_CDN in .env\n\nAt every 25 places in the code where \"https://ucarecdn.com/\" is used, replace by this env value.\n\n# Source\n\nHere is how the account configuration looks\n\n<img width=\"1658\" height=\"396\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/d61378ac-868d-4365-9459-a47134daeac8\" />\n\nHere is the official declaration of upload care implying the change\n\n> \"Accounts created before September 4, 2025 can continue using the legacy global domain ucarecdn.com\"\n\nhttps://uploadcare.com/docs/delivery/cdn/\n<img width=\"1370\" height=\"906\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/f2634530-7b32-46ba-95b3-77645dcfbbc1\" />\n\n",
+        "url": "https://github.com/monicahq/monica/issues/7918"
+    },
+    {
+        "id": 3760408308,
+        "number": 7916,
+        "title": "Inquiry regarding Korean translation contribution",
+        "state": "open",
+        "created_at": "2025-12-24T14:08:50Z",
+        "updated_at": "2025-12-24T14:08:50Z",
+        "closed_at": null,
+        "author": "jwk110388-commits",
+        "comments": 0,
+        "labels": [
+            "enhancement"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "I am a user who really enjoys using Monica CRM.\n\nI am writing to ask about Korean language support. I noticed that the Korean translation is currently unavailable or incomplete in the latest version.\n\nIf there is a translation project platform (like Crowdin or GitHub) where I can contribute, please let me know. I would be happy to help translate or review the Korean language pack to make it available for everyone.\n\nLooking forward to your reply.\n\nBest regards,",
+        "url": "https://github.com/monicahq/monica/issues/7916"
+    },
+    {
+        "id": 3751187754,
+        "number": 7915,
+        "title": "Carddav client won't fetch anything other than contact name",
+        "state": "open",
+        "created_at": "2025-12-21T14:16:14Z",
+        "updated_at": "2025-12-21T14:16:14Z",
+        "closed_at": null,
+        "author": "minatsuki",
+        "comments": 0,
+        "labels": [
+            "enhancement"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "Don't know [this is function](https://github.com/monicahq/monica/issues/2738\n) still maintained/test only or something other as I cant find in document, so sorry to list as a feature request. \n\nDescription\nI use radicale as carddav server, and want to sync contact with monica. I know vcard will only import first phone info in web ui, but with carddav sync, monica only sync/create with contact name, and set gender as vCard. No phone, no email. Another with manual sync, edit in radicale side not merge to monica, but monica to radicale works.\n\nReproduce\nthe version I use:\ndocker image: monica:5.0.0-beta.5-apache\n\ncreate sync with radicale, get \"Subscription added: some_uuid\"\n`docker exec -it monica:5.0.0-beta.5-apache-1 php artisan monica:newaddressbooksubscription --email user_in_monica@somewhere.com --url radicale.host --login radicale_username --password radicale_password --vaultId vaultid_as_user_in_monica`\n\nmanual sync without uuid `docker exec -it monica:5.0.0-beta.5-apache-1 php artisan monica:updateaddressbooksubscription won't work `will get\n\n```\n   Illuminate\\Database\\Eloquent\\ModelNotFoundException\n\n  No query results for model [App\\Models\\AddressBookSubscription].\n\n  at vendor/laravel/framework/src/Illuminate/Database/Eloquent/Builder.php:599\n    595▕             return $result;\n    596▕         }\n    597▕\n    598▕         if (is_null($result)) {\n  ➜ 599▕             throw (new ModelNotFoundException)->setModel(\n    600▕                 get_class($this->model), $id\n    601▕             );\n    602▕         }\n    603▕\n```\n\nwith some_uuid above `docker exec -it monica:5.0.0-beta.5-apache-1 php artisan monica:updateaddressbooksubscription -vvv --subscriptionId=some_uuid\n` works with no output, but as in description, sync only works one way. So will this function works in future or just something like deprecated?",
+        "url": "https://github.com/monicahq/monica/issues/7915"
+    },
+    {
+        "id": 3744542342,
+        "number": 7914,
+        "title": "CardDAV return PHOTO;VALUE=URI with line break - Breaking CardDav sync",
+        "state": "closed",
+        "created_at": "2025-12-18T19:29:00Z",
+        "updated_at": "2025-12-18T19:44:03Z",
+        "closed_at": "2025-12-18T19:44:03Z",
+        "author": "celi28",
+        "comments": 1,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### ⚠️ This issue respects the following points: ⚠️\n\n- [x] This is a **bug**, not a question or a configuration/webserver/proxy issue.\n- [x] This issue is **not** already reported on [Github](https://github.com/monicahq/monica/issues?q=is%3Aopen+is%3Aissue+label%3Abug) _(I've searched it)_.\n- [x] I agree to follow Monica's [Code of Conduct](https://github.com/monicahq/monica/blob/main/CODE_OF_CONDUCT.md).\n\n### Bug description\n\nCardDav contact server return a PHOTO;VALUE=URI with a linebreak, leading to import error\n\n### Steps to reproduce\n\n1. Setup a Monica server using docker image ver.  4.1.2\n2. Create a contact with no picture\n3. Connect to monica using CardDav\n\n### Expected behavior\n\nExpecting PHOTO;VALUE=URI without line break\n\n### Environment\n\nYour own self-hosted instance (monica v4)\n\n### Version of Monica\n\n4.1.2 - 61101814fd\n\n### Installation method\n\nDocker image\n\n### Web server\n\nApache\n\n### Database engine version\n\nMySQL\n\n### Additional info\n\nExample : \n```BEGIN:VCARD\nVERSION:3.0\nPRODID:-//Sabre//Sabre VObject 4.5.4//EN\nUID:7471cc4a-aaa7-4496-b23d-5ba2886bfbb5\nSOURCE:https://[URL REDACTED]/people/h:6ymgnO01ValXw2dGej\nFN:[NAME REDACTED]\nN:[NAME REDACTED]\nGENDER:O\nPHOTO;VALUE=URI:https://[URL REDACTED]/store/avatars/7471cc4a-aaa7-4496-b2\n 3d-5ba2886bfbb5.jpg?1765883297\nTEL;TYPE=CELL:[NAME PHONE]\nREV:20251216T110817Z\nEND:VCARD\n```\n\nYou can notice the line break in PHOTO;VALUE=URI.\n",
+        "url": "https://github.com/monicahq/monica/issues/7914"
+    },
+    {
+        "id": 3728254531,
+        "number": 7913,
+        "title": "Better \"Business\" support",
+        "state": "open",
+        "created_at": "2025-12-15T00:28:24Z",
+        "updated_at": "2025-12-15T00:28:24Z",
+        "closed_at": null,
+        "author": "jaredcat",
+        "comments": 0,
+        "labels": [
+            "enhancement"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "<!--\nThanks for filing an issue and for your interest in the project.\n\nNote: This is the **issue tracker of Monica**, please do NOT use this to get answers to your questions or get help for fixing your installation. This is a place to report bugs to developers, after your instance has been debugged.\n\nPlease note Monica is a **free and open-source** project. We take our own time to help you, so please, be patient.\n\n-->\n\n<!--- Please keep this note for other contributors -->\n\n### How to use GitHub\n\n- Please use the 👍 [reaction](https://blog.github.com/2016-03-10-add-reactions-to-pull-requests-issues-and-comments/) to show that you are interested into the same feature.\n- Please don't comment if you have no relevant information to add. It's just extra noise for everyone subscribed to this issue.\n- Subscribe to receive notifications on status change and new comments.\n\n<!--- FEATURE REQUEST: -->\n\n**Is your feature request related to a problem? Please describe.**\n\nBusiness/work pages should contain more information or, even better solution, business being their own type of contact/entity.\n\n**Describe the solution you'd like**\n\n1. Businesses should be their own type of \"contact\"\nThis can be helpful to add information about a place people might visit often. They could also tag it in memories and events. So not only linking to other people at an event but also place. This way they can review memories by location/business.\n\n2. Work contact information shouldn't be linked to a person.\nIt doesn't sit right with me, adding business information like phone or websites to a person. This person might leave that job. I still might need that \"relationship\". Now I have to manually migrate that information to a new person? It would be great if I could store the information with the business itself.\n\nThis would also enhance the work life events, letting starting/leaving a job as an optional business contact (similar to adding other types of relationships). This could also let you view all contacts that work at the same place.\n\n**Additional context**\n\nI stumbled upon this project looking to help manage business contacts and such, and it seems great, but I ran into a few things I found lacking. I started with copying information from business cards, and ideally it would be great if Monica replaced the need to hold on to these. It currently kind of struggles to do so because of lack of business/work information.\n\nAlso relates to https://github.com/monicahq/monica/issues/5774",
+        "url": "https://github.com/monicahq/monica/issues/7913"
+    },
+    {
+        "id": 3714213036,
+        "number": 7911,
+        "title": "Example \"full\" and \"full_v5\" don't go through first user registration flow on launch",
+        "state": "open",
+        "created_at": "2025-12-10T08:52:06Z",
+        "updated_at": "2025-12-10T08:53:24Z",
+        "closed_at": null,
+        "author": "komali2",
+        "comments": 0,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### ⚠️ This issue respects the following points: ⚠️\n\n- [x] This is a **bug**, not a question or a configuration/webserver/proxy issue.\n- [x] This issue is **not** already reported on [Github](https://github.com/monicahq/monica/issues?q=is%3Aopen+is%3Aissue+label%3Abug) _(I've searched it)_.\n- [x] I agree to follow Monica's [Code of Conduct](https://github.com/monicahq/monica/blob/main/CODE_OF_CONDUCT.md).\n\n### Bug description\n\nExample \"full\" and \"full_v5\" don't go through first user registration flow on launch\n\n### Steps to reproduce\n\n1. In the full_v5, or \"full\" directory of the docker repo, copy the .env, and fill out accordingly. Ensure `APP_ENV` is `production`\n2. Run `docker compose up`\n3. Navigate to whatever port the app is on\n4. Observe a normal login screen, rather than a login flow\n...\n\n\n### Expected behavior\n\nUpon loading the app for the first time, there should be a \"create new user\" login flow\n\n### Environment\n\napp.monicahq.com (monica v5)\n\n### Version of Monica\n\nfull or full_v5\n\n### Installation method\n\nDocker compose\n\n### Web server\n\nDefined by docker compose file (nginx)\n\n### Database engine version\n\nDefined by docker compose file (latest mysql)\n\n### Additional info\n\n",
+        "url": "https://github.com/monicahq/monica/issues/7911"
+    },
+    {
+        "id": 3677258276,
+        "number": 7910,
+        "title": "[Docker] \"Add Contact\" page crashes on en-US locale due to missing localization file",
+        "state": "open",
+        "created_at": "2025-11-30T01:20:24Z",
+        "updated_at": "2025-11-30T01:20:24Z",
+        "closed_at": null,
+        "author": "nathanwang16",
+        "comments": 0,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### ⚠️ This issue respects the following points: ⚠️\n\n- [x] This is a **bug**, not a question or a configuration/webserver/proxy issue.\n- [x] This issue is **not** already reported on [Github](https://github.com/monicahq/monica/issues?q=is%3Aopen+is%3Aissue+label%3Abug) _(I've searched it)_.\n- [x] I agree to follow Monica's [Code of Conduct](https://github.com/monicahq/monica/blob/main/CODE_OF_CONDUCT.md).\n\n### Bug description\n\nWhen running the Docker container with a browser locale set to en-US (English - United States), specific pages (such as the \"Add Contact\" page) fail to render form fields correctly. The browser console displays a 404 Not Found error for /lang/en-US.json. This happens because while en.json exists, the specific en-US.json file is not generated or copied during the Docker build process, causing the frontend to crash or render incompletely when it attempts to load that specific locale.\n\n### Steps to reproduce\n\n1. Run the official Monica Docker image.\n2. Set your browser's preferred language to en-US.\n3. Log in and navigate to the Add Contact page.\n4. Observe that the form fields are empty or missing labels.\n5. Open the browser developer tools (Console/Network tab) and observe a 404 error for the request to /lang/en-US.json\n\n\n### Expected behavior\n\nThe application should correctly load the English translations for en-US users (falling back to or using en.json content), and the forms should render with all fields visible and labeled.\n\n### Environment\n\nYour own self-hosted instance (v5 a.k.a chandler version or main branch)\n\n### Version of Monica\n\nv5.0.0-beta.5\n\n### Installation method\n\nDocker image\n\n### Web server\n\nApache\n\n### Database engine version\n\nMariaDB\n\n### Additional info\n\nI have verified that the issue is caused by the missing en-US.json file in the final Docker image.\nA proposed fix is to explicitly copy en.json to en-US.json during the Docker build process. I have tested this locally by modifying scripts/docker/Dockerfile and scripts/docker/Dockerfile-fpm, which resolved the issue. Should I submit a PR?",
+        "url": "https://github.com/monicahq/monica/issues/7910"
+    },
+    {
+        "id": 3644160785,
+        "number": 7908,
+        "title": "Bidirectional “Other Relationships” not syncing automatically",
+        "state": "closed",
+        "created_at": "2025-11-19T19:37:04Z",
+        "updated_at": "2026-01-12T18:15:13Z",
+        "closed_at": "2026-01-12T18:15:13Z",
+        "author": "Rafo044",
+        "comments": 2,
+        "labels": [
+            "enhancement"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "Currently, when adding an “Other Relationship” between two contacts (e.g., A is my brother, B is my brother), the reverse relationship is not automatically created. Users must manually add the reciprocal connection, which can be tedious for larger networks. This feature would improve usability by automatically syncing relationships in both directions.",
+        "url": "https://github.com/monicahq/monica/issues/7908"
+    },
+    {
+        "id": 3630166675,
+        "number": 7907,
+        "title": "Redesign Authentication Pages",
+        "state": "open",
+        "created_at": "2025-11-16T07:51:49Z",
+        "updated_at": "2025-12-06T09:11:22Z",
+        "closed_at": null,
+        "author": "Nima8FT",
+        "comments": 1,
+        "labels": [
+            "enhancement"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "Hi @djaiss , I’d like to propose a redesign of the authentication pages (login, create account, reset password, and send email) to improve visual consistency and user experience.\n\n**What I want to achieve**\n- Update the look of input fields and buttons to make the authentication pages more visually appealing.\n- Keep the user experience consistent with the rest of Monica’s design.\n\n**Why**\n- The current authentication pages look outdated and could benefit from a modern, clean design.\n- Improved UI will provide a better first impression for users.\n",
+        "url": "https://github.com/monicahq/monica/issues/7907"
+    },
+    {
+        "id": 3589848708,
+        "number": 7902,
+        "title": "No reminder emails",
+        "state": "open",
+        "created_at": "2025-11-05T08:16:43Z",
+        "updated_at": "2026-03-19T00:17:51Z",
+        "closed_at": null,
+        "author": "giuseppefiglie-wq",
+        "comments": 1,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### ⚠️ This issue respects the following points: ⚠️\n\n- [x] This is a **bug**, not a question or a configuration/webserver/proxy issue.\n- [x] This issue is **not** already reported on [Github](https://github.com/monicahq/monica/issues?q=is%3Aopen+is%3Aissue+label%3Abug) _(I've searched it)_.\n- [x] I agree to follow Monica's [Code of Conduct](https://github.com/monicahq/monica/blob/main/CODE_OF_CONDUCT.md).\n\n### Bug description\n\nHello, I use the online version of Monica. I do not get email reminders and above all the list of the day disappears so everytime I lose activites. Please help me. I have a gmail account.\n\n### Steps to reproduce\n\n1. set the reminder on the web based Monica\n2. I don't get the reminder email\n3. the reminders of the day disappear from the todo list\n...\n\n\n### Expected behavior\n\n1. set the reminder on the web based Monica\n2. get the reminder email\n3. the reminders of the day still appear from the todo list\n\n### Environment\n\napp.monicahq.com (monica v4)\n\n### Version of Monica\n\n_No response_\n\n### Installation method\n\nNone\n\n### Web server\n\nNone\n\n### Database engine version\n\nNone\n\n### Additional info\n\n_No response_",
+        "url": "https://github.com/monicahq/monica/issues/7902"
+    },
+    {
+        "id": 3560698416,
+        "number": 7901,
+        "title": "Is there a local file feature now？Without the need for uploadcare",
+        "state": "open",
+        "created_at": "2025-10-28T09:58:34Z",
+        "updated_at": "2025-10-28T09:58:34Z",
+        "closed_at": null,
+        "author": "kusen-alpha",
+        "comments": 0,
+        "labels": [
+            "enhancement"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "Is there a local file feature now？Without the need for uploadcare",
+        "url": "https://github.com/monicahq/monica/issues/7901"
+    },
+    {
+        "id": 3492093359,
+        "number": 7878,
+        "title": "Adding more documentation",
+        "state": "open",
+        "created_at": "2025-10-07T16:02:33Z",
+        "updated_at": "2025-10-07T16:02:33Z",
+        "closed_at": null,
+        "author": "onel",
+        "comments": 0,
+        "labels": [
+            "enhancement"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "Super interesting project, I would love to contribute some documentation to it if you guys are open to contributions.\n\nI see the API docs site covers some important parts so I can start with some reference docs in the code and move up from there.",
+        "url": "https://github.com/monicahq/monica/issues/7878"
+    },
+    {
+        "id": 3444949756,
+        "number": 7858,
+        "title": "Polish language",
+        "state": "open",
+        "created_at": "2025-09-23T11:47:04Z",
+        "updated_at": "2025-09-23T11:47:04Z",
+        "closed_at": null,
+        "author": "kubahaha",
+        "comments": 0,
+        "labels": [
+            "enhancement"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "Hi,\nI would like to translate the app to polish.\nCan you please configure it in Crowdin?\nThanks",
+        "url": "https://github.com/monicahq/monica/issues/7858"
+    }
+]

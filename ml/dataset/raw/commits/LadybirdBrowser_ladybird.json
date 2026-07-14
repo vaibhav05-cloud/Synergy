@@ -1,0 +1,242 @@
+[
+    {
+        "sha": "6e8de4e25e4e77825938557db42fc69b6ea7ef11",
+        "author": "Andreas Kling",
+        "email": "andreas@ladybird.org",
+        "date": "2026-07-13T23:12:03Z",
+        "message": "LibWeb: Separate in-flow bounds from scrollable overflow\n\nTrack in-flow content independently when adding a scroll container’s\nend padding. Out-of-flow boxes and propagated visible overflow have\nalready extended the scrollable overflow area and must not receive the\ncontainer padding a second time.\n\nAdd coverage for positioned content at and beyond the padding edge, and\ncorrect the existing in-flow padding expectation.",
+        "url": "https://github.com/LadybirdBrowser/ladybird/commit/6e8de4e25e4e77825938557db42fc69b6ea7ef11"
+    },
+    {
+        "sha": "6d92dff9564b95e1d3b38b7e63dd48bd3ba59e15",
+        "author": "Andreas Kling",
+        "email": "andreas@ladybird.org",
+        "date": "2026-07-13T22:59:11Z",
+        "message": "LibWeb: Preserve text input size after table normalization\n\nUse the text control default preferred size when table display\nnormalization causes an appearance:none input to enter replaced sizing.\nOtherwise its automatic height falls through to the generic 150px\nreplaced-element fallback.\n\nAdd regression coverage comparing normalized table-cell and block text\ninputs.",
+        "url": "https://github.com/LadybirdBrowser/ladybird/commit/6d92dff9564b95e1d3b38b7e63dd48bd3ba59e15"
+    },
+    {
+        "sha": "0806d5538a11db54cef60bcef1582c42b075e743",
+        "author": "Andreas Kling",
+        "email": "andreas@ladybird.org",
+        "date": "2026-07-14T08:02:40Z",
+        "message": "UI/Qt: Cascade popups without explicit coordinates\n\nUse the regular new-window cascade position for each coordinate that\nwindow.open() leaves unspecified. Preserve explicitly requested popup\ncoordinates and existing popup sizing behavior.",
+        "url": "https://github.com/LadybirdBrowser/ladybird/commit/0806d5538a11db54cef60bcef1582c42b075e743"
+    },
+    {
+        "sha": "1ef3389c3dd135b9f56de97c34ef2c920c484eae",
+        "author": "Andreas Kling",
+        "email": "andreas@ladybird.org",
+        "date": "2026-07-14T07:29:23Z",
+        "message": "UI/Qt: Recreate web view when detaching tabs\n\nNotify the QRhiWidget that its window is changing before destroying its\nnative surface. This releases its resources and unregisters the cleanup\ncallback from the source window RHI before that window is destroyed.\n\nRecreate the surface after adoption and keep new detached windows hidden\nuntil the recreated view is installed, letting Qt configure the backing\nstore before first exposure.",
+        "url": "https://github.com/LadybirdBrowser/ladybird/commit/1ef3389c3dd135b9f56de97c34ef2c920c484eae"
+    },
+    {
+        "sha": "b5be6ec9806a62218830aa7309c24892672dfd97",
+        "author": "Andreas Kling",
+        "email": "andreas@ladybird.org",
+        "date": "2026-07-14T07:18:54Z",
+        "message": "UI/Qt: Open external URLs outside private windows\n\nRoute QFileOpenEvent requests to a non-private browser window.\nUse the active normal window first, then reuse any normal window. Create\none when only private windows exist.",
+        "url": "https://github.com/LadybirdBrowser/ladybird/commit/b5be6ec9806a62218830aa7309c24892672dfd97"
+    },
+    {
+        "sha": "c1280c4011b7f80028d8a7feea262e9668eb7a1c",
+        "author": "Andreas Kling",
+        "email": "andreas@ladybird.org",
+        "date": "2026-07-14T07:12:59Z",
+        "message": "UI/Qt: Focus web view after activating bookmarks\n\nReturn focus to the active tab after a bookmark action starts loading.\nThis ends omnibox editing and keeps the bookmark URL visible. Bookmark\nactions from both the menu and bookmarks bar share this path.",
+        "url": "https://github.com/LadybirdBrowser/ladybird/commit/c1280c4011b7f80028d8a7feea262e9668eb7a1c"
+    },
+    {
+        "sha": "200606ec83419d85eeed76cf5c299d679b99a3cd",
+        "author": "Andreas Kling",
+        "email": "andreas@ladybird.org",
+        "date": "2026-07-14T06:42:26Z",
+        "message": "LibWeb: Clear text selection after clicking within it\n\nPreserve an existing selection on mouse-down so macOS can begin a text\ndrag or dictionary lookup. When an uncancelled mouseup occurs at the\noriginal position, clear a document selection or collapse an editable\nselection to the clicked caret position.\n\nThis follows Blink and WebKit for non-editable content. Gecko likewise\ndefers the selection change until mouseup, but collapses non-editable\nselections to a caret.\n\nCover completed primary clicks and cancelled mouseup events.",
+        "url": "https://github.com/LadybirdBrowser/ladybird/commit/200606ec83419d85eeed76cf5c299d679b99a3cd"
+    },
+    {
+        "sha": "d6e364048b7d9245a89c257804166c4590f464b3",
+        "author": "Andreas Kling",
+        "email": "andreas@ladybird.org",
+        "date": "2026-07-13T21:27:44Z",
+        "message": "LibWeb: Resolve user-select values without layout nodes\n\nResolve user-select used values from DOM computed styles and style\ninheritance ancestry so display: contents elements participate in the\nselection algorithm even though they do not generate layout nodes.\n\nUse DOM boundary points when clamping selections. A boxless ancestor can\notherwise turn a pre-order position before a control into one after it.\n\nCover none, all, contain, nested auto, controls, and slotted content\nacross boxless ancestors.",
+        "url": "https://github.com/LadybirdBrowser/ladybird/commit/d6e364048b7d9245a89c257804166c4590f464b3"
+    },
+    {
+        "sha": "832e181a7a00cde3e9d0d24854b6d9e95c7ec4db",
+        "author": "Andreas Kling",
+        "email": "andreas@ladybird.org",
+        "date": "2026-07-14T00:12:58Z",
+        "message": "UI/Qt: Offset native macOS window controls\n\nAppKit lays out the standard window controls after Qt creates the native\nsurface, leaving them misaligned with Ladybird's taller tab strip.\n\nObserve frame changes from the native titlebar layout and reapply a\nsix-point offset after AppKit finishes laying out the controls.",
+        "url": "https://github.com/LadybirdBrowser/ladybird/commit/832e181a7a00cde3e9d0d24854b6d9e95c7ec4db"
+    },
+    {
+        "sha": "d8e9b8b1e7d7f1353c77bec1ddd21d571f344612",
+        "author": "Aliaksandr Kalenik",
+        "email": "kalenik.aliaksandr@gmail.com",
+        "date": "2026-07-14T00:25:10Z",
+        "message": "LibWeb: Honor IDL nonces on inline style elements\n\nStyle element CSP checks required the nonce content attribute before\ncomparing its internal value. Unlike scripts, Chromium and Gecko pass\na style element's internal nonce directly to CSP, which matters when\nscript sets HTMLStyleElement.nonce because that setter intentionally\ndoes not create a content attribute.\n\nRestrict this interoperability behavior to HTML and SVG style elements\nwhile retaining nonceability checks for scripts. Add a regression test\nfor a dynamically inserted style whose nonce is set through the IDL\nproperty.",
+        "url": "https://github.com/LadybirdBrowser/ladybird/commit/d8e9b8b1e7d7f1353c77bec1ddd21d571f344612"
+    },
+    {
+        "sha": "132cf4d686ef6121d1749799286cc18702347bbe",
+        "author": "Andreas Kling",
+        "email": "andreas@ladybird.org",
+        "date": "2026-07-13T13:07:18Z",
+        "message": "LibWeb: Store Web platform strings as UTF-16\n\nMove DOM and HTML text, Web-facing APIs, parser and URL plumbing, CSS\nand ARIA serialization, generated bindings, and IPC boundaries to\nUTF-16.\n\nAdd borrowed UTF-16 paths where ownership is unnecessary, keep byte\nconversions explicit at system boundaries, and update tests and\nutilities for the new representation.",
+        "url": "https://github.com/LadybirdBrowser/ladybird/commit/132cf4d686ef6121d1749799286cc18702347bbe"
+    },
+    {
+        "sha": "77493ee60bee1b7a0947e7373d44d052adca0baa",
+        "author": "Andreas Kling",
+        "email": "andreas@ladybird.org",
+        "date": "2026-07-13T23:24:21Z",
+        "message": "UI: Distinguish profiles with Dock icon badges\n\nShare one Cocoa badge renderer between the Qt and AppKit frontends on\nmacOS. Keep the standard icon for the default profile and overlay a\nlarger badge on other profiles using a curated Ladybird-adjacent color\npalette and up to the first three characters of the profile name.",
+        "url": "https://github.com/LadybirdBrowser/ladybird/commit/77493ee60bee1b7a0947e7373d44d052adca0baa"
+    },
+    {
+        "sha": "f117cfbae704ccd38395b080994c0f6b01b3afe2",
+        "author": "Andreas Kling",
+        "email": "andreas@ladybird.org",
+        "date": "2026-07-13T21:36:32Z",
+        "message": "LibWeb: Place text control carets from padding clicks\n\nGoogle's search field uses a one-line textarea with generous padding.\nClicking that padding left the caret unchanged because the initial hit\ntest did not resolve against the text in its user-agent shadow tree.\n\nConstrain initial caret hit testing to a focused text control's internal\nselection scope. Resolve points beyond a line's inline bounds to the\nlogical line edge, taking reversed inline axes into account.\n\nAdd regression coverage for input and textarea padding on every side in\nLTR and RTL controls.",
+        "url": "https://github.com/LadybirdBrowser/ladybird/commit/f117cfbae704ccd38395b080994c0f6b01b3afe2"
+    },
+    {
+        "sha": "9744e83a7e0cf3c8ef58729f345c3ebd5f3b5063",
+        "author": "Andreas Kling",
+        "email": "andreas@ladybird.org",
+        "date": "2026-07-13T17:56:36Z",
+        "message": "UI/AppKit: Isolate saved window frames by profile\n\nKey AppKit window frame persistence by the canonical profile identity so\nprofiles cannot observe each other's saved window positions. Avoid all\nwindow state persistence for temporary profiles.",
+        "url": "https://github.com/LadybirdBrowser/ladybird/commit/9744e83a7e0cf3c8ef58729f345c3ebd5f3b5063"
+    },
+    {
+        "sha": "257d3557d0da2f9e2b99a239558ae3e2aa1234a3",
+        "author": "Andreas Kling",
+        "email": "andreas@ladybird.org",
+        "date": "2026-07-13T18:16:09Z",
+        "message": "LibWebView: Isolate browser state by profile\n\nSelect the profile before opening persistent state or launching helpers.\nRoute settings, bookmarks, databases, HTTP and Alt-Svc caches, and Skia\ncaches through explicit paths shared with the sandbox allowlists. Keep\nAndroid on its existing private layout without exposing profile CLI.\n\nUse a startup lock and per-profile endpoints to coordinate ownership.\nForward URLs before opening stores. Retain --force-new-process as a\ndeprecated temporary-profile alias.\n\nTest isolation of settings, bookmarks, databases, and HTTP cache entries\nbetween profiles.",
+        "url": "https://github.com/LadybirdBrowser/ladybird/commit/257d3557d0da2f9e2b99a239558ae3e2aa1234a3"
+    },
+    {
+        "sha": "eb54bb5bb5b25db6edec66ec5c0a0ce676eedbd1",
+        "author": "Andreas Kling",
+        "email": "andreas@ladybird.org",
+        "date": "2026-07-13T18:22:42Z",
+        "message": "Meta: Add profile migration tool\n\nProvide a one-time macOS and Linux tool that copies unsuffixed Ladybird\nconfiguration and data into the default profile while leaving the source\nintact. Exclude existing profiles and cached data. Refuse to overwrite a\npopulated destination.",
+        "url": "https://github.com/LadybirdBrowser/ladybird/commit/eb54bb5bb5b25db6edec66ec5c0a0ce676eedbd1"
+    },
+    {
+        "sha": "4954ea311bfe0ce0a0f109ccc8c5a1fdbfc421cc",
+        "author": "Andreas Kling",
+        "email": "andreas@ladybird.org",
+        "date": "2026-07-13T17:50:04Z",
+        "message": "LibWebView: Add browser profile path resolver\n\nIntroduce the final profile layout with a stable named default profile.\nSupport named, custom-path, and temporary alternatives. Validate each\nselector and canonicalize routing identities. Create private directories\nand remove temporary profiles when their owner is destroyed.\n\nCover profile naming, layouts, selector validation, routing identity and\ntemporary-profile cleanup.",
+        "url": "https://github.com/LadybirdBrowser/ladybird/commit/4954ea311bfe0ce0a0f109ccc8c5a1fdbfc421cc"
+    },
+    {
+        "sha": "aa947a71a25aeaeb54d6f188774863e1484382fa",
+        "author": "Aliaksandr Kalenik",
+        "email": "kalenik.aliaksandr@gmail.com",
+        "date": "2026-07-11T22:26:06Z",
+        "message": "LibWeb: Simplify text fragment iteration over flat inline storage\n\nTextOffsetMapping still searches the paintable subtree for the per-line\ninline paintables that used to hold a text node's fragments. All\nfragments of a text node now live on its containing block's\nPaintableWithLines in line order, so scan that flat list directly.",
+        "url": "https://github.com/LadybirdBrowser/ladybird/commit/aa947a71a25aeaeb54d6f188774863e1484382fa"
+    },
+    {
+        "sha": "1f35784066cf3245c55d6f843eb577795debf599",
+        "author": "Aliaksandr Kalenik",
+        "email": "kalenik.aliaksandr@gmail.com",
+        "date": "2026-07-11T22:23:50Z",
+        "message": "LibWeb: Store a single paintable pointer on Layout::Node\n\nEvery layout node now has at most one paintable, but Layout::Node still\ncarries a DoublyLinkedList of them, callers still loop over it, and the\nabsolute_united_* rect helpers still exist only to merge a fragmented\ninline's per-line paintables into one rect.\n\nCollapse the list to a plain RefPtr and delete the united-rect helpers,\nwhich by now return exactly what the plain absolute rect getters return.\nNo functional change; the full test suite passes without a single\nexpectation update.",
+        "url": "https://github.com/LadybirdBrowser/ladybird/commit/1f35784066cf3245c55d6f843eb577795debf599"
+    },
+    {
+        "sha": "fc5fba3513fa2059a72571b08a1b97cbedfa9daf",
+        "author": "Aliaksandr Kalenik",
+        "email": "kalenik.aliaksandr@gmail.com",
+        "date": "2026-07-11T22:15:35Z",
+        "message": "LibWeb: Store inline content flat on the block and add InlinePaintable\n\nA wrapped inline box owns one paintable per line it spans, so\nLayoutState::commit() stitches the paint tree together in fragile\norder-dependent passes, fragmented inlines never hit the paintable reuse\ncache, and a wrapped opacity span composites per line instead of once.\n\nNow the block establishing the inline formatting context owns all its\ninline content in flat line-ordered vectors, and each fragmented inline\nbox becomes a single fragment-less InlinePaintable whose geometry comes\nfrom the pieces computed during inline layout. commit() is reduced to a\nplain transfer, and inline paintables become 1:1 with layout nodes and\ncacheable like every other paintable.\n\nThis fixes bugs the old model could not express, among them sliced edges\non the wrong physical sides in rtl and vertical text, padding never\nsliced at wrap boundaries, carets stuck inside positioned inline boxes,\nand unclickable empty editable inline boxes. Every behavior change is\npinned by a preparation-commit test or a rebaselined expectation.",
+        "url": "https://github.com/LadybirdBrowser/ladybird/commit/fc5fba3513fa2059a72571b08a1b97cbedfa9daf"
+    },
+    {
+        "sha": "7055cc8a37e5ab8b328a4f08db656dae2eb29296",
+        "author": "Aliaksandr Kalenik",
+        "email": "kalenik.aliaksandr@gmail.com",
+        "date": "2026-07-11T21:24:39Z",
+        "message": "LibWeb: Compute inline box pieces during inline layout\n\nWhich sides of a wrapped inline box's border and padding appear on each\nline is guessed at LayoutState::commit() time, by comparing which layout\nnode ends one line and starts the next. The guess breaks when a box's\ncontent spans several text nodes or is interrupted by a block-in-inline,\nand it cannot place sliced edges on the correct physical sides for rtl\nand vertical writing modes.\n\nInline layout is where a box's true first and last content fragment are\nknown, so compute one InlineBoxPiece per fragmented box and line there,\nafter all fragment-mutating line passes: a border-box rect plus the\nphysical edges that piece carries. The output is stored on the\nformatting context root and is unused for now; the upcoming rework\nswitches painting over to it.",
+        "url": "https://github.com/LadybirdBrowser/ladybird/commit/7055cc8a37e5ab8b328a4f08db656dae2eb29296"
+    },
+    {
+        "sha": "57cf4680625d4ea9da2d2ff4639255db25d16b96",
+        "author": "Aliaksandr Kalenik",
+        "email": "kalenik.aliaksandr@gmail.com",
+        "date": "2026-07-11T21:14:39Z",
+        "message": "LibWeb: Prepare paint helpers and tests for inline fragment rework\n\nBackgrounds, borders, box shadows and outlines can only be painted at a\npaintable's own absolute rect, but the upcoming rework of fragmented\ninline boxes needs to paint each of them once per line piece. Split the\npaint helpers into rect-parameterized variants now, so the rework does\nnot have to duplicate their logic.\n\nBehavior around fragmented inlines (hit testing, carets, client rects,\nstacking contexts, border slicing, visibility) is also barely covered by\ntests, so the rework could regress it silently. Pin the current behavior\ndown with regression tests first, so the rework's intentional changes\nsurface as reviewable expectation updates. No behavior change in this\ncommit.",
+        "url": "https://github.com/LadybirdBrowser/ladybird/commit/57cf4680625d4ea9da2d2ff4639255db25d16b96"
+    },
+    {
+        "sha": "48c2308a7ea42173b7252369db4fc8f18c3cd0f7",
+        "author": "sideshowbarker",
+        "email": "mike@w3.org",
+        "date": "2026-07-13T05:04:19Z",
+        "message": "Docs: Clarify note about Kitware’s apt repository\n\nFixes https://github.com/LadybirdBrowser/ladybird/issues/10402",
+        "url": "https://github.com/LadybirdBrowser/ladybird/commit/48c2308a7ea42173b7252369db4fc8f18c3cd0f7"
+    },
+    {
+        "sha": "e42f144c4f087e7d30070911948ad347fea748dc",
+        "author": "Andreas Kling",
+        "email": "andreas@ladybird.org",
+        "date": "2026-07-13T14:52:46Z",
+        "message": "LibWeb: Dispatch form control events synchronously\n\nBlink, WebKit, and Gecko notify script in the same stack after a user\ninteraction changes a form control. Queuing these events lets controlled\ncomponents restore stale state before observing the new value.\n\nDispatch input synchronously for all user-driven input value changes.\nSend commit-time change and file picker cancel notifications in the same\nstack. Keep intentionally scheduled selection events unchanged.",
+        "url": "https://github.com/LadybirdBrowser/ladybird/commit/e42f144c4f087e7d30070911948ad347fea748dc"
+    },
+    {
+        "sha": "5a466f8ffdb27f936d1294cc4f1bbb9517afa1f2",
+        "author": "Andreas Kling",
+        "email": "andreas@ladybird.org",
+        "date": "2026-07-13T14:34:11Z",
+        "message": "LibWeb: Test form control event ordering\n\nModel controlled range and text controls that render their last\nevent-observed values immediately after user interaction. This captures\nthe remaining delayed input notifications without timing dependencies.\n\nAlso cover change delivery when a textarea loses focus.",
+        "url": "https://github.com/LadybirdBrowser/ladybird/commit/5a466f8ffdb27f936d1294cc4f1bbb9517afa1f2"
+    },
+    {
+        "sha": "26189d33a7638e8269113ebb47ab7d09e472c77c",
+        "author": "Andreas Kling",
+        "email": "andreas@ladybird.org",
+        "date": "2026-07-13T12:39:02Z",
+        "message": "LibWeb: Dispatch text control input events synchronously\n\nHTML specifies queued input event delivery for text controls, but Blink,\nWebKit, and Gecko dispatch the event synchronously after each edit.\nDeferring it lets a controlled component restore stale state before its\ninput handler observes the newest value, which can swallow rapid edits.\n\nDispatch input synchronously for input and textarea text editing while\nleaving other form control interactions queued. Update event ordering\nexpectations and cover the controlled-render scenario without timing.",
+        "url": "https://github.com/LadybirdBrowser/ladybird/commit/26189d33a7638e8269113ebb47ab7d09e472c77c"
+    },
+    {
+        "sha": "d895b1daeac9e77e5437eba4d3a7301cc4526b3b",
+        "author": "Andreas Kling",
+        "email": "andreas@ladybird.org",
+        "date": "2026-07-13T12:37:19Z",
+        "message": "LibWeb: Test text control input event ordering\n\nModel a controlled text input that renders its last event-observed value\nimmediately after an edit. This deterministically captures the delayed\ninput notification without relying on timers or scheduling delays.\n\nCover input and textarea controls, including the observable ordering\nof beforeinput, textInput, and input.",
+        "url": "https://github.com/LadybirdBrowser/ladybird/commit/d895b1daeac9e77e5437eba4d3a7301cc4526b3b"
+    },
+    {
+        "sha": "770ac61f3130041c8e17bc35b40ec3eac2402793",
+        "author": "sideshowbarker",
+        "email": "mike@w3.org",
+        "date": "2026-05-27T08:56:39Z",
+        "message": "Tests: Drop unstable counters from :has() sibling combinator test\n\nProblem: The has-sibling-combinator-non-subject.html test occasionally\nfails on CI in the first case (“adjacent match stops after plain element\ninserted between operands”). styleInvalidations drifts from the expected\n3 up to 5 under concurrent test scheduling. Cases 2–24 are stable.\n\nCause: The styleInvalidations counter is cache-warmth-dependent for\nthe first case in the run — same pattern PR #9642 addressed for the\nhas-concrete-structural-triggers.\n\nFix: Add an omitAllCounters per-case option to the runSiblingHasCase\nhelper, and opt the first case in. Drop the counter trailer from that\ncase’s PASS line; the RESULT line preceding it still records initial/\nafter/expected — so the test still verifies correctness. It just no\nlonger over-specifies counts that are cache-warmth-dependent.",
+        "url": "https://github.com/LadybirdBrowser/ladybird/commit/770ac61f3130041c8e17bc35b40ec3eac2402793"
+    },
+    {
+        "sha": "139d6012fe15da61e449a3ad325fb218d2a83e9a",
+        "author": "Jelle Raaijmakers",
+        "email": "jelle@ladybird.org",
+        "date": "2026-07-13T10:12:42Z",
+        "message": "LibWeb: Prevent quadratic insertion performance in parser\n\nThe parser was calling into `TreeNode::child_count()` in order to append\nnew nodes, but we don't need to do that - we can use a sentinel value to\nindicate we want to append and modify the behavior of `NodeAndOffset`\nslightly so it returns the expected values in its API.\n\nThis results in us being able to run WPT's encoding tests significantly\nfaster; I'm seeing upwards of 10x runtime reductions on specific\n`encoding` tests on my machine.",
+        "url": "https://github.com/LadybirdBrowser/ladybird/commit/139d6012fe15da61e449a3ad325fb218d2a83e9a"
+    },
+    {
+        "sha": "38f338a469e33ffde57790c63135ebc964a3cc50",
+        "author": "Jelle Raaijmakers",
+        "email": "jelle@ladybird.org",
+        "date": "2026-07-13T09:49:34Z",
+        "message": "Tests/LibWeb: Make `setTestTimeout()` always set a new timeout\n\nThe old behavior only set a new timeout if it was larger than the\nconfigured test timeout. This is both pretty confusing for an API called\n`setTestTimeout()` _and_ was already causing no-ops for tests trying to\nreduce their timeouts.\n\nThe new behavior always restarts the timeout timer and allows tests to\neither extend or reduce their timeout. This does mean that tests could\nrepeatedly call this to indefinitely extend their timeout, but it seems\nunlikely that we would write and accept such a test, and the overall\ntesting and/or job timeout will still catch such a mistake at the end.",
+        "url": "https://github.com/LadybirdBrowser/ladybird/commit/38f338a469e33ffde57790c63135ebc964a3cc50"
+    }
+]

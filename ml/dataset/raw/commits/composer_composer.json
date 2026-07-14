@@ -1,0 +1,242 @@
+[
+    {
+        "sha": "1f54358cf86f316ac92a4ddc56ea9ce027480c1f",
+        "author": "Brad Jorsch",
+        "email": "anomiex@users.noreply.github.com",
+        "date": "2026-07-10T07:27:41Z",
+        "message": "Avoid a race condition in `ensureDirectoryExists` (#12977)\n\nIf multiple processes are running at once, it's possible that one might\ncreate a directory somewhere in between when another tests `!is_dir()`\nand when it tries `mkdir()`.\n\nHandle this situation by re-testing `is_dir()` if `mkdir()` fails, and\ntreating it as a success if the directory now exists.\n\nFixes #12976",
+        "url": "https://github.com/composer/composer/commit/1f54358cf86f316ac92a4ddc56ea9ce027480c1f"
+    },
+    {
+        "sha": "f1d3ad1aeff8f4905413681392136636a3128792",
+        "author": "dependabot[bot]",
+        "email": "49699333+dependabot[bot]@users.noreply.github.com",
+        "date": "2026-07-10T07:11:52Z",
+        "message": "Bump actions/attest from 4.1.0 to 4.1.1 (#12979)\n\nBumps [actions/attest](https://github.com/actions/attest) from 4.1.0 to 4.1.1.\n- [Release notes](https://github.com/actions/attest/releases)\n- [Changelog](https://github.com/actions/attest/blob/main/RELEASE.md)\n- [Commits](https://github.com/actions/attest/compare/59d89421af93a897026c735860bf21b6eb4f7b26...a1948c3f048ba23858d222213b7c278aabede763)\n\n---\nupdated-dependencies:\n- dependency-name: actions/attest\n  dependency-version: 4.1.1\n  dependency-type: direct:production\n  update-type: version-update:semver-patch\n...\n\nSigned-off-by: dependabot[bot] <support@github.com>\nCo-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>",
+        "url": "https://github.com/composer/composer/commit/f1d3ad1aeff8f4905413681392136636a3128792"
+    },
+    {
+        "sha": "8fbad13554162188f900ff149454932500d508a8",
+        "author": "Dimas Febri",
+        "email": "149291944+dimasfeb19@users.noreply.github.com",
+        "date": "2026-07-06T08:37:41Z",
+        "message": "Clarify the limitations of pinning an explicit commit reference (#12965)\n\nSpell out what the dev-master#<ref> syntax does and does not do: the\npackage metadata is read from the branch HEAD rather than the pinned\ncommit, and the override is only reliable for source installs. Closes #12964",
+        "url": "https://github.com/composer/composer/commit/8fbad13554162188f900ff149454932500d508a8"
+    },
+    {
+        "sha": "8624fd5066c8263df29689b314efbdd830946582",
+        "author": "dependabot[bot]",
+        "email": "49699333+dependabot[bot]@users.noreply.github.com",
+        "date": "2026-07-03T13:46:54Z",
+        "message": "Bump actions/cache from 5.0.5 to 6.1.0 (#12970)\n\nBumps [actions/cache](https://github.com/actions/cache) from 5.0.5 to 6.1.0.\n- [Release notes](https://github.com/actions/cache/releases)\n- [Changelog](https://github.com/actions/cache/blob/main/RELEASES.md)\n- [Commits](https://github.com/actions/cache/compare/27d5ce7f107fe9357f9df03efb73ab90386fccae...55cc8345863c7cc4c66a329aec7e433d2d1c52a9)\n\n---\nupdated-dependencies:\n- dependency-name: actions/cache\n  dependency-version: 6.1.0\n  dependency-type: direct:production\n  update-type: version-update:semver-major\n...\n\nSigned-off-by: dependabot[bot] <support@github.com>\nCo-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>",
+        "url": "https://github.com/composer/composer/commit/8624fd5066c8263df29689b314efbdd830946582"
+    },
+    {
+        "sha": "cfe63554d2e62aa3f25a9bf75474414bab13c914",
+        "author": "dependabot[bot]",
+        "email": "49699333+dependabot[bot]@users.noreply.github.com",
+        "date": "2026-07-03T10:24:45Z",
+        "message": "Bump zizmorcore/zizmor-action from 0.5.6 to 0.5.7 (#12969)\n\nBumps [zizmorcore/zizmor-action](https://github.com/zizmorcore/zizmor-action) from 0.5.6 to 0.5.7.\n- [Release notes](https://github.com/zizmorcore/zizmor-action/releases)\n- [Commits](https://github.com/zizmorcore/zizmor-action/compare/5f14fd08f7cf1cb1609c1e344975f152c7ee938d...192e21d79ab29983730a13d1382995c2307fbcaa)\n\n---\nupdated-dependencies:\n- dependency-name: zizmorcore/zizmor-action\n  dependency-version: 0.5.7\n  dependency-type: direct:production\n  update-type: version-update:semver-patch\n...\n\nSigned-off-by: dependabot[bot] <support@github.com>\nCo-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>",
+        "url": "https://github.com/composer/composer/commit/cfe63554d2e62aa3f25a9bf75474414bab13c914"
+    },
+    {
+        "sha": "ada25562204b42254adae2404eb0894a718e2bde",
+        "author": "Jordi Boggiano",
+        "email": "j.boggiano@seld.be",
+        "date": "2026-07-03T09:00:57Z",
+        "message": "Fix forgejo driver to handle empty repos better (#12968)",
+        "url": "https://github.com/composer/composer/commit/ada25562204b42254adae2404eb0894a718e2bde"
+    },
+    {
+        "sha": "c6c9144f1b75918cab654e8a15d3dd74c7f4af8d",
+        "author": "Jordi Boggiano",
+        "email": "j.boggiano@seld.be",
+        "date": "2026-07-02T09:16:01Z",
+        "message": "Add missing exts to the requirements",
+        "url": "https://github.com/composer/composer/commit/c6c9144f1b75918cab654e8a15d3dd74c7f4af8d"
+    },
+    {
+        "sha": "118acf3cb5304c552b4bda270b61cbe6f11581b4",
+        "author": "Jordi Boggiano",
+        "email": "j.boggiano@seld.be",
+        "date": "2026-07-02T08:30:34Z",
+        "message": "Fix/ignore MB_ONIGURUMA_VERSION deprecation, fixes #12967",
+        "url": "https://github.com/composer/composer/commit/118acf3cb5304c552b4bda270b61cbe6f11581b4"
+    },
+    {
+        "sha": "15352a5938b042683b390e0724ff4ba228deeb9e",
+        "author": "Jordi Boggiano",
+        "email": "j.boggiano@seld.be",
+        "date": "2026-07-01T09:24:45Z",
+        "message": "Reverting release version changes",
+        "url": "https://github.com/composer/composer/commit/15352a5938b042683b390e0724ff4ba228deeb9e"
+    },
+    {
+        "sha": "8d4439f572a97670a9edc039eb3b093cc976b4bc",
+        "author": "Jordi Boggiano",
+        "email": "j.boggiano@seld.be",
+        "date": "2026-07-01T09:24:45Z",
+        "message": "Release 2.10.2",
+        "url": "https://github.com/composer/composer/commit/8d4439f572a97670a9edc039eb3b093cc976b4bc"
+    },
+    {
+        "sha": "79d92f047ddbaa91fc5f193d17df2cfcddbf2d7e",
+        "author": "Jordi Boggiano",
+        "email": "j.boggiano@seld.be",
+        "date": "2026-07-01T09:23:37Z",
+        "message": "Update changelog",
+        "url": "https://github.com/composer/composer/commit/79d92f047ddbaa91fc5f193d17df2cfcddbf2d7e"
+    },
+    {
+        "sha": "8887ad76fbd830cb1861a2b1fd8ead78ed1fa1ec",
+        "author": "Jordi Boggiano",
+        "email": "j.boggiano@seld.be",
+        "date": "2026-07-01T08:54:03Z",
+        "message": "Merge commit from fork\n\n* Sanitize URL-embedded usernames/tokens in verbose output\n\nAuthHelper::addAuthenticationOptions() wrote the HTTP-Basic username\nverbatim to the -vvv debug log. When a token is embedded in the URL user\nslot (e.g. https://ghp_TOKEN@host/...), it leaked in plaintext.\n\nUrl::sanitize() and ProcessExecutor only matched the user:password@ form,\nso the documented user@ (no-password) form was not sanitized either.\n\nConsolidate the masking decision into Url::sanitizeUsername(): GitHub\ntokens and long hex strings keep only their first 3 chars, other 12char+\nvalues keep their first 8, short values and well-known non-secret markers\n(x-token-auth, gitlab-ci-token, ...) are shown verbatim. The marker list\nis now a shared Url::NON_SECRET_CREDENTIALS constant reused by\nGit::maskCredentials. AuthHelper's basic-auth display now runs through it.\n\n* Mask long (12char+) usernames to first 3 chars too\n\nPreviously non-token 12char+ usernames kept their first 8 chars while\nGitHub tokens kept only 3. Treat both the same: keep only the first 3\nchars. The two branches now collapse into one condition.",
+        "url": "https://github.com/composer/composer/commit/8887ad76fbd830cb1861a2b1fd8ead78ed1fa1ec"
+    },
+    {
+        "sha": "502c6c4f699802d9cf464728b3e8a95674f919a0",
+        "author": "Jordi Boggiano",
+        "email": "j.boggiano@seld.be",
+        "date": "2026-07-01T08:52:49Z",
+        "message": "Merge commit from fork\n\n* Validate resolved packages before locking (GHSA-499r-g7pc-vmp9)\n\nAdd ValidatingArrayLoader::validatePackage() and call it from\nLockTransaction::setResultPackages() so every package coming out of the\nsolver is re-checked before it is written to / installed from composer.lock.\n\nPackages served by a repository are loaded via the non-validating\nArrayLoader, so the name and source/dist url+reference checks done in\nload() never run on them. This re-applies the security-sensitive subset of\nthose checks at the lock transaction (hit by both update and install),\nguarding against malicious package names and \"-\"-prefixed urls/references\nthat could be interpreted as command-line options (argument injection).\n\nTest fixtures in SolverTest/InstallerTest that used shorthand package names\n(A, B, ...) are renamed to valid vendor/name form so they pass validation.\n\n* Validate package bin paths against path traversal (GHSA-gjfg-22fp-rrxx)\n\nReject bin entries containing \"..\" path segments in both\nValidatingArrayLoader::load() (so packagist.org and `composer validate`\nflag them at publish time) and ValidatingArrayLoader::validatePackage()\n(so every resolved package is re-checked before it is written to or\ninstalled from the lock file, on both update and install).\n\nWithout this a dependency's bin entry such as \"../../../../etc/shadow\"\nmakes BinaryInstaller resolve a path outside the package directory and\nchmod(0777 & ~umask()) an arbitrary host file during composer install.",
+        "url": "https://github.com/composer/composer/commit/502c6c4f699802d9cf464728b3e8a95674f919a0"
+    },
+    {
+        "sha": "145e74d325f8e3431cc3230e2fcb5602caef84e4",
+        "author": "Jordi Boggiano",
+        "email": "j.boggiano@seld.be",
+        "date": "2026-06-30T11:38:01Z",
+        "message": "Update deps",
+        "url": "https://github.com/composer/composer/commit/145e74d325f8e3431cc3230e2fcb5602caef84e4"
+    },
+    {
+        "sha": "e42b4f1215fcd72d4e83b7bb60a275689f45507c",
+        "author": "Dimas Febri",
+        "email": "149291944+dimasfeb19@users.noreply.github.com",
+        "date": "2026-07-01T07:51:34Z",
+        "message": "Retry downloads failing with HTTP 400 on a fresh connection (#12962)\n\nWhen a request is retried it now opens a new connection instead of potentially re-using a kept-alive one from the pool, which may itself be the cause of the failure. The 400 status code is also added to the list of retryable codes, as codeload.github.com has been intermittently returning it on reused connections while the same URL downloads fine over a fresh connection.\n\nFixes #12958",
+        "url": "https://github.com/composer/composer/commit/e42b4f1215fcd72d4e83b7bb60a275689f45507c"
+    },
+    {
+        "sha": "8c3eba87d24bbdcdaaf8f5c42391de20fd8ed6b1",
+        "author": "Jordi Boggiano",
+        "email": "j.boggiano@seld.be",
+        "date": "2026-06-30T08:57:14Z",
+        "message": "Add basic command level telemetry (#12952)",
+        "url": "https://github.com/composer/composer/commit/8c3eba87d24bbdcdaaf8f5c42391de20fd8ed6b1"
+    },
+    {
+        "sha": "c5f92a0ea9491c9d7e77759d565aaf0c958f2c8f",
+        "author": "dependabot[bot]",
+        "email": "49699333+dependabot[bot]@users.noreply.github.com",
+        "date": "2026-06-29T15:38:47Z",
+        "message": "Bump actions/checkout from 6.0.3 to 7.0.0 (#12949)\n\nBumps [actions/checkout](https://github.com/actions/checkout) from 6.0.3 to 7.0.0.\n- [Release notes](https://github.com/actions/checkout/releases)\n- [Changelog](https://github.com/actions/checkout/blob/main/CHANGELOG.md)\n- [Commits](https://github.com/actions/checkout/compare/df4cb1c069e1874edd31b4311f1884172cec0e10...9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0)\n\n---\nupdated-dependencies:\n- dependency-name: actions/checkout\n  dependency-version: 7.0.0\n  dependency-type: direct:production\n  update-type: version-update:semver-major\n...\n\nSigned-off-by: dependabot[bot] <support@github.com>\nCo-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>",
+        "url": "https://github.com/composer/composer/commit/c5f92a0ea9491c9d7e77759d565aaf0c958f2c8f"
+    },
+    {
+        "sha": "b7c4e393f100fa46a56d787c38f10d2450e300db",
+        "author": "Jordi Boggiano",
+        "email": "j.boggiano@seld.be",
+        "date": "2026-06-29T15:15:05Z",
+        "message": "Sanitize JSON parse errors in Http\\Response to avoid leaking response bodies (#12960)",
+        "url": "https://github.com/composer/composer/commit/b7c4e393f100fa46a56d787c38f10d2450e300db"
+    },
+    {
+        "sha": "66651533f16ec4c2113b5e0f239060eb272b22ed",
+        "author": "Jordi Boggiano",
+        "email": "j.boggiano@seld.be",
+        "date": "2026-06-26T10:29:16Z",
+        "message": "Add VersionsTest for self update behavior",
+        "url": "https://github.com/composer/composer/commit/66651533f16ec4c2113b5e0f239060eb272b22ed"
+    },
+    {
+        "sha": "d63e06ab5f6593d1c50859359aabd478865407bd",
+        "author": "Jordi Boggiano",
+        "email": "j.boggiano@seld.be",
+        "date": "2026-06-26T06:16:19Z",
+        "message": "Prevent phar metadata unserialization on unsafe php versions (#12945)",
+        "url": "https://github.com/composer/composer/commit/d63e06ab5f6593d1c50859359aabd478865407bd"
+    },
+    {
+        "sha": "ca64886dd0553a8f3a5cbad9c58ed32f65d54dc8",
+        "author": "Jordi Boggiano",
+        "email": "j.boggiano@seld.be",
+        "date": "2026-06-26T06:15:10Z",
+        "message": "Only follow http(s) redirects in HTTP transports (#12947)\n\nRestrict redirect following to the http and https schemes in both the stream-based RemoteFilesystem and the curl transport, rather than following a Location header to any URL scheme. This matches the protocol restriction the curl transport already applies via CURLOPT_PROTOCOLS.",
+        "url": "https://github.com/composer/composer/commit/ca64886dd0553a8f3a5cbad9c58ed32f65d54dc8"
+    },
+    {
+        "sha": "7a82bbfd1c133ad901ada763fb477ac10b5dbb03",
+        "author": "dependabot[bot]",
+        "email": "49699333+dependabot[bot]@users.noreply.github.com",
+        "date": "2026-06-25T07:21:36Z",
+        "message": "Bump shivammathur/setup-php from 2.37.1 to 2.37.2 (#12939)\n\nBumps [shivammathur/setup-php](https://github.com/shivammathur/setup-php) from 2.37.1 to 2.37.2.\n- [Release notes](https://github.com/shivammathur/setup-php/releases)\n- [Commits](https://github.com/shivammathur/setup-php/compare/7c071dfe9dc99bdf297fa79cb49ea005b9fcadbc...f3e473d116dcccaddc5834248c87452386958240)\n\n---\nupdated-dependencies:\n- dependency-name: shivammathur/setup-php\n  dependency-version: 2.37.2\n  dependency-type: direct:production\n  update-type: version-update:semver-patch\n...\n\nSigned-off-by: dependabot[bot] <support@github.com>\nCo-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>",
+        "url": "https://github.com/composer/composer/commit/7a82bbfd1c133ad901ada763fb477ac10b5dbb03"
+    },
+    {
+        "sha": "fef1d347c960f4ace71675469443032144fdcaeb",
+        "author": "Stephan",
+        "email": "glaubinix@users.noreply.github.com",
+        "date": "2026-06-17T11:32:41Z",
+        "message": "ComposerRepository: output warning for additional requests (#12923)",
+        "url": "https://github.com/composer/composer/commit/fef1d347c960f4ace71675469443032144fdcaeb"
+    },
+    {
+        "sha": "10f0c0f1b576e23222717f30a5ce265233c798c7",
+        "author": "Eyüp Can Akman",
+        "email": "eyupcanakman@gmail.com",
+        "date": "2026-06-17T06:52:50Z",
+        "message": "Use array_any() in the suggestion provider check (#12937)",
+        "url": "https://github.com/composer/composer/commit/10f0c0f1b576e23222717f30a5ce265233c798c7"
+    },
+    {
+        "sha": "5f05516569b52cb46dc373d4457959c7095b1da3",
+        "author": "Keerthana",
+        "email": "keerthanadhandapani2005@gmail.com",
+        "date": "2026-06-17T06:52:01Z",
+        "message": "Fix audit output to use stdout for summary messages (#12904)",
+        "url": "https://github.com/composer/composer/commit/5f05516569b52cb46dc373d4457959c7095b1da3"
+    },
+    {
+        "sha": "c30c5cd2523e8f7e7fdde189e76b4d5c2700e21f",
+        "author": "Jordi Boggiano",
+        "email": "j.boggiano@seld.be",
+        "date": "2026-06-16T11:32:06Z",
+        "message": "Add warnings in self-update when using soon to be deprecated versions, or when the php version is outdated (#12920)",
+        "url": "https://github.com/composer/composer/commit/c30c5cd2523e8f7e7fdde189e76b4d5c2700e21f"
+    },
+    {
+        "sha": "e813f04e40243bd5f848511b47cafbc577b14f7a",
+        "author": "Eyüp Can Akman",
+        "email": "eyupcanakman@gmail.com",
+        "date": "2026-06-16T11:30:53Z",
+        "message": "Don't hide a suggestion provided by the suggesting package itself (#12933)\n\nFixes #12819",
+        "url": "https://github.com/composer/composer/commit/e813f04e40243bd5f848511b47cafbc577b14f7a"
+    },
+    {
+        "sha": "9b04f9a607023cc1a86e17e0dc75b2dcf7328cd1",
+        "author": "Jordi Boggiano",
+        "email": "j.boggiano@seld.be",
+        "date": "2026-06-16T09:20:23Z",
+        "message": "Fix CI race condition",
+        "url": "https://github.com/composer/composer/commit/9b04f9a607023cc1a86e17e0dc75b2dcf7328cd1"
+    },
+    {
+        "sha": "a1caef09b8a69ef9cb755f543e384796ae99801c",
+        "author": "Jordi Boggiano",
+        "email": "j.boggiano@seld.be",
+        "date": "2026-06-16T08:18:18Z",
+        "message": "Update deps",
+        "url": "https://github.com/composer/composer/commit/a1caef09b8a69ef9cb755f543e384796ae99801c"
+    },
+    {
+        "sha": "2555b697e6b4504f274fd2baa0075a3e2d90a015",
+        "author": "Jordi Boggiano",
+        "email": "j.boggiano@seld.be",
+        "date": "2026-06-15T11:48:28Z",
+        "message": "Avoid deeply nested multi constraints when matching security advisories / malware (#12935)\n\nFixes composer/semver#177",
+        "url": "https://github.com/composer/composer/commit/2555b697e6b4504f274fd2baa0075a3e2d90a015"
+    }
+]

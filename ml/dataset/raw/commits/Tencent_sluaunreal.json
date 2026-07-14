@@ -1,0 +1,242 @@
+[
+    {
+        "sha": "7970ab72fd59118e1b3f86aac2d016828b54b748",
+        "author": "zjhongxian",
+        "email": "zjhongxian@gmail.com",
+        "date": "2025-10-20T02:41:34Z",
+        "message": "Merge pull request #635 from npt-1707/fix_CVE-2022-33099\n\nFix potential vulnerable cloned function",
+        "url": "https://github.com/Tencent/sluaunreal/commit/7970ab72fd59118e1b3f86aac2d016828b54b748"
+    },
+    {
+        "sha": "53c866b09f1d53a5a3d883cec20588a3c008dcf9",
+        "author": "npt-1707",
+        "email": "npthanh132@gmail.com",
+        "date": "2025-05-20T20:30:05Z",
+        "message": "Plugins/slua_unreal/External/lua/ldebug.cpp: Save stack space while handling errors",
+        "url": "https://github.com/Tencent/sluaunreal/commit/53c866b09f1d53a5a3d883cec20588a3c008dcf9"
+    },
+    {
+        "sha": "a2093b713b61cae99eaaadf73ab36c65a7e4d811",
+        "author": "zjhongxian",
+        "email": "zjhongxian@gmail.com",
+        "date": "2025-02-25T04:47:49Z",
+        "message": "Merge pull request #631 from zhilin00/master\n\nfixed ue4.26 bad dependency on Oodle, switch to Zlib， also 4.26 has n…",
+        "url": "https://github.com/Tencent/sluaunreal/commit/a2093b713b61cae99eaaadf73ab36c65a7e4d811"
+    },
+    {
+        "sha": "bc270e7a06010c96e440f136d3d6c636c515a2ad",
+        "author": "LiuZhilin",
+        "email": "824420176@qq.com",
+        "date": "2025-02-24T09:13:46Z",
+        "message": "fixed ue4.26 bad dependency on Oodle, switch to Zlib， also 4.26 has no HitResult.h，only in UE5",
+        "url": "https://github.com/Tencent/sluaunreal/commit/bc270e7a06010c96e440f136d3d6c636c515a2ad"
+    },
+    {
+        "sha": "18531c978239443779683258e63bf315acd5c9cc",
+        "author": "zjhongxian",
+        "email": "zjhongxian@gmail.com",
+        "date": "2024-09-13T11:49:02Z",
+        "message": "Merge pull request #610 from zjhongxian/master\n\n主要是修复一些崩溃bug和一些特性支持、调整",
+        "url": "https://github.com/Tencent/sluaunreal/commit/18531c978239443779683258e63bf315acd5c9cc"
+    },
+    {
+        "sha": "1d9d51e4008a5f20e72b729b609e4e98d2fb8958",
+        "author": "zjhongxian",
+        "email": "zjhongxian@gmail.com",
+        "date": "2024-09-13T08:31:54Z",
+        "message": "Important fix: add obj IsUnreachable for LuaObject::isUObjectValid, otherwise it will cause crash while accessing obj's Class.",
+        "url": "https://github.com/Tencent/sluaunreal/commit/1d9d51e4008a5f20e72b729b609e4e98d2fb8958"
+    },
+    {
+        "sha": "fa424d0159bc6741ea88b458d20ea9076c6b215d",
+        "author": "zjhongxian",
+        "email": "zjhongxian@gmail.com",
+        "date": "2024-09-09T07:23:51Z",
+        "message": "Use \"PluginDirectory\" instead of \"ModuleDirectory\" in slua_unreal.Build.cs.",
+        "url": "https://github.com/Tencent/sluaunreal/commit/fa424d0159bc6741ea88b458d20ea9076c6b215d"
+    },
+    {
+        "sha": "00f3b9b6235871c13008f03f70f8968c76e94548",
+        "author": "zjhongxian",
+        "email": "zjhongxian@gmail.com",
+        "date": "2024-09-09T07:22:24Z",
+        "message": "When slua.LuaArray creation fails, throw an error message.",
+        "url": "https://github.com/Tencent/sluaunreal/commit/00f3b9b6235871c13008f03f70f8968c76e94548"
+    },
+    {
+        "sha": "e4b2661b8a27e96e9224e511633222e5c8084db4",
+        "author": "zjhongxian",
+        "email": "zjhongxian@gmail.com",
+        "date": "2024-09-09T07:20:31Z",
+        "message": "PropertyProto::createProperty support FName/Text type.",
+        "url": "https://github.com/Tencent/sluaunreal/commit/e4b2661b8a27e96e9224e511633222e5c8084db4"
+    },
+    {
+        "sha": "0f89339a8a13125f211794d230f220ccb6276e35",
+        "author": "zjhongxian",
+        "email": "zjhongxian@gmail.com",
+        "date": "2024-09-09T07:19:45Z",
+        "message": "LuaMultiDelegate::BroadCast change to LuaMultiDelegate::Broadcast.",
+        "url": "https://github.com/Tencent/sluaunreal/commit/0f89339a8a13125f211794d230f220ccb6276e35"
+    },
+    {
+        "sha": "320462526243e73f62be50c6c0cdb37b8bdc1af3",
+        "author": "zjhongxian",
+        "email": "zjhongxian@gmail.com",
+        "date": "2024-09-09T07:19:11Z",
+        "message": "Change LuaNet::luaReplicateClasses to 16-bit alignment.",
+        "url": "https://github.com/Tencent/sluaunreal/commit/320462526243e73f62be50c6c0cdb37b8bdc1af3"
+    },
+    {
+        "sha": "6075faf15d3ca42ee3bae8af17a3e8fb277e1907",
+        "author": "zjhongxian",
+        "email": "zjhongxian@gmail.com",
+        "date": "2024-09-07T07:34:32Z",
+        "message": "Merge pull request #609 from RailgunHamster/master\n\ncls nullptr check",
+        "url": "https://github.com/Tencent/sluaunreal/commit/6075faf15d3ca42ee3bae8af17a3e8fb277e1907"
+    },
+    {
+        "sha": "72e60c757cf466f1232ce5e78a9cd69450ce76e1",
+        "author": "RailgunHamster",
+        "email": "31252310+RailgunHamster@users.noreply.github.com",
+        "date": "2024-09-07T03:51:57Z",
+        "message": "cls nullptr check",
+        "url": "https://github.com/Tencent/sluaunreal/commit/72e60c757cf466f1232ce5e78a9cd69450ce76e1"
+    },
+    {
+        "sha": "3b328cc48047d4732d34a489fa5f506db1859c9c",
+        "author": "RailgunHamster",
+        "email": "railgunhamster@qq.com",
+        "date": "2024-08-25T17:46:53Z",
+        "message": "Add FMemMark for FMemStack Pop",
+        "url": "https://github.com/Tencent/sluaunreal/commit/3b328cc48047d4732d34a489fa5f506db1859c9c"
+    },
+    {
+        "sha": "4f6b6ad57f69846d2d97781a9e23becb95cfec45",
+        "author": "zjhongxian",
+        "email": "zjhongxian@gmail.com",
+        "date": "2024-09-06T02:16:05Z",
+        "message": "Merge pull request #603 from RailgunHamster/master\n\nAdd FMemMark for FMemStack Pop",
+        "url": "https://github.com/Tencent/sluaunreal/commit/4f6b6ad57f69846d2d97781a9e23becb95cfec45"
+    },
+    {
+        "sha": "499b27222eb36a1ae567cebd0fb57722212b1dfb",
+        "author": "zjhongxian",
+        "email": "zjhongxian@gmail.com",
+        "date": "2024-08-28T08:04:01Z",
+        "message": "Fixed compile error at Android platform.",
+        "url": "https://github.com/Tencent/sluaunreal/commit/499b27222eb36a1ae567cebd0fb57722212b1dfb"
+    },
+    {
+        "sha": "280265ad9b6cb2b99af7ce4dc02f0b6e50327096",
+        "author": "zjhongxian",
+        "email": "zjhongxian@gmail.com",
+        "date": "2024-08-26T09:30:05Z",
+        "message": "Fixed EnumProperty checker error.",
+        "url": "https://github.com/Tencent/sluaunreal/commit/280265ad9b6cb2b99af7ce4dc02f0b6e50327096"
+    },
+    {
+        "sha": "762c3c38342ddbcd74aaaaadd9bb7ce67645b9f7",
+        "author": "zjhongxian",
+        "email": "zjhongxian@gmail.com",
+        "date": "2024-08-26T09:28:53Z",
+        "message": "Fixed compile error: declaration shadows a field.",
+        "url": "https://github.com/Tencent/sluaunreal/commit/762c3c38342ddbcd74aaaaadd9bb7ce67645b9f7"
+    },
+    {
+        "sha": "01f7041629c2bdbff30c36fab42dbd241c350344",
+        "author": "RailgunHamster",
+        "email": "railgunhamster@qq.com",
+        "date": "2024-08-25T17:46:53Z",
+        "message": "Add FMemMark for FMemStack Pop",
+        "url": "https://github.com/Tencent/sluaunreal/commit/01f7041629c2bdbff30c36fab42dbd241c350344"
+    },
+    {
+        "sha": "f3e30fab168066415eb7e0561474560e4ec721bb",
+        "author": "zjhongxian",
+        "email": "zjhongxian@gmail.com",
+        "date": "2024-08-23T03:24:34Z",
+        "message": "Correct include path.",
+        "url": "https://github.com/Tencent/sluaunreal/commit/f3e30fab168066415eb7e0561474560e4ec721bb"
+    },
+    {
+        "sha": "894dfafc89def5df5c22a79d90858b3dbad12827",
+        "author": "zjhongxian",
+        "email": "zjhongxian@gmail.com",
+        "date": "2024-08-23T01:57:10Z",
+        "message": "Correct slua namespace.",
+        "url": "https://github.com/Tencent/sluaunreal/commit/894dfafc89def5df5c22a79d90858b3dbad12827"
+    },
+    {
+        "sha": "5f5274bcd1e872954971976cdc03deda1c9a01c4",
+        "author": "zjhongxian",
+        "email": "zjhongxian@gmail.com",
+        "date": "2024-08-22T14:58:13Z",
+        "message": "Not need SelfType parameter any more.",
+        "url": "https://github.com/Tencent/sluaunreal/commit/5f5274bcd1e872954971976cdc03deda1c9a01c4"
+    },
+    {
+        "sha": "7496ba517de296cccca052ebc58b8bd7120591b1",
+        "author": "zjhongxian",
+        "email": "zjhongxian@gmail.com",
+        "date": "2024-08-22T14:54:12Z",
+        "message": "CallLuaFunction supports calling with the specified WorldContext of lua_State.",
+        "url": "https://github.com/Tencent/sluaunreal/commit/7496ba517de296cccca052ebc58b8bd7120591b1"
+    },
+    {
+        "sha": "ef0ab23fa1f139810695d431469aaadfe237e3d8",
+        "author": "zjhongxian",
+        "email": "zjhongxian@gmail.com",
+        "date": "2024-08-22T14:47:12Z",
+        "message": "Improvement on the mechanism of obtaining FWeakObjectPtr: remove WeakUObjectUD, UD_WEAKUPTR, and unify to obtain the UObject corresponding to FWeakObjectPtr.",
+        "url": "https://github.com/Tencent/sluaunreal/commit/ef0ab23fa1f139810695d431469aaadfe237e3d8"
+    },
+    {
+        "sha": "e6e7433e48d4881c00a44f0634b48c76cf29a410",
+        "author": "zjhongxian",
+        "email": "zjhongxian@gmail.com",
+        "date": "2024-08-22T14:39:22Z",
+        "message": "The constructor of the class no longer needs to add an additional SelfType in the first parameter.",
+        "url": "https://github.com/Tencent/sluaunreal/commit/e6e7433e48d4881c00a44f0634b48c76cf29a410"
+    },
+    {
+        "sha": "750277523759eaeac2a2d2f695513ea15dec7035",
+        "author": "zjhongxian",
+        "email": "zjhongxian@gmail.com",
+        "date": "2024-08-22T14:35:52Z",
+        "message": "Correct slua namespace.",
+        "url": "https://github.com/Tencent/sluaunreal/commit/750277523759eaeac2a2d2f695513ea15dec7035"
+    },
+    {
+        "sha": "b9e1dcb75be2c3fc8d3838d93b10607809a95261",
+        "author": "zjhongxian",
+        "email": "zjhongxian@gmail.com",
+        "date": "2024-08-22T14:29:51Z",
+        "message": "Push Enum type support int64.",
+        "url": "https://github.com/Tencent/sluaunreal/commit/b9e1dcb75be2c3fc8d3838d93b10607809a95261"
+    },
+    {
+        "sha": "88205093423c94b2ad9f40724e7e705ed26445bd",
+        "author": "zjhongxian",
+        "email": "zjhongxian@gmail.com",
+        "date": "2024-08-22T14:27:18Z",
+        "message": "Fixed require module error.",
+        "url": "https://github.com/Tencent/sluaunreal/commit/88205093423c94b2ad9f40724e7e705ed26445bd"
+    },
+    {
+        "sha": "c8a0da019a44f82d6f7996c8f5a68d929db3be4b",
+        "author": "zjhongxian",
+        "email": "zjhongxian@gmail.com",
+        "date": "2024-08-22T14:23:49Z",
+        "message": "Fixed variable declaration hidden.",
+        "url": "https://github.com/Tencent/sluaunreal/commit/c8a0da019a44f82d6f7996c8f5a68d929db3be4b"
+    },
+    {
+        "sha": "7d9c8c7c68ef2f8db55b175b38d213bf47d8de7c",
+        "author": "zjhongxian",
+        "email": "zjhongxian@gmail.com",
+        "date": "2024-08-15T02:29:17Z",
+        "message": "Fixed: may be typearg is nullptr in LuaObject::checkUD.",
+        "url": "https://github.com/Tencent/sluaunreal/commit/7d9c8c7c68ef2f8db55b175b38d213bf47d8de7c"
+    }
+]

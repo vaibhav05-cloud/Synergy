@@ -1,0 +1,242 @@
+[
+    {
+        "sha": "f5633c1f84181673896c038cbe285131c6d669a3",
+        "author": "Alex Newman",
+        "email": "thedotmack@gmail.com",
+        "date": "2026-07-13T04:01:22Z",
+        "message": "docs: update changelog for v13.11.0",
+        "url": "https://github.com/thedotmack/claude-mem/commit/f5633c1f84181673896c038cbe285131c6d669a3"
+    },
+    {
+        "sha": "fad1872b81be7de07565ac291418f38c52ee448c",
+        "author": "Alex Newman",
+        "email": "thedotmack@gmail.com",
+        "date": "2026-07-13T03:54:31Z",
+        "message": "chore: bump version to 13.11.0",
+        "url": "https://github.com/thedotmack/claude-mem/commit/fad1872b81be7de07565ac291418f38c52ee448c"
+    },
+    {
+        "sha": "7a9c9b0618b392fc67c005c784c745a68c218761",
+        "author": "Alex Newman",
+        "email": "thedotmack@gmail.com",
+        "date": "2026-07-13T03:52:26Z",
+        "message": "Merge pull request #3182 from thedotmack/cloud-sync-native\n\nfeat(sync): worker-native cloud sync — the database is the queue",
+        "url": "https://github.com/thedotmack/claude-mem/commit/7a9c9b0618b392fc67c005c784c745a68c218761"
+    },
+    {
+        "sha": "aa186fae77fac3c99a38d3d8d4f0f3907915836a",
+        "author": "Alex Newman",
+        "email": "thedotmack@gmail.com",
+        "date": "2026-07-13T03:13:19Z",
+        "message": "fix(cloud-sync): guard prompt stamps against mid-flight memory id registration\n\nA prompt SELECTed with the fallback mapping could have its memory id\nregister while the POST was in flight: requeuePromptSync no-ops (the row's\nsynced_at is still NULL) and the unconditional stamp then marked the stale\nfallback upload as synced — permanently mis-keyed in the cloud.\n\nThe stamp for prompts now re-checks, per row, that the mapping pushed is\nstill the current one (SQLite IS so NULLs match for orphan and\nunregistered rows). A row that fails the guard stays unsynced and the same\ndrain loop immediately re-pushes it with the registered mapping; the\nserver upsert on (user_id, device_id, local_id) overwrites in place.\n\nRegression test holds the POST open with a gated fetch, lands the memory\nid mid-flight, and asserts the re-push; mutation-tested by disabling the\nguard (test fails, catching the exact race). Reported by greptile on PR\n#3182 with a reproducing harness.\n\nCo-Authored-By: Claude Fable 5 <noreply@anthropic.com>",
+        "url": "https://github.com/thedotmack/claude-mem/commit/aa186fae77fac3c99a38d3d8d4f0f3907915836a"
+    },
+    {
+        "sha": "030fb0f6cb6da06df4667ddb8e430a7033be6d0b",
+        "author": "Alex Newman",
+        "email": "thedotmack@gmail.com",
+        "date": "2026-07-13T02:54:44Z",
+        "message": "Merge remote-tracking branch 'origin/main' into cloud-sync-native\n\n# Conflicts:\n#\tplugin/scripts/mcp-server.cjs\n#\tplugin/scripts/server-service.cjs\n#\tplugin/scripts/transcript-watcher.cjs\n#\tplugin/scripts/worker-service.cjs",
+        "url": "https://github.com/thedotmack/claude-mem/commit/030fb0f6cb6da06df4667ddb8e430a7033be6d0b"
+    },
+    {
+        "sha": "1a39fb80a9643753e56fea31c200340704376b75",
+        "author": "Alex Newman",
+        "email": "thedotmack@gmail.com",
+        "date": "2026-07-13T02:07:19Z",
+        "message": "Merge pull request #3215 from thedotmack/release/v13.10.4\n\nchore: bump version to 13.10.4",
+        "url": "https://github.com/thedotmack/claude-mem/commit/1a39fb80a9643753e56fea31c200340704376b75"
+    },
+    {
+        "sha": "67ba946f37c4ee50170d1c3f5301c6205a158723",
+        "author": "Alex Newman",
+        "email": "thedotmack@gmail.com",
+        "date": "2026-07-12T23:26:54Z",
+        "message": "chore: bump version to 13.10.4",
+        "url": "https://github.com/thedotmack/claude-mem/commit/67ba946f37c4ee50170d1c3f5301c6205a158723"
+    },
+    {
+        "sha": "31a06e9b13ab7917ed23c602d6d7101844c3cdb3",
+        "author": "Alex Newman",
+        "email": "thedotmack@gmail.com",
+        "date": "2026-07-12T23:22:13Z",
+        "message": "chore: bump version to 13.10.4",
+        "url": "https://github.com/thedotmack/claude-mem/commit/31a06e9b13ab7917ed23c602d6d7101844c3cdb3"
+    },
+    {
+        "sha": "c28f7d5388739b0b71f4860fcf30c4423c831931",
+        "author": "Alex Newman",
+        "email": "thedotmack@gmail.com",
+        "date": "2026-07-12T23:21:34Z",
+        "message": "chore: bump version to 13.10.4",
+        "url": "https://github.com/thedotmack/claude-mem/commit/c28f7d5388739b0b71f4860fcf30c4423c831931"
+    },
+    {
+        "sha": "0cd98603db0cb942d9b96e01b0f5c59f9d4e1060",
+        "author": "Alex Newman",
+        "email": "thedotmack@gmail.com",
+        "date": "2026-07-12T23:12:37Z",
+        "message": "chore: bump version to 13.10.4",
+        "url": "https://github.com/thedotmack/claude-mem/commit/0cd98603db0cb942d9b96e01b0f5c59f9d4e1060"
+    },
+    {
+        "sha": "42716b4fb2f6401c79515a7fc9bb5b0af8c589af",
+        "author": "Alex Newman",
+        "email": "thedotmack@gmail.com",
+        "date": "2026-07-12T23:12:14Z",
+        "message": "chore: bump version to 13.10.4",
+        "url": "https://github.com/thedotmack/claude-mem/commit/42716b4fb2f6401c79515a7fc9bb5b0af8c589af"
+    },
+    {
+        "sha": "5c54a8bfd1421ac4a8e045cfb2c9e3f0397de6c5",
+        "author": "Alex Newman",
+        "email": "thedotmack@gmail.com",
+        "date": "2026-07-12T23:11:51Z",
+        "message": "chore: bump version to 13.10.4",
+        "url": "https://github.com/thedotmack/claude-mem/commit/5c54a8bfd1421ac4a8e045cfb2c9e3f0397de6c5"
+    },
+    {
+        "sha": "29441ef62c61e8346d919c89c382c0ccf2ed18ac",
+        "author": "Alex Newman",
+        "email": "thedotmack@gmail.com",
+        "date": "2026-07-12T23:11:28Z",
+        "message": "chore: bump version to 13.10.4",
+        "url": "https://github.com/thedotmack/claude-mem/commit/29441ef62c61e8346d919c89c382c0ccf2ed18ac"
+    },
+    {
+        "sha": "bbab128ff91f55ff0f8448190122a7aa0bfaa08d",
+        "author": "Alex Newman",
+        "email": "thedotmack@gmail.com",
+        "date": "2026-07-12T23:11:06Z",
+        "message": "chore: bump version to 13.10.4",
+        "url": "https://github.com/thedotmack/claude-mem/commit/bbab128ff91f55ff0f8448190122a7aa0bfaa08d"
+    },
+    {
+        "sha": "d94bef4f7750dc163b0b0168803523affcdbbe7d",
+        "author": "Alex Newman",
+        "email": "thedotmack@gmail.com",
+        "date": "2026-07-12T23:10:43Z",
+        "message": "chore: bump version to 13.10.4",
+        "url": "https://github.com/thedotmack/claude-mem/commit/d94bef4f7750dc163b0b0168803523affcdbbe7d"
+    },
+    {
+        "sha": "a2c4db2ee920c677f589e10bb5ae3cb23d6bfbf4",
+        "author": "Alex Newman",
+        "email": "thedotmack@gmail.com",
+        "date": "2026-07-12T23:10:21Z",
+        "message": "chore: bump version to 13.10.4",
+        "url": "https://github.com/thedotmack/claude-mem/commit/a2c4db2ee920c677f589e10bb5ae3cb23d6bfbf4"
+    },
+    {
+        "sha": "25b24294541c5f512bb2b6a8b84a45457f9d7641",
+        "author": "Alex Newman",
+        "email": "thedotmack@gmail.com",
+        "date": "2026-07-12T23:09:59Z",
+        "message": "chore: bump version to 13.10.4",
+        "url": "https://github.com/thedotmack/claude-mem/commit/25b24294541c5f512bb2b6a8b84a45457f9d7641"
+    },
+    {
+        "sha": "98f83c1233169bf8ba3aa9d0feb81fc90dda437c",
+        "author": "Alex Newman",
+        "email": "thedotmack@gmail.com",
+        "date": "2026-07-12T23:09:35Z",
+        "message": "chore: bump version to 13.10.4",
+        "url": "https://github.com/thedotmack/claude-mem/commit/98f83c1233169bf8ba3aa9d0feb81fc90dda437c"
+    },
+    {
+        "sha": "afbf8b04e1010903e1645a11c6d447f99bf98582",
+        "author": "Alex Newman",
+        "email": "thedotmack@gmail.com",
+        "date": "2026-07-12T23:06:02Z",
+        "message": "Merge pull request #3214 from thedotmack/agent/non-blocking-memory-hooks\n\nfix: make Claude memory hooks non-blocking",
+        "url": "https://github.com/thedotmack/claude-mem/commit/afbf8b04e1010903e1645a11c6d447f99bf98582"
+    },
+    {
+        "sha": "611030dd78f9c10ddb7520da5e75b23b78d5d4ba",
+        "author": "Alex Newman",
+        "email": "thedotmack@gmail.com",
+        "date": "2026-07-12T21:50:31Z",
+        "message": "test: enforce non-blocking Claude memory hooks",
+        "url": "https://github.com/thedotmack/claude-mem/commit/611030dd78f9c10ddb7520da5e75b23b78d5d4ba"
+    },
+    {
+        "sha": "ce1f52533992bcdff67869a156ebd0b3e0a6b8f6",
+        "author": "Alex Newman",
+        "email": "thedotmack@gmail.com",
+        "date": "2026-07-12T21:50:03Z",
+        "message": "fix: make Claude memory hooks non-blocking",
+        "url": "https://github.com/thedotmack/claude-mem/commit/ce1f52533992bcdff67869a156ebd0b3e0a6b8f6"
+    },
+    {
+        "sha": "a0b9486c0c76d758debf2e2f3d2bd002958422f8",
+        "author": "Alex Newman",
+        "email": "thedotmack@gmail.com",
+        "date": "2026-07-12T21:14:59Z",
+        "message": "Merge pull request #3213 from thedotmack/release/v13.10.3\n\nchore: bump version to 13.10.3",
+        "url": "https://github.com/thedotmack/claude-mem/commit/a0b9486c0c76d758debf2e2f3d2bd002958422f8"
+    },
+    {
+        "sha": "a1b50d6a275e01cc390a989286f8468a7a9deadf",
+        "author": "Alex Newman",
+        "email": "thedotmack@gmail.com",
+        "date": "2026-07-12T21:09:40Z",
+        "message": "chore: bump version to 13.10.3",
+        "url": "https://github.com/thedotmack/claude-mem/commit/a1b50d6a275e01cc390a989286f8468a7a9deadf"
+    },
+    {
+        "sha": "b08091412289d015b2d2e6f5304c233b6368e445",
+        "author": "Alex Newman",
+        "email": "thedotmack@gmail.com",
+        "date": "2026-07-12T21:07:28Z",
+        "message": "Merge pull request #3212 from thedotmack/core-dev\n\nchore(branches): promote core-dev to main for v13.10.3",
+        "url": "https://github.com/thedotmack/claude-mem/commit/b08091412289d015b2d2e6f5304c233b6368e445"
+    },
+    {
+        "sha": "1705b6774d160bdca237822eecd2eea6cac811ee",
+        "author": "Alex Newman",
+        "email": "thedotmack@gmail.com",
+        "date": "2026-07-12T20:58:38Z",
+        "message": "Merge pull request #3210 from thedotmack/fix/codex-runtime-marker\n\nfix(codex): write runtime marker into plugin root",
+        "url": "https://github.com/thedotmack/claude-mem/commit/1705b6774d160bdca237822eecd2eea6cac811ee"
+    },
+    {
+        "sha": "f661629c1748bd768d9150bf4e34ad1afa0812ec",
+        "author": "Alex Newman",
+        "email": "thedotmack@gmail.com",
+        "date": "2026-07-12T20:50:59Z",
+        "message": "Merge remote-tracking branch 'origin/core-dev' into fix/codex-runtime-marker",
+        "url": "https://github.com/thedotmack/claude-mem/commit/f661629c1748bd768d9150bf4e34ad1afa0812ec"
+    },
+    {
+        "sha": "996b52e64f459c086eea01f0fd21cb261f0b8bfa",
+        "author": "Alex Newman",
+        "email": "thedotmack@gmail.com",
+        "date": "2026-07-12T20:40:36Z",
+        "message": "Merge pull request #3211 from thedotmack/sync/main-into-core-dev\n\nchore(branches): sync main into core-dev",
+        "url": "https://github.com/thedotmack/claude-mem/commit/996b52e64f459c086eea01f0fd21cb261f0b8bfa"
+    },
+    {
+        "sha": "0a764d22c944e6749e84fea1f180d294bf1aba86",
+        "author": "Alex Newman",
+        "email": "thedotmack@gmail.com",
+        "date": "2026-07-12T20:34:02Z",
+        "message": "Merge main into core-dev\n\n# Conflicts:\n#\tplugin/scripts/context-generator.cjs\n#\tplugin/scripts/mcp-server.cjs\n#\tplugin/scripts/server-service.cjs\n#\tplugin/scripts/transcript-watcher.cjs\n#\tplugin/scripts/worker-service.cjs\n#\tsrc/npx-cli/commands/install.ts\n#\tsrc/services/infrastructure/HealthMonitor.ts\n#\tsrc/services/worker/README.md",
+        "url": "https://github.com/thedotmack/claude-mem/commit/0a764d22c944e6749e84fea1f180d294bf1aba86"
+    },
+    {
+        "sha": "eed4f569cd737de0e931f5b949486fa82a0dc7ee",
+        "author": "Alex Newman",
+        "email": "thedotmack@gmail.com",
+        "date": "2026-07-12T20:13:50Z",
+        "message": "test(cloud-sync): cover joined prompt drain, lane threshold, v40 once-only, and re-push hooks\n\n- prompt mapping: session_db_id join pushes real memory_session_id/project;\n  per-row fallback for NULL-memory-id sessions and orphan prompts; stamping\n  still lands through the rowAlias-qualified drain\n- lane pick: >200 pending sends X-Sync-Lane: backfill on every page of that\n  kind's drain while other kinds stay live; exactly 200 stays live\n- v40 requeue: records version 40 and never re-nulls stamps on later boots\n- requeuePromptSync: updateMemorySessionId/ensureMemorySessionIdRegistered\n  requeue only the affected session's prompts, and only on an actual change\n\nCo-Authored-By: Claude Fable 5 <noreply@anthropic.com>",
+        "url": "https://github.com/thedotmack/claude-mem/commit/eed4f569cd737de0e931f5b949486fa82a0dc7ee"
+    },
+    {
+        "sha": "d03392f8dac616f82950c8ccf3b7870f3d484f17",
+        "author": "Alex Newman",
+        "email": "thedotmack@gmail.com",
+        "date": "2026-07-12T20:08:00Z",
+        "message": "build: rebuild plugin bundles with fixed prompt mapper and v40 self-repair\n\nRegenerated from src including 7c8c6ebc7 (joined drain pushes real\nmemory_session_id/project on prompts) and 5af1b059b (v40 requeue +\nbackfill lane). Deployed live: v40 re-queued all 20,226 local prompts\nand the worker drained them to zero through the backfill lane with no\nerrors.\n\nCo-Authored-By: Claude Fable 5 <noreply@anthropic.com>",
+        "url": "https://github.com/thedotmack/claude-mem/commit/d03392f8dac616f82950c8ccf3b7870f3d484f17"
+    }
+]

@@ -1,0 +1,242 @@
+[
+    {
+        "sha": "0b136860e80585c02c12f64933995b872d7623af",
+        "author": "Antonio Cheong",
+        "email": "acheong@duti.dev",
+        "date": "2026-04-29T18:01:46Z",
+        "message": "Merge pull request #15 from qs2d/fix/mac-zero-pad\n\nfix: zero-pad MAC address hex bytes in Decode()",
+        "url": "https://github.com/acheong08/apple-corelocation-experiments/commit/0b136860e80585c02c12f64933995b872d7623af"
+    },
+    {
+        "sha": "e8a55cb265cc46c11cbdcc56c7c1efcf88514956",
+        "author": "zja",
+        "email": "junan_zhang@maxnetsys.com.cn",
+        "date": "2026-04-29T15:44:43Z",
+        "message": "fix: zero-pad MAC address hex bytes in Decode()\n\nEach byte in the BSSID must be zero-padded to 2 hex digits.\nPreviously %x formatting would omit leading zeros per byte,\nproducing invalid BSSIDs like '70:65:82:e2:72:2' instead of\n'70:65:82:e2:72:02'. Now uses %02x per byte via binary.BigEndian.",
+        "url": "https://github.com/acheong08/apple-corelocation-experiments/commit/e8a55cb265cc46c11cbdcc56c7c1efcf88514956"
+    },
+    {
+        "sha": "525700c4c06677617564406e620a2abc3dfefaa0",
+        "author": "Antonio Cheong",
+        "email": "acheong@duti.dev",
+        "date": "2026-01-18T14:00:47Z",
+        "message": "update broken link",
+        "url": "https://github.com/acheong08/apple-corelocation-experiments/commit/525700c4c06677617564406e620a2abc3dfefaa0"
+    },
+    {
+        "sha": "8db4d56eeabf7da31eedd7d06fee8efa74302e2e",
+        "author": "Antonio Cheong",
+        "email": "acheong@duti.dev",
+        "date": "2026-01-17T20:52:36Z",
+        "message": "make usable as lib",
+        "url": "https://github.com/acheong08/apple-corelocation-experiments/commit/8db4d56eeabf7da31eedd7d06fee8efa74302e2e"
+    },
+    {
+        "sha": "ba5c95111adc6a1b9215f07031dbdddbebd0a9d3",
+        "author": "Antonio Cheong",
+        "email": "acheong@duti.dev",
+        "date": "2025-10-13T19:22:41Z",
+        "message": "Update README.md",
+        "url": "https://github.com/acheong08/apple-corelocation-experiments/commit/ba5c95111adc6a1b9215f07031dbdddbebd0a9d3"
+    },
+    {
+        "sha": "787dccc21631973134e1bd2eadef97e766ccb875",
+        "author": "Antonio Cheong",
+        "email": "acheong@duti.dev",
+        "date": "2025-09-19T14:47:36Z",
+        "message": "arpc: error handling to prevent read overflow. bump location collector",
+        "url": "https://github.com/acheong08/apple-corelocation-experiments/commit/787dccc21631973134e1bd2eadef97e766ccb875"
+    },
+    {
+        "sha": "cfe273fba21029eb11201b34e2a5b42df46605d7",
+        "author": "Antonio Cheong",
+        "email": "acheong@duti.dev",
+        "date": "2025-09-18T10:39:39Z",
+        "message": "some markdown organization",
+        "url": "https://github.com/acheong08/apple-corelocation-experiments/commit/cfe273fba21029eb11201b34e2a5b42df46605d7"
+    },
+    {
+        "sha": "89d1c88d2efe73bd9f636742963b94b84f830a27",
+        "author": "Antonio Cheong",
+        "email": "acheong@duti.dev",
+        "date": "2025-09-18T09:36:07Z",
+        "message": "bump location collector",
+        "url": "https://github.com/acheong08/apple-corelocation-experiments/commit/89d1c88d2efe73bd9f636742963b94b84f830a27"
+    },
+    {
+        "sha": "0f86e66c2e72c2e2011eb88b5b48d59e5b840b3b",
+        "author": "Antonio Cheong",
+        "email": "acheong@duti.dev",
+        "date": "2025-09-10T15:02:33Z",
+        "message": "fix submodules",
+        "url": "https://github.com/acheong08/apple-corelocation-experiments/commit/0f86e66c2e72c2e2011eb88b5b48d59e5b840b3b"
+    },
+    {
+        "sha": "f461205fb71a773106ed30561d3c168e954ee3f9",
+        "author": "Antonio Cheong",
+        "email": "acheong@duti.dev",
+        "date": "2025-09-10T14:29:43Z",
+        "message": "colorized location visuals",
+        "url": "https://github.com/acheong08/apple-corelocation-experiments/commit/f461205fb71a773106ed30561d3c168e954ee3f9"
+    },
+    {
+        "sha": "67b551e173cd8af484aa5f40b7eb1fdebe666962",
+        "author": "Antonio Cheong",
+        "email": "acheong@duti.dev",
+        "date": "2025-09-10T14:51:38Z",
+        "message": "submodule vpn",
+        "url": "https://github.com/acheong08/apple-corelocation-experiments/commit/67b551e173cd8af484aa5f40b7eb1fdebe666962"
+    },
+    {
+        "sha": "98848c0b492da170c0df11a4f0202c2c89590d7a",
+        "author": "Antonio Cheong",
+        "email": "acheong@duti.dev",
+        "date": "2025-09-10T13:57:59Z",
+        "message": "various notes, graphs, and delete location collector app cuz it not workin",
+        "url": "https://github.com/acheong08/apple-corelocation-experiments/commit/98848c0b492da170c0df11a4f0202c2c89590d7a"
+    },
+    {
+        "sha": "41462c65d2224777e286aee2468aacc5f228438b",
+        "author": "Antonio Cheong",
+        "email": "acheong@duti.dev",
+        "date": "2025-09-09T15:15:59Z",
+        "message": "various script updates (not important).",
+        "url": "https://github.com/acheong08/apple-corelocation-experiments/commit/41462c65d2224777e286aee2468aacc5f228438b"
+    },
+    {
+        "sha": "e5043d7cb3b074dd938c9a608538394565613510",
+        "author": "Antonio Cheong",
+        "email": "acheong@duti.dev",
+        "date": "2025-09-09T11:53:29Z",
+        "message": "add app icons to map visualization, au, and pds separate scripts",
+        "url": "https://github.com/acheong08/apple-corelocation-experiments/commit/e5043d7cb3b074dd938c9a608538394565613510"
+    },
+    {
+        "sha": "9de6f0cec4aa28b747df734af3fcc4e7bc1ea2cd",
+        "author": "Antonio Cheong",
+        "email": "acheong@duti.dev",
+        "date": "2025-09-08T15:27:06Z",
+        "message": "visualization use app title name",
+        "url": "https://github.com/acheong08/apple-corelocation-experiments/commit/9de6f0cec4aa28b747df734af3fcc4e7bc1ea2cd"
+    },
+    {
+        "sha": "a71645a92fcdc487f6b0ea5daf4aedf3a7ca9d45",
+        "author": "Antonio Cheong",
+        "email": "acheong@duti.dev",
+        "date": "2025-09-08T15:22:29Z",
+        "message": "generate-map shortcut and location processor update to leave fields untouched",
+        "url": "https://github.com/acheong08/apple-corelocation-experiments/commit/a71645a92fcdc487f6b0ea5daf4aedf3a7ca9d45"
+    },
+    {
+        "sha": "c274378f7ed1f83e209625fb8352d4f6f057114f",
+        "author": "Antonio Cheong",
+        "email": "acheong@duti.dev",
+        "date": "2025-09-08T15:03:33Z",
+        "message": "holy shit pds",
+        "url": "https://github.com/acheong08/apple-corelocation-experiments/commit/c274378f7ed1f83e209625fb8352d4f6f057114f"
+    },
+    {
+        "sha": "8535264b30dfd08ea1499af10efad5025c86f4ab",
+        "author": "Antonio Cheong",
+        "email": "acheong@duti.dev",
+        "date": "2025-09-08T14:07:00Z",
+        "message": "throw error when pbcwloc return !=200",
+        "url": "https://github.com/acheong08/apple-corelocation-experiments/commit/8535264b30dfd08ea1499af10efad5025c86f4ab"
+    },
+    {
+        "sha": "e9f619b74dc3e9f3dcd08e8fe4aaeabbc66d4844",
+        "author": "Antonio Cheong",
+        "email": "acheong@duti.dev",
+        "date": "2025-09-08T13:53:04Z",
+        "message": "fix scripts, analyze data",
+        "url": "https://github.com/acheong08/apple-corelocation-experiments/commit/e9f619b74dc3e9f3dcd08e8fe4aaeabbc66d4844"
+    },
+    {
+        "sha": "725573a5d88ab89b41888b92e8346120e126820e",
+        "author": "Antonio Cheong",
+        "email": "acheong@duti.dev",
+        "date": "2025-09-08T13:25:43Z",
+        "message": "batching due to gaps",
+        "url": "https://github.com/acheong08/apple-corelocation-experiments/commit/725573a5d88ab89b41888b92e8346120e126820e"
+    },
+    {
+        "sha": "6499c455ed536aad2e2ccdb193078eebeb9706b7",
+        "author": "Antonio Cheong",
+        "email": "acheong@duti.dev",
+        "date": "2025-09-08T13:22:59Z",
+        "message": "distribution of time",
+        "url": "https://github.com/acheong08/apple-corelocation-experiments/commit/6499c455ed536aad2e2ccdb193078eebeb9706b7"
+    },
+    {
+        "sha": "1c377f618748ac238bd458a4e60e72677ed1bdac",
+        "author": "Antonio Cheong",
+        "email": "acheong@duti.dev",
+        "date": "2025-09-08T13:21:27Z",
+        "message": "working time migration",
+        "url": "https://github.com/acheong08/apple-corelocation-experiments/commit/1c377f618748ac238bd458a4e60e72677ed1bdac"
+    },
+    {
+        "sha": "18cb6176179463947c5eb862672821fe520d0a9b",
+        "author": "Antonio Cheong",
+        "email": "acheong@duti.dev",
+        "date": "2025-09-08T13:16:51Z",
+        "message": "migration and analysis scripts",
+        "url": "https://github.com/acheong08/apple-corelocation-experiments/commit/18cb6176179463947c5eb862672821fe520d0a9b"
+    },
+    {
+        "sha": "af16d32760dbfc4787075c0374a8149da9b6ca0a",
+        "author": "Antonio Cheong",
+        "email": "acheong@duti.dev",
+        "date": "2025-09-08T12:37:25Z",
+        "message": "persistent states",
+        "url": "https://github.com/acheong08/apple-corelocation-experiments/commit/af16d32760dbfc4787075c0374a8149da9b6ca0a"
+    },
+    {
+        "sha": "68b36d8b7f88932a70d5b48b075b835dfb04db73",
+        "author": "Antonio Cheong",
+        "email": "acheong@duti.dev",
+        "date": "2025-09-08T12:32:35Z",
+        "message": "clear logs funcitonality, show all logs in UI",
+        "url": "https://github.com/acheong08/apple-corelocation-experiments/commit/68b36d8b7f88932a70d5b48b075b835dfb04db73"
+    },
+    {
+        "sha": "52072ea1d40785652ad9f28652d1339afc7d764f",
+        "author": "Antonio Cheong",
+        "email": "acheong@duti.dev",
+        "date": "2025-09-08T12:29:33Z",
+        "message": "remove a whole bunch of logging. as simple as possible",
+        "url": "https://github.com/acheong08/apple-corelocation-experiments/commit/52072ea1d40785652ad9f28652d1339afc7d764f"
+    },
+    {
+        "sha": "8a3235a7ea26ab943ea7ece99411a984ad274052",
+        "author": "Antonio Cheong",
+        "email": "acheong@duti.dev",
+        "date": "2025-09-08T12:23:59Z",
+        "message": "reduce log noise",
+        "url": "https://github.com/acheong08/apple-corelocation-experiments/commit/8a3235a7ea26ab943ea7ece99411a984ad274052"
+    },
+    {
+        "sha": "8f4ea28b42fbb7fa28fbd6324b0e86ebaa39d6fb",
+        "author": "Antonio Cheong",
+        "email": "acheong@duti.dev",
+        "date": "2025-09-08T12:18:21Z",
+        "message": "simplify logs",
+        "url": "https://github.com/acheong08/apple-corelocation-experiments/commit/8f4ea28b42fbb7fa28fbd6324b0e86ebaa39d6fb"
+    },
+    {
+        "sha": "7a9d4477525cda48877401bfb0c1088b5a60cd4c",
+        "author": "Antonio Cheong",
+        "email": "acheong@duti.dev",
+        "date": "2025-09-08T12:13:05Z",
+        "message": "airplane mode check deprecated",
+        "url": "https://github.com/acheong08/apple-corelocation-experiments/commit/7a9d4477525cda48877401bfb0c1088b5a60cd4c"
+    },
+    {
+        "sha": "8f095ba5d77131ad728e6845d609e0106ca2a155",
+        "author": "Antonio Cheong",
+        "email": "acheong@duti.dev",
+        "date": "2025-09-08T12:08:52Z",
+        "message": "make things toggle to reduce intents used",
+        "url": "https://github.com/acheong08/apple-corelocation-experiments/commit/8f095ba5d77131ad728e6845d609e0106ca2a155"
+    }
+]

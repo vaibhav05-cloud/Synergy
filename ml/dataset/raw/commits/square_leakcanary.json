@@ -1,0 +1,242 @@
+[
+    {
+        "sha": "bcf276e04d540c19855f5be4fb2a56c48090c50e",
+        "author": "py - Pierre Yves Ricau",
+        "email": "pyricau@users.noreply.github.com",
+        "date": "2026-07-13T17:44:18Z",
+        "message": "Merge pull request #2835 from square/py/large_dumps\n\nSupport heap dumps whose per-type index exceeds 2 GB",
+        "url": "https://github.com/square/leakcanary/commit/bcf276e04d540c19855f5be4fb2a56c48090c50e"
+    },
+    {
+        "sha": "8f3c4577cddff9e19d5b8db9e6e6a223e12fcbf3",
+        "author": "Pierre-Yves Ricau",
+        "email": "py@squareup.com",
+        "date": "2026-06-26T15:19:13Z",
+        "message": "Remove large heap dump benchmark harness and paging test hooks\n\nDrops the throwaway benchmark scaffolding and the test-only hooks added in\nthe previous commit, leaving no unused test-only APIs in the codebase. The\npaged index is covered by unit tests that build the paged structures\ndirectly (PagedByteArrayTest, PagedSortedBytesMapTest).\n\nCo-Authored-By: Claude Opus 4.8 (1M context) <noreply@anthropic.com>",
+        "url": "https://github.com/square/leakcanary/commit/8f3c4577cddff9e19d5b8db9e6e6a223e12fcbf3"
+    },
+    {
+        "sha": "ea2a85557fa26df96f64ed7ae1c0960f0a96c55d",
+        "author": "Pierre-Yves Ricau",
+        "email": "py@squareup.com",
+        "date": "2026-06-26T15:19:04Z",
+        "message": "Add large heap dump benchmark harness and paging test hooks\n\nTemporary scaffolding used to validate the paged index on a real, very\nlarge JVM heap dump:\n\n- GenerateBigHeapDump allocates N objects and dumps the heap via\n  HotSpotDiagnosticMXBean.dumpHeap, producing a genuine hprof whose\n  instance index exceeds 2 GB.\n- BenchmarkOpenHeapDump reports index build time, traversal time, lookup\n  throughput and peak heap, with modes to force the single array path\n  (reproducing the #2807 NegativeArraySizeException) or force paging.\n- generateBigHeapDump / benchmarkOpenHeapDump Gradle tasks.\n- forcedEntriesPerPageForTesting / forceSingleArrayForTesting hooks on\n  SortedBytesMaps, used by the above and by an end-to-end integration\n  test that forces a tiny page size so a small dump exercises the paged\n  index through a real HeapGraph.\n\nRemoved in the following commit; kept here only for the record.\n\nCo-Authored-By: Claude Opus 4.8 (1M context) <noreply@anthropic.com>",
+        "url": "https://github.com/square/leakcanary/commit/ea2a85557fa26df96f64ed7ae1c0960f0a96c55d"
+    },
+    {
+        "sha": "dc436ecd6d0f41d1f2139424a4e81206e82c24b7",
+        "author": "Pierre-Yves Ricau",
+        "email": "py@squareup.com",
+        "date": "2026-06-26T15:18:51Z",
+        "message": "Shard oversized per-record-type indexes across paged byte arrays\n\nA SortedBytesMap was backed by a single ByteArray, which the JVM caps at\n~2 GB (Int.MAX_VALUE bytes). For very large heap dumps a per-record-type\nindex can exceed that limit and the size computation overflows Int,\nthrowing NegativeArraySizeException while indexing (issue #2807).\n\nSortedBytesMap becomes an interface with two implementations:\nArraySortedBytesMap (the existing single ByteArray) and\nPagedSortedBytesMap, which splits storage across power-of-two-entry pages\nso the total can exceed the single array limit. Entries never straddle a\npage, so each entry stays in one page.\n\nPagedUnsortedByteEntries appends entries across pre-sized pages (no page\never grows, regardless of id distribution) then sorts the whole logical\narray in place with PagedByteArrayTimSort, an in-place port of the AOSP\nTimSort whose temp buffer is itself paged. Because the sort is in place,\nthe pages end up globally id sorted and become the read map's range\npartitioned segments, with no separate merge or copy; lookups binary\nsearch a one-key-per-page fence then a single page.\n\nIndexes that fit a single array keep the exact previous code path\n(UnsortedByteEntries / ArraySortedBytesMap / ByteArrayTimSort); paging\nonly engages above the single array limit.\n\nCo-Authored-By: Claude Opus 4.8 (1M context) <noreply@anthropic.com>",
+        "url": "https://github.com/square/leakcanary/commit/dc436ecd6d0f41d1f2139424a4e81206e82c24b7"
+    },
+    {
+        "sha": "62a253c8f39f5b77a8a0b7141d9389d830ff827a",
+        "author": "py - Pierre Yves Ricau",
+        "email": "pyricau@users.noreply.github.com",
+        "date": "2026-07-13T14:31:44Z",
+        "message": "Merge pull request #2836 from SimonMarquis/patch-1\n\nFix HeapAnalysisStringRenderingTest on Windows environments",
+        "url": "https://github.com/square/leakcanary/commit/62a253c8f39f5b77a8a0b7141d9389d830ff827a"
+    },
+    {
+        "sha": "b09b61fe709daaf14731213d398e6865bb502045",
+        "author": "py - Pierre Yves Ricau",
+        "email": "pyricau@users.noreply.github.com",
+        "date": "2026-07-13T14:30:59Z",
+        "message": "Merge pull request #2837 from SimonMarquis/patch-2\n\nFix LeakCanaryLeakDeobfuscationPluginTest on Windows environments",
+        "url": "https://github.com/square/leakcanary/commit/b09b61fe709daaf14731213d398e6865bb502045"
+    },
+    {
+        "sha": "b7b985ec2c004d470afe1ec9d681eb9b5eeeac96",
+        "author": "py - Pierre Yves Ricau",
+        "email": "pyricau@users.noreply.github.com",
+        "date": "2026-07-13T14:30:24Z",
+        "message": "Merge pull request #2838 from SimonMarquis/patch-3\n\nFix leakcanary-app build on Windows environment",
+        "url": "https://github.com/square/leakcanary/commit/b7b985ec2c004d470afe1ec9d681eb9b5eeeac96"
+    },
+    {
+        "sha": "fc2ef42e7d5b3b30f4f22d14373bac3e765fe6be",
+        "author": "py - Pierre Yves Ricau",
+        "email": "pyricau@users.noreply.github.com",
+        "date": "2026-07-13T14:29:56Z",
+        "message": "Merge pull request #2839 from SimonMarquis/patch-4\n\nRemove deprecated jcenter repositories",
+        "url": "https://github.com/square/leakcanary/commit/fc2ef42e7d5b3b30f4f22d14373bac3e765fe6be"
+    },
+    {
+        "sha": "cebd6e3c15794250399aa657583ae0806335c728",
+        "author": "Simon Marquis",
+        "email": "contact@simon-marquis.fr",
+        "date": "2026-06-28T11:44:24Z",
+        "message": "Update LeakCanaryLeakDeobfuscationPluginTest.kt",
+        "url": "https://github.com/square/leakcanary/commit/cebd6e3c15794250399aa657583ae0806335c728"
+    },
+    {
+        "sha": "2ae84ebf4b87b9ee0110902f7dcf120d0fc7f8e3",
+        "author": "Simon Marquis",
+        "email": "contact@simon-marquis.fr",
+        "date": "2026-06-28T11:43:56Z",
+        "message": "Remove deprecated jcenter repositories",
+        "url": "https://github.com/square/leakcanary/commit/2ae84ebf4b87b9ee0110902f7dcf120d0fc7f8e3"
+    },
+    {
+        "sha": "2177a3dd565cb21bc1274c4a1d55a46817c69a81",
+        "author": "Simon Marquis",
+        "email": "contact@simon-marquis.fr",
+        "date": "2026-06-28T11:40:18Z",
+        "message": "Fix leakcanary-app build on Windows environment\n\nThe issue comes from KAPT failing to correctly escape generated proguard files, as you can see in this scan: https://scans.gradle.com/s/v2w3gkl3o7cm6/failures?focused-exception-line=0-2-4-6-8-10-0#1\r\n\r\nBumping Hilt to the next-compatible version.",
+        "url": "https://github.com/square/leakcanary/commit/2177a3dd565cb21bc1274c4a1d55a46817c69a81"
+    },
+    {
+        "sha": "bcbe9745fc3240640c2f72f6f304c52a06940231",
+        "author": "Simon Marquis",
+        "email": "contact@simon-marquis.fr",
+        "date": "2026-06-28T11:20:03Z",
+        "message": "Fix LeakCanaryLeakDeobfuscationPluginTest on Windows environments\n\n`local.properties` file creation from `ANDROID_HOME` variables did not properly escaped Windows paths, leading to invalid values.\r\n\r\nFor instance, if the env variable is `X:\\Android`, the resulting file would contain `sdk.dir=X:\\Android` which is invalid.",
+        "url": "https://github.com/square/leakcanary/commit/bcbe9745fc3240640c2f72f6f304c52a06940231"
+    },
+    {
+        "sha": "9d601ff7e85ad91a136c7c713dd3388be97d60a7",
+        "author": "Simon Marquis",
+        "email": "contact@simon-marquis.fr",
+        "date": "2026-06-28T10:59:32Z",
+        "message": "Fix HeapAnalysisStringRenderingTest on Windows environments\n\n- hprof absolute paths contains backslashes that must be escaped otherwise they are interpreted by the regex compiler\r\n- stacktraces contains platform-dependent new-lines and must be part of the `.*`\r\n- replace greedy quantifiers (`.*`) with lazy ones (`.*?`) for less unnecessary backtracking",
+        "url": "https://github.com/square/leakcanary/commit/9d601ff7e85ad91a136c7c713dd3388be97d60a7"
+    },
+    {
+        "sha": "27b51013ce4a6907460d337b117ce3105e0c61b2",
+        "author": "py - Pierre Yves Ricau",
+        "email": "pyricau@users.noreply.github.com",
+        "date": "2026-06-26T16:42:01Z",
+        "message": "Merge pull request #2824 from roberto-git0/fix-npe-shark-mocks\n\nFix NullPointerException shark throws due to mockito memory leaks",
+        "url": "https://github.com/square/leakcanary/commit/27b51013ce4a6907460d337b117ce3105e0c61b2"
+    },
+    {
+        "sha": "24f8e230a429a6a0b39e86ccafe5f5a8f4efdae0",
+        "author": "py - Pierre Yves Ricau",
+        "email": "pyricau@users.noreply.github.com",
+        "date": "2026-06-26T16:36:13Z",
+        "message": "Merge pull request #2834 from square/py/indexedObjectOrNull_bug\n\nFix primitive array global index in indexedObjectOrNull",
+        "url": "https://github.com/square/leakcanary/commit/24f8e230a429a6a0b39e86ccafe5f5a8f4efdae0"
+    },
+    {
+        "sha": "6dd476566734f57d640946b653a054def5169ffc",
+        "author": "Pierre-Yves Ricau",
+        "email": "py@squareup.com",
+        "date": "2026-06-26T13:44:09Z",
+        "message": "Fix primitive array global index in indexedObjectOrNull\n\nindexedObjectOrNull computed the primitive-array branch's global index by\nadding primitiveArrayIndex.size instead of objectArrayIndex.size, so the\nindex was wrong whenever those two sizes differ. objectAtIndex's\nrequire also compared the global index instead of the shifted index,\nbreaking the round trip. Both are fixed and covered by a new round-trip\ntest.\n\nCo-Authored-By: Claude Opus 4.8 (1M context) <noreply@anthropic.com>",
+        "url": "https://github.com/square/leakcanary/commit/6dd476566734f57d640946b653a054def5169ffc"
+    },
+    {
+        "sha": "57a8b1eb371d2dd602624f6992589c3c4f5c5298",
+        "author": "Pierre-Yves Ricau",
+        "email": "py@squareup.com",
+        "date": "2026-06-26T09:09:13Z",
+        "message": "Add comment explaining nullable mContext in mocked view environments\n\nCo-Authored-By: Claude Opus 4.8 (1M context) <noreply@anthropic.com>",
+        "url": "https://github.com/square/leakcanary/commit/57a8b1eb371d2dd602624f6992589c3c4f5c5298"
+    },
+    {
+        "sha": "e80e5680ba7fe90a38a46189fac0c2fec136ae73",
+        "author": "py - Pierre Yves Ricau",
+        "email": "pyricau@users.noreply.github.com",
+        "date": "2026-06-26T09:02:02Z",
+        "message": "Merge pull request #2831 from roberto-git0/add-missing-roots\n\nAdd missing GC root types to LeakTrace file",
+        "url": "https://github.com/square/leakcanary/commit/e80e5680ba7fe90a38a46189fac0c2fec136ae73"
+    },
+    {
+        "sha": "7e4d7e140d6bf3cbd82e8f47c7193bc5a6f8aca5",
+        "author": "Pierre-Yves Ricau",
+        "email": "py@squareup.com",
+        "date": "2026-06-25T10:51:27Z",
+        "message": "Rewrite releasing docs for the Central Portal / CI flow\n\n- Drop the obsolete OSSRH account, GPG signing key, and SONATYPE_NEXUS_*\n  gradle.properties setup; publishing is automated via GitHub Actions with\n  org secrets (note the correct local-publish env vars instead)\n- Drive the release from NEW_VERSION/NEXT_VERSION shell variables instead of\n  hand-edited NEXT / <NEXT> / REPLACE_WITH_* placeholders (the source of the\n  dropped -SNAPSHOT)\n- Clarify mkdocs.yml: bump next_release always, promote release only on stable\n- Replace the fragile 'close milestone nodes[0]' automation with the real\n  per-release milestone practice\n- Fix the changelog diff link to use the previous tag\n- Mark the Homebrew bump as stable-only (homebrew-core rejects pre-releases)\n\nCo-Authored-By: Claude Opus 4.8 (1M context) <noreply@anthropic.com>",
+        "url": "https://github.com/square/leakcanary/commit/7e4d7e140d6bf3cbd82e8f47c7193bc5a6f8aca5"
+    },
+    {
+        "sha": "13df44827ddc009aa2a69384aa2a60a15c2e0d2e",
+        "author": "Pierre-Yves Ricau",
+        "email": "py@squareup.com",
+        "date": "2026-06-25T10:24:59Z",
+        "message": "Modernize main CI workflow actions\n\n- Replace archived gradle/gradle-build-action@v2 with the maintained\n  gradle/actions/setup-gradle (SHA-pinned to the same v4 release as\n  wrapper-validation), preserving build caching\n- Bump actions/checkout and actions/setup-java from v3 to v4 (also resolves\n  the Node 20 deprecation warnings)\n- Add a read-only permissions block to limit the GITHUB_TOKEN scope\n\nCo-Authored-By: Claude Opus 4.8 (1M context) <noreply@anthropic.com>",
+        "url": "https://github.com/square/leakcanary/commit/13df44827ddc009aa2a69384aa2a60a15c2e0d2e"
+    },
+    {
+        "sha": "79677db554367988528d85376328ad47b29fc37d",
+        "author": "Pierre-Yves Ricau",
+        "email": "py@squareup.com",
+        "date": "2026-06-25T09:26:42Z",
+        "message": "Add full diff links to 3.0-alpha-8 and 3.0-alpha-9 changelog entries\n\nCo-Authored-By: Claude Opus 4.8 (1M context) <noreply@anthropic.com>",
+        "url": "https://github.com/square/leakcanary/commit/79677db554367988528d85376328ad47b29fc37d"
+    },
+    {
+        "sha": "c1f6daff5b74317bfa372359adeec6c59b4b3ae3",
+        "author": "Pierre-Yves Ricau",
+        "email": "py@squareup.com",
+        "date": "2026-06-25T09:19:43Z",
+        "message": "Fix snapshot deployment to use Central Portal credentials\n\nThe snapshot-deployment job still used the legacy SONATYPE_NEXUS_* secrets,\nwhich the Maven Central Portal snapshot repo rejects with 401. Use the same\nSONATYPE_CENTRAL_* token the publish-release workflow uses.\n\nCo-Authored-By: Claude Opus 4.8 (1M context) <noreply@anthropic.com>",
+        "url": "https://github.com/square/leakcanary/commit/c1f6daff5b74317bfa372359adeec6c59b4b3ae3"
+    },
+    {
+        "sha": "4557033c0980c3a3c9c6e350c3b39306a5d8f184",
+        "author": "Pierre-Yves Ricau",
+        "email": "py@squareup.com",
+        "date": "2026-06-25T08:27:04Z",
+        "message": "Clarify releasing docs: explicit -SNAPSHOT suffix and distZip ordering\n\nCo-Authored-By: Claude Opus 4.8 (1M context) <noreply@anthropic.com>",
+        "url": "https://github.com/square/leakcanary/commit/4557033c0980c3a3c9c6e350c3b39306a5d8f184"
+    },
+    {
+        "sha": "94b0ff6c5008b6e8e18b6f481787f3787db78058",
+        "author": "Pierre-Yves Ricau",
+        "email": "py@squareup.com",
+        "date": "2026-06-25T08:27:04Z",
+        "message": "Prepare for next development iteration\n\nCo-Authored-By: Claude Opus 4.8 (1M context) <noreply@anthropic.com>",
+        "url": "https://github.com/square/leakcanary/commit/94b0ff6c5008b6e8e18b6f481787f3787db78058"
+    },
+    {
+        "sha": "bac94a74fa87ed807c31a42b4d495bbfdcede33a",
+        "author": "py - Pierre Yves Ricau",
+        "email": "pyricau@users.noreply.github.com",
+        "date": "2026-06-24T19:46:31Z",
+        "message": "Merge pull request #2833 from square/release_3.0-alpha-9\n\nMigrate publishing to Maven Central Portal (Kotlin 2.1 / AGP 8.11 / Gradle 8.13)",
+        "url": "https://github.com/square/leakcanary/commit/bac94a74fa87ed807c31a42b4d495bbfdcede33a"
+    },
+    {
+        "sha": "47a3037ee45af5b1f2721c87d74e343bc7b71d52",
+        "author": "Pierre-Yves Ricau",
+        "email": "py@squareup.com",
+        "date": "2026-06-24T18:53:10Z",
+        "message": "Migrate publishing to Maven Central Portal\n\nOSSRH (s01.oss.sonatype.org) was decommissioned, so publishing via\nvanniktech's SonatypeHost.S01 no longer works. Publish through the\nCENTRAL_PORTAL host from a GitHub Actions workflow, like square/papa.\n\nCentral Portal support requires vanniktech 0.32.0, which requires Kotlin\n>= 1.9.20. Bump Kotlin 1.8.21 -> 1.9.25 (and the Compose compiler\n1.4.7 -> 1.5.15 to match). AGP (8.2.2) and Gradle (8.10.2) are left\nunchanged on purpose: Kotlin 2.x would force an AGP bump whose Unified\nTest Platform fails to talk to the emulator on our CI (\"Failed to receive\nthe UTP test results\"), breaking all instrumentation tests, and it is not\nneeded for publishing.\n\n- build.gradle.kts: SonatypeHost.S01 -> CENTRAL_PORTAL (automaticRelease)\n- Modernize stdlib calls surfaced by the Kotlin bump: Char.toUpperCase ->\n  uppercaseChar, String.toLowerCase(Locale) -> lowercase(Locale), and a\n  non-null ViewModelProvider.Factory.create override\n- apiDump: enums gain getEntries() (stable Enum.entries since Kotlin 1.9;\n  additive, non-breaking)\n- Add .github/workflows/publish-release.yml (workflow_dispatch), hardened\n  with a read-only permissions block and no unpinned/archived actions\n- Update docs/releasing.md for the GitHub Actions / Central Portal flow\n\nCo-Authored-By: Claude Opus 4.8 (1M context) <noreply@anthropic.com>",
+        "url": "https://github.com/square/leakcanary/commit/47a3037ee45af5b1f2721c87d74e343bc7b71d52"
+    },
+    {
+        "sha": "b7f3bd2c32dfc4a813720476f66e2614c87f407a",
+        "author": "Pierre-Yves Ricau",
+        "email": "py@squareup.com",
+        "date": "2026-06-24T17:10:38Z",
+        "message": "Prepare 3.0-alpha-9 release",
+        "url": "https://github.com/square/leakcanary/commit/b7f3bd2c32dfc4a813720476f66e2614c87f407a"
+    },
+    {
+        "sha": "bbafd32ac4b8d226f63055163d7bba7b66c7a1c5",
+        "author": "py - Pierre Yves Ricau",
+        "email": "pyricau@users.noreply.github.com",
+        "date": "2026-06-24T16:49:16Z",
+        "message": "Merge pull request #2733 from Tans5/fix_activity_thread_reader\n\nFix ACTIVITY_THREAD__NEW_ACTIVITIES read ActivityRecord's fields erro…",
+        "url": "https://github.com/square/leakcanary/commit/bbafd32ac4b8d226f63055163d7bba7b66c7a1c5"
+    },
+    {
+        "sha": "d3e5eb5d3ef9f4165f324589419e333681d938e9",
+        "author": "Pierre-Yves Ricau",
+        "email": "py@squareup.com",
+        "date": "2026-06-24T15:48:00Z",
+        "message": "update changelog",
+        "url": "https://github.com/square/leakcanary/commit/d3e5eb5d3ef9f4165f324589419e333681d938e9"
+    },
+    {
+        "sha": "548732690a44fb2d1e15c2bc5b2ad3a9c6ca9db9",
+        "author": "Roberto Stanciu",
+        "email": "robertostanciu@google.com",
+        "date": "2026-06-17T13:07:57Z",
+        "message": "Register JVM and debugger GC roots as low priority in MatchingGcRootProvider",
+        "url": "https://github.com/square/leakcanary/commit/548732690a44fb2d1e15c2bc5b2ad3a9c6ca9db9"
+    }
+]

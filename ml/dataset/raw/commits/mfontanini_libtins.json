@@ -1,0 +1,242 @@
+[
+    {
+        "sha": "67c81199fb0db04123ffc83ca829ace0ab7d4029",
+        "author": "Dave Walker",
+        "email": "email@daviey.com",
+        "date": "2025-12-12T04:53:03Z",
+        "message": "Update CMake minimum required version to 3.10 (#553)\n\nCMake 4 removed compatibility with CMake versions < 3.5, and versions\nbetween 3.5-3.10 are deprecated.\n\nThis change updates the minimum required version to 3.10 to ensure\ncompatibility with modern CMake versions including CMake 4.x.\n\nThis issue is affecting NixOS users (see\nhttps://github.com/NixOS/nixpkgs/issues/450198) and will likely impact\nother distributions as they upgrade to CMake 4.x.",
+        "url": "https://github.com/mfontanini/libtins/commit/67c81199fb0db04123ffc83ca829ace0ab7d4029"
+    },
+    {
+        "sha": "fe221866238282057478b3c15e985dd12c8f49ef",
+        "author": "James R T",
+        "email": "jamestiotio@gmail.com",
+        "date": "2024-03-31T14:46:42Z",
+        "message": "Add RTP support (#530)\n\nThis commit adds support for the Real-time Transport Protocol (RTP) as\r\ndefined in RFC 3550. Some tests have also been added to ensure that the\r\nRTP PDU class functionality is working as expected.\r\n\r\nSigned-off-by: James Raphael Tiovalen <jamestiotio@gmail.com>",
+        "url": "https://github.com/mfontanini/libtins/commit/fe221866238282057478b3c15e985dd12c8f49ef"
+    },
+    {
+        "sha": "bbac2ece529eb51593a12a208411473a27563254",
+        "author": "James R T",
+        "email": "jamestiotio@gmail.com",
+        "date": "2024-03-17T15:18:02Z",
+        "message": "Replace remaining `rfind_pdu` calls to `find_pdu` in `src` directory (#527)\n\nThis commit replaces the remaining `rfind_pdu` calls to `find_pdu` in\r\nthe `src` directory. Any existing `rfind_pdu` calls in the `examples`\r\nand `tests` directories are unmodified.\r\n\r\nThe main motivation is that conditional statements are generally more\r\nperformant than exception handling. Since `rfind_pdu` calls `find_pdu`\r\ninternally anyway, this eliminates some overhead as well.\r\n\r\nSigned-off-by: James Raphael Tiovalen <jamestiotio@gmail.com>",
+        "url": "https://github.com/mfontanini/libtins/commit/bbac2ece529eb51593a12a208411473a27563254"
+    },
+    {
+        "sha": "ba9a2155caa2e3c65068bd34a2c9e22f26beae7c",
+        "author": "James R T",
+        "email": "jamestiotio@gmail.com",
+        "date": "2024-03-17T15:16:31Z",
+        "message": "Update VXLANTest destination port number (#528)\n\nBased on RFC 7348, the default IANA-assigned destination UDP port number\r\nfor VXLAN is 4789, not the source port number. Update the value in the\r\nVXLANTest class to align with the RFC.\r\n\r\nThe VXLAN implementation still allows for the destination port number to\r\nbe configurable to allow interoperability (as specified by the RFC),\r\nsuch as with the Linux kernel's default value of 8472.\r\n\r\nSigned-off-by: James Raphael Tiovalen <jamestiotio@gmail.com>",
+        "url": "https://github.com/mfontanini/libtins/commit/ba9a2155caa2e3c65068bd34a2c9e22f26beae7c"
+    },
+    {
+        "sha": "00619e0500f42dfbceb2fb88c2b43418927218bb",
+        "author": "Cameron Miller",
+        "email": "camm73@yahoo.com",
+        "date": "2024-02-20T23:12:00Z",
+        "message": "Modify conditional to have Android API version check (#526)\n\nCo-authored-by: Cameron Miller <cameron.miller@homeaware.com>",
+        "url": "https://github.com/mfontanini/libtins/commit/00619e0500f42dfbceb2fb88c2b43418927218bb"
+    },
+    {
+        "sha": "64da67ca56b7a2be13c6bf52048d949c05198e2c",
+        "author": "Yang Bin",
+        "email": "73997093+SuperBigYB@users.noreply.github.com",
+        "date": "2023-09-19T14:04:43Z",
+        "message": "Update tcp.h (#516)\n\nFix a spelling error",
+        "url": "https://github.com/mfontanini/libtins/commit/64da67ca56b7a2be13c6bf52048d949c05198e2c"
+    },
+    {
+        "sha": "39437008303f720113365b74744740473f1d8fbb",
+        "author": "Matias Fontanini",
+        "email": "matias.fontanini@gmail.com",
+        "date": "2023-08-20T16:47:49Z",
+        "message": "Bump version to 4.6",
+        "url": "https://github.com/mfontanini/libtins/commit/39437008303f720113365b74744740473f1d8fbb"
+    },
+    {
+        "sha": "142b6f62cb5eab87a99b3a21e546c5ef5bca5439",
+        "author": "Matias Fontanini",
+        "email": "matias.fontanini@gmail.com",
+        "date": "2023-08-20T16:47:12Z",
+        "message": "Add CHANGES for v4.5",
+        "url": "https://github.com/mfontanini/libtins/commit/142b6f62cb5eab87a99b3a21e546c5ef5bca5439"
+    },
+    {
+        "sha": "dfd2701ee41b053e7504ced089b192482695ad59",
+        "author": "James R T",
+        "email": "jamestiotio@gmail.com",
+        "date": "2023-06-08T19:39:15Z",
+        "message": "Add vxlan.h to CMakeLists.txt (#508)",
+        "url": "https://github.com/mfontanini/libtins/commit/dfd2701ee41b053e7504ced089b192482695ad59"
+    },
+    {
+        "sha": "850bb9b642a2f842808c53e83b275204777cae7f",
+        "author": "James R T",
+        "email": "jamestiotio@gmail.com",
+        "date": "2023-05-04T01:21:59Z",
+        "message": "Add VXLAN support (#501)\n\nThis patch adds a new PDU class to support VXLAN. Several VXLAN-related\r\ntests have also been added.\r\n\r\nSigned-off-by: James Raphael Tiovalen <jamestiotio@gmail.com>",
+        "url": "https://github.com/mfontanini/libtins/commit/850bb9b642a2f842808c53e83b275204777cae7f"
+    },
+    {
+        "sha": "b7e61f4c76ac64053c9c4c9f8eadaabbe3a9381a",
+        "author": "Ed Catmur",
+        "email": "ed@catmur.uk",
+        "date": "2023-04-30T17:13:56Z",
+        "message": "Qualify calls to std::move (clang 15) (#488)\n\nCo-authored-by: Ed Catmur <edward.catmur@mavensecurities.com>",
+        "url": "https://github.com/mfontanini/libtins/commit/b7e61f4c76ac64053c9c4c9f8eadaabbe3a9381a"
+    },
+    {
+        "sha": "e2a14d889833ffabe79ac1edceadd0546f530026",
+        "author": "Ed Catmur",
+        "email": "ed@catmur.uk",
+        "date": "2023-04-30T17:11:57Z",
+        "message": "Remove use of deprecated std::iterator (#481)\n\nCo-authored-by: Ed Catmur <edward.catmur@mavensecurities.com>",
+        "url": "https://github.com/mfontanini/libtins/commit/e2a14d889833ffabe79ac1edceadd0546f530026"
+    },
+    {
+        "sha": "ba0c820852e5036a13e73990ac07c123691cdce7",
+        "author": "Tobias Specht",
+        "email": "specht.tobias@gmx.de",
+        "date": "2023-04-30T16:44:49Z",
+        "message": "Add FileSniffer constructor with FILE pointer as pcap source (#499)",
+        "url": "https://github.com/mfontanini/libtins/commit/ba0c820852e5036a13e73990ac07c123691cdce7"
+    },
+    {
+        "sha": "df509e7e36474c9b19c30686895d58b6aad0546a",
+        "author": "James R T",
+        "email": "jamestiotio@gmail.com",
+        "date": "2023-04-21T04:22:01Z",
+        "message": "Ignore IPv6 packets with payload after one with no Next Header (#500)\n\nIPv6 data packets with payload or padded bytes received after one with\r\nno Next Header were not being parsed correctly, resulting in NULL PDU.\r\n\r\nThis commit fixes the IPv6 parser to be compliant with RFC 2460 Section\r\n4.7 by adding a check in the IPv6 constructor to ignore the subsequent\r\npackets if an IPv6 packet contains no Next Header.\r\n\r\nSigned-off-by: James Raphael Tiovalen <jamestiotio@gmail.com>",
+        "url": "https://github.com/mfontanini/libtins/commit/df509e7e36474c9b19c30686895d58b6aad0546a"
+    },
+    {
+        "sha": "fa87e1b6f697deafa90288760b7eb89549a00a22",
+        "author": "Ed Catmur",
+        "email": "ed@catmur.uk",
+        "date": "2023-01-31T18:02:50Z",
+        "message": "Add missing include (#497)\n\n`<algorithm>` is needed for std::fill (error in clang-16)",
+        "url": "https://github.com/mfontanini/libtins/commit/fa87e1b6f697deafa90288760b7eb89549a00a22"
+    },
+    {
+        "sha": "812be7966d445ec56e88eab512f8fd2d57152427",
+        "author": "Vasiliy Glazov",
+        "email": "vascom2@gmail.com",
+        "date": "2023-01-24T16:29:36Z",
+        "message": "Fix build with GCC13 (#496)\n\nDue to changes in GCC13 need fix include.",
+        "url": "https://github.com/mfontanini/libtins/commit/812be7966d445ec56e88eab512f8fd2d57152427"
+    },
+    {
+        "sha": "f89cc9f076f3b3825306fa27e4c5a3b35b7696f1",
+        "author": "Bill Willcox",
+        "email": "bwillcox@users.noreply.github.com",
+        "date": "2023-01-03T17:10:41Z",
+        "message": "Validate high order two bits of first dns label octet (#494)",
+        "url": "https://github.com/mfontanini/libtins/commit/f89cc9f076f3b3825306fa27e4c5a3b35b7696f1"
+    },
+    {
+        "sha": "638bf9b34b27ae9bbe57d3eaead14971f1d36af4",
+        "author": "Matias Fontanini",
+        "email": "matias.fontanini@gmail.com",
+        "date": "2023-01-03T17:04:03Z",
+        "message": "Trigger actions on pull requests (#495)",
+        "url": "https://github.com/mfontanini/libtins/commit/638bf9b34b27ae9bbe57d3eaead14971f1d36af4"
+    },
+    {
+        "sha": "eb997f54384c5105a1ec49d7683fa1131d8fa23c",
+        "author": "mbcdev",
+        "email": "mbcdev@users.noreply.github.com",
+        "date": "2022-08-30T15:27:42Z",
+        "message": "fix incorrect IP address range calculation when using /0 prefix (#484) (#486)\n\nAccording to the C/C++ Standard, for shift operations, the behavior is undefined if the right operand is equal to the width of the promoted left operand.\r\nOn a 64-bit Windows machine, this causes IP addresses 0.0.0.0 and 255.255.255.255 to have the same internal representation, leading to various issues when using a /0 prefix.",
+        "url": "https://github.com/mfontanini/libtins/commit/eb997f54384c5105a1ec49d7683fa1131d8fa23c"
+    },
+    {
+        "sha": "18cbab4fc7f1c0807eaabac8c730d2d911832a27",
+        "author": "Scott K Logan",
+        "email": "logans@cottsay.net",
+        "date": "2022-05-14T18:09:58Z",
+        "message": "Use CMAKE_INSTALL_LIBDIR in CONF_CMAKE_INSTALL_DIR (#472)\n\nOn some platforms (like RedHat ones), CMAKE_INSTALL_LIBDIR is set to\r\n`lib64` instead of `lib`. The CMake files should also be installed to\r\n`lib64`, but because CONF_CMAKE_INSTALL_DIR is set unconditionally to\r\nuse `lib`, the proper path can't be configured.\r\n\r\nThis change makes CONF_CMAKE_INSTALL_DIR use the configured\r\nCMAKE_INSTALL_LIBDIR value, which defaults to `lib`.",
+        "url": "https://github.com/mfontanini/libtins/commit/18cbab4fc7f1c0807eaabac8c730d2d911832a27"
+    },
+    {
+        "sha": "7cd2b2c39648c7bdb904d18d55ec44180cec7227",
+        "author": "Scott K Logan",
+        "email": "logans@cottsay.net",
+        "date": "2022-05-14T18:07:39Z",
+        "message": "Fall back to system GTest if available (#473)\n\nUsing a submodule to download and build GTest is a great approach for\r\nmost circumstances, but some may prefer to use the system-provided GTest\r\nif it is available.\r\n\r\nThis change adds a fallback to using the system's GTest if the submodule\r\nis absent.",
+        "url": "https://github.com/mfontanini/libtins/commit/7cd2b2c39648c7bdb904d18d55ec44180cec7227"
+    },
+    {
+        "sha": "260149375231652a5a694cdd2594034e03d68c7e",
+        "author": "Lattice 0",
+        "email": "lattice0@protonmail.com",
+        "date": "2022-04-24T15:44:52Z",
+        "message": "android workaround (#471)",
+        "url": "https://github.com/mfontanini/libtins/commit/260149375231652a5a694cdd2594034e03d68c7e"
+    },
+    {
+        "sha": "7204fbd68855f3019ac87c7dccf1750a9937d011",
+        "author": "Bill Willcox",
+        "email": "bwillcox@users.noreply.github.com",
+        "date": "2022-02-26T22:29:22Z",
+        "message": "dns: parser reads into garbage on misreported packet size (#468)\n\nCo-authored-by: Bill Willcox <billwcorp@gmail.com>",
+        "url": "https://github.com/mfontanini/libtins/commit/7204fbd68855f3019ac87c7dccf1750a9937d011"
+    },
+    {
+        "sha": "c302e659d77121052173a7e24ee5bbc357bbfd72",
+        "author": "Bill Willcox",
+        "email": "bwillcox@users.noreply.github.com",
+        "date": "2022-02-20T23:18:00Z",
+        "message": "dns: bad label size interpreted as decompression pointer (#466)\n\nCo-authored-by: Bill Willcox <billwcorp@gmail.com>",
+        "url": "https://github.com/mfontanini/libtins/commit/c302e659d77121052173a7e24ee5bbc357bbfd72"
+    },
+    {
+        "sha": "54e4e4b0f4e09a946fec20cb9541a96c585e8f52",
+        "author": "Matias Fontanini",
+        "email": "matias.fontanini@gmail.com",
+        "date": "2022-02-20T01:01:37Z",
+        "message": "Add github actions for ubuntu (#467)",
+        "url": "https://github.com/mfontanini/libtins/commit/54e4e4b0f4e09a946fec20cb9541a96c585e8f52"
+    },
+    {
+        "sha": "6a17e59032d8d3a9074b8519ffd23595fd515ab1",
+        "author": "Matias Fontanini",
+        "email": "matias.fontanini@gmail.com",
+        "date": "2022-02-17T14:55:48Z",
+        "message": "Bump version to 4.5",
+        "url": "https://github.com/mfontanini/libtins/commit/6a17e59032d8d3a9074b8519ffd23595fd515ab1"
+    },
+    {
+        "sha": "e3aedc56edc7e9f39170c195de9a886a4309b0cb",
+        "author": "Matias Fontanini",
+        "email": "matias.fontanini@gmail.com",
+        "date": "2022-02-17T14:55:02Z",
+        "message": "Update CHANGES.md for v4.4",
+        "url": "https://github.com/mfontanini/libtins/commit/e3aedc56edc7e9f39170c195de9a886a4309b0cb"
+    },
+    {
+        "sha": "3b006c15db7e8c40e9ddad1bf8794e0b421c1cb9",
+        "author": "Matias Fontanini",
+        "email": "matias.fontanini@gmail.com",
+        "date": "2022-01-30T17:04:08Z",
+        "message": "Merge pull request #458 from demiquartz/fix-macro-name-conflict\n\nFix conflict between variable and macro name",
+        "url": "https://github.com/mfontanini/libtins/commit/3b006c15db7e8c40e9ddad1bf8794e0b421c1cb9"
+    },
+    {
+        "sha": "177d0b4621a1c5f4b2772865342317abe20c43a3",
+        "author": "Takaaki Sato",
+        "email": "takaaki@demiquartz.jp",
+        "date": "2021-10-31T03:03:24Z",
+        "message": "Fix conflict between variable and macro name",
+        "url": "https://github.com/mfontanini/libtins/commit/177d0b4621a1c5f4b2772865342317abe20c43a3"
+    },
+    {
+        "sha": "24ac038c302b2dff1cd47b104893ee60965d108f",
+        "author": "Matias Fontanini",
+        "email": "matias.fontanini@gmail.com",
+        "date": "2021-07-23T02:23:51Z",
+        "message": "Merge pull request #448 from FlukeCorp/link-local-uses-interface\n\nIPv6 use interface when sending to link-local dest",
+        "url": "https://github.com/mfontanini/libtins/commit/24ac038c302b2dff1cd47b104893ee60965d108f"
+    }
+]

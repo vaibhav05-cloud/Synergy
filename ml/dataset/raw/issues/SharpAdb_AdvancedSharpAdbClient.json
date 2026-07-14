@@ -1,0 +1,363 @@
+[
+    {
+        "id": 4133406649,
+        "number": 139,
+        "title": "建议增加InstallAsync等安装apk应用的api对于错误代码的返回",
+        "state": "closed",
+        "created_at": "2026-03-25T07:57:07Z",
+        "updated_at": "2026-03-26T04:38:55Z",
+        "closed_at": "2026-03-26T04:38:55Z",
+        "author": "scottfly189",
+        "comments": 2,
+        "labels": [
+            "enhancement"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Describe your feature request\n\n目前所有的安装api,如:InstallAsync等，返回都是void,但有时候安装会由于各种原因失败，建议增加对于返回错误代码的解析，如:\n```\n        private static Dictionary<string, string> rules = new()\n        {\n            [\"INSTALL_FAILED_ALREADY_EXISTS\"] = \"App already exists; use -r to replace the existing app\",\n            [\"INSTALL_FAILED_VERSION_DOWNGRADE\"] = \"Version downgrade; use the -d option\",\n            [\"INSTALL_FAILED_INVALID_APK\"] = \"APK is corrupted or incomplete\",\n            [\"INSTALL_FAILED_NO_MATCHING_ABIS\"] = \"CPU architecture mismatch (arm64/armeabi-v7a)\",\n            [\"INSTALL_FAILED_INSUFFICIENT_STORAGE\"] = \"Insufficient storage space\",\n            [\"INSTALL_FAILED_USER_RESTRICTED\"] = \"User is restricted from installing apps; enable 'USB installation' in Developer options. If already enabled, try disabling and re-enabling it.\",\n            [\"INSTALL_FAILED_MISSING_SPLIT\"] = \"Missing split APK\",\n            [\"INSTALL_FAILED_INVALID_URI\"] = \"Invalid APK filename; ensure the APK filename contains no Chinese characters\",\n            [\"INSTALL_FAILED_DUPLICATE_PACKAGE\"] = \"A package with the same name already exists\",\n            [\"INSTALL_FAILED_MISSING_SHARED_LIBRARY\"] = \"The package uses shared libraries not available on the device\",\n            [\"INSTALL_FAILED_REPLACE_COULDNT_DELETE\"] = \"Could not delete while replacing\",\n            [\"INSTALL_FAILED_DEXOPT\"] = \"Dex optimization failed or insufficient space\",\n            [\"INSTALL_FAILED_OLDER_SDK\"] = \"Device OS version is lower than the app requires\",\n            [\"INSTALL_FAILED_CONFLICTING_PROVIDER\"] = \"A content provider with the same name already exists on the device\",\n            [\"INSTALL_FAILED_NEWER_SDK\"] = \"Device OS version is newer than the app supports\",\n            [\"INSTALL_FAILED_CPU_ABI_INCOMPATIBLE\"] = \"Contains native code incompatible with the device's CPU ABI\",\n            [\"INSTALL_FAILED_MISSING_FEATURE\"] = \"The app requires features not available on the device\",\n            [\"INSTALL_FAILED_CONTAINER_ERROR\"] = \"SD card access error\",\n            [\"INSTALL_FAILED_INVALID_INSTALL_LOCATION\"] = \"Cannot install to the specified location\",\n            [\"INSTALL_FAILED_MEDIA_UNAVAILABLE\"] = \"Install location unavailable\",\n            [\"INSTALL_FAILED_VERIFICATION_TIMEOUT\"] = \"Package verification timed out\",\n            [\"INSTALL_FAILED_VERIFICATION_FAILURE\"] = \"Package verification failed\",\n            [\"INSTALL_FAILED_PACKAGE_CHANGED\"] = \"The package does not match the caller's expectations\",\n            [\"INSTALL_PARSE_FAILED_NOT_APK\"] = \"The specified path is not a file or does not end with .apk\",\n            [\"INSTALL_PARSE_FAILED_BAD_MANIFEST\"] = \"Unable to parse AndroidManifest.xml\",\n            [\"INSTALL_PARSE_FAILED_NO_CERTIFICATES\"] = \"The package is not signed\",\n            [\"INSTALL_PARSE_FAILED_INCONSISTENT_CERTIFICATES\"] = \"Installed app's signature does not match the APK. Uninstall the app from the device first and then install.\",\n            [\"INSTALL_PARSE_FAILED_CERTIFICATE_ENCODING\"] = \"CertificateEncodingException encountered while parsing APK\",\n            [\"INSTALL_PARSE_FAILED_BAD_PACKAGE_NAME\"] = \"No package name in manifest or the package name is invalid\",\n            [\"INSTALL_PARSE_FAILED_BAD_SHARED_USER_ID\"] = \"Invalid shared user ID specified in manifest\",\n            [\"INSTALL_FAILED_INTERNAL_ERROR\"] = \"Installation failed due to internal system error\",\n            [\"INSTALL_CANCELED_BY_USER\"] = \"Installation requires confirmation on the device, but it was not confirmed or was canceled. Please confirm installation on the device.\",\n            [\"INSTALL_FAILED_ACWF_INCOMPATIBLE\"] = \"App is incompatible with the device\",\n        };\n```\n\n\n### How important is this to you?\n\nNice-to-have\n\n### Describe the solution you'd like\n\n_No response_\n\n### Describe alternatives you've considered\n\n_No response_\n\n### Additional context\n\n_No response_",
+        "url": "https://github.com/SharpAdb/AdvancedSharpAdbClient/issues/139"
+    },
+    {
+        "id": 4084617443,
+        "number": 138,
+        "title": "ADBClient的理解求助",
+        "state": "closed",
+        "created_at": "2026-03-16T20:24:49Z",
+        "updated_at": "2026-03-25T07:54:48Z",
+        "closed_at": "2026-03-25T07:54:48Z",
+        "author": "scottfly189",
+        "comments": 4,
+        "labels": [
+            "help wanted"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### What can we do for you?\n\n尊敬的作者:\n      近期我做的应用用到AdvancedSharpAdbClient，用起来很爽，不过今天碰到在多线程下socket耗尽，adbd拒绝连接的情况，我认识到我在代码中到处用```var client = _DeviceData!.CreateDeviceClient().AdbClient;```这种代码建AdbClient是错误的，我重新看了一下文档，看到有下面这句话:\n```\nIf you want to automate 2 or more devices at the same time, you must remember: 1 device - 1 AdbClient class\n```\n我想求证一下，这句话的理解是不是：\n 多设备的情况下，是不是用一个字典保存这个AdbClient,一个设备对应一个AdbClient，关于请求这个设备，就单独用这个client来连接？在多线程下是否线程 安全？\n\n因为我现在水平比较菜，还看不懂源码，所以来请教您一下，\n谢谢您做出这么利害的框架",
+        "url": "https://github.com/SharpAdb/AdvancedSharpAdbClient/issues/138"
+    },
+    {
+        "id": 4073056212,
+        "number": 137,
+        "title": "请教AdbClient等关闭问题",
+        "state": "closed",
+        "created_at": "2026-03-13T19:41:44Z",
+        "updated_at": "2026-03-15T12:05:00Z",
+        "closed_at": "2026-03-15T09:52:10Z",
+        "author": "scottfly189",
+        "comments": 8,
+        "labels": [
+            "help wanted"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### What can we do for you?\n\n请教大佬：\n       我看源码，象AdbClient等也没有实现IDisposeable等接口，那么我们对于关闭的最佳实践是什么？特别是在多线程中。\n\n谢谢您！",
+        "url": "https://github.com/SharpAdb/AdvancedSharpAdbClient/issues/137"
+    },
+    {
+        "id": 4041629251,
+        "number": 136,
+        "title": "请教如何流式接收",
+        "state": "closed",
+        "created_at": "2026-03-08T16:24:09Z",
+        "updated_at": "2026-03-09T05:15:58Z",
+        "closed_at": "2026-03-09T05:15:58Z",
+        "author": "scottfly189",
+        "comments": 2,
+        "labels": [
+            "help wanted"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### What can we do for you?\n\n因为我近期在开发一个Android的工具，需要分析AndroidManifest.xml与resources.arsc文件，但我不想下载后再分析，想一边接流一边分析（用的是ApkReader),用的adb命令如: adb exec-out cat /product/preinstall/WPSoffice/WPSoffice.apk, 用AdvancedSharpAdbClient如何接收这种流哩？\n我看了IShellOutputReceiver接口，只能是string,所以我不知道如何办？\n所以请教大佬：用AdvancedSharpAdbClient如何接流？",
+        "url": "https://github.com/SharpAdb/AdvancedSharpAdbClient/issues/136"
+    },
+    {
+        "id": 3786490273,
+        "number": 133,
+        "title": "Incorrect progress on pulling large files",
+        "state": "closed",
+        "created_at": "2026-01-06T20:52:22Z",
+        "updated_at": "2026-01-13T03:57:32Z",
+        "closed_at": "2026-01-13T03:34:26Z",
+        "author": "Alex4SSB",
+        "comments": 15,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Describe the bug\n\nSyncProgressChangedEventArgs during pull of large files:\n\n• For files where the size in bytes has the 32nd bit set `1`, 2,329,488,011 bytes in this case, the progress is negative (from start to finish). See screenshot 1.\n\n• For files where the size in bytes has the 33rd bit set `1`, 5,079,805,952 bytes in this case, the progress surpasses 100 at some point. See screenshot 2.\n\n\n### Steps to reproduce the bug\n\n1. Connect a device\n2. Create a sync service\n3. Pull a large file (as specified) while providing SyncProgressChangedEventArgs callback\n\n### Expected behavior\n\nThe progress should always be between 0 and 100, as specified.\nAlso, the TotalBytesToReceive doesn't seem right.\n\n### Screenshots\n\nScreenshot 1:\n![Image](https://github.com/user-attachments/assets/4b352927-c7ce-4a49-9b08-23763dfb389c)\n\nScreenshot 2:\n<img width=\"587\" height=\"257\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/53b3b973-487b-4ef3-8ce3-c22f5e69549b\" />\n\n### NuGet package version\n\n3.4.14 (later verified in 3.5.15)\n\n### .NET Platform\n\n.NET 9\n\n### Platform type\n\nWindows\n\n### System version\n\nWindows 11 64bit.\nThe app is only compiled for x64.\n\n### IDE\n\nVisual Studio 2026\n\n### More Context\nOriginal Issue:\nhttps://github.com/Alex4SSB/ADB-Explorer/issues/290",
+        "url": "https://github.com/SharpAdb/AdvancedSharpAdbClient/issues/133"
+    },
+    {
+        "id": 3775719245,
+        "number": 132,
+        "title": "AdvancedSharpAdbClient.AdbClient.GetFrameBuffer会造成模拟器内存上涨",
+        "state": "open",
+        "created_at": "2026-01-02T06:42:02Z",
+        "updated_at": "2026-01-02T07:56:03Z",
+        "closed_at": null,
+        "author": "gtaxq",
+        "comments": 1,
+        "labels": [
+            "help wanted"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### What can we do for you?\n\nvb.net Framework 4.7.1\n```vb\nPublic 屏幕缓存 As Framebuffer\n屏幕缓存 = adb设备.GetFrameBuffer(已连接到设备)\n```\n这段代码 就是用在模拟器(雷电模拟器)上的话,会造成Ld9BoxHeadless.exe进程内存不断上涨, 就是调用一次涨一点,这个怎么整?",
+        "url": "https://github.com/SharpAdb/AdvancedSharpAdbClient/issues/132"
+    },
+    {
+        "id": 3771762685,
+        "number": 131,
+        "title": "Problems with invalid pair parameters",
+        "state": "open",
+        "created_at": "2025-12-31T01:52:25Z",
+        "updated_at": "2026-01-12T03:24:12Z",
+        "closed_at": null,
+        "author": "rube200",
+        "comments": 2,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Describe the bug\n\nWhen i try to pair to a device with valid paramters (ip, port and code) everything works fine.\nThe problem is when i use a wrong port/code to pair the device, currently the app crashes because it fails to read the msg return by adb.\n\nLog:\n```csharp\nAn unhandled exception has occurred while executing the request.\n    System.FormatException: The input string 'FAIL' was not in a correct format.\n    at System.Number.ThrowFormatException[TChar](ReadOnlySpan`1 value)\n    at System.Int32.Parse(String s, NumberStyles style)\n    at AdvancedSharpAdbClient.AdbSocket.ReadStringAsync(CancellationToken cancellationToken)\n    at AdvancedSharpAdbClient.AdbClient.PairAsync(String host, Int32 port, String code, CancellationToken cancellationToken)\n```\n\nAfter some digging i found the problem could be the adb tools itself, this is example of error when doing it directly in terminal with wrong port/code:\n```cmd\n>adb pair 192.168.2.100:123123 123123\nerror: protocol fault (couldn't read status message): No error\n```\n\n### Steps to reproduce the bug\n\nJust call\n```c#\nawait new AdbClient().PairAsync(\"some ip\", 123, \"some wrong code\", CancellationToken.None);\n```\nThe app will crash throwing `System.FormatException`\n\n### Expected behavior\n\nExpected to return an error in message instead of crashing.\n\n### NuGet package version\n\n3.5.15\n\n### .NET Platform\n\n.NET 10\n\n### Platform type\n\nWindows\n\n### System version\n\n```cmd\n>adb version\nAndroid Debug Bridge version 1.0.41\nVersion 36.0.0-13206524\nInstalled as D:\\Android\\Android_Sdk\\platform-tools\\adb.exe\nRunning on Windows 10.0.26100\n```\n\n### IDE\n\nRider 2025\n\n### Additional context\n\nAfter some debugging i found this are the messages return by adb socket:\n```csharp\n\"FAIL0027Failed: Unable to start pairing client.\" //When ip/port is wrong\n\"FAIL0031Failed: Wrong password or connection was dropped.\" //When pair code is wrong\n\"0045Successfully paired to 192.168.2.100:40613 [guid=REDACTED]\" //On Success\n```",
+        "url": "https://github.com/SharpAdb/AdvancedSharpAdbClient/issues/131"
+    },
+    {
+        "id": 3768452787,
+        "number": 130,
+        "title": "Using logcat",
+        "state": "open",
+        "created_at": "2025-12-29T22:20:13Z",
+        "updated_at": "2025-12-30T03:14:15Z",
+        "closed_at": null,
+        "author": "elekven-m",
+        "comments": 1,
+        "labels": [
+            "help wanted"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### What can we do for you?\n\nUsing Net 10 and AdvancedSharpAdbClient 3.5.15. Attempting to read log stream like \"adb shell logcat\". When I have code use AdbClient to run \"shell logcat\", it behaves as expected with a continuing output stream of log messages. When I use RunLogServiceAsync, it executes its message action callback a couple thousand times then the stream exits. If I restart the RunLogServiceAsync, I get the same behavior again with exactly the same messages duplicated. How is this function supposed to be called to generate a continuous steam of LogEntry message callbacks? This is how I am using the service now:\n\n```cs\nawait Adb.Client.RunLogServiceAsync(deviceData, LogMsgAction, ctok, [LogId.Default]);\nlog.Trace($\"Android log stream ended\");\n\nprivate void LogMsgAction(LogEntry entry)\n{\n    log.Trace($\"Android log stream received entry: {entry}\");\n}\n```",
+        "url": "https://github.com/SharpAdb/AdvancedSharpAdbClient/issues/130"
+    },
+    {
+        "id": 3576358996,
+        "number": 128,
+        "title": "App start & app status",
+        "state": "open",
+        "created_at": "2025-10-31T20:26:15Z",
+        "updated_at": "2026-01-12T03:23:55Z",
+        "closed_at": null,
+        "author": "MagischerOtter",
+        "comments": 5,
+        "labels": [
+            "bug",
+            "help wanted"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### What can we do for you?\n\n_await client.StartAppAsync(\"com.my.app\");_\nDoesnt start the app. I have also tried the command:\n_adb -s 192.168.0.36:5556 shell monkey -p com.daerigame.magicknight 1_\nOutput:\n  bash arg: -p\n  bash arg: com.daerigame.magicknight\n  bash arg: 1\nargs: [-p, com.daerigame.magicknight, 1]\n arg: \"-p\"\n arg: \"com.daerigame.magicknight\"\n arg: \"1\"\ndata=\"com.daerigame.magicknight\"\n** SYS_KEYS has no physical keys but with factor 2.0%.\n\n\n\nAnd if i start the app by hand & use GetAppStatus it returns running in background but i can clearly see its running in foreground\n\nMy Andoird device is redroid with android 13",
+        "url": "https://github.com/SharpAdb/AdvancedSharpAdbClient/issues/128"
+    },
+    {
+        "id": 3558968895,
+        "number": 126,
+        "title": "Bug Report — Missing detailed upload progress during package installation",
+        "state": "closed",
+        "created_at": "2025-10-27T23:01:51Z",
+        "updated_at": "2026-01-12T03:23:47Z",
+        "closed_at": "2025-10-27T23:34:09Z",
+        "author": "selimhaddioui",
+        "comments": 2,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Describe the bug\n\nWhen installing a package using PackageManager.InstallPackageAsync, only the start and end events of the upload phase (PackageInstallProgressState.Uploading) are reported through the IProgress<InstallProgressEventArgs> callback.\n\nIt seems that the progress callback is not passed to the PushAsync method inside InstallPackageAsync, preventing granular upload progress updates.\n\n### Steps to reproduce the bug\n\n```csharp\nvar progress = new Progress<InstallProgressEventArgs>(e => Dummy(e));\n\nawait packageManager.InstallPackageAsync(\n    packageFilePath,\n    progress,\n    cancellationToken,\n    arguments: [\"-r\", \"-t\", \"-g\"]\n);\n```\n\nObserved:\n```csharp\nDummy(e) // e.State = Uploading, e.UploadProgress = 0\nDummy(e) // e.State = Uploading, e.UploadProgress = 100\n```\n\n### Expected behavior\n\nDuring the upload phase (PackageInstallProgressState.Uploading),\nthe IProgress<InstallProgressEventArgs> callback should be invoked continuously with incremental values of e.UploadProgress (e.g., 0.0 → 0.1 → 0.2 → … → 1.0) reflecting the actual upload progress of the package file.\n\nThis would allow consumers to display real-time progress bars or logs during package installation, consistent with the behavior of SyncService.PushAsync when a progress reporter is provided.\n\n### Screenshots\n\n# Root cause\n\nThe InstallPackageAsync method calls:\n```csharp\nawait sync.PushAsync(stream, remoteFilePath, UnixFileStatus.DefaultFileMode, File.GetLastWriteTime(localFilePath), null, cancellationToken);\n```\nIt does not pass the progress callback.\n\n# Proposed Fix\n\n```csharp\nawait sync.PushAsync(stream, remoteFilePath, UnixFileStatus.DefaultFileMode, File.GetLastWriteTime(localFilePath), progress, cancellationToken);\n```\n\n\n### NuGet package version\n\nLatest Source\n\n### .NET Platform\n\n.NET 9\n\n### Platform type\n\nWindows\n\n### System version\n\n_No response_\n\n### IDE\n\nRider 2025\n\n### Additional context\n\n_No response_",
+        "url": "https://github.com/SharpAdb/AdvancedSharpAdbClient/issues/126"
+    },
+    {
+        "id": 3076535569,
+        "number": 123,
+        "title": "adb.exe server inherits app handles when launched via AdbServer.Instance.StartServer",
+        "state": "open",
+        "created_at": "2025-05-20T10:35:11Z",
+        "updated_at": "2026-01-12T03:23:38Z",
+        "closed_at": null,
+        "author": "jimon",
+        "comments": 1,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Describe the bug\n\nWhen AdvancedSharpAdbClient is used as part of the bigger app, e.g. an app with listen sockets, starting adb server would make it inherit all open handles. Meaning if app doesn't close the handles on shutdown, they will outlive the app and not be available unless adb server is killed.\n\nPractical example:\n- App opens tcp listen socket on port 4000\n- App starts adb server\n- App crashed due to some error\n- 4000 port is still bound because adb inherited it's handled\n\nIt's unfortunate side effect of trying to pass adb stdout/stderr back to the app.\n\nWhen `adb.exe start-server` is invoked, it [internally starts the daemon with handles inherited](https://cs.android.com/android/platform/superproject/+/android15-qpr2-release:packages/modules/adb/adb.cpp;l=937-953?q=adb.cpp&ss=android%2Fplatform%2Fsuperproject).\n\n.NET itself also creates a process with all handles inherited unconditionally, see [the long standing issue](https://github.com/dotnet/runtime/issues/13943).\n\nOne possible way to solve this is to use `UseShellExecute = true` in launch code, this will lose stdout redirect though. \n```cs\nProcessStartInfo psi = new(filename, command)\n{\n    CreateNoWindow = true,\n    WindowStyle = ProcessWindowStyle.Hidden,\n    UseShellExecute = false,\n    RedirectStandardError = true,\n    RedirectStandardOutput = true\n};\n```\n\nAnother way is to manually invoke winapi CreateProcess and pass stdout/stderr handles to it, making everything else as not inherited. This would be so much easier if .NET had support for it.\n\nYet another way is to explicitly mark handles as not inheritable, but this is not practical when integrating the framework into a bigger app.\n\n### Steps to reproduce the bug\n\n- open tcp listen socket on port X\n- starts adb server\n- exit the app without closing the socket\n\n`netstat -ano -p tcp` still shows port X as active\n\n### Expected behavior\n\n_No response_\n\n### Screenshots\n\n_No response_\n\n### NuGet package version\n\nNone\n\n### .NET Platform\n\n_No response_\n\n### Platform type\n\n_No response_\n\n### System version\n\n_No response_\n\n### IDE\n\n_No response_\n\n### Additional context\n\n_No response_",
+        "url": "https://github.com/SharpAdb/AdvancedSharpAdbClient/issues/123"
+    },
+    {
+        "id": 3039658373,
+        "number": 122,
+        "title": "Longpress on SendKey",
+        "state": "open",
+        "created_at": "2025-05-05T13:19:56Z",
+        "updated_at": "2026-01-12T03:32:01Z",
+        "closed_at": null,
+        "author": "Imaginous",
+        "comments": 2,
+        "labels": [
+            "enhancement"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Describe your feature request\n\nWhen using ADB from the command line you can emulate a long key press:\n`shell input keyevent --longpress <key code>`\n\nI'm using this for certain keys. I wanted to start using your library instead of starting ADB via a process each time I want to send a key stroke.\n\nBut found out your library doesn't seem to support the *longpress* attribute.\n\n\n### How important is this to you?\n\nCritical\n\n### Describe the solution you'd like\n\nTo support the *longpress* attribute like in the ADB shell command.\n\n### Describe alternatives you've considered\n\nKeep using my own solution... but it's not as comprehensive as your great library.\n\n### Additional context\n\n_No response_",
+        "url": "https://github.com/SharpAdb/AdvancedSharpAdbClient/issues/122"
+    },
+    {
+        "id": 2965997566,
+        "number": 121,
+        "title": "Unable to use nohup",
+        "state": "open",
+        "created_at": "2025-04-02T10:51:09Z",
+        "updated_at": "2026-01-12T03:23:21Z",
+        "closed_at": null,
+        "author": "ZSXinXing",
+        "comments": 0,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Describe the bug\n\nI use ExecuteRemoteCommand to execute nohup ./filename & to run the executable library. It is executed successfully in Windows PowerShell, but ExecuteRemoteCommand cannot be executed. It has no feedback and the binary file does not run.\n\n### Steps to reproduce the bug\n\n![Image](https://github.com/user-attachments/assets/2f624d19-f600-48b0-81b4-104e11f8336a)\n\n### Expected behavior\n\n_No response_\n\n### Screenshots\n\n_No response_\n\n### NuGet package version\n\nNone\n\n### .NET Platform\n\n_No response_\n\n### Platform type\n\n_No response_\n\n### System version\n\n_No response_\n\n### IDE\n\n_No response_\n\n### Additional context\n\n_No response_",
+        "url": "https://github.com/SharpAdb/AdvancedSharpAdbClient/issues/121"
+    },
+    {
+        "id": 2927548184,
+        "number": 118,
+        "title": "新版本的ExecuteRemoteCommand参数encoding不应每次都带，可以在初始化的时候一次性设置",
+        "state": "closed",
+        "created_at": "2025-03-18T08:08:28Z",
+        "updated_at": "2026-01-12T03:31:33Z",
+        "closed_at": "2025-03-20T07:21:52Z",
+        "author": "bigsinger",
+        "comments": 3,
+        "labels": [
+            "enhancement"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Describe your feature request\n\n目前升级到新版编译不过了，而且每次带上这个编码也很奇怪。\n\n### How important is this to you?\n\nNice-to-have\n\n### Describe the solution you'd like\n\n_No response_\n\n### Describe alternatives you've considered\n\n_No response_\n\n### Additional context\n\n_No response_",
+        "url": "https://github.com/SharpAdb/AdvancedSharpAdbClient/issues/118"
+    },
+    {
+        "id": 2629206254,
+        "number": 113,
+        "title": "Does not work in Unity due to 'init' keyword in properties",
+        "state": "open",
+        "created_at": "2024-11-01T14:54:23Z",
+        "updated_at": "2026-01-12T03:23:13Z",
+        "closed_at": null,
+        "author": "Monsoonexe",
+        "comments": 2,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Describe the bug\n\nThe readme claims that this repo can be used in Unity (the game engine, I'm assuming). However, this is not the case (tested in 2020.3). This repo uses the 'init' keyword for properties, which are explicitly not a feature supported by unity: [source](https://docs.unity3d.com/Manual/csharp-compiler.html#:~:text=unmanaged%20function%20pointers-,Init%20only%20setters,-If%20you%20try)\n\n### Steps to reproduce the bug\n\nDownload source. Go through each folder of the 'lib' folder and copy-paste .dll into /Plugins folder in Unity. It'll compile. Now in your code, try to use any property that uses the 'init' keyword (in my case, none of the properties on `DeviceData` are supported. If you try to access these properties in your code, when you recompile in Unity, you'll get an error in the console about \"property... is not supported by the language...\". Even picking .dll from .net framework 3.5 or 4.5 has same issues.\r\n\r\nA work-around I use is to re-write the properties as extension methods and use Reflection to call the underlying `get_Name` auto-property functions.\r\n\r\nUnity 2020.3 (but the Unity 6 doc suggest this feature is still unsupported). Using Mono scripting backend 4.x.\n\n### Expected behavior\n\nI expected the claims to be correct -- all features are supported. If some features aren't supported, please notate as such.\n\n### Screenshots\n\n![image](https://github.com/user-attachments/assets/c926e2a9-1d92-4a88-98db-40f156075645)\r\n![image](https://github.com/user-attachments/assets/01e705fc-a7f4-4f1c-8520-6888afd59d94)\r\n\n\n### NuGet package version\n\nLatest Source\n\n### .NET Platform\n\nOthers\n\n### Platform type\n\nWindows\n\n### System version\n\n_No response_\n\n### IDE\n\nVisual Studio 2022\n\n### Additional context\n\n_No response_",
+        "url": "https://github.com/SharpAdb/AdvancedSharpAdbClient/issues/113"
+    },
+    {
+        "id": 2490007358,
+        "number": 110,
+        "title": "ExecuteRemoteCommand bugged?!",
+        "state": "open",
+        "created_at": "2024-08-27T17:51:46Z",
+        "updated_at": "2026-01-12T03:23:07Z",
+        "closed_at": null,
+        "author": "SaymanNsk",
+        "comments": 5,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Describe the bug\n\nЭмулятор LDPlayer 9 крайней сборки с сайта авторов.\r\nПытаюсь накидать автоматизацию. В процессе прикручиваю redsocks2. Там нужно \"крутить\" iptables.\r\nadb.adbClient.ExecuteRemoteCommand(\"echo -n > /data/local/tmp/rs/iptables.rules\", adb.deviceData);\r\nне отрабатывает. Если добавить аргумент на receiver или Encoding, тогда срабатывает. Но, не всегда требуется \"грабить\" вывод. Тут он точно не требуется. В результате, файл не обнуляется.\n\n### Steps to reproduce the bug\n\nШаги простые - выполнить ExecuteRemoteCommand с единственным аргументом DeviceData.\n\n### Expected behavior\n\nПо всей видимости, команда должна отработать без возвращения куда-либо вывод с консоли.\n\n### Screenshots\n\n_No response_\n\n### NuGet package version\n\n3.3.13\n\n### .NET Platform\n\n.NET Framework 4.8.x\n\n### Platform type\n\nWindows\n\n### System version\n\nMicrosoft Windows [Version 10.0.19045.4780]\n\n### IDE\n\nVisual Studio 2022\n\n### Additional context\n\n_No response_",
+        "url": "https://github.com/SharpAdb/AdvancedSharpAdbClient/issues/110"
+    },
+    {
+        "id": 2450450402,
+        "number": 109,
+        "title": "Devices Disconnect within 30 seconds",
+        "state": "closed",
+        "created_at": "2024-08-06T09:51:05Z",
+        "updated_at": "2026-01-12T03:23:00Z",
+        "closed_at": "2024-09-21T13:51:09Z",
+        "author": "jerry-synap",
+        "comments": 5,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Describe the bug\r\n\r\nI connect to multiple devices using the code shown.\r\nThe devices connect and are to be seen via 'adb devices' command, but they all disconnect around 15-30 seconds. I am using the devicemonitor and tracking the disconnects.\r\n\r\n### Steps to reproduce the bug\r\n\r\nTry the following code :\r\n\r\n```cs\r\nnamespace TestDeviceMonitor\r\n{\r\n    internal class Program\r\n    {\r\n        static int count = 0;\r\n        static readonly AdbClient adbClient = new();\r\n        const string SUBNET = \"192.168.1.\";\r\n        static void Main(string[] args)\r\n        {\r\n\r\n            StartServerResult startServerResult = AdbServer.Instance.StartServer(\"adb.exe\", true);\r\n            Console.WriteLine(startServerResult);\r\n            Console.WriteLine($\"Current subnet is : {SUBNET}\");\r\n\r\n\r\n            var x = adbClient.GetDevices();\r\n            Console.WriteLine(x.Count());\r\n\r\n            using DeviceMonitor deviceMonitor = new(new AdbSocket(new IPEndPoint(IPAddress.Loopback, AdbClient.AdbServerPort)));\r\n            deviceMonitor.DeviceConnected += DeviceMonitor_DeviceConnected;\r\n            deviceMonitor.DeviceDisconnected += DeviceMonitor_DeviceDisconnected;\r\n            deviceMonitor.DeviceChanged += (sender, e) => Console.WriteLine($\"Device state changed: {e.Device} {e.OldState} -> {e.NewState}\");\r\n            deviceMonitor.Start();\r\n\r\n\r\n            ScanNetworkForDevices();\r\n\r\n            Console.Write(\"Press any key to exit...\\n\");\r\n            Console.ReadKey(true);\r\n            //AdbServer.Instance.RestartServer();\r\n        }\r\n\r\n        private static async Task ScanNetworkForDevices()\r\n        {\r\n            for (int i = 2; i < 254; i++)\r\n            {\r\n                _ = adbClient.ConnectAsync($\"{SUBNET}{i}\");\r\n                Console.WriteLine($\"Scanned {i}\");\r\n            }\r\n        }\r\n\r\n\r\n        private static void DeviceMonitor_DeviceDisconnected(object? sender, DeviceDataEventArgs e)\r\n        {\r\n            Console.WriteLine($\"{DateTime.Now} Device Disconnected\");\r\n            if (e.Device.State == DeviceState.Offline) { Console.WriteLine(count--); }\r\n        }\r\n\r\n        private static void DeviceMonitor_DeviceConnected(object? sender, DeviceDataEventArgs e)\r\n        {\r\n            Console.WriteLine($\"{DateTime.Now} Device Connected\");\r\n            //if (e.Device.State == DeviceState.Online) Console.WriteLine(count++);\r\n        }\r\n    }\r\n}\r\n```\r\n\r\n### Expected behavior\r\n\r\nThe devices should stay connected unless the device is unplugged, loses network or is intentionally disconnected.\r\n\r\n### Screenshots\r\n\r\n![image](https://github.com/user-attachments/assets/741d5af4-288b-49ec-9db0-ac2e369dcff5)\r\n\r\n\r\n### NuGet package version\r\n\r\n3.3.13\r\n\r\n### .NET Platform\r\n\r\n.NET 8\r\n\r\n### Platform type\r\n\r\nWindows\r\n\r\n### System version\r\n\r\nWindows 11 Home , 23H2 OS Version : 22631.3958\r\n\r\n### IDE\r\n\r\nVisual Studio 2022-preview, Visual Studio 2022\r\n\r\n### Additional context\r\n\r\nI am testing the DeviceMonitor feature using a simple console app.",
+        "url": "https://github.com/SharpAdb/AdvancedSharpAdbClient/issues/109"
+    },
+    {
+        "id": 2304514570,
+        "number": 105,
+        "title": "Are the any commands to change imei and other parameters to be anonimous",
+        "state": "open",
+        "created_at": "2024-05-19T09:15:30Z",
+        "updated_at": "2026-01-12T03:31:25Z",
+        "closed_at": null,
+        "author": "evolution1987",
+        "comments": 1,
+        "labels": [
+            "enhancement"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Describe your feature request\n\nVery offen some apps need to change device parameters\n\n### How important is this to you?\n\nNice-to-have\n\n### Describe the solution you'd like\n\nIt would be nice to change imei, emsi, device model, android id and other parameters\n\n### Describe alternatives you've considered\n\n-\n\n### Additional context\n\n-",
+        "url": "https://github.com/SharpAdb/AdvancedSharpAdbClient/issues/105"
+    },
+    {
+        "id": 2247401798,
+        "number": 104,
+        "title": "The adb process returned error code -1 ",
+        "state": "closed",
+        "created_at": "2024-04-17T05:26:51Z",
+        "updated_at": "2024-10-30T17:05:37Z",
+        "closed_at": "2024-10-30T17:05:37Z",
+        "author": "flashbear",
+        "comments": 1,
+        "labels": [
+            "help wanted"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### What can we do for you?\n\nI'm keeping getting an error code -1 when running command start-server using the example code below:\r\nThis code works only if I initiate the server manually first (ex. by running 'adb devices') via command prompt which starts the server.\r\nany idea?  my adb path is correct\r\n\r\n![error](https://github.com/SharpAdb/AdvancedSharpAdbClient/assets/62415374/8c252067-70b0-40ac-977f-cb827910ac6e)\r\n",
+        "url": "https://github.com/SharpAdb/AdvancedSharpAdbClient/issues/104"
+    },
+    {
+        "id": 2212426311,
+        "number": 102,
+        "title": "An error occurs when connecting adb and retrieving the device list.Help title",
+        "state": "open",
+        "created_at": "2024-03-28T06:06:49Z",
+        "updated_at": "2024-03-28T18:10:14Z",
+        "closed_at": null,
+        "author": "hosot",
+        "comments": 2,
+        "labels": [
+            "help wanted"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### What can we do for you?\r\n```cs\r\nif (!AdbServer.Instance.GetStatus().IsRunning)\n{\n    AdbServer server = new AdbServer();\r\n    try\r\n    {\r\n        StartServerResult result = server.StartServer(Application.StartupPath + @\"\\adb\\adb.exe\", false);\r\n        if (result != StartServerResult.Started)\r\n        {\r\n            MessageBox.Show(\"adb fail\", \"error\", MessageBoxButtons.OK, MessageBoxIcon.Error);\r\n            return;\r\n        }\r\n        else\r\n        {\r\n            MessageBox.Show(\"adb OK!\", \"info\", MessageBoxButtons.OK, MessageBoxIcon.Information);\r\n        }\r\n    }\r\n    catch (Exception ex)\r\n    {\r\n        **MessageBox.Show(ex.Message, \"Exception\", MessageBoxButtons.OK, MessageBoxIcon.Error);**\r\n        return;\r\n    }\r\n}\r\n```\r\nThe error occurs in the highlighted part.\r\nException: The adb process returnd error code -1 when running command start-server\r\n\r\n```cs\r\ntry\r\n{\r\n    adbClient = new AdbClient();\r\n\r\n}\r\ncatch (Exception ex)\n{ MessageBox.Show(ex.Message, \"1\"); return; }\r\ntry\r\n{\r\n    var devices = adbClient.GetDevices();\r\n\r\n    if (devices.Count() == 0)\r\n    {\r\n        MessageBox.Show(\"No Devices\");\r\n        return;\r\n    }\r\n    try\r\n    {\r\n        deviceData = devices.FirstOrDefault();\r\n\r\n    }\r\n    catch (Exception ex)\r\n    {\r\n        MessageBox.Show(ex.Message, \"3\");\r\n        return;\r\n    }\n}\r\ncatch (Exception ex)\r\n{\r\n    **MessageBox.Show(ex.Message, \"2\");**\r\n    return;\r\n}\r\n```\r\n\r\nIn the highlighted part\r\n'adb cannot connect to 127.0.0.1:5037: The connection failed because the target computer refused the connection.'\r\nAn error occurs.\r\n\r\nIt works normally on my development PC, but a problem has occurred on the PC where I need to use the program, so I can't use it.\r\n\r\nIn this case, are there any additional programs that I need to install?",
+        "url": "https://github.com/SharpAdb/AdvancedSharpAdbClient/issues/102"
+    }
+]

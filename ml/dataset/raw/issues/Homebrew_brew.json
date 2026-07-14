@@ -1,0 +1,352 @@
+[
+    {
+        "id": 4881011173,
+        "number": 23096,
+        "title": "Donation link is not correct",
+        "state": "open",
+        "created_at": "2026-07-14T07:49:41Z",
+        "updated_at": "2026-07-14T08:12:12Z",
+        "closed_at": null,
+        "author": "quirky-potter-70",
+        "comments": 1,
+        "labels": [],
+        "assignees": [
+            "MikeMcQuaid"
+        ],
+        "locked": false,
+        "body": "### `brew doctor` output\n\n```shell\nnot relevant\n```\n\n### Verification\n\n- [x] I ran `brew update` twice and am still able to reproduce my issue.\n- [x] My \"`brew doctor` output\" above says `Your system is ready to brew` or a definitely unrelated `Tier` message.\n- [x] This issue's title and/or description do not reference a single formula e.g. `brew install wget`. If they do, open an issue at https://github.com/Homebrew/homebrew-core/issues/new/choose instead.\n\n### `brew config` output\n\n```shell\nnot relevant\n```\n\n### What were you trying to do (and why)?\n\nI was trying to go to the donate page on the GitHub repo.\n\n### What happened (include all command output)?\n\nI ran a command and it directed me to donate. I copied the donation link and it brought me to the top of the GitHub page instead of to the donation section of the GitHub repo.\n\nWhat it linked me: https://github.com/Homebrew/brew#donations\n\n\n\n### What did you expect to happen?\n\nI expected it to bring me straight to the donations section because the link included a shortcut to that.\n\nIt didn't and I had to scroll down.\n\nFix: change from https://github.com/Homebrew/brew#donations to https://github.com/Homebrew/brew#-donations\n\n### Step-by-step reproduction instructions (running `brew` commands)\n\n```shell\nnot relevant, any command which triggers donation request.\n```",
+        "url": "https://github.com/Homebrew/brew/issues/23096"
+    },
+    {
+        "id": 4879340181,
+        "number": 23094,
+        "title": "brew install --cask silently skips nested-container extraction (container nested: casks install empty)",
+        "state": "open",
+        "created_at": "2026-07-14T02:39:50Z",
+        "updated_at": "2026-07-14T08:13:35Z",
+        "closed_at": null,
+        "author": "OscarMarshall",
+        "comments": 1,
+        "labels": [],
+        "assignees": [
+            "MikeMcQuaid"
+        ],
+        "locked": false,
+        "body": "### `brew doctor` output\n\n```\nPlease note that these warnings are just used to help the Homebrew maintainers\nwith debugging if you file an issue. If everything you use Homebrew for is\nworking fine: please don't worry or file an issue; just ignore this. Thanks!\n\nWarning: Some installed casks are deprecated or disabled.\nYou should find replacements for the following casks:\n  codex-app\n```\n\n(Unrelated `Tier`-style warning about an installed cask being deprecated — not connected to this issue.)\n\n### Verification\n\n- [x] I ran `brew update` twice and am still able to reproduce my issue.\n- [x] My \"`brew doctor` output\" above says `Your system is ready to brew` or a definitely unrelated `Tier` message.\n- [x] This issue's title and/or description do not reference a single formula e.g. `brew install wget`. If they do, open an issue at https://github.com/Homebrew/homebrew-core/issues/new/choose instead.\n\n(This bug isn't about `programmer-dvorak` itself — the cask definition is correct. It's a bug in `brew`'s cask installer, specifically its handling of the `container nested:` DSL directive under the parallel download-queue staging path added for `brew install`/`brew bundle`. I use `programmer-dvorak` only as a reproducible example because it's one of the few public casks using `container nested:`.)\n\n### `brew config` output\n\n```\nHOMEBREW_VERSION: 6.0.10-25-g199d35f\nORIGIN: https://github.com/Homebrew/brew\nHEAD: 199d35fe464ed152e487a9264308c26420bd8cb5\nLast commit: 27 minutes ago\nBranch: main\nCore tap: N/A\nCore cask tap: N/A\nHOMEBREW_PREFIX: /opt/homebrew\nHOMEBREW_CASK_OPTS: []\nHOMEBREW_DOWNLOAD_CONCURRENCY: 36\nHOMEBREW_EDITOR: nano\nHOMEBREW_FORBID_PACKAGES_FROM_PATHS: set\nHOMEBREW_MAKE_JOBS: 18\nHOMEBREW_REQUIRE_TAP_TRUST: set\nHomebrew Ruby: 4.0.5 => /opt/homebrew/Library/Homebrew/vendor/portable-ruby/4.0.5_1/bin/ruby\nCPU: 18-core 64-bit arm_sotra\nClang: 21.0.0 build 2100\nGit: 2.50.1 => /Library/Developer/CommandLineTools/usr/bin/git\nCurl: 8.7.1 => /usr/bin/curl\nmacOS: 26.4-arm64\nCLT: 26.6.0.0.1781586589\nXcode: N/A\nRosetta 2: false\n```\n\n### What were you trying to do (and why)?\n\nInstalling the `programmer-dvorak` cask (`brew install --cask programmer-dvorak`), which also reproduces via `brew bundle` with `cask \"programmer-dvorak\"` in a Brewfile. This cask declares:\n\n```ruby\nurl \"https://www.kaufmann.no/downloads/macos/ProgrammerDvorak-#{version.dots_to_underscores}.pkg.zip\"\ncontainer nested: \"Programmer Dvorak v#{version.major_minor}.pkg/Contents/Archive.pax.gz\"\nkeyboard_layout \"Library/Keyboard Layouts/Programmer Dvorak.bundle\"\n```\n\ni.e. the artifact lives inside a `.pkg`'s `Archive.pax.gz`, nested inside the downloaded `.zip` — see https://github.com/Homebrew/homebrew-cask/blob/HEAD/Casks/p/programmer-dvorak.rb.\n\n### What happened (include all command output)?\n\n```\n❯ brew install --cask programmer-dvorak\n✔︎ JSON API packages.arm64_tahoe.jws.json                                   Downloaded   15.3MB/ 15.3MB\n==> Would install 1 cask:\nprogrammer-dvorak\n==> Fetching downloads for: programmer-dvorak\n✔︎ Cask programmer-dvorak (1.2.13)                                          Downloaded   12.4KB/ 12.4KB\n==> Caveats\nYou must reboot for the installation of programmer-dvorak to take effect.\n==> Installing Cask programmer-dvorak\n==> Purging files for version 1.2.13 of Cask programmer-dvorak\nError: It seems the Keyboard Layout source '/opt/homebrew/Caskroom/programmer-dvorak/1.2.13/Library/Keyboard Layouts/Programmer Dvorak.bundle' is not there.\n```\n\nI dug into why and it looks like the newer parallel `download_queue`-based prefetch path (used by `brew install`/`brew bundle` since the `defer_fetch: true` staging flow was introduced) only extracts the **outer** container and never expands the `container nested:` archive:\n\n- The download itself is fine — sha256 of the cached `.zip` matches the cask's declared checksum exactly.\n- Manually driving the same cask-loading/extraction Ruby code *outside* `brew install`'s pipeline (`Cask::CaskLoader.load` + `Cask::Download#fetch` + `#stage_from_download_queue`) extracts correctly and produces `Library/Keyboard Layouts/Programmer Dvorak.bundle` as expected.\n- But watching `/opt/homebrew/var/homebrew/tmp/.caskroom/programmer-dvorak/<version>/` while a real `brew install --cask programmer-dvorak` runs shows only:\n  ```\n  Programmer Dvorak v1.2.pkg/Contents/Archive.pax.gz   (still gzipped, never expanded)\n  ```\n  instead of the expected `Library/Keyboard Layouts/Programmer Dvorak.bundle/...` tree. `Cask::Installer#stage` then finds nothing at the expected path once it moves this into `Caskroom/`, and the `keyboard_layout` artifact install step fails.\n- This is 100% reproducible across repeated `brew install --cask programmer-dvorak` runs (not a timing flake), and still reproduces after `brew update` (confirmed on `HEAD e322eeffc2` and again after updating to `HEAD 199d35fe46`).\n\nThis suggests the `container.nested` info isn't being honored by whatever `Cask` object instance is used for the queued prefetch/extract step during `brew install`, even though the fully-loaded cask object has it (`cask.container.inspect` => `#<Cask::DSL::Container @nested=\"Programmer Dvorak v1.2.pkg/Contents/Archive.pax.gz\" ...>` when loaded directly via `Cask::CaskLoader`).\n\n### What did you expect to happen?\n\nThe nested container is extracted and the keyboard layout artifact is installed, as it did with older Homebrew versions.\n\n### Step-by-step reproduction instructions (running `brew` commands)\n\n```\nbrew install --cask programmer-dvorak\n```\n\nFails every time on a fresh Caskroom (macOS 26.4, Homebrew 6.0.10, arm64). No special `HOMEBREW_*` env vars beyond defaults were needed to reproduce.\n",
+        "url": "https://github.com/Homebrew/brew/issues/23094"
+    },
+    {
+        "id": 4878825695,
+        "number": 23092,
+        "title": "Failed to update RBI files",
+        "state": "closed",
+        "created_at": "2026-07-14T00:41:08Z",
+        "updated_at": "2026-07-14T07:10:33Z",
+        "closed_at": "2026-07-14T07:10:33Z",
+        "author": "github-actions[bot]",
+        "comments": 1,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "The Sorbet workflow [failed](https://github.com/Homebrew/brew/actions/runs/29296519551). No RBI files were updated.",
+        "url": "https://github.com/Homebrew/brew/issues/23092"
+    },
+    {
+        "id": 4877298889,
+        "number": 23086,
+        "title": "uninstall --cask <path> reports 'is not installed' right after successful install from the same path (main, breaks homebrew-cask CI)",
+        "state": "closed",
+        "created_at": "2026-07-13T20:20:22Z",
+        "updated_at": "2026-07-14T08:04:40Z",
+        "closed_at": "2026-07-14T08:04:40Z",
+        "author": "zack40x",
+        "comments": 2,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "### `brew doctor` output\n\n```shell\nWarning: Some taps are not on the default git origin branch and may not receive\nupdates. If this is a surprise to you, check out the default branch with:\n  git -C $(brew --repo homebrew/cask) checkout main\n\nWarning: The following taps are not trusted:\n  supabase/tap\n```\n(The cask tap is on a PR branch because it was checked out for the reproduction below; the trust warning concerns an unrelated third-party tap.)\n\n### Verification\n\n- [x] I ran `brew update` twice and am still able to reproduce my issue.\n- [x] My \"`brew doctor` output\" above says `Your system is ready to brew` or a definitely unrelated `Tier` message.\n- [x] This issue's title and/or description do not reference a single formula e.g. `brew install wget`. If they do, open an issue at https://github.com/Homebrew/homebrew-core/issues/new/choose instead.\n\n### `brew config` output\n\n```shell\nHOMEBREW_VERSION: 6.0.10-17-g85c5ba0\nORIGIN: https://github.com/Homebrew/brew\nHEAD: 85c5ba05deaa43787600e2d2a99a3e8ab4f6b6a0\nLast commit: 2 hours ago\nBranch: main\nCore tap: N/A\nCore cask tap HEAD: dc89dd190f1afa6a983d0ee959f50b24bda59cde\nCore cask tap last commit: 20 minutes ago\nCore cask tap branch: crest-new-cask\nHOMEBREW_PREFIX: /opt/homebrew\nHOMEBREW_CASK_OPTS: []\nHOMEBREW_DOWNLOAD_CONCURRENCY: 28\nHOMEBREW_FORBID_PACKAGES_FROM_PATHS: set\nHOMEBREW_MAKE_JOBS: 14\nHOMEBREW_REQUIRE_TAP_TRUST: set\nHomebrew Ruby: 4.0.5 => /opt/homebrew/Library/Homebrew/vendor/portable-ruby/4.0.5_1/bin/ruby\nCPU: 14-core 64-bit arm_brava\nClang: 21.0.0 build 2100\nGit: 2.50.1 => /Library/Developer/CommandLineTools/usr/bin/git\nCurl: 8.7.1 => /usr/bin/curl\nmacOS: 15.x arm64\n```\n\n### What were you trying to do (and why)?\n\nInstall a cask from a file path and then uninstall it from the same path, which is exactly what the homebrew-cask CI test job does for every cask PR (`brew install --cask './Casks/...'` followed by `brew uninstall --cask './Casks/...'`).\n\n### What happened (include all command output)?\n\nThe install succeeds, but the uninstall from the same path fails claiming the cask is not installed. Uninstalling by token works.\n\n```shell\n$ cd $(brew --repository homebrew/cask)\n$ brew install --cask ./Casks/t/topnotch.rb\n==> Fetching downloads for: topnotch\n✔︎ Cask topnotch (1.3.2)\n==> Installing Cask topnotch\n==> Moving App 'TopNotch.app' to '/Applications/TopNotch.app'\n🍺  topnotch was successfully installed!\n\n$ brew uninstall --cask ./Casks/t/topnotch.rb\nError: Cask './Casks/t/topnotch.rb' is not installed.\n\n$ brew uninstall --cask topnotch\n==> Uninstalling Cask topnotch\n==> Purging files for version 1.3.2 of Cask topnotch\n```\n\nReproduces with any cask (also reproduced with a new cask under review), with and without `HOMEBREW_DEVELOPER=1`. This appears to be what is failing the `test` job of currently-open homebrew-cask PRs, e.g. https://github.com/Homebrew/homebrew-cask/actions/runs/29280632570/job/86920862977 (and the same symptom on PRs #274812, #274813, #274814, #274816 in the same window): the CI uninstall step errors with `Cask './Casks/c/<token>.rb' is not installed.` right after a successful install, and the leftover check then fails with \"Some applications are still installed\".\n\n### What did you expect to happen?\n\n`brew uninstall --cask <path>` resolves the installed cask the same way `brew install --cask <path>` does. If path resolution is now intentionally restricted (e.g. related to the recent `HOMEBREW_FORBID_PACKAGES_FROM_PATHS` work), both commands should refuse consistently with a message saying so, rather than reporting \"is not installed\".\n\n### Step-by-step reproduction instructions (running `brew` commands)\n\n```shell\nbrew tap --force homebrew/cask\ncd $(brew --repository homebrew/cask)\nbrew install --cask ./Casks/t/topnotch.rb    # succeeds\nbrew uninstall --cask ./Casks/t/topnotch.rb  # Error: Cask './Casks/t/topnotch.rb' is not installed.\nbrew uninstall --cask topnotch               # works\n```\n",
+        "url": "https://github.com/Homebrew/brew/issues/23086"
+    },
+    {
+        "id": 4858201733,
+        "number": 23053,
+        "title": "`brew bundle cleanup --force` silently skips its final `brew cleanup` when any warning is printed (stderr is closed via IO.popen)",
+        "state": "closed",
+        "created_at": "2026-07-10T19:54:52Z",
+        "updated_at": "2026-07-11T07:28:14Z",
+        "closed_at": "2026-07-11T07:28:14Z",
+        "author": "lonlydwolf",
+        "comments": 0,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "### `brew doctor` output\n\n```shell\n❯ brew doctor\nYour system is ready to brew.\n```\n\n### Verification\n\n- [x] I ran `brew update` twice and am still able to reproduce my issue.\n- [x] My \"`brew doctor` output\" above says `Your system is ready to brew` or a definitely unrelated `Tier` message.\n- [x] This issue's title and/or description do not reference a single formula e.g. `brew install wget`. If they do, open an issue at https://github.com/Homebrew/homebrew-core/issues/new/choose instead.\n\n### `brew config` output\n\n```shell\n❯ brew config\nHOMEBREW_VERSION: 6.0.9\nORIGIN: https://github.com/Homebrew/brew\nHEAD: 655769712a9a9499563d9685a8488f349354492d\nLast commit: 3 days ago\nBranch: stable\nCore tap: N/A\nCore cask tap: N/A\nHOMEBREW_PREFIX: /opt/homebrew\nHOMEBREW_CASK_OPTS: []\nHOMEBREW_DOWNLOAD_CONCURRENCY: 16\nHOMEBREW_EDITOR: nvim\nHOMEBREW_FORBID_PACKAGES_FROM_PATHS: set\nHOMEBREW_MAKE_JOBS: 8\nHOMEBREW_REQUIRE_TAP_TRUST: set\nHomebrew Ruby: 4.0.5 => /opt/homebrew/Library/Homebrew/vendor/portable-ruby/4.0.5_1/bin/ruby\nCPU: octa-core 64-bit arm_firestorm_icestorm\nClang: 21.0.0 build 2100\nGit: 2.55.0 => /opt/homebrew/bin/git\nCurl: 8.7.1 => /usr/bin/curl\nmacOS: 26.5.2-arm64\nCLT: 26.6.0.0.1781586589\nXcode: 26.6\nMetal Toolchain: N/A\nRosetta 2: false\n```\n\n### What were you trying to do (and why)?\n\nPrune drift on my machine with `brew bundle cleanup --force` (invoked from an Ansible playbook): uninstall anything not declared in my Brewfile AND purge outdated download caches — the dry-run advertises both actions.\n\n### What happened (include all command output)?\n\nThe dry-run promises cache removals:\n\n```console\n$ brew bundle cleanup --file=~/.config/Brew/Brewfile\nWould `brew cleanup`:\nWould remove: /Users/lonlydwolf/Library/Caches/Homebrew/Cask/proton-pass--1.38.0.dmg (248.3MB)\nWould remove: /Users/lonlydwolf/Library/Caches/Homebrew/Cask/whatsapp--26.27.19 (250.9MB)\nWould remove: /Users/lonlydwolf/Library/Caches/Homebrew/Cask/claude--1.20186.0,d7731e7f42fb72db87a6488ad8c1357b1cf971f7.zip (333.5MB)\nRun `brew bundle cleanup --force` to make these changes.\n```\n\nBut the forced run exits 0, prints nothing about the cleanup, and removes nothing:\n\n```console\n$ brew bundle cleanup --file=~/.config/Brew/Brewfile --force\n$ echo $?\n0\n$ ls ~/Library/Caches/Homebrew/Cask/ | grep proton-pass\nproton-pass--1.38.0.dmg\nproton-pass--1.38.1.dmg\n```\n\nRunning `brew cleanup` directly works immediately — note it prints Warnings to stderr first; that's the trigger (see below):\n\n```console\n$ brew cleanup\nWarning: Skipping fastfetch: most recent version 2.66.0 not installed\nWarning: Skipping just: most recent version 1.56.0 not installed\n...\nRemoving: /Users/lonlydwolf/Library/Caches/Homebrew/Cask/proton-pass--1.38.0.dmg... (248.3MB)\nRemoving: /Users/lonlydwolf/Library/Caches/Homebrew/Cask/whatsapp--26.27.19... (250.9MB)\n```\n\n**Cause:** `brew bundle cleanup --force` runs its final `brew cleanup` through `system_output_no_stderr`:\n\n```ruby\nIO.popen([cmd, *args], err: :close).read\n# Library/Homebrew/bundle/subcommand/cleanup.rb:375 (HEAD 6557697)\n```\n\nThe child `brew cleanup` crashes as soon as it writes its first Warning to the closed stderr — before removing anything — and the failure is swallowed. Minimal demonstration of the same condition:\n\n```console\n$ brew cleanup 2>&-\n$ echo $?\n1\n```\n\n(no output, nothing removed — identical to what happens inside bundle). The bug is therefore intermittent in the wild: it only manifests when `brew cleanup` would print at least one warning to stderr (e.g. any installed formula whose most recent version isn't installed). Redirecting to `/dev/null` (e.g. `err: File::NULL`) instead of closing the fd would preserve the no-stderr intent without killing the child.\n\n### What did you expect to happen?\n\n`brew bundle cleanup --force` performs the `brew cleanup` its own dry-run advertises (\"Run `brew bundle cleanup --force` to make these changes\"), removing the listed cached downloads — regardless of whether `brew cleanup` happens to print warnings to stderr. If the embedded `brew cleanup` fails, the failure should at least be reported instead of being silently swallowed.\n\n### Step-by-step reproduction instructions (running `brew` commands)\n\n```shell\n1. Simulate a stale cached download (any installed cask with a non-installed version works):\n\n   \n   $ echo stale > \"$(brew --cache)/Cask/iterm2--0.0.1.zip\"\n   \n\n2. Ensure `brew cleanup` prints at least one `Warning:` to stderr — e.g. have any installed formula whose most recent version isn't installed (common state between upgrades). Verify with:\n\n   \n   $ brew cleanup --dry-run\n   Warning: Skipping <formula>: most recent version <v> not installed\n   Would remove: .../Cask/iterm2--0.0.1.zip (12B)\n   \n\n3. Create a Brewfile matching the installed state, so cleanup has no packages to uninstall:\n\n   \n   $ brew bundle dump --file=/tmp/Brewfile\n   \n\n4. Dry-run advertises the removal:\n\n   \n   $ brew bundle cleanup --file=/tmp/Brewfile\n   Would `brew cleanup`:\n   Would remove: .../Cask/iterm2--0.0.1.zip (12B)\n   Run `brew bundle cleanup --force` to make these changes.\n   \n\n5. Forced run exits 0, silent — the file survives:\n\n   \n   $ brew bundle cleanup --file=/tmp/Brewfile --force\n   $ echo $?\n   0\n   $ ls \"$(brew --cache)/Cask/\" | grep iterm2--0.0.1\n   iterm2--0.0.1.zip\n   \n\n6. Direct proof of the mechanism — `brew cleanup` with stderr closed (the exact condition `IO.popen([cmd, *args], err: :close)` creates at `Library/Homebrew/bundle/subcommand/cleanup.rb:375`) exits 1 having done nothing:\n\n   \n   $ brew cleanup 2>&-\n   $ echo $?\n   1\n   \n\n7. Plain `brew cleanup` removes the file, confirming step 5 should have:\n\n   \n   $ brew cleanup\n   Warning: Skipping <formula>: most recent version <v> not installed\n   Removing: .../Cask/iterm2--0.0.1.zip... (12B)\n   \n\nNote: the bug only manifests when step 2's warning condition holds; on a machine where `brew cleanup` writes nothing to stderr, the embedded cleanup survives — which is why this fails intermittently in the wild.\n```",
+        "url": "https://github.com/Homebrew/brew/issues/23053"
+    },
+    {
+        "id": 4845731638,
+        "number": 23029,
+        "title": "Opt-in support for installing casks without the Xcode Command Line Tools",
+        "state": "closed",
+        "created_at": "2026-07-09T11:14:28Z",
+        "updated_at": "2026-07-10T19:15:22Z",
+        "closed_at": "2026-07-10T19:15:22Z",
+        "author": "milanvarady",
+        "comments": 5,
+        "labels": [],
+        "assignees": [
+            "MikeMcQuaid"
+        ],
+        "locked": false,
+        "body": "### Verification\n\n- [x] This issue's title and/or description do not reference a single formula e.g. `brew install wget`. If they do, open an issue at https://github.com/Homebrew/homebrew-core/issues/new/choose instead.\n\n### Provide a detailed description of the proposed feature\n\nAdd an opt-in environment variable (name up to the maintainers, for example `HOMEBREW_NO_DEVELOPER_TOOLS`) that lets cask commands run on a Mac without the Xcode Command Line Tools, without failing and without opening the \"install command line developer tools\" system dialog.\n\nCasks are prebuilt applications, so a compiler is not needed to download and place them. On Apple Silicon, several code paths still reach for the CLT during cask install and uninstall:\n\n- `extend/os/mac/diagnostic.rb` adds `check_for_installed_developer_tools` to `fatal_preinstall_checks` when `Hardware::CPU.arm?`, so `brew install --cask` aborts with \"No developer tools installed\" (via `cask/installer.rb` `perform_preinstall_checks_once`).\n- `cask/quarantine.rb` runs `/usr/bin/xcrun -find swift` to find the Swift helper for the quarantine attribute. Without the CLT that stub opens the installer dialog, and there is no non-Swift fallback, so the cask ends up unquarantined regardless.\n- `cask/utils/trash.rb` runs `cask/utils/trash.swift` (a `#!/usr/bin/swift` script) for `trash:` directives on uninstall and zap.\n- `DevelopmentTools.locate` (mac) falls back to `/usr/bin/xcrun -find <tool>`, which can open the same dialog.\n\nWhen the variable is set, each path would take the no-tools route: skip the fatal dev-tools check, skip the `xcrun -find` fallback in `locate`, treat Swift as unavailable so quarantine is skipped, trash by moving to the Trash directly, and let the git shim skip its `xcrun -find git` fallback. Default behavior does not change.\n\nThere is a precedent in `brew.sh`, which already avoids calling `xcrun` when the tools are absent, with a comment that doing so \"opens the install developer tools dialog.\" This makes the cask paths consistent with that.\n\n### What is the motivation for the feature?\n\nI maintain [Applite](https://github.com/milanvarady/Applite), a GUI app that installs Homebrew casks for non-technical users. It ships its own Homebrew and drives it for installs and uninstalls. Asking these users to download the multi gigabyte Command Line Tools before they can install a single prebuilt app is a large barrier, and today they either get a hard failure on Apple Silicon or an unexpected system dialog asking them to install developer tools.\n\nMore generally, any tool, script, or CI job that installs casks on a machine without the CLT hits the same friction, even though the compiler is not needed for the download and move case.\n\n### How will the feature be relevant to at least 90% of Homebrew users?\n\nHonest answer: as an opt-in variable it will only be set by users and tools that specifically want cask installs without the CLT, so it is not something 90% of users would turn on. What is relevant to everyone is the behavior it corrects. Any macOS user who has not installed the CLT yet (a fresh machine, someone who declined the prompt, an automated setup) can currently hit a surprise developer-tools dialog or a hard failure when a cask is installed on their behalf, even though nothing is being compiled. The change removes that surprise for that case and stays invisible and zero cost to everyone who has the tools, since it is off by default. If the 90% bar is strict here, I understand this may fit better as a documented opt-in for the cask-without-CLT case rather than a default change, and I am happy to take direction.\n\n### What alternatives to the feature have been considered?\n\n- Requiring the CLT up front. This is the current situation and the barrier we are trying to remove for prebuilt apps.\n- Patching Homebrew's source in a shipped copy. This works but is fragile, since it has to be reapplied on every update and can break silently when internals move.\n- Reimplementing cask install natively. Not viable for full parity, because casks can run arbitrary Ruby in preflight and postflight blocks that is not in the JSON API and cannot be reproduced without a Ruby interpreter.\n\nThe opt-in variable is the smallest change that covers all the cask paths in one place without affecting default behavior.",
+        "url": "https://github.com/Homebrew/brew/issues/23029"
+    },
+    {
+        "id": 4844824042,
+        "number": 23028,
+        "title": "Feature request: support taps rooted at a Git subdirectory",
+        "state": "closed",
+        "created_at": "2026-07-09T09:02:38Z",
+        "updated_at": "2026-07-09T11:38:19Z",
+        "closed_at": "2026-07-09T11:38:19Z",
+        "author": "omry",
+        "comments": 2,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "# Feature request: support taps rooted at a Git subdirectory\n\n### Verification\n\n- [x] This issue's title and/or description do not reference a single formula e.g. `brew install wget`. If they do, open an issue at https://github.com/Homebrew/homebrew-core/issues/new/choose instead.\n\n### Provide a detailed description of the proposed feature\n\nPlease support using a subdirectory of a Git repository as the root of a tap, including both formulae and casks.\n\nExample project layout:\n\n```text\nmy-project/\n  packaging/\n    apt/\n    brew/\n      Casks/\n        my-project-app.rb\n      Formula/\n        my-project.rb\n    python/\n    rpm/\n    ...\n```\n\nToday, remote taps are rooted at the Git checkout root, so this layout cannot be tapped directly as `Formula/my-project.rb` or `Casks/my-project-app.rb`.\n\nPossible UX:\n\n```sh\nbrew tap owner/name github://owner/project/path/to/tap\nbrew install my-project\nbrew install --cask my-project-app\n```\n\nConcrete example:\n\n```sh\nbrew tap omry/reploy github://omry/reploy/packaging/brew\nbrew install reploy\n```\n\nor possibly:\n\n```sh\nbrew tap owner/name https://github.com/owner/project.git --subdirectory packaging/brew\nbrew install my-project\nbrew install --cask my-project-app\n```\n\nHomebrew would treat:\n\n```text\npackaging/brew/Formula/my-project.rb\npackaging/brew/Casks/my-project-app.rb\n```\n\nas the tap's:\n\n```text\nFormula/my-project.rb\nCasks/my-project-app.rb\n```\n\nThis could use Git sparse checkout, but the key behavior is the logical tap root, not just fetching fewer files.\n\nOpen questions:\n\n- Should this be a flag, URL syntax, or both?\n- Should `brew --repo owner/name` return the checkout root or logical tap root?\n- Should `brew tap-info` display the configured subdirectory?\n- Should this support all Git remotes or only GitHub-style URLs?\n\n### What is the motivation for the feature?\n\nMany projects keep packaging files in the main repository so releases, reviews, and CI stay close to the code being packaged.\n\nThe current alternatives work, but each has friction:\n\n- separate `homebrew-*` tap repo: requires another repository and sync automation\n- `Formula/` at project root: imposes Homebrew layout on the main repo\n- raw formula URL or local path: skips the normal tap workflow\n- local directory tap: works only for local development, not public remote installs\n\n### How will the feature be relevant to at least 90% of Homebrew users?\n\nMost users would not configure this directly, but they would benefit from more projects being able to publish Homebrew installs without maintaining a separate tap repository. This lowers packaging friction for upstream projects and makes the normal `brew tap` / `brew install` workflow available in more cases.\n\n### What alternatives to the feature have been considered?\n\nThe main alternative is a dedicated `homebrew-*` repository, which is the current best practice for public taps. That works, but it adds release-sync automation and another repository to maintain.\n\nInstalling from a raw formula URL or local path works for development, but it does not provide the normal tap workflow, update behavior, or explicit `owner/tap/formula` names.\n\nRelevant docs:\n\nhttps://docs.brew.sh/How-to-Create-and-Maintain-a-Tap\n\nRelated issue:\n\nhttps://github.com/Homebrew/brew/issues/14861\n",
+        "url": "https://github.com/Homebrew/brew/issues/23028"
+    },
+    {
+        "id": 4842376118,
+        "number": 23021,
+        "title": "Installing a cask from a custom tap fails with a trust error if it `conflicts_with` another third-party cask",
+        "state": "closed",
+        "created_at": "2026-07-09T01:34:04Z",
+        "updated_at": "2026-07-09T15:48:36Z",
+        "closed_at": "2026-07-09T15:48:36Z",
+        "author": "gerlero",
+        "comments": 0,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "### `brew doctor` output\n\n```shell\nPlease note that these warnings are just used to help the Homebrew maintainers\nwith debugging if you file an issue. If everything you use Homebrew for is\nworking fine: please don't worry or file an issue; just ignore this. Thanks!\n\nWarning: /usr/bin occurs before /opt/homebrew/bin in your PATH.\nThis means that system-provided programs will be used instead of those\nprovided by Homebrew. Consider setting your PATH so that\n/opt/homebrew/bin occurs before /usr/bin. Here is a one-liner:\n  echo 'export PATH=\"/opt/homebrew/bin:$PATH\"' >> ~/.zshrc\n\nThe following tools exist at both paths:\n  openssl\n\nWarning: Broken symlinks were found. Remove them with `brew cleanup`:\n  /opt/homebrew/etc/bash_completion.d/docker-compose\n  /opt/homebrew/opt/python@3\n  /opt/homebrew/share/fish/vendor_completions.d/docker-compose.fish\n  /opt/homebrew/share/zsh/site-functions/_docker-compose\n```\n\n### Verification\n\n- [x] I ran `brew update` twice and am still able to reproduce my issue.\n- [x] My \"`brew doctor` output\" above says `Your system is ready to brew` or a definitely unrelated `Tier` message.\n- [x] This issue's title and/or description do not reference a single formula e.g. `brew install wget`. If they do, open an issue at https://github.com/Homebrew/homebrew-core/issues/new/choose instead.\n\n### `brew config` output\n\n```shell\nHOMEBREW_VERSION: 6.0.9-17-ga34c4ca\nORIGIN: https://github.com/Homebrew/brew\nHEAD: a34c4cad0b2ebf21046b892739139539328ea3fb\nLast commit: 2 hours ago\nBranch: main\nCore tap: N/A\nCore cask tap: N/A\nHOMEBREW_PREFIX: /opt/homebrew\nHOMEBREW_CASK_OPTS: []\nHOMEBREW_DOWNLOAD_CONCURRENCY: 16\nHOMEBREW_FORBID_PACKAGES_FROM_PATHS: set\nHOMEBREW_MAKE_JOBS: 8\nHOMEBREW_REQUIRE_TAP_TRUST: set\nHomebrew Ruby: 4.0.5 => /opt/homebrew/Library/Homebrew/vendor/portable-ruby/4.0.5_1/bin/ruby\nCPU: octa-core 64-bit arm_ibiza\nClang: 21.0.0 build 2100\nGit: 2.50.1 => /Library/Developer/CommandLineTools/usr/bin/git\nCurl: 8.7.1 => /usr/bin/curl\nmacOS: 26.5.1-arm64\nCLT: 26.6.0.0.1781586589\nXcode: N/A\nRosetta 2: false\n```\n\n### What were you trying to do (and why)?\n\nTrying to install a third-party cask from a custom tap using the fully qualified name to avoid having to trust it manually (but the cask itself declares a `conflicts_with` another cask on that custom tap)\n\n### What happened (include all command output)?\n\n```\nbrew install gerlero/openfoam/openfoam\n```\n\n```\n==> Trusted cask gerlero/openfoam/openfoam\n==> Would install 1 cask:\ngerlero/openfoam/openfoam\n==> Fetching downloads for: gerlero/openfoam/openfoam\nError: Refusing to load cask gerlero/openfoam/openfoam@2606 from untrusted tap gerlero/openfoam.\nRun `brew trust --cask gerlero/openfoam/openfoam@2606` or `brew trust gerlero/openfoam` to trust it.\n```\n\nNote: [`gerlero/openfoam/openfoam`](https://github.com/gerlero/homebrew-openfoam/blob/main/Casks/openfoam.rb) is the cask I want to install, and [`gerlero/openfoam/openfoam@2606`](https://github.com/gerlero/homebrew-openfoam/blob/main/Casks/openfoam@2606.rb) is a `conflicts_with` of the first, which is not installed, definitely should not be installed (that would cause the conflict!), and thus I should not need to manually trust it here nor do I think it should cause an error because of being untrusted.\n\n### What did you expect to happen?\n\nJust trust and install the third-party cask I requested. The fact that another cask it `conflicts_with` is itself untrusted should not matter here.\n\n### Step-by-step reproduction instructions (running `brew` commands)\n\n```shell\nbrew install gerlero/openfoam/openfoam\n```",
+        "url": "https://github.com/Homebrew/brew/issues/23021"
+    },
+    {
+        "id": 4835919640,
+        "number": 23010,
+        "title": "Upgrading with an incompatible cask produce two error messages and skip every other cask",
+        "state": "closed",
+        "created_at": "2026-07-08T08:56:38Z",
+        "updated_at": "2026-07-09T09:18:46Z",
+        "closed_at": "2026-07-08T17:30:43Z",
+        "author": "Porkepix",
+        "comments": 7,
+        "labels": [],
+        "assignees": [
+            "MikeMcQuaid"
+        ],
+        "locked": false,
+        "body": "### `brew doctor` output\n\nSome unrelated warning:\n```shell\nWarning: Some installed casks are deprecated or disabled.\nYou should find replacements for the following casks:\n\nWarning: A newer Command Line Tools release is available.\nUpdate them from Software Update in System Settings.\n\nIf that doesn't show you any updates, run:\n  sudo rm -rf /Library/Developer/CommandLineTools\n  sudo xcode-select --install\n\nAlternatively, manually download them from:\n  https://developer.apple.com/download/all/.\nYou should download the Command Line Tools for Xcode 26.3.\n\n\n\nThis is a Tier 2 configuration:\n  https://docs.brew.sh/Support-Tiers#tier-2\nYou can report issues with Tier 2 configurations to Homebrew/* repositories!\nRead the above document before opening any issues or PRs.\n\n\nWarning: Some installed kegs have no formulae!\nThis means they were either deleted or installed manually.\nYou should find replacements for the following formulae:\n\n\nWarning: Some installed formulae are deprecated or disabled.\nYou should find replacements for the following formulae:\n```\n\nmacOS 15 so we get the warning for the Command Line Tools anyway, even if we're on the most recent supported version of our macOS\n\n### Verification\n\n- [x] I ran `brew update` twice and am still able to reproduce my issue.\n- [x] My \"`brew doctor` output\" above says `Your system is ready to brew` or a definitely unrelated `Tier` message.\n- [x] This issue's title and/or description do not reference a single formula e.g. `brew install wget`. If they do, open an issue at https://github.com/Homebrew/homebrew-core/issues/new/choose instead.\n\n### `brew config` output\n\n```shell\nHOMEBREW_VERSION: 6.0.9-2-g2b14e07\nORIGIN: https://github.com/Homebrew/brew\nHEAD: 2b14e0744a978b646f64a73c7102a29903c7f8ab\nLast commit: 2 hours ago\nBranch: main\nCore tap HEAD: 5d21936806b6f277cb01fceb333431ce6710a763\nCore tap last commit: 4 months ago\nCore tap JSON: 08 Jul 08:01 UTC\nCore cask tap HEAD: 11ef64372b34d73445a44ed92f6bf4878b66717b\nCore cask tap last commit: 4 months ago\nCore cask tap JSON: 08 Jul 08:01 UTC\nHOMEBREW_PREFIX: /opt/homebrew\nHOMEBREW_CASK_OPTS: []\nHOMEBREW_DOWNLOAD_CONCURRENCY: 20\nHOMEBREW_FORBID_PACKAGES_FROM_PATHS: set\nHOMEBREW_MAKE_JOBS: 10\nHOMEBREW_REQUIRE_TAP_TRUST: set\nHomebrew Ruby: 4.0.5 => /opt/homebrew/Library/Homebrew/vendor/portable-ruby/4.0.5_1/bin/ruby\nCPU: deca-core 64-bit arm_firestorm_icestorm\nClang: 17.0.0 build 1700\nGit: 2.55.0 => /opt/homebrew/bin/git\nCurl: 8.7.1 => /usr/bin/curl\nmacOS: 15.7.7-arm64\nCLT: 16.4.0.0.1.1747106510\nXcode: N/A\nRosetta 2: false\n```\n\n### What were you trying to do (and why)?\n\nSimply do my regular upgrades using `brew upgrade --greedy`\n\n### What happened (include all command output)?\n\nOne of the casks dropped compatibility with my version of macOS and request Tahoe+ and therefore produce an error message:\n`Error: foobar: This cask does not run on macOS versions older than Tahoe.`\n\nThis message appears twice, a first time before the downloads and a second time after formulas bottles install but before cask installs.\n\nAnd here it just stops and skip every Casks, even the compatible ones.\n\nIt's still possible to upgrade them one by one by naming them.\n\n### What did you expect to happen?\n\nThe error message should only appear once, on a visible place, and all the compatible casks should still be installed, not skipped.\n\n### Step-by-step reproduction instructions (running `brew` commands)\n\n`brew upgrade --greedy` (probably the same without the `--greedy` flag) while having several casks to upgrade and at least an incompatible one.\n\nEDIT: I wasn't sure if this was the place or `homebrew-cask` was, but it seemed more likely it belonged here.",
+        "url": "https://github.com/Homebrew/brew/issues/23010"
+    },
+    {
+        "id": 4826019813,
+        "number": 22998,
+        "title": "cask `brew upgrade` aborts with `No such file or directory @ rb_file_s_rename` instead of self-healing when the installed version's Caskroom dir is missing (esp. auto_updates casks)",
+        "state": "closed",
+        "created_at": "2026-07-07T06:51:45Z",
+        "updated_at": "2026-07-07T10:09:20Z",
+        "closed_at": "2026-07-07T10:09:20Z",
+        "author": "gecube",
+        "comments": 1,
+        "labels": [],
+        "assignees": [
+            "gecube"
+        ],
+        "locked": false,
+        "body": "### Verification\n\n- [x] This issue's title and/or description do not reference a single formula e.g. `brew install wget`. If they do, open an issue at https://github.com/Homebrew/homebrew-core/issues/new/choose instead.\n\n### Provide a detailed description of the proposed feature\n\nMake `brew upgrade` for **casks** tolerant of a missing staged directory for the version recorded in the receipt, so a receipt↔Caskroom mismatch self-heals instead of aborting with an unhandled exception.\n\nToday, upgrading a cask fails hard when the currently-recorded version's Caskroom directory no longer exists on disk:\n\n```\n==> Upgrading claude-code\n  2.1.42 -> 2.1.195\n==> Purging files for version 2.1.195 of Cask claude-code\nError: claude-code: No such file or directory @ rb_file_s_rename - (/opt/homebrew/Caskroom/claude-code/2.1.42, /opt/homebrew/Caskroom/claude-code/2.1.42.upgrading)\n```\n\n**Root cause.** During an upgrade, `Cask::Installer#backup` renames the staged version directory to `<version>.upgrading` for rollback safety (`Library/Homebrew/cask/installer.rb`):\n\n```ruby\ndef backup\n  bp = backup_path\n  raise \"unexpected nil backup_path\" unless bp\n  bmp = backup_metadata_path\n  raise \"unexpected nil backup_metadata_path\" unless bmp\n\n  @cask.staged_path.rename bp.to_s               # <- Errno::ENOENT if staged_path is gone\n  @cask.metadata_versioned_path.rename bmp.to_s\nend\n```\n\nIf `@cask.staged_path` is already gone while the receipt still lists that version, the `rename` raises `Errno::ENOENT` and the whole upgrade (and the rest of the `brew upgrade` batch) aborts.\n\n**Proposed change** — skip the backup rename when there is nothing to back up:\n\n```diff\n-      @cask.staged_path.rename bp.to_s\n-      @cask.metadata_versioned_path.rename bmp.to_s\n+      # The receipt can point at a version whose staged files are already gone\n+      # (e.g. an `auto_updates` cask that updated itself out-of-band, or a\n+      # previously interrupted `brew upgrade`/`brew cleanup`). There is then\n+      # nothing to back up, so skip the rename instead of raising\n+      # `Errno::ENOENT` and aborting the whole upgrade.\n+      @cask.staged_path.rename bp.to_s if @cask.staged_path.exist?\n+      @cask.metadata_versioned_path.rename bmp.to_s if @cask.metadata_versioned_path.exist?\n```\n\n`#restore_backup` is already defensive (`return if !bp.directory? || !bmp.directory?`), so when no backup was created the revert path is a correct no-op and the new version installs cleanly. I'm happy to open a PR with this (plus a regression test).\n\n### What is the motivation for the feature?\n\nReal-world impact: I open my laptop, try to launch `claude`, and the OS reports the executable is missing. A routine `brew upgrade` then does not fix it — it **crashes** on the rename above and leaves the cask half-upgraded. So instead of just working, I have to stop, diagnose, and manually `brew uninstall --force` + `brew install` to recover. Stress and wasted time for what should be a no-op self-heal.\n\nWhat makes it even more confusing: at the same moment a fresh shell claims the executable is missing, I still have **active `claude` sessions running in other terminals**. The already-running processes keep working (they hold their own binary), so the state looks contradictory — \"it's clearly installed and running, yet a new invocation and `brew upgrade` both say it's broken\" — which makes the failure harder to reason about than a plain missing package.\n\nThis is not a one-off. The same `No such file or directory @ rb_file_s_rename` failure has been reported for years across many casks and is repeatedly closed as \"stale/outdated/just reinstall\", while the underlying fragility (a non-defensive `File.rename` in the upgrade path) is never addressed:\n\n- Homebrew/homebrew-cask#213685 (Spotify, 2025) — identical symptom\n- Homebrew/homebrew-cask#166367 (zulu11)\n- Homebrew/homebrew-cask#49512 and #51021\n- plus GIMP, Android Studio, dotnet-sdk, google-cloud-sdk, parallels, unity, …\n\nThe receipt-vs-reality drift that triggers it is already acknowledged in Homebrew/brew#22617 (\"for `auto_updates` casks, `brew upgrade` shows the wrong version as the upgrade source\"). A crash on a missing old directory should simply never happen.\n\n### How will the feature be relevant to at least 90% of Homebrew users?\n\n- Practically everyone who uses Homebrew runs `brew upgrade`, and most users have at least one **`auto_updates true`** cask (browsers, editors, Electron apps, self-updating CLIs — Chrome, VS Code, Spotify, `claude-code`, etc.). Those casks routinely let their binary update out-of-band, so the receipt version drifts from the Caskroom — the exact precondition for this crash.\n- The failure is also reachable via a previously interrupted `brew upgrade`/`brew cleanup`, which is common.\n- Because the exception aborts the **entire** `brew upgrade` run, a single drifted cask blocks upgrading everything else. Making the backup step defensive removes a whole recurring class of hard failures for the general cask-using population, at essentially zero cost to everyone else.\n\n### What alternatives to the feature have been considered?\n\n- **`brew reinstall <cask>` / `brew uninstall --cask <cask> --force && brew install --cask <cask>`** — the current workaround. It recovers, but it is manual, must be discovered by each user hitting the crash, and does nothing to prevent recurrence; `brew upgrade` still hard-fails.\n- **`rm -rf /opt/homebrew/Caskroom/<cask> && brew install --cask <cask>`** — same drawbacks, more error-prone.\n- **Status quo (close reports as stale)** — leaves the root fragility in place; the issue keeps reappearing for cask after cask (see list above).\n- **Preferred:** make the backup/rename step idempotent and tolerant of a missing source directory (the diff above), optionally plus proactive receipt↔Caskroom reconciliation for `auto_updates` casks so the mismatch is healed before upgrade.\n\n### Environment\n\n```\nHomebrew 6.0.7\nmacOS: 26.5.1-arm64 (build 25F80)\nCPU: arm64 (Apple Silicon, 14-core)\nCLT: 26.6.0.0.1781586589 / Xcode 26.4\n```\n\nCask: `claude-code` (`auto_updates true`), upgrade `2.1.42 -> 2.1.195`.\n",
+        "url": "https://github.com/Homebrew/brew/issues/22998"
+    },
+    {
+        "id": 4825354562,
+        "number": 22996,
+        "title": "`sudo brew services` reads root's empty trust store, and the suggested remediation `brew trust` refuses to run as root",
+        "state": "closed",
+        "created_at": "2026-07-07T04:53:08Z",
+        "updated_at": "2026-07-07T15:59:17Z",
+        "closed_at": "2026-07-07T15:59:17Z",
+        "author": "Tryanks",
+        "comments": 0,
+        "labels": [],
+        "assignees": [
+            "MikeMcQuaid"
+        ],
+        "locked": false,
+        "body": "### `brew doctor` output\n\n```shell\nWarning: Calling `depends_on :macos` with `depends_on macos:` is deprecated! Use `depends_on :macos` with `depends_on macos:` inside an `on_macos` block instead.\nPlease report this issue to the cirruslabs/homebrew-cli tap (not Homebrew/* repositories), or even better, submit a PR to fix it:\n  /opt/homebrew/Library/Taps/cirruslabs/homebrew-cli/softnet.rb:18\n\nWarning: Calling `depends_on :macos` with `depends_on macos:` is deprecated! Use `depends_on :macos` with `depends_on macos:` inside an `on_macos` block instead.\nPlease report this issue to the cirruslabs/homebrew-cli tap (not Homebrew/* repositories), or even better, submit a PR to fix it:\n  /opt/homebrew/Library/Taps/cirruslabs/homebrew-cli/softnet.rb:18\n\nWarning: Calling `depends_on :macos` with `depends_on macos:` is deprecated! Use `depends_on :macos` with `depends_on macos:` inside an `on_macos` block instead.\nPlease report this issue to the cirruslabs/homebrew-cli tap (not Homebrew/* repositories), or even better, submit a PR to fix it:\n  /opt/homebrew/Library/Taps/cirruslabs/homebrew-cli/tart.rb:22\n\nWarning: Calling `depends_on :macos` with `depends_on macos:` is deprecated! Use `depends_on :macos` with `depends_on macos:` inside an `on_macos` block instead.\nPlease report this issue to the cirruslabs/homebrew-cli tap (not Homebrew/* repositories), or even better, submit a PR to fix it:\n  /opt/homebrew/Library/Taps/cirruslabs/homebrew-cli/tart.rb:22\n\nPlease note that these warnings are just used to help the Homebrew maintainers\nwith debugging if you file an issue. If everything you use Homebrew for is\nworking fine: please don't worry or file an issue; just ignore this. Thanks!\n\nWarning: /usr/bin occurs before /opt/homebrew/bin in your PATH.\nThis means that system-provided programs will be used instead of those\nprovided by Homebrew. Consider setting your PATH so that\n/opt/homebrew/bin occurs before /usr/bin. Here is a one-liner:\n  echo 'export PATH=\"/opt/homebrew/bin:$PATH\"' >> ~/.zshrc\n\nThe following tools exist at both paths:\n  openssl\n  pip3\n  pp\n  python3\n\nWarning: Homebrew's \"sbin\" was not found in your PATH but you have installed\nformulae that put executables in /opt/homebrew/sbin.\nConsider setting your PATH for example like so:\n  echo 'export PATH=\"/opt/homebrew/sbin:$PATH\"' >> ~/.zshrc\n```\n\n### Verification\n\n- [x] I ran `brew update` twice and am still able to reproduce my issue.\n- [x] My \"`brew doctor` output\" above says `Your system is ready to brew` or a definitely unrelated `Tier` message.\n- [x] This issue's title and/or description do not reference a single formula e.g. `brew install wget`. If they do, open an issue at https://github.com/Homebrew/homebrew-core/issues/new/choose instead.\n\n### `brew config` output\n\n```shell\nHOMEBREW_VERSION: 6.0.8-2-g988192e\nORIGIN: https://github.com/Homebrew/brew\nHEAD: 988192e5557150f69736dfdd314d8d69e5cca502\nLast commit: 10 hours ago\nBranch: main\nCore tap: N/A\nCore cask tap: N/A\nHOMEBREW_PREFIX: /opt/homebrew\nHOMEBREW_CASK_OPTS: []\nHOMEBREW_DOWNLOAD_CONCURRENCY: 30\nHOMEBREW_FORBID_PACKAGES_FROM_PATHS: set\nHOMEBREW_MAKE_JOBS: 15\nHOMEBREW_REQUIRE_TAP_TRUST: set\nHomebrew Ruby: 4.0.5 => /opt/homebrew/Library/Homebrew/vendor/portable-ruby/4.0.5_1/bin/ruby\nCPU: 15-core 64-bit arm_sotra\nClang: 21.0.0 build 2100\nGit: 2.50.1 => /Applications/Xcode.app/Contents/Developer/usr/bin/git\nCurl: 8.7.1 => /usr/bin/curl\nmacOS: 26.5.1-arm64\nCLT: 26.6.0.0.1781586589\nXcode: 26.5\nMetal Toolchain: 17.0 (17F42)\nRosetta 2: false\n```\n\n### What were you trying to do (and why)?\n\nStop a system-wide daemon from my own third-party tap, hosted on a custom (non-GitHub) SSH remote, that had been started with `sudo brew services start` a few weeks ago. The daemon needs root, hence `sudo`. The tap is private, so its name is redacted below as `<user>/<tap>/<formula>`.\n\n### What happened (include all command output)?\n\nEvery error message suggests a command that fails with another error, leaving no working path to stop the service:\n\n```\n$ sudo brew services stop <formula>\nError: Refusing to load formula <user>/<tap>/<formula> from untrusted tap <user>/<tap>.\nRun `brew trust --formula <user>/<tap>/<formula>` or `brew trust <user>/<tap>` to trust it.\n\n$ brew trust <user>/<tap>\nAlready trusted tap: git@<custom-host>:<user>/homebrew-<tap>.git\n\n$ sudo brew trust <user>/<tap>\nPassword:\nError: Running Homebrew as root is extremely dangerous and no longer supported.\nAs Homebrew does not drop privileges on installation you would be giving all\nbuild scripts full access to your system.\n\n$ brew services stop <formula>\nError: Service `<formula>` is started as `root`. Try:\n  sudo brew services stop <formula>\n```\n\n### What did you expect to happen?\n\nEither `sudo brew services` consults the invoking user's trust store (e.g. via `SUDO_USER`, similar to the existing `HOMEBREW_SUDO_USER` handling in `services/system.rb`), or the untrusted-tap error under root suggests a remediation that can actually be followed.\n\n### Step-by-step reproduction instructions (running `brew` commands)\n\n```shell\n# brew 6.x with tap trust checks default-on; any non-official tap providing a service formula\nbrew tap <user>/<tap>\nbrew trust <user>/<tap>\nbrew install <user>/<tap>/<formula>\nsudo brew services start <user>/<tap>/<formula>  # fully-qualified name passes Trust.explicitly_allowed?\nbrew services stop <formula>        # => Service is started as `root`. Try: sudo brew services stop <formula>\nsudo brew services stop <formula>   # => Error: Refusing to load formula ... from untrusted tap\nsudo brew trust <user>/<tap>        # => Error: Running Homebrew as root is extremely dangerous ...\n\n# The root-side view can also be simulated without sudo by pointing HOME at an empty directory:\nenv HOME=$(mktemp -d) brew services info <formula>                 # => UntrustedTapError\nenv HOME=$(mktemp -d) brew services info <user>/<tap>/<formula>    # succeeds (ARGV bypass)\n```\n\n### Root cause (from reading the 6.0.8 source)\n\n- `bin/brew` derives `HOMEBREW_USER_CONFIG_HOME` from `$HOME` (defaulting to `${HOME}/.homebrew`), and `Homebrew::Trust.trust_file` reads `trust.json` from there. Under `sudo`, `$HOME` is `/var/root`, so root consults `/var/root/.homebrew/trust.json` (empty) and never sees the invoking user's trust store.\n- `check-run-command-as-root` in `Library/Homebrew/brew.sh` allowlists `services` under root — which is where the `Try: sudo brew services stop` hint in `services/cli.rb` sends you — but not `trust`, so the remediation printed by `Trust.raise_untrusted!` cannot be followed.\n- Since `HOMEBREW_REQUIRE_TAP_TRUST` became default-on, any root-owned service from a non-official tap hits this on its next `sudo brew services stop`/`restart`.\n\n### Workarounds (verified)\n\n- The fully-qualified name bypasses the check via `Trust.explicitly_allowed?`, which matches names in `ARGV`: with an empty trust store, `brew services info <formula>` raises `UntrustedTapError` but `brew services info <user>/<tap>/<formula>` succeeds. So `sudo brew services stop <user>/<tap>/<formula>` works while the short name does not — neither error message mentions this.\n- `sudo HOMEBREW_NO_REQUIRE_TAP_TRUST=1 brew services stop <formula>` (deprecated escape hatch).\n- Bypassing brew entirely: `sudo launchctl bootout system/<label>`.\n\n---\n\nAI disclosure: I used Claude Code (Claude Fable 5) to investigate the source and draft this issue, per the [Responsible AI Usage](https://docs.brew.sh/Responsible-AI-Usage) guidelines. I reviewed the analysis and ran the commands/reproductions on my machine myself.\n",
+        "url": "https://github.com/Homebrew/brew/issues/22996"
+    },
+    {
+        "id": 4824062764,
+        "number": 22993,
+        "title": "`brew upgrade` for a third-party tap cask reverts with \"already an App\" (installed JSON metadata has no artifacts, no INSTALL_RECEIPT.json written on upgrade)",
+        "state": "closed",
+        "created_at": "2026-07-07T00:07:19Z",
+        "updated_at": "2026-07-07T10:15:04Z",
+        "closed_at": "2026-07-07T08:43:34Z",
+        "author": "umputun",
+        "comments": 2,
+        "labels": [],
+        "assignees": [
+            "MikeMcQuaid"
+        ],
+        "locked": false,
+        "body": "**Description**\n\nSince the cask JSON-metadata change in #22952 (`9da6c488b`), `brew upgrade` for a cask installed from a third-party tap fails and reverts with:\n\n```\nError: <tap>/<cask>: It seems there is already an App at '/Applications/<App>.app'.\n```\n\n`brew upgrade --cask <token> --force` succeeds once, but the next release fails the same way. `brew reinstall --cask --force <token>` fixes it durably, because the install path writes the receipt that the upgrade path does not.\n\n**Root cause**\n\nFor a cask without uninstall flight blocks, `Cask::Installer#save_caskfile` writes a minimal JSON snapshot from `Cask#to_installed_json_hash`, which records only `url_specs` and no artifacts (`Library/Homebrew/cask/cask.rb`). The installed cask's artifacts are meant to come from `.metadata/INSTALL_RECEIPT.json` (`Cask::Tab`), which `Installer#install` writes via `Tab.create(@cask).write` (`Library/Homebrew/cask/installer.rb`).\n\nThe upgrade path never writes or refreshes that receipt: `Cask::Upgrade` calls `old_cask_installer.start_upgrade`, `new_cask_installer.stage`, `new_cask_installer.install_artifacts`, then finalizes, with no `Tab.create.write` (`Library/Homebrew/cask/upgrade.rb`).\n\nOfficial `homebrew/cask` casks are masked from this because they already carry a receipt or older full metadata. A third-party tap cask has no API/full-metadata source, so on the next upgrade `load_from_installed_caskfile` reconstructs zero artifacts, `start_upgrade` -> `uninstall_artifacts` removes nothing, and the new `App` artifact install then collides with the still-present old app, producing \"already an App\" and a revert.\n\nFor context: #22986 fixed stale version precedence only, not the missing artifacts. #22983 proposed writing cask receipts after a successful upgrade and was closed. I do not see a merged fix for the missing-artifacts case.\n\n**Reproduction**\n\n1. On a brew that includes #22952, install a GUI-app cask from a third-party tap that has an `app` artifact and no `uninstall_preflight`/`uninstall_postflight`, in a state that leaves only the minimal installed JSON and no `.metadata/INSTALL_RECEIPT.json` (a prior `brew upgrade --force`, or delete the receipt).\n2. Publish a new version and run `brew upgrade --cask <token>`.\n3. It reverts with \"already an App\"; the old app was never removed from `/Applications`.\n\nObserved locally: the installed cask loads with `artifacts.count == 0` while the live tap cask has the full set; `.metadata/<version>/<ts>/Casks/<token>.json` has `\"artifacts\": null` and no `INSTALL_RECEIPT.json` exists under the Caskroom.\n\nAn RSpec around `local-caffeine` would cover it: install, delete `Caskroom/local-caffeine/.metadata/INSTALL_RECEIPT.json`, assert `Cask::CaskLoader.load_from_installed_caskfile(...).artifacts` is empty, then assert the upgrade fails on an occupied app target.\n\n**Suggested fix**\n\nEither write/refresh the cask receipt (`Tab.create(new_cask).write`) on the upgrade path after `install_artifacts` (this is what #22983 did), or have `to_installed_json_hash` record `uninstall_artifacts` for casks not backed by the API.\n\n**Environment**\n\n- Homebrew 6.0.8-2-g988192e (`main`), macOS 26.5.1, arm64.\n- Reproduces with any third-party tap GUI cask; seen with `umputun/apps/agterm`.\n- A different machine on an older brew (pre-#22952) upgrades the same cask with no problem.\n\n<details><summary><code>brew config</code></summary>\n\n```\nHOMEBREW_VERSION: 6.0.8-2-g988192e\nORIGIN: https://github.com/Homebrew/brew\nHEAD: 988192e5557150f69736dfdd314d8d69e5cca502\nBranch: main\nHOMEBREW_PREFIX: /opt/homebrew\nHOMEBREW_CASK_OPTS: []\nHOMEBREW_DOWNLOAD_CONCURRENCY: 40\nHOMEBREW_MAKE_JOBS: 20\nHOMEBREW_NO_ANALYTICS: set\nHOMEBREW_NO_ENV_HINTS: set\nHOMEBREW_REQUIRE_TAP_TRUST: set\nHomebrew Ruby: 4.0.5 => /opt/homebrew/Library/Homebrew/vendor/portable-ruby/4.0.5_1/bin/ruby\nCPU: 20-core 64-bit arm_firestorm_icestorm\nClang: 21.0.0 build 2100\nGit: 2.55.0 => /opt/homebrew/bin/git\nCurl: 8.7.1 => /usr/bin/curl\nmacOS: 26.5.1-arm64\nCLT: 26.5.0.0.1777544298\nXcode: 26.6\nRosetta 2: false\n```\n\n</details>\n",
+        "url": "https://github.com/Homebrew/brew/issues/22993"
+    },
+    {
+        "id": 4820593203,
+        "number": 22984,
+        "title": "docs.brew.sh deployment failed!",
+        "state": "closed",
+        "created_at": "2026-07-06T15:26:19Z",
+        "updated_at": "2026-07-06T17:05:18Z",
+        "closed_at": "2026-07-06T17:05:18Z",
+        "author": "github-actions[bot]",
+        "comments": 1,
+        "labels": [
+            "deploy failure"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "The most recent [docs.brew.sh deployment failed](https://github.com/Homebrew/brew/actions/runs/28802398965).",
+        "url": "https://github.com/Homebrew/brew/issues/22984"
+    },
+    {
+        "id": 4817120018,
+        "number": 22979,
+        "title": "docs.brew.sh deployment failed!",
+        "state": "closed",
+        "created_at": "2026-07-06T07:55:58Z",
+        "updated_at": "2026-07-06T14:45:10Z",
+        "closed_at": "2026-07-06T14:45:10Z",
+        "author": "github-actions[bot]",
+        "comments": 2,
+        "labels": [
+            "deploy failure"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "The most recent [docs.brew.sh deployment failed](https://github.com/Homebrew/brew/actions/runs/28776144853).",
+        "url": "https://github.com/Homebrew/brew/issues/22979"
+    },
+    {
+        "id": 4815205728,
+        "number": 22976,
+        "title": "docs.brew.sh deployment failed!",
+        "state": "closed",
+        "created_at": "2026-07-06T01:15:47Z",
+        "updated_at": "2026-07-06T01:38:39Z",
+        "closed_at": "2026-07-06T01:38:39Z",
+        "author": "github-actions[bot]",
+        "comments": 1,
+        "labels": [
+            "deploy failure"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "The most recent [docs.brew.sh deployment failed](https://github.com/Homebrew/brew/actions/runs/28761477638).",
+        "url": "https://github.com/Homebrew/brew/issues/22976"
+    },
+    {
+        "id": 4813926703,
+        "number": 22969,
+        "title": "docs.brew.sh deployment failed!",
+        "state": "closed",
+        "created_at": "2026-07-05T18:16:16Z",
+        "updated_at": "2026-07-05T18:35:10Z",
+        "closed_at": "2026-07-05T18:35:10Z",
+        "author": "github-actions[bot]",
+        "comments": 1,
+        "labels": [
+            "deploy failure"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "The most recent [docs.brew.sh deployment failed](https://github.com/Homebrew/brew/actions/runs/28750109192).",
+        "url": "https://github.com/Homebrew/brew/issues/22969"
+    },
+    {
+        "id": 4813670885,
+        "number": 22966,
+        "title": "docs.brew.sh deployment failed!",
+        "state": "closed",
+        "created_at": "2026-07-05T16:55:46Z",
+        "updated_at": "2026-07-05T17:44:54Z",
+        "closed_at": "2026-07-05T17:44:54Z",
+        "author": "github-actions[bot]",
+        "comments": 2,
+        "labels": [
+            "deploy failure"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "The most recent [docs.brew.sh deployment failed](https://github.com/Homebrew/brew/actions/runs/28747897450).",
+        "url": "https://github.com/Homebrew/brew/issues/22966"
+    },
+    {
+        "id": 4811540665,
+        "number": 22954,
+        "title": "Feature Request: Interactive Dependency Explanation & Tidy Tool (`brew why` / `brew tidy`)",
+        "state": "closed",
+        "created_at": "2026-07-05T04:00:15Z",
+        "updated_at": "2026-07-05T08:00:59Z",
+        "closed_at": "2026-07-05T08:00:59Z",
+        "author": "NK2552003",
+        "comments": 1,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "### Verification\n\n- [x] This issue's title and/or description do not reference a single formula e.g. `brew install wget`. If they do, open an issue at https://github.com/Homebrew/homebrew-core/issues/new/choose instead.\n\n### Provide a detailed description of the proposed feature\n\nCurrently, investigating why a package is installed or identifying safe packages to remove requires stringing together multiple commands (brew uses --installed, brew leaves, brew autoremove). This can be cumbersome for developers managing complex local environments, leading to bloated systems.\n\nI propose adding a new set of developer-focused diagnostic commands (or officially adopting a tap) that provides:\n\n- brew why <package>: A visual, tree-based explanation of exactly why a package is on the system (was it user-requested, or a dependency of X, Y, and Z?).\n- brew tidy: An interactive, safe cleanup wizard that goes beyond brew autoremove by letting users select which orphaned dependencies or old caches to clear in a guided TUI.\n- brew stats: A quick health and size breakdown of the local Homebrew installation.\n\n### What is the motivation for the feature?\n\nDevelopers often struggle with \"Homebrew bloat.\" Providing built-in, visually intuitive commands to understand the dependency graph and safely clean up the system would significantly improve the developer experience and maintain system health. I have a working prototype of these features and would love to contribute them if the maintainers are open to it!\n\n### How will the feature be relevant to at least 90% of Homebrew users?\n\nAlmost all Homebrew users eventually face two universal problems: running out of disk space due to old caches/orphaned dependencies, and not knowing if it is safe to uninstall a specific package. By providing brew tidy and brew why, over 90% of users will have an accessible, built-in way to confidently clean up their systems and understand their dependency trees without needing deep technical knowledge of how Homebrew links packages under the hood.\n\n### What alternatives to the feature have been considered?\n\n- *Using existing commands* : Users can currently pipe together brew leaves, brew autoremove, and brew cleanup, but this lacks interactivity and visual feedback, making users hesitant to run them out of fear of breaking their environments.\n\n- *Maintaining an external Tap*: Building this entirely as a third-party tap (e.g., brew tap username/brew-why). While this works, these features deal with fundamental system maintenance and disk space management, which feel like core utilities that should be available to the ecosystem by default rather than requiring users to discover a third-party tool.",
+        "url": "https://github.com/Homebrew/brew/issues/22954"
+    },
+    {
+        "id": 4809498625,
+        "number": 22948,
+        "title": "brew upgrade/reinstall of a source-built tap formula fails with \"process has already locked\" while the lock is free",
+        "state": "closed",
+        "created_at": "2026-07-04T15:13:40Z",
+        "updated_at": "2026-07-06T07:24:41Z",
+        "closed_at": "2026-07-05T16:43:17Z",
+        "author": "kevdoran",
+        "comments": 3,
+        "labels": [],
+        "assignees": [
+            "MikeMcQuaid"
+        ],
+        "locked": false,
+        "body": "### `brew doctor` output\n\n```shell\nYour system is ready to brew.\n```\n\n### Verification\n\n- [x] I ran `brew update` twice and am still able to reproduce my issue.\n- [x] My \"`brew doctor` output\" above says `Your system is ready to brew` or a definitely unrelated `Tier` message.\n- [x] This issue's title and/or description do not reference a single formula e.g. `brew install wget`. If they do, open an issue at https://github.com/Homebrew/homebrew-core/issues/new/choose instead.\n\n### `brew config` output\n\n```shell\nHOMEBREW_VERSION: 6.0.6-68-g7ff4fd7\nORIGIN: https://github.com/Homebrew/brew\nHEAD: 7ff4fd73927c9493b646e0cd69bd652da3cadbe6\nLast commit: 2 hours ago\nBranch: HEAD\nCore tap: N/A\nCore cask tap: N/A\nHOMEBREW_PREFIX: /opt/homebrew\nHOMEBREW_CASK_OPTS: []\nHOMEBREW_DOWNLOAD_CONCURRENCY: 20\nHOMEBREW_FORBID_PACKAGES_FROM_PATHS: set\nHOMEBREW_MAKE_JOBS: 10\nHOMEBREW_REQUIRE_TAP_TRUST: set\nHomebrew Ruby: 4.0.5 => /opt/homebrew/Library/Homebrew/vendor/portable-ruby/4.0.5_1/bin/ruby\nCPU: deca-core 64-bit arm_hidra\nClang: 21.0.0 build 2100\nGit: 2.55.0 => /opt/homebrew/bin/git\nCurl: 8.7.1 => /usr/bin/curl\nmacOS: 26.5-arm64\nCLT: 26.5.0.0.1777544298\nXcode: 26.6\nMetal Toolchain: N/A\nRosetta 2: false\n```\n\n### What were you trying to do (and why)?\n\nUpgrade a **source-built third-party tap formula** to a newly published version (`brew upgrade pj`, from the public tap `kevdoran/tap`, formula: https://github.com/kevdoran/homebrew-tap/blob/main/Formula/pj.rb — a plain build-from-source Go formula with no bottles). The tap had just published a version bump and I wanted the new version.\n\n### What happened (include all command output)?\n\n`brew upgrade` (and `brew reinstall`) consistently fail claiming another process holds the formula lock, while **no other brew process exists and the lock is verifiably free**:\n\n```\n$ brew upgrade pj\n✔︎ Formula pj (1.0.0)\n==> Upgrading kevdoran/tap/pj\n  0.5.0 -> 1.0.0\nError: A `brew upgrade pj` process has already locked /opt/homebrew/Cellar/pj.\nPlease wait for it to finish or terminate it to continue.\n\n$ ps -ef | grep -iE \"ruby|homebrew\" | grep -v grep\n(no output)\n\n$ ruby -e 'f=File.open(\"/opt/homebrew/var/homebrew/locks/pj.formula.lock\", File::RDWR|File::CREAT); p f.flock(File::LOCK_EX|File::LOCK_NB)'\n0        # lock acquired instantly — nothing holds it\n```\n\nThe failure is 100% reproducible across invocations. The fetch phase succeeds first (`✔︎ Formula pj (1.0.0)` renders before the error), which suggests the download-queue prefetch stage and the upgrade stage may both be taking the formula lock within the same run (flock on two fds conflicts even within one process).\n\nAdditional data points:\n\n- `brew install` of the same formula works every time; only `upgrade` and `reinstall` fail.\n- `HOMEBREW_DOWNLOAD_CONCURRENCY=1` does **not** help.\n- `brew cleanup --prune=all` and deleting the stale lock file do not help.\n- Reproduced identically on stable `6.0.6` (clean tag checkout) and `main` (`6.0.6-68-g7ff4fd7`).\n- On failure, `brew upgrade` prints `Backing up...` and restores the old keg (`INSTALL_RECEIPT.json` mtime changes), so the failure happens after the upgrade transaction begins.\n- **`brew reinstall` failing this way leaves the formula uninstalled/unlinked** — the old keg is removed but the new one never lands, so the user loses the binary entirely.\n\n### What did you expect to happen?\n\nThe upgrade to proceed, since no other process holds the lock.\n\n### Step-by-step reproduction instructions (running `brew` commands)\n\n```shell\nbrew trust kevdoran/tap\n# install the previous formula version (via the tap's git history), then upgrade:\ngit -C \"$(brew --repository kevdoran/tap)\" checkout 98a470e   # formula @ 0.5.0\nbrew install kevdoran/tap/pj\ngit -C \"$(brew --repository kevdoran/tap)\" checkout main       # formula @ 1.0.0\nbrew upgrade pj\n# => Error: A `brew upgrade pj` process has already locked /opt/homebrew/Cellar/pj.\n# (reproduces the same without the git checkout dance whenever the tap\n#  publishes a version bump and an older version is installed)\n```",
+        "url": "https://github.com/Homebrew/brew/issues/22948"
+    },
+    {
+        "id": 4808966793,
+        "number": 22941,
+        "title": "docs.brew.sh deployment failed!",
+        "state": "closed",
+        "created_at": "2026-07-04T12:29:05Z",
+        "updated_at": "2026-07-04T12:30:29Z",
+        "closed_at": "2026-07-04T12:30:29Z",
+        "author": "github-actions[bot]",
+        "comments": 1,
+        "labels": [
+            "deploy failure"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "The most recent [docs.brew.sh deployment failed](https://github.com/Homebrew/brew/actions/runs/28706078269).",
+        "url": "https://github.com/Homebrew/brew/issues/22941"
+    }
+]

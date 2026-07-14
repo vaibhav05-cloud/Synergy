@@ -1,0 +1,413 @@
+[
+    {
+        "id": 4879539424,
+        "number": 140515,
+        "title": "[Failing Test] ci-kubernetes-e2e-gce-cos-default-master",
+        "state": "closed",
+        "created_at": "2026-07-14T03:20:07Z",
+        "updated_at": "2026-07-14T07:13:00Z",
+        "closed_at": "2026-07-14T07:12:59Z",
+        "author": "pacoxu",
+        "comments": 7,
+        "labels": [
+            "kind/failing-test",
+            "sig/cloud-provider",
+            "needs-triage"
+        ],
+        "assignees": [
+            "upodroid"
+        ],
+        "locked": false,
+        "body": "### Which jobs are failing?\n\nhttps://prow.k8s.io/view/gs/kubernetes-ci-logs/logs/ci-kubernetes-e2e-gce-cos-default-master/2076705583133626368\n\n### Which tests are failing?\n\n\n\nKubernetes e2e suite: [SynchronizedBeforeSuite] expand_more\ne2e.go: Test expand_more\n\n\n### Since when has it been failing?\n\nafter https://github.com/kubernetes/kubernetes/pull/138363 and https://github.com/kubernetes/kubernetes/pull/139844 were merged today. It seems to be unrelated as the failure is an image removing below.\n\n### Testgrid link\n\nhttps://testgrid.k8s.io/sig-release-master-blocking#gce-cos-default-master\n\n### Reason for failure (if possible)\n\n```\n                waiting:\n                  message: 'Back-off pulling image \"gcr.io/k8s-ingress-image-push/ingress-gce-glbc-amd64:v1.23.1\":\n                    ErrImagePull: rpc error: code = NotFound desc = failed to pull and unpack\n                    image \"gcr.io/k8s-ingress-image-push/ingress-gce-glbc-amd64:v1.23.1\":\n                    failed to resolve image: gcr.io/k8s-ingress-image-push/ingress-gce-glbc-amd64:v1.23.1:\n                    not found'\n                  reason: ImagePullBackOff\n```\n\n### Anything else we need to know?\n\n_No response_\n\n### Relevant SIG(s)\n\n/sig\nthis seems to be a blocker. https://prow.k8s.io/job-history/gs/kubernetes-ci-logs/pr-logs/directory/pull-kubernetes-e2e-gce keeps failing",
+        "url": "https://github.com/kubernetes/kubernetes/issues/140515"
+    },
+    {
+        "id": 4879104983,
+        "number": 140510,
+        "title": "SelectionPredicate.Empty does not account for ShardSelector",
+        "state": "open",
+        "created_at": "2026-07-14T01:48:18Z",
+        "updated_at": "2026-07-14T02:43:11Z",
+        "closed_at": null,
+        "author": "jpbetz",
+        "comments": 3,
+        "labels": [
+            "sig/api-machinery",
+            "triage/accepted"
+        ],
+        "assignees": [
+            "Jefftree"
+        ],
+        "locked": false,
+        "body": "While working on https://github.com/kubernetes/kubernetes/pull/140200 I noticed that `SelectionPredicate.Empty()` needs to be updated for `ShardSelector`.  I believe that without this fix, `remainingItemCount` is computed from the unfiltered window.  We should also add a test for `remainingItemCount`.",
+        "url": "https://github.com/kubernetes/kubernetes/issues/140510"
+    },
+    {
+        "id": 4877925466,
+        "number": 140509,
+        "title": "`exec` based readiness probes are ignored for terminating pods in v1.35",
+        "state": "open",
+        "created_at": "2026-07-13T21:54:11Z",
+        "updated_at": "2026-07-14T06:10:59Z",
+        "closed_at": null,
+        "author": "ryan-vance-cresta",
+        "comments": 3,
+        "labels": [
+            "kind/bug",
+            "needs-sig",
+            "needs-triage"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### What happened?\n\nReadiness probes that use `exec` are skipped during pod termination for Kubernetes version `1.35`.\n\nWith `v1.35`, the readiness probe errors out with a context cancelled error. This leaves the `Ready` status as `True` until the pod is removed.\n\n### What did you expect to happen?\n\nNormally, when a pod is terminating the exec command still runs and updates the `Ready` status as appropriate.\n\nThis behavior is observed on other recent Kubernetes versions:\n- `1.33`\n- `1.34`\n- `1.36`\n\n### How can we reproduce it (as minimally and precisely as possible)?\n\nPlease follow the readme in this public repository https://github.com/ryan-vance-cresta/k8s-readiness-probe-regression. It has a bare minimum example deployment, with `kind` configurations for different Kubernetes versions I tested against.\n\nThe readme gives all necessary commands to reproduce, but at a high level:\n- Apply the example deployment, wait until running\n- Terminate a pod either directly or through rollout restart\n- Watch the Ready status turn false (good) or stay true (bad) \n\n### Anything else we need to know?\n\n_No response_\n\n### Kubernetes version\n\nKubernetes `v1.35` is the only one observed to have this issue. Versions `1.33`, `1.34`, and `1.36` all work as expected.\n\n\n### Cloud provider\n\nThis issue has been observed on AWS EKS `v1.35.5-eks-a3a0722`. It was further tested on previous versions with `kind`.\n\n### OS version\n\n`Amazon Linux 2023.11.20260505`\n\n\n### Install tools\n\n`kubectl`, `kind`\n\n\n### Container runtime (CRI) and version (if applicable)\n\n`containerd 2.2.3`\n\n### Related plugins (CNI, CSI, ...) and versions (if applicable)\n\n_No response_",
+        "url": "https://github.com/kubernetes/kubernetes/issues/140509"
+    },
+    {
+        "id": 4876100288,
+        "number": 140503,
+        "title": "Evaluate enforcement of `+listType=map` and `+listMapKey=uid` for OwnerReference in ObjectMeta",
+        "state": "open",
+        "created_at": "2026-07-13T17:35:05Z",
+        "updated_at": "2026-07-14T08:29:56Z",
+        "closed_at": null,
+        "author": "lalitc375",
+        "comments": 3,
+        "labels": [
+            "kind/cleanup",
+            "sig/api-machinery",
+            "triage/accepted",
+            "area/api-validation"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### What happened?\nDuring the review of PR #140381 (Configure DV on objectMeta OwnerReference), it was observed that `OwnerReference` in `ObjectMeta` has the following tags in `staging/src/k8s.io/apimachinery/pkg/apis/meta/v1/types.go`:\n```go\n// +patchStrategy=merge\n// +listType=map\n// +listMapKey=uid\n```\nHowever, there are currently no corresponding handwritten validations that fully enforce these constraints. \n\n### Why was this not addressed in PR #140381?\nAs discussed in [this comment thread](https://github.com/kubernetes/kubernetes/pull/140381#discussion_r3572186534), adding Declarative Validation (DV) for these markers right now could potentially break existing workflows. The scope of PR #140381 was strictly limited to mirroring the existing handwritten validations to ensure exact structural error reporting and deduplication parity.\n\n### Action Items\n- [ ] Investigate the impact of fully enforcing `+listMapKey=uid` and `+listType=map` on `OwnerReference`.\n- [ ] Determine a safe rollout strategy if we decide to enforce these validations.\n- [ ] Alternatively, if they should remain unenforced, add appropriate comments/documentation explaining this limitation.\n\n/sig api-machinery\n/kind cleanup\n",
+        "url": "https://github.com/kubernetes/kubernetes/issues/140503"
+    },
+    {
+        "id": 4875527105,
+        "number": 140502,
+        "title": "The generated test scenarios for RWX volume types dont make sense",
+        "state": "open",
+        "created_at": "2026-07-13T16:20:08Z",
+        "updated_at": "2026-07-13T16:20:47Z",
+        "closed_at": null,
+        "author": "gnufied",
+        "comments": 2,
+        "labels": [
+            "kind/bug",
+            "sig/storage",
+            "needs-triage"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### What happened?\n\nWhen RWX capability is enabled we are generating CSI test with following names:\n\n```\nExternal Storage [Driver: csi.vsphere.vmware.com] [Testpattern: Dynamic PV (ext4)] multiVolume [Slow] should concurrently access the single volume from pods on different node\n\n```\n\nBut this does not make sense. A RWX volume can't support ext4.  This should be fixed.\n\nFor example:\n\nhttps://prow.ci.openshift.org/view/gs/test-platform-results/logs/periodic-ci-openshift-release-main-nightly-4.23-e2e-vsphere-ovn-csi-vcf9/2071709165373362176\n\n\n\n### What did you expect to happen?\n\nRWX volume tests shouldn't use ext4 or XFS filesystem types in their names (or in implementation).\n\n\n### How can we reproduce it (as minimally and precisely as possible)?\n\nRun CSI tests\n\n### Anything else we need to know?\n\n_No response_\n\n### Kubernetes version\n\n<details>\n\n```console\n$ kubectl version\n# paste output here\n```\n\n</details>\n\n\n### Cloud provider\n\n<details>\n\n</details>\n\n\n### OS version\n\n<details>\n\n```console\n# On Linux:\n$ cat /etc/os-release\n# paste output here\n$ uname -a\n# paste output here\n\n# On Windows:\nC:\\> wmic os get Caption, Version, BuildNumber, OSArchitecture\n# paste output here\n```\n\n</details>\n\n\n### Install tools\n\n<details>\n\n</details>\n\n\n### Container runtime (CRI) and version (if applicable)\n\n<details>\n\n</details>\n\n\n### Related plugins (CNI, CSI, ...) and versions (if applicable)\n\n<details>\n\n</details>\n",
+        "url": "https://github.com/kubernetes/kubernetes/issues/140502"
+    },
+    {
+        "id": 4874702088,
+        "number": 140496,
+        "title": "Track assumed pods in a cycle to simplify gang scheduling feasibility check",
+        "state": "open",
+        "created_at": "2026-07-13T14:39:42Z",
+        "updated_at": "2026-07-13T14:42:39Z",
+        "closed_at": null,
+        "author": "vshkrabkov",
+        "comments": 3,
+        "labels": [
+            "sig/scheduling",
+            "needs-triage"
+        ],
+        "assignees": [
+            "vshkrabkov"
+        ],
+        "locked": false,
+        "body": "## Context\nIn the Kubernetes scheduler, when scheduling a pod group (gang), we need to check if the gang's `MinCount` constraint can be met. This check is performed in the `PlacementFeasible` function of the `gangscheduling` plugin.\n\nDuring a pod group scheduling cycle, we evaluate pods one by one. If a pod is successfully scheduled in the simulation, it is \"assumed\" in the snapshot of the cache.\n\nTo determine if a subsequent pod in the same group can be scheduled, we need to know how many pods were *already scheduled* before the current cycle started (`alreadyScheduledCount`), and how many have been scheduled *during* the current cycle.\n\nCurrently, `alreadyScheduledCount` is calculated by comparing all scheduled pods in the snapshot with the list of pods that were unscheduled at the start of the cycle:\n\n```go\nunscheduledUIDs := sets.New[types.UID]()\nfor _, pod := range podGroupInfo.GetUnscheduledPods() {\n    unscheduledUIDs.Insert(pod.UID)\n}\n\nalreadyScheduledCount := 0\nfor _, scheduledPod := range podGroupState.ScheduledPods() {\n    if !unscheduledUIDs.Has(scheduledPod.UID) {\n        alreadyScheduledCount++\n    }\n}\n```\n\nThis approach is inefficient as it requires:\n1. Building a set of UIDs for all unscheduled pods.\n2. Iterating over all scheduled pods (which includes both previously scheduled and assumed in this cycle pods) and performing a lookup in the set.\n\n## Proposal\nWe can simplify this logic by introducing a way to query how many pods have been assumed *during the current scheduling cycle* directly from the pod group state snapshot.\n\nWe propose adding a new method to the `PodGroupState` interface:\n```go\n// AssumedInThisCycleCount returns the number of assumed pods in the current scheduling cycle.\n// For live state, this always returns 0.\nAssumedInThisCycleCount() int\n```\n\nWith this method, `alreadyScheduledCount` can be calculated as:\n```go\nscheduled := podGroupState.ScheduledPodsCount()\nassumedInThisCycle := podGroupState.AssumedInThisCycleCount()\nalreadyScheduledCount := scheduled - assumedInThisCycle\n```\n\nThis eliminates the need to build the `unscheduledUIDs` set and iterate over `ScheduledPods()`.\n\n## Proposed Changes\n\n### 1. Framework Lister Interface\nModify [staging/src/k8s.io/kube-scheduler/framework/listers.go](file:///usr/local/google/home/vshkrabkov/Development/kubernetes/staging/src/k8s.io/kube-scheduler/framework/listers.go) to add `AssumedInThisCycleCount() int` to the `PodGroupState` interface.\n\n### 2. Cache Implementation\nModify [pkg/scheduler/backend/cache/podgroupstate.go](file:///usr/local/google/home/vshkrabkov/Development/kubernetes/pkg/scheduler/backend/cache/podgroupstate.go):\n*   Implement `AssumedInThisCycleCount() int` for `podGroupState` (live state) to return `0`.\n*   Update `podGroupStateSnapshot` struct to track pods assumed during the cycle:\n    ```go\n    type podGroupStateSnapshot struct {\n        podGroupStateData\n        assumedThisCycle sets.Set[types.UID]\n    }\n    ```\n*   Update `assumePod` method on `podGroupStateSnapshot` to add the pod UID to `assumedThisCycle`.\n*   Update `forgetPod` method on `podGroupStateSnapshot` to remove the pod UID from `assumedThisCycle`.\n*   Implement `AssumedInThisCycleCount() int` for `podGroupStateSnapshot` to return `len(s.assumedThisCycle)`.\n\n### 3. Gang Scheduling Plugin\nModify [pkg/scheduler/framework/plugins/gangscheduling/gangscheduling.go](file:///usr/local/google/home/vshkrabkov/Development/kubernetes/pkg/scheduler/framework/plugins/gangscheduling/gangscheduling.go):\n*   In `PlacementFeasible`, simplify `alreadyScheduledCount` calculation:\n    ```go\n    scheduled := podGroupState.ScheduledPodsCount()\n    assumedInThisCycle := podGroupState.AssumedInThisCycleCount()\n    alreadyScheduledCount := scheduled - assumedInThisCycle\n    ```\n*   Remove the `unscheduledUIDs` set construction and the loop over `podGroupState.ScheduledPods()`.\n\n### 4. Test Mocks and Contracts\n*   Update `podGroupStateContract` in [pkg/scheduler/framework/autoscaler_contract/lister_contract_test.go](file:///usr/local/google/home/vshkrabkov/Development/kubernetes/pkg/scheduler/framework/autoscaler_contract/lister_contract_test.go) to implement `AssumedInThisCycleCount() int` (returning `0`).\n*   Update `mockPodGroupState` in [pkg/scheduler/framework/plugins/gangscheduling/gangscheduling_test.go](file:///usr/local/google/home/vshkrabkov/Development/kubernetes/pkg/scheduler/framework/plugins/gangscheduling/gangscheduling_test.go) to implement `AssumedInThisCycleCount() int`.\n*   Add unit tests in [pkg/scheduler/backend/cache/podgroupstate_test.go](file:///usr/local/google/home/vshkrabkov/Development/kubernetes/pkg/scheduler/backend/cache/podgroupstate_test.go) to verify that `AssumedInThisCycleCount` correctly tracks assumed pods in a snapshot.\n\nLinks & References:\n* PR Discussion: https://github.com/kubernetes/kubernetes/pull/139464#discussion_r3569622119\n\n",
+        "url": "https://github.com/kubernetes/kubernetes/issues/140496"
+    },
+    {
+        "id": 4874314745,
+        "number": 140495,
+        "title": "Kubelet allocates system-reserved CPU to pod when cpu-topology is hybrid",
+        "state": "open",
+        "created_at": "2026-07-13T13:55:33Z",
+        "updated_at": "2026-07-13T15:13:37Z",
+        "closed_at": null,
+        "author": "ksadura",
+        "comments": 2,
+        "labels": [
+            "kind/bug",
+            "sig/node",
+            "needs-triage"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### What happened?\n\nFollowing CPU topology (hybrid i.e. cores with id `0-28` are hyper-threaded and `32-43` are single-threaded) was given.\n```\nIntel(R) Core(TM) i7-14700\nCPU(s):                28\nOn-line CPU(s) list:   0-27\nCore(s) per socket:    20\nSocket(s):             1\nNUMA node(s):          1\n```\n\nFor pod with 2 guaranteed CPUs, kubelet allocated `0-1` cpuset, despite `0` was explicitly reserved for system purposes. Kubelet was launched with following flags: `--kubelet-flags=\"--cpu-manager-policy=static --reserved-cpus=0`. \n\nHere are some kubelet logs:\n```\nI0710 16:32:08.192397  353056 policy_static.go:185] \"Reserved CPUs not available for exclusive assignment\" reservedSize=1 reserved=\"0\" reservedPhysicalCPUs=\"0-1\"\n...\nI0710 16:32:45.032352  353056 policy_static.go:556] \"Allocate start\" pod=\"default/test-7fb87c954c-n8gtr\" podUID=\"35863126-0027-47ff-90f9-8684692a19bb\" containerName=\"testcnt1\"\nI0710 16:32:45.032419  353056 policy_static.go:675] \"AllocateCPUs\" pod=\"default/test-7fb87c954c-n8gtr\" podUID=\"35863126-0027-47ff-90f9-8684692a19bb\" containerName=\"testcnt1\" numCPUs=2 socket=null\nI0710 16:32:45.035206  353056 policy_static.go:708] \"AllocateCPUs\" pod=\"default/test-7fb87c954c-n8gtr\" podUID=\"35863126-0027-47ff-90f9-8684692a19bb\" containerName=\"testcnt1\" result=\"0-1 aligned=<uncore:true>\"\nI0710 16:32:45.037033  353056 policy_static.go:621] \"Allocate end\" pod=\"default/test-7fb87c954c-n8gtr\" podUID=\"35863126-0027-47ff-90f9-8684692a19bb\" containerName=\"testcnt1\"\n```\n\nThen, kubelet was **restarted**, but it can't boot again due to invalid state:\n```\nI0713 16:37:04.270175  593834 state_mem.go:143] \"Updated default CPUSet\" logger=\"CPUManager state checkpoint.CPUManager state memory\" cpuSet=\"2-27\"\nI0713 16:37:04.270195  593834 state_mem.go:161] \"Updated CPUSet assignments\" logger=\"CPUManager state checkpoint.CPUManager state memory\" assignments=\"{\\\"35863126-0027-47ff-90f9-8684692a19bb\\\":{\\\"testcnt1\\\":\\\"0-1\\\"}}\"\nI0713 15:37:04.270215  593834 state_checkpoint.go:182] \"restored state from checkpoint\" logger=\"CPUManager state checkpoint\"\nI0713 16:37:04.270227  593834 state_checkpoint.go:183] \"defaultCPUSet\" logger=\"CPUManager state checkpoint\" defaultCpuSet=\"2-27\"\nE0713 16:37:04.270257  593834 policy_static.go:303] \"invalid state, please drain node and remove policy state file\" err=\"not all reserved cpus: \\\"0\\\" are present in defaultCpuSet: \\\"2-27\\\"\"\nE0713 16:37:04.270266  593834 cpu_manager.go:263] \"Policy start error\" err=\"not all reserved cpus: \\\"0\\\" are present in defaultCpuSet: \\\"2-27\\\"\"\nE0713 16:37:04.270277  593834 kubelet.go:1837] \"Failed to start ContainerManager\" err=\"start cpu manager error: not all reserved cpus: \\\"0\\\" are present in defaultCpuSet: \\\"2-27\\\"\"\n```\n\n### What did you expect to happen?\n\nKubelet allocates 2 CPUs that do not interfere with reserved CPUs. After restart kubelet starts smoothly.\n\n### How can we reproduce it (as minimally and precisely as possible)?\n\n1. Start local cluster using `hack/local-up-cluster.sh` script with proper flags set.\n```console\nCPUMANAGER_POLICY=\"static\" KUBELET_FLAGS=\"--reserved-cpus=0\" hack/local-up-cluster.sh\n```\n2. Deploy the pod with guaranteed CPU resources\n```yaml\nresources:\n  requests:\n    cpu: '2'\n    memory: \"2Gi\"\n  limits:\n    cpu: '2'\n    memory: \"2Gi\"\n```\n3. Kill the cluster and try to start it again.\n\n### Anything else we need to know?\n\n--\n\n### Kubernetes version\n\n<details>\n\n```console\n$ kubectl version\nClient Version: v1.36.0\nKustomize Version: v5.8.1\nServer Version: v1.37.0-alpha.2.283+fde2a0d4e7ab62-dirty\n```\n\n</details>\n\n\n### Cloud provider\n\n<details>\nN/A\n</details>\n\n\n### OS version\n\n<details>\n\n```console\n$ cat /etc/os-release\nPRETTY_NAME=\"Ubuntu 24.04.4 LTS\"\nNAME=\"Ubuntu\"\nVERSION_ID=\"24.04\"\nVERSION=\"24.04.4 LTS (Noble Numbat)\"\nVERSION_CODENAME=noble\nID=ubuntu\nID_LIKE=debian\nHOME_URL=\"https://www.ubuntu.com/\"\nSUPPORT_URL=\"https://help.ubuntu.com/\"\nBUG_REPORT_URL=\"https://bugs.launchpad.net/ubuntu/\"\nPRIVACY_POLICY_URL=\"https://www.ubuntu.com/legal/terms-and-policies/privacy-policy\"\nUBUNTU_CODENAME=noble\nLOGO=ubuntu-logo\n$ uname -a\nLinux 6.17.0-35-generic #35~24.04.1-Ubuntu SMP PREEMPT_DYNAMIC Tue May 26 19:30:42 UTC 2 x86_64 x86_64 x86_64 GNU/Linux\n\n```\n\n</details>\n\n\n### Install tools\n\n<details>\nN/A\n</details>\n\n\n### Container runtime (CRI) and version (if applicable)\n\n<details>\ncontainerd://2.2.3\n</details>\n\n\n### Related plugins (CNI, CSI, ...) and versions (if applicable)\n\n<details>\nN/A\n</details>\n",
+        "url": "https://github.com/kubernetes/kubernetes/issues/140495"
+    },
+    {
+        "id": 4874100191,
+        "number": 140493,
+        "title": "Reinstate or drop `[Feature:PerformanceDNS]` tests",
+        "state": "open",
+        "created_at": "2026-07-13T13:29:32Z",
+        "updated_at": "2026-07-13T13:29:41Z",
+        "closed_at": null,
+        "author": "danwinship",
+        "comments": 1,
+        "labels": [
+            "priority/backlog",
+            "sig/network",
+            "needs-triage"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "https://github.com/kubernetes/test-infra/pull/37410 points out that the `[Feature:PerformanceDNS]` tests are not currently being run anywhere.\n\nWe should either fix this so that there is some CI jobs that runs them, or else remove them if they are no longer useful.\n\n/sig network\n/priority backlog\n",
+        "url": "https://github.com/kubernetes/kubernetes/issues/140493"
+    },
+    {
+        "id": 4873917671,
+        "number": 140491,
+        "title": "Add `[Feature:SCTPConnectivity]` CI",
+        "state": "closed",
+        "created_at": "2026-07-13T13:07:25Z",
+        "updated_at": "2026-07-13T13:31:00Z",
+        "closed_at": "2026-07-13T13:14:38Z",
+        "author": "danwinship",
+        "comments": 3,
+        "labels": [
+            "needs-sig",
+            "needs-triage"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "https://github.com/kubernetes/test-infra/pull/37410 points out that we are not currently running `[Feature:SCTPConnectivity]` tests anywhere. We were previously running them in some kind jobs, but the default kernel used in GCE jobs now doesn't support SCTP (https://github.com/kubernetes/test-infra/issues/35031).\n\nAs I understand it, the GCE underlay network itself also does not support SCTP, so we can't use normal-GCE-networking-on-Ubuntu-on-GCE either. (I might be wrong about that? If the GCE underlay does support SCTP, then the fix is to just remove `SCTPConnectivity` from the skips on `pull-kubernetes-e2e-gce-network-policies` / `ci-kubernetes-e2e-gce-network-policies`.)\n\nKind-on-Ubuntu-on-GCE should work (since it would only send SCTP over the docker network, not the GCE network), but I'm not sure if our scripts support that setup. (We have kind-on-GCE and Ubuntu-on-GCE but there are no kind-on-Ubuntu-on-GCE jobs.)\n\nI believe the EKS/AKS kernel and underlays all support SCTP, so the final possibility is to run a (kind or non-kind) jobs outside of GCE. (In which case, this could possibly be combined with #140489.)\n\nNote that some of the `[Feature:SCTPConnectivity]` tests are also `[Feature:NetworkPolicy]`, so we want to run these on a job that also includes NP support.\n\ncc @aojea",
+        "url": "https://github.com/kubernetes/kubernetes/issues/140491"
+    },
+    {
+        "id": 4873819885,
+        "number": 140489,
+        "title": "Add `[Feature:Networking-IPv6]` and `[Feature:SCTPConnectivity]` CI",
+        "state": "open",
+        "created_at": "2026-07-13T12:55:44Z",
+        "updated_at": "2026-07-13T13:30:05Z",
+        "closed_at": null,
+        "author": "danwinship",
+        "comments": 2,
+        "labels": [
+            "sig/network",
+            "sig/testing",
+            "area/ipv6",
+            "needs-triage",
+            "area/network-policy"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "https://github.com/kubernetes/test-infra/pull/37410 points out that the single `[Feature:Networking-IPv6]` e2e test and the `[Feature:SCTPConnectivity]` tests do not get run by any of our existing CI jobs.\n\n`[Feature:Networking-IPv6]` requires connectivity to the IPv6 internet, which our default CI environment doesn't have.\n`[Feature:SCTPConnectivity]` requires kernel support for SCTP (which the default GCE \"COS\" kernels don't have) and pod network support for SCTP (which, AIUI, the GCE underlay network does not have, so these tests can't run in an environment that sends pod network packets directly over the GCE underlay). Also, some of the SCTP tests are also `[Feature:NetworkPolicy]`, so we should run it in an environment with NP. And one of the SCTP tests is `[Feature:IPv6DualStack]`.\n\n@upodroid [points out](https://github.com/kubernetes/test-infra/pull/37410#issuecomment-4941003690) that the `k8s-infra-aks-prow-build` cluster supports dual-stack and has external IPv6 connectivity. It seems that the `eks-prow-build-cluster` also supports dual-stack clusters, though I'm not sure if it supports dual-stack external connectivity.\n\nI'm not sure about the state of SCTP support in the default kernels on those platforms, or if we have infra for running non-default-kernels on jobs on those platforms...\n\nAnyway, we should add a periodic that runs on EKS or AKS with a config that allows for `[Feature:IPv6DualStack]`, `[Feature:Networking-IPv6]`, `[Feature:SCTPConnectivity]`, and `[Feature:NetworkPolicy]`.\n\n/sig network\n/sig testing\n/area ipv6\n/area network-policy\n\ncc @aojea",
+        "url": "https://github.com/kubernetes/kubernetes/issues/140489"
+    },
+    {
+        "id": 4872511845,
+        "number": 140486,
+        "title": "[Flaky]  TestPodGroupPreemption",
+        "state": "open",
+        "created_at": "2026-07-13T09:59:11Z",
+        "updated_at": "2026-07-13T15:27:56Z",
+        "closed_at": null,
+        "author": "soltysh",
+        "comments": 2,
+        "labels": [
+            "kind/flake",
+            "needs-triage",
+            "wg/workload-aware-scheduling"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Which jobs are flaking?\n\npull-kubernetes-integration [instance1](https://prow.k8s.io/view/gs/kubernetes-ci-logs/pr-logs/pull/138363/pull-kubernetes-integration/2076003630875414528)\n\n### Which tests are flaking?\n\n TestPodGroupPreemption/Basic_scheduling:_reprieve_if_it_does_not_reduce_scheduled_pods_below_max_possible\n\n### Since when has it been flaking?\n\nIt seems it's flaking since https://github.com/kubernetes/kubernetes/pull/139980 merged. \n\n### Testgrid link\n\nhttps://testgrid.k8s.io/presubmits-kubernetes-blocking#pull-kubernetes-integration\n\n### Reason for failure (if possible)\n\n_No response_\n\n### Anything else we need to know?\n\n_No response_\n\n### Relevant SIG(s)\n\n/wg workload-aware-scheduling\n",
+        "url": "https://github.com/kubernetes/kubernetes/issues/140486"
+    },
+    {
+        "id": 4871697077,
+        "number": 140483,
+        "title": "[FH: InPlacePodVerticalScalingExclusiveCPUs] Add e2e node test(s) with vertical scaling of Guaranteed QoS pods with fractional CPU",
+        "state": "open",
+        "created_at": "2026-07-13T08:11:22Z",
+        "updated_at": "2026-07-13T08:15:41Z",
+        "closed_at": null,
+        "author": "esotsal",
+        "comments": 3,
+        "labels": [
+            "priority/important-soon",
+            "sig/node",
+            "triage/accepted"
+        ],
+        "assignees": [
+            "esotsal"
+        ],
+        "locked": false,
+        "body": "This is a follow up issue from https://github.com/kubernetes/kubernetes/pull/140480#issuecomment-4953783779\n\nFor `InPlacePodVerticalScalingExclusiveCPUs` more e2e node test(s) verifying vertical scaling of Guaranteed QoS pods with fractional CPU is handled as expected, need to be added to test more combinations, to improve test coverage.\n\nRelated to https://github.com/kubernetes/enhancements/issues/5554",
+        "url": "https://github.com/kubernetes/kubernetes/issues/140483"
+    },
+    {
+        "id": 4868081045,
+        "number": 140476,
+        "title": "PodRequests/PodLimits insert an explicit zero for pod-level resource keys absent from actuated resources",
+        "state": "closed",
+        "created_at": "2026-07-12T17:41:03Z",
+        "updated_at": "2026-07-12T17:42:59Z",
+        "closed_at": "2026-07-12T17:42:59Z",
+        "author": "semx",
+        "comments": 2,
+        "labels": [
+            "kind/bug",
+            "sig/node",
+            "needs-triage"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "**What happened**:\n\n`PodRequests` and `PodLimits` (`staging/src/k8s.io/component-helpers/resource/helpers.go`) compute pod-level aggregation by iterating `pod.Spec.Resources.{Requests,Limits}` and assigning the value from the *effective* (actuated) resources for each supported pod-level resource:\n\n```go\nfor resourceName, quantity := range pod.Spec.Resources.Limits {\n    if IsSupportedPodLevelResource(resourceName) {\n        limits[resourceName] = quantity\n        if effectiveLims != nil {\n            limits[resourceName] = effectiveLims[resourceName]\n        }\n    }\n}\n```\n\nWhen a resource key is present in the spec but absent from the effective map, `effectiveLims[resourceName]` returns a zero-valued `resource.Quantity`, so the key is inserted into the result with an explicit zero.\n\nThis happens in practice when an in-place resize *adds* a pod-level request/limit (adding a key is permitted by validation; only removal is blocked) and the resize is marked `PodResizePending` / `Infeasible`: `determineEffective{Requests,Limits}` then returns the actuated-only map, which does not contain the newly added key.\n\nContainer-level aggregation (`AggregateContainerRequests` / `AggregateContainerLimits`) iterates the *effective* map via `addResourceList` and therefore omits keys that are not actuated. The two paths disagree on the resulting key set for the same input.\n\n**What you expected to happen**:\n\nPod-level aggregation should omit a key that is not present in the effective/actuated resources, matching container-level aggregation, rather than inserting an explicit zero.\n\n**How to reproduce it (as minimally and precisely as possible)**:\n\nBuild a pod with pod-level resources (`Spec.Resources.{Requests,Limits}` = `{cpu, memory}`), status resources actuated to `{cpu}` only, and a `PodResizePending` / `Infeasible` condition; call `PodLimits` / `PodRequests` with `UseStatusResources` and `InPlacePodLevelResourcesVerticalScalingEnabled` set. The returned map contains `memory: 0` (explicit), whereas `AggregateContainer{Requests,Limits}` on the same pod omits `memory`.\n\n**Anything else we need to know?**:\n\nThis is a consistency issue and is not currently observable through any cgroup/enforcement path. The paths that write cgroup values (`ResourceConfigForPod`, `calculateSandboxResources`) do not set `UseStatusResources`, and the consumers that do set it read through `.Cpu()` / `.Memory()` accessors, where an explicit zero and an absent key are equivalent. The only presence-checking consumer (`ResourceConfigForPod`, which checks `limits[v1.ResourceMemory]`) does not use those options. Filing ahead of the pod-level in-place resize GA work so the two aggregation paths stay consistent.\n\n/sig node\n/kind bug\n",
+        "url": "https://github.com/kubernetes/kubernetes/issues/140476"
+    },
+    {
+        "id": 4868075518,
+        "number": 140474,
+        "title": "resource: PodRequests/PodLimits report a zero-valued pod-level resource on an infeasible resize",
+        "state": "open",
+        "created_at": "2026-07-12T17:39:22Z",
+        "updated_at": "2026-07-12T17:39:30Z",
+        "closed_at": null,
+        "author": "semx",
+        "comments": 1,
+        "labels": [
+            "kind/bug",
+            "sig/scheduling",
+            "sig/node",
+            "needs-triage"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### What happened?\n\n`PodRequests` / `PodLimits` in `component-helpers/resource` insert an explicit **zero-valued** quantity for a pod-level resource that is present in `pod.Spec.Resources` but absent from the effective (actuated) resources, when an in-place resize is marked **infeasible**.\n\nThe pod-level branch iterates over the *spec* keys and indexes into the effective map:\n\n```go\n// staging/src/k8s.io/component-helpers/resource/helpers.go  (PodRequests)\nfor resourceName, quantity := range pod.Spec.Resources.Requests {\n    if IsSupportedPodLevelResource(resourceName) {\n        reqs[resourceName] = quantity\n        if effectiveReqs != nil {\n            reqs[resourceName] = effectiveReqs[resourceName] // zero-value if key is missing\n        }\n    }\n}\n```\n\nFor an infeasible resize, `determineEffectiveRequests` returns `max(Actuated, Allocated)` (no Spec), so a resource that the resize *adds* but that is not yet actuated is missing from `effectiveReqs`. Indexing a Go map with a missing key yields a zero `resource.Quantity`, which is then written into the result as `memory: 0`.\n\nThe container-level path does not have this problem: it iterates over the effective list and adds it, so a missing resource is simply omitted rather than set to zero.\n\n### Why it is reachable\n\n1. A pod-level resize may **add** a cpu/memory resource: `validatePodLevelResourcesResize` forbids only *removing* resources (`resourcesRemoved`), and `dropCPUMemoryUpdates` treats cpu/memory as mutable.\n2. When the resize is infeasible, the pod keeps running with the old actuated resources; `convertToAPIPodLevelResourcesStatus` derives `Status.Resources` from `allocatedPod.Spec.Resources.DeepCopy()`, which lacks the newly-added key.\n3. `PodRequests`/`PodLimits` are called with `UseStatusResources` + `InPlacePodLevelResourcesVerticalScalingEnabled` (e.g. the scheduler's `noderesources` fit plugin), producing the zero-valued entry.\n\n### Impact\n\nThis is a correctness/consistency issue rather than a scheduling-capacity bug (an infeasible resize does not reserve the added resource, so ~0 is the correct footprint). The visible effects of reporting `memory: 0` instead of omitting the key:\n\n- `pod.status.allocatedResources` reports an explicit `memory: 0` (surprising in `kubectl get pod -o yaml`);\n- an explicit limit of `0` is not the same as \"no limit\" for downstream consumers;\n- `0` vs *absent* produces spurious inequality when resource maps are compared during resize reconciliation.\n\nBoth feature gates (`InPlacePodLevelResourcesVerticalScaling`, `PodLevelResources`) are alpha/off-by-default, so the current exposure is narrow, but the behavior is worth fixing before the feature graduates.\n\n### Reproduction\n\nA unit test in `component-helpers/resource` reproduces it directly:\n\n```go\npod := &v1.Pod{\n    Spec: v1.PodSpec{\n        Resources: &v1.ResourceRequirements{Requests: v1.ResourceList{\n            v1.ResourceCPU:    resource.MustParse(\"2\"),\n            v1.ResourceMemory: resource.MustParse(\"1Gi\"),\n        }},\n        Containers: []v1.Container{{Name: \"c1\"}},\n    },\n    Status: v1.PodStatus{\n        Conditions: []v1.PodCondition{{\n            Type: v1.PodResizePending, Status: v1.ConditionTrue, Reason: v1.PodReasonInfeasible,\n        }},\n        Resources:          &v1.ResourceRequirements{Requests: v1.ResourceList{v1.ResourceCPU: resource.MustParse(\"2\")}},\n        AllocatedResources: v1.ResourceList{v1.ResourceCPU: resource.MustParse(\"2\")},\n    },\n}\ngot := PodRequests(pod, PodResourcesOptions{\n    UseStatusResources:                             true,\n    InPlacePodLevelResourcesVerticalScalingEnabled: true,\n})\n// got == {cpu: 2, memory: 0}   -- expected {cpu: 2}\n```\n\n### Proposed fix\n\nAlign the pod-level loop with the container-level path: only take the value from the effective map when the key is present, otherwise omit it.\n\n```go\nif effectiveReqs == nil {\n    reqs[resourceName] = quantity\n} else if effectiveReq, ok := effectiveReqs[resourceName]; ok {\n    reqs[resourceName] = effectiveReq\n}\n// key absent from effective -> omit, do not insert a zero-valued quantity\n```\n\n(The same change applies to `PodLimits`.) I have a branch with this fix plus table tests covering the requests and limits paths; the tests fail on `master` (result contains `memory: 0`) and pass with the fix, and the existing `component-helpers/resource` suite stays green. Happy to open a PR if this direction looks right.\n\n### What did you expect to happen?\n\nA pod-level resource that is not yet actuated during an infeasible resize should be omitted from `PodRequests`/`PodLimits`, consistent with the container-level aggregation, rather than reported as a zero-valued quantity.\n\n/sig node\n/sig scheduling\n/kind bug\n",
+        "url": "https://github.com/kubernetes/kubernetes/issues/140474"
+    },
+    {
+        "id": 4866739897,
+        "number": 140472,
+        "title": "DRA: ResourceSlice validRange.step of 2^64 re-panics with integer divide by zero (bypasses the #139698 Sign() guard via Value() truncation)",
+        "state": "open",
+        "created_at": "2026-07-12T10:53:15Z",
+        "updated_at": "2026-07-12T10:53:24Z",
+        "closed_at": null,
+        "author": "thc1006",
+        "comments": 2,
+        "labels": [
+            "sig/node",
+            "needs-triage"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### What happened?\n\n`ResourceSlice` validation panics with `integer divide by zero` on a `capacity.requestPolicy.validRange.step` whose value is a positive multiple of 2^64 (for example `18446744073709551616`).\n\nThis re-opens the panic that #139653 reported and #139698 fixed. That fix added a guard using `Quantity.Sign()`, but the arithmetic still uses `Quantity.Value()`, and the two disagree for values that do not fit in int64:\n\n```go\n// pkg/apis/resource/validation/validation.go\nif valueRange.Step.Sign() <= 0 {            // :1178  Sign() is exact -> 2^64 has Sign()==1, passes\n    ...\n} else {\n    ... validateRequestPolicyRangeStep(...) // :1186\n}\n\nfunc validateRequestPolicyRangeStep(value, min, step apiresource.Quantity, ...) {\n    stepVal := step.Value()   // :1197  Value() == big.Int.Int64(), truncates 2^64 -> 0\n    ...\n    if added%stepVal != 0 {   // :1201  added % 0 -> integer divide by zero\n```\n\n`resource.MustParse(\"18446744073709551616\").Sign()` is `1` but `.Value()` is `0`, so a step of 2^64 passes the `Sign() <= 0` guard and then divides by zero. Same for `2^65`, `2^128`, and milli-scaled values like `18446744073709551616000m`.\n\n### What did you expect to happen?\n\nValidation should return a field error for an out-of-range step, never panic.\n\n### How can we reproduce it (as minimally and precisely as possible)?\n\nCreate (or have a DRA driver publish) a `ResourceSlice` whose device has `allowMultipleAllocations: true` and a capacity with:\n\n```yaml\nrequestPolicy:\n  default: \"0\"\n  validRange:\n    min: \"0\"\n    step: \"18446744073709551616\"   # 2^64\n```\n\nDriving the real `validateRequestPolicyRange` with `step = 2^64` panics:\n\n```\nPANIC: runtime error: integer divide by zero\n```\n\nI have the test and can open a PR.\n\n### Anything else we need to know?\n\nThe apiserver's panic-recovery middleware catches this and returns HTTP 500 for the offending create/update, so the apiserver does not crash; the effect is repeated 500s and log spam on the affected request. `CapacityRequestPolicy` lives only on `ResourceSlice.Spec`, which NodeRestriction limits to a node writing its own slice, so the realistic trigger is a buggy or malicious DRA driver publishing a slice (or a cluster-admin), not an unprivileged namespace tenant. It is gated by `DRAConsumableCapacity`, which is beta and on by default in 1.36, so the default configuration is affected.\n\nThere is a sibling wrong-accept in the same function: `added := value.Value() - min.Value()` (`:1200`) is an int64 subtraction that can wrap for near-`MaxInt64` `min`/`value`, producing an incorrect \"not a multiple\" result. Same root cause (int64-truncating `Value()` arithmetic).\n\nSuggested fix: do the step/multiple math with `Quantity.Cmp` / `big.Int` (like the `Sign()` guard) instead of `Value()`, or reject a step whose `Value() <= 0` in addition to `Sign() <= 0`. Related `Value()`-truncation validation issue in the same file: #140457.\n\n/sig node\n/area dra\n",
+        "url": "https://github.com/kubernetes/kubernetes/issues/140472"
+    },
+    {
+        "id": 4866715399,
+        "number": 140471,
+        "title": "DRA: re-preparing a claim after a kubelet restart appends duplicate devices (unbounded checkpoint growth)",
+        "state": "open",
+        "created_at": "2026-07-12T10:44:20Z",
+        "updated_at": "2026-07-12T10:44:28Z",
+        "closed_at": null,
+        "author": "thc1006",
+        "comments": 2,
+        "labels": [
+            "sig/node",
+            "needs-triage"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### What happened?\n\nWhen the kubelet restarts while a pod using a ResourceClaim is still running, the DRA manager re-runs `NodePrepareResources` for that claim and appends the returned devices onto the checkpoint-restored `DriverState.Devices` instead of replacing them. The device list grows by one full set on every restart, and duplicate `CDIDeviceIDs` are surfaced to the runtime and persisted to the checkpoint.\n\n`newClaimInfoFromState` restores every checkpointed claim with `prepared: false`:\n\n```go\n// pkg/kubelet/cm/dra/claiminfo.go\nfunc newClaimInfoFromState(state *state.ClaimInfoState) *ClaimInfo {\n\tinfo := &ClaimInfo{\n\t\tClaimInfoState: *state.DeepCopy(),\n\t\tprepared:       false,\n\t}\n\treturn info\n}\n```\n\n`prepared` is unexported and not part of the checkpoint, so it is always `false` after a restart. In `prepareResources` the skip guard then does not fire:\n\n```go\n// pkg/kubelet/cm/dra/manager.go\nif claimInfo.isPrepared() { // false after a restart, so not skipped\n\tcontinue\n}\n```\n\n`NodePrepareResources` runs again and the response is added with `addDevice`, which appends without checking for devices already present:\n\n```go\n// pkg/kubelet/cm/dra/claiminfo.go\nfunc (info *ClaimInfo) addDevice(driverName string, deviceState state.Device) {\n\t...\n\tdriverState.Devices = append(driverState.Devices, deviceState)\n\tinfo.DriverState[driverName] = driverState\n}\n```\n\nThe cached ClaimInfo it appends to is the one restored from the checkpoint (`prepareResources` uses `m.cache.get` and only builds a fresh ClaimInfo when the entry does not exist), so the list doubles. `setPrepared` then checkpoints the doubled list, and the next restart doubles it again.\n\n### What did you expect to happen?\n\nRe-preparing an already-prepared claim after a restart should be idempotent: the manager should not accumulate duplicate devices, and the checkpoint should not grow across restarts.\n\n### How can we reproduce it (as minimally and precisely as possible)?\n\nA unit test in `pkg/kubelet/cm/dra` that drives the real `Manager`: prepare a claim, then build a second `Manager` on the same state directory (which restores the checkpoint), then prepare the same pod again. `DriverState.Devices` goes from 1 to 2. Making `addDevice` idempotent (or resetting the driver's devices before re-adding) keeps it at 1.\n\n```\nafter first prepare: 1 device(s) in DriverState\nafter restart + re-prepare: 2 device(s) in DriverState\n```\n\nI have the test and am glad to attach it or open a PR.\n\n### Anything else we need to know?\n\nNot tenant-triggered and node-local. The concrete effect is unbounded growth of `DriverState.Devices` and the checkpoint for a long-lived pod on a kubelet that restarts (upgrades, crashes, config reloads), plus duplicate `CDIDeviceIDs` passed to the runtime and to device-health tracking.\n\nSuggested direction: make re-prepare idempotent, either by resetting the driver's `DriverState.Devices` before re-adding the `NodePrepareResources` response (the response is the authoritative set) or by deduping in `addDevice`. Restoring with `prepared: false` and re-calling the driver is fine; the manager just should not accumulate.\n\n/sig node\n/area dra\n",
+        "url": "https://github.com/kubernetes/kubernetes/issues/140471"
+    },
+    {
+        "id": 4865115615,
+        "number": 140468,
+        "title": "DRA: reject negative ConsumedCapacity before computing node-allocatable resource demand",
+        "state": "open",
+        "created_at": "2026-07-12T02:38:45Z",
+        "updated_at": "2026-07-12T08:42:03Z",
+        "closed_at": null,
+        "author": "thc1006",
+        "comments": 2,
+        "labels": [
+            "sig/scheduling",
+            "sig/node",
+            "needs-triage",
+            "wg/device-management"
+        ],
+        "assignees": [
+            "KrishnaParihar1"
+        ],
+        "locked": false,
+        "body": "\n### What happened?\n\nWhen the `DRANodeAllocatableResources` feature is enabled, the scheduler computes a pod's node-allocatable footprint from `resourceClaim.Status.Allocation.Devices.Results[i].ConsumedCapacity`, multiplied by `NodeAllocatableResourceMappings[...].AllocationMultiplier`. `ConsumedCapacity` is not validated at the API server, so a negative value flows into that computation and produces a negative footprint.\n\nThe API validation gap is at `pkg/apis/resource/validation/validation.go:518` (`validateDeviceRequestAllocationResult`), which does not look at `ConsumedCapacity` at all. There are zero references to `ConsumedCapacity` in the validation package.\n\nThe footprint is computed at `pkg/scheduler/framework/plugins/dynamicresources/nodeallocatabledynamicresources.go:158-171`: `quantity = consumed.DeepCopy()` then optionally multiplied by `AllocationMultiplier`, and added into the claim status resources at line 178.\n\nThe fit check that consumes the footprint only runs when the demand is positive. `nodeFitsResources` guards each resource with `podRequest.MilliCPU > 0` (line 340) and `podRequest.Memory > 0` (line 350). A negative footprint makes those guards false, so the fit check for that resource is skipped. A malformed or corrupt AllocationResult can therefore produce a negative node-allocatable footprint whose fit check is silently not performed.\n\n### What did you expect to happen?\n\nTwo layers. At the API server, `ConsumedCapacity` (and the related `CapacityRequirements.Requests` and `AllocationMultiplier`) should be validated as non-negative. In the scheduler as defense in depth, `buildNodeAllocatableDRAInfo` should return an error on a negative consumed capacity, re-check the sign after applying the multiplier, and never hand a negative aggregate to `nodeFitsResources`.\n\n### How can we reproduce it (as minimally and precisely as possible)?\n\nThis test goes through the real `buildNodeAllocatableDRAInfo` with a device that maps CPU to a capacity key, and a claim allocated to it with `ConsumedCapacity[\"cores\"] = -8`. The computed CPU footprint is `-8`.\n\n<details>\n<summary>Repro test (package dynamicresources)</summary>\n\n```go\nfunc TestNegativeConsumedCapacityFootprint(t *testing.T) {\n\tslice := &resourceapi.ResourceSlice{\n\t\tObjectMeta: metav1.ObjectMeta{Name: \"slice-a\", Namespace: \"test-ns\"},\n\t\tSpec: resourceapi.ResourceSliceSpec{\n\t\t\tPool: resourceapi.ResourcePool{Name: \"pool1\"}, NodeName: ptr.To(\"test-node\"), Driver: \"driver.example.com\",\n\t\t\tDevices: []resourceapi.Device{{Name: \"dev0\",\n\t\t\t\tNodeAllocatableResourceMappings: map[v1.ResourceName]resourceapi.NodeAllocatableResourceMapping{\n\t\t\t\t\tv1.ResourceCPU: {CapacityKey: ptr.To(resourceapi.QualifiedName(\"cores\"))},\n\t\t\t\t}}},\n\t\t}}\n\talloc := &resourceapi.AllocationResult{Devices: resourceapi.DeviceAllocationResult{\n\t\tResults: []resourceapi.DeviceRequestAllocationResult{{\n\t\t\tDriver: \"driver.example.com\", Pool: \"pool1\", Device: \"dev0\",\n\t\t\tConsumedCapacity: map[resourceapi.QualifiedName]resource.Quantity{\"cores\": resource.MustParse(\"-8\")},\n\t\t}}}}\n\tclaim := &resourceapi.ResourceClaim{ObjectMeta: metav1.ObjectMeta{Name: \"claim1\", Namespace: \"test-ns\", UID: \"claim1-uid\"}}\n\tpod := st.MakePod().Name(\"test-pod\").Namespace(\"test-ns\").UID(\"test-uid\").\n\t\tContainers([]v1.Container{{Name: \"c1\", Resources: v1.ResourceRequirements{Claims: []v1.ResourceClaim{{Name: \"claim1\"}}}}}).Obj()\n\tpl := &DynamicResources{draManager: &mockDRAManager{claims: []*resourceapi.ResourceClaim{claim}, resourceSlices: []*resourceapi.ResourceSlice{slice}}}\n\tgot, err := pl.buildNodeAllocatableDRAInfo(pod,\n\t\tmap[v1.ObjectReference]*resourceapi.AllocationResult{{Name: \"claim1\", UID: \"claim1-uid\"}: alloc},\n\t\tmap[string]types.UID{\"claim1\": \"claim1-uid\"})\n\tif err != nil {\n\t\tt.Fatal(err)\n\t}\n\tcpu := got[0].Resources[v1.ResourceCPU] // \"-8\": a negative node-allocatable footprint\n\tif cpu.Sign() >= 0 {\n\t\tt.Errorf(\"expected a negative footprint, got %s\", cpu.String())\n\t}\n}\n```\n\n</details>\n\nI also confirmed the API accepts the value: `validateDeviceRequestAllocationResult` has no `ConsumedCapacity` check, so a status update carrying a negative `ConsumedCapacity` is not rejected.\n\n### Anything else we need to know?\n\nThe value is not controlled by an ordinary namespace workload author. It lives in the allocation portion of ResourceClaim status, so reaching this code with a negative value requires an actor or component authorized to write that allocation status, or another allocator bug that persists a negative consumed capacity. The feature gate `DRANodeAllocatableResources` is alpha and off by default. This is best read as corrupt or malformed trusted control-plane state being treated as a negative resource credit, not a tenant-facing issue.\n\nThe spec-side `ExactDeviceRequest.Capacity` (`CapacityRequirements.Requests`) is also unvalidated at the API server, though the structured allocator now rejects a negative request in `CmpRequestOverCapacity`. The remaining gap for that field is only the missing API bound.\n\nThis is the same file (`nodeallocatabledynamicresources.go`) as #140460.\n\n### Kubernetes version\n\nmaster, Go 1.26\n\n### Cloud provider\n\nN/A - scheduler-plugin unit-test reproduction\n\n/sig scheduling\n/sig node\n/wg device-management\n",
+        "url": "https://github.com/kubernetes/kubernetes/issues/140468"
+    },
+    {
+        "id": 4864532502,
+        "number": 140465,
+        "title": "Watch client shutdown: three remaining bugs from #131505",
+        "state": "open",
+        "created_at": "2026-07-11T23:11:09Z",
+        "updated_at": "2026-07-11T23:11:17Z",
+        "closed_at": null,
+        "author": "karlkfi",
+        "comments": 1,
+        "labels": [
+            "kind/bug",
+            "sig/api-machinery",
+            "needs-triage"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "In 2025 I fixed several watch client shutdown bugs: #131266 (reflector Stop deadlock), #131321 (VeryShortWatchError), #131706 (watch test body cleanup). Thanks again to @wojtek-t and @liggitt for those reviews.\n\nThe test work in #131505 turned up three more bugs. They were documented there as TODOs but never fixed. I've verified all three still exist on master (843726939e9) and plan to send one small PR per bug:\n\n1. **Response body leak.** `Request.Watch` doesn't close `resp.Body` when content-type negotiation fails. Tracked in #140464.\n\n2. **Error event after Stop.** `StreamWatcher.receive` selects between the done channel and the error send. When both are ready Go picks at random, so a decode error racing with `Stop()` reaches the consumer about half the time. First reported back in 2015 (#6433) and again recently in #139782. The open fix #139783 adds the http2 error string to `IsProbableEOF`, which helps that case, but the race allows any decode error through after Stop. My PR will check the done channel first so a stopped watcher just closes its result channel.\n\n3. **Broken error unwrapping.** `StreamWatcher.receive` and the client watch decoder wrap decode errors with `%v`, which severs `errors.Is`/`errors.As`. Consumers end up string-matching the message. Config Sync, for example, matches the literal \"unable to decode an event from the watch stream: context canceled\" text to detect shutdown. Small enough to fix without its own issue.\n\nEach PR is small, structured as a failing test commit followed by the fix, with race detector and stress output in the description.\n\nRequesting `/triage accepted` so the fix PRs land against accepted issues.\n\n/kind bug\n/sig api-machinery\n",
+        "url": "https://github.com/kubernetes/kubernetes/issues/140465"
+    },
+    {
+        "id": 4864527430,
+        "number": 140464,
+        "title": "client-go: Request.Watch leaks the response body when content-type negotiation fails",
+        "state": "open",
+        "created_at": "2026-07-11T23:09:13Z",
+        "updated_at": "2026-07-11T23:11:42Z",
+        "closed_at": null,
+        "author": "karlkfi",
+        "comments": 2,
+        "labels": [
+            "kind/bug",
+            "sig/api-machinery",
+            "needs-triage"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### What happened?\n\nWhen `Request.Watch` gets a 200 response but content-type negotiation fails (no stream decoder for the response content type), `newStreamWatcher` returns the error without closing `resp.Body`. The connection leaks.\n\nThis is in `staging/src/k8s.io/client-go/rest/request.go`. It was found by the test work in #131505 and left there as a TODO. I've verified it's still present on master (843726939e9).\n\n### What did you expect to happen?\n\nThe response body is closed on every error path out of `Request.Watch`, the same way the retry paths already handle it via `readAndCloseResponseBody`.\n\n### How can we reproduce it (as minimally and precisely as possible)?\n\nExtend the existing `TestWatchUnknownContentType` in `rest/request_test.go` to count body closes with the in-package `readTracker` helper:\n\n```\n=== RUN   TestWatchUnknownContentType\n    request_test.go:2271: Expected response body Close to be invoked 1 time, but got: 0\n--- FAIL: TestWatchUnknownContentType (0.00s)\n```\n\n### Anything else we need to know?\n\nI have a fix ready, roughly 4 lines plus the test above. It reuses the existing `readAndCloseResponseBody` helper so the connection can be reused. PR incoming shortly.\n\n/kind bug\n/sig api-machinery\n\n### Kubernetes version\n\n<details>\n\nmaster (843726939e9). Client library bug, applies to client-go at HEAD.\n\n</details>\n\n### Cloud provider\n\n<details>\n\nN/A\n\n</details>\n\n### OS version\n\n<details>\n\nN/A\n\n</details>\n\n### Install tools\n\n<details>\n\nN/A\n\n</details>\n\n### Container runtime (CRI) and version (if applicable)\n\n<details>\n\nN/A\n\n</details>\n\n### Related plugins (CNI, CSI, ...) and versions (if applicable)\n\n<details>\n\nN/A\n\n</details>\n",
+        "url": "https://github.com/kubernetes/kubernetes/issues/140464"
+    },
+    {
+        "id": 4863779684,
+        "number": 140460,
+        "title": "DRA: node-allocatable footprint uses the wrong driver's device when two drivers share a pool and device name",
+        "state": "open",
+        "created_at": "2026-07-11T19:11:27Z",
+        "updated_at": "2026-07-11T19:11:35Z",
+        "closed_at": null,
+        "author": "thc1006",
+        "comments": 1,
+        "labels": [
+            "sig/scheduling",
+            "sig/node",
+            "needs-triage",
+            "wg/device-management"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### What happened?\n\nWhen computing a pod's node-allocatable footprint from DRA claims, the scheduler looks up the allocated device by pool name and device name only, and does not consider the driver. A DRA device is identified by `(driver, pool, device)`, so two drivers that publish the same pool name and device name on a node collide, and the lookup can return the wrong driver's device.\n\n`getDeviceFromManager` in `pkg/scheduler/framework/plugins/dynamicresources/nodeallocatabledynamicresources.go`:\n\n```go\nfunc getDeviceFromManager(draManager fwk.SharedDRAManager, poolName, deviceName string) (*resourceapi.Device, error) {\n\tslices, err := draManager.ResourceSlices().ListWithDeviceTaintRules()\n\t...\n\tfor _, slice := range slices {\n\t\tif slice.Spec.Pool.Name == poolName {\n\t\t\tfor i := range slice.Spec.Devices {\n\t\t\t\tif slice.Spec.Devices[i].Name == deviceName {\n\t\t\t\t\treturn &slice.Spec.Devices[i], nil\n\t\t\t\t}\n\t\t\t}\n\t\t}\n\t}\n\t...\n}\n```\n\nIt compares `slice.Spec.Pool.Name` and `device.Name`, but never `slice.Spec.Driver`, and returns the first match. Both call sites pass `result.Pool` and `result.Device` but not `result.Driver`, which is available on the allocation result. The returned device carries the wrong `NodeAllocatableResourceMappings`, so the pod's node CPU/memory footprint is computed from the wrong driver's mapping. The result depends on the order of the resource-slice list, so it is non-deterministic.\n\n### What did you expect to happen?\n\nThe lookup should match the allocation's driver as well, so `getDeviceFromManager` returns the device from the slice whose `(driver, pool, device)` matches the allocation result.\n\n### How can we reproduce it (as minimally and precisely as possible)?\n\nAdd this test to `pkg/scheduler/framework/plugins/dynamicresources` (it uses the existing `mockDRAManager`). Two drivers publish the same pool name and device name on the node with different node-allocatable CPU multipliers (1 and 8), and a claim is allocated the driver-b device, so the pod's node-allocatable CPU footprint should be 8:\n\n<details>\n<summary>Repro test</summary>\n\n```go\nfunc TestBuildNodeAllocatableDRAInfoDriverCollision(t *testing.T) {\n\tmkSlice := func(name, driver, mult string) *resourceapi.ResourceSlice {\n\t\treturn &resourceapi.ResourceSlice{\n\t\t\tObjectMeta: metav1.ObjectMeta{Name: name, Namespace: \"test-ns\"},\n\t\t\tSpec: resourceapi.ResourceSliceSpec{\n\t\t\t\tPool: resourceapi.ResourcePool{Name: \"pool1\"}, NodeName: ptr.To(\"test-node\"), Driver: driver,\n\t\t\t\tDevices: []resourceapi.Device{{Name: \"cpu0\",\n\t\t\t\t\tNodeAllocatableResourceMappings: map[v1.ResourceName]resourceapi.NodeAllocatableResourceMapping{\n\t\t\t\t\t\tv1.ResourceCPU: {AllocationMultiplier: ptr.To(resource.MustParse(mult))},\n\t\t\t\t\t}}},\n\t\t\t}}\n\t}\n\t// Same pool name and device name, different drivers and multipliers.\n\tslices := []*resourceapi.ResourceSlice{\n\t\tmkSlice(\"slice-a\", \"driver-a.example.com\", \"1\"),\n\t\tmkSlice(\"slice-b\", \"driver-b.example.com\", \"8\"),\n\t}\n\t// The claim is allocated the device from driver-b.\n\talloc := &resourceapi.AllocationResult{Devices: resourceapi.DeviceAllocationResult{\n\t\tResults: []resourceapi.DeviceRequestAllocationResult{{\n\t\t\tDriver: \"driver-b.example.com\", Pool: \"pool1\", Device: \"cpu0\",\n\t\t}}}}\n\tclaim := &resourceapi.ResourceClaim{ObjectMeta: metav1.ObjectMeta{Name: \"claim1\", Namespace: \"test-ns\", UID: \"claim1-uid\"}}\n\tpod := st.MakePod().Name(\"test-pod\").Namespace(\"test-ns\").UID(\"test-uid\").\n\t\tContainers([]v1.Container{{Name: \"c1\", Resources: v1.ResourceRequirements{Claims: []v1.ResourceClaim{{Name: \"claim1\"}}}}}).Obj()\n\n\tpl := &DynamicResources{draManager: &mockDRAManager{claims: []*resourceapi.ResourceClaim{claim}, resourceSlices: slices}}\n\tgot, err := pl.buildNodeAllocatableDRAInfo(pod,\n\t\tmap[v1.ObjectReference]*resourceapi.AllocationResult{{Name: \"claim1\", UID: \"claim1-uid\"}: alloc},\n\t\tmap[string]types.UID{\"claim1\": \"claim1-uid\"})\n\tif err != nil {\n\t\tt.Fatal(err)\n\t}\n\twant := []v1.NodeAllocatableResourceClaimStatus{{\n\t\tResourceClaimName: \"claim1\",\n\t\tContainers:        []string{\"c1\"},\n\t\tResources:         map[v1.ResourceName]resource.Quantity{v1.ResourceCPU: resource.MustParse(\"8\")},\n\t}}\n\tif diff := cmp.Diff(want, got); diff != \"\" {\n\t\tt.Errorf(\"node-allocatable footprint used the wrong driver's mapping (-want +got):\\n%s\", diff)\n\t}\n}\n```\n\n</details>\n\nOn the current code the computed CPU footprint is `1` instead of `8`: the allocation is for driver-b (multiplier 8), but `getDeviceFromManager` returns driver-a's device (the first slice with the same pool and device name), so the pod's node-allocatable footprint is taken from the wrong driver's mapping.\n\n### Anything else we need to know?\n\n`getDeviceFromManager` and its two call sites already have the driver available on the allocation result. Passing the driver through and adding `slice.Spec.Driver == driverName` to the match resolves it.\n\nThis is a scheduler-plugin issue reproduced with a unit test; it does not require a running cluster, DRA driver, container runtime, or cloud provider.\n\nFeature gate:\n\n```text\nDRANodeAllocatableResources=true\n```\n\n`DRANodeAllocatableResources` is alpha and disabled by default in Kubernetes 1.36, so the affected path is opt-in.\n\n### Kubernetes version\n\n```console\nmaster @ 16e45f3b5e6a76a1ac741550e3a65980eea783c2\nGo 1.26\n```\n\n### Cloud provider\n\n```text\nN/A - scheduler-plugin unit-test reproduction\n```\n\n### OS version\n\n```text\nN/A - scheduler-plugin unit-test reproduction\n```\n\n### Install tools\n\n```text\nN/A - source build\n```\n\n### Container runtime (CRI) and version (if applicable)\n\n```text\nN/A\n```\n\n### Related plugins (CNI, CSI, ...) and versions (if applicable)\n\n```text\nN/A\n```\n\n/sig scheduling\n/sig node\n/wg device-management\n",
+        "url": "https://github.com/kubernetes/kubernetes/issues/140460"
+    }
+]

@@ -1,0 +1,242 @@
+[
+    {
+        "sha": "99b991b6f378c9804381a013530cb8393094b8d9",
+        "author": "Sam Brannen",
+        "email": "104798+sbrannen@users.noreply.github.com",
+        "date": "2026-07-13T08:16:37Z",
+        "message": "Upgrade to JUnit 6.1.2\n\nCloses gh-36815",
+        "url": "https://github.com/spring-projects/spring-framework/commit/99b991b6f378c9804381a013530cb8393094b8d9"
+    },
+    {
+        "sha": "9024d5ffbd47172826d3257b492e9192467e98e6",
+        "author": "Brian Clozel",
+        "email": "brian.clozel@broadcom.com",
+        "date": "2026-07-12T09:55:38Z",
+        "message": "Merge branch '7.0.x'",
+        "url": "https://github.com/spring-projects/spring-framework/commit/9024d5ffbd47172826d3257b492e9192467e98e6"
+    },
+    {
+        "sha": "bbfe6a0473809fa5fd1d8495f20039de23474748",
+        "author": "junhyeong9812",
+        "email": "pickjog@gmail.com",
+        "date": "2026-06-24T22:54:03Z",
+        "message": "Make immediate-cancel task termination test deterministic\n\nThe taskTerminationTimeoutWithImmediateCancel test submitted a task and\nimmediately closed the executor, then asserted that the future was\ncancelled. The cancellation flag is set by close() on the calling thread,\nwhile it is checked at the start of the task on a separate worker thread.\nWith no ordering guarantee between the two, a quickly scheduled worker\ncould pass the cancellation check before close() set the flag, complete\nthe trivial task normally, and leave the future uncancelled, making the\ntest fail intermittently under load.\n\nOverride doExecute to capture the task-tracking wrapper instead of\nrunning it on a background thread, then run it on the test thread after\nclose() has set the cancellation flag. This exercises the same\ncancellation path deterministically, with no reliance on thread\nscheduling.\n\nSigned-off-by: junhyeong9812 <pickjog@gmail.com>",
+        "url": "https://github.com/spring-projects/spring-framework/commit/bbfe6a0473809fa5fd1d8495f20039de23474748"
+    },
+    {
+        "sha": "6dd2aa3988f93a843e7bbb53fa7bec7f6b1889ba",
+        "author": "Sébastien Deleuze",
+        "email": "sdeleuze@users.noreply.github.com",
+        "date": "2026-07-08T18:46:34Z",
+        "message": "Merge branch '7.0.x'",
+        "url": "https://github.com/spring-projects/spring-framework/commit/6dd2aa3988f93a843e7bbb53fa7bec7f6b1889ba"
+    },
+    {
+        "sha": "13a43e76cb35dd805616d53db33b2e512dc954be",
+        "author": "Sébastien Deleuze",
+        "email": "sdeleuze@users.noreply.github.com",
+        "date": "2026-07-08T18:46:17Z",
+        "message": "Fix Javadoc error in RetryPolicy\n\nSee gh-36983",
+        "url": "https://github.com/spring-projects/spring-framework/commit/13a43e76cb35dd805616d53db33b2e512dc954be"
+    },
+    {
+        "sha": "28bf619887f7e2683c048d789b4f57350438ae85",
+        "author": "Sébastien Deleuze",
+        "email": "sdeleuze@users.noreply.github.com",
+        "date": "2026-07-08T15:23:42Z",
+        "message": "Merge branch '7.0.x'",
+        "url": "https://github.com/spring-projects/spring-framework/commit/28bf619887f7e2683c048d789b4f57350438ae85"
+    },
+    {
+        "sha": "16e82cd6934bc6aa56cb6538a2ee06d81acbafe7",
+        "author": "Sébastien Deleuze",
+        "email": "sdeleuze@users.noreply.github.com",
+        "date": "2026-07-08T13:27:26Z",
+        "message": "Refine JdbcTemplate nullability contribution\n\nCloses gh-37012",
+        "url": "https://github.com/spring-projects/spring-framework/commit/16e82cd6934bc6aa56cb6538a2ee06d81acbafe7"
+    },
+    {
+        "sha": "516a2ca51165c81d63443e0a02f38915a364cf5c",
+        "author": "Chris",
+        "email": "christian@vonrueti.ch",
+        "date": "2026-07-07T13:07:42Z",
+        "message": "Make batchArgs contents nullable in batchUpdate\n\nUpdated batchUpdate method signatures to allow nullable Object arrays.\n\nSee gh-37012\n\nSigned-off-by: Chris <christian@vonrueti.ch>",
+        "url": "https://github.com/spring-projects/spring-framework/commit/516a2ca51165c81d63443e0a02f38915a364cf5c"
+    },
+    {
+        "sha": "9726c7ed5f8ef573289cfab345f36e4e0ccf5a62",
+        "author": "Yanming Zhou",
+        "email": "zhouyanming@gmail.com",
+        "date": "2026-06-15T07:49:06Z",
+        "message": "Let composite/filtered collections accept null elements\n\nCloses gh-36923\n\nSigned-off-by: Yanming Zhou <zhouyanming@gmail.com>",
+        "url": "https://github.com/spring-projects/spring-framework/commit/9726c7ed5f8ef573289cfab345f36e4e0ccf5a62"
+    },
+    {
+        "sha": "7e0818f4e99b86dafef988e04f02a2c3a576e7f5",
+        "author": "Sébastien Deleuze",
+        "email": "sdeleuze@users.noreply.github.com",
+        "date": "2026-07-08T13:11:42Z",
+        "message": "Align domainToAscii with current WhatWG spec\n\nThe WhatWG URL Standard changed its \"domain to ASCII\" algorithm when\nbeStrict is false and the domain is an ASCII string, it now returns\nthe domain lowercased regardless of Unicode ToASCII's outcome, for web\ncompatibility. Invalid or ambiguous \"xn--\" (ACE) labels are no longer\nrejected or validated; they are lowercased and accepted, matching\nbrowsers and the web-platform-tests URL cases.\n\nThis supersedes the earlier spec revision that only lowercased ASCII\ndomains whose labels did not start with \"xn--\". Drop the now-obsolete\n\"xn--\" label detection (which was dead code anyway due to a typo) and\nunconditionally lowercase ASCII domains.\n\nCloses gh-37018",
+        "url": "https://github.com/spring-projects/spring-framework/commit/7e0818f4e99b86dafef988e04f02a2c3a576e7f5"
+    },
+    {
+        "sha": "ed13afa0d402fd66a7054b1b0cac2d3095454848",
+        "author": "Sébastien Deleuze",
+        "email": "sdeleuze@users.noreply.github.com",
+        "date": "2026-07-08T13:08:51Z",
+        "message": "Ensure consistent ButtonTag value attribute processing\n\nCloses gh-37017",
+        "url": "https://github.com/spring-projects/spring-framework/commit/ed13afa0d402fd66a7054b1b0cac2d3095454848"
+    },
+    {
+        "sha": "1700fad16d2a3d32c8d45159507f79f0b1cdf747",
+        "author": "Sam Brannen",
+        "email": "104798+sbrannen@users.noreply.github.com",
+        "date": "2026-07-06T12:59:10Z",
+        "message": "Update due to deprecation warnings",
+        "url": "https://github.com/spring-projects/spring-framework/commit/1700fad16d2a3d32c8d45159507f79f0b1cdf747"
+    },
+    {
+        "sha": "d71643c34721dc5ac8c07ebd9fae2c8baf2ae796",
+        "author": "Sam Brannen",
+        "email": "104798+sbrannen@users.noreply.github.com",
+        "date": "2026-07-06T12:55:47Z",
+        "message": "Remove unused code",
+        "url": "https://github.com/spring-projects/spring-framework/commit/d71643c34721dc5ac8c07ebd9fae2c8baf2ae796"
+    },
+    {
+        "sha": "257687d44b54f95046bc0851c638d287a13ce413",
+        "author": "Juergen Hoeller",
+        "email": "juergen.hoeller@broadcom.com",
+        "date": "2026-07-06T10:52:52Z",
+        "message": "Upgrade to Aalto 1.4, Gson 2.14, Woodstox 7.2.1",
+        "url": "https://github.com/spring-projects/spring-framework/commit/257687d44b54f95046bc0851c638d287a13ce413"
+    },
+    {
+        "sha": "9a82d107c04ba316c3a6d967b56792fc43d99f5b",
+        "author": "Juergen Hoeller",
+        "email": "juergen.hoeller@broadcom.com",
+        "date": "2026-07-06T10:32:43Z",
+        "message": "Merge branch '7.0.x'\n\n# Conflicts:\n#\tframework-platform/framework-platform.gradle",
+        "url": "https://github.com/spring-projects/spring-framework/commit/9a82d107c04ba316c3a6d967b56792fc43d99f5b"
+    },
+    {
+        "sha": "c08e5e9c1cb49542f7562e83a1bfca811ab78d8b",
+        "author": "Juergen Hoeller",
+        "email": "juergen.hoeller@broadcom.com",
+        "date": "2026-07-06T10:30:41Z",
+        "message": "Upgrade to Log4J 2.26.1, Groovy 5.0.7, Tomcat 11.0.23, Jetty 12.1.10, EclipseLink 5.0.1, Hibernate ORM 7.2.22, Hibernate Validator 9.1.2, Caffeine 3.2.4, Protobuf 4.35.1, Checkstyle 13.7",
+        "url": "https://github.com/spring-projects/spring-framework/commit/c08e5e9c1cb49542f7562e83a1bfca811ab78d8b"
+    },
+    {
+        "sha": "97e9ddb2d75f282ee01093df0a370ec258b0478c",
+        "author": "Juergen Hoeller",
+        "email": "juergen.hoeller@broadcom.com",
+        "date": "2026-07-06T09:57:27Z",
+        "message": "Add constant for default timeout value\n\nCloses gh-36983",
+        "url": "https://github.com/spring-projects/spring-framework/commit/97e9ddb2d75f282ee01093df0a370ec258b0478c"
+    },
+    {
+        "sha": "45b4d00d9f2ebee0053358f0bc091ab753351588",
+        "author": "Sam Brannen",
+        "email": "104798+sbrannen@users.noreply.github.com",
+        "date": "2026-07-06T09:03:12Z",
+        "message": "Merge branch '7.0.x'",
+        "url": "https://github.com/spring-projects/spring-framework/commit/45b4d00d9f2ebee0053358f0bc091ab753351588"
+    },
+    {
+        "sha": "f0e69a702c1c59648901d67da83bc5d0c8655356",
+        "author": "Sam Brannen",
+        "email": "104798+sbrannen@users.noreply.github.com",
+        "date": "2026-07-06T08:52:54Z",
+        "message": "Ensure SpEL's InlineList is immutable in compiled mode\n\nPrior to this commit, SpEL's InlineList was cached as a mutable list in\ncompiled mode (i.e., in a static field in the generated byte code).\n\nTo address that, this commit modifies InlineList's generateClinitCode()\nmethod so that it wraps both top-level and nested inline lists using\nCollections.unmodifiableList(), analogous to what we already do in\ncreateList().\n\nCloses gh-37001",
+        "url": "https://github.com/spring-projects/spring-framework/commit/f0e69a702c1c59648901d67da83bc5d0c8655356"
+    },
+    {
+        "sha": "4bcb6cc081c1ff3b11af3ed195e682ff53457fa2",
+        "author": "Sam Brannen",
+        "email": "104798+sbrannen@users.noreply.github.com",
+        "date": "2026-07-02T10:08:26Z",
+        "message": "Merge branch '7.0.x'",
+        "url": "https://github.com/spring-projects/spring-framework/commit/4bcb6cc081c1ff3b11af3ed195e682ff53457fa2"
+    },
+    {
+        "sha": "d1470bbb25954e640b9d7473b701d9841e775876",
+        "author": "junhyeong9812",
+        "email": "pickjog@gmail.com",
+        "date": "2026-07-01T22:52:25Z",
+        "message": "Register native configuration file when only lambda hints are present\n\nPrior to this commit, FileNativeConfigurationWriter did not write reachability-metadata.json\nwhen a RuntimeHints instance contained only lambda hints, because\nNativeConfigurationWriter.hasAnyHint() omitted\nReflectionHints.lambdaHints() from its checks. As a result, lambda\nmetadata emitted by RuntimeHintsWriter was silently dropped.\n\nThis commit addresses that by including lambda hints in hasAnyHint() so\nthe configuration file is written whenever lambda hints are present.\n\nCloses gh-36989\n\nSigned-off-by: junhyeong9812 <pickjog@gmail.com>",
+        "url": "https://github.com/spring-projects/spring-framework/commit/d1470bbb25954e640b9d7473b701d9841e775876"
+    },
+    {
+        "sha": "df0ec741074d868f127df6ed03fc24b2657dcd9c",
+        "author": "Sébastien Deleuze",
+        "email": "sdeleuze@users.noreply.github.com",
+        "date": "2026-07-01T13:41:32Z",
+        "message": "Merge branch '7.0.x'",
+        "url": "https://github.com/spring-projects/spring-framework/commit/df0ec741074d868f127df6ed03fc24b2657dcd9c"
+    },
+    {
+        "sha": "347f23a73fefcc5b3ec987db6e6d61baa4841789",
+        "author": "Sébastien Deleuze",
+        "email": "sdeleuze@users.noreply.github.com",
+        "date": "2026-07-01T13:27:28Z",
+        "message": "Upgrade nullability plugin to 0.0.14\n\nNullaway 0.13.7 is now the default.\n\nSee gh-36850",
+        "url": "https://github.com/spring-projects/spring-framework/commit/347f23a73fefcc5b3ec987db6e6d61baa4841789"
+    },
+    {
+        "sha": "99b3e205d1993870f56f48d398054b262de605f7",
+        "author": "Manu Sridharan",
+        "email": "msridhar@gmail.com",
+        "date": "2026-05-27T17:03:56Z",
+        "message": "Update to NullAway 0.13.6\n\nAdd missing nullness annotation in\nUriComponents.VarArgsTemplateVariables to fix new warnings.\n\nCloses gh-36850\n\nSigned-off-by: Manu Sridharan <msridhar@gmail.com>",
+        "url": "https://github.com/spring-projects/spring-framework/commit/99b3e205d1993870f56f48d398054b262de605f7"
+    },
+    {
+        "sha": "c5d7908a7876855c9385dcbb3ae24a3f67c42e01",
+        "author": "Sam Brannen",
+        "email": "104798+sbrannen@users.noreply.github.com",
+        "date": "2026-06-28T13:35:42Z",
+        "message": "Find transitive interface annotations in findAllLocalMergedAnnotations()\n\nThis commit picks up where ce718cf699d left off by ensuring that\nfindAllLocalMergedAnnotations() also finds annotations declared on\ntransitive interfaces — that is, on interfaces of the directly\nimplemented interfaces of the root declaring class.\n\nThe previous implementation filtered annotations from a single\nTYPE_HIERARCHY search by checking whether the annotation's source was\neither the root declaring class or one of its directly declared\ninterfaces. However, this excluded annotations inherited through an\ninterface chain such as First -> Second -> Third, where the annotation\nis declared on Third but not on Second.\n\nThis commit replaces that approach with two targeted searches whose\nresults are combined:\n\n- DIRECT on the root declaring class, to capture annotations declared\n  directly on the class (including via composed/meta-annotations)\n- TYPE_HIERARCHY on each directly implemented interface, which\n  naturally traverses the full super-interface chain of each interface\n\nA corresponding test for this scenario has also been added.\n\nCloses gh-36975",
+        "url": "https://github.com/spring-projects/spring-framework/commit/c5d7908a7876855c9385dcbb3ae24a3f67c42e01"
+    },
+    {
+        "sha": "ce718cf699dde1b35c425f81548a1679566aa63b",
+        "author": "Sam Brannen",
+        "email": "104798+sbrannen@users.noreply.github.com",
+        "date": "2026-06-28T11:51:24Z",
+        "message": "Always find interface annotations in findAllLocalMergedAnnotations()\n\nPrior to this commit, AnnotationDescriptor's\nfindAllLocalMergedAnnotations() filtered results using\nMergedAnnotationPredicates.firstRunOf(\nMergedAnnotation::getAggregateIndex), which retains only annotations\nthat share the same aggregate index as the first annotation\nencountered. Since annotations on the root declaring class have\naggregate index 0 and annotations on interfaces have higher indices,\ninterface annotations were silently excluded whenever the root\ndeclaring class itself declared the annotation.\n\nThis commit fixes the issue by replacing the aggregate-index-based\nfilter with a source-based filter that explicitly includes annotations\nfrom the root declaring class and from each directly implemented\ninterface. The Javadoc for findAllLocalMergedAnnotations() has also\nbeen updated to document the ordering guarantee: annotations from the\nroot declaring class appear first, followed by annotations from\nimplemented interfaces in declaration order.\n\nCloses gh-36975",
+        "url": "https://github.com/spring-projects/spring-framework/commit/ce718cf699dde1b35c425f81548a1679566aa63b"
+    },
+    {
+        "sha": "efaa53b48814e3e32ce5b6fcb8ff2d983e633438",
+        "author": "Sam Brannen",
+        "email": "104798+sbrannen@users.noreply.github.com",
+        "date": "2026-06-28T11:55:12Z",
+        "message": "Upgrade to JUnit 6.1.1\n\nCloses gh-36815",
+        "url": "https://github.com/spring-projects/spring-framework/commit/efaa53b48814e3e32ce5b6fcb8ff2d983e633438"
+    },
+    {
+        "sha": "bb34bf6dc68137b9a519e6ff8921b7bf4edc51b0",
+        "author": "Sam Brannen",
+        "email": "104798+sbrannen@users.noreply.github.com",
+        "date": "2026-06-27T16:09:31Z",
+        "message": "Merge branch '7.0.x'",
+        "url": "https://github.com/spring-projects/spring-framework/commit/bb34bf6dc68137b9a519e6ff8921b7bf4edc51b0"
+    },
+    {
+        "sha": "78f05d8f8e8d65a8fbc669aef54c5db439ad2167",
+        "author": "Sam Brannen",
+        "email": "104798+sbrannen@users.noreply.github.com",
+        "date": "2026-06-27T16:08:53Z",
+        "message": "Address deprecation warnings\n\nThis commit addresses warnings across the code base related to:\n\n- internal and public deprecations in Spring Framework\n- deprecated Locale constructors\n- deprecated URL constructors\n- deprecated Thread#getId method",
+        "url": "https://github.com/spring-projects/spring-framework/commit/78f05d8f8e8d65a8fbc669aef54c5db439ad2167"
+    },
+    {
+        "sha": "8f539b6e23228f4840afc5403c778fa102f2110c",
+        "author": "Sam Brannen",
+        "email": "104798+sbrannen@users.noreply.github.com",
+        "date": "2026-06-27T15:14:07Z",
+        "message": "Merge branch '7.0.x'",
+        "url": "https://github.com/spring-projects/spring-framework/commit/8f539b6e23228f4840afc5403c778fa102f2110c"
+    }
+]

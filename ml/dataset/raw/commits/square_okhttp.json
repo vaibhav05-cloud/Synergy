@@ -1,0 +1,242 @@
+[
+    {
+        "sha": "0afc65fee707a5df87f28233cba7c24899f236b0",
+        "author": "Jesse Wilson",
+        "email": "jesse@wasmo.com",
+        "date": "2026-07-13T22:24:32Z",
+        "message": "DnsAsDns2 (#9540)\n\n* DnsAsDns2\n\n* Update okhttp/src/commonJvmAndroid/kotlin/okhttp3/internal/dns/DnsAsDns2.kt\n\nCo-authored-by: Jake Wharton <jw@jakewharton.com>\n\n* Spotless\n\n---------\n\nCo-authored-by: Jake Wharton <jw@jakewharton.com>",
+        "url": "https://github.com/square/okhttp/commit/0afc65fee707a5df87f28233cba7c24899f236b0"
+    },
+    {
+        "sha": "6a237f781144a7d388c734ab86de7aa52127035b",
+        "author": "Jesse Wilson",
+        "email": "jesse@wasmo.com",
+        "date": "2026-07-13T12:55:53Z",
+        "message": "Dns2, the new OkHttp DNS API (#9536)\n\n* WIP: New DNS API\n\nBig new features are support for SVCB and being async.\n\n* Fixup docs\n\n* More API feedback\n\n* Replace data classes with manual equals/hashCode/toString things\n\nWe can't use data classes in public APIs without making backwards-compatibility\nmore difficult.\n\n* apiDump\n\n* Spotless",
+        "url": "https://github.com/square/okhttp/commit/6a237f781144a7d388c734ab86de7aa52127035b"
+    },
+    {
+        "sha": "63e3caa7c7248fa38af7ba3375470446e2fb5574",
+        "author": "renovate[bot]",
+        "email": "29139614+renovate[bot]@users.noreply.github.com",
+        "date": "2026-07-10T04:30:34Z",
+        "message": "Update ksp monorepo to v2.3.10 (#9532)\n\nCo-authored-by: renovate[bot] <29139614+renovate[bot]@users.noreply.github.com>",
+        "url": "https://github.com/square/okhttp/commit/63e3caa7c7248fa38af7ba3375470446e2fb5574"
+    },
+    {
+        "sha": "8ef2d8081a417149fa614fe817bea4af60674718",
+        "author": "renovate[bot]",
+        "email": "29139614+renovate[bot]@users.noreply.github.com",
+        "date": "2026-07-09T16:14:27Z",
+        "message": "Update shadow.plugin to v9.5.1 (#9526)\n\nCo-authored-by: renovate[bot] <29139614+renovate[bot]@users.noreply.github.com>",
+        "url": "https://github.com/square/okhttp/commit/8ef2d8081a417149fa614fe817bea4af60674718"
+    },
+    {
+        "sha": "fc9f43ac2c37412772b05895a0d2c6fcb5c6c2a1",
+        "author": "renovate[bot]",
+        "email": "29139614+renovate[bot]@users.noreply.github.com",
+        "date": "2026-07-07T03:49:59Z",
+        "message": "Update dependency com.github.jnr:jnr-unixsocket to v0.39.2 (#9528)\n\nCo-authored-by: renovate[bot] <29139614+renovate[bot]@users.noreply.github.com>",
+        "url": "https://github.com/square/okhttp/commit/fc9f43ac2c37412772b05895a0d2c6fcb5c6c2a1"
+    },
+    {
+        "sha": "1d2c0fe4844fb7143c37198015539eec2fccbd71",
+        "author": "renovate[bot]",
+        "email": "29139614+renovate[bot]@users.noreply.github.com",
+        "date": "2026-06-30T03:48:11Z",
+        "message": "Update plugin com.diffplug.spotless to v8.8.0 (#9520)\n\nCo-authored-by: renovate[bot] <29139614+renovate[bot]@users.noreply.github.com>",
+        "url": "https://github.com/square/okhttp/commit/1d2c0fe4844fb7143c37198015539eec2fccbd71"
+    },
+    {
+        "sha": "0cadfa2997513d20bf88ca530c963a1266f17af9",
+        "author": "renovate[bot]",
+        "email": "29139614+renovate[bot]@users.noreply.github.com",
+        "date": "2026-06-28T19:34:13Z",
+        "message": "Update dependency com.puppycrawl.tools:checkstyle to v13.7.0 (#9518)\n\nCo-authored-by: renovate[bot] <29139614+renovate[bot]@users.noreply.github.com>",
+        "url": "https://github.com/square/okhttp/commit/0cadfa2997513d20bf88ca530c963a1266f17af9"
+    },
+    {
+        "sha": "b3a6e51aaaade843e201fa372a3c88afb5491854",
+        "author": "renovate[bot]",
+        "email": "29139614+renovate[bot]@users.noreply.github.com",
+        "date": "2026-06-28T19:06:35Z",
+        "message": "Update dependency com.github.jnr:jnr-unixsocket to v0.39.1 (#9516)\n\nCo-authored-by: renovate[bot] <29139614+renovate[bot]@users.noreply.github.com>",
+        "url": "https://github.com/square/okhttp/commit/b3a6e51aaaade843e201fa372a3c88afb5491854"
+    },
+    {
+        "sha": "359febc4e265c5cd98903dc226458de1e7a57808",
+        "author": "Yuri Schimke",
+        "email": "yuri@schimke.ee",
+        "date": "2026-06-27T20:33:10Z",
+        "message": "emulator 37 testing (#9515)\n\n* Set up API 37 emulator matrix in CI\n\nRefactor the android CI job to drive the emulator matrix off an explicit\ntarget/arch include list and add an experimental, non-blocking API 37\n(16 KB page-size) entry. Warm the Gradle cache by assembling the\ninstrumentation APK instead of running the Robolectric unit tests, match\nthe snapshot boot options on the run step so cached snapshots restore,\nand bump emulator memory/GPU/feature flags for headless runs.\n\nExtracted from the testing_ech branch so the emulator setup can land\nahead of the ECH work.\n\n* Fix android-test instrumentation tests for the API 37 emulator\n\nThree environmental differences surface on the API 37 emulator image and\nmake connectedCheck fail there:\n\n- The GmsCore Conscrypt provider negotiates TLS 1.3 (not 1.2) from API 37\n  onward, so assert the version conditionally.\n- The dual-stack loopback tries the unbound address first, emitting a\n  ConnectStart/ConnectFailed pair before the successful connect; filter\n  those pairs out so the event-sequence assertion is stable across single-\n  and dual-stack environments.\n- Peer verification failures can arrive wrapped (as a cause or suppressed\n  exception) rather than thrown directly; accept any of those shapes.\n\nThese are independent of the Android 17 platform/ECH work, so they can\nland with the emulator CI setup ahead of it.",
+        "url": "https://github.com/square/okhttp/commit/359febc4e265c5cd98903dc226458de1e7a57808"
+    },
+    {
+        "sha": "62ce184cf11abf9a42c743ca32781dac875aa413",
+        "author": "renovate[bot]",
+        "email": "29139614+renovate[bot]@users.noreply.github.com",
+        "date": "2026-06-26T17:40:44Z",
+        "message": "Update Gradle to v9.6.1 (#9495)\n\nCo-authored-by: renovate[bot] <29139614+renovate[bot]@users.noreply.github.com>",
+        "url": "https://github.com/square/okhttp/commit/62ce184cf11abf9a42c743ca32781dac875aa413"
+    },
+    {
+        "sha": "d2aab54668961163b6d063366e2eae19b5f7b2a6",
+        "author": "renovate[bot]",
+        "email": "29139614+renovate[bot]@users.noreply.github.com",
+        "date": "2026-06-26T16:34:20Z",
+        "message": "Update dependency com.github.jnr:jnr-unixsocket to v0.39.0 (#9513)\n\nCo-authored-by: renovate[bot] <29139614+renovate[bot]@users.noreply.github.com>",
+        "url": "https://github.com/square/okhttp/commit/d2aab54668961163b6d063366e2eae19b5f7b2a6"
+    },
+    {
+        "sha": "76bec10403501257b90c30b6e77d2ce9926e786f",
+        "author": "renovate[bot]",
+        "email": "29139614+renovate[bot]@users.noreply.github.com",
+        "date": "2026-06-26T04:47:44Z",
+        "message": "Update shadow.plugin to v9.4.3 (#9512)\n\nCo-authored-by: renovate[bot] <29139614+renovate[bot]@users.noreply.github.com>",
+        "url": "https://github.com/square/okhttp/commit/76bec10403501257b90c30b6e77d2ce9926e786f"
+    },
+    {
+        "sha": "f7ea9ad9f1a2ee271ded865c174347ae08e25667",
+        "author": "renovate[bot]",
+        "email": "29139614+renovate[bot]@users.noreply.github.com",
+        "date": "2026-06-26T03:41:25Z",
+        "message": "Update dependency org.gradlex.extra-java-module-info to v1.14.2 (#9511)\n\nCo-authored-by: renovate[bot] <29139614+renovate[bot]@users.noreply.github.com>",
+        "url": "https://github.com/square/okhttp/commit/f7ea9ad9f1a2ee271ded865c174347ae08e25667"
+    },
+    {
+        "sha": "04aa831d1345bfe467a503ed95fd7c942d2f151a",
+        "author": "renovate[bot]",
+        "email": "29139614+renovate[bot]@users.noreply.github.com",
+        "date": "2026-06-25T16:07:07Z",
+        "message": "Update dependency org.gradlex.extra-java-module-info to v1.14.1 (#9509)\n\nCo-authored-by: renovate[bot] <29139614+renovate[bot]@users.noreply.github.com>",
+        "url": "https://github.com/square/okhttp/commit/04aa831d1345bfe467a503ed95fd7c942d2f151a"
+    },
+    {
+        "sha": "055e69afccaed188e5c5adbca0269444545a9ac5",
+        "author": "renovate[bot]",
+        "email": "29139614+renovate[bot]@users.noreply.github.com",
+        "date": "2026-06-23T17:54:57Z",
+        "message": "Update actions/cache action to v6 (#9507)\n\nCo-authored-by: renovate[bot] <29139614+renovate[bot]@users.noreply.github.com>",
+        "url": "https://github.com/square/okhttp/commit/055e69afccaed188e5c5adbca0269444545a9ac5"
+    },
+    {
+        "sha": "5caff201a9e8ebf64a33204b8046e5d38d324202",
+        "author": "renovate[bot]",
+        "email": "29139614+renovate[bot]@users.noreply.github.com",
+        "date": "2026-06-23T16:26:14Z",
+        "message": "Update plugin com.diffplug.spotless to v8.7.0 (#9486)\n\nCo-authored-by: renovate[bot] <29139614+renovate[bot]@users.noreply.github.com>",
+        "url": "https://github.com/square/okhttp/commit/5caff201a9e8ebf64a33204b8046e5d38d324202"
+    },
+    {
+        "sha": "8bb26f537c117b3bbb27a684c0707c1b85322ef4",
+        "author": "renovate[bot]",
+        "email": "29139614+renovate[bot]@users.noreply.github.com",
+        "date": "2026-06-22T01:07:50Z",
+        "message": "Update ksp monorepo to v2.3.9 (#9461)\n\nCo-authored-by: renovate[bot] <29139614+renovate[bot]@users.noreply.github.com>",
+        "url": "https://github.com/square/okhttp/commit/8bb26f537c117b3bbb27a684c0707c1b85322ef4"
+    },
+    {
+        "sha": "0d812ea2ff104a5b9119e3cf2c874778721d84a7",
+        "author": "renovate[bot]",
+        "email": "29139614+renovate[bot]@users.noreply.github.com",
+        "date": "2026-06-22T00:48:12Z",
+        "message": "Update lint.gradle to v1.0.0 (#9488)\n\nCo-authored-by: renovate[bot] <29139614+renovate[bot]@users.noreply.github.com>",
+        "url": "https://github.com/square/okhttp/commit/0d812ea2ff104a5b9119e3cf2c874778721d84a7"
+    },
+    {
+        "sha": "0fef838dc5365cf684ac28f835075efb33d48675",
+        "author": "renovate[bot]",
+        "email": "29139614+renovate[bot]@users.noreply.github.com",
+        "date": "2026-06-21T22:44:11Z",
+        "message": "Update maven.publish to v0.37.0 (#9498)\n\nCo-authored-by: renovate[bot] <29139614+renovate[bot]@users.noreply.github.com>",
+        "url": "https://github.com/square/okhttp/commit/0fef838dc5365cf684ac28f835075efb33d48675"
+    },
+    {
+        "sha": "f9492a3a2604bdd2781564ff69b7e778bdc73924",
+        "author": "renovate[bot]",
+        "email": "29139614+renovate[bot]@users.noreply.github.com",
+        "date": "2026-06-18T21:41:33Z",
+        "message": "Update actions/checkout action to v7 (#9494)\n\nCo-authored-by: renovate[bot] <29139614+renovate[bot]@users.noreply.github.com>",
+        "url": "https://github.com/square/okhttp/commit/f9492a3a2604bdd2781564ff69b7e778bdc73924"
+    },
+    {
+        "sha": "7ebdb0aca70628862a590fd18244de1265470848",
+        "author": "renovate[bot]",
+        "email": "29139614+renovate[bot]@users.noreply.github.com",
+        "date": "2026-06-16T10:02:30Z",
+        "message": "Update spotless.plugin to v8.7.0 (#9487)\n\nCo-authored-by: renovate[bot] <29139614+renovate[bot]@users.noreply.github.com>",
+        "url": "https://github.com/square/okhttp/commit/7ebdb0aca70628862a590fd18244de1265470848"
+    },
+    {
+        "sha": "b6960566a79d5ad33732e8bbcbe845f6c5bd0110",
+        "author": "renovate[bot]",
+        "email": "29139614+renovate[bot]@users.noreply.github.com",
+        "date": "2026-06-16T02:43:15Z",
+        "message": "Update graalvm to v1.1.2 (#9460)\n\nCo-authored-by: renovate[bot] <29139614+renovate[bot]@users.noreply.github.com>",
+        "url": "https://github.com/square/okhttp/commit/b6960566a79d5ad33732e8bbcbe845f6c5bd0110"
+    },
+    {
+        "sha": "6abc678ad07aefe055cb1afb6fd897c34a988eb9",
+        "author": "renovate[bot]",
+        "email": "29139614+renovate[bot]@users.noreply.github.com",
+        "date": "2026-06-15T12:34:13Z",
+        "message": "Update checkstyle to v13.6.0 (#9485)\n\nCo-authored-by: renovate[bot] <29139614+renovate[bot]@users.noreply.github.com>",
+        "url": "https://github.com/square/okhttp/commit/6abc678ad07aefe055cb1afb6fd897c34a988eb9"
+    },
+    {
+        "sha": "eef98589a84b2724e8f9ae64f09b9bde43a51eef",
+        "author": "Jesse Wilson",
+        "email": "jesse@wasmo.com",
+        "date": "2026-06-09T12:55:53Z",
+        "message": "Fix the 4.x docs commit (#9484)",
+        "url": "https://github.com/square/okhttp/commit/eef98589a84b2724e8f9ae64f09b9bde43a51eef"
+    },
+    {
+        "sha": "668794b665a62045605930e03dd7ae0336ce5934",
+        "author": "Sai Asish Y",
+        "email": "say.apm35@gmail.com",
+        "date": "2026-06-09T02:08:55Z",
+        "message": "Don't crash route selection when the system proxy selector throws (#9478)\n\nSigned-off-by: Sai Asish Y <say.apm35@gmail.com>",
+        "url": "https://github.com/square/okhttp/commit/668794b665a62045605930e03dd7ae0336ce5934"
+    },
+    {
+        "sha": "728e4d575d8e9a09bbab04ef09bb24ff6b1fa0ab",
+        "author": "Jesse Wilson",
+        "email": "jesse@wasmo.com",
+        "date": "2026-06-08T21:50:48Z",
+        "message": "Don't publish docs for internal packages (#9483)",
+        "url": "https://github.com/square/okhttp/commit/728e4d575d8e9a09bbab04ef09bb24ff6b1fa0ab"
+    },
+    {
+        "sha": "0f00a315b23bc6ed89f67d310c81413a2d897c2b",
+        "author": "Jesse Wilson",
+        "email": "jesse@wasmo.com",
+        "date": "2026-06-08T21:44:04Z",
+        "message": "Fix website publishing (#9482)",
+        "url": "https://github.com/square/okhttp/commit/0f00a315b23bc6ed89f67d310c81413a2d897c2b"
+    },
+    {
+        "sha": "1cfe02f6bc428e6a5f4f4e1699fc34d1cb16dc62",
+        "author": "Jesse Wilson",
+        "email": "jesse@swank.ca",
+        "date": "2026-06-08T19:34:56Z",
+        "message": "Prepare next development version.",
+        "url": "https://github.com/square/okhttp/commit/1cfe02f6bc428e6a5f4f4e1699fc34d1cb16dc62"
+    },
+    {
+        "sha": "61423f472da24e0ccc42b6a2c0863fb27932fea5",
+        "author": "Jesse Wilson",
+        "email": "jesse@swank.ca",
+        "date": "2026-06-08T19:34:43Z",
+        "message": "Prepare for release 5.4.0.",
+        "url": "https://github.com/square/okhttp/commit/61423f472da24e0ccc42b6a2c0863fb27932fea5"
+    },
+    {
+        "sha": "d7e6effcb6852ca848b5f497032546b98b0a6370",
+        "author": "renovate[bot]",
+        "email": "29139614+renovate[bot]@users.noreply.github.com",
+        "date": "2026-06-08T10:28:01Z",
+        "message": "Update eclipse.osgi to v3.24.200 (#9480)\n\nCo-authored-by: renovate[bot] <29139614+renovate[bot]@users.noreply.github.com>",
+        "url": "https://github.com/square/okhttp/commit/d7e6effcb6852ca848b5f497032546b98b0a6370"
+    }
+]

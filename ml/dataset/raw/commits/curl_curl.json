@@ -1,0 +1,242 @@
+[
+    {
+        "sha": "dfa444f1e59c52b56fb0d16152e610e4c29c7115",
+        "author": "Collin Funk",
+        "email": "collin.funk1@gmail.com",
+        "date": "2026-07-11T07:47:16Z",
+        "message": "unit3214: fix to pass on systems with >=128-bit pointers\n\nE.g. on CHERI pointers are 128 bits [1]. This causes the unit3214 test\nto fail, which was written with more traditional platforms in mind. Here\nis the output of log/stderr3214:\n\n```\nURL: -\nBAD: struct Curl_easy is 7984 bytes, allowed to be 5370: 2614 bytes too big\nBAD: struct connectdata is 1408 bytes, allowed to be 1300: 108 bytes too big\nBAD: struct Curl_multi is 1248 bytes, allowed to be 850: 398 bytes too big\nBAD: struct curl_httppost is 224 bytes, allowed to be 112: 112 bytes too big\nBAD: struct curl_slist is 32 bytes, allowed to be 16: 16 bytes too big\nBAD: struct curl_khkey is 32 bytes, allowed to be 24: 8 bytes too big\nBAD: struct curl_hstsentry is 48 bytes, allowed to be 40: 8 bytes too big\nBAD: struct curl_mime is 144 bytes, allowed to be 96: 48 bytes too big\nBAD: struct curl_mimepart is 592 bytes, allowed to be 440: 152 bytes too big\nBAD: struct curl_certinfo is 32 bytes, allowed to be 16: 16 bytes too big\nBAD: struct curl_tlssessioninfo is 32 bytes, allowed to be 16: 16 bytes too big\nBAD: struct curl_blob is 32 bytes, allowed to be 24: 8 bytes too big\nBAD: struct CURLMsg is 48 bytes, allowed to be 24: 24 bytes too big\nBAD: struct curl_header is 80 bytes, allowed to be 48: 32 bytes too big\nTest ended with result 14\n```\n\nMultiply the allowed size on systems with larger than 64-bit pointers.\n\n[1] https://www.cl.cam.ac.uk/research/security/ctsrd/pdfs/20171017a-cheri-poster.pdf\n\nCloses #22299",
+        "url": "https://github.com/curl/curl/commit/dfa444f1e59c52b56fb0d16152e610e4c29c7115"
+    },
+    {
+        "sha": "87704c45e8123b5dd82e3406536a5154f7d15b41",
+        "author": "renovate[bot]",
+        "email": "29139614+renovate[bot]@users.noreply.github.com",
+        "date": "2026-07-13T18:56:23Z",
+        "message": "GHA: update dependency google/boringssl to v0.20260713.0\n\nCloses #22311",
+        "url": "https://github.com/curl/curl/commit/87704c45e8123b5dd82e3406536a5154f7d15b41"
+    },
+    {
+        "sha": "eecc273f6d9a61100fc99898f91f517ab7d9c184",
+        "author": "Daniel Stenberg",
+        "email": "daniel@haxx.se",
+        "date": "2026-07-13T16:54:20Z",
+        "message": "test1560: allow to build and run without LDAP support\n\nCloses #22312",
+        "url": "https://github.com/curl/curl/commit/eecc273f6d9a61100fc99898f91f517ab7d9c184"
+    },
+    {
+        "sha": "30d74402959bd6360e0f491c504552186652f707",
+        "author": "Daniel Stenberg",
+        "email": "daniel@haxx.se",
+        "date": "2026-07-13T10:34:23Z",
+        "message": "RELEASE-NOTES: synced\n\nAnd bump to 8.22.0 for the pending release",
+        "url": "https://github.com/curl/curl/commit/30d74402959bd6360e0f491c504552186652f707"
+    },
+    {
+        "sha": "7bbcf26edf15d20544a94ff02d566215444357ca",
+        "author": "Viktor Szakats",
+        "email": "commit@vsz.me",
+        "date": "2026-07-10T10:17:52Z",
+        "message": "scripts/contri*: find 'Thanks-to' references\n\nAlso any other `<word>-to:` alternatives.\n\nCo-authored-by: Daniel Stenberg\n\nCloses #22293",
+        "url": "https://github.com/curl/curl/commit/7bbcf26edf15d20544a94ff02d566215444357ca"
+    },
+    {
+        "sha": "34bc5b60bcc13b413116c7eb3635c202ad02f206",
+        "author": "Stefan Eissing",
+        "email": "stefan@eissing.org",
+        "date": "2026-07-10T09:47:48Z",
+        "message": "lib: ratelimit timestamps\n\nRemove the timestamp passed for ratelimit checks. Let the limit\ncalculation obtain a timestamp when it needs it. Most transfers run\nwithout active ratelimits and getting a fresh timestamp is unnecessary.\n\nCloses #22292",
+        "url": "https://github.com/curl/curl/commit/34bc5b60bcc13b413116c7eb3635c202ad02f206"
+    },
+    {
+        "sha": "c3ae9ef8226ac60c5e5915e44a927d4b05daebd9",
+        "author": "Graham Campbell",
+        "email": "hello@gjcampbell.co.uk",
+        "date": "2026-07-12T02:58:18Z",
+        "message": "hostip: only cache negative resolves for authoritative answers\n\nCloses #22302",
+        "url": "https://github.com/curl/curl/commit/c3ae9ef8226ac60c5e5915e44a927d4b05daebd9"
+    },
+    {
+        "sha": "353d05ef0c82c4e8052affb4e30b56db7349106c",
+        "author": "Daniel Stenberg",
+        "email": "daniel@haxx.se",
+        "date": "2026-07-13T07:02:43Z",
+        "message": "configure: set ldap lib to no by default for non-finds\n\n`ldap_lib_ok` is never actually set at the start, so a prior cached\nautoconf result could lead to an incorrect value.\n\nPointed out by the GitHub AI\n\nCloses #22308",
+        "url": "https://github.com/curl/curl/commit/353d05ef0c82c4e8052affb4e30b56db7349106c"
+    },
+    {
+        "sha": "d43d24beb1188d1bcf0cc34450b9af96889b7f9d",
+        "author": "Daniel Stenberg",
+        "email": "daniel@haxx.se",
+        "date": "2026-07-13T06:57:52Z",
+        "message": "configure: remove double check for GnuTLS\n\n`GNUTLS_ENABLED` was checked twice in the HTTPS-proxy support block,\nmaking the second check redundant.\n\n- also fix the \"or upper\" phrasing which is hard to understand\n\nPointed out by the GitHub AI thing\n\nCloses #22307",
+        "url": "https://github.com/curl/curl/commit/d43d24beb1188d1bcf0cc34450b9af96889b7f9d"
+    },
+    {
+        "sha": "94947509868bab0219945567632b519416b1dfb4",
+        "author": "Alhuda Khan",
+        "email": "al.hudz.k@gmail.com",
+        "date": "2026-07-12T12:01:44Z",
+        "message": "ftp: reject control bytes in ACCT and alternative-to-user\n\nA CR or LF in the CURLOPT_FTP_ACCOUNT or CURLOPT_FTP_ALTERNATIVE_TO_USER\nstring split the control-channel command line and smuggled a second FTP\ncommand. Reject a byte below 0x20 in both values before the command is\nbuilt.\n\nCloses #22301",
+        "url": "https://github.com/curl/curl/commit/94947509868bab0219945567632b519416b1dfb4"
+    },
+    {
+        "sha": "c3f9ef13f62a2f09466cbfec8676eb6fbb361313",
+        "author": "Alhuda Khan",
+        "email": "al.hudz.k@gmail.com",
+        "date": "2026-07-02T10:53:36Z",
+        "message": "mime: reject CR and LF in mail part name and filename\n\nCloses #22247",
+        "url": "https://github.com/curl/curl/commit/c3f9ef13f62a2f09466cbfec8676eb6fbb361313"
+    },
+    {
+        "sha": "02214d98f7ae3e7dad099e807c1ed549ef551014",
+        "author": "Graham Campbell",
+        "email": "hello@gjcampbell.co.uk",
+        "date": "2026-07-04T19:45:31Z",
+        "message": "conncache: apply multi limits to transfers using a shared pool\n\n- Determine max host and total connection limits from the transfer's own\n  multi handle and test that it works for shared connections.\n\nPrior to this change, since df67269 (precedes 8.13.0),\nCurl_cpool_check_limits() took the limits from the multi handle that\nowns the pool. A share-owned pool is not owned by any multi, so the\nlimit check always passed.\n\nPrior to df67269 the limits came from the transfer's own multi handle.\n\nFixes https://github.com/curl/curl/issues/22265\nCloses https://github.com/curl/curl/pull/22266",
+        "url": "https://github.com/curl/curl/commit/02214d98f7ae3e7dad099e807c1ed549ef551014"
+    },
+    {
+        "sha": "6bad3db3d55161fb6deafee005de0bbde6a795c4",
+        "author": "Emmanuel Ugwu",
+        "email": "emmanuelugwu121@gmail.com",
+        "date": "2026-07-11T19:02:33Z",
+        "message": "configure: fix misleading error messages\n\nReported-by: Bryan Henderson\nURL: https://curl.se/mail/lib-2026-07/0010.html\nCloses #22300\nSigned-off-by: Emmanuel Ugwu <emmanuelugwu121@gmail.com>",
+        "url": "https://github.com/curl/curl/commit/6bad3db3d55161fb6deafee005de0bbde6a795c4"
+    },
+    {
+        "sha": "fa246bf7f2b6096732ae9f53408363444b5865fe",
+        "author": "itzTanos29",
+        "email": "tanushnry@gmail.com",
+        "date": "2026-07-10T16:57:41Z",
+        "message": "CURLOPT_HEADERFUNCTION.md: document folded header unfolding\n\nFixes #22296\nCloses #22297",
+        "url": "https://github.com/curl/curl/commit/fa246bf7f2b6096732ae9f53408363444b5865fe"
+    },
+    {
+        "sha": "b940cb15666560c86d4f443713a621d737a56c60",
+        "author": "Stefan Eissing",
+        "email": "stefan@eissing.org",
+        "date": "2026-07-09T10:45:51Z",
+        "message": "ws: pause/unpause write handling\n\nWebsocket frames need to be written individualy, so that applications\ncan access the frame meta data correctly. This worked until the write\nfunction triggered a pause. Remaining frames accumulated in the \"out\"\nwriter's buffer and on unpaused were written in one chunk.\n\nws decode writer will now stop writing frames when the client writer\nis paused. To handle the writing of buffered raw data after an unpause,\nclient writers have gotten a new \"flush\" method.\n\nAdd pytest test_20_12 with a new client to check handling of pauses\nand websocket frames.\n\nReported-by: Hendrik Hübner\nFixes #22273\nCloses #22283",
+        "url": "https://github.com/curl/curl/commit/b940cb15666560c86d4f443713a621d737a56c60"
+    },
+    {
+        "sha": "e89d5a1202f3e00918eb0ea465041dbaa78e75c7",
+        "author": "Stefan Eissing",
+        "email": "stefan@eissing.org",
+        "date": "2026-07-10T07:58:08Z",
+        "message": "tests: remove test1701\n\nTest 1701 did a HTTP/2 Upgrade in a HTTP/1.1 POST request. This will no\nlonger be supported in the upcoming nghttp2 release for security reasons\n(Upgrade requests with body a re messy, error prone and can easily lead\nto connection confusion).\n\nAs no other server we have supports this, remove the test.\n\nReported-by: firexinghe on github\nFixes #22280\nCloses #22291",
+        "url": "https://github.com/curl/curl/commit/e89d5a1202f3e00918eb0ea465041dbaa78e75c7"
+    },
+    {
+        "sha": "eb73af253cb37bf3caa2112fff7d02f38cfe49fb",
+        "author": "Stefan Eissing",
+        "email": "stefan@eissing.org",
+        "date": "2026-07-08T12:15:10Z",
+        "message": "tool: fix memory use in parallel mode\n\nThe curl tool was creating a new transfer every time it checked if\nit needed to add one to reach max parallelism. This led to eventually\nall configured transfers to have easy handles created.\n\nLimit the creation again to the ones needed for max parallelism.\n\nscorecard.py: set --out-null only for curl versions that support it\n\nCloses #22277",
+        "url": "https://github.com/curl/curl/commit/eb73af253cb37bf3caa2112fff7d02f38cfe49fb"
+    },
+    {
+        "sha": "b093d884475b75d266ee2e1693c596db0416536e",
+        "author": "Viktor Szakats",
+        "email": "commit@vsz.me",
+        "date": "2026-06-26T20:57:40Z",
+        "message": "tidy-up: typos, comment nits\n\nCloses #22294",
+        "url": "https://github.com/curl/curl/commit/b093d884475b75d266ee2e1693c596db0416536e"
+    },
+    {
+        "sha": "5c5334f831c29fc993b5689c2265655297a848b4",
+        "author": "renovate[bot]",
+        "email": "29139614+renovate[bot]@users.noreply.github.com",
+        "date": "2026-07-10T01:41:13Z",
+        "message": "GHA: update dependency awslabs/aws-lc to v5.1.0\n\nCloses #22288",
+        "url": "https://github.com/curl/curl/commit/5c5334f831c29fc993b5689c2265655297a848b4"
+    },
+    {
+        "sha": "d054f386dd77ed02f6d7513e0464e414948d93df",
+        "author": "Viktor Szakats",
+        "email": "commit@vsz.me",
+        "date": "2026-07-03T20:37:58Z",
+        "message": "GHA/windows: enable wolfSSL in two MSYS2 mingw-w64 jobs\n\nNumber of tests went to 1919 (from 1912). Runs 30s faster.\n\nThanks-to: Christoph Reiter\nRef: https://github.com/msys2/MINGW-packages/commit/5c995ac09830ac84bcfff58e6fcf032c42f4b20f\nRef: #22252\n\nCloses #22259",
+        "url": "https://github.com/curl/curl/commit/d054f386dd77ed02f6d7513e0464e414948d93df"
+    },
+    {
+        "sha": "50c244c74d775979e2771d128fd90affe7193b49",
+        "author": "Viktor Szakats",
+        "email": "commit@vsz.me",
+        "date": "2026-07-09T18:09:24Z",
+        "message": "tests: skip test 311 for wolfSSL 5.9.2\n\nTo fix this for everyone running curl tests.\n\nAlso: drop workarounds for CI.\n\nRefs:\nhttps://github.com/wolfSSL/wolfssl/pull/10793\nhttps://github.com/wolfSSL/wolfssl/commit/7dd269fc52228cbc854b9f0ed8c3938b95d8a2c8\n\nRef: https://github.com/curl/curl/pull/22269#issuecomment-4892203666\nFollow-up to 7183bec8fe7b4efcae3b0354dc5bf6de54384190 #22269\nFollow-up to 03f9751585112cdc3c5f0a370217f08c05782de9 #22204\n\nCloses #22286",
+        "url": "https://github.com/curl/curl/commit/50c244c74d775979e2771d128fd90affe7193b49"
+    },
+    {
+        "sha": "06a42cd8bbf237626b6e0c67f592e380cd359e86",
+        "author": "Viktor Szakats",
+        "email": "commit@vsz.me",
+        "date": "2026-07-09T16:04:18Z",
+        "message": "GHA/linux: bump 3.x mbedTLS to 3.6.7\n\nFollow-up to 6e5f94cd5dad9764641d1718b36e79907c68caf4 #22271\n\nCloses #22285",
+        "url": "https://github.com/curl/curl/commit/06a42cd8bbf237626b6e0c67f592e380cd359e86"
+    },
+    {
+        "sha": "7183bec8fe7b4efcae3b0354dc5bf6de54384190",
+        "author": "Stefan Eissing",
+        "email": "stefan@eissing.org",
+        "date": "2026-07-06T09:24:31Z",
+        "message": "GHA/macos: ignore test 311 results for Homebrew wolfSSL\n\nHomebrew is distributing v5.9.2 at the time of this commit, which\ncontains known regression failing to parse the server certificate.\nThe fix has been merged upstream. Till it makes it into a release\nand Homebrew, ignore test results for 311.\n\nRefs:\nhttps://github.com/wolfSSL/wolfssl/pull/10793\nhttps://github.com/wolfSSL/wolfssl/commit/7dd269fc52228cbc854b9f0ed8c3938b95d8a2c8\n\nFollow-up to 03f9751585112cdc3c5f0a370217f08c05782de9 #22204 #22175 #22160\nCloses #22269",
+        "url": "https://github.com/curl/curl/commit/7183bec8fe7b4efcae3b0354dc5bf6de54384190"
+    },
+    {
+        "sha": "6e5f94cd5dad9764641d1718b36e79907c68caf4",
+        "author": "renovate[bot]",
+        "email": "29139614+renovate[bot]@users.noreply.github.com",
+        "date": "2026-07-07T16:43:40Z",
+        "message": "GHA: update dependency Mbed-TLS/mbedtls to v4.2.0\n\nRef: #21178\nCloses #22271",
+        "url": "https://github.com/curl/curl/commit/6e5f94cd5dad9764641d1718b36e79907c68caf4"
+    },
+    {
+        "sha": "6841d59af67345493c0a692a6200bc4d8a82c5fd",
+        "author": "renovate[bot]",
+        "email": "29139614+renovate[bot]@users.noreply.github.com",
+        "date": "2026-07-06T02:40:48Z",
+        "message": "GHA: update dependency pizlonator/fil-c to v0.681\n\nNote: Renovate strips pre-existing quotes from the YAML version value.\nThis breaks the bump next time its version is ending with zero(s).\nRef: 78267398e5a2ce347a6729926c68272b2b6fbed5 #22143 #22142\n\nCloses #22267",
+        "url": "https://github.com/curl/curl/commit/6841d59af67345493c0a692a6200bc4d8a82c5fd"
+    },
+    {
+        "sha": "791f5b25d32fa4598a629d25b03a152faefc0f75",
+        "author": "Daniel Stenberg",
+        "email": "daniel@haxx.se",
+        "date": "2026-07-03T06:55:44Z",
+        "message": "setopt: error for CURLOPT_SHARE when easy handle is used\n\nChanging the share while driving would be complicated and error-prone.\n\nURL: https://curl.se/mail/lib-2026-07/0000.html\n\nCloses #22253",
+        "url": "https://github.com/curl/curl/commit/791f5b25d32fa4598a629d25b03a152faefc0f75"
+    },
+    {
+        "sha": "e0222c00293573e83d85fb5dfc43d67b4b837dda",
+        "author": "Stefan Eissing",
+        "email": "stefan@eissing.org",
+        "date": "2026-07-04T15:20:13Z",
+        "message": "test2114: fix reading from stdin\n\nThe test provides an invalid username, but no ':' with password, so that\nthe curl tool tries to read the password from stdin. That makes the test\nhang, also in CI.\n\nThe check for invalid characters is happening when the CURLOPT_USERPWD\nis applied to the URL, so when the transfer is started. Maybe the check\nshould happen also in setopt already.\n\nThe test hangs because tool_paramhlp.c:548 `checkpasswd()` does not see\na ':' and tries to read the password from stdin.\n\nFix: add a ':' in the tests invalid user setting, so that the read does\nnot happen.\n\nFollow-up to ecaa344a7a17874ff0c6e5\n\nCloses #22264",
+        "url": "https://github.com/curl/curl/commit/e0222c00293573e83d85fb5dfc43d67b4b837dda"
+    },
+    {
+        "sha": "ecaa344a7a17874ff0c6e5717489e8f9033c4d5c",
+        "author": "Alhuda Khan",
+        "email": "al.hudz.k@gmail.com",
+        "date": "2026-07-01T09:41:15Z",
+        "message": "url: reject control codes in credentials set via CURLOPT\n\nCloses #22236",
+        "url": "https://github.com/curl/curl/commit/ecaa344a7a17874ff0c6e5717489e8f9033c4d5c"
+    },
+    {
+        "sha": "69ac867f98fb438c242687c36526e2a090371d3d",
+        "author": "Daniel Stenberg",
+        "email": "daniel@haxx.se",
+        "date": "2026-07-04T10:19:47Z",
+        "message": "TLS: drop support for TLS-SRP\n\nThe options will simply do nothing.\n\nCloses #21965",
+        "url": "https://github.com/curl/curl/commit/69ac867f98fb438c242687c36526e2a090371d3d"
+    },
+    {
+        "sha": "d169ad68faa5ed5ba2375e7502307a6262466d88",
+        "author": "Viktor Szakats",
+        "email": "commit@vsz.me",
+        "date": "2025-10-24T23:40:44Z",
+        "message": "gssapi: add support for Apple GSS Framework\n\nAdd support for the native GSS Framework on Apple targets, which is\nApple's fork of Heimdal. This option allows to drop Apple's deprecated\nMIT Kerberos compatibility shim \"mit-krb5/1.7-prerelease\".\n\nSource code uses different headers, other than that no source changes\nare necessary.\n\nYou can enable by configuring with:\nautotools: `--enable-gssapi-apple`\nCMake: `-DCURL_USE_GSSAPI=ON -DCURL_GSS_FLAVOR=Apple`\n\nThese options are experimental, and may receive breaking updates till\nthe GSS backend selection logic settles, for Apple and also for the GNU\nand MIT implementation.\n\nVersion string:\n```\ncurl 8.21.0-DEV (aarch64-apple-darwin25.4.0) libcurl/8.21.0-DEV\n  OpenSSL/3.6.2 zlib/1.2.12 AppleIDN AppleGSS OpenLDAP/2.4.28/Apple\n```\n\nAlso:\n- drop in-source deprecation warning suppressions when using AppleGSS.\n- GHA/macos: enable Apple GSS in CI jobs.\n\nSupported by:\niOS 5.0+, iPadOS 5.0+, Mac Catalyst 13.0+, macOS 10.14+, visionOS 1.0+\n\nRef: https://developer.apple.com/documentation/gss\nRef: #19109\n\nCloses #22052",
+        "url": "https://github.com/curl/curl/commit/d169ad68faa5ed5ba2375e7502307a6262466d88"
+    }
+]

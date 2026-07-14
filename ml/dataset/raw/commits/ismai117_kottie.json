@@ -1,0 +1,242 @@
+[
+    {
+        "sha": "569d07f6c253357c8bdc9645c18ba3a4b56779be",
+        "author": "ismai117",
+        "email": "88812838+ismai117@users.noreply.github.com",
+        "date": "2026-03-09T06:24:59Z",
+        "message": "Add contributing section to README",
+        "url": "https://github.com/ismai117/kottie/commit/569d07f6c253357c8bdc9645c18ba3a4b56779be"
+    },
+    {
+        "sha": "7bb4e9ad1116bbcb19abdc7f46febc9394a3b559",
+        "author": "ismai117",
+        "email": "88812838+ismai117@users.noreply.github.com",
+        "date": "2026-03-09T06:22:26Z",
+        "message": "Simplify license section in README.md\n\nRemoved redundant license disclaimer text.",
+        "url": "https://github.com/ismai117/kottie/commit/7bb4e9ad1116bbcb19abdc7f46febc9394a3b559"
+    },
+    {
+        "sha": "a8727c3414cba8ae02b63a711d6a7d1151461cea",
+        "author": "ismai117",
+        "email": "88812838+ismai117@users.noreply.github.com",
+        "date": "2026-03-09T06:21:43Z",
+        "message": "Update README.md",
+        "url": "https://github.com/ismai117/kottie/commit/a8727c3414cba8ae02b63a711d6a7d1151461cea"
+    },
+    {
+        "sha": "bc30ff8341e57d0df8178a163f6c2ab0893d29f0",
+        "author": "ismai117",
+        "email": "88812838+ismai117@users.noreply.github.com",
+        "date": "2026-03-09T06:20:59Z",
+        "message": "Merge pull request #51 from ismai117/readme-cleanup\n\nClean up README documentation",
+        "url": "https://github.com/ismai117/kottie/commit/bc30ff8341e57d0df8178a163f6c2ab0893d29f0"
+    },
+    {
+        "sha": "ba5c495736594fc8a06e4d1e8c183cb373368452",
+        "author": "ismail.mohamed",
+        "email": "ismailncgroup@gmail.com",
+        "date": "2026-03-09T06:20:04Z",
+        "message": "Clean up README documentation\n\n- Update iOS setup instructions with SPM resolution note\n- Update API examples to use new KottieComposition sealed type\n- Use Kottie.IterateForever instead of KottieConstants\n- Improve formatting and organization\n- Add license section\n\nCo-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>",
+        "url": "https://github.com/ismai117/kottie/commit/ba5c495736594fc8a06e4d1e8c183cb373368452"
+    },
+    {
+        "sha": "4fc5c1471ba908ee63c5c0b9669f8778b69b8a1d",
+        "author": "ismai117",
+        "email": "88812838+ismai117@users.noreply.github.com",
+        "date": "2026-03-09T05:15:27Z",
+        "message": "Merge pull request #50 from ismai117/api-redesign\n\nRedesign public API for type safety and clarity",
+        "url": "https://github.com/ismai117/kottie/commit/4fc5c1471ba908ee63c5c0b9669f8778b69b8a1d"
+    },
+    {
+        "sha": "6e79bc9a1e6cdf64b1fde468af8f9556e80b5202",
+        "author": "ismail.mohamed",
+        "email": "ismailncgroup@gmail.com",
+        "date": "2026-03-09T05:14:22Z",
+        "message": "Redesign public API for type safety and clarity\n\nBreaking changes:\n- Replace KottieCompositionResult with sealed KottieComposition type\n  (Loading, Success, Failure) for exhaustive when expressions\n- Move all public API to `kottie` package\n- Rename KottieAnimationState.iterations to iteration (singular)\n- Remove minWidth/minHeight parameters from KottieAnimation\n\nAPI improvements:\n- Add KDoc documentation to all public APIs\n- Add extension properties: isSuccess, isLoading, isFailure, errorOrNull\n- Hide internal implementation in kottie.internal package\n- Remove unused Controllers.kt and utility functions\n- Fix bug: SkiaComposition.kt was calling success() on errors\n\nCleanup:\n- Delete duplicate internal specs (SkiaCompositionSpec, LottieCompositionSpec)\n- Consolidate animation state classes into single KottieAnimationState\n- Share Skia implementation across JVM, JS, and WASM targets\n- Fix malformed filename (rememberkottieComposition(.kt)\n- Update sample app to use new API\n\nCo-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>",
+        "url": "https://github.com/ismai117/kottie/commit/6e79bc9a1e6cdf64b1fde468af8f9556e80b5202"
+    },
+    {
+        "sha": "87fd058d4d527688219a5f78dc5cba668aa02be4",
+        "author": "ismai117",
+        "email": "88812838+ismai117@users.noreply.github.com",
+        "date": "2025-10-01T22:43:21Z",
+        "message": "Merge pull request #48 from ismai117/upgrade-lottie-android-version\n\nupgrade lottie android version",
+        "url": "https://github.com/ismai117/kottie/commit/87fd058d4d527688219a5f78dc5cba668aa02be4"
+    },
+    {
+        "sha": "0182732fa2a5da4bbadba746fe3f5e52caa439dc",
+        "author": "ismai117",
+        "email": "88812838+ismai117@users.noreply.github.com",
+        "date": "2025-10-01T22:43:12Z",
+        "message": "Merge pull request #47 from ismai117/default-height/width-optional\n\nDefault height/width optional",
+        "url": "https://github.com/ismai117/kottie/commit/0182732fa2a5da4bbadba746fe3f5e52caa439dc"
+    },
+    {
+        "sha": "c446cb77f159f6daba2bf456b65237eebe38cf92",
+        "author": "ismail.mohamed",
+        "email": "ismailncgroup@gmail.com",
+        "date": "2025-10-01T22:42:15Z",
+        "message": "upgrade lottie android version",
+        "url": "https://github.com/ismai117/kottie/commit/c446cb77f159f6daba2bf456b65237eebe38cf92"
+    },
+    {
+        "sha": "1bde1afb5de355fb5119725822ad7e142570bb6d",
+        "author": "ismail.mohamed",
+        "email": "ismailncgroup@gmail.com",
+        "date": "2025-10-01T22:40:26Z",
+        "message": "Make minWidth and minHeight optional parameters with default values in KottieAnimation composable",
+        "url": "https://github.com/ismai117/kottie/commit/1bde1afb5de355fb5119725822ad7e142570bb6d"
+    },
+    {
+        "sha": "9f512ab39cb732cf14893e4b9640ed3fba8ee826",
+        "author": "ismail.mohamed",
+        "email": "ismailncgroup@gmail.com",
+        "date": "2025-10-01T22:39:53Z",
+        "message": "Make minWidth and minHeight optional parameters with default values in KottieAnimation composable",
+        "url": "https://github.com/ismai117/kottie/commit/9f512ab39cb732cf14893e4b9640ed3fba8ee826"
+    },
+    {
+        "sha": "6acc5fad3a79aa0a10c115685361cec13b2299d1",
+        "author": "ismail.mohamed",
+        "email": "ismailncgroup@gmail.com",
+        "date": "2025-09-18T22:19:22Z",
+        "message": "update deps",
+        "url": "https://github.com/ismai117/kottie/commit/6acc5fad3a79aa0a10c115685361cec13b2299d1"
+    },
+    {
+        "sha": "016321db4ab32cf419935dde9d813e34a48be16d",
+        "author": "ismail",
+        "email": "ismail.mohamed@kraken.tech",
+        "date": "2025-09-09T12:21:28Z",
+        "message": "use correct import",
+        "url": "https://github.com/ismai117/kottie/commit/016321db4ab32cf419935dde9d813e34a48be16d"
+    },
+    {
+        "sha": "4aa17d5ea14aca5ce70a30db56da14649cb040db",
+        "author": "ismail",
+        "email": "ismail.mohamed@kraken.tech",
+        "date": "2025-09-09T12:07:05Z",
+        "message": "update lib name",
+        "url": "https://github.com/ismai117/kottie/commit/4aa17d5ea14aca5ce70a30db56da14649cb040db"
+    },
+    {
+        "sha": "50a4e5ed66b8cea8ea97cbf13c3e63ff825ea838",
+        "author": "ismail",
+        "email": "ismail.mohamed@kraken.tech",
+        "date": "2025-09-09T12:02:57Z",
+        "message": "change module name for wasm",
+        "url": "https://github.com/ismai117/kottie/commit/50a4e5ed66b8cea8ea97cbf13c3e63ff825ea838"
+    },
+    {
+        "sha": "ef870202560e6290c6d903f343e6e1cfbf056edc",
+        "author": "ismail",
+        "email": "ismail.mohamed@kraken.tech",
+        "date": "2025-09-09T11:59:07Z",
+        "message": "update sonatype",
+        "url": "https://github.com/ismai117/kottie/commit/ef870202560e6290c6d903f343e6e1cfbf056edc"
+    },
+    {
+        "sha": "4a0b2633d2ecc6679f1e91e3f855b4038191f471",
+        "author": "ismail",
+        "email": "ismail.mohamed@kraken.tech",
+        "date": "2025-09-09T11:57:38Z",
+        "message": "update deps",
+        "url": "https://github.com/ismai117/kottie/commit/4a0b2633d2ecc6679f1e91e3f855b4038191f471"
+    },
+    {
+        "sha": "5ea410c43d1a7be33637bdfc599efa74a04c1437",
+        "author": "ismai117",
+        "email": "88812838+ismai117@users.noreply.github.com",
+        "date": "2025-09-09T09:50:15Z",
+        "message": "Merge pull request #42 from prudhvir3ddy/prudhvir3ddy/kottie-composition-result-2\n\nAdded support for LottieCompositionResult properties",
+        "url": "https://github.com/ismai117/kottie/commit/5ea410c43d1a7be33637bdfc599efa74a04c1437"
+    },
+    {
+        "sha": "c0c9c40194d012f6430c655475d7e94e46bdbccf",
+        "author": "ismai117",
+        "email": "88812838+ismai117@users.noreply.github.com",
+        "date": "2025-09-01T18:07:22Z",
+        "message": "Merge pull request #43 from prudhvir3ddy/prudhvir3ddy/ktlint_ignore_generated\n\nktlint to ignore generated files",
+        "url": "https://github.com/ismai117/kottie/commit/c0c9c40194d012f6430c655475d7e94e46bdbccf"
+    },
+    {
+        "sha": "f5dc84e8abfd8afc5a3636a1bf16e735675e1067",
+        "author": "prudhvi reddy",
+        "email": "prudhvireddy.m01@gmail.com",
+        "date": "2025-08-31T12:03:08Z",
+        "message": "ktlint to ignore generated files",
+        "url": "https://github.com/ismai117/kottie/commit/f5dc84e8abfd8afc5a3636a1bf16e735675e1067"
+    },
+    {
+        "sha": "27e654e7f5a997c071f391a8d173794df89bb364",
+        "author": "prudhvi reddy",
+        "email": "prudhvireddy.m01@gmail.com",
+        "date": "2025-08-31T12:01:22Z",
+        "message": "updated skia to working example",
+        "url": "https://github.com/ismai117/kottie/commit/27e654e7f5a997c071f391a8d173794df89bb364"
+    },
+    {
+        "sha": "f64458dc005cdafc07f30673f0ae3fced401fa22",
+        "author": "prudhvi reddy",
+        "email": "prudhvireddy.m01@gmail.com",
+        "date": "2025-08-31T11:18:38Z",
+        "message": "removed description",
+        "url": "https://github.com/ismai117/kottie/commit/f64458dc005cdafc07f30673f0ae3fced401fa22"
+    },
+    {
+        "sha": "87bedd56bd30212ad558b0f936aaadc9c03c9c8b",
+        "author": "prudhvi reddy",
+        "email": "prudhvireddy.m01@gmail.com",
+        "date": "2025-08-31T11:16:43Z",
+        "message": "Merge branch 'main' of github.com:/ismai117/kottie into prudhvir3ddy/kottie-composition-result-2",
+        "url": "https://github.com/ismai117/kottie/commit/87bedd56bd30212ad558b0f936aaadc9c03c9c8b"
+    },
+    {
+        "sha": "6534735322aebb3b0006596b8815d94597425897",
+        "author": "ismai117",
+        "email": "88812838+ismai117@users.noreply.github.com",
+        "date": "2025-08-31T10:41:09Z",
+        "message": "Merge pull request #41 from prudhvir3ddy/prudhvir3ddy/kotlin_upgrade\n\nSupport latest xcode by upgrading kotlin",
+        "url": "https://github.com/ismai117/kottie/commit/6534735322aebb3b0006596b8815d94597425897"
+    },
+    {
+        "sha": "d0d0d58f7ea2b67bb31b496729d230afb674bbf7",
+        "author": "ismai117",
+        "email": "88812838+ismai117@users.noreply.github.com",
+        "date": "2025-08-31T10:40:40Z",
+        "message": "Merge pull request #40 from prudhvir3ddy/prudhvir3ddy/delete_metadata\n\nRemove metadata from the repository",
+        "url": "https://github.com/ismai117/kottie/commit/d0d0d58f7ea2b67bb31b496729d230afb674bbf7"
+    },
+    {
+        "sha": "5b10d9bee4ce374f00de22c72f52ac31ed7b12b2",
+        "author": "prudhvi reddy",
+        "email": "prudhvireddy.m01@gmail.com",
+        "date": "2025-08-31T05:21:37Z",
+        "message": "kottie with composition result",
+        "url": "https://github.com/ismai117/kottie/commit/5b10d9bee4ce374f00de22c72f52ac31ed7b12b2"
+    },
+    {
+        "sha": "ffcbcacc16e5afdf811ee6cc169811066b5034f3",
+        "author": "prudhvi reddy",
+        "email": "prudhvireddy.m01@gmail.com",
+        "date": "2025-08-31T03:51:29Z",
+        "message": "update required yarn file lock for kotlin upgrade with kotlinUpgradeYarnLock",
+        "url": "https://github.com/ismai117/kottie/commit/ffcbcacc16e5afdf811ee6cc169811066b5034f3"
+    },
+    {
+        "sha": "223267f465a1df45e3d7e659666aa8d99021fad8",
+        "author": "prudhvi reddy",
+        "email": "prudhvireddy.m01@gmail.com",
+        "date": "2025-08-31T02:28:36Z",
+        "message": "Support latest xcode by upgrading kotlin",
+        "url": "https://github.com/ismai117/kottie/commit/223267f465a1df45e3d7e659666aa8d99021fad8"
+    },
+    {
+        "sha": "95f15be65857ea17db5a7ddc4f196488b8bb7f11",
+        "author": "prudhvi reddy",
+        "email": "prudhvireddy.m01@gmail.com",
+        "date": "2025-08-31T02:13:35Z",
+        "message": "add .kotlin to gitignore",
+        "url": "https://github.com/ismai117/kottie/commit/95f15be65857ea17db5a7ddc4f196488b8bb7f11"
+    }
+]

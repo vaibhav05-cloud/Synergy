@@ -1,0 +1,354 @@
+[
+    {
+        "id": 4541155911,
+        "number": 895,
+        "title": "chokidar@^4 causes pnpm trustPolicy no-downgrade failure (ERR_PNPM_TRUST_DOWNGRADE)",
+        "state": "open",
+        "created_at": "2026-05-28T14:21:58Z",
+        "updated_at": "2026-05-28T14:21:58Z",
+        "closed_at": null,
+        "author": "arantespp",
+        "comments": 0,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "## Summary\nProjects using strict pnpm supply-chain policies (`trustPolicy: no-downgrade`) fail install because this package depends on `chokidar@^4.0.1`, which currently resolves to `chokidar@4.0.3` and is flagged as a trust downgrade.\n\n## Error\n\n```text\n[ERR_PNPM_TRUST_DOWNGRADE] 1 lockfile entries failed verification:\n  chokidar@4.0.3 High-risk trust downgrade for \"chokidar@4.0.3\" (possible package takeover)\n```\n\n## Dependency path\n\n`@storybook/builder-webpack5 -> fork-ts-checker-webpack-plugin@9.1.0 -> chokidar@^4.0.1`\n\n## Why this matters\nWith pnpm v11 security settings (`minimumReleaseAge`, `blockExoticSubdeps`, `trustPolicy: no-downgrade`), this blocks `pnpm install` unless users explicitly relax policy (`trustPolicyExclude`).\n\n## Request\nCould you provide a path that avoids this trust-downgrade block for strict-policy users? For example:\n\n- update dependency strategy away from the affected `chokidar` line, or\n- document recommended compatibility/security guidance for package managers enforcing trust-level checks.\n\nHappy to test any candidate version quickly.\n",
+        "url": "https://github.com/TypeStrong/fork-ts-checker-webpack-plugin/issues/895"
+    },
+    {
+        "id": 4112547215,
+        "number": 892,
+        "title": "Support for typescript-go?",
+        "state": "open",
+        "created_at": "2026-03-21T13:32:39Z",
+        "updated_at": "2026-04-30T17:45:32Z",
+        "closed_at": null,
+        "author": "maecapozzi",
+        "comments": 1,
+        "labels": [
+            "enhancement"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "## Feature motivation\n<!-- Describe the context, the use-case and the advantages of the feature request. -->\n\nTypescript-go is starting to be used by more projects. When we migrated to it, we had to stop using fork-ts-checker-webpack-plugin. People have been missing the in-browser type failures since then.\n\n## Feature description\n<!-- Describe the functional changes that would have to be made -->\n\nI don't know yet, I wanted to check to see whether there was appetite for this first.\n\n## Feature implementation\n<!-- Optionally describe the technical changes to be made. -->\n",
+        "url": "https://github.com/TypeStrong/fork-ts-checker-webpack-plugin/issues/892"
+    },
+    {
+        "id": 3962120642,
+        "number": 885,
+        "title": "Security - Upgrade minimatch to ^10.2.1",
+        "state": "open",
+        "created_at": "2026-02-19T10:19:36Z",
+        "updated_at": "2026-05-27T16:09:37Z",
+        "closed_at": null,
+        "author": "RoiEf",
+        "comments": 3,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "minimatch < 10.2.1 has a high severity CVE \nhttps://github.com/advisories/GHSA-3ppc-4f35-3m26\n\nThis package needs to be updated.",
+        "url": "https://github.com/TypeStrong/fork-ts-checker-webpack-plugin/issues/885"
+    },
+    {
+        "id": 3955397491,
+        "number": 884,
+        "title": "Security: Upgrade schema-utils to v4 to resolve ajv CVE-2025-69873 (GHSA-2g4f-4pwh-qvx6)",
+        "state": "open",
+        "created_at": "2026-02-18T01:23:29Z",
+        "updated_at": "2026-05-27T16:09:37Z",
+        "closed_at": null,
+        "author": "oliver-lister-sj",
+        "comments": 1,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "## Description\n\n`fork-ts-checker-webpack-plugin` currently depends on `schema-utils` version ^3.1.1, which internally depends on `ajv` version ^6.12.5 (resolving to 6.12.6). This version of `ajv` has a ReDoS (Regular Expression Denial of Service) security vulnerability.\n\n## Security Advisory\n\n- **CVE:** CVE-2025-69873\n- **GitHub Advisory:** [GHSA-2g4f-4pwh-qvx6](https://github.com/advisories/GHSA-2g4f-4pwh-qvx6)\n- **Severity:** Moderate / High (CVSS 7.5)\n- **Fixed in:** `ajv` 8.18.0\n\n## Dependency Chain\n```\n  fork-ts-checker-webpack-plugin@9.1.0\n  └── schema-utils@3.3.0\n      └── ajv@6.12.6 ← VULNERABLE\n```\n\n## Proposed Solution\n\nUpgrade `schema-utils` from `^3.1.1` to `^4.0.0` or higher. `schema-utils` 4.x uses `ajv` 8.x which includes the security fix.\n\n## Environment\n\n- fork-ts-checker-webpack-plugin version: 9.1.0\n- Node.js version: 20.x\n- Webpack version: 5.94.0\n\n## Additional Context\n\nWhile this vulnerability requires specific conditions to exploit (`$data` option enabled with untrusted input), security scanners flag this as a vulnerability, causing issues with compliance and CI/CD pipelines.\n\nRelated: [webpack/schema-utils#191](https://github.com/webpack/schema-utils/issues/191)",
+        "url": "https://github.com/TypeStrong/fork-ts-checker-webpack-plugin/issues/884"
+    },
+    {
+        "id": 3920367118,
+        "number": 883,
+        "title": "Worker crash (OOM / SIGABRT) does not fail the webpack build",
+        "state": "open",
+        "created_at": "2026-02-10T09:23:10Z",
+        "updated_at": "2026-02-10T09:23:10Z",
+        "closed_at": null,
+        "author": "omer-feinberg-island",
+        "comments": 0,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "## Current behavior\nWhen the type checker worker process crashes (e.g., due to an out-of-memory error), the build completes successfully with exit code 0. The crash is logged to the console but is never propagated to compilation.errors.\n\n## Expected behavior\nBuild should fail with a non-zero exit code when the type checker worker crashes.\n\n## Steps to reproduce the issue\nCreate the following files:\n\n**package.json**:\n```\n  {\n    \"private\": true,\n    \"devDependencies\": {\n      \"typescript\": \"^5.0.0\",\n      \"webpack\": \"^5.0.0\",\n      \"webpack-cli\": \"^5.0.0\",\n      \"ts-loader\": \"^9.0.0\",\n      \"fork-ts-checker-webpack-plugin\": \"9.1.0\"\n    }\n  }\n```\n**tsconfig.json**:\n```\n  {\n    \"compilerOptions\": {\n      \"target\": \"ES2020\",\n      \"module\": \"ESNext\",\n      \"moduleResolution\": \"node\",\n      \"strict\": true,\n      \"outDir\": \"dist\"\n    },\n    \"include\": [\"src\"]\n  }\n```\n\n**webpack.config.js**:\n```\n  const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');\n\n  module.exports = {\n    mode: 'production',\n    entry: './src/index.ts',\n    output: {\n      filename: 'bundle.js',\n      path: __dirname + '/dist',\n    },\n    resolve: {\n      extensions: ['.ts', '.js'],\n    },\n    module: {\n      rules: [\n        {\n          test: /\\.ts$/,\n          loader: 'ts-loader',\n          options: { transpileOnly: true },\n        },\n      ],\n    },\n    plugins: [\n      new ForkTsCheckerWebpackPlugin({\n        typescript: {\n          memoryLimit: 100,\n        },\n      }),\n    ],\n  };\n```\n\n**src/index.ts**:\n```\n  export const x = 1;\n```\n\n**Run**:\n`npm install && npx webpack`\n\n**Output**:\n```\n  RpcExitError: Process 89674 exited [SIGABRT]\n  Issues checking service aborted - probably out of memory. ...\n  asset bundle.js 0 bytes [emitted] [minimized] (name: main)\n  webpack 5.105.0 compiled successfully in 720 ms\n  # exit code: 0\n```\n\n## Environment\n  - fork-ts-checker-webpack-plugin: 9.1.0\n  - typescript: 5.7.3\n  - eslint: N/A\n  - webpack: 5.105.0\n  - os: macOS Darwin 24.5.0\n",
+        "url": "https://github.com/TypeStrong/fork-ts-checker-webpack-plugin/issues/883"
+    },
+    {
+        "id": 3870351630,
+        "number": 881,
+        "title": "memfs version warning",
+        "state": "open",
+        "created_at": "2026-01-29T12:14:45Z",
+        "updated_at": "2026-05-27T16:09:44Z",
+        "closed_at": null,
+        "author": "alok1111",
+        "comments": 2,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "## Current behavior\nWarning appears\n```\nyarn install v1.22.22\n[1/4] Resolving packages...\nwarning fork-ts-checker-webpack-plugin > memfs@3.6.0: this will be v4\n```\n\n## Expected behavior\nNo warnings\n\n## Steps to reproduce the issue\nRun `yarn install` in a project with `webpack-dev-server@5.2.3` and `fork-ts-checker-webpack-plugin` dependencies\n\n## Issue reproduction repository\n<!-- Location of a (minimal) repository that demonstrates the issue. -->\n\n## Environment\n - **fork-ts-checker-webpack-plugin**: 9.1.0\n - **typescript**: 5.5.4\n - **eslint**: 8.57.1\n - **webpack**: 5.104.1\n - **os**: Debian GNU/Linux 13\n",
+        "url": "https://github.com/TypeStrong/fork-ts-checker-webpack-plugin/issues/881"
+    },
+    {
+        "id": 3182183433,
+        "number": 867,
+        "title": "Q: warning \"class not found\" after adding plugin, \"module has no exports\" - possibly configuration?",
+        "state": "open",
+        "created_at": "2025-06-27T09:52:51Z",
+        "updated_at": "2025-06-27T10:04:35Z",
+        "closed_at": null,
+        "author": "mroeling",
+        "comments": 0,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "Since the plugin is working already in many cases, I suspect this is more like a question than a bug. \n\nBased on the blog on Aurelia1 ([link](https://discourse.aurelia.io/t/speed-up-webpack-for-aurelia-1/6462)), I've tried to add the plugin to our Aurelia1 project. \n\nBut I get many warnings, all formed like:\n\n```\nWARNING in ./<filepath>.ts 84:163-180\nexport '<ClassName>' (imported as '<ClassName>') was not found in '~/<filepath>'\n (module has no exports)\n```\nNote the \"~\" part, that's part of the tsconfig (added below)\n\nBefore adding the plugin, this was never an error/warning. \n\nThings I've tried:\n* verbatimModuleSyntax / importsNotUsedAsValues in tsconfig\n* useTypescriptIncrementalApi in webpack config\n\nthe tsconfig:\n```json\n{\n  \"compileOnSave\": false,\n  \"compilerOptions\": {\n    \"esModuleInterop\": true,\n    \"module\": \"ESNext\",\n    \"removeComments\": true,\n    \"emitDecoratorMetadata\": true,\n    \"experimentalDecorators\": true,\n    \"sourceMap\": true,\n    \"target\": \"ES2018\",\n    \"lib\": [\"ES2015\", \"DOM\"],\n    \"moduleResolution\": \"Bundler\",\n    \"baseUrl\": \"src\",\n    \"paths\": {\n      \"~/*\": [\"./*\"],                                                // <!-- possible cause?\n      \"~sdk/*\": [\"../resources/generated/sdk/*\"]\n    },\n    \"resolveJsonModule\": true,\n    \"importHelpers\": true,\n    \"allowJs\": true\n  },\n  \"include\": [\"src\", \"test\"],\n  \"atom\": {\n    \"rewriteTsconfig\": false\n  }\n}\n\n```\n\nThe webpack config is rather large. So a snippet to show at least the imports, and the config I added.\n```js\nconst path = require(\"path\");\nconst HtmlWebpackPlugin = require(\"html-webpack-plugin\");\nconst CopyWebpackPlugin = require(\"copy-webpack-plugin\");\nconst MiniCssExtractPlugin = require(\"mini-css-extract-plugin\");\nconst DuplicatePackageCheckerPlugin = require(\"duplicate-package-checker-webpack-plugin\");\nconst project = require(\"./aurelia_project/aurelia.json\");\nconst { AureliaPlugin } = require(\"aurelia-webpack-plugin\");\nconst { BundleAnalyzerPlugin } = require(\"webpack-bundle-analyzer\");\nconst { CleanWebpackPlugin } = require(\"clean-webpack-plugin\");\nconst TsconfigPathsPlugin = require(\"tsconfig-paths-webpack-plugin\");\nconst CspHtmlWebpackPlugin = require(\"csp-html-webpack-plugin\");\nconst ForkTsCheckerWebpackPlugin = require(\"fork-ts-checker-webpack-plugin\");\n\n// snip\n\nmodule.exports = ({ production }, { analyze, hmr, port, host }) => ({\n  cache: production === \"development\" ? {\n    type: 'filesystem',\n  } : false,\n// snip\n  plugins: [\n// snip\n    new ForkTsCheckerWebpackPlugin({\n      typescript: {\n        diagnosticOptions: {\n          semantic: true,\n          syntactic: true,\n        },\n      },\n    }),\n  ],\n})\n```\n\nAny help will be appreciated! It's too promising to just skip :)",
+        "url": "https://github.com/TypeStrong/fork-ts-checker-webpack-plugin/issues/867"
+    },
+    {
+        "id": 3016137954,
+        "number": 863,
+        "title": "bug",
+        "state": "closed",
+        "created_at": "2025-04-24T06:22:30Z",
+        "updated_at": "2025-06-22T09:50:03Z",
+        "closed_at": "2025-06-22T09:50:03Z",
+        "author": "Superpak80s",
+        "comments": 0,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "## Current behavior\n<!-- Describe how the issue manifests. -->\n\n## Expected behavior\n<!-- Describe what the desired behavior would be. -->\n\n## Steps to reproduce the issue\n<!-- Describe how we can reproduce this problem step by step. -->\n\n## Issue reproduction repository\n<!-- Location of a (minimal) repository that demonstrates the issue. -->\n\n## Environment\n - **fork-ts-checker-webpack-plugin**: [version from the `package.json`]\n - **typescript**: [version from the `package.json`]\n - **eslint**: [version from the `package.json`]\n - **webpack**: [version from the `package.json`]\n - **os**: [e.g. Ubuntu 19.04]\n",
+        "url": "https://github.com/TypeStrong/fork-ts-checker-webpack-plugin/issues/863"
+    },
+    {
+        "id": 3016004032,
+        "number": 862,
+        "title": "cosmiconfig 8.x version giving License Risk -> High for blackduck scan",
+        "state": "open",
+        "created_at": "2025-04-24T04:58:34Z",
+        "updated_at": "2025-09-29T17:19:40Z",
+        "closed_at": null,
+        "author": "imakshar",
+        "comments": 1,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "## Current behavior\n\n`cosmiconfig 8.x` version is giving a high-risk License issue in the BlackDuck scan. \n\nPFA\n\n![Image](https://github.com/user-attachments/assets/19cd7b0b-6bf8-4816-9740-ca9e8044ef23)\n\n## Expected behavior\n\nThe latest version of `cosmiconfig` is `9.0.0`, so updating it to the latest version might solve the issue of the BlackDuck scan. Or it should not give a vulnerability issue for the `cosmiconfig` dependency. \n\n## Steps to reproduce the issue\n\nInstall `fork-ts-checker-webpack-plugin` and scan it through BlackDuck scan or any scanner that gives you vulnerability issues. \n\n## Issue reproduction repository\n\nNA\n\n## Environment\n - **fork-ts-checker-webpack-plugin**: [9.1.0 from the `package.json`]\n - **typescript**: [5.0 from the `package.json`]\n - **eslint**: [7.32.0 from the `package.json`]\n - **webpack**: NA\n - **vite**: 4.5.5\n - **os**: [Ubuntu 22.04.4 LTs]\n",
+        "url": "https://github.com/TypeStrong/fork-ts-checker-webpack-plugin/issues/862"
+    },
+    {
+        "id": 2993214632,
+        "number": 859,
+        "title": "Error: EMFILE: too many open files",
+        "state": "open",
+        "created_at": "2025-04-14T14:14:55Z",
+        "updated_at": "2025-04-24T21:33:56Z",
+        "closed_at": null,
+        "author": "Ten666u",
+        "comments": 6,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "## Current behavior\n\nWhen using plugin on macOS, the following error occurs after a dev build, in projects with many files:\n```\nNo typescript errors found.\nnode:internal/errors:563\n    ErrorCaptureStackTrace(err);\n    ^\n\nError: EMFILE: too many open files, watch\n    at FSWatcher._handle.onchange (node:internal/fs/watchers:207:21)\nEmitted 'error' event on FSWatcher instance at:\n    at FSWatcher._handleError (/path/to/project/node_modules/chokidar/index.js:539:18)\n    at NodeFsHandler._boundHandleError (/path/to/project/node_modules/chokidar/handler.js:300:49)\n    at /path/to/project/node_modules/chokidar/handler.js:149:9\n    at foreach (/path/to/projectnode_modules/chokidar/handler.js:81:9)\n    at fsWatchBroadcast (/path/to/project/node_modules/chokidar/handler.js:148:5)\n    at FSWatcher.<anonymous> (/path/to/project/node_modules/chokidar/handler.js:196:17)\n    at FSWatcher.emit (node:events:518:28)\n    at FSWatcher._handle.onchange (node:internal/fs/watchers:213:12) {\n  errno: -24,\n  syscall: 'watch',\n  code: 'EMFILE',\n  filename: null\n}\n\nNode.js v20.11.0\n```\nThis error seems to be related to the chokidar file watcher used internally, likely due to hitting macOS restrictions on open file descriptors.\n\n> 🔎 Note: The output (build) directory and node_modules are excluded from the TypeScript and Webpack configs\n\n## Expected behavior\nThere should be no EMFILE: too many open files error during plugin execution on macOS.\n\n## Steps to reproduce the issue\n1. Use the plugin in a project where a directory contains a large number of files.\n2. Start the dev server on macOS.\n\n## Environment\n - **fork-ts-checker-webpack-plugin**: ^9.0.2\n - **typescript**: ^5.6.2\n - **eslint**: ^9.9.1\n - **webpack**: 5.94.0\n - **os**: macOS Sohoma 14.5 (23F79)\n",
+        "url": "https://github.com/TypeStrong/fork-ts-checker-webpack-plugin/issues/859"
+    },
+    {
+        "id": 2962955701,
+        "number": 857,
+        "title": "Rollup plugin support?",
+        "state": "open",
+        "created_at": "2025-04-01T10:05:51Z",
+        "updated_at": "2025-04-01T10:06:35Z",
+        "closed_at": null,
+        "author": "tianyingchun",
+        "comments": 0,
+        "labels": [
+            "enhancement"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "hi this plugin is excellent, can we plan to provider rollup plugin support?",
+        "url": "https://github.com/TypeStrong/fork-ts-checker-webpack-plugin/issues/857"
+    },
+    {
+        "id": 2856505111,
+        "number": 855,
+        "title": "Type Checking Not Works with TypeScript 5.6+ and `build: true` Option",
+        "state": "open",
+        "created_at": "2025-02-17T01:41:57Z",
+        "updated_at": "2025-10-28T16:58:34Z",
+        "closed_at": null,
+        "author": "kku39",
+        "comments": 5,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "When I use TypeScript@5.6+ and set the fork-ts-checker-webpack-plugin's option `typescript.build` to `true`, the following problem occurs.\n\n## Current behavior\n\nThe webpack build completes with no errors even if there are type errors in source code such as:\n\n```ts:index.ts\nconst num: number = 'aaa'; // TS2322: Type 'string' is not assignable to type 'number'.\n\nfunction foo(num: number) {}\nfoo('aaa'); // TS2345: Argument of type 'string' is not assignable to parameter of type 'number'.\n```\n\nNot sure if this is relevant, but I see the following messages during the build:\n\n```\nTypeError: The \"path\" argument must be of type string. Received undefined\n```\n\n```\nTypeError: Cannot read properties of undefined (reading 'includes')\n```\n\n## Expected behavior\n\nThe webpack build raises errors such as:\n\n```\nERROR in ./index.ts:1:7\nTS2322: Type 'string' is not assignable to type 'number'.\n  > 1 | const num: number = 'aaa';\n      |       ^^^\n    2 |\n    3 | function foo(num: number) {}\n    4 | foo('aaa');\n\nERROR in ./index.ts:4:5\nTS2345: Argument of type 'string' is not assignable to parameter of type 'number'.\n    2 |\n    3 | function foo(num: number) {}\n  > 4 | foo('aaa');\n      |     ^^^^^\n    5 |\n```\n\n## Steps to reproduce the issue\n\n1. Clone the repository described below.\n2. `npm ci`\n3. `npx webpack`\n\nIn addition, it works fine if you exec `npm i typescript@5.5` before the build.\n\n## Issue reproduction repository\n\nhttps://github.com/kku39/issue-repro-of-fork-ts-checker-webpack-plugin\n\n## Environment\n\n - **fork-ts-checker-webpack-plugin**: 9.0.2\n - **typescript**: 5.7.3\n - **eslint**: None\n - **webpack**: 5.98.0\n - **os**: Windows 11, debian:11\n",
+        "url": "https://github.com/TypeStrong/fork-ts-checker-webpack-plugin/issues/855"
+    },
+    {
+        "id": 2720832357,
+        "number": 854,
+        "title": "Out of memory crash with TypeScript `5.7.2`",
+        "state": "closed",
+        "created_at": "2024-12-05T16:11:36Z",
+        "updated_at": "2024-12-09T19:06:12Z",
+        "closed_at": "2024-12-09T19:06:11Z",
+        "author": "eamodio",
+        "comments": 1,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "## Current behavior\r\n\r\nSince the upgrade to TypeScript `5.7.2`, I've been continually seeing issues where watching gets \"stuck\" for a while and ultimately crashes with out of memory errors. It is relatively random at this point (or I haven't figured out the pattern), but it happens after a few or many recompiles on changes\r\n\r\n \r\n```\r\n<--- Last few GCs --->\r\n\r\n[24704:000001A7B53EF000]  1847586 ms: Mark-Compact 2045.3 (2086.0) -> 2043.9 (2086.5) MB, pooled: 0 MB, 336.05 / 0.00 ms  (average mu = 0.626, current mu = 0.073) allocation failure; scavenge might not succeed\r\n[24704:000001A7B53EF000]  1847967 ms: Mark-Compact 2045.9 (2086.5) -> 2044.5 (2091.2) MB, pooled: 0 MB, 353.55 / 0.00 ms  (average mu = 0.459, current mu = 0.072) allocation failure; scavenge might not succeed\r\n\r\n\r\n<--- JS stacktrace --->\r\n\r\nFATAL ERROR: Reached heap limit Allocation failed - JavaScript heap out of memory\r\n----- Native stack trace -----\r\n\r\n 1: 00007FF7DD6EBD7B node::SetCppgcReference+16011\r\n 2: 00007FF7DD654BC8 DSA_meth_get_flags+92344\r\n 3: 00007FF7DE1E2C31 v8::Isolate::ReportExternalAllocationLimitReached+65\r\n 4: 00007FF7DE1CFA36 v8::Function::Experimental_IsNopFunction+2918\r\n 5: 00007FF7DE01B6E0 v8::internal::StrongRootAllocatorBase::StrongRootAllocatorBase+31552\r\n 6: 00007FF7DE018737 v8::internal::StrongRootAllocatorBase::StrongRootAllocatorBase+19351\r\n 7: 00007FF7DE02DE34 v8::Isolate::GetHeapProfiler+7428\r\n 8: 00007FF7DE02E6BA v8::Isolate::GetHeapProfiler+9610\r\n 9: 00007FF7DE03F117 v8::Isolate::GetHeapProfiler+77799\r\n10: 00007FF7DDCFD83B v8::internal::Version::GetString+435083\r\n11: 00007FF77E26D4BA\r\nRpcExitError: Process 24704 exited with code 134\r\n\r\nIssues checking service aborted - probably out of memory. Check the `memoryLimit` option in the ForkTsCheckerWebpackPlugin configuration.\r\nIf increasing the memory doesn't solve the issue, it's most probably a bug in the TypeScript.\r\n```\r\n\r\n## Expected behavior\r\n\r\nNot crash\r\n\r\n## Steps to reproduce the issue\r\n- Using https://github.com/gitkraken/vscode-gitlens\r\n- Start the watch task, `pnpm run watch:quick` (`watch:quick` has no linting)\r\n- Make a series of changes to cause re-compiles and wait for the \"hang\" then crash\r\n\r\n## Issue reproduction repository\r\nNot minimal, but the `https://github.com/gitkraken/vscode-gitlens` repo reproduces it\r\n\r\n## Environment\r\n - **fork-ts-checker-webpack-plugin**: `9.0.2` (also happens on `6.5.3`)\r\n - **typescript**: `5.7.2`\r\n - **eslint**: `9.16.0`\r\n - **webpack**: `5.96.1`\r\n - **os**: Windows 11\r\n",
+        "url": "https://github.com/TypeStrong/fork-ts-checker-webpack-plugin/issues/854"
+    },
+    {
+        "id": 2715006653,
+        "number": 853,
+        "title": "CVE-2024-43788: webpack vulnerability",
+        "state": "open",
+        "created_at": "2024-12-03T13:15:14Z",
+        "updated_at": "2024-12-03T13:17:18Z",
+        "closed_at": null,
+        "author": "AgataJedryszek-da",
+        "comments": 0,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "## Current behavior\r\n<!-- Describe how the issue manifests. -->\r\nDependabot gives an alert about following vulnerability: Webpack's AutoPublicPathRuntimeModule has a DOM Clobbering Gadget that leads to XSS.\r\n\r\n## Expected behavior\r\nNo vulnerabilities, Webpack dependecy updated to `>=5.94.0 `.\r\n\r\n## Steps to reproduce the issue\r\n<!-- Describe how we can reproduce this problem step by step. -->\r\nRun `npm audit` / `pnpm audit`, result:\r\n\r\n![bilde](https://github.com/user-attachments/assets/572a80a1-7e71-46d6-9b9d-5fee1894af08)\r\n\r\n## Issue reproduction repository\r\nhttps://github.com/domstolene/designsystem/tree/main/packages/tokens\r\n\r\n## Environment\r\n - **fork-ts-checker-webpack-plugin**: ^9.0.2\r\n - **typescript**: ^5.6.3\r\n - **eslint**: 8.57.1\r\n - **os**: Windows 10\r\n",
+        "url": "https://github.com/TypeStrong/fork-ts-checker-webpack-plugin/issues/853"
+    },
+    {
+        "id": 2678730494,
+        "number": 851,
+        "title": "Tests not working anymore after Node > 18",
+        "state": "open",
+        "created_at": "2024-11-21T09:34:46Z",
+        "updated_at": "2024-11-21T09:34:46Z",
+        "closed_at": null,
+        "author": "Fuzzyma",
+        "comments": 0,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "Installing this repository has some challenges.\r\nThe engine field is set to Node >12. However, Node 12 cant be used because some dependencies _at least_ require Node 14.\r\nIn Node 20 the tests start failing because mockFS is not mocking the file system anymore.\r\n\r\nSo we probably want to set the engine field to Node version 14.21.3 til 18.18.2. I didnt test node 19 since it wasnt LTS but it breaks in Node 20.\r\n\r\nI also had problems with yarn versin 3 so I had to install yarn v1 (which by itself is a challenge if corepack is enabled).\r\n\r\nSo here is what I used in the end:\r\n\r\n```bash\r\nnvm use 18\r\nnpm i yarn # not globally because it conflicts with corepack and corepack will use yarn 3\r\nrm package-lock.json\r\nnpx yarn\r\nnpx yarn build\r\nnpx yarn test\r\n```\r\n\r\nJust leaving this here for others to notice. I am not sure if this package is still relevant for newer node versions but in that case we probably wanna modernice all dependencies",
+        "url": "https://github.com/TypeStrong/fork-ts-checker-webpack-plugin/issues/851"
+    },
+    {
+        "id": 2673531931,
+        "number": 850,
+        "title": "Update / Replace dependencies as part of the ecosystem-cleanup initiative (e18e)",
+        "state": "open",
+        "created_at": "2024-11-19T20:57:57Z",
+        "updated_at": "2024-11-21T09:49:29Z",
+        "closed_at": null,
+        "author": "Fuzzyma",
+        "comments": 1,
+        "labels": [
+            "enhancement"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "## Feature motivation\r\n\r\nMaybe you've already heard of the e18e initiave (https://e18e.dev/). We want to bring the JS ecosystem forward by modernizing old dependencies or replace them with smaller / faster alternatives.\r\n\r\nE.g. updating chokidar would reduce the dependency count it brings in from 13 to 1 and replacing chalk with picocolors would shave off a bit of traffic whenever this package is installed.\r\n\r\nWith over 14mio downloads this week, that adds up.\r\n\r\nSo my question: Is this project open for this kind of modernization? If so, I would be happy to create PRs for the changes.",
+        "url": "https://github.com/TypeStrong/fork-ts-checker-webpack-plugin/issues/850"
+    },
+    {
+        "id": 2405038205,
+        "number": 848,
+        "title": "A Simple Approach to Type Detection for Vue.js Framework ts",
+        "state": "open",
+        "created_at": "2024-07-12T08:28:02Z",
+        "updated_at": "2024-08-19T01:52:57Z",
+        "closed_at": null,
+        "author": "wzqnanbei",
+        "comments": 2,
+        "labels": [
+            "enhancement"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "## Feature motivation\r\nIn the development process, I choose webpack packaging tool and vue^3.1.1 for development, in the use of fork-ts-checker-plugin plugin for ts type error detection, there is fork-ts-checker-plugin plugin can not recognize the following two types of ts type error:\r\n1、The filename ends in .vue\r\n2、using setup syntax in the script tag in vue\r\n\r\nI searched for some solutions and found that vue's own tool \"vue-tsc\" works very well for detecting the type of ts in the vue framework.\r\n\r\nWhen I researched the working principle of vue-tsc^1.8.27, I found that it rewrites the createProgram() method in the program creation process of ts. For this reason, I tried to use the rewritten createProgram() method in the fork-ts-checker-plugin plugin, and the effect has been improved. The ts type error in the above two cases can be recognised effectively.\r\n\r\nI would like to ask the developers to consider the feasibility of using the new createProgram() method.\r\n\r\nOther than that, I'm not satisfied with the error messages I encountered during the development process, specifically: I only want to get the error number 2322, but I can't filter the other errors, I'd like to ask the developer if he can open this configuration option in the plugin settings, thank you very much.\r\n\r\nI really like the fork-ts-checker-plugin, if you want to know more about my idea, I can submit a pull request to express my idea, thanks again!\r\n\r\nTranslated with DeepL.com (free version)\r\n\r\n\r\n\r\n## Feature description\r\n1、Filtering function for error types\r\n2、An approach to vue framework support\r\n\r\n\r\n\r\n## Feature implementation\r\n1、Add the type option to the issue of the plugin configuration\r\n2、Replace the createProgram method in the current plugin with the createProgram method in the vue-tsc plugin",
+        "url": "https://github.com/TypeStrong/fork-ts-checker-webpack-plugin/issues/848"
+    },
+    {
+        "id": 2338821375,
+        "number": 845,
+        "title": "`createRpcWorker` should not override `execArgv`",
+        "state": "open",
+        "created_at": "2024-06-06T17:36:41Z",
+        "updated_at": "2024-08-17T09:23:23Z",
+        "closed_at": null,
+        "author": "mook-as",
+        "comments": 1,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "## Current behavior\r\nI have a project that seems to blow up TypeScript because there are too many generics involved; I have to build it with `node --stack-size=…` so that the stack is big enough.\r\n\r\nNote that it appears that NodeJS does not allow setting this option via `NODE_OPTIONS`.\r\n\r\nHowever, [`rpc-worker#createRpcWorker`](https://github.com/TypeStrong/fork-ts-checker-webpack-plugin/blob/0fab463b21c6edc4d94834568a3f440241d57887/src/rpc/rpc-worker.ts#L18) currently [clobbers `options.execArgv`](https://github.com/TypeStrong/fork-ts-checker-webpack-plugin/blob/0fab463b21c6edc4d94834568a3f440241d57887/src/rpc/rpc-worker.ts#L32) if a memory limit is set, which [it always is](https://github.com/TypeStrong/fork-ts-checker-webpack-plugin/blob/0fab463b21c6edc4d94834568a3f440241d57887/src/typescript/type-script-worker-config.ts#L43).  This means that I can't pass it in on the command line.\r\n\r\n## Expected behavior\r\nThe relevant line:\r\nhttps://github.com/TypeStrong/fork-ts-checker-webpack-plugin/blob/0fab463b21c6edc4d94834568a3f440241d57887/src/rpc/rpc-worker.ts#L32\r\n\r\nIt would be nice if that's something along the lines of:\r\n```ts\r\n    options.execArgv = process.execArgv.concat([`--max-old-space-size=${memoryLimit}`]);\r\n```\r\n\r\n## Steps to reproduce the issue\r\nI suppose the easiest would be:\r\n1. Launch webpack with `--stack-size=…` arguments.\r\n2. Check `ps` output (or equivalent) to see that the `TypeScriptReporterRpcService.js` processes do not have `--stack-size=…` in the command line. (They have `--max-old-space-size=2048` instead.)\r\n\r\n## Issue reproduction repository\r\nSorry, I don't have a minimal test case; hopefully I have provided enough information to be clear what the issue is.\r\n\r\n## Environment\r\n - **fork-ts-checker-webpack-plugin**: 6.5.3\r\n - **typescript**: 5.4.5\r\n - **eslint**: 8.57.0\r\n - **webpack**: 5.91.0\r\n - **os**: macOS Ventura 13.6\r\n",
+        "url": "https://github.com/TypeStrong/fork-ts-checker-webpack-plugin/issues/845"
+    },
+    {
+        "id": 2308488897,
+        "number": 844,
+        "title": "[QUESTION] Equivalent of eslint: {files: \"pattern\"} in ForkTsCheckerWebpackPlugin v9",
+        "state": "closed",
+        "created_at": "2024-05-21T14:48:37Z",
+        "updated_at": "2024-08-17T09:24:38Z",
+        "closed_at": "2024-08-17T09:24:24Z",
+        "author": "rahulranjan-blitz",
+        "comments": 1,
+        "labels": [
+            "question"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "## Current behavior\r\nI am currently upgrading my old webpack config from 2 years back. Earlier I had used ForkTsCheckerWebpackPlugin with {eslint: { files: './src/**/*.{ts, tsx, js, jsx}' } } as constructor argument. on v5.2.0\r\nI wish to pass the same file pattern to be included for type checking but not sure which is the property/field to use, have checked the documentaion. Can someone point me out the field for this?\r\n\r\nThank you so much!\r\n\r\n",
+        "url": "https://github.com/TypeStrong/fork-ts-checker-webpack-plugin/issues/844"
+    },
+    {
+        "id": 2111614890,
+        "number": 838,
+        "title": "`TypeError: Cannot set property mark of #<Object> which has only a getter`",
+        "state": "closed",
+        "created_at": "2024-02-01T05:53:46Z",
+        "updated_at": "2024-08-17T09:49:16Z",
+        "closed_at": "2024-08-17T09:49:15Z",
+        "author": "khteh",
+        "comments": 6,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "## Current behavior\r\n<!-- Describe how the issue manifests. -->\r\nHit the following error on Quasar Vue.JS:\r\n```\r\nTypeError: Cannot set property mark of #<Object> which has only a getter\r\nTypeError: Cannot set property mark of #<Object> which has only a getter\r\n    at Object.connectTypeScriptPerformance (/usr/src/khteh/node_modules/fork-ts-checker-webpack-plugin/lib/typescript-reporter/profile/TypeScriptPerformance.js:12:36)\r\n    at createTypeScriptReporter (/usr/src/khteh/node_modules/fork-ts-checker-webpack-plugin/lib/typescript-reporter/reporter/TypeScriptReporter.js:40:49)\r\n    at Object.<anonymous> (/usr/src/khteh/node_modules/fork-ts-checker-webpack-plugin/lib/reporter/reporter-rpc/ReporterRpcService.js:21:30)\r\n    at Generator.next (<anonymous>)\r\n    at /usr/src/khteh/node_modules/fork-ts-checker-webpack-plugin/lib/reporter/reporter-rpc/ReporterRpcService.js:8:71\r\n    at new Promise (<anonymous>)\r\n    at __awaiter (/usr/src/khteh/node_modules/fork-ts-checker-webpack-plugin/lib/reporter/reporter-rpc/ReporterRpcService.js:4:12)\r\n    at /usr/src/khteh/node_modules/fork-ts-checker-webpack-plugin/lib/reporter/reporter-rpc/ReporterRpcService.js:19:88\r\n    at Object.<anonymous> (/usr/src/khteh/node_modules/fork-ts-checker-webpack-plugin/lib/rpc/RpcService.js:23:38)\r\n    at Generator.next (<anonymous>)\r\nTypeError: Cannot set property mark of #<Object> which has only a getter\r\nTypeError: Cannot set property mark of #<Object> which has only a getter\r\n    at Object.connectTypeScriptPerformance (/usr/src/khteh/node_modules/fork-ts-checker-webpack-plugin/lib/typescript-reporter/profile/TypeScriptPerformance.js:12:36)\r\n    at createTypeScriptReporter (/usr/src/khteh/node_modules/fork-ts-checker-webpack-plugin/lib/typescript-reporter/reporter/TypeScriptReporter.js:40:49)\r\n    at Object.<anonymous> (/usr/src/khteh/node_modules/fork-ts-checker-webpack-plugin/lib/reporter/reporter-rpc/ReporterRpcService.js:21:30)\r\n    at Generator.next (<anonymous>)\r\n    at /usr/src/khteh/node_modules/fork-ts-checker-webpack-plugin/lib/reporter/reporter-rpc/ReporterRpcService.js:8:71\r\n    at new Promise (<anonymous>)\r\n    at __awaiter (/usr/src/khteh/node_modules/fork-ts-checker-webpack-plugin/lib/reporter/reporter-rpc/ReporterRpcService.js:4:12)\r\n    at /usr/src/khteh/node_modules/fork-ts-checker-webpack-plugin/lib/reporter/reporter-rpc/ReporterRpcService.js:19:88\r\n    at Object.<anonymous> (/usr/src/khteh/node_modules/fork-ts-checker-webpack-plugin/lib/rpc/RpcService.js:23:38)\r\n    at Generator.next (<anonymous>)\r\n```\r\n## Expected behavior\r\n<!-- Describe what the desired behavior would be. -->\r\nNo error\r\n## Steps to reproduce the issue\r\n<!-- Describe how we can reproduce this problem step by step. -->\r\nhttps://github.com/khteh/quasar\r\n## Issue reproduction repository\r\n<!-- Location of a (minimal) repository that demonstrates the issue. -->\r\n\r\n## Environment\r\n - **fork-ts-checker-webpack-plugin**: [version from the `package.json`] Not installed explicitly\r\n - **typescript**: [version from the `package.json`] 5.3.3\r\n - **eslint**: [version from the `package.json`] 8.56.0\r\n - **webpack**: [version from the `package.json`] \"@quasar/app-webpack\": \"^3.12.3\",\r\n - **os**: [e.g. Ubuntu 19.04] 23.10\r\n",
+        "url": "https://github.com/TypeStrong/fork-ts-checker-webpack-plugin/issues/838"
+    }
+]

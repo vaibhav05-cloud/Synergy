@@ -1,0 +1,387 @@
+[
+    {
+        "id": 4819555820,
+        "number": 1214,
+        "title": "Test suite: Replica backup/restore",
+        "state": "open",
+        "created_at": "2026-07-06T13:23:13Z",
+        "updated_at": "2026-07-06T18:52:01Z",
+        "closed_at": null,
+        "author": "jesperpedersen",
+        "comments": 2,
+        "labels": [
+            "test"
+        ],
+        "assignees": [
+            "AhmedMabrouk22"
+        ],
+        "locked": false,
+        "body": "We need to create a full test suite that will test\n\n* Test case: Full backup from a replica (PostgreSQL 17+)\n* Test case: Incremental backup from a replica (PostgreSQL 17+)\n* Test case: Full backup from a replica (PostgreSQL 14)\n* Test case: Incremental backup from a replica (PostgreSQL 14)\n\nSo, we need to configure a primary/replica setup, and make sure that backups can be taken from the replica instance instead of the primary one.\n\nThen we need to do the same for a restore based on these backups",
+        "url": "https://github.com/pgmoneta/pgmoneta/issues/1214"
+    },
+    {
+        "id": 4814409869,
+        "number": 1213,
+        "title": "Parallel Azure blob upload using worker pool",
+        "state": "open",
+        "created_at": "2026-07-05T20:55:52Z",
+        "updated_at": "2026-07-05T21:01:18Z",
+        "closed_at": null,
+        "author": "shashidhar-bm",
+        "comments": 0,
+        "labels": [
+            "feature"
+        ],
+        "assignees": [
+            "shashidhar-bm"
+        ],
+        "locked": false,
+        "body": "With #1212, we introduced parallelism across different storage engines. However, file uploads within the Azure storage engine are still performed one at a time. \nThis issue brings worker-pool-based parallel file upload to Azure (same as how s3 upload works today).",
+        "url": "https://github.com/pgmoneta/pgmoneta/issues/1213"
+    },
+    {
+        "id": 4808097956,
+        "number": 1211,
+        "title": "feat: parallel fan-out for remote storage engines",
+        "state": "open",
+        "created_at": "2026-07-04T07:26:37Z",
+        "updated_at": "2026-07-05T12:06:06Z",
+        "closed_at": null,
+        "author": "shashidhar-bm",
+        "comments": 2,
+        "labels": [
+            "feature"
+        ],
+        "assignees": [
+            "shashidhar-bm"
+        ],
+        "locked": false,
+        "body": "Add a unified remote upload node that runs S3, Azure, and SSH uploads in parallel threads\nalso Add MCTF integration tests that bring up all three backends together and prove the uploads actually run in parallel",
+        "url": "https://github.com/pgmoneta/pgmoneta/issues/1211"
+    },
+    {
+        "id": 4800540460,
+        "number": 1207,
+        "title": "Wrong value of \"Path\" key in File object of manifest file for incremental backup workflow v14-16",
+        "state": "closed",
+        "created_at": "2026-07-03T05:09:06Z",
+        "updated_at": "2026-07-04T04:42:50Z",
+        "closed_at": "2026-07-04T04:42:50Z",
+        "author": "ashu3103",
+        "comments": 0,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [
+            "ashu3103"
+        ],
+        "locked": false,
+        "body": "**Describe the bug**\n\nAs per the docs the \"Path\" key of the File object in manifest file should be: The associated string value is the path of the file relative to the root of the backup directory. But currently only file name is displayed rather than the relative path.\n\nExpected:\n\n```\nbase/16615/INCREMENTAL.6117,637bed75f4fe601a2f99eb1c7508a782199cb2199e6179bf40b3b572cc84cb72e6ec82a4ee62ed70630ec4546f2c780744039543b218a057f85b8d601137ab9f\n```\n\nActual:\n\n```\nINCREMENTAL.6117,637bed75f4fe601a2f99eb1c7508a782199cb2199e6179bf40b3b572cc84cb72e6ec82a4ee62ed70630ec4546f2c780744039543b218a057f85b8d601137ab9f\n```\n",
+        "url": "https://github.com/pgmoneta/pgmoneta/issues/1207"
+    },
+    {
+        "id": 4796852123,
+        "number": 1206,
+        "title": "feat: MCTF integration test support for SSH storage engine",
+        "state": "closed",
+        "created_at": "2026-07-02T17:37:29Z",
+        "updated_at": "2026-07-05T20:04:14Z",
+        "closed_at": "2026-07-05T20:04:14Z",
+        "author": "shashidhar-bm",
+        "comments": 0,
+        "labels": [
+            "feature"
+        ],
+        "assignees": [
+            "shashidhar-bm"
+        ],
+        "locked": false,
+        "body": null,
+        "url": "https://github.com/pgmoneta/pgmoneta/issues/1206"
+    },
+    {
+        "id": 4796122124,
+        "number": 1204,
+        "title": "feat: MCTF integration test support for Azure Blob Storage",
+        "state": "closed",
+        "created_at": "2026-07-02T15:59:09Z",
+        "updated_at": "2026-07-03T21:25:31Z",
+        "closed_at": "2026-07-03T21:25:31Z",
+        "author": "shashidhar-bm",
+        "comments": 0,
+        "labels": [
+            "feature"
+        ],
+        "assignees": [
+            "shashidhar-bm"
+        ],
+        "locked": false,
+        "body": null,
+        "url": "https://github.com/pgmoneta/pgmoneta/issues/1204"
+    },
+    {
+        "id": 4795944557,
+        "number": 1202,
+        "title": "check.sh crashes on port conflict",
+        "state": "closed",
+        "created_at": "2026-07-02T15:35:59Z",
+        "updated_at": "2026-07-03T21:28:05Z",
+        "closed_at": "2026-07-03T21:28:05Z",
+        "author": "shashidhar-bm",
+        "comments": 0,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [
+            "shashidhar-bm"
+        ],
+        "locked": false,
+        "body": "`check.sh` currently fails if the default test port is already in use, requiring manual intervention to choose a new port.\nAlso , when setup aborts early, `cleanup()` attempts to use a configuration file that was never created, resulting in a misleading secondary error during shutdown.",
+        "url": "https://github.com/pgmoneta/pgmoneta/issues/1202"
+    },
+    {
+        "id": 4762951302,
+        "number": 1199,
+        "title": "Backup worflow for tablespaces (v14) gives segfault",
+        "state": "closed",
+        "created_at": "2026-06-28T16:57:06Z",
+        "updated_at": "2026-07-03T05:04:26Z",
+        "closed_at": "2026-07-03T05:04:26Z",
+        "author": "ashu3103",
+        "comments": 1,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [
+            "ashu3103"
+        ],
+        "locked": false,
+        "body": "**Describe the bug**\n\nOn executing the full backup command with Tablespaces (no Tablespaces no bug) the server gives segmentation fault. The error originates from `pgmoneta_receive_archive_files` function in `archive.c` which I think is not well tested for lower PostgreSQL versions with Tablespaces. (@Jubilee101 @jesperpedersen can you confirm this)\n\npgmoneta Error Log:\n```\n/home/ashu3103/Desktop/pgmoneta/src/libpgmoneta/archive.c:362:19: runtime error: member access within null pointer of type 'struct message'\nSUMMARY: UndefinedBehaviorSanitizer: undefined-behavior /home/ashu3103/Desktop/pgmoneta/src/libpgmoneta/archive.c:362:19\n```\n\nPostgreSQL Error Log:\n```\n2026-06-28 22:08:52.649 IST [200404] STATEMENT:  BASE_BACKUP LABEL 'pgmoneta_20260628220851' FAST WAL NOWAIT MANIFEST 'yes' MANIFEST_CHECKSUMS 'SHA512';\n2026-06-28 22:08:52.649 IST [200404] ERROR:  base backup could not send data, aborting backup\n2026-06-28 22:08:52.649 IST [200404] STATEMENT:  BASE_BACKUP LABEL 'pgmoneta_20260628220851' FAST WAL NOWAIT MANIFEST 'yes' MANIFEST_CHECKSUMS 'SHA512';\n2026-06-28 22:08:52.649 IST [200404] LOG:  could not send data to client: Broken pipe\n2026-06-28 22:08:52.649 IST [200404] STATEMENT:  BASE_BACKUP LABEL 'pgmoneta_20260628220851' FAST WAL NOWAIT MANIFEST 'yes' MANIFEST_CHECKSUMS 'SHA512';\n2026-06-28 22:08:52.649 IST [200404] FATAL:  connection to client lost\n```\n\n**PostgreSQL**\n\nPostgreSQL Version 14\n",
+        "url": "https://github.com/pgmoneta/pgmoneta/issues/1199"
+    },
+    {
+        "id": 4761811700,
+        "number": 1198,
+        "title": "Backup setup fails non-deterministically in CI",
+        "state": "open",
+        "created_at": "2026-06-28T09:49:19Z",
+        "updated_at": "2026-07-13T13:04:59Z",
+        "closed_at": null,
+        "author": "shashidhar-bm",
+        "comments": 9,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [
+            "MostafaFouad0"
+        ],
+        "locked": false,
+        "body": "I've observed a recurring issue in CI where some tests fail intermittently without any apparent reason. Interestingly, re-running the same job often results in a successful run without any changes.\n\nThe failure that keeps surfacing is:\n```\nFailed tests:\n  - test_cli_archive (test_cli.c:234) - backup failed during setup - check server is online and backup configuration\n```\n\nNeed to find a way to improve CI consistency.",
+        "url": "https://github.com/pgmoneta/pgmoneta/issues/1198"
+    },
+    {
+        "id": 4759075808,
+        "number": 1196,
+        "title": "SCRAM messages split across network segments can underflow the length-prefixed parsers",
+        "state": "closed",
+        "created_at": "2026-06-27T16:25:59Z",
+        "updated_at": "2026-07-03T21:37:48Z",
+        "closed_at": "2026-07-03T21:37:36Z",
+        "author": "fheikens",
+        "comments": 1,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "A SCRAM authentication message (`AuthenticationSASLContinue` / `SASLFinal`) that arrives split across multiple TCP segments is parsed after the first `read()` returns. The parser then computes `sasl_continue->length - 9` (and similar offsets) on a partial message; because `length` is unsigned, a short message underflows to a huge value that reaches `get_scram_attribute()` / `base64_decode()`, risking a crash. The same single-read assumption exists in every SCRAM exchange (server-side and client-side).\n\nThis is the counterpart of pgagroal#834.\n\n### Fix\n\nAdd a `read_complete_message()` that keeps reading until the byte count declared in the message header has arrived and rejects a malformed declared length; use it for the SCRAM exchanges; guard every SCRAM parse site against short messages and missing attributes so a malformed message fails authentication cleanly instead of crashing.\n\n### Acceptance\n\nNew MCTF regression tests covering single-segment, split-segment, truncated-by-close, and invalid-declared-length cases.\n",
+        "url": "https://github.com/pgmoneta/pgmoneta/issues/1196"
+    },
+    {
+        "id": 4728700683,
+        "number": 1194,
+        "title": "mctf: storage-engine integration testing support",
+        "state": "closed",
+        "created_at": "2026-06-23T18:57:16Z",
+        "updated_at": "2026-06-28T15:39:41Z",
+        "closed_at": "2026-06-28T15:39:41Z",
+        "author": "shashidhar-bm",
+        "comments": 0,
+        "labels": [
+            "feature",
+            "test"
+        ],
+        "assignees": [
+            "shashidhar-bm"
+        ],
+        "locked": false,
+        "body": "Related: [discussion thread](https://github.com/pgmoneta/pgmoneta/discussions/1126#discussioncomment-17383633)",
+        "url": "https://github.com/pgmoneta/pgmoneta/issues/1194"
+    },
+    {
+        "id": 4727969209,
+        "number": 1193,
+        "title": "Test: Not double compressed with server-side compression",
+        "state": "closed",
+        "created_at": "2026-06-23T17:10:05Z",
+        "updated_at": "2026-07-06T11:32:34Z",
+        "closed_at": "2026-07-06T11:32:34Z",
+        "author": "AhmedMabrouk22",
+        "comments": 6,
+        "labels": [
+            "test"
+        ],
+        "assignees": [
+            "AhmedMabrouk22"
+        ],
+        "locked": false,
+        "body": "When using `compression = server-zstd` in `pgmoneta.conf`  with `wal_compression = zstd` in `postgresql.conf`, pgmoneta should not apply a second layer of compression on top of what PostgreSQL already did.\nRelated to #944 ",
+        "url": "https://github.com/pgmoneta/pgmoneta/issues/1193"
+    },
+    {
+        "id": 4687129355,
+        "number": 1189,
+        "title": "Introduce Non-blocking I/O to pgmoneta",
+        "state": "open",
+        "created_at": "2026-06-17T21:17:11Z",
+        "updated_at": "2026-06-27T12:46:18Z",
+        "closed_at": null,
+        "author": "ahmed-kamal2004",
+        "comments": 4,
+        "labels": [
+            "enhancement"
+        ],
+        "assignees": [
+            "ahmed-kamal2004"
+        ],
+        "locked": false,
+        "body": null,
+        "url": "https://github.com/pgmoneta/pgmoneta/issues/1189"
+    },
+    {
+        "id": 4676936163,
+        "number": 1186,
+        "title": "memory leak in sha512 verification",
+        "state": "closed",
+        "created_at": "2026-06-16T18:40:39Z",
+        "updated_at": "2026-06-17T18:41:37Z",
+        "closed_at": "2026-06-17T18:41:37Z",
+        "author": "shashidhar-bm",
+        "comments": 1,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [
+            "shashidhar-bm"
+        ],
+        "locked": false,
+        "body": "- ref: [CI](https://github.com/pgmoneta/pgmoneta/actions/runs/27634861783/job/81719330104?pr=1185)\n\n```\n=================================================================\n==1567==ERROR: LeakSanitizer: detected memory leaks\n\nDirect leak of 80 byte(s) in 1 object(s) allocated from:\n    #0 0x5567a7a10fc8 in malloc (/__w/pgmoneta/pgmoneta/build/src/pgmoneta+0xe2fc8) (BuildId: 81c78b6be34a50150e2c117f0a92bc3bc77313f2)\n    #1 0x7f40132b58e2 in pgmoneta_deque_create /__w/pgmoneta/pgmoneta/src/libpgmoneta/deque.c:92:8\n    #2 0x7f401345ed2d in pgmoneta_sha512_verification /__w/pgmoneta/pgmoneta/src/libpgmoneta/verify.c:378:11\n    #3 0x5567a7a660eb in verification_cb /__w/pgmoneta/pgmoneta/src/main.c:2579:7\n    #4 0x7f4014413cca in ev_invoke_pending (/lib64/libev.so.4+0x5cca) (BuildId: 0d1f4b43a0285d5ccf27746e6be5451f1cbda359)\n\nIndirect leak of 32 byte(s) in 1 object(s) allocated from:\n    #0 0x5567a7a10fc8 in malloc (/__w/pgmoneta/pgmoneta/build/src/pgmoneta+0xe2fc8) (BuildId: 81c78b6be34a50150e2c117f0a92bc3bc77313f2)\n    #1 0x7f40132b5e69 in deque_node_create /__w/pgmoneta/pgmoneta/src/libpgmoneta/deque.c:536:8\n    #2 0x7f40132b5aee in pgmoneta_deque_create /__w/pgmoneta/pgmoneta/src/libpgmoneta/deque.c:100:4\n    #3 0x7f401345ed2d in pgmoneta_sha512_verification /__w/pgmoneta/pgmoneta/src/libpgmoneta/verify.c:378:11\n    #4 0x5567a7a660eb in verification_cb /__w/pgmoneta/pgmoneta/src/main.c:2579:7\n    #5 0x7f4014413cca in ev_invoke_pending (/lib64/libev.so.4+0x5cca) (BuildId: 0d1f4b43a0285d5ccf27746e6be5451f1cbda359)\n```",
+        "url": "https://github.com/pgmoneta/pgmoneta/issues/1186"
+    },
+    {
+        "id": 4668261128,
+        "number": 1184,
+        "title": "Local backup isn't retained when local is configured alongside another storage engine",
+        "state": "closed",
+        "created_at": "2026-06-15T19:33:08Z",
+        "updated_at": "2026-06-19T02:20:26Z",
+        "closed_at": "2026-06-19T02:20:26Z",
+        "author": "shashidhar-bm",
+        "comments": 0,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [
+            "shashidhar-bm"
+        ],
+        "locked": false,
+        "body": "For example, with `storage_engine = local, s3`, the backup should be retained both locally and in S3. Currently, however, the local backup data is deleted after it is uploaded to S3.",
+        "url": "https://github.com/pgmoneta/pgmoneta/issues/1184"
+    },
+    {
+        "id": 4668190055,
+        "number": 1183,
+        "title": "Failed backup leaves junk in the cloud",
+        "state": "open",
+        "created_at": "2026-06-15T19:23:32Z",
+        "updated_at": "2026-06-16T18:16:00Z",
+        "closed_at": null,
+        "author": "shashidhar-bm",
+        "comments": 0,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [
+            "shashidhar-bm"
+        ],
+        "locked": false,
+        "body": "the failure cleanup only deletes the local side.,,nd it doesn't remove what was already uploaded to the remote backends.\n",
+        "url": "https://github.com/pgmoneta/pgmoneta/issues/1183"
+    },
+    {
+        "id": 4659966485,
+        "number": 1181,
+        "title": "Restore fails when config files live outside the data directory",
+        "state": "open",
+        "created_at": "2026-06-14T17:22:20Z",
+        "updated_at": "2026-06-15T20:00:24Z",
+        "closed_at": null,
+        "author": "shashidhar-bm",
+        "comments": 10,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "Today I was using a PostgreSQL cluster installed the normal Debian way (`apt install postgresql`). \nThe backup ran fine, but the restore failed, \n\nWhen I checked the log, it said missing `postgresql.conf`, \n```\nERROR vfile_local.c:66 vfile_local: Failed to open file '/tmp/pgm-s3-test/backup/primary/backup/20260614221817/data//postgresql.conf.zstd' (mode='r'): No such file or directory\nERROR extraction.c:162 extraction: failed to create reader for /tmp/pgm-s3-test/backup/primary/backup/20260614221817/data//postgresql.conf.zstd\n```\n\nDigging further, I noticed that on Debian/Ubuntu, PostgreSQL keeps its configuration files under `/etc/postgresql/...` outside the data directory. As a result, `postgresql.conf` and `pg_hba.conf` were never included in the backup, and the restore's \"excluded files\" step aborts when those files are missing.\n\nWhat I don't understand is why this hasn't come up before. Could this be something specific to my machine?",
+        "url": "https://github.com/pgmoneta/pgmoneta/issues/1181"
+    },
+    {
+        "id": 4655752484,
+        "number": 1179,
+        "title": "Remove s3 delete subcommand",
+        "state": "open",
+        "created_at": "2026-06-13T14:06:46Z",
+        "updated_at": "2026-06-13T14:06:46Z",
+        "closed_at": null,
+        "author": "Amr-Shams",
+        "comments": 0,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "`pgmoneta-cli s3 delete <server> <prefix>` leaves orphaned backup.info on disk. After that:\n\n1. pgmoneta-cli list shows a phantom backup\n2. Verification reads broken metadata and errors out\n3. No command reconciles the state\n\npgmoneta-cli delete handles both local+S3 atomically.\n",
+        "url": "https://github.com/pgmoneta/pgmoneta/issues/1179"
+    },
+    {
+        "id": 4626789228,
+        "number": 1176,
+        "title": "pgmoneta_connect: use bounded pgmoneta_snprintf for port formatting",
+        "state": "closed",
+        "created_at": "2026-06-10T00:33:17Z",
+        "updated_at": "2026-06-10T13:53:43Z",
+        "closed_at": "2026-06-10T13:53:43Z",
+        "author": "fheikens",
+        "comments": 0,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "In `pgmoneta_connect` (`src/libpgmoneta/network.c`) the backend port is formatted into the stack buffer `sport` with an unbounded `sprintf`:\n\n```c\nchar sport[6];\n...\nsprintf(&sport[0], \"%d\", port);\n```\n\nThe buffer is already correctly sized — six bytes holds the maximum port (65535) plus its NUL — so this is not an overflow. It is a consistency/hardening gap: every other formatted write in this file already uses the bounded `pgmoneta_snprintf` (e.g. lines 171, 185, 220), and the sister project pgexporter already uses the bounded form here.\n\nProposal: replace the `sprintf` with `pgmoneta_snprintf(&sport[0], sizeof(sport), \"%d\", port)` to match the surrounding code. No behavioural change for valid ports.\n\nContext: surfaced while cross-checking the equivalent pgagroal fix (pgagroal#926 / pgagroal#927) across the sister projects.",
+        "url": "https://github.com/pgmoneta/pgmoneta/issues/1176"
+    },
+    {
+        "id": 4625589436,
+        "number": 1175,
+        "title": "Health Check",
+        "state": "open",
+        "created_at": "2026-06-09T21:04:01Z",
+        "updated_at": "2026-06-09T21:04:01Z",
+        "closed_at": null,
+        "author": "trxvorr",
+        "comments": 0,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "cross port from pgagroal",
+        "url": "https://github.com/pgmoneta/pgmoneta/issues/1175"
+    }
+]

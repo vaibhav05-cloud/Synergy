@@ -1,0 +1,242 @@
+[
+    {
+        "sha": "55526a18268bbc1ddaf8a6b7850c33d984eac9e9",
+        "author": "Junio C Hamano",
+        "email": "gitster@pobox.com",
+        "date": "2026-07-13T15:27:08Z",
+        "message": "The 2nd batch for Git 2.56\n\nSigned-off-by: Junio C Hamano <gitster@pobox.com>",
+        "url": "https://github.com/git/git/commit/55526a18268bbc1ddaf8a6b7850c33d984eac9e9"
+    },
+    {
+        "sha": "6eb10fffa55519e041423150eacf913a3213dac5",
+        "author": "Junio C Hamano",
+        "email": "gitster@pobox.com",
+        "date": "2026-07-13T15:27:27Z",
+        "message": "Merge branch 'ps/odb-generalize-prepare'\n\nThe 'reprepare()' callback for object database sources has been\ngeneralized into a 'prepare()' callback with an optional flush cache\nflag, and a new 'odb_prepare()' wrapper has been introduced to allow\npre-opening object database sources.\n\n* ps/odb-generalize-prepare:\n  odb: introduce `odb_prepare()`\n  odb/source: generalize `reprepare()` callback",
+        "url": "https://github.com/git/git/commit/6eb10fffa55519e041423150eacf913a3213dac5"
+    },
+    {
+        "sha": "3c775abab0b4acb9db2098ac07ee5d6565494080",
+        "author": "Junio C Hamano",
+        "email": "gitster@pobox.com",
+        "date": "2026-07-13T15:27:27Z",
+        "message": "Merge branch 'kk/prio-queue-get-put-fusion'\n\nThe lazy priority queue optimization pattern (deferring actual removal\nin 'prio_queue_get()' to allow get+put fusion) has been folded\ndirectly into 'prio_queue' itself, speeding up commit traversal\nworkflows and simplifying callers.\n\n* kk/prio-queue-get-put-fusion:\n  prio-queue: fold lazy_queue into prio_queue for automatic get+put fusion\n  prio-queue: rename .nr to .nr_ and add accessor helpers",
+        "url": "https://github.com/git/git/commit/3c775abab0b4acb9db2098ac07ee5d6565494080"
+    },
+    {
+        "sha": "6d6939a568d76120e77058e5959c3b82b4b90f1c",
+        "author": "Junio C Hamano",
+        "email": "gitster@pobox.com",
+        "date": "2026-07-13T15:27:27Z",
+        "message": "Merge branch 'hn/branch-push-slip-advice'\n\nWhen 'git push origin/main' or 'git branch origin main' is run, the\ncommand is now recognized as a potential typo, and advice has been\nadded to offer a typo fix.\n\n* hn/branch-push-slip-advice:\n  push: suggest <remote> <branch> for a slash slip\n  branch: suggest <remote>/<branch> on upstream slip",
+        "url": "https://github.com/git/git/commit/6d6939a568d76120e77058e5959c3b82b4b90f1c"
+    },
+    {
+        "sha": "431cacf73dc3cadc84e86514d7a0a6038a87f2bc",
+        "author": "Junio C Hamano",
+        "email": "gitster@pobox.com",
+        "date": "2026-07-13T15:27:26Z",
+        "message": "Merge branch 'jk/format-patch-leakfix'\n\nA memory leak in the '--base' handling of 'git format-patch' has been\nplugged, and the leak reporting of the test suite when running under a\nTAP harness has been improved.\n\n* jk/format-patch-leakfix:\n  format-patch: fix leak of rev_info in prepare_bases()\n  t: move LSan errors from stdout to stderr",
+        "url": "https://github.com/git/git/commit/431cacf73dc3cadc84e86514d7a0a6038a87f2bc"
+    },
+    {
+        "sha": "c58d5183483f5b2247a5ffc8ec9af9c275b23f71",
+        "author": "Junio C Hamano",
+        "email": "gitster@pobox.com",
+        "date": "2026-07-13T15:27:26Z",
+        "message": "Merge branch 'jk/reftable-leakfix'\n\nA memory leak in the 'reftable_writer_new()' initialization function\nhas been fixed by delaying the allocation of 'struct reftable_writer'\nuntil after input options are validated.\n\n* jk/reftable-leakfix:\n  reftable: fix unlikely leak on API error",
+        "url": "https://github.com/git/git/commit/c58d5183483f5b2247a5ffc8ec9af9c275b23f71"
+    },
+    {
+        "sha": "6635b9d55e49b45c8f4b19ca5770e13f645e3ba0",
+        "author": "Junio C Hamano",
+        "email": "gitster@pobox.com",
+        "date": "2026-07-13T15:27:26Z",
+        "message": "Merge branch 'ad/gpg-strip-cr-before-lf'\n\nThe GPG and SSH signature parsing code has been corrected to strip\ncarriage return characters only when they immediately precede line\nfeeds, instead of unconditionally stripping all carriage returns.\n\n* ad/gpg-strip-cr-before-lf:\n  gpg-interface: fix strip_cr_before_lf to only remove CR before LF",
+        "url": "https://github.com/git/git/commit/6635b9d55e49b45c8f4b19ca5770e13f645e3ba0"
+    },
+    {
+        "sha": "f60db8d575adb79761d363e026fb49bddf330c73",
+        "author": "Taylor Blau",
+        "email": "ttaylorr@openai.com",
+        "date": "2026-07-09T02:26:20Z",
+        "message": "mailmap: map Taylor Blau's work address\n\nSigned-off-by: Taylor Blau <ttaylorr@openai.com>\nSigned-off-by: Junio C Hamano <gitster@pobox.com>",
+        "url": "https://github.com/git/git/commit/f60db8d575adb79761d363e026fb49bddf330c73"
+    },
+    {
+        "sha": "f85a7e662054a7b0d9070e432508831afa214b47",
+        "author": "Junio C Hamano",
+        "email": "gitster@pobox.com",
+        "date": "2026-07-06T22:49:17Z",
+        "message": "Start Git 2.56 cycle\n\nThis time, do not forget to update GIT-VERSION-GEN to say 2.55.GIT\n\nSigned-off-by: Junio C Hamano <gitster@pobox.com>",
+        "url": "https://github.com/git/git/commit/f85a7e662054a7b0d9070e432508831afa214b47"
+    },
+    {
+        "sha": "83fd231fc6831f56953c93ee5778bfb83ee05582",
+        "author": "Junio C Hamano",
+        "email": "gitster@pobox.com",
+        "date": "2026-07-06T22:50:25Z",
+        "message": "Merge branch 'sg/t3420-do-not-grep-in-missing-file'\n\nA test checking interactions between git rebase --quit and\nautostash in t3420-rebase-autostash.sh has been corrected to use\ntest_path_is_missing instead of ! grep on a file that shouldn't\nexist in the conflicted state.\n\n* sg/t3420-do-not-grep-in-missing-file:\n  t3420-rebase-autostash: don't try to grep non-existing files",
+        "url": "https://github.com/git/git/commit/83fd231fc6831f56953c93ee5778bfb83ee05582"
+    },
+    {
+        "sha": "a4d2e8a074a9ee95dfef1f7da21b5fbe0108f3f6",
+        "author": "Junio C Hamano",
+        "email": "gitster@pobox.com",
+        "date": "2026-07-06T22:50:24Z",
+        "message": "Merge branch 'ps/connected-generic-promisor-checks'\n\nThe connectivity check has been refactored to search for promisor\nobjects in a generic way using the object database interface,\nrather than iterating packfiles directly. This allows connectivity\nchecks to work properly in repositories that do not use packfiles.\n\n* ps/connected-generic-promisor-checks:\n  connected: search promisor objects generically\n  connected: split out promisor-based connectivity check\n  odb/source-packed: support flags when iterating an object prefix\n  odb/source-packed: extract logic to skip certain packs",
+        "url": "https://github.com/git/git/commit/a4d2e8a074a9ee95dfef1f7da21b5fbe0108f3f6"
+    },
+    {
+        "sha": "3442a0fb7927f3bb6710c1c75f03b4f783605d57",
+        "author": "Junio C Hamano",
+        "email": "gitster@pobox.com",
+        "date": "2026-07-06T22:50:24Z",
+        "message": "Merge branch 'ps/refs-onbranch-fixes'\n\nReference backend configuration has been updated to load lazily to\navoid recursive calls during repository initialization when 'onbranch'\nconfiguration conditions are evaluated. This has also fixed a memory\nleak and allowed the unused `chdir_notify_reparent()` machinery to be\ndropped.\n\n* ps/refs-onbranch-fixes:\n  refs: protect against chicken-and-egg recursion\n  refs/reftable: lazy-load configuration to fix chicken-and-egg\n  reftable: split up write options\n  refs/files: lazy-load configuration to fix chicken-and-egg\n  refs: move parsing of \"core.logAllRefUpdates\" back into ref stores\n  repository: free main reference database\n  chdir-notify: drop unused `chdir_notify_reparent()`\n  refs: unregister reference stores from \"chdir_notify\"\n  setup: don't apply \"GIT_REFERENCE_BACKEND\" without a repository\n  setup: stop applying repository format twice\n  setup: inline `check_and_apply_repository_format()`",
+        "url": "https://github.com/git/git/commit/3442a0fb7927f3bb6710c1c75f03b4f783605d57"
+    },
+    {
+        "sha": "7fe674d8b6186ffd7ae320ef8111225a090b7eee",
+        "author": "Junio C Hamano",
+        "email": "gitster@pobox.com",
+        "date": "2026-07-06T22:50:23Z",
+        "message": "Merge branch 'wy/doc-clarify-review-replies'\n\nDocumentation on community contribution guidelines has been updated to\nencourage replying to review comments before rerolling, and to advise\na default limit of at most one reroll per day to give reviewers across\ndifferent time zones enough time to participate.\n\n* wy/doc-clarify-review-replies:\n  doc: advise batching patch rerolls\n  doc: encourage review replies before rerolling",
+        "url": "https://github.com/git/git/commit/7fe674d8b6186ffd7ae320ef8111225a090b7eee"
+    },
+    {
+        "sha": "2b0d1afb967d6e0e458204275b1fa3b6a8bedd2b",
+        "author": "Junio C Hamano",
+        "email": "gitster@pobox.com",
+        "date": "2026-07-06T22:50:23Z",
+        "message": "Merge branch 'jk/repo-info-path-keys'\n\nThe \"git repo info\" command has been taught new keys to output both\nabsolute and relative paths for \"gitdir\" and \"commondir\", supported by\na new path-formatting helper extracted from \"git rev-parse\".\n\n* jk/repo-info-path-keys:\n  repo: add path.gitdir with absolute and relative suffix formatting\n  repo: add path.commondir with absolute and relative suffix formatting\n  path: extract format_path() and use in rev-parse",
+        "url": "https://github.com/git/git/commit/2b0d1afb967d6e0e458204275b1fa3b6a8bedd2b"
+    },
+    {
+        "sha": "2e5d1cc0f8388503af74d729e8feecbd94c8e2d0",
+        "author": "Junio C Hamano",
+        "email": "gitster@pobox.com",
+        "date": "2026-07-06T22:50:23Z",
+        "message": "Merge branch 'mv/log-follow-mergy'\n\n\"git log --follow\" has been updated to better handle non-linear\nhistory, in which the path being tracked gets renamed differently in\nmultiple history lines.\n\n* mv/log-follow-mergy:\n  log: improve --follow following renames for non-linear history",
+        "url": "https://github.com/git/git/commit/2e5d1cc0f8388503af74d729e8feecbd94c8e2d0"
+    },
+    {
+        "sha": "8af4256eb1fd8ca28e81948746909e6b8e8d190e",
+        "author": "Junio C Hamano",
+        "email": "gitster@pobox.com",
+        "date": "2026-07-06T22:50:23Z",
+        "message": "Merge branch 'pw/status-rebase-todo'\n\nThe display of the rebase todo list in \"git status\" has been\nimproved to correctly abbreviate object IDs for more commands and\navoid misinterpreting refs as object IDs.\n\n* pw/status-rebase-todo:\n  status: improve rebase todo list parsing\n  sequencer: factor out parsing of todo commands",
+        "url": "https://github.com/git/git/commit/8af4256eb1fd8ca28e81948746909e6b8e8d190e"
+    },
+    {
+        "sha": "982308d6de195e55372d51765842eae7683bc0f0",
+        "author": "Junio C Hamano",
+        "email": "gitster@pobox.com",
+        "date": "2026-07-06T22:50:22Z",
+        "message": "Merge branch 'tb/pack-path-walk-bitmap-delta-islands'\n\nThe pack-objects command has been updated to support reachability\nbitmaps and delta-islands concurrently with the `--path-walk` option,\nallowing faster packaging by falling back to path-walk when bitmaps\ncannot fully satisfy the request.\n\n* tb/pack-path-walk-bitmap-delta-islands:\n  pack-objects: support `--delta-islands` with `--path-walk`\n  pack-objects: extract `record_tree_depth()` helper\n  pack-objects: support reachability bitmaps with `--path-walk`\n  t/perf: drop p5311's lookup-table permutation",
+        "url": "https://github.com/git/git/commit/982308d6de195e55372d51765842eae7683bc0f0"
+    },
+    {
+        "sha": "32d5049a71942df782d4abccd92f2a179c70cfed",
+        "author": "Junio C Hamano",
+        "email": "gitster@pobox.com",
+        "date": "2026-07-06T22:50:22Z",
+        "message": "Merge branch 'jc/submittingpatches-design-critiques'\n\nThe documentation in SubmittingPatches has been updated to clarify how\npatch contributors should respond to design and viability critiques,\nand how the resolution of such critiques should be recorded in the\nfinal commit messages.\n\n* jc/submittingpatches-design-critiques:\n  SubmittingPatches: address design critiques",
+        "url": "https://github.com/git/git/commit/32d5049a71942df782d4abccd92f2a179c70cfed"
+    },
+    {
+        "sha": "3b89f1206bb760cd27f9174ac65bab67ed5238be",
+        "author": "Junio C Hamano",
+        "email": "gitster@pobox.com",
+        "date": "2026-07-06T22:50:22Z",
+        "message": "Merge branch 'kh/submittingpatches-trailers'\n\nThe trailer sections in SubmittingPatches have been updated to\nencourage use of standard trailers.\n\n* kh/submittingpatches-trailers:\n  SubmittingPatches: note that trailer order matters\n  SubmittingPatches: be consistent with trailer markup\n  SubmittingPatches: document Based-on-patch-by trailer\n  SubmittingPatches: discourage common Linux trailers\n  SubmittingPatches: encourage trailer use for substantial help",
+        "url": "https://github.com/git/git/commit/3b89f1206bb760cd27f9174ac65bab67ed5238be"
+    },
+    {
+        "sha": "b7daa7ef643145a2dbcbea13ba11ad507abd6b60",
+        "author": "Junio C Hamano",
+        "email": "gitster@pobox.com",
+        "date": "2026-07-06T22:50:22Z",
+        "message": "Merge branch 'mh/fetch-follow-remote-head-config'\n\nThe `fetch.followRemoteHEAD` configuration variable has been added to\nprovide a default for the per-remote `remote.<name>.followRemoteHEAD`\nsetting.\n\n* mh/fetch-follow-remote-head-config:\n  fetch: fixup a misaligned comment\n  fetch: add configuration variable fetch.followRemoteHEAD\n  fetch: refactor do_fetch handling of followRemoteHEAD\n  fetch: return 0 on known git_fetch_config\n  fetch: rename function report_set_head\n  t5510: cleanup remote in followRemoteHEAD dangling ref test\n  doc: explain fetchRemoteHEADWarn advice\n  fetch: fixup set_head advice for warn-if-not-branch",
+        "url": "https://github.com/git/git/commit/b7daa7ef643145a2dbcbea13ba11ad507abd6b60"
+    },
+    {
+        "sha": "6786e9ce003264b765125c431835f00fddf61b1f",
+        "author": "Junio C Hamano",
+        "email": "gitster@pobox.com",
+        "date": "2026-07-06T22:50:21Z",
+        "message": "Merge branch 'po/hash-object-size-t'\n\nSupport for hashing loose or packed objects larger than 4GB on Windows\nand other LLP64 platforms has been improved by converting object header\nbuffers and data-handling functions from 'unsigned long' to 'size_t'.\n\n* po/hash-object-size-t:\n  hash-object: add a >4GB/LLP64 test case using filtered input\n  hash-object: add another >4GB/LLP64 test case\n  hash-object --stdin: verify that it works with >4GB/LLP64\n  hash algorithms: use size_t for section lengths\n  object-file.c: use size_t for header lengths\n  hash-object: demonstrate a >4GB/LLP64 problem",
+        "url": "https://github.com/git/git/commit/6786e9ce003264b765125c431835f00fddf61b1f"
+    },
+    {
+        "sha": "13f5190881de9dcca1dae206f628c8e6faab9689",
+        "author": "Junio C Hamano",
+        "email": "gitster@pobox.com",
+        "date": "2026-07-06T22:50:21Z",
+        "message": "Merge branch 'ty/move-protect-hfs-ntfs'\n\nThe global configuration variables protect_hfs and protect_ntfs have\nbeen migrated into struct repo_config_values to tie them to\nper-repository configuration state.\n\n* ty/move-protect-hfs-ntfs:\n  environment: use 'repo->initialized' for repo_protect_hfs() and repo_protect_ntfs()\n  environment: move 'protect_hfs' and 'protect_ntfs' into 'repo_config_values'",
+        "url": "https://github.com/git/git/commit/13f5190881de9dcca1dae206f628c8e6faab9689"
+    },
+    {
+        "sha": "a7f8e847722a398fd523f61931bf35b8bb5f4664",
+        "author": "Junio C Hamano",
+        "email": "gitster@pobox.com",
+        "date": "2026-07-06T22:50:21Z",
+        "message": "Merge branch 'ps/odb-source-packed'\n\nThe packed object source has been refactored into a proper struct\nodb_source.\n\n* ps/odb-source-packed:\n  odb/source-packed: drop pointer to \"files\" parent source\n  midx: refactor interfaces to work on \"packed\" source\n  odb/source-packed: stub out remaining functions\n  odb/source-packed: wire up `freshen_object()` callback\n  odb/source-packed: wire up `find_abbrev_len()` callback\n  odb/source-packed: wire up `count_objects()` callback\n  odb/source-packed: wire up `for_each_object()` callback\n  odb/source-packed: wire up `read_object_stream()` callback\n  odb/source-packed: wire up `read_object_info()` callback\n  packfile: use higher-level interface to implement `has_object_pack()`\n  odb/source-packed: wire up `reprepare()` callback\n  odb/source-packed: wire up `close()` callback\n  odb/source-packed: start converting to a proper `struct odb_source`\n  odb/source-packed: store pointer to \"files\" instead of generic source\n  packfile: move packed source into \"odb/\" subsystem\n  packfile: split out packfile list logic\n  packfile: rename `struct packfile_store` to `odb_source_packed`",
+        "url": "https://github.com/git/git/commit/a7f8e847722a398fd523f61931bf35b8bb5f4664"
+    },
+    {
+        "sha": "37997b0aa4b13f15173521d4e3897277d0af7ef6",
+        "author": "Junio C Hamano",
+        "email": "gitster@pobox.com",
+        "date": "2026-07-06T22:50:20Z",
+        "message": "Merge branch 'td/ref-filter-restore-prefix-iteration'\n\nCommands that list branches and tags (like git branch and git tag)\nhave been optimized to pass the namespace prefix when initializing\ntheir ref iterator, avoiding a loose-ref scaling regression in\nrepositories with many unrelated loose references.\n\n* td/ref-filter-restore-prefix-iteration:\n  ref-filter: restore prefix-scoped iteration",
+        "url": "https://github.com/git/git/commit/37997b0aa4b13f15173521d4e3897277d0af7ef6"
+    },
+    {
+        "sha": "aed0faa52bfcdd79cac5b1491dc89d1051fa7ea1",
+        "author": "Junio C Hamano",
+        "email": "gitster@pobox.com",
+        "date": "2026-07-06T22:50:20Z",
+        "message": "Merge branch 'en/ort-harden-against-corrupt-trees'\n\nThe 'ort' merge backend has been hardened against corrupt trees by\nensuring it aborts under appropriate error conditions.\n\n* en/ort-harden-against-corrupt-trees:\n  cache-tree: fix verify_cache() to catch non-adjacent D/F conflicts\n  merge-ort: abort merge when trees have duplicate entries\n  merge-ort: free diff pairs queue in clear_or_reinit_internal_opts()\n  merge-ort: drop unnecessary show_all_errors from collect_merge_info()\n  merge-ort: propagate callback errors from traverse_trees_wrapper()",
+        "url": "https://github.com/git/git/commit/aed0faa52bfcdd79cac5b1491dc89d1051fa7ea1"
+    },
+    {
+        "sha": "ed5d4f6e899ff09c0852711b5918f3d740ce1669",
+        "author": "Junio C Hamano",
+        "email": "gitster@pobox.com",
+        "date": "2026-07-06T22:50:20Z",
+        "message": "Merge branch 'jk/setup-gitfile-diag-fix'\n\nA regression in the error diagnosis code for invalid .git files has\nbeen fixed, avoiding a potential NULL-pointer crash when reporting\nthat a .git file does not point to a valid repository.\n\n* jk/setup-gitfile-diag-fix:\n  read_gitfile(): simplify NOT_A_REPO error message",
+        "url": "https://github.com/git/git/commit/ed5d4f6e899ff09c0852711b5918f3d740ce1669"
+    },
+    {
+        "sha": "57305b8b465eb85bfab03007921071f2fe5b1d10",
+        "author": "Junio C Hamano",
+        "email": "gitster@pobox.com",
+        "date": "2026-07-06T22:50:20Z",
+        "message": "Merge branch 'rs/cat-file-default-format-optim'\n\nThe default format path of git cat-file --batch has been optimized\nto use strbuf_add_oid_hex() and strbuf_add_uint() instead of\nstrbuf_addf(), yielding a noticeable speedup.\n\n* rs/cat-file-default-format-optim:\n  cat-file: speed up default format",
+        "url": "https://github.com/git/git/commit/57305b8b465eb85bfab03007921071f2fe5b1d10"
+    },
+    {
+        "sha": "da898390cb4742080f1484f108d00afcebcb8b2c",
+        "author": "Junio C Hamano",
+        "email": "gitster@pobox.com",
+        "date": "2026-07-06T22:50:19Z",
+        "message": "Merge branch 'ps/doc-recommend-b4'\n\nProject-specific configuration for b4 has been introduced, and the\ndocumentation has been updated to recommend using it as a\nstreamlined method for submitting patches.\n\n* ps/doc-recommend-b4:\n  b4: introduce configuration for the Git project\n  MyFirstContribution: recommend the use of b4\n  MyFirstContribution: recommend shallow threading of cover letters",
+        "url": "https://github.com/git/git/commit/da898390cb4742080f1484f108d00afcebcb8b2c"
+    },
+    {
+        "sha": "e49c0e898a540577c42ee3693368a273534dc9eb",
+        "author": "Junio C Hamano",
+        "email": "gitster@pobox.com",
+        "date": "2026-07-06T22:50:19Z",
+        "message": "Merge branch 'ps/setup-drop-global-state'\n\nThe refactoring of 'setup.c' has been continued to drop remaining\nglobal state (`git_work_tree_cfg`, `is_bare_repository_cfg`), updating\n`is_bare_repository()` to no longer implicitly rely on\n`the_repository`.\n\n* ps/setup-drop-global-state:\n  treewide: drop USE_THE_REPOSITORY_VARIABLE\n  environment: stop using `the_repository` in `is_bare_repository()`\n  environment: split up concerns of `is_bare_repository_cfg`\n  builtin/init: stop modifying `is_bare_repository_cfg`\n  setup: remove global `git_work_tree_cfg` variable\n  builtin/init: simplify logic to configure worktree\n  builtin/init: stop modifying global `git_work_tree_cfg` variable",
+        "url": "https://github.com/git/git/commit/e49c0e898a540577c42ee3693368a273534dc9eb"
+    },
+    {
+        "sha": "57c386f9a5f57973cc70be5375bbe30a6a9fd864",
+        "author": "Junio C Hamano",
+        "email": "gitster@pobox.com",
+        "date": "2026-07-06T22:50:19Z",
+        "message": "Merge branch 'cc/promisor-auto-config-url-more'\n\nThe handling of promisor-remote protocol capability has been updated\nto allow the other side to add to the list of promisor remotes via the\n'promisor.acceptFromServerURL' configuration variable.\n\n* cc/promisor-auto-config-url-more:\n  doc: promisor: improve acceptFromServer entry\n  promisor-remote: auto-configure unknown remotes\n  promisor-remote: trust known remotes matching acceptFromServerUrl\n  promisor-remote: introduce promisor.acceptFromServerUrl\n  promisor-remote: add 'local_name' to 'struct promisor_info'\n  urlmatch: add url_normalize_pattern() helper\n  urlmatch: change 'allow_globs' arg to bool\n  t5710: simplify 'mkdir X' followed by 'git -C X init'",
+        "url": "https://github.com/git/git/commit/57c386f9a5f57973cc70be5375bbe30a6a9fd864"
+    }
+]

@@ -1,0 +1,369 @@
+[
+    {
+        "id": 4699919773,
+        "number": 2328,
+        "title": "[Bug]: Wrong items at reorder",
+        "state": "open",
+        "created_at": "2026-06-19T10:24:25Z",
+        "updated_at": "2026-06-19T10:24:25Z",
+        "closed_at": null,
+        "author": "TiboriusDev",
+        "comments": 0,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### What happened?\n\n<img width=\"582\" height=\"800\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/4df54232-897a-49a4-9395-46515d7d0c6c\" />\n\nI have several tables on multiple pages, and the “Reorder” feature works on all of them. Now I have a page with several tables, only one of which has a “Reorder” option. The items are being loaded from the wrong table, so the ‘Reorder’ feature isn't working. I renamed the “reorder” method, which now calls the correct method, but the items are still being loaded from the wrong table. Any idea what the problem might be? I couldn’t find any differences compared to the page where it works.\n\n<img width=\"922\" height=\"722\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/31f8af0c-32a6-4562-b927-7d2d6fac756d\" />\n\n<img width=\"1160\" height=\"313\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/32272e9c-1b67-4aac-9251-fb86b7e253a2\" />\n\n<img width=\"1072\" height=\"466\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/6aad1831-4735-43c8-9fc3-ae3f0677e259\" />\n\n### How to reproduce the bug\n\n_No response_\n\n### Package Version\n\n_No response_\n\n### PHP Version\n\n_No response_\n\n### Laravel Version\n\n_No response_\n\n### Alpine Version\n\n_No response_\n\n### Theme\n\n_No response_\n\n### Notes\n\n_No response_\n\n### Error Message\n\n_No response_",
+        "url": "https://github.com/rappasoft/laravel-livewire-tables/issues/2328"
+    },
+    {
+        "id": 4453372497,
+        "number": 2327,
+        "title": "[Feature Request]: Add support for Laravel 13",
+        "state": "open",
+        "created_at": "2026-05-15T11:01:15Z",
+        "updated_at": "2026-06-29T06:56:12Z",
+        "closed_at": null,
+        "author": "amansandhu0011",
+        "comments": 5,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "### Overview\n\nPlease add support for Laravel 13.\n\nCurrently, the package cannot be installed in Laravel 13 applications due to version constraints. It would be great if the package could be updated to support the latest Laravel release.\n\nThanks for the great work on this package.\n\n### Detailed explanation\n\n_No response_\n\n### Notes\n\n_No response_",
+        "url": "https://github.com/rappasoft/laravel-livewire-tables/issues/2327"
+    },
+    {
+        "id": 4117865948,
+        "number": 2323,
+        "title": "[Bug]: Blurry Titles on documentation",
+        "state": "closed",
+        "created_at": "2026-03-23T03:01:09Z",
+        "updated_at": "2026-04-06T00:54:07Z",
+        "closed_at": "2026-04-06T00:54:07Z",
+        "author": "Sweasley",
+        "comments": 5,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### What happened?\n\nI am trying to browser the docs, then the text on the left are all blurry. But it works\n\n<img width=\"1525\" height=\"891\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/e054c529-5ad5-48e8-8306-9edf53560a07\" />\n\n### How to reproduce the bug\n\nJust load the documentation website\n\n### Package Version\n\n3.7\n\n### PHP Version\n\n8.2.x\n\n### Laravel Version\n\n12\n\n### Alpine Version\n\n_No response_\n\n### Theme\n\nTailwind 3.x\n\n### Notes\n\n_No response_\n\n### Error Message\n\n_No response_",
+        "url": "https://github.com/rappasoft/laravel-livewire-tables/issues/2323"
+    },
+    {
+        "id": 4096264395,
+        "number": 2322,
+        "title": "[Feature Request]: Laravel 13 Support",
+        "state": "closed",
+        "created_at": "2026-03-18T16:20:05Z",
+        "updated_at": "2026-04-13T15:47:51Z",
+        "closed_at": "2026-04-13T15:47:51Z",
+        "author": "cytech",
+        "comments": 0,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "### Overview\n\nLaravel 13 Support\n\n### Detailed explanation\n\n_No response_\n\n### Notes\n\n_No response_",
+        "url": "https://github.com/rappasoft/laravel-livewire-tables/issues/2322"
+    },
+    {
+        "id": 3889768050,
+        "number": 2317,
+        "title": "[Bug]: Errore when loading rappasoft/laravel-livewire-tables/core.min.js",
+        "state": "closed",
+        "created_at": "2026-02-03T07:53:22Z",
+        "updated_at": "2026-03-20T05:30:38Z",
+        "closed_at": "2026-03-20T05:30:38Z",
+        "author": "RiccardoBurderiAG",
+        "comments": 2,
+        "labels": [
+            "bug",
+            "wontfix"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### What happened?\n\nAs the object i am recieveng an error while loading my laravel platform:\n\nVM898:1 Uncaught (in promise) SyntaxError: Unexpected token '<', \"<!-- This \"... is not valid JSON\n    at JSON.parse (<anonymous>)\n    at Wo (index.js:163:39)\n    at async Kt.send (pool.js:44:9)\n\nis there any way to fix this?\n\n### How to reproduce the bug\n\n_No response_\n\n### Package Version\n\n_No response_\n\n### PHP Version\n\nNone\n\n### Laravel Version\n\n_No response_\n\n### Alpine Version\n\n_No response_\n\n### Theme\n\nNone\n\n### Notes\n\n_No response_\n\n### Error Message\n\n_No response_",
+        "url": "https://github.com/rappasoft/laravel-livewire-tables/issues/2317"
+    },
+    {
+        "id": 3816191417,
+        "number": 2315,
+        "title": "[Feature Request]: Add support for Livewire v4",
+        "state": "closed",
+        "created_at": "2026-01-15T06:26:28Z",
+        "updated_at": "2026-07-07T16:52:04Z",
+        "closed_at": "2026-07-07T16:52:04Z",
+        "author": "abrardev99",
+        "comments": 23,
+        "labels": [
+            "wontfix"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Overview\n\nLivewire version 4 launched today, see docs https://livewire.laravel.com/docs/4.x/upgrading\n\n### Detailed explanation\n\n_No response_\n\n### Notes\n\n_No response_",
+        "url": "https://github.com/rappasoft/laravel-livewire-tables/issues/2315"
+    },
+    {
+        "id": 3780942517,
+        "number": 2313,
+        "title": "[Bug]: setDefaultSort not working",
+        "state": "closed",
+        "created_at": "2026-01-05T10:16:15Z",
+        "updated_at": "2026-03-07T05:11:28Z",
+        "closed_at": "2026-03-07T05:11:28Z",
+        "author": "TiboriusDev",
+        "comments": 2,
+        "labels": [
+            "bug",
+            "wontfix"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### What happened?\n\nI don't know when it stopped working, but at some point setDefaultSort had no effect. We had it in another place with the date and now also with the Sort column.\n\n**composer**\n<img width=\"494\" height=\"653\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/af081349-1412-4f9a-879d-ee56cbb40f16\" />\n\n\n**package**\n<img width=\"414\" height=\"382\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/b738fd3c-99a1-4dea-8f5f-75e0ecad4944\" />\n\n\n\n\n“...” is just a placeholder.\n```php   \npublic function configure(): void\n    {\n        $this->setAdditionalSelects([\n\t\t\t... as id'\n\t\t]);\n        $this->setPrimaryKey('id');\n\n        $this->setSearchDisabled();\n        $this->setPerPageVisibilityStatus(false);\n        $this->setColumnSelectDisabled();\n\n        $this->setReorderEnabled();\n\n        $this->setDefaultSort('sort', 'asc');\n\n\t\t$this->setThAttributes(function(Column $column) {\n\t\t\t$title = $column->getTitle();\n\n\t\t\tswitch ($title) {\n\t\t\t\tcase __('...'):\n\t\t\t\t\treturn [\n\t\t\t\t\t\t'class' => 'w-full',\n\t\t\t\t\t\t'default' => true, \n\t\t\t\t\t\t'default-styling' => true\n\t\t\t\t\t];\n\t\t\t\t\tbreak;\n\t\t\t\tcase __('table.actions'):\n\t\t\t\t\treturn [\n\t\t\t\t\t\t'class' => 'column-action',\n\t\t\t\t\t\t'default' => true, \n\t\t\t\t\t\t'default-styling' => true\n\t\t\t\t\t];\n\t\t\t\t\tbreak;\n\t\t\t}\n\t\t \n\t\t\treturn ['default' => true, 'default-styling' => true];\n\t\t});\n\n\t\t$this->setTdAttributes(function(Column $column) {\n\t\t\t$title = $column->getTitle();\n\n\t\t\tswitch ($title) {\n\t\t\t\tcase __('...'):\n\t\t\t\t\treturn [\n\t\t\t\t\t\t'class' => 'whitespace-normal',\n\t\t\t\t\t];\n\t\t\t\t\tbreak;\n\t\t\t}\n\t\t \n\t\t\treturn ['default' => true, 'default-styling' => true];\n\t\t});\n    }\n```\n\n### How to reproduce the bug\n\n_No response_\n\n### Package Version\n\n_No response_\n\n### PHP Version\n\nNone\n\n### Laravel Version\n\n_No response_\n\n### Alpine Version\n\n_No response_\n\n### Theme\n\nNone\n\n### Notes\n\n_No response_\n\n### Error Message\n\n_No response_",
+        "url": "https://github.com/rappasoft/laravel-livewire-tables/issues/2313"
+    },
+    {
+        "id": 3671189847,
+        "number": 2311,
+        "title": "[Feature Request]: Add a dark mode theme to the documentation or make the text more readable ",
+        "state": "closed",
+        "created_at": "2025-11-27T12:10:33Z",
+        "updated_at": "2026-04-18T13:59:32Z",
+        "closed_at": "2026-04-18T09:22:41Z",
+        "author": "astroanu",
+        "comments": 10,
+        "labels": [
+            "wontfix"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Overview\n\nI find the documentation hard to read. I'm not sure why it appears like this in my browser, I don't have dark mode enabled. But the text is completely invisible. \n\nThere needs to be a mode switcher to change the documentation theme or, just make the text more readable, Thanks.\n\n<img width=\"1478\" height=\"1052\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/d2f9cd78-a336-46f0-91fd-2c8c0c52217a\" />\n\n### Detailed explanation\n\n_No response_\n\n### Notes\n\n_No response_",
+        "url": "https://github.com/rappasoft/laravel-livewire-tables/issues/2311"
+    },
+    {
+        "id": 3666650477,
+        "number": 2310,
+        "title": "[Bug]: Problem with using Laravel in subdirectory / script_base_path",
+        "state": "closed",
+        "created_at": "2025-11-26T09:25:36Z",
+        "updated_at": "2026-01-02T17:13:51Z",
+        "closed_at": "2026-01-02T17:13:51Z",
+        "author": "cthiele-mogic",
+        "comments": 1,
+        "labels": [
+            "bug",
+            "wontfix"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### What happened?\n\nWhen my laravel project is in a subdirectory, the injection of styles and css does not work properly. \n\n`APP_URL=http://domain.de/subdirectory/\n`\nIn livewire-tables.php configuration\n`'script_base_path' => '/subdirectory/rappasoft/laravel-livewire-tables'`\n\nIn frontend it is fine: \n\n`<link href=\"/subdirectory/rappasoft/laravel-livewire-tables/core.min.css\" rel=\"stylesheet\" />`\n\nBut the route to assets (see RappasoftFrontendAssets.php)  is registered with the the subdirectory path which is wrong, because my APP_URL already consists subdirectory. If you call http://domain.de/subdirectory/subdirectory/rappasoft/laravel-livewire-tables/core.min.css it works and the css is returned.\n\n\n### How to reproduce the bug\n\nUse APP_URL with subdirectory and enter this subdirectory path in livewire-tables.php > script_base_path\n\n### Package Version\n\n3.7.3\n\n### PHP Version\n\n8.2.x\n\n### Laravel Version\n\n12.39.0\n\n### Alpine Version\n\n_No response_\n\n### Theme\n\nTailwind 3.x\n\n### Notes\n\n_No response_\n\n### Error Message\n\n_No response_",
+        "url": "https://github.com/rappasoft/laravel-livewire-tables/issues/2310"
+    },
+    {
+        "id": 3592306911,
+        "number": 2309,
+        "title": "[Bug]: Custom Livewire Table Filter Causes Uncaught Snapshot missing Error",
+        "state": "closed",
+        "created_at": "2025-11-05T18:30:04Z",
+        "updated_at": "2025-12-13T02:50:02Z",
+        "closed_at": "2025-12-13T02:50:02Z",
+        "author": "kvovadis",
+        "comments": 1,
+        "labels": [
+            "bug",
+            "wontfix"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### What happened?\n\nWhen attempting to create a custom filter for Livewire Tables following the official documentation ([link](https://rappasoft.com/docs/laravel-livewire-tables/v3/filter-types/filters-livewire-component)\n), I encounter an error that prevents the filter from working.\n\n### How to reproduce the bug\n\n1. Follow the documentation to implement a custom Livewire filter.\n2. Add the filter to a Livewire Table component.\n3. Load the table in the browser.\n4. Use component to filter the table.\n\n### Package Version\n\n3.x\n\n### PHP Version\n\n8.3.x\n\n### Laravel Version\n\n11\n\n### Alpine Version\n\n3.x\n\n### Theme\n\nTailwind 3.x\n\n### Notes\n\nThe custom filter should work as intended and be applied to the table without errors.\n\n### Error Message\n\nUncaught Snapshot missing on Livewire component with id",
+        "url": "https://github.com/rappasoft/laravel-livewire-tables/issues/2309"
+    },
+    {
+        "id": 3538653501,
+        "number": 2306,
+        "title": "[Bug]: Lazy loaded tabels push query parameter",
+        "state": "closed",
+        "created_at": "2025-10-22T00:56:51Z",
+        "updated_at": "2025-11-28T20:33:46Z",
+        "closed_at": "2025-11-28T20:33:46Z",
+        "author": "christian-forgacs",
+        "comments": 1,
+        "labels": [
+            "bug",
+            "wontfix"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### What happened?\n\nIf I add the Attribute `#[Lazy]` to my data table class after loading my url of current page change to e.g.\n\n```\ncustomer?tableperPage=10&table-columns-customer[0]=kundennummer&table-columns-customer[1]=name&table-columns-customer[2]=vertreter&table-columns-customer[3]=filiale&table-columns-customer[4]=unterkunden&table-columns-customer[7]=&page-customer=2\n```\n\nAt some tables e.g. the query parameter \"*perPage\" is empty and this bug produce on explicit page reload following exception:\n\n```\nCannot assign string to property Rappasoft\\LaravelLivewireTables\\DataTableComponent::$perPage of type ?int\n```\n\nbecause the url parameter is empty, not null or a int. Here the url:\n\n```\nmaster_order?table-sorts-masterorder[order_number]=desc&tableperPage=&table-columns-masterorder[0]=auftrnr&table-columns-masterorder[1]=schlagw&table-columns-masterorder[2]=kunde&table-columns-masterorder[3]=auftragsart&table-columns-masterorder[4]=auftrags-kat&table-columns-masterorder[5]=anzahl-positionen&table-columns-masterorder[6]=nettopreis-gesamt&table-columns-masterorder[7]=vertreter&table-columns-masterorder[8]=erstellt-am&table-columns-masterorder[9]=positionen&table-columns-masterorder[10]=\n```\n\n### How to reproduce the bug\n\nAdd Attribute `#[Lazy]` from livewire to the data table component.\n\n### Note\n\nIf I remove the lazy attribute on the class and add it directly to the livewire tag at the page everything works great. But if I load a table in an e.g. modal loaded by livewire (wire-elements/modal) same issue appears.\n\nAfter I use `setQueryStringDisabled` its \"working\" but this is only a workaround... In my case after that only query parameter for sorting will added to the url.\n\n### Package Version\n\n3.7.3\n\n### PHP Version\n\n8.4\n\n### Laravel Version\n\n12.25.0\n\n### Alpine Version\n\n3\n\n### Theme\n\nTailwind 3.x\n\n### Error Message\n\n_No response_",
+        "url": "https://github.com/rappasoft/laravel-livewire-tables/issues/2306"
+    },
+    {
+        "id": 3472212835,
+        "number": 2305,
+        "title": "[Bug]: filter not working",
+        "state": "closed",
+        "created_at": "2025-10-01T06:27:44Z",
+        "updated_at": "2025-11-12T05:32:20Z",
+        "closed_at": "2025-11-12T05:32:20Z",
+        "author": "afzalursyaref",
+        "comments": 1,
+        "labels": [
+            "bug",
+            "wontfix"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### What happened?\n\nwhen i select filter option, i get error in browser console :\nUncaught InvalidCharacterError: Failed to execute 'setAttribute' on 'Element': '0' is not a valid attribute name.\n    at HTMLDivElement.newSetAttribute [as setAttribute] (livewire.js?id=df3a17f2:8603:25)\n    at patchAttributes (livewire.js?id=df3a17f2:8363:17)\n    at patch (livewire.js?id=df3a17f2:8316:9)\n    at patchChildren (livewire.js?id=df3a17f2:8476:9)\n    at patch (livewire.js?id=df3a17f2:8320:9)\n    at patchChildren (livewire.js?id=df3a17f2:8476:9)\n    at patch (livewire.js?id=df3a17f2:8320:9)\n    at patchChildren (livewire.js?id=df3a17f2:8476:9)\n    at patch (livewire.js?id=df3a17f2:8320:9)\n    at patchChildren (livewire.js?id=df3a17f2:8476:9)\n\nbut if i reload the page after change filter, datatable can get result normally\n\n### How to reproduce the bug\n\n1. select filter option\n\n### Package Version\n\n3.7.3\n\n### PHP Version\n\nNone\n\n### Laravel Version\n\n12\n\n### Alpine Version\n\nlivewire v3.6.4\n\n### Theme\n\nBootstrap 5.x\n\n### Notes\n\n_No response_\n\n### Error Message\n\n<img width=\"1793\" height=\"905\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/099e13b3-0912-4a98-8625-583a46d3983a\" />",
+        "url": "https://github.com/rappasoft/laravel-livewire-tables/issues/2305"
+    },
+    {
+        "id": 3428896605,
+        "number": 2301,
+        "title": "[Bug]: Error when running php artisan optimize",
+        "state": "closed",
+        "created_at": "2025-09-18T06:46:46Z",
+        "updated_at": "2025-10-26T17:39:12Z",
+        "closed_at": "2025-10-26T17:39:12Z",
+        "author": "Jacobtims",
+        "comments": 1,
+        "labels": [
+            "bug",
+            "wontfix"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### What happened?\n\nWhen I run the `php artisan optimize` command, I get the following error:\n\n```\n InvalidArgumentException \n\n  Unable to locate a class or view for component [heroicon-o-check-circle].\n\n  at vendor/laravel/framework/src/Illuminate/View/Compilers/ComponentTagCompiler.php:315\n    311▕         if (Str::startsWith($component, 'mail::')) {\n    312▕             return $component;\n    313▕         }\n    314▕ \n  ➜ 315▕         throw new InvalidArgumentException(\n    316▕             \"Unable to locate a class or view for component [{$component}].\"\n    317▕         );\n    318▕     }\n    319▕ \n\n      +2 vendor frames \n\n  3   [internal]:0\n      Illuminate\\View\\Compilers\\ComponentTagCompiler::{closure:Illuminate\\View\\Compilers\\ComponentTagCompiler::compileSelfClosingTags():215}([\"<x-heroicon-o-check-circle\n                    @class(                                                                                                                                                                                                    \n                        [                                                                                                                                                                                                      \n                            'inline-block h-5 w-5 text-green-500' => $isTailwind,                                                                                                                                              \n                            'd-inline-block text-success laravel-livewire-tables-btn-small' => $isBootstrap                                                                                                                    \n                        ]                                                                                                                                                                                                      \n                    )                                                                                                                                                                                                          \n                />\", \"heroicon-o-check-circle\", \" @class(                                                                                                                                                                      \n                        [                                                                                                                                                                                                      \n                            'inline-block h-5 w-5 text-green-500' => $isTailwind,                                                                                                                                              \n                            'd-inline-block text-success laravel-livewire-tables-btn-small' => $isBootstrap                                                                                                                    \n                        ]                                                                                                                                                                                                      \n                    )                                                                                                                                                                                                          \n                \", \" @class(                                                                                                                                                                                                   \n                        [                                                                                                                                                                                                      \n                            'inline-block h-5 w-5 text-green-500' => $isTailwind,                                                                                                                                              \n                            'd-inline-block text-success laravel-livewire-tables-btn-small' => $isBootstrap                                                                                                                    \n                        ]                                                                                                                                                                                                      \n                    )                                                                                                                                                                                                          \n                \", \"(                                                                                                                                                                                                          \n                        [                                                                                                                                                                                                      \n                            'inline-block h-5 w-5 text-green-500' => $isTailwind,                                                                                                                                              \n                            'd-inline-block text-success laravel-livewire-tables-btn-small' => $isBootstrap                                                                                                                    \n                        ]                                                                                                                                                                                                      \n                    )\"])                                                                                                                                                                                                       \n      +7 vendor frames \n\n  11  [internal]:0\n      Illuminate\\Foundation\\Console\\ViewCacheCommand::{closure:Illuminate\\Foundation\\Console\\ViewCacheCommand::compileViews():61}(Object(Symfony\\Component\\Finder\\SplFileInfo), \"/vendor/rappasoft/laravel-livewire-tables/src/../resources/views/includes/columns/boolean.blade.php\")\n```\n\n### How to reproduce the bug\n\n- Run the `php artisan optimize` command\n- See the error in the console\n\n### Package Version\n\nv3.7.3\n\n### PHP Version\n\nNone\n\n### Laravel Version\n\n8.4.12\n\n### Alpine Version\n\n3.15.0\n\n### Theme\n\nBootstrap 5.x\n\n### Notes\n\n_No response_\n\n### Error Message\n\n_No response_",
+        "url": "https://github.com/rappasoft/laravel-livewire-tables/issues/2301"
+    },
+    {
+        "id": 3404730239,
+        "number": 2299,
+        "title": "[Bug]: Custom Filter View not working anymore",
+        "state": "closed",
+        "created_at": "2025-09-11T04:36:27Z",
+        "updated_at": "2025-10-18T11:46:25Z",
+        "closed_at": "2025-10-18T11:46:25Z",
+        "author": "nkvatadze",
+        "comments": 1,
+        "labels": [
+            "bug",
+            "wontfix"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### What happened?\n\nCustom filter view no longer works after upgrading from v1 to v3.\n\nAfter upgrading from v1 to v3, the custom filter view for a specific datatable stopped working.\nThis [feature](https://rappasoft.com/docs/laravel-livewire-tables/v1/filters/custom-filter-view)\n was available in v1, but I cannot find any way to implement the same functionality in v3.\n\nIs this feature deprecated/abandoned? We rely on it heavily in our project.\n\n### How to reproduce the bug\n\n1. Create a datatable in v1 and implement a [custom filter view](https://rappasoft.com/docs/laravel-livewire-tables/v1/filters/custom-filter-view)\n2. Verify that the custom filter view renders and works as expected.\n3. Upgrade the project from v1 to v3.\n4. Attempt to apply the same custom filter view in the datatable.\n5. Notice that there is no documented or working way to implement the feature in v3 — the custom filter view does not render.\n\n### Package Version\n\n3.x\n\n### PHP Version\n\n8.2.x\n\n### Laravel Version\n\n10.x\n\n### Alpine Version\n\n3.x\n\n### Theme\n\nTailwind 3.x\n\n### Notes\n\n_No response_\n\n### Error Message\n\nCustom filter view not working.",
+        "url": "https://github.com/rappasoft/laravel-livewire-tables/issues/2299"
+    },
+    {
+        "id": 3404718832,
+        "number": 2298,
+        "title": "[Bug]: Select All isn't working",
+        "state": "closed",
+        "created_at": "2025-09-11T04:30:18Z",
+        "updated_at": "2025-10-18T11:46:24Z",
+        "closed_at": "2025-10-18T11:46:24Z",
+        "author": "nkvatadze",
+        "comments": 1,
+        "labels": [
+            "bug",
+            "wontfix"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### What happened?\n\nBulk actions fail when selecting all rows with large datasets.\n\nWhen attempting to select all rows for bulk actions, the feature works correctly with a small number of records. However, with large datasets (e.g., 100k records), it fails.\n\nI investigated and found that all [records](https://github.com/rappasoft/laravel-livewire-tables/blob/c5f0539bcd3f317a0ac0b07d46695158c6c03a52/src/Traits/Helpers/BulkActionsHelpers.php#L148)\n are being stored in an array, which leads to the following error:\n\nFatal Error: Allowed Memory Size of 134217728 Bytes Exhausted\n\n**Additional Context**\n\nThis issue started after upgrading from v1 to v3.\nIn v1, the feature worked as expected without hitting memory issues.\n\n### How to reproduce the bug\n\n1. Create a table with a large dataset (e.g., ~100k records).\n2.  Enable bulk actions in the Livewire Tables component.\n3. Click “Select All” to include every record in the bulk action.\n4. Observe that the application tries to load all records into memory.\n5. The process fails with the error:\n\nFatal Error: Allowed Memory Size of 134217728 Bytes Exhausted\n\n### Package Version\n\n3.x\n\n### PHP Version\n\n8.2.x\n\n### Laravel Version\n\n10.x\n\n### Alpine Version\n\n3.x\n\n### Theme\n\nTailwind 3.x\n\n### Notes\n\n_No response_\n\n### Error Message\n\nFatal Error: Allowed Memory Size of 134217728 Bytes Exhausted",
+        "url": "https://github.com/rappasoft/laravel-livewire-tables/issues/2298"
+    },
+    {
+        "id": 3399527937,
+        "number": 2297,
+        "title": "[Feature Request]: Wire Link Column in Button Group",
+        "state": "closed",
+        "created_at": "2025-09-09T18:38:17Z",
+        "updated_at": "2025-10-18T04:46:25Z",
+        "closed_at": "2025-10-18T04:46:25Z",
+        "author": "theticraft",
+        "comments": 1,
+        "labels": [
+            "wontfix"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Overview\n\nI would like to put Wire Link Columns in the Button Group Column\n\n### Detailed explanation\n\nIt would be nice to put multiple Wire Links in one column (the Button Group Column)\n\n### Notes\n\nIt needs an additional check at `Views\\Columns\\Traits\\Helpers\\ButtonGroupColumnHelpers` in `getButtons()`:\ninstead of `->reject(fn ($button) => ! $button instanceof LinkColumn)`\nit needs `->reject(fn ($button) => ! ($button instanceof LinkColumn || $button instanceof WireLinkColumn))`\n\n**Advice: _Do not copy and paste the code, as this could introduce errors!_**",
+        "url": "https://github.com/rappasoft/laravel-livewire-tables/issues/2297"
+    },
+    {
+        "id": 3337641727,
+        "number": 2294,
+        "title": "[Feature Request]: Update Github link to go to version 3 of the docs",
+        "state": "closed",
+        "created_at": "2025-08-20T10:58:38Z",
+        "updated_at": "2025-09-27T04:21:08Z",
+        "closed_at": "2025-09-27T04:21:08Z",
+        "author": "rdvr",
+        "comments": 1,
+        "labels": [
+            "wontfix"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Overview\n\nFor the link on https://github.com/rappasoft/laravel-livewire-tables to go to version 3 of the documentation.\n\n### Detailed explanation\n\nThe about link on https://github.com/rappasoft/laravel-livewire-tables currently links to version 2 of the docs. I have clicked this quite a few times to go to the docs only to realise I am in an old version of the docs.\n\n### Notes\n\n_No response_",
+        "url": "https://github.com/rappasoft/laravel-livewire-tables/issues/2294"
+    },
+    {
+        "id": 3277955859,
+        "number": 2287,
+        "title": "[Feature Request]: Documentation Tailwind Purge",
+        "state": "closed",
+        "created_at": "2025-07-30T17:42:58Z",
+        "updated_at": "2025-10-18T04:46:24Z",
+        "closed_at": "2025-10-18T04:46:24Z",
+        "author": "hleon0",
+        "comments": 3,
+        "labels": [
+            "wontfix"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Overview\n\nIt would be nice if the documentation also showed how to avoid Tailwind Purge to remove styles in Tailwind v4.\n\n### Detailed explanation\n\nWith Tailwind v4 there is no more tailwind.config.js, and I had to add \n`@source '../../vendor/rappasoft/laravel-livewire-tables/resources/views/**/*.blade.php';\n`\nto the app.css to avoid Tailwind Purge from removing styles.\nI didn't know about this at first so it would've been nice if this was also in the documentation, not just how to do it in v2 and v3.\n\n### Notes\n\n_No response_",
+        "url": "https://github.com/rappasoft/laravel-livewire-tables/issues/2287"
+    },
+    {
+        "id": 3252295963,
+        "number": 2285,
+        "title": "[Bug]: Trying to load belongsToMany relation with pivot table always empty",
+        "state": "closed",
+        "created_at": "2025-07-22T11:29:31Z",
+        "updated_at": "2025-08-30T01:44:55Z",
+        "closed_at": "2025-08-30T01:44:55Z",
+        "author": "csifalmeria",
+        "comments": 2,
+        "labels": [
+            "bug",
+            "wontfix"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### What happened?\n\nSimilar to issue #2213 I am trying lo create a table to show a list of users having a column wiht their roles. Relation uses a pivot table. \n\nUser class seems like:\n\n```\nclass User extends Model\n{\n\tprotected $table = 'users';\n\n\tprotected $casts = [\n\t\t'email_verified_at' => 'datetime'\n\t];\n\n\tprotected $hidden = [\n\t\t'password',\n\t\t'remember_token'\n\t];\n\n\tprotected $fillable = [\n\t\t'name',\n\t\t'email',\n\t\t'email_verified_at',\n\t\t'password',\n\t\t'remember_token'\n\t];\n\n\tpublic function roles()\n\t{\n\t\treturn $this->belongsToMany(Role::class, 'model_has_roles', 'model_id', 'role_id');\n\t}\n}\n```\n\nCalling `User::find(1)->roles` from tinker returns user roles\n\nTrying to get from the column it is always empty.\n\nTable builder method is:\n\n```\n public function builder(): \\Illuminate\\Database\\Eloquent\\Builder\n    {\n        return User::query()->with(['roles']);\n    }\n```\nColumn definition for testing:\n\n```\n            Column::make('Roles')\n                ->label(function ($row): string {\n                    return print_r($row, true);\n                }),\n\n```\n\n\n\n### How to reproduce the bug\n\n_No response_\n\n### Package Version\n\n3.7.3\n\n### PHP Version\n\n8.2.x\n\n### Laravel Version\n\n12.19.3\n\n### Alpine Version\n\n_No response_\n\n### Theme\n\nNone\n\n### Notes\n\n_No response_\n\n### Error Message\n\n_No response_",
+        "url": "https://github.com/rappasoft/laravel-livewire-tables/issues/2285"
+    },
+    {
+        "id": 3242310698,
+        "number": 2283,
+        "title": "[Bug]: DateColumn not working with immutable_datetime",
+        "state": "closed",
+        "created_at": "2025-07-18T08:03:20Z",
+        "updated_at": "2025-08-27T10:08:39Z",
+        "closed_at": "2025-08-27T10:08:39Z",
+        "author": "spaantje",
+        "comments": 4,
+        "labels": [
+            "bug",
+            "wontfix"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### What happened?\n\nWhen you cast a column to a `immutable_datetime` the DateColumn is not displaying the content. This is because the DateColumn is checking for a instance of `DateTime` but it's a `DateTimeImmutable` type.\n\n### How to reproduce the bug\n\n_No response_\n\n### Package Version\n\n3.7.3\n\n### PHP Version\n\n8.3.x\n\n### Laravel Version\n\n11.45.1\n\n### Alpine Version\n\n_No response_\n\n### Theme\n\nTailwind 3.x\n\n### Notes\n\n_No response_\n\n### Error Message\n\n_No response_",
+        "url": "https://github.com/rappasoft/laravel-livewire-tables/issues/2283"
+    }
+]

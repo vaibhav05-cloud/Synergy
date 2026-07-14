@@ -1,0 +1,242 @@
+[
+    {
+        "sha": "b62bfd6b06de958e4630b715225b7e8409bfd0f9",
+        "author": "ocornut",
+        "email": "omar@miracleworld.net",
+        "date": "2026-07-10T19:36:43Z",
+        "message": "InputText: reworked `io.ConfigInputTextEnterKeepActive` mode so that pressing Ctrl+Enter or Shift+Enter still allows to deactivate.\n\ncc #9239",
+        "url": "https://github.com/ocornut/imgui/commit/b62bfd6b06de958e4630b715225b7e8409bfd0f9"
+    },
+    {
+        "sha": "da137cbbb066e57f4b44f3f331c36e1e30e1cbe2",
+        "author": "ocornut",
+        "email": "omar@miracleworld.net",
+        "date": "2026-07-08T16:40:29Z",
+        "message": "(Breaking) Drag and Drop: commented out legacy name `ImGuiDragDropFlags_SourceAutoExpirePayload`. Use `ImGuiDragDropFlags_PayloadAutoExpire`.",
+        "url": "https://github.com/ocornut/imgui/commit/da137cbbb066e57f4b44f3f331c36e1e30e1cbe2"
+    },
+    {
+        "sha": "9bb131fb2f866dba6be12c3a73023e984e18a959",
+        "author": "ocornut",
+        "email": "omar@miracleworld.net",
+        "date": "2026-07-08T16:28:37Z",
+        "message": "CI: enable Metal4 examples. (#9466, #9451)\n\n(Untested)",
+        "url": "https://github.com/ocornut/imgui/commit/9bb131fb2f866dba6be12c3a73023e984e18a959"
+    },
+    {
+        "sha": "62399b5bfec49a5eab808be1a41c2d018d240777",
+        "author": "Jonathan Hoffstadt",
+        "email": "jonathanhoffstadt@yahoo.com",
+        "date": "2026-07-08T15:14:55Z",
+        "message": "Examples: Apple + Metal4: add example (#9466, #9451)\n\n+ Amend edit to EXAMPLES.md, comment build.xml",
+        "url": "https://github.com/ocornut/imgui/commit/62399b5bfec49a5eab808be1a41c2d018d240777"
+    },
+    {
+        "sha": "68fce9f3bddb6c3e015a33150796847190f50ac6",
+        "author": "ocornut",
+        "email": "omar@miracleworld.net",
+        "date": "2026-07-08T13:02:56Z",
+        "message": "Settings: added DiscardAll option to CleanupIniSettings() / ImGuiSettingsCleanupArgs. (#9460)\n\n+ Demo: tweak for scaling.",
+        "url": "https://github.com/ocornut/imgui/commit/68fce9f3bddb6c3e015a33150796847190f50ac6"
+    },
+    {
+        "sha": "f903a7e8e23f2d80fbb5198e9e049632a28d798f",
+        "author": "ocornut",
+        "email": "omar@miracleworld.net",
+        "date": "2026-07-07T20:52:47Z",
+        "message": "Settings: fixed Windows not honoring DiscardWhenMissingDate. (#9460)",
+        "url": "https://github.com/ocornut/imgui/commit/f903a7e8e23f2d80fbb5198e9e049632a28d798f"
+    },
+    {
+        "sha": "112d6d9eabe3995e0cfa0a093e287c68f865d3f1",
+        "author": "ocornut",
+        "email": "omar@miracleworld.net",
+        "date": "2026-07-07T20:30:15Z",
+        "message": "Settings: added a type name filter to CleanupIniSettings() / ImGuiSettingsCleanupArgs. Amends. (#9460)\n\nRequest hash because storing const char* strings in struct is not entirely zen. Amend 2c49da4.",
+        "url": "https://github.com/ocornut/imgui/commit/112d6d9eabe3995e0cfa0a093e287c68f865d3f1"
+    },
+    {
+        "sha": "2c49da44be5d878e69968bc4032f6c5e6c6dbade",
+        "author": "ocornut",
+        "email": "omar@miracleworld.net",
+        "date": "2026-07-07T20:17:55Z",
+        "message": "Settings: added a type name filter to CleanupIniSettings() / ImGuiSettingsCleanupArgs. (#9460)",
+        "url": "https://github.com/ocornut/imgui/commit/2c49da44be5d878e69968bc4032f6c5e6c6dbade"
+    },
+    {
+        "sha": "85593d0869ecc9c49c9b8aa83c0433275e982e67",
+        "author": "ocornut",
+        "email": "omar@miracleworld.net",
+        "date": "2026-07-07T20:06:43Z",
+        "message": "Tables, Settings: make TableSettingsCreate() recycle existing unbound entry (might happen after a GC or anything clearing table->SettingsOffset.  (#9460, #9108)",
+        "url": "https://github.com/ocornut/imgui/commit/85593d0869ecc9c49c9b8aa83c0433275e982e67"
+    },
+    {
+        "sha": "d1eb8d031c69689371e72b027a472d12a0d9a14e",
+        "author": "ocornut",
+        "email": "omar@miracleworld.net",
+        "date": "2026-07-07T20:00:26Z",
+        "message": "Settings: added explicit DiscardWhenMissingDate. (#9460, #9108)",
+        "url": "https://github.com/ocornut/imgui/commit/d1eb8d031c69689371e72b027a472d12a0d9a14e"
+    },
+    {
+        "sha": "481f2cea17e5862c2f27934c6cb8d4ef1c134191",
+        "author": "Kian",
+        "email": "92978255+MERL10N@users.noreply.github.com",
+        "date": "2026-07-07T01:13:19Z",
+        "message": "Backends: Metal4: added ImTextureID tex_id to residency set. (#9461, #9458, #9451)\n\nThis will resolve runtime errors identified by XCode's Metal Shader Validator.",
+        "url": "https://github.com/ocornut/imgui/commit/481f2cea17e5862c2f27934c6cb8d4ef1c134191"
+    },
+    {
+        "sha": "520a29dd518be4f3bdfc4a4740660b491ecfd3bb",
+        "author": "Kian",
+        "email": "92978255+MERL10N@users.noreply.github.com",
+        "date": "2026-07-03T22:34:32Z",
+        "message": "Backends: Metal4: added metal-cpp support. (#9461)\n\nwith amends.",
+        "url": "https://github.com/ocornut/imgui/commit/520a29dd518be4f3bdfc4a4740660b491ecfd3bb"
+    },
+    {
+        "sha": "cfdc953ba91fa6dc093dfd3223977fe9d8e00a9c",
+        "author": "ocornut",
+        "email": "omar@miracleworld.net",
+        "date": "2026-07-07T14:21:36Z",
+        "message": "ColorPicker: added option to fix Saturation/Value triangle in wheel picker. Amends. (#9337)\n\nThe heat makes this week really not good with human mistakes I guess.",
+        "url": "https://github.com/ocornut/imgui/commit/cfdc953ba91fa6dc093dfd3223977fe9d8e00a9c"
+    },
+    {
+        "sha": "f626c1c7933329ed74a442dd071fe2766ac774d4",
+        "author": "ocornut",
+        "email": "omar@miracleworld.net",
+        "date": "2026-07-07T14:18:34Z",
+        "message": "ColorPicker: added option to fix Saturation/Value triangle in wheel picker. Amends. (#9337)\n\nConfigColorPickerRotateTriangle -> !ImGuiColorEditFlags_PickerNoRotate",
+        "url": "https://github.com/ocornut/imgui/commit/f626c1c7933329ed74a442dd071fe2766ac774d4"
+    },
+    {
+        "sha": "5d56c0943243a75de5213c9e36653ff93ed0683a",
+        "author": "ocornut",
+        "email": "omar@miracleworld.net",
+        "date": "2026-06-25T12:37:03Z",
+        "message": "ColorPicker: added option to fix Saturation/Value triangle in wheel picker. Amends. (#9337)",
+        "url": "https://github.com/ocornut/imgui/commit/5d56c0943243a75de5213c9e36653ff93ed0683a"
+    },
+    {
+        "sha": "0785cdb2bb07e3c58e09c56ada0e3cbc74918a20",
+        "author": "SeanTheBuilder1",
+        "email": "seanthebuilder52@gmail.com",
+        "date": "2026-03-30T17:13:25Z",
+        "message": "ColorPicker: added option to fix Saturation/Value triangle in wheel picker. (#9337)",
+        "url": "https://github.com/ocornut/imgui/commit/0785cdb2bb07e3c58e09c56ada0e3cbc74918a20"
+    },
+    {
+        "sha": "aca69173dfaf3c54c02a5f699ca4cd1211154446",
+        "author": "ocornut",
+        "email": "omar@miracleworld.net",
+        "date": "2026-07-07T14:00:01Z",
+        "message": "(Breaking) ColorEdit: obsoleted SetColorEditOptions() function in favor of poking to io.ConfigColorEditFlags. (Amend 0e479b9, 9f7d808)\n\nApologies, 9f7d808 was extremely flaky.",
+        "url": "https://github.com/ocornut/imgui/commit/aca69173dfaf3c54c02a5f699ca4cd1211154446"
+    },
+    {
+        "sha": "9f7d8086fe653cf12b8c83961effd8e53a88d4ad",
+        "author": "ocornut",
+        "email": "omar@miracleworld.net",
+        "date": "2026-07-06T14:02:17Z",
+        "message": "(Breaking) ColorEdit: obsoleted SetColorEditOptions() function in favor of poking to io.ColorEditFlags. (Amend 0e479b9)\n\nReordered IO fields breaks ABI backward compat which was never guaranteed. Occasional breaking is a good way to enforce that lack of guarantee!",
+        "url": "https://github.com/ocornut/imgui/commit/9f7d8086fe653cf12b8c83961effd8e53a88d4ad"
+    },
+    {
+        "sha": "0e479b95543b736143ebc815fc727ba8c035f5c2",
+        "author": "ocornut",
+        "email": "omar@miracleworld.net",
+        "date": "2026-07-06T13:34:13Z",
+        "message": "(Breaking) ColorEdit: obsoleted SetColorEditOptions() function in favor of poking to style.ColorEditFlags.",
+        "url": "https://github.com/ocornut/imgui/commit/0e479b95543b736143ebc815fc727ba8c035f5c2"
+    },
+    {
+        "sha": "776bf2ab0d61e719e58f2c6d27d109ab5dcf2af1",
+        "author": "ocornut",
+        "email": "omar@miracleworld.net",
+        "date": "2026-07-03T16:59:37Z",
+        "message": "Examples: OpenGL3+Win32: rework OpenGL initialization to allow Wine compatibility. Fix. (#9427, #6577)\n\nFixed commented out test code.",
+        "url": "https://github.com/ocornut/imgui/commit/776bf2ab0d61e719e58f2c6d27d109ab5dcf2af1"
+    },
+    {
+        "sha": "4f1ea369eae2510c85e41ef159433e19927ff14c",
+        "author": "ocornut",
+        "email": "omar@miracleworld.net",
+        "date": "2026-07-03T16:57:14Z",
+        "message": "Examples: OpenGL3+Win32: rework OpenGL initialization to allow Wine compatibility. (#9427, #6577)",
+        "url": "https://github.com/ocornut/imgui/commit/4f1ea369eae2510c85e41ef159433e19927ff14c"
+    },
+    {
+        "sha": "a97714495591ebe947b9b9a87022c7e2b3bcc13a",
+        "author": "ocornut",
+        "email": "omar@miracleworld.net",
+        "date": "2026-07-03T16:42:51Z",
+        "message": "Examples: OpenGL3+GLFW,SDL2,SDL3: improve Wine compatibility by passing empty GLSL version to ImGui_ImplOpenGL3_Init().  (#9427, #6577)",
+        "url": "https://github.com/ocornut/imgui/commit/a97714495591ebe947b9b9a87022c7e2b3bcc13a"
+    },
+    {
+        "sha": "e616ace74dce14f927c808cb82f2a8b21b0d392d",
+        "author": "ocornut",
+        "email": "omar@miracleworld.net",
+        "date": "2026-07-03T15:48:11Z",
+        "message": "CI, Backends: Metal4: fixed CI, added comments. (#9458)",
+        "url": "https://github.com/ocornut/imgui/commit/e616ace74dce14f927c808cb82f2a8b21b0d392d"
+    },
+    {
+        "sha": "5c2160ac85fd24f0e426e970966af9cd979edac8",
+        "author": "ocornut",
+        "email": "omar@miracleworld.net",
+        "date": "2026-07-03T14:56:38Z",
+        "message": "Settings, IO: move ConfigDebugIniSettings in same section.",
+        "url": "https://github.com/ocornut/imgui/commit/5c2160ac85fd24f0e426e970966af9cd979edac8"
+    },
+    {
+        "sha": "5fb77dfde1260690af678a1b086288c073db89cd",
+        "author": "ocornut",
+        "email": "omar@miracleworld.net",
+        "date": "2026-07-02T16:28:56Z",
+        "message": "Settings: added io.ConfigIniSettingsAutoDiscardMonths, trimming tool in in Metrics->Settings + internal CleanupIniSettings(). (#9460)\n\ncc #437 #2564",
+        "url": "https://github.com/ocornut/imgui/commit/5fb77dfde1260690af678a1b086288c073db89cd"
+    },
+    {
+        "sha": "f7e8343ee97726e8e74e19097364dc77ccde79eb",
+        "author": "ocornut",
+        "email": "omar@miracleworld.net",
+        "date": "2026-06-25T21:00:37Z",
+        "message": "Settings, IO: added io.ConfigIniSettingsSaveLastUsedDate, platform_io.Platform_SessionDate, IMGUI_DISABLE_TIME_FUNCTIONS(). (#9460)\n\ncc #437",
+        "url": "https://github.com/ocornut/imgui/commit/f7e8343ee97726e8e74e19097364dc77ccde79eb"
+    },
+    {
+        "sha": "7d43c74b591ff539097138a7a6596d3df7610252",
+        "author": "ocornut",
+        "email": "omar@miracleworld.net",
+        "date": "2026-07-02T13:13:49Z",
+        "message": "CI: update PVS studio. Reduce Windows CI workload for typical push.",
+        "url": "https://github.com/ocornut/imgui/commit/7d43c74b591ff539097138a7a6596d3df7610252"
+    },
+    {
+        "sha": "8fc25800e0f4164c6edc4e9b00cc0e8d988d3b3c",
+        "author": "ocornut",
+        "email": "omar@miracleworld.net",
+        "date": "2026-07-02T13:02:59Z",
+        "message": "Fonts, Context: assert that ImFontAtlas has no other references when destroying an owned atlas. (#9426)",
+        "url": "https://github.com/ocornut/imgui/commit/8fc25800e0f4164c6edc4e9b00cc0e8d988d3b3c"
+    },
+    {
+        "sha": "6824e2c2e4b3e1314f8b84ccd870197cc038972c",
+        "author": "ocornut",
+        "email": "omar@miracleworld.net",
+        "date": "2026-07-02T12:26:46Z",
+        "message": "Examples: Android: update to AGP 9.2.0 to support Gradle 9.6.0.",
+        "url": "https://github.com/ocornut/imgui/commit/6824e2c2e4b3e1314f8b84ccd870197cc038972c"
+    },
+    {
+        "sha": "e9ea19086b4701b37237f53e1ab457a8a6b90f92",
+        "author": "ocornut",
+        "email": "omar@miracleworld.net",
+        "date": "2026-07-02T12:12:32Z",
+        "message": "CI: fixed Android build on Ubuntu-latest by expliciting Gradle version to < 9.x.",
+        "url": "https://github.com/ocornut/imgui/commit/e9ea19086b4701b37237f53e1ab457a8a6b90f92"
+    }
+]

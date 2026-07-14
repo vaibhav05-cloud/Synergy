@@ -1,0 +1,350 @@
+[
+    {
+        "id": 4646126852,
+        "number": 542,
+        "title": "Build fails with \"error obtaining VCS status: exit status 128\" on Go 1.25",
+        "state": "open",
+        "created_at": "2026-06-12T03:55:27Z",
+        "updated_at": "2026-06-12T03:55:27Z",
+        "closed_at": null,
+        "author": "ymotongpoo",
+        "comments": 0,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "## Summary\n\n`xk6 build` fails when using Go 1.25 due to VCS stamping being enabled by default. Since xk6 builds in a temporary directory that is not a git repository, the `go build` command fails when it tries to obtain VCS status.\n\n## Environment\n\n- xk6 version: `v1.4.6`\n- Go version: `go1.25.11 linux/amd64`\n- OS: Linux (Ubuntu)\n\n## Steps to Reproduce\n\n```bash\nxk6 build --with github.com/ymotongpoo/xk6-otel-gen\n```\n\n## Error Output\n\n```\nINF Building new k6 binary (native)\nINF Initializing Go module\nINF Creating k6 main\nINF adding dependency go.k6.io/k6@v1.8.0\nINF importing extensions\nINF adding dependency github.com/ymotongpoo/xk6-otel-gen\nINF Building k6\nerror obtaining VCS status: exit status 128\n        Use -buildvcs=false to disable VCS stamping.\nINF Cleaning up work directory /tmp/k6foundry...\nERR compiling: executing go command: exit status 1\n```\n\n## Root Cause\n\nSince Go 1.18, `-buildvcs=true` is the default, which causes `go build` to invoke `git` to embed VCS information into the binary. xk6 creates a fresh temporary directory (e.g. `/tmp/k6foundry...`) that is not a git repository, so `git` exits with status 128 (\"fatal: not a git repository\"), causing the build to fail.\n\nThis was not an issue before Go 1.25 because the behavior appears to have become stricter in this version.\n\n## Workaround\n\nPass `-buildvcs=false` via `GOFLAGS` or `--build-flags`:\n\n```bash\n# Option 1: via GOFLAGS environment variable\nGOFLAGS=\"-buildvcs=false\" xk6 build --with <extension>\n\n# Option 2: via --build-flags (note: replaces the defaults, so all flags must be specified)\nxk6 build --with <extension> \\\n  --build-flags=-trimpath \\\n  \"--build-flags=-ldflags=-s -w\" \\\n  --build-flags=-buildvcs=false\n```\n\n## Suggested Fix\n\nAdd `-buildvcs=false` to the default `--build-flags` in xk6, since builds always occur in a temporary directory with no VCS context:\n\n```go\n// Before\ndefaultBuildFlags = []string{\"-trimpath\", \"-ldflags=-s -w\"}\n\n// After\ndefaultBuildFlags = []string{\"-trimpath\", \"-ldflags=-s -w\", \"-buildvcs=false\"}\n```\n\nThis change is safe because the temporary build directory never has meaningful VCS information to embed anyway.\n\n",
+        "url": "https://github.com/grafana/xk6/issues/542"
+    },
+    {
+        "id": 4374996080,
+        "number": 496,
+        "title": "Prepare v1.4.1",
+        "state": "closed",
+        "created_at": "2026-05-04T08:15:27Z",
+        "updated_at": "2026-05-04T09:07:39Z",
+        "closed_at": "2026-05-04T09:07:39Z",
+        "author": "szkiba",
+        "comments": 0,
+        "labels": [],
+        "assignees": [
+            "szkiba"
+        ],
+        "locked": false,
+        "body": null,
+        "url": "https://github.com/grafana/xk6/issues/496"
+    },
+    {
+        "id": 4349861358,
+        "number": 484,
+        "title": "Prepare v1.4.0",
+        "state": "closed",
+        "created_at": "2026-04-29T10:47:13Z",
+        "updated_at": "2026-04-29T11:49:07Z",
+        "closed_at": "2026-04-29T11:49:07Z",
+        "author": "szkiba",
+        "comments": 0,
+        "labels": [],
+        "assignees": [
+            "szkiba"
+        ],
+        "locked": false,
+        "body": null,
+        "url": "https://github.com/grafana/xk6/issues/484"
+    },
+    {
+        "id": 4349257194,
+        "number": 482,
+        "title": "Fix Broken Go Version Constraint in Dev Container",
+        "state": "closed",
+        "created_at": "2026-04-29T09:14:32Z",
+        "updated_at": "2026-04-29T09:58:20Z",
+        "closed_at": "2026-04-29T09:58:20Z",
+        "author": "szkiba",
+        "comments": 0,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "The Go version constraint `1.26.x` in the dev container configuration is broken and does not work with the devcontainer feature.\n\n## Problem\nThe version specification `1.26.x` is invalid for the `ghcr.io/devcontainers/features/go:1` feature and causes build failures or unexpected behavior.\n\n## Solution\nChange the Go version from `1.26.x` to `1.26` in `.devcontainer/devcontainer.json`:\n```diff\n- \"ghcr.io/devcontainers/features/go:1\": { \"version\": \"1.26.x\" },\n+ \"ghcr.io/devcontainers/features/go:1\": { \"version\": \"1.26\" },\n```\n\nThis uses the latest 1.26.x version and aligns with the Go version configuration in `validate.yml` GitHub workflow.\n\n## Impact\n- Resolves dev container build failures related to Go installation\n- Ensures consistent Go version across all development environments",
+        "url": "https://github.com/grafana/xk6/issues/482"
+    },
+    {
+        "id": 4312137169,
+        "number": 476,
+        "title": "xk6 build fails with fork --k6-repo after k6 moved to v2 module path",
+        "state": "open",
+        "created_at": "2026-04-22T22:15:02Z",
+        "updated_at": "2026-04-22T22:15:02Z",
+        "closed_at": null,
+        "author": "inancgumus",
+        "comments": 0,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "### Problem\n\nAfter [grafana/k6#5777](https://github.com/grafana/k6/pull/5777) moved k6 to module path \\`go.k6.io/k6/v2\\`, \\`xk6 build\\` fails whenever \\`--k6-repo\\` points to a remote fork. The failure blocks the [xk6.yml workflow](https://github.com/grafana/k6/blob/master/.github/workflows/xk6.yml) for every fork PR in grafana/k6.\n\nExample failing run: https://github.com/grafana/k6/actions/runs/24786435232/job/72533025474?pr=5716\n\n### Reproduction\n\n\\`\\`\\`bash\nXK6_K6_REPO=github.com/prakharbirla-ng/k6 xk6 build f520efb45f42 \\\\\n  --output ./k6ext --with github.com/grafana/xk6-output-test=./xk6-output-test\n\\`\\`\\`\n\n\\`\\`\\`\ngo.mod:5: replace github.com/prakharbirla-ng/k6: version \\\"v0.0.0-20260422175047-f520efb45f42\\\" invalid:\n  go.mod has post-v0 module path \\\"go.k6.io/k6/v2\\\" at revision f520efb45f42\n\\`\\`\\`\n\n### Root cause\n\n1. \\`resolveK6Repo\\` skips auto-resolution whenever \\`--k6-repo\\` is set.\n2. k6foundry then writes \\`replace go.k6.io/k6 => github.com/<fork>/k6 <SHA>\\`.\n3. Go resolves the SHA to a \\`v0.0.0-*\\` pseudo-version because the fork URL has no \\`/v2\\` suffix — but the fork's go.mod at that SHA declares \\`module go.k6.io/k6/v2\\`. Version/path mismatch rejected by Go.\n\nEven constructing the replace with the correct source path (\\`go.k6.io/k6/v2 => github.com/<fork>/k6 <SHA>\\`) fails with the inverse error: \\`version \\\"v2.0.0-…\\\" invalid: should be v0 or v1, not v2\\`. Go module semantics require the replacement URL path to match the target's major version, which is not the case for forks of a repo that moved to /v2 on master.\n\n### Proposed fix\n\nWhen \\`--k6-repo\\` is a remote URL and the target version is non-semver (SHA/branch), xk6 should shallow-clone the fork locally, read its \\`go.mod\\` to detect the major version, and use a local-path replace. Local replaces do not use pseudo-versions, so the major-version consistency check does not trigger.\n\nAlso detect major version from a local-path \\`--k6-repo\\` (today it's silently ignored, so \\`go.k6.io/k6\\` is used even when the local go.mod says \\`go.k6.io/k6/v2\\`).\n\n### Context\n\n- Slack: https://raintank-corp.slack.com/archives/C040KCKE5NG/p1776879316765249\n- k6 v2 migration PR: https://github.com/grafana/k6/pull/5777\n- xk6 #445 introduced auto-resolution but only for the default-repo path.",
+        "url": "https://github.com/grafana/xk6/issues/476"
+    },
+    {
+        "id": 4303727335,
+        "number": 473,
+        "title": "xk6 build fails to build k6 on Windows",
+        "state": "closed",
+        "created_at": "2026-04-21T15:41:38Z",
+        "updated_at": "2026-04-22T07:35:53Z",
+        "closed_at": "2026-04-22T07:35:53Z",
+        "author": "andrewslotin",
+        "comments": 1,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "On Windows, `xk6 build` fails because the go subprocess it launches tries to create its work directory inside `C:\\Windows\\` (a protected system directory) instead of the user's temp directory. The parent process's `TMP`/`TEMP` are set correctly, and k6foundry itself uses the correct temp path — only the spawned go command is affected.\n\n## Environment\n* xk6 version: **xk6 version 1.3.7**\n* Go version: **go version go1.26.2 windows/amd64**\n* OS: Windows 11 Pro 10.0.26200\n* Architecture: amd64\n* Shell: PowerShell\n* Running as: standard user (non-admin)\n\n## Environment variables in the shell used to run xk6:\n```powershell\nPS C:\\Users\\andre\\Development\\xk6> $env:TMP\nC:\\Users\\andre\\AppData\\Local\\Temp\nPS C:\\Users\\andre\\Development\\xk6> $env:TEMP\nC:\\Users\\andre\\AppData\\Local\\Temp\nPS C:\\Users\\andre\\Development\\xk6> $env:GOTMPDIR\n(empty)\n```\n## Steps to reproduce\n1. Build xk6 on Windows (go install go.k6.io/xk6/cmd/xk6@v1.3.7).\n2. From a writable working directory, run:\n```powershell\n.\\xk6 build --verbose --with github.com/grafana/xk6-faker@latest\n```\n**Expected behavior**\nxk6 builds a k6 binary with the xk6-faker extension in the current directory.\n**Actual behavior**\n```\n> ./xk6 build --verbose --with github.com/grafana/xk6-faker@latest\n5:30PM INF Building new k6 binary (native)\n5:30PM INF Initializing Go module\ngo: creating new go.mod: module k6\n5:30PM INF Creating k6 main\n5:30PM INF adding dependency go.k6.io/k6@latest\n5:30PM INF importing extensions\n5:30PM INF adding dependency github.com/grafana/xk6-faker@latest\n5:30PM INF Building k6\ngo: creating work dir: mkdir C:\\Windows\\go-build2288887796: Access is denied.\n5:30PM INF Cleaning up work directory C:\\Users\\andre\\AppData\\Local\\Temp\\k6foundry3099781253\n5:30PM ERR compiling: executing go command: exit status 1\n```\n\n## Suspected root cause\nThe two paths in the log are inconsistent:\n* k6foundry correctly uses `C:\\Users\\andre\\AppData\\Local\\Temp\\k6foundry...` (inherits the parent process env).\nThe go subprocess uses `C:\\Windows\\go-build...` (ends up in the Windows directory).\n* On Windows, when `TEMP`, `TMP`, and `USERPROFILE` are all unset/empty, Go's `os.TempDir()` falls back to `GetWindowsDirectory()`, which returns `C:\\Windows`. See [`src/os/file_windows.go`](`https://github.com/golang/go/blob/master/src/os/file_windows.go`) — `tempDir()` checks `TMP`, then `TEMP`, then `USERPROFILE`, then falls back to `GetWindowsDirectory()`.\n\nThat strongly suggests xk6 (or its use of k6foundry) launches the go subprocess with a scrubbed or empty environment — likely with `CopyGoEnv: false` and no explicit `TEMP`/`TMP` added to [`k6foundry.GoOpts.Env`](https://pkg.go.dev/github.com/grafana/k6foundry#GoOpts). With an empty env, the Go child can't find any user temp dir and falls back to `C:\\Windows`, which fails because standard users can't write there.\n\nThis doesn't reproduce on Linux/macOS because the equivalent `os.TempDir()` fallback there is `/tmp`, which is world-writable.",
+        "url": "https://github.com/grafana/xk6/issues/473"
+    },
+    {
+        "id": 4282121690,
+        "number": 467,
+        "title": "make doc is not checked if ran in CI ",
+        "state": "open",
+        "created_at": "2026-04-17T11:06:14Z",
+        "updated_at": "2026-04-17T11:06:14Z",
+        "closed_at": null,
+        "author": "mstoykov",
+        "comments": 0,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "The documentation and the source seem to drift and nothing is checking this.\r\n\r\n\r\n_Originally posted by @mstoykov in https://github.com/grafana/xk6/issues/445#issuecomment-4267470143_\r\n            ",
+        "url": "https://github.com/grafana/xk6/issues/467"
+    },
+    {
+        "id": 4142672639,
+        "number": 440,
+        "title": "Deprecate and sunset the grafana/xk6 Docker image",
+        "state": "open",
+        "created_at": "2026-03-26T10:44:48Z",
+        "updated_at": "2026-04-21T15:42:20Z",
+        "closed_at": null,
+        "author": "szkiba",
+        "comments": 1,
+        "labels": [
+            "docker"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "This is a proposal to deprecate and eventually sunset the official `grafana/xk6` Docker image. Existing distribution methods (pre-compiled binaries, `gh` CLI extension, Homebrew, and Dev Containers) provide a significantly better and faster user experience. Sunsetting the image will also eliminate the high maintenance burden of patching continuous CVEs in the Docker base images.\n\n### Context\nHistorically, the Docker image provided an isolated Go toolchain to easily build custom k6 binaries. However, the ecosystem has evolved, and the image's utility has diminished while its maintenance cost has grown.\n\n**Current Usage:** The Docker image receives approximately 3,800 pulls per week. While not negligible, this represents a small fraction of the overall k6 user base.\n\n* **Decreased User Need:** With k6's introduction of automatic extension resolution, the vast majority of extension users no longer need a dedicated local build environment just to use extensions.\n* **Developer Preference for Native Tools:** Extension developers typically already have a local Go toolchain installed. Developing and building with native tools is significantly faster and more seamless than managing volume mounts and overhead in a Docker-based workflow.\n* **High Maintenance Burden (CVEs):** Maintaining the Docker image requires constant monitoring and rebuilding to patch CVEs introduced by the underlying base images (Alpine/Golang). This is a heavy maintenance tax that takes focus away from improving core `xk6` functionality.\n* **Faster, Native Alternatives:** Binary releases are available for all major platforms, along with Homebrew support, a GitHub CLI extension, and a Dev Container feature. These are faster, native, and generally provide a better developer experience.\n\n### Migration Paths\nFor workflows currently relying on the `grafana/xk6` Docker image, here are the recommended, faster alternatives:\n\n**1. For GitHub Actions (Recommended & Fastest)**\nThe `gh` CLI is pre-installed on GitHub Actions runners. The `xk6` extension can be installed natively in seconds, downloading the pre-compiled binary rather than building from source:\n\n```yaml\nsteps:\n  - name: Install xk6 via GitHub CLI\n    run: gh ext install grafana/gh-xk6\n    env:\n      GH_TOKEN: ${{ github.token }}\n      \n  - name: Build custom k6\n    run: gh xk6 build --with github.com/grafana/xk6-browser\n```\n\n**2. For Other CI/CD Pipelines (GitLab, Jenkins, etc.)**\nPre-compiled binaries can be downloaded directly from the [releases page](https://github.com/grafana/xk6/releases):\n\n```bash\n# Download and install pre-compiled xk6 binary\ncurl -L https://github.com/grafana/xk6/releases/latest/download/xk6-linux-amd64.tar.gz | tar xz\nchmod +x xk6\n./xk6 build --with github.com/grafana/xk6-browser\n```\n\nAlternatively, the official Golang image can be used to install `xk6` dynamically:\n\n```dockerfile\nFROM golang:alpine\nRUN go install go.k6.io/xk6/cmd/xk6@latest\nRUN xk6 build --with github.com/grafana/xk6-browser\n```\n\n**3. For Local Extension Development**\nThe [Dev Container feature](https://github.com/grafana/devcontainer-features) is highly recommended for providing an isolated, robust development environment. \n\nAlternatively, `xk6` can be installed locally using any of the following convenient methods:\n* **Homebrew:** `brew install xk6`\n* **GitHub CLI:** `gh ext install grafana/gh-xk6` (useful since `gh` is already a standard developer tool)\n* **Go:** `go install go.k6.io/xk6/cmd/xk6@latest`\n\n### Proposed Timeline\n1.  **Phase 1 (Immediate):** Add deprecation notices to the repository README, the Docker Hub description, and upcoming release notes. \n2.  **Phase 2 (3 months after deprecation notice):** Formally stop publishing new Docker image tags to Docker Hub. Existing images will remain available but will no longer receive updates or security patches.\n\n### Feedback\nBefore moving forward, it is important to ensure no critical use cases are missed. If sunsetting this image severely impacts a workflow in a way that the above migration paths cannot solve, please share feedback in the comments below!",
+        "url": "https://github.com/grafana/xk6/issues/440"
+    },
+    {
+        "id": 4137658843,
+        "number": 438,
+        "title": "Switch Docker base image to Chainguard to eliminate CVEs and reduce maintenance",
+        "state": "closed",
+        "created_at": "2026-03-25T18:40:33Z",
+        "updated_at": "2026-03-26T09:06:16Z",
+        "closed_at": "2026-03-26T09:06:16Z",
+        "author": "szkiba",
+        "comments": 0,
+        "labels": [],
+        "assignees": [
+            "szkiba"
+        ],
+        "locked": false,
+        "body": "## The Problem\nCurrently, the official `grafana/xk6` Docker images are built on top of `golang:alpine`. Because `xk6` is a build tool, we are forced to ship a full compiler toolchain and OS environment inside our distribution. \n\nAs a result, our images frequently flag for CVEs in security scanners. These vulnerabilities are rarely in `xk6` or Go itself, but rather in stale underlying Alpine OS packages (e.g., `busybox`, `libssl`, `curl`). This creates endless noise for our users and puts constant pressure on the maintainers to cut new releases or trigger manual rebuilds just to clear scanner warnings.\n\n## The Solution\nTo resolve this, we can switch our base image from `golang:alpine` to **Chainguard** (`cgr.dev/chainguard/go`). \n\nChainguard maintains a minimal Linux un-distro (Wolfi) specifically designed for container security. By transitioning to their `-dev` image, we can retain the exact same user experience (`docker run --rm -v $(pwd):/xk6 grafana/xk6 build ...`) while permanently dropping our CVE count to near zero.\n\n## Why Chainguard is better than Alpine for xk6\nSwitching away from Alpine brings three massive architectural benefits:\n\n1. **Near-Zero CVEs (Distroless by Design)**\n   Chainguard strips out all non-essential OS packages, drastically reducing the attack surface. They aggressively patch vulnerabilities within hours of upstream releases. Security scanners (Trivy, Snyk, etc.) almost universally report 0 vulnerabilities on these images, eliminating the maintenance burden of playing whack-a-mole with OS-level patches.\n\n2. **Superior CGO Compatibility (`glibc` vs `musl`)**\n   Alpine relies on `musl libc`. Many popular k6 extensions (like `xk6-kafka` or `xk6-sqlite`) utilize C bindings that are heavily optimized for the standard GNU C Library (`glibc`). Compiling CGO on Alpine often requires messy workarounds or runs slower. Chainguard is built natively on `glibc`, making CGO extension builds faster, more reliable, and completely standard for our users.\n\n3. **Reduced Maintenance Burden**\n   By pinning our Dockerfiles to a specific Chainguard image digest, we guarantee 100% reproducible builds. Since we already use Renovate, it will automatically open PRs to update this digest whenever Chainguard releases security patches, effectively putting our base image CVE management on autopilot.\n\n## Implementation & Impact\nThe refactored `Dockerfile` and `Dockerfile.goreleaser` have already been thoroughly tested locally. \n\n**Crucially, the end-user experience remains 100% unchanged.** Users will continue to pull the image and run their standard `xk6` commands exactly as they do today. The only difference is that the underlying environment is now highly secure, CGO-optimized, and maintenance-friendly.\n",
+        "url": "https://github.com/grafana/xk6/issues/438"
+    },
+    {
+        "id": 4052964722,
+        "number": 434,
+        "title": "Fix CVEs by upgrading Go to 1.25.8 and updating Docker base images",
+        "state": "closed",
+        "created_at": "2026-03-10T16:45:54Z",
+        "updated_at": "2026-03-11T08:04:25Z",
+        "closed_at": "2026-03-11T08:04:25Z",
+        "author": "szkiba",
+        "comments": 0,
+        "labels": [],
+        "assignees": [
+            "szkiba"
+        ],
+        "locked": false,
+        "body": "## Summary\nThis issue tracks the fix for multiple CVEs affecting the xk6 project by upgrading Go and Docker base images.\n\n## CVEs to fix\n\n**Docker base image related:**\n- CVE-2026-22184\n- ~CVE-2026-27171~ (no fix available yet)\n\n**Go version related:**\n- CVE-2026-27139\n- CVE-2026-27142\n- CVE-2026-25679\n\n## Proposed fixes\n\n1. Upgrade Go from 1.25.7 to 1.25.8\n2. Update Docker base images from `golang:1.25.7-alpine3.23` to `golang:1.25.8-alpine3.23`\n3. Update release workflow to pin Go 1.25.8\n\n## Impact\n\n- Security vulnerabilities patched\n- Same minor version maintained (1.25.x)\n- Validation and integration workflows already use 1.25.x and will automatically pick up 1.25.8",
+        "url": "https://github.com/grafana/xk6/issues/434"
+    },
+    {
+        "id": 3966871661,
+        "number": 432,
+        "title": "Prepare v1.3.5",
+        "state": "closed",
+        "created_at": "2026-02-20T06:32:08Z",
+        "updated_at": "2026-02-20T06:44:49Z",
+        "closed_at": "2026-02-20T06:44:49Z",
+        "author": "szkiba",
+        "comments": 0,
+        "labels": [],
+        "assignees": [
+            "szkiba"
+        ],
+        "locked": false,
+        "body": null,
+        "url": "https://github.com/grafana/xk6/issues/432"
+    },
+    {
+        "id": 3966811705,
+        "number": 430,
+        "title": "Update Go to 1.25.7 to fix security vulnerabilities",
+        "state": "closed",
+        "created_at": "2026-02-20T06:16:47Z",
+        "updated_at": "2026-02-20T08:08:38Z",
+        "closed_at": "2026-02-20T08:08:37Z",
+        "author": "szkiba",
+        "comments": 0,
+        "labels": [
+            "SECURITY"
+        ],
+        "assignees": [
+            "szkiba"
+        ],
+        "locked": false,
+        "body": "\nUpdate the Go version to 1.25.7 to address multiple security vulnerabilities (CVEs).\n\n## Affected CVEs\n\nThe following CVEs are fixed in Go 1.25.7:\n\n- CVE-2025-68121\n- CVE-2025-61732\n- CVE-2025-61731\n- CVE-2025-61726\n- CVE-2025-68119\n- CVE-2026-25210\n- CVE-2025-60876\n- CVE-2025-61728\n- CVE-2025-61730\n\n",
+        "url": "https://github.com/grafana/xk6/issues/430"
+    },
+    {
+        "id": 3963221006,
+        "number": 428,
+        "title": "Windows release artifact contains incorrect executable name (k6 instead of k6.exe)",
+        "state": "closed",
+        "created_at": "2026-02-19T14:17:12Z",
+        "updated_at": "2026-02-19T14:17:46Z",
+        "closed_at": "2026-02-19T14:17:46Z",
+        "author": "szkiba",
+        "comments": 0,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "## Description\n\nThe shared extension workflow produces Windows zip release artifacts with an incorrect k6 executable name.\n\n## Current Behavior\n\nThe Windows zip release artifact contains an executable named `k6` (without the .exe extension).\n\n## Expected Behavior\n\nThe Windows zip release artifact should contain an executable named `k6.exe`.\n\n## Impact\n\nThis affects the usability of the Windows release artifacts, as Windows expects executables to have the `.exe` extension.\n",
+        "url": "https://github.com/grafana/xk6/issues/428"
+    },
+    {
+        "id": 3963218901,
+        "number": 427,
+        "title": "Incorrect k6 executable name on Windows",
+        "state": "closed",
+        "created_at": "2026-02-19T14:16:46Z",
+        "updated_at": "2026-02-19T17:27:42Z",
+        "closed_at": "2026-02-19T17:27:42Z",
+        "author": "szkiba",
+        "comments": 0,
+        "labels": [],
+        "assignees": [
+            "szkiba"
+        ],
+        "locked": false,
+        "body": "On Windows, `xk6 build` generates a binary named `k6` rather than `k6.exe`. This makes the binary difficult to execute via the command line without specifying the full name and prevents Windows from recognizing it as an executable file.\n\n### Steps to Reproduce\n1. Run `xk6 build` on a Windows machine.\n2. Observe the resulting file name in the working directory.\n\n### Actual Behavior\nThe binary is produced as `k6`.\n\n### Expected Behavior\nThe binary should be produced as `k6.exe`.\n\n### Clarification\n\nThis issue specifically occurs when **cross-compiling to Windows** from another platform (e.g., Linux or macOS). When compiling directly on Windows, Go already appends the .exe extension to the default output name automatically.\n",
+        "url": "https://github.com/grafana/xk6/issues/427"
+    },
+    {
+        "id": 3847090919,
+        "number": 416,
+        "title": "Support for Subcommand Extensions",
+        "state": "closed",
+        "created_at": "2026-01-23T11:37:13Z",
+        "updated_at": "2026-02-17T13:52:03Z",
+        "closed_at": "2026-02-17T13:52:03Z",
+        "author": "szkiba",
+        "comments": 0,
+        "labels": [],
+        "assignees": [
+            "szkiba"
+        ],
+        "locked": false,
+        "body": "With the release of **k6 v1.5.0**, k6 introduced support for **Subcommand Extensions**. This allows extensions to register custom subcommands under the `k6 x` namespace (e.g., `k6 x my-cmd ...`).\n\nCurrently, `xk6` lacks native support for:\n1.  **Execution:** Running these subcommand extensions on the fly (similar to how `xk6 run` works for standard JS extensions).\n2.  **Scaffolding:** Generating new projects based on the subcommand architecture.\n\n### Proposal\n\nAdding support for this extension type in `xk6` with the following workflow:\n\n#### 1. Execution Support (`xk6 x <subcommand>`)\n\nTo match the k6 syntax (`k6 x subcommand`), `xk6` should support an `x` command that builds the binary from the current directory and immediately executes the extension subcommand.\n\n**Proposed Syntax:**\n```bash\n# Builds the binary with the extension in CWD and executes the subcommand\nxk6 x <subcommand_name> [flags]\n```\n\n**Example:**\nIf I am developing an extension that adds the `my-tool` subcommand:\n```bash\n# This should build the binary and run `k6 x my-tool --debug`\nxk6 x my-tool --debug\n```\n\n#### 2. Scaffolding Support (`xk6 new`)\n\nThe `xk6 new` command should be updated to support generating the boilerplate for a subcommand extension.\n\n* It should accept a flag to specify the extension type.\n* The template used should be the official example: [grafana/xk6-subcommand-example](https://github.com/grafana/xk6-subcommand-example).\n\n**Example usage:**\n```bash\nxk6 new --type subcommand my-extension\n```\n\n### Alternatives\n\nCurrently, to test a subcommand extension during development, one must manually build the binary using `xk6 build`, and then execute the binary directly:\n```bash\nxk6 build --with .\n./k6 x my-subcommand\n```\n",
+        "url": "https://github.com/grafana/xk6/issues/416"
+    },
+    {
+        "id": 3818117082,
+        "number": 412,
+        "title": "Prepare v1.3.3 release - Security updates and Docker base image",
+        "state": "closed",
+        "created_at": "2026-01-15T15:51:35Z",
+        "updated_at": "2026-01-15T16:10:17Z",
+        "closed_at": "2026-01-15T16:10:17Z",
+        "author": "szkiba",
+        "comments": 0,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "## Release v1.3.3\n\nThis patch release addresses security updates and updates the Docker base image.\n\n### Changes to include:\n- Security: Update gosec to v2.22.11\n- Dependencies: Update golang.org/x/mod to v0.32.0\n- Docker: Update Go version to 1.25.5-alpine3.23\n- Workflows: Update GitHub Actions (artifact actions v4, setup-go, oven-sh/setup-bun, shared-workflows)\n",
+        "url": "https://github.com/grafana/xk6/issues/412"
+    },
+    {
+        "id": 3817618015,
+        "number": 410,
+        "title": "Update Docker base images to Alpine 3.23",
+        "state": "closed",
+        "created_at": "2026-01-15T13:38:42Z",
+        "updated_at": "2026-02-05T13:18:28Z",
+        "closed_at": "2026-02-05T13:18:28Z",
+        "author": "szkiba",
+        "comments": 0,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "Update golang base image from alpine3.22 to alpine3.23 in Dockerfile and Dockerfile.goreleaser.\n\n**Changes:**\n- golang: 1.25.5-alpine3.22 → 1.25.5-alpine3.23\n- New digest: sha256:ac09a5f469f307e5da71e766b0bd59c9c49ea460a528cc3e6686513d64a6f1fb\n\nThis update provides security updates and improvements from Alpine 3.23.2.",
+        "url": "https://github.com/grafana/xk6/issues/410"
+    },
+    {
+        "id": 3738671629,
+        "number": 400,
+        "title": "fix CVEs",
+        "state": "closed",
+        "created_at": "2025-12-17T12:19:52Z",
+        "updated_at": "2025-12-17T13:01:29Z",
+        "closed_at": "2025-12-17T13:01:29Z",
+        "author": "szkiba",
+        "comments": 0,
+        "labels": [
+            "SECURITY"
+        ],
+        "assignees": [
+            "szkiba"
+        ],
+        "locked": false,
+        "body": "Fix the following CVEs:\n\n- CVE-2025-61729\n- CVE-2025-61727\n- CVE-2025-62408\n- CVE-2025-58181\n- CVE-2025-47914\n\nTo do this, instead of `1.25.x` in the release workflow, the go version number (`1.25.5`) must be explicitly specified, otherwise due to the workflow cache, the latest go version may not be used.\n\nIn addition, `2.22.11` from the `securego/gosec` base image must be used.\n",
+        "url": "https://github.com/grafana/xk6/issues/400"
+    },
+    {
+        "id": 3716009785,
+        "number": 398,
+        "title": "Support branch names in xk6 sync command",
+        "state": "closed",
+        "created_at": "2025-12-10T16:49:11Z",
+        "updated_at": "2025-12-11T15:52:52Z",
+        "closed_at": "2025-12-11T15:52:52Z",
+        "author": "szkiba",
+        "comments": 1,
+        "labels": [
+            "enhancement"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "## Feature Request\n\nEnhance the `xk6 sync` command to support k6 branch names in addition to version tags and \"latest\".\n\n## Proposal\n\nSupport branch name specifications for the `-k`/`--k6-version` flag:\n\n- **Branch names**: `master`, or any branch name\n\n## Current Behavior\n\n`xk6 sync` currently supports:\n- Concrete version tags (e.g., `xk6 sync -k v0.50.0`)\n- `latest` keyword (e.g., `xk6 sync -k latest`)\n\n## Proposed Behavior\n\n```bash\n# Sync to master branch  \nxk6 sync -k master\n\n# Sync to specific branch\nxk6 sync -k feature/some-branch\n```\n\n## Investigation Needed\n\n- Research how `go get` handles branch specifications\n- Consider implications for `go.mod` updates (pseudo-versions for branches)\n- Evaluate user experience and common use cases\n\n## Benefits\n\n- Easier testing with k6 development branches\n- More flexible version management for extension developers\n- Aligns with familiar `go get` semantics\n- Enables testing with pre-release versions\n\n## Use Cases\n\n- Extension developers testing against k6 `master` branch\n- Testing compatibility with upcoming k6 releases\n- Development workflows for feature branches\n",
+        "url": "https://github.com/grafana/xk6/issues/398"
+    },
+    {
+        "id": 3711267224,
+        "number": 396,
+        "title": "Prepare v1.3.1",
+        "state": "closed",
+        "created_at": "2025-12-09T14:46:37Z",
+        "updated_at": "2025-12-09T15:17:28Z",
+        "closed_at": "2025-12-09T15:17:28Z",
+        "author": "szkiba",
+        "comments": 0,
+        "labels": [],
+        "assignees": [
+            "szkiba"
+        ],
+        "locked": false,
+        "body": null,
+        "url": "https://github.com/grafana/xk6/issues/396"
+    }
+]

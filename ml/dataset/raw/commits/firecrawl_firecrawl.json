@@ -1,0 +1,242 @@
+[
+    {
+        "sha": "9b8225fac843a5f3832a68d7e26024fd4844bd94",
+        "author": "Kris Oei",
+        "email": "87241105+KrisOei@users.noreply.github.com",
+        "date": "2026-07-13T18:06:30Z",
+        "message": "Merge pull request #3997 from firecrawl/feat/laravel-ai-tools\n\nfeat(php-sdk): native tool classes for the Laravel AI SDK",
+        "url": "https://github.com/firecrawl/firecrawl/commit/9b8225fac843a5f3832a68d7e26024fd4844bd94"
+    },
+    {
+        "sha": "3d6342b84d014be47819f0cf06a293fcd377aa79",
+        "author": "firecrawl-spring[bot]",
+        "email": "254786068+firecrawl-spring[bot]@users.noreply.github.com",
+        "date": "2026-07-13T17:49:06Z",
+        "message": "feat(api): point ACUC calls at auth_credit_usage_chunk_53 (#4012)\n\nSwitches authCreditUsageChunk / authCreditUsageChunkFromTeam to the v53 RPCs,\nwhich auto-fall-back plan-less teams in multi-team orgs to org-wide/Scale-\nEnterprise rate limits. Requires the firecrawl-db v53 migration to be applied\nfirst.\n\nCo-authored-by: firecrawl-spring[bot] <254786068+firecrawl-spring[bot]@users.noreply.github.com>\nCo-authored-by: micahstairs <micah@sideguide.dev>",
+        "url": "https://github.com/firecrawl/firecrawl/commit/3d6342b84d014be47819f0cf06a293fcd377aa79"
+    },
+    {
+        "sha": "d59b65fe70d38c2e12789413bfa98f31287e6c1e",
+        "author": "firecrawl-spring[bot]",
+        "email": "254786068+firecrawl-spring[bot]@users.noreply.github.com",
+        "date": "2026-07-13T17:16:39Z",
+        "message": "chore(billing): remove the idle credit-usage tally loop (#4010)\n\nThe index-worker ran tallyBilling() every 5min: it drained the\n`billed_teams` Redis set and called update_tally_10_team for each team to\naggregate credit_usage -> credit_usage_tally. #3992 removed the two sadd\nfeeders of `billed_teams` (Autumn is the source of truth for credits, and\nthe tally's readers have been migrated off it), so the set is permanently\nempty and the loop is dead work.\n\nRemoves tallyBilling(), the 5-minute billingTallyInterval (+ its\nclearInterval), and the now-unused updateTallyTeam wrapper in db/rpc.ts.\nThe update_tally_* DB functions are dropped separately in firecrawl-db.\n\nCo-authored-by: firecrawl-spring[bot] <254786068+firecrawl-spring[bot]@users.noreply.github.com>\nCo-authored-by: micahstairs <micah@sideguide.dev>",
+        "url": "https://github.com/firecrawl/firecrawl/commit/d59b65fe70d38c2e12789413bfa98f31287e6c1e"
+    },
+    {
+        "sha": "022a3554bc49b5973f6475298b43166ed8d19727",
+        "author": "Kris Oei",
+        "email": "87241105+KrisOei@users.noreply.github.com",
+        "date": "2026-07-13T16:41:47Z",
+        "message": "ci(php-sdk): extract SDK_VERSION with the same permissive pattern as the version gate\n\nThe tag step's sed required exactly three numeric components, but\ncheck_version_has_incremented.py extracts any quoted string — so a\npre-release like 1.10.0-beta.1 would pass the gate and then fail the job\nbefore tagging and the Packagist notify. Capture whatever the gate\napproved instead; the gate's version parse remains the format validator.\n\nCo-Authored-By: Claude Fable 5 <noreply@anthropic.com>",
+        "url": "https://github.com/firecrawl/firecrawl/commit/022a3554bc49b5973f6475298b43166ed8d19727"
+    },
+    {
+        "sha": "82d74eb5415ddedd06b6bea5099069b3225508d6",
+        "author": "Kris Oei",
+        "email": "87241105+KrisOei@users.noreply.github.com",
+        "date": "2026-07-13T16:28:54Z",
+        "message": "docs(php-sdk): note why assertSuccess covers only synchronous endpoints\n\nReview flagged the asymmetry: crawl start/status skip the success:false\nenvelope check. That is deliberate — a failed start yields a null job ID\nthat pollCrawl() and the crawl tool both guard, and crawl status is\nsurfaced explicitly on CrawlJob — but nothing said so.\n\nCo-Authored-By: Claude Fable 5 <noreply@anthropic.com>",
+        "url": "https://github.com/firecrawl/firecrawl/commit/82d74eb5415ddedd06b6bea5099069b3225508d6"
+    },
+    {
+        "sha": "ef8ca672d63dfaf12e2bc267c31aa040c9749bb5",
+        "author": "firecrawl-spring[bot]",
+        "email": "254786068+firecrawl-spring[bot]@users.noreply.github.com",
+        "date": "2026-07-13T16:24:00Z",
+        "message": "feat(billing): wire batch billing onto bill_team_7 (#4008)\n\nbill_team_7 (firecrawl-db #214) drops bill_team_6's fetch_subscription\nparam and its subscription self-fetch. That self-fetch was already dead\nin the live path: billTeam -> queueBillingOperation stores\n`subscription_id ?? null`, so by the time supaBillTeam runs, the value is\nstring|null (never undefined) and `fetch_subscription: subscription_id\n=== undefined` was always false. So this swap is behavior-preserving --\nit just deletes the unused lookup capability.\n\nRenames the db/rpc wrapper billTeam6 -> billTeam7 (one fewer param) and\npoints supaBillTeam at it. bill_team_6 stays in the DB for backward compat.\n\nDoes NOT yet retire ACUC sub_id: ~20 controllers still thread\nreq.acuc?.sub_id into billTeam, stamping it onto credit_usage.subscription_id.\nRemoving those + dropping sub_id from the ACUC is the follow-up.\n\nCo-authored-by: firecrawl-spring[bot] <254786068+firecrawl-spring[bot]@users.noreply.github.com>\nCo-authored-by: micahstairs <micah@sideguide.dev>",
+        "url": "https://github.com/firecrawl/firecrawl/commit/ef8ca672d63dfaf12e2bc267c31aa040c9749bb5"
+    },
+    {
+        "sha": "9f17c8e62aae88027dd9fcbfb48cceafc8f4d6ed",
+        "author": "Kris Oei",
+        "email": "87241105+KrisOei@users.noreply.github.com",
+        "date": "2026-07-13T16:08:46Z",
+        "message": "ci(php-sdk): tag releases on firecrawl-php so Packagist publishes stable versions\n\nThe publish workflow force-pushed the subtree split to firecrawl-php main\nand notified Packagist, but never created a version tag. Packagist derives\nstable versions from tags, so the package exposed only dev-main and\nconstraints like ^1.9 could not resolve. Push the split as\nrefs/tags/v{SDK_VERSION} before the Packagist notify, skipping when the tag\nalready exists so workflow re-runs stay idempotent.\n\nCo-Authored-By: Claude Fable 5 <noreply@anthropic.com>",
+        "url": "https://github.com/firecrawl/firecrawl/commit/9f17c8e62aae88027dd9fcbfb48cceafc8f4d6ed"
+    },
+    {
+        "sha": "f661561e2a3622c5e8db3f02cb010a8464085fe8",
+        "author": "cursor[bot]",
+        "email": "206951365+cursor[bot]@users.noreply.github.com",
+        "date": "2026-07-13T15:58:22Z",
+        "message": "fix(security): resolve pnpm audit failures (#4007)\n\nCo-authored-by: Cursor Agent <cursoragent@cursor.com>\nCo-authored-by: Abimael Martell <abimaelmartell@users.noreply.github.com>",
+        "url": "https://github.com/firecrawl/firecrawl/commit/f661561e2a3622c5e8db3f02cb010a8464085fe8"
+    },
+    {
+        "sha": "2c9ea09266df5c21d2f758fa5debfcafef0d8f7f",
+        "author": "firecrawl-spring[bot]",
+        "email": "254786068+firecrawl-spring[bot]@users.noreply.github.com",
+        "date": "2026-07-13T15:55:21Z",
+        "message": "chore(billing): stop populating the billed_teams tally set (#3992)\n\nbillTeam/batch_billing and the ACUC cache-clear path added each team to the\nRedis \"billed_teams\" set, which the index-worker loop drained into\nupdate_tally_10_team (the legacy credit_usage_tally pipeline). Autumn is the\nsource of truth for credits now; that tally, coupons decrement, and\ncredit_usage.tallied are no longer authoritative. Stop feeding the set so the\nloop idles. The set can only shrink from here (drained by the still-running\nloop), so nothing piles up.\n\nRemoves the now-unused getRedisConnection import from auth.ts.\n\nCo-authored-by: firecrawl-spring[bot] <254786068+firecrawl-spring[bot]@users.noreply.github.com>\nCo-authored-by: micahstairs <micah@sideguide.dev>",
+        "url": "https://github.com/firecrawl/firecrawl/commit/2c9ea09266df5c21d2f758fa5debfcafef0d8f7f"
+    },
+    {
+        "sha": "55cabf80a5eb225523e1a2ee17a93b95c34a9542",
+        "author": "firecrawl-spring[bot]",
+        "email": "254786068+firecrawl-spring[bot]@users.noreply.github.com",
+        "date": "2026-07-13T13:04:11Z",
+        "message": "docs(readme): list all official SDKs and fix Go miscategorization (#4006)\n\n- Add Go, Ruby, .NET, and PHP to the SDKs section\n- Remove the \"Community SDKs\" heading — Go (and all SDKs in apps/*-sdk)\n  are official, matching docs.firecrawl.dev/sdks/overview\n\nCo-authored-by: firecrawl-spring[bot] <254786068+firecrawl-spring[bot]@users.noreply.github.com>\nCo-authored-by: micahstairs <micah@sideguide.dev>",
+        "url": "https://github.com/firecrawl/firecrawl/commit/55cabf80a5eb225523e1a2ee17a93b95c34a9542"
+    },
+    {
+        "sha": "af6d47f3db423e00d52c1c0cc657bbfc837787f6",
+        "author": "Gergő Móricz",
+        "email": "mo.geryy@gmail.com",
+        "date": "2026-07-11T20:23:45Z",
+        "message": "fix(search): retry transient highlight failures (#4000)\n\n* fix(search): retry transient highlight failures\n\n* fix(api): harden highlight retry handling\n\n* fix(api): reject malformed highlight batches",
+        "url": "https://github.com/firecrawl/firecrawl/commit/af6d47f3db423e00d52c1c0cc657bbfc837787f6"
+    },
+    {
+        "sha": "044d5f906e1fc2aae453bcc94bd5e7312c7711ad",
+        "author": "Gergő Móricz",
+        "email": "mo.geryy@gmail.com",
+        "date": "2026-07-11T19:27:59Z",
+        "message": "fix(search): propagate highlight request IDs (#3999)",
+        "url": "https://github.com/firecrawl/firecrawl/commit/044d5f906e1fc2aae453bcc94bd5e7312c7711ad"
+    },
+    {
+        "sha": "370771fa846b1b81ceaa64265ccc179691d9881b",
+        "author": "Gergő Móricz",
+        "email": "mo.geryy@gmail.com",
+        "date": "2026-07-11T18:10:17Z",
+        "message": "fix(search): isolate shadow canonical log context (#3998)",
+        "url": "https://github.com/firecrawl/firecrawl/commit/370771fa846b1b81ceaa64265ccc179691d9881b"
+    },
+    {
+        "sha": "71e03b083fa46311011d39ceeee2841877f37b96",
+        "author": "Kris Oei",
+        "email": "87241105+KrisOei@users.noreply.github.com",
+        "date": "2026-07-11T18:00:14Z",
+        "message": "fix(php-sdk): address review findings on budgets, deadlines, and coverage\n\nTruncation notices now fit inside the stated cap, a single oversized item\nreduces to an omitted marker instead of bypassing the output budget, the\ncrawl budget counts serialized page length, crawl start and status requests\nare bounded by the remaining wall-clock deadline via new optional per-request\ntimeouts on startCrawl/getCrawlStatus, and the FirecrawlTools pass-through\ntest now exercises all four tools. Documented the PHP 8.3 dev requirement.\n\nCo-Authored-By: Claude Fable 5 <noreply@anthropic.com>",
+        "url": "https://github.com/firecrawl/firecrawl/commit/71e03b083fa46311011d39ceeee2841877f37b96"
+    },
+    {
+        "sha": "0643a6831e81a72d97dfa45e88e82012623cf175",
+        "author": "Gergő Móricz",
+        "email": "mo.geryy@gmail.com",
+        "date": "2026-07-11T17:55:03Z",
+        "message": "feat(search): add bounded highlights shadow traffic (#3996)\n\n* feat(search): add bounded highlights shadow traffic\n\n* fix(search): isolate highlight shadow logging",
+        "url": "https://github.com/firecrawl/firecrawl/commit/0643a6831e81a72d97dfa45e88e82012623cf175"
+    },
+    {
+        "sha": "309ce8aee8aa99daed8a5ed29d07bf5b80f8cc6b",
+        "author": "Kris Oei",
+        "email": "87241105+KrisOei@users.noreply.github.com",
+        "date": "2026-07-11T17:49:14Z",
+        "message": "style(php-sdk): trim docblocks in crawl and base tool\n\nCo-Authored-By: Claude Fable 5 <noreply@anthropic.com>",
+        "url": "https://github.com/firecrawl/firecrawl/commit/309ce8aee8aa99daed8a5ed29d07bf5b80f8cc6b"
+    },
+    {
+        "sha": "af25dae5d02b7e4ae1437cfb659f48e5efba8804",
+        "author": "Kris Oei",
+        "email": "87241105+KrisOei@users.noreply.github.com",
+        "date": "2026-07-11T17:42:28Z",
+        "message": "fix(php-sdk): use UUID-formatted crawl idempotency keys\n\nThe API's idempotency middleware only accepts UUID keys and rejects\nanything else with a 409, verified against production.\n\nCo-Authored-By: Claude Fable 5 <noreply@anthropic.com>",
+        "url": "https://github.com/firecrawl/firecrawl/commit/af25dae5d02b7e4ae1437cfb659f48e5efba8804"
+    },
+    {
+        "sha": "686bdc4586b35e1e3175c1e7e3b7470147bc7937",
+        "author": "Kris Oei",
+        "email": "87241105+KrisOei@users.noreply.github.com",
+        "date": "2026-07-11T17:39:29Z",
+        "message": "fix(php-sdk): bound crawl tool lifecycle and tool output budgets\n\nCrawl tool now starts jobs with an idempotency key (stable across HTTP\nretries), polls under one wall-clock deadline, reports pagination cursors\ninstead of following them, and returns a status-explicit JSON object so\nfailed or partial crawls are visible. Search and map outputs are capped by\na whole-result character budget with an explicit omitted marker.\n\nCo-Authored-By: Claude Fable 5 <noreply@anthropic.com>",
+        "url": "https://github.com/firecrawl/firecrawl/commit/686bdc4586b35e1e3175c1e7e3b7470147bc7937"
+    },
+    {
+        "sha": "b295b875adb544a35fcd6093681bb76918bce6eb",
+        "author": "Kris Oei",
+        "email": "87241105+KrisOei@users.noreply.github.com",
+        "date": "2026-07-11T16:03:39Z",
+        "message": "style(php-sdk): trim docblocks to repo comment conventions\n\nCo-Authored-By: Claude Fable 5 <noreply@anthropic.com>",
+        "url": "https://github.com/firecrawl/firecrawl/commit/b295b875adb544a35fcd6093681bb76918bce6eb"
+    },
+    {
+        "sha": "ddd75789ec517290ca99666abc138723fc8871e9",
+        "author": "Kris Oei",
+        "email": "87241105+KrisOei@users.noreply.github.com",
+        "date": "2026-07-11T16:00:46Z",
+        "message": "docs(php-sdk): frame crawl timeout guidance around runtime behavior\n\nCo-Authored-By: Claude Fable 5 <noreply@anthropic.com>",
+        "url": "https://github.com/firecrawl/firecrawl/commit/ddd75789ec517290ca99666abc138723fc8871e9"
+    },
+    {
+        "sha": "b113bec5cc78d5d63fe2c4a10770b2060074e577",
+        "author": "Gergő Móricz",
+        "email": "mo.geryy@gmail.com",
+        "date": "2026-07-11T08:14:06Z",
+        "message": "feat(search): batch query highlights (#3993)",
+        "url": "https://github.com/firecrawl/firecrawl/commit/b113bec5cc78d5d63fe2c4a10770b2060074e577"
+    },
+    {
+        "sha": "f1fadeacf6d932274fd1d5e357e5329f3611a849",
+        "author": "Kris Oei",
+        "email": "87241105+KrisOei@users.noreply.github.com",
+        "date": "2026-07-10T23:44:16Z",
+        "message": "style(php-sdk): drop remaining test comments\n\nCo-Authored-By: Claude Fable 5 <noreply@anthropic.com>",
+        "url": "https://github.com/firecrawl/firecrawl/commit/f1fadeacf6d932274fd1d5e357e5329f3611a849"
+    },
+    {
+        "sha": "70788bbbb1ef7ed2961c3cad204ac2a6871f1bd8",
+        "author": "Kris Oei",
+        "email": "87241105+KrisOei@users.noreply.github.com",
+        "date": "2026-07-10T23:41:18Z",
+        "message": "docs(php-sdk): clarify success=false envelope is intentional API design\n\nCo-Authored-By: Claude Fable 5 <noreply@anthropic.com>",
+        "url": "https://github.com/firecrawl/firecrawl/commit/70788bbbb1ef7ed2961c3cad204ac2a6871f1bd8"
+    },
+    {
+        "sha": "d2e856bc4ef30cf8fb5e0ee3dd40d42a92ce6ca2",
+        "author": "Kris Oei",
+        "email": "87241105+KrisOei@users.noreply.github.com",
+        "date": "2026-07-10T23:35:40Z",
+        "message": "docs(php-sdk): note HTTP 200 success=false failure mode in client and changelog\n\nCo-Authored-By: Claude Fable 5 <noreply@anthropic.com>",
+        "url": "https://github.com/firecrawl/firecrawl/commit/d2e856bc4ef30cf8fb5e0ee3dd40d42a92ce6ca2"
+    },
+    {
+        "sha": "22ca9d513eafa674f0fb5f56e5a973857122df03",
+        "author": "Kris Oei",
+        "email": "87241105+KrisOei@users.noreply.github.com",
+        "date": "2026-07-10T22:39:39Z",
+        "message": "style(php-sdk): tighten comments in Laravel AI tools\n\nCo-Authored-By: Claude Fable 5 <noreply@anthropic.com>",
+        "url": "https://github.com/firecrawl/firecrawl/commit/22ca9d513eafa674f0fb5f56e5a973857122df03"
+    },
+    {
+        "sha": "c47602c421722cf758c258268f9fd0f97257022b",
+        "author": "Kris Oei",
+        "email": "87241105+KrisOei@users.noreply.github.com",
+        "date": "2026-07-10T22:00:18Z",
+        "message": "chore(php-sdk): bump version to 1.9.0\n\nCo-Authored-By: Claude Fable 5 <noreply@anthropic.com>",
+        "url": "https://github.com/firecrawl/firecrawl/commit/c47602c421722cf758c258268f9fd0f97257022b"
+    },
+    {
+        "sha": "f27395db9f65df59fddc4cc8386ea97e48268ee7",
+        "author": "Kris Oei",
+        "email": "87241105+KrisOei@users.noreply.github.com",
+        "date": "2026-07-10T21:58:27Z",
+        "message": "fix(php-sdk): bound crawl wait time for queue-friendly execution\n\nFirecrawlClient::crawl() polls for up to 300 seconds by default, but\nLaravel queue workers commonly kill jobs at 60 seconds, orphaning a\ncrawl that keeps running (and billing) on the server. Add an\noverridable $timeoutSeconds (default 55) to FirecrawlCrawl, catch\nJobTimeoutException in handle() to return a specific, actionable\nmessage instead of a generic guard() error, and document the wait in\nthe tool description and README.\n\nCo-Authored-By: Claude Fable 5 <noreply@anthropic.com>",
+        "url": "https://github.com/firecrawl/firecrawl/commit/f27395db9f65df59fddc4cc8386ea97e48268ee7"
+    },
+    {
+        "sha": "88dac4347de2db632e7543d57024b1d37bc97940",
+        "author": "Kris Oei",
+        "email": "87241105+KrisOei@users.noreply.github.com",
+        "date": "2026-07-10T21:56:54Z",
+        "message": "fix(php-sdk): cap Laravel AI tool output sizes\n\nA large scraped page or crawl result could overflow the model context\nor a consumer's conversation storage. Add a shared truncate() helper\non FirecrawlTool and apply it: scrape output caps at 80000 characters,\neach crawled page's markdown caps at 15000, and the map tool's limit\n(both the runtime clamp and the schema max) drops from 5000 to 500.\n\nCo-Authored-By: Claude Fable 5 <noreply@anthropic.com>",
+        "url": "https://github.com/firecrawl/firecrawl/commit/88dac4347de2db632e7543d57024b1d37bc97940"
+    },
+    {
+        "sha": "f3dabd19834b6d34b7674dfa1b9502aa62e675c6",
+        "author": "Kris Oei",
+        "email": "87241105+KrisOei@users.noreply.github.com",
+        "date": "2026-07-10T21:56:02Z",
+        "message": "fix(php-sdk): use underscore-prefixed integration tag for old API compatibility\n\nPrefix the Laravel AI tools' integration tag with an underscore\n(_laravel-ai) instead of adding a new value to the API's integration\nenum. The API's integration validator accepts any underscore-prefixed\nvalue on every deployed version, so the tools work against lagging or\nself-hosted APIs without a deploy ordering requirement. Revert the\napps/api enum addition to match origin/main.\n\nCo-Authored-By: Claude Fable 5 <noreply@anthropic.com>",
+        "url": "https://github.com/firecrawl/firecrawl/commit/f3dabd19834b6d34b7674dfa1b9502aa62e675c6"
+    },
+    {
+        "sha": "76027337ea15545df3e5966533016cdd117c9f90",
+        "author": "Kris Oei",
+        "email": "87241105+KrisOei@users.noreply.github.com",
+        "date": "2026-07-10T21:55:22Z",
+        "message": "fix(php-sdk): surface success=false API envelopes instead of empty results\n\nThe API can return HTTP 200 with a success:false envelope (e.g. DNS\nfailures), which the client was hydrating into an empty Document,\nSearchData, or MapData instead of raising the error. Add an\nassertSuccess helper and apply it to scrape, search, and map, the\nsynchronous endpoints the Laravel tools call directly, so failures\nsurface to the model instead of reading as \"no content.\"\n\nCo-Authored-By: Claude Fable 5 <noreply@anthropic.com>",
+        "url": "https://github.com/firecrawl/firecrawl/commit/76027337ea15545df3e5966533016cdd117c9f90"
+    }
+]

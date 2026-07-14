@@ -1,0 +1,242 @@
+[
+    {
+        "sha": "99a920bdf9408ef885dfd9776c3b4d4453d22c8d",
+        "author": "Jonathan Brossard",
+        "email": "endrazine@gmail.com",
+        "date": "2026-07-12T17:04:26Z",
+        "message": "Modified build instructions under Ubuntu 26.04.",
+        "url": "https://github.com/endrazine/wcc/commit/99a920bdf9408ef885dfd9776c3b4d4453d22c8d"
+    },
+    {
+        "sha": "140672e2188548cce5f6c0739cb872cc21a37dfa",
+        "author": "Jonathan Brossard",
+        "email": "endrazine@gmail.com",
+        "date": "2026-07-12T17:00:45Z",
+        "message": "Added Dockerfiles for Debian 13 (Trixie) and Ubuntu 26.04.",
+        "url": "https://github.com/endrazine/wcc/commit/140672e2188548cce5f6c0739cb872cc21a37dfa"
+    },
+    {
+        "sha": "c48c0cc338dd4553a40dd7d8dd6e58576b5857d9",
+        "author": "Jonathan Brossard",
+        "email": "endrazine@gmail.com",
+        "date": "2026-07-12T16:45:20Z",
+        "message": "Cleanup code : no more warnings at compile time.",
+        "url": "https://github.com/endrazine/wcc/commit/c48c0cc338dd4553a40dd7d8dd6e58576b5857d9"
+    },
+    {
+        "sha": "675bf9600afa5008d3f6c61c0c7f5ba0e9518ece",
+        "author": "Jonathan Brossard",
+        "email": "endrazine@gmail.com",
+        "date": "2026-05-22T09:40:01Z",
+        "message": "Fixed missing function prototype declaration for init_multiarch_support()\nas per https://github.com/endrazine/wcc/issues/52",
+        "url": "https://github.com/endrazine/wcc/commit/675bf9600afa5008d3f6c61c0c7f5ba0e9518ece"
+    },
+    {
+        "sha": "8aae08f279610eb7298858e72f0ee928c137344b",
+        "author": "Jonathan Brossard",
+        "email": "endrazine@gmail.com",
+        "date": "2026-04-25T10:18:00Z",
+        "message": "Update README: version 0.0.12, remove build timestamps from example output",
+        "url": "https://github.com/endrazine/wcc/commit/8aae08f279610eb7298858e72f0ee928c137344b"
+    },
+    {
+        "sha": "de563bf2e4601156abbac0ea81b4f6f01a91c98a",
+        "author": "Jonathan Brossard",
+        "email": "endrazine@gmail.com",
+        "date": "2026-04-25T10:13:31Z",
+        "message": "Bump version to 0.0.12, update copyright years to 2026",
+        "url": "https://github.com/endrazine/wcc/commit/de563bf2e4601156abbac0ea81b4f6f01a91c98a"
+    },
+    {
+        "sha": "f2a24cfd80edfb6b04eb0de8bb5e233f132a176d",
+        "author": "Jonathan Brossard",
+        "email": "endrazine@gmail.com",
+        "date": "2026-04-25T10:04:14Z",
+        "message": "Apply Debian packaging patches (issue #51)\n\n- Fix doxygen LaTeX compilation bug (\\+ command)\n- Fix spelling errors in wcc.c, wld.1, wsh.c, wsh_help.h\n- Add shebang to main.wsh\n- Add non-Linux kernel support via local elf-em.h\n- Link libbfd statically (fixes Debian bug #949601)\n- Remove build timestamps for reproducible builds\n- Add CPPFLAGS/LDFLAGS support for Debian hardening\n- Remove accidentally committed Lua build artifacts\n- Improve .gitignore to exclude build artifacts\n\nPatches by Philippe Thierry and Debian Security Tools team\n<team+pkg-security@tracker.debian.org>\nReported in: https://github.com/endrazine/wcc/issues/51",
+        "url": "https://github.com/endrazine/wcc/commit/f2a24cfd80edfb6b04eb0de8bb5e233f132a176d"
+    },
+    {
+        "sha": "d5b1095f002b41bbb835e5db0d63cf776732871e",
+        "author": "Jonathan Brossard",
+        "email": "endrazine@gmail.com",
+        "date": "2026-04-25T09:39:14Z",
+        "message": "Vendor Lua 5.3.6 (replaces 5.3.0/1; fixes CVE-2020-24370 natively)\n\nPrevious vendored snapshot was Lua 5.3.0 or 5.3.1 (copyright 2015).\nLua 5.3.6 includes all 5.3.x bug fixes including the backport of\nCVE-2020-24370 (negation overflow in ldebug.c findvararg).\n\nCloses: PR #43",
+        "url": "https://github.com/endrazine/wcc/commit/d5b1095f002b41bbb835e5db0d63cf776732871e"
+    },
+    {
+        "sha": "b6dc6fb01791e3fb3ec8d483cabf200bbe055654",
+        "author": "Jonathan Brossard",
+        "email": "endrazine@gmail.com",
+        "date": "2026-04-03T07:05:48Z",
+        "message": "Updated README.md with Ubuntu 24.04 build instructions.",
+        "url": "https://github.com/endrazine/wcc/commit/b6dc6fb01791e3fb3ec8d483cabf200bbe055654"
+    },
+    {
+        "sha": "b68d9cf0621bf8d6fe0fef7f6186d45929a39d55",
+        "author": "Jonathan Brossard",
+        "email": "endrazine@gmail.com",
+        "date": "2026-04-03T07:02:34Z",
+        "message": "Improved pagination.",
+        "url": "https://github.com/endrazine/wcc/commit/b68d9cf0621bf8d6fe0fef7f6186d45929a39d55"
+    },
+    {
+        "sha": "fad40be3886ee2ef5b77623a425d1b19ba332f74",
+        "author": "Jonathan Brossard",
+        "email": "endrazine@gmail.com",
+        "date": "2025-09-28T10:07:55Z",
+        "message": "Fixed run_shell() when running scripts in non-interactive mode.\nImproved help() command.",
+        "url": "https://github.com/endrazine/wcc/commit/fad40be3886ee2ef5b77623a425d1b19ba332f74"
+    },
+    {
+        "sha": "988ec9719d0f480165fae45244a6cde22b031256",
+        "author": "Jonathan Brossard",
+        "email": "endrazine@gmail.com",
+        "date": "2025-09-28T09:14:38Z",
+        "message": "Added initial multi-arch disassembler.",
+        "url": "https://github.com/endrazine/wcc/commit/988ec9719d0f480165fae45244a6cde22b031256"
+    },
+    {
+        "sha": "ce50815c5cb7dae9c3cceb5e7efdd479fb890113",
+        "author": "Jonathan Brossard",
+        "email": "endrazine@gmail.com",
+        "date": "2025-09-28T07:28:54Z",
+        "message": "Finished multi-line paste integration/cleanup.",
+        "url": "https://github.com/endrazine/wcc/commit/ce50815c5cb7dae9c3cceb5e7efdd479fb890113"
+    },
+    {
+        "sha": "9b067c2976ca4a2a78836ac9dddf08037c7b5eb8",
+        "author": "Jonathan Brossard",
+        "email": "endrazine@gmail.com",
+        "date": "2025-09-28T07:25:49Z",
+        "message": "Add multiline support to WSH shell\n\n- Detect incomplete Lua statements using <eof> error\n- Show >> continuation prompts for multiline input\n- Accumulate lines until syntactically complete\n- Preserve tab completion and history functionality\n- Works seamlessly with linenoise multiline paste fix",
+        "url": "https://github.com/endrazine/wcc/commit/9b067c2976ca4a2a78836ac9dddf08037c7b5eb8"
+    },
+    {
+        "sha": "78cfb6694f392fad5182804cae7c107cba980e17",
+        "author": "Jonathan Brossard",
+        "email": "endrazine@gmail.com",
+        "date": "2025-09-28T07:22:39Z",
+        "message": "Switch to endrazine/linenoise fork with multiline paste fix",
+        "url": "https://github.com/endrazine/wcc/commit/78cfb6694f392fad5182804cae7c107cba980e17"
+    },
+    {
+        "sha": "5df816f6b591097ad20d73583fe3041198f42030",
+        "author": "Jonathan Brossard",
+        "email": "endrazine@gmail.com",
+        "date": "2025-09-28T07:20:57Z",
+        "message": "Remove original linenoise submodule",
+        "url": "https://github.com/endrazine/wcc/commit/5df816f6b591097ad20d73583fe3041198f42030"
+    },
+    {
+        "sha": "1d14d4ad1f88b644e94762f819e795ae280a850b",
+        "author": "Jonathan Brossard",
+        "email": "endrazine@gmail.com",
+        "date": "2025-09-26T10:09:05Z",
+        "message": "Added lua2c() and struct2c() functions.",
+        "url": "https://github.com/endrazine/wcc/commit/1d14d4ad1f88b644e94762f819e795ae280a850b"
+    },
+    {
+        "sha": "dced7e9d8ed92c9763c9dadbc367ec9ed5daa9c3",
+        "author": "Jonathan Brossard",
+        "email": "endrazine@gmail.com",
+        "date": "2025-09-17T19:59:21Z",
+        "message": "Allow linking against any version of libbfd.",
+        "url": "https://github.com/endrazine/wcc/commit/dced7e9d8ed92c9763c9dadbc367ec9ed5daa9c3"
+    },
+    {
+        "sha": "83bc06c12a2cce715888040355cee2a92727305b",
+        "author": "Jonathan Brossard",
+        "email": "endrazine@gmail.com",
+        "date": "2025-09-17T19:57:49Z",
+        "message": "Impose libbfd 2.45 for linking.",
+        "url": "https://github.com/endrazine/wcc/commit/83bc06c12a2cce715888040355cee2a92727305b"
+    },
+    {
+        "sha": "c54c2baf866bd03a907e526578059812c4316bf9",
+        "author": "Jonathan Brossard",
+        "email": "endrazine@gmail.com",
+        "date": "2025-09-17T19:35:54Z",
+        "message": "Improved wcc : added PE to ELF, COFF to ELF and Mach-O to ELF\nbasic capabilities.",
+        "url": "https://github.com/endrazine/wcc/commit/c54c2baf866bd03a907e526578059812c4316bf9"
+    },
+    {
+        "sha": "3dfd28cb53b4766032e1113cf508bf2f5dce87d5",
+        "author": "Jonathan Brossard",
+        "email": "endrazine@gmail.com",
+        "date": "2025-09-15T07:20:11Z",
+        "message": "Improve compatibility with latest gcc versions.",
+        "url": "https://github.com/endrazine/wcc/commit/3dfd28cb53b4766032e1113cf508bf2f5dce87d5"
+    },
+    {
+        "sha": "6d1f5c8b0df0c2a7141a761eb2656858ab322844",
+        "author": "Jonathan Brossard",
+        "email": "endrazine@gmail.com",
+        "date": "2025-09-14T18:20:13Z",
+        "message": "Improved i386 compilation",
+        "url": "https://github.com/endrazine/wcc/commit/6d1f5c8b0df0c2a7141a761eb2656858ab322844"
+    },
+    {
+        "sha": "221eb584dc66630d8f95a0db52b8b8858af0a0a8",
+        "author": "Jonathan Brossard",
+        "email": "endrazine@gmail.com",
+        "date": "2025-09-12T21:49:17Z",
+        "message": "Improve ELF unlinking with wcc.",
+        "url": "https://github.com/endrazine/wcc/commit/221eb584dc66630d8f95a0db52b8b8858af0a0a8"
+    },
+    {
+        "sha": "58e2fa7965a0e5b82ff9c2f68aa0a8aade3f996f",
+        "author": "Jonathan Brossard",
+        "email": "endrazine@gmail.com",
+        "date": "2025-09-09T08:37:32Z",
+        "message": "Improve backtraces for musl.",
+        "url": "https://github.com/endrazine/wcc/commit/58e2fa7965a0e5b82ff9c2f68aa0a8aade3f996f"
+    },
+    {
+        "sha": "8b487910cdce9f259ded2ef2531a5f5cfe140ea4",
+        "author": "Jonathan Brossard",
+        "email": "endrazine@gmail.com",
+        "date": "2025-09-09T08:17:31Z",
+        "message": "Improve musl support.",
+        "url": "https://github.com/endrazine/wcc/commit/8b487910cdce9f259ded2ef2531a5f5cfe140ea4"
+    },
+    {
+        "sha": "2ce7f7fd17449de1d69434b0c7c2acf82b5d67c1",
+        "author": "Jonathan Brossard",
+        "email": "endrazine@gmail.com",
+        "date": "2025-09-09T07:57:09Z",
+        "message": "Improve musl support.",
+        "url": "https://github.com/endrazine/wcc/commit/2ce7f7fd17449de1d69434b0c7c2acf82b5d67c1"
+    },
+    {
+        "sha": "66f6e33347bbc4fc0362ef15258fed091f1c917d",
+        "author": "Jonathan Brossard",
+        "email": "endrazine@gmail.com",
+        "date": "2025-09-09T07:34:27Z",
+        "message": "Improve musl support.",
+        "url": "https://github.com/endrazine/wcc/commit/66f6e33347bbc4fc0362ef15258fed091f1c917d"
+    },
+    {
+        "sha": "8b229c611e24d72f03d6c1a0b0e793d33968e467",
+        "author": "Jonathan Brossard",
+        "email": "endrazine@gmail.com",
+        "date": "2025-09-09T07:30:56Z",
+        "message": "Improve musl support.",
+        "url": "https://github.com/endrazine/wcc/commit/8b229c611e24d72f03d6c1a0b0e793d33968e467"
+    },
+    {
+        "sha": "d074e234bf5f1cc2ae29e83761b64a5771ef2185",
+        "author": "Jonathan Brossard",
+        "email": "endrazine@gmail.com",
+        "date": "2025-09-09T07:25:11Z",
+        "message": "Attempt to fix musl compilation with backtraces.",
+        "url": "https://github.com/endrazine/wcc/commit/d074e234bf5f1cc2ae29e83761b64a5771ef2185"
+    },
+    {
+        "sha": "2c94353e84d2b8844e75116c3e0e3bb95c84d66f",
+        "author": "Jonathan Brossard",
+        "email": "endrazine@gmail.com",
+        "date": "2025-09-09T07:21:43Z",
+        "message": "Add backtraces to musl.",
+        "url": "https://github.com/endrazine/wcc/commit/2c94353e84d2b8844e75116c3e0e3bb95c84d66f"
+    }
+]

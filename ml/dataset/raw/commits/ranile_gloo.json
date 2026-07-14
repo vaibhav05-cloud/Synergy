@@ -1,0 +1,242 @@
+[
+    {
+        "sha": "552bedcb2ca8c384edc8f66d6bdda6a5e7ec3697",
+        "author": "Guy Bedford",
+        "email": "guybedford@gmail.com",
+        "date": "2026-05-16T02:16:00Z",
+        "message": "fix: propagate unwind safety to user callbacks across all gloo crates (#562)\n\nwasm-bindgen 0.2.109+ added a `MaybeUnwindSafe` bound on `Closure::wrap`\nand `Closure::once` to make panics in JS-invoked closures sound under\n`panic = \"unwind\"`. The bound landed quietly because under the default\n`panic = \"abort\"` it resolves to a no-op blanket impl, but downstream\ncrates that test under `-Cpanic=unwind` (notably wasm-streams) hit a\nhard compile error: the `Box<F> as Box<dyn Fn*>` coercion used to\nconstruct the closure type erases the static `UnwindSafe` bound the\nconstructors now require. See\nhttps://github.com/MattiasBuelens/wasm-streams/pull/35 for the\noriginating report.\n\nThis change applies the same pattern to every gloo crate that hosts a\n`Closure::wrap` / `Closure::once` call site: a `CallbackUnwindSafe`\nmarker on the public boundary (where one exists), and an internal\nswitch to the `_assert_unwind_safe` variant under `panic = \"unwind\"`\nto acknowledge the dyn-erasure at the call site that has already\nenforced the bound.\n\ngloo-timers\n* `Timeout::new` and `Interval::new` add a `CallbackUnwindSafe` bound,\n  a marker that resolves to `std::panic::UnwindSafe` under\n  `panic = \"unwind\"` on wasm and to a no-op blanket otherwise.\n  Internally both route through `Closure::once_assert_unwind_safe` and\n  `Closure::wrap_assert_unwind_safe` under panic=unwind.\n* The `futures` feature wraps its internal `oneshot::Sender` and\n  `mpsc::UnboundedSender` captures in `std::panic::AssertUnwindSafe`.\n  `TimeoutFuture` consumes the wrapper through a by-value helper so\n  that RFC 2229 disjoint capture sees the closure capturing the\n  wrapper rather than projecting to the inner sender (writing `tx.0`\n  or `let AssertUnwindSafe(x) = tx` inside the closure would silently\n  defeat the assertion).\n\ngloo-events\n* All four `EventListener` constructors (`new`, `once`,\n  `new_with_options`, `once_with_options`) surface\n  `CallbackUnwindSafe` on the user callback and route through the\n  `_assert_unwind_safe` variants under panic=unwind.\n\ngloo-render\n* `request_animation_frame` surfaces the same bound. The internal\n  trampoline that fans the user `FnOnce` out through\n  `Rc<RefCell<Option<CallbackWrapper>>>` is audited unwind-safe: the\n  slot is transitioned to `None` via `borrow_mut().take()` before the\n  user callback runs, so a panic leaves a legitimately reachable\n  post-fire state and `AnimationFrame::drop` correctly skips\n  cancellation.\n\ngloo-net\n* Internal closures only; no public bound. The four WebSocket\n  callbacks and the two EventSource callbacks route through a\n  crate-local `wrap_internal!` macro that resolves to\n  `Closure::wrap_assert_unwind_safe` under panic=unwind. The captures\n  (`Rc<RefCell<Option<Waker>>>` and `mpsc::UnboundedSender<...>`) are\n  exclusively owned by the crate; `unbounded_send` is lock-free and\n  the waker slot is taken in one shot, so a caught panic leaves no\n  observable invariant violated.\n\ngloo-worker\n* The `set_on_packed_message` trampoline is `pub(crate)` and called\n  only from the spawner and registrar. Both call sites either\n  construct a value and forward via `scope.send`, or hold a\n  `RefMut<callbacks>` that is correctly released during unwind via\n  `RefMut::drop`, so asserting unwind safety here is sound.\n\nPublic-API semver impact is none under the default panic strategy:\n`CallbackUnwindSafe` blanket-impls every type, so the new bound is\ninvisible to existing callers. Under `panic = \"unwind\"` the affected\ncrates previously did not compile against wasm-bindgen 0.2.109+, so\nthere are no existing callers to break. The `wasm-bindgen` floor is\nleft at `\"0.2\"` in every crate; the `_assert_unwind_safe` call sites\nare cfg-gated on `panic = \"unwind\"`, and any user opting into that\nstrategy will have already resolved a wasm-bindgen new enough to\nexpose the helpers.\n\nCI gains a `panic_unwind_build` job that builds every affected crate\nwith `-Cpanic=unwind -Zbuild-std=std,panic_unwind --all-features` so\nthe same regression cannot reappear silently. The `--all-features`\nflag covers gloo-timers' `futures` feature, gloo-net's transport\nfeatures (json, websocket, http, eventsource), and gloo-worker's\n`futures` feature in a single invocation.",
+        "url": "https://github.com/ranile/gloo/commit/552bedcb2ca8c384edc8f66d6bdda6a5e7ec3697"
+    },
+    {
+        "sha": "6d66a97ff36ca365943c19a9a0b1f88246a8b880",
+        "author": "Moo, Kachon",
+        "email": "lightdemon17@gmail.com",
+        "date": "2026-04-22T15:07:19Z",
+        "message": "docs(net): add json body example code and correct outdated GET example (#556)",
+        "url": "https://github.com/ranile/gloo/commit/6d66a97ff36ca365943c19a9a0b1f88246a8b880"
+    },
+    {
+        "sha": "2867bc52c588b5abfa7cfae61a7c0b8ed523fe93",
+        "author": "dependabot[bot]",
+        "email": "49699333+dependabot[bot]@users.noreply.github.com",
+        "date": "2026-04-19T10:39:00Z",
+        "message": "chore(deps): bump rand from 0.10.0 to 0.10.1 (#559)\n\nBumps [rand](https://github.com/rust-random/rand) from 0.10.0 to 0.10.1.\n- [Release notes](https://github.com/rust-random/rand/releases)\n- [Changelog](https://github.com/rust-random/rand/blob/master/CHANGELOG.md)\n- [Commits](https://github.com/rust-random/rand/compare/0.10.0...0.10.1)\n\n---\nupdated-dependencies:\n- dependency-name: rand\n  dependency-version: 0.10.1\n  dependency-type: direct:production\n...\n\nSigned-off-by: dependabot[bot] <support@github.com>\nCo-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>",
+        "url": "https://github.com/ranile/gloo/commit/2867bc52c588b5abfa7cfae61a7c0b8ed523fe93"
+    },
+    {
+        "sha": "47bfc27a3003da6cac3301599561eee09e596918",
+        "author": "Elina",
+        "email": "imelina@elina.website",
+        "date": "2026-04-15T16:28:07Z",
+        "message": "Migrate to Edition 2024 and increase MSRV to 1.85 (#553)",
+        "url": "https://github.com/ranile/gloo/commit/47bfc27a3003da6cac3301599561eee09e596918"
+    },
+    {
+        "sha": "2a9838b4443e9aa4b57f5abb0380def0fbded54d",
+        "author": "Siyuan Yan",
+        "email": "44753941+Madoshakalaka@users.noreply.github.com",
+        "date": "2026-04-02T09:08:16Z",
+        "message": "fix(worker): enable spawning web workers from inside web workers (#547)\n\nReplace window-dependent URL resolution in WorkerSpawner with\njs_sys::Reflect-based globalThis.location.href, which works in both\nwindow and worker global scopes.\n\nAdd nested-worker-yew example demonstrating the feature: a\ncoordinator worker spawns per-request compute workers to calculate\nfibonacci numbers, with a Yew UI visualizing worker lifecycles.",
+        "url": "https://github.com/ranile/gloo/commit/2a9838b4443e9aa4b57f5abb0380def0fbded54d"
+    },
+    {
+        "sha": "4ac57f83c15cba5e0b7de9e7c771c719d3c693ba",
+        "author": "Elina",
+        "email": "imelina@elina.website",
+        "date": "2026-04-01T10:31:45Z",
+        "message": "Persistent history state (#541)",
+        "url": "https://github.com/ranile/gloo/commit/4ac57f83c15cba5e0b7de9e7c771c719d3c693ba"
+    },
+    {
+        "sha": "c85421d06c2738cf4363328ad8736ca1cc888f62",
+        "author": "Elina",
+        "email": "imelina@elina.website",
+        "date": "2026-04-01T10:30:59Z",
+        "message": "Keep `EventSource` alive until all subscriptions are closed (#545)\n\nUpdate `EventSourceSubscription` to hold an `Rc<EventSource>` to prevent premature closure of the EventSource.\n\n---\n\n* Keep `EventSource` alive until all subscriptions are closed\n\n* Add tests\n\n* Update CHANGELOG.md",
+        "url": "https://github.com/ranile/gloo/commit/c85421d06c2738cf4363328ad8736ca1cc888f62"
+    },
+    {
+        "sha": "6eb2631ffa550a559ac72f26edfce1b187c2b4ce",
+        "author": "Elina",
+        "email": "imelina@elina.website",
+        "date": "2026-03-27T12:27:13Z",
+        "message": "Replace `Bincode` with `Postcard` (#540)\n\nPostcard was chosen because it is recommended by the [bincode current readme](https://crates.io/crates/bincode/) and uses serde instead of custom serialization/deserialization protocol\n\nfixes #529\n\nThe breakage is removing the public `Bincode` type. Anyone who explicitly wrote:\n\n```rs\nuse gloo_worker::Bincode;\n```\n```rs\nWorkerSpawner<MyWorker, Bincode>\n```\nwill get a compile error",
+        "url": "https://github.com/ranile/gloo/commit/6eb2631ffa550a559ac72f26edfce1b187c2b4ce"
+    },
+    {
+        "sha": "072eccba63451ab8c9d7fbf8563e3ae3a782aa44",
+        "author": "Siyuan Yan",
+        "email": "44753941+Madoshakalaka@users.noreply.github.com",
+        "date": "2026-03-27T12:24:57Z",
+        "message": "fix: docs.rs build failure for gloo 0.12.0 (#543)\n\nRemoved `rustc-args` from docs.rs metadata to prevent leaking `--cfg docsrs` to dependencies, and replace removed `doc_auto_cfg` feature with `doc_cfg` (removed in Rust 1.92.0).",
+        "url": "https://github.com/ranile/gloo/commit/072eccba63451ab8c9d7fbf8563e3ae3a782aa44"
+    },
+    {
+        "sha": "40b4c5f92a7af109fd2e9754afb270e6e5199f2a",
+        "author": "Matt Yan",
+        "email": "syan4@ualberta.ca",
+        "date": "2026-03-25T12:09:47Z",
+        "message": "chore: release gloo 0.12.0",
+        "url": "https://github.com/ranile/gloo/commit/40b4c5f92a7af109fd2e9754afb270e6e5199f2a"
+    },
+    {
+        "sha": "c8feeb18bf5dde6b7aed80c749e1aef89b34fb52",
+        "author": "Matt Yan",
+        "email": "syan4@ualberta.ca",
+        "date": "2026-03-25T12:05:50Z",
+        "message": "chore: release gloo-timers 0.4.0",
+        "url": "https://github.com/ranile/gloo/commit/c8feeb18bf5dde6b7aed80c749e1aef89b34fb52"
+    },
+    {
+        "sha": "d69fcff62ee63f37076c4a0715a6f828b0036599",
+        "author": "Matt Yan",
+        "email": "syan4@ualberta.ca",
+        "date": "2026-03-25T12:00:41Z",
+        "message": "chore: release gloo-net 0.7.0",
+        "url": "https://github.com/ranile/gloo/commit/d69fcff62ee63f37076c4a0715a6f828b0036599"
+    },
+    {
+        "sha": "7a57df39ff9d172ad0bbf91cf0fc48a57d428392",
+        "author": "Matt Yan",
+        "email": "syan4@ualberta.ca",
+        "date": "2026-03-25T11:59:14Z",
+        "message": "chore: release gloo-file 0.4.0",
+        "url": "https://github.com/ranile/gloo/commit/7a57df39ff9d172ad0bbf91cf0fc48a57d428392"
+    },
+    {
+        "sha": "2685476cd8495947d61eac98a6a5f25cc90d1a34",
+        "author": "Matt Yan",
+        "email": "syan4@ualberta.ca",
+        "date": "2026-03-25T11:56:52Z",
+        "message": "fix: correct gloo-history category slugs",
+        "url": "https://github.com/ranile/gloo/commit/2685476cd8495947d61eac98a6a5f25cc90d1a34"
+    },
+    {
+        "sha": "b1d5129d93ff4dda112a8fd2846485bbcf3562e6",
+        "author": "Matt Yan",
+        "email": "syan4@ualberta.ca",
+        "date": "2026-03-25T11:56:24Z",
+        "message": "fix: correct gloo-storage category slugs",
+        "url": "https://github.com/ranile/gloo/commit/b1d5129d93ff4dda112a8fd2846485bbcf3562e6"
+    },
+    {
+        "sha": "8316f33311e7a83cd1611b30f47dc27ecc53955d",
+        "author": "Matt Yan",
+        "email": "syan4@ualberta.ca",
+        "date": "2026-03-25T11:55:36Z",
+        "message": "fix: correct gloo-render category slugs",
+        "url": "https://github.com/ranile/gloo/commit/8316f33311e7a83cd1611b30f47dc27ecc53955d"
+    },
+    {
+        "sha": "07345515229f46045cfa4f480ae401a464a4569a",
+        "author": "Matt Yan",
+        "email": "syan4@ualberta.ca",
+        "date": "2026-03-25T11:54:54Z",
+        "message": "chore: release gloo-console 0.4.0, gloo-dialogs 0.3.0, gloo-events 0.3.0, gloo-history 0.3.0, gloo-render 0.3.0, gloo-storage 0.4.0",
+        "url": "https://github.com/ranile/gloo/commit/07345515229f46045cfa4f480ae401a464a4569a"
+    },
+    {
+        "sha": "e6280d4b93c86a478a8f2f31af5f13d770b156b7",
+        "author": "Matt Yan",
+        "email": "syan4@ualberta.ca",
+        "date": "2026-03-25T11:42:30Z",
+        "message": "chore: release gloo-utils 0.3.0",
+        "url": "https://github.com/ranile/gloo/commit/e6280d4b93c86a478a8f2f31af5f13d770b156b7"
+    },
+    {
+        "sha": "cca8089045c0b208bf2f4581d61503686a197b69",
+        "author": "Matt Yan",
+        "email": "syan4@ualberta.ca",
+        "date": "2026-03-25T11:28:40Z",
+        "message": "chore: release gloo-worker-macros 0.2.0 and gloo-worker 0.6.0",
+        "url": "https://github.com/ranile/gloo/commit/cca8089045c0b208bf2f4581d61503686a197b69"
+    },
+    {
+        "sha": "a8af99c835468f84a1a5c9933cbae07ede9ad174",
+        "author": "Siyuan Yan",
+        "email": "44753941+Madoshakalaka@users.noreply.github.com",
+        "date": "2026-03-25T11:16:43Z",
+        "message": "chore: update rust dependencies (#536)\n\nbincode, proc-macro-crate, trybuild specially pinned for rust 1.82 compat (they pull deps that require 1.85+)",
+        "url": "https://github.com/ranile/gloo/commit/a8af99c835468f84a1a5c9933cbae07ede9ad174"
+    },
+    {
+        "sha": "0de58655d219dbfabf9bc0900a8761e764b36791",
+        "author": "vpochapuis",
+        "email": "75721408+vpochapuis@users.noreply.github.com",
+        "date": "2026-03-25T08:42:48Z",
+        "message": "fix(net)!: remove EventSource Clone implementation (#417)",
+        "url": "https://github.com/ranile/gloo/commit/0de58655d219dbfabf9bc0900a8761e764b36791"
+    },
+    {
+        "sha": "d2377968aed77fa2f32f762becb49c2d571ac97c",
+        "author": "Jonáš Fiala",
+        "email": "jonas.fiala.cardiff@gmail.com",
+        "date": "2026-03-25T08:06:03Z",
+        "message": "feat(worker)!: Add option to spawn workers as a module (#421)\n\nBREAKING CHANGE: default worker type is now ES module type\n\nBREAKING CHANGE: spawn_with_loader() removed. Do .with_loader(true).spawn(path) Now.",
+        "url": "https://github.com/ranile/gloo/commit/d2377968aed77fa2f32f762becb49c2d571ac97c"
+    },
+    {
+        "sha": "ea698e6bbd7a2d0305833487e91c7e7acb4ae424",
+        "author": "Elina",
+        "email": "imelina@elina.website",
+        "date": "2026-03-25T07:48:52Z",
+        "message": "fix: make JsError::try_from not panic (#488)\n\nJsString::from paniced with non-string input. Now this it uses dyn_into so that if the passed JsValue input, when not an Error, can't be turned a string, a fallback message is provided",
+        "url": "https://github.com/ranile/gloo/commit/ea698e6bbd7a2d0305833487e91c7e7acb4ae424"
+    },
+    {
+        "sha": "9fe4c087be1aa9be4c546dc35c49fb047a6ae219",
+        "author": "Horaci Macias",
+        "email": "135130171+hmacias-avaya@users.noreply.github.com",
+        "date": "2026-03-25T07:44:58Z",
+        "message": "fix(net): RequestBuilder::build creates a url with an extra ampersand (#497)",
+        "url": "https://github.com/ranile/gloo/commit/9fe4c087be1aa9be4c546dc35c49fb047a6ae219"
+    },
+    {
+        "sha": "798b701a852d1fba52c999cb1702cacde6f0a847",
+        "author": "Fedeparma74",
+        "email": "33133578+Fedeparma74@users.noreply.github.com",
+        "date": "2026-03-25T06:17:34Z",
+        "message": "fix(net): Send ws binary message with Blob (#502)\n\nthis fixes unwrap panics when SharedArrayBuffer is enabled with certain target-feature rustflags",
+        "url": "https://github.com/ranile/gloo/commit/798b701a852d1fba52c999cb1702cacde6f0a847"
+    },
+    {
+        "sha": "bc1010bd9c72a8f44b55ba72a488d970b1ed41d2",
+        "author": "martin frances",
+        "email": "martinfrances107@hotmail.com",
+        "date": "2026-03-25T05:01:58Z",
+        "message": "chore: MSRV 1.82, dependency update, ci update, refactoring (#505)\n\nCo-authored-by: Siyuan \"Mattuwu\" Yan <44753941+Madoshakalaka@users.noreply.github.com>",
+        "url": "https://github.com/ranile/gloo/commit/bc1010bd9c72a8f44b55ba72a488d970b1ed41d2"
+    },
+    {
+        "sha": "192334b16dbbf68466eec9cb570fa232094985f7",
+        "author": "dependabot[bot]",
+        "email": "49699333+dependabot[bot]@users.noreply.github.com",
+        "date": "2026-03-25T03:59:00Z",
+        "message": "chore(deps): bump tokio from 1.35.0 to 1.38.2 (#516)\n\nBumps [tokio](https://github.com/tokio-rs/tokio) from 1.35.0 to 1.38.2.\n- [Release notes](https://github.com/tokio-rs/tokio/releases)\n- [Commits](https://github.com/tokio-rs/tokio/compare/tokio-1.35.0...tokio-1.38.2)\n\n---\nupdated-dependencies:\n- dependency-name: tokio\n  dependency-version: 1.38.2\n  dependency-type: direct:production\n...\n\nSigned-off-by: dependabot[bot] <support@github.com>\nCo-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>",
+        "url": "https://github.com/ranile/gloo/commit/192334b16dbbf68466eec9cb570fa232094985f7"
+    },
+    {
+        "sha": "4b5895218e1eee46d0652b7aaf4eca590c260394",
+        "author": "dependabot[bot]",
+        "email": "49699333+dependabot[bot]@users.noreply.github.com",
+        "date": "2026-03-24T07:40:58Z",
+        "message": "chore(deps): bump mio from 0.8.10 to 0.8.11 (#452)\n\nBumps [mio](https://github.com/tokio-rs/mio) from 0.8.10 to 0.8.11.\n- [Release notes](https://github.com/tokio-rs/mio/releases)\n- [Changelog](https://github.com/tokio-rs/mio/blob/master/CHANGELOG.md)\n- [Commits](https://github.com/tokio-rs/mio/compare/v0.8.10...v0.8.11)\n\n---\nupdated-dependencies:\n- dependency-name: mio\n  dependency-type: indirect\n...\n\nSigned-off-by: dependabot[bot] <support@github.com>\nCo-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>",
+        "url": "https://github.com/ranile/gloo/commit/4b5895218e1eee46d0652b7aaf4eca590c260394"
+    },
+    {
+        "sha": "19ed0f00dffc90327d35ff419598883c4f5dd083",
+        "author": "dependabot[bot]",
+        "email": "49699333+dependabot[bot]@users.noreply.github.com",
+        "date": "2026-03-24T07:30:26Z",
+        "message": "chore(deps): bump dawidd6/action-download-artifact from 2 to 11 (#508)\n\nBumps [dawidd6/action-download-artifact](https://github.com/dawidd6/action-download-artifact) from 2 to 11.\n- [Release notes](https://github.com/dawidd6/action-download-artifact/releases)\n- [Commits](https://github.com/dawidd6/action-download-artifact/compare/v2...v11)\n\n---\nupdated-dependencies:\n- dependency-name: dawidd6/action-download-artifact\n  dependency-version: '11'\n  dependency-type: direct:production\n  update-type: version-update:semver-major\n...\n\nSigned-off-by: dependabot[bot] <support@github.com>\nCo-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>",
+        "url": "https://github.com/ranile/gloo/commit/19ed0f00dffc90327d35ff419598883c4f5dd083"
+    },
+    {
+        "sha": "a74d3c3002528117182adbe9ffd3ff6bfcfae383",
+        "author": "dependabot[bot]",
+        "email": "49699333+dependabot[bot]@users.noreply.github.com",
+        "date": "2026-03-24T06:17:49Z",
+        "message": "chore(deps): bump h2 from 0.3.22 to 0.3.26 (#462)\n\nBumps [h2](https://github.com/hyperium/h2) from 0.3.22 to 0.3.26.\n- [Release notes](https://github.com/hyperium/h2/releases)\n- [Changelog](https://github.com/hyperium/h2/blob/v0.3.26/CHANGELOG.md)\n- [Commits](https://github.com/hyperium/h2/compare/v0.3.22...v0.3.26)\n\n---\nupdated-dependencies:\n- dependency-name: h2\n  dependency-type: indirect\n...\n\nSigned-off-by: dependabot[bot] <support@github.com>\nCo-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>",
+        "url": "https://github.com/ranile/gloo/commit/a74d3c3002528117182adbe9ffd3ff6bfcfae383"
+    }
+]

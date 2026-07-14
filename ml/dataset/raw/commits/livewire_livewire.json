@@ -1,0 +1,242 @@
+[
+    {
+        "sha": "4bf4ab6a2393175fb4ce0d4506728ac63dbedf15",
+        "author": "Caleb Porzio",
+        "email": "calebporzio@gmail.com",
+        "date": "2026-07-13T17:25:56Z",
+        "message": "[4.x] Add the `$upload` action and `wire:drop` — paste, drop, and file-picker uploads (#10408)\n\nCo-authored-by: Claude Fable 5 <noreply@anthropic.com>",
+        "url": "https://github.com/livewire/livewire/commit/4bf4ab6a2393175fb4ce0d4506728ac63dbedf15"
+    },
+    {
+        "sha": "6413b8bbff0677d2566fde613c8e920b3a4661f7",
+        "author": "Caleb Porzio",
+        "email": "calebporzio@gmail.com",
+        "date": "2026-07-13T15:21:08Z",
+        "message": "Add API design philosophy guide to .claude/rules\n\nJudgment-layer companion to adding-features.md: the ladder (ship\nbehavior > inherit > extend > mint), surface placement, naming\ngrammar, defaults, state homes, and smell tests for designing new\npublic APIs. Derived from shipped v4 decisions.\n\nCo-Authored-By: Claude Fable 5 <noreply@anthropic.com>",
+        "url": "https://github.com/livewire/livewire/commit/6413b8bbff0677d2566fde613c8e920b3a4661f7"
+    },
+    {
+        "sha": "78574b2610273da961b83fdd94f0e249da9c4b9e",
+        "author": "Caleb Porzio",
+        "email": "calebporzio@gmail.com",
+        "date": "2026-07-12T10:53:37Z",
+        "message": "[4.x] Add `wire:if` and `wire:for` directives (#10404)\n\nCo-authored-by: Claude Fable 5 <noreply@anthropic.com>",
+        "url": "https://github.com/livewire/livewire/commit/78574b2610273da961b83fdd94f0e249da9c4b9e"
+    },
+    {
+        "sha": "57a620d812cccb7f108fd87006aee8e14ead5fac",
+        "author": "Caleb Porzio",
+        "email": "calebporzio@gmail.com",
+        "date": "2026-07-11T11:22:45Z",
+        "message": "[4.x] Chunked, resumable, and multiple-file S3 uploads (#10394)\n\nCo-authored-by: Claude Fable 5 <noreply@anthropic.com>",
+        "url": "https://github.com/livewire/livewire/commit/57a620d812cccb7f108fd87006aee8e14ead5fac"
+    },
+    {
+        "sha": "2512a9a0dbeb9fa758f5b2abe6bf4b45fa9bb3d7",
+        "author": "Caleb Porzio",
+        "email": "calebporzio@gmail.com",
+        "date": "2026-07-09T16:07:29Z",
+        "message": "[4.x] Add JavaScript synthesizers via `Livewire.synth()` (#10397)\n\nCo-authored-by: Claude Fable 5 <noreply@anthropic.com>",
+        "url": "https://github.com/livewire/livewire/commit/2512a9a0dbeb9fa758f5b2abe6bf4b45fa9bb3d7"
+    },
+    {
+        "sha": "c1103e17d14f5cd394857cdb9ff8ab0ad53d05ef",
+        "author": "Caleb Porzio",
+        "email": "calebporzio@gmail.com",
+        "date": "2026-07-07T20:07:51Z",
+        "message": "[4.x] docs: add missing $this->validate() calls to file upload examples (#10395)\n\nCo-authored-by: Claude Fable 5 <noreply@anthropic.com>",
+        "url": "https://github.com/livewire/livewire/commit/c1103e17d14f5cd394857cdb9ff8ab0ad53d05ef"
+    },
+    {
+        "sha": "29e3d2cc76c30201fa0e9e834371174ed8a1d739",
+        "author": "Caleb Porzio",
+        "email": "calebporzio@gmail.com",
+        "date": "2026-07-07T15:05:32Z",
+        "message": "docs: format long inline nginx snippet as a code block\n\nAn 83-character inline code span can't wrap gracefully — as a fenced\ncode block it reads better and can't overflow narrow viewports.\n\nCo-Authored-By: Claude Fable 5 <noreply@anthropic.com>",
+        "url": "https://github.com/livewire/livewire/commit/29e3d2cc76c30201fa0e9e834371174ed8a1d739"
+    },
+    {
+        "sha": "9baf7a96ddb57c6d67fa65ec8dba425accadf860",
+        "author": "Dave Wood",
+        "email": "dave@safelincs.co.uk",
+        "date": "2026-07-07T11:23:27Z",
+        "message": "[4.x] Handle exceptions from form lifecycle hooks (#10376)\n\nCo-authored-by: Dave Wood <davew@W00003.local>\nCo-authored-by: Josh Hanley <josh@hitsystems.com.au>\nCo-authored-by: Caleb Porzio <calebporzio@gmail.com>\nCo-authored-by: Claude Fable 5 <noreply@anthropic.com>",
+        "url": "https://github.com/livewire/livewire/commit/9baf7a96ddb57c6d67fa65ec8dba425accadf860"
+    },
+    {
+        "sha": "bfc87b7e33f5102cbbeb99eefd685d841322a81a",
+        "author": "Josh Hanley",
+        "email": "josh@hitsystems.com.au",
+        "date": "2026-07-07T11:14:06Z",
+        "message": "Revert \"[4.x] Move temporary file if disks are same\" (#10390)",
+        "url": "https://github.com/livewire/livewire/commit/bfc87b7e33f5102cbbeb99eefd685d841322a81a"
+    },
+    {
+        "sha": "6901c90b9ed3cb48a57a1967d71fe4d563d82372",
+        "author": "Rihulfa Akbar",
+        "email": "151924216+ghabriel25@users.noreply.github.com",
+        "date": "2026-07-07T11:13:36Z",
+        "message": "[4.x] Extract renderless-related methods into a `HandlesRenderless` trait (#10389)\n\nCo-authored-by: Josh Hanley <josh@hitsystems.com.au>",
+        "url": "https://github.com/livewire/livewire/commit/6901c90b9ed3cb48a57a1967d71fe4d563d82372"
+    },
+    {
+        "sha": "64fdee5bd5ce8d2aa4aa682ac689ea2bfe8580e4",
+        "author": "Rihulfa Akbar",
+        "email": "151924216+ghabriel25@users.noreply.github.com",
+        "date": "2026-07-07T11:12:56Z",
+        "message": "[4.x] Fix `BaseAuthorze` and `BaseRenderless` not triggered using event (#10384)\n\nCo-authored-by: Caleb Porzio <calebporzio@gmail.com>\nCo-authored-by: Claude Fable 5 <noreply@anthropic.com>",
+        "url": "https://github.com/livewire/livewire/commit/64fdee5bd5ce8d2aa4aa682ac689ea2bfe8580e4"
+    },
+    {
+        "sha": "f17c951cc92a1c74ea70f00478699501090ae6fe",
+        "author": "Julian Glück",
+        "email": "65236355+JulianGlueck@users.noreply.github.com",
+        "date": "2026-07-07T11:09:04Z",
+        "message": "Fix PHP 8.5 null array offset deprecation in EloquentCollectionSynth::hydrate() (#10380)\n\nCo-authored-by: Caleb Porzio <calebporzio@gmail.com>\nCo-authored-by: Claude Fable 5 <noreply@anthropic.com>",
+        "url": "https://github.com/livewire/livewire/commit/f17c951cc92a1c74ea70f00478699501090ae6fe"
+    },
+    {
+        "sha": "e3c7c5cb899e1cb13d7c4e2e6df06364e29f6516",
+        "author": "Rihulfa Akbar",
+        "email": "151924216+ghabriel25@users.noreply.github.com",
+        "date": "2026-07-07T11:06:23Z",
+        "message": "[4.x] Refactor `SupportAttributes` (#10378)",
+        "url": "https://github.com/livewire/livewire/commit/e3c7c5cb899e1cb13d7c4e2e6df06364e29f6516"
+    },
+    {
+        "sha": "afb276662eba22accee29d5796bc2d693ef5514d",
+        "author": "Dave Wood",
+        "email": "dave@safelincs.co.uk",
+        "date": "2026-07-07T11:04:31Z",
+        "message": "[4.x] Fix form `validateOnly()` keeping previous field messages (#10375)\n\nCo-authored-by: Dave Wood <davew@W00003.local>\nCo-authored-by: Josh Hanley <josh@hitsystems.com.au>",
+        "url": "https://github.com/livewire/livewire/commit/afb276662eba22accee29d5796bc2d693ef5514d"
+    },
+    {
+        "sha": "8e7ce6d2b81b8a4ca5b8ff4518fffbdf123888a2",
+        "author": "Muhammad Yusuf",
+        "email": "68459009+VernSG@users.noreply.github.com",
+        "date": "2026-07-07T10:59:20Z",
+        "message": "[4.x] Fix SFC island imports (#10338)\n\nCo-authored-by: Caleb Porzio <calebporzio@gmail.com>\nCo-authored-by: Claude Fable 5 <noreply@anthropic.com>",
+        "url": "https://github.com/livewire/livewire/commit/8e7ce6d2b81b8a4ca5b8ff4518fffbdf123888a2"
+    },
+    {
+        "sha": "2091847bfa2ae0f54645178e5970c43d758f581d",
+        "author": "Josh Hanley",
+        "email": "josh@hitsystems.com.au",
+        "date": "2026-07-06T19:44:55Z",
+        "message": "[4.x] Fix fetch responses with a http redirect being parsed as Livewire payloads (#10369)",
+        "url": "https://github.com/livewire/livewire/commit/2091847bfa2ae0f54645178e5970c43d758f581d"
+    },
+    {
+        "sha": "874ec6218fc2e00f1317152e78348c6d90a175b6",
+        "author": "Josh Hanley",
+        "email": "josh@hitsystems.com.au",
+        "date": "2026-07-06T19:37:39Z",
+        "message": "[4.x] Add support for `@continue` and `@break` in morph markers (#10368)",
+        "url": "https://github.com/livewire/livewire/commit/874ec6218fc2e00f1317152e78348c6d90a175b6"
+    },
+    {
+        "sha": "6629a13cfcd4971ce00154ee0108f5ed08ff5daf",
+        "author": "Josh Hanley",
+        "email": "josh@hitsystems.com.au",
+        "date": "2026-07-06T19:36:46Z",
+        "message": "[4.x] Skip Volt functional components during SFC detection (#10367)",
+        "url": "https://github.com/livewire/livewire/commit/6629a13cfcd4971ce00154ee0108f5ed08ff5daf"
+    },
+    {
+        "sha": "502977c1e30f3d772008c4e86890828838abcb77",
+        "author": "Sohail Ahmad",
+        "email": "58299055+sohailahmad07@users.noreply.github.com",
+        "date": "2026-07-06T19:35:34Z",
+        "message": "Add renderless wire model (#10363)\n\nCo-authored-by: Caleb Porzio <calebporzio@gmail.com>\nCo-authored-by: Claude Fable 5 <noreply@anthropic.com>",
+        "url": "https://github.com/livewire/livewire/commit/502977c1e30f3d772008c4e86890828838abcb77"
+    },
+    {
+        "sha": "a422322e38fddc21a7077a47db5fd1e54ed2851a",
+        "author": "Josh Hanley",
+        "email": "josh@hitsystems.com.au",
+        "date": "2026-07-06T19:34:13Z",
+        "message": "[4.x] Remove stale `$wire.$watch` cleanups from the component when manually unwatched (#10349)\n\nCo-authored-by: Tomáš Rybenský <tomas.rybensky@gmail.com>",
+        "url": "https://github.com/livewire/livewire/commit/a422322e38fddc21a7077a47db5fd1e54ed2851a"
+    },
+    {
+        "sha": "13c9a7283b7008766baa5dc6b38097cf59d5b5d6",
+        "author": "RenHai Wen",
+        "email": "70972819+people-sea@users.noreply.github.com",
+        "date": "2026-07-06T19:33:35Z",
+        "message": "[4.x] Fix `writeToHistory()` mutating the current history state (#10342)\n\nCo-authored-by: Josh Hanley <josh@hitsystems.com.au>",
+        "url": "https://github.com/livewire/livewire/commit/13c9a7283b7008766baa5dc6b38097cf59d5b5d6"
+    },
+    {
+        "sha": "079ff51534229fbc062d997ba63b0ac1f04d67ca",
+        "author": "Mateus Junges",
+        "email": "mateus@junges.dev",
+        "date": "2026-07-06T19:32:55Z",
+        "message": "[4.x] Honor scoped route bindings for `mount()` method injection (#10341)\n\nCo-authored-by: Andy Swick <andy@techenby.com>\nCo-authored-by: Caleb Porzio <calebporzio@gmail.com>\nCo-authored-by: Claude Fable 5 <noreply@anthropic.com>",
+        "url": "https://github.com/livewire/livewire/commit/079ff51534229fbc062d997ba63b0ac1f04d67ca"
+    },
+    {
+        "sha": "dd7019c85a4147e4c9c2e77b48f2a7caa04e8a92",
+        "author": "Josh Hanley",
+        "email": "josh@hitsystems.com.au",
+        "date": "2026-07-06T19:29:45Z",
+        "message": "[4.x] Fix validation throwing TypeError when rules(), messages() or validationAttributes() return a Collection (#10303)",
+        "url": "https://github.com/livewire/livewire/commit/dd7019c85a4147e4c9c2e77b48f2a7caa04e8a92"
+    },
+    {
+        "sha": "1eabade0759e2e82fc8c603038c682bea1a3e397",
+        "author": "RenHai Wen",
+        "email": "70972819+people-sea@users.noreply.github.com",
+        "date": "2026-07-06T19:28:40Z",
+        "message": "[4.x] Prevent `wire:model.live.blur` from triggering redundant requests (#10284)\n\nCo-authored-by: Caleb Porzio <calebporzio@gmail.com>\nCo-authored-by: Claude Fable 5 <noreply@anthropic.com>",
+        "url": "https://github.com/livewire/livewire/commit/1eabade0759e2e82fc8c603038c682bea1a3e397"
+    },
+    {
+        "sha": "bd1578546691e48bcc79d9e0d3f18c764964e966",
+        "author": "cyppe",
+        "email": "thomas.andersson@gmail.com",
+        "date": "2026-07-06T19:26:46Z",
+        "message": "[4.x] Fix stale reactive snapshots for overlapping `wire:model.live` requests (#10061)\n\nCo-authored-by: Claude Opus 4.6 <noreply@anthropic.com>\nCo-authored-by: Caleb Porzio <calebporzio@gmail.com>",
+        "url": "https://github.com/livewire/livewire/commit/bd1578546691e48bcc79d9e0d3f18c764964e966"
+    },
+    {
+        "sha": "646d6f7ae3c4492b42730a006bbf63bdd1335c08",
+        "author": "Josh Hanley",
+        "email": "josh@hitsystems.com.au",
+        "date": "2026-06-27T11:52:36Z",
+        "message": "[4.x] Extract synth orchestration into a `HandleSynths` mechanism (#10276)\n\nCo-authored-by: Caleb Porzio <calebporzio@gmail.com>\nCo-authored-by: Claude Opus 4.8 (1M context) <noreply@anthropic.com>",
+        "url": "https://github.com/livewire/livewire/commit/646d6f7ae3c4492b42730a006bbf63bdd1335c08"
+    },
+    {
+        "sha": "ef752b1bf9ef97ee95496c158cd66553153f0374",
+        "author": "Rihulfa Akbar",
+        "email": "151924216+ghabriel25@users.noreply.github.com",
+        "date": "2026-06-27T10:20:21Z",
+        "message": "[4.x] Use dedicated feature for `BaseRenderless` (#10346)",
+        "url": "https://github.com/livewire/livewire/commit/ef752b1bf9ef97ee95496c158cd66553153f0374"
+    },
+    {
+        "sha": "7b57d74b9634bae5a7d42148d5580ebe3272e3ee",
+        "author": "Josh Hanley",
+        "email": "josh@hitsystems.com.au",
+        "date": "2026-06-27T02:53:07Z",
+        "message": "Merge branch '3.x'\n\n# Conflicts:\n#\tsrc/Features/SupportPagination/UnitTest.php",
+        "url": "https://github.com/livewire/livewire/commit/7b57d74b9634bae5a7d42148d5580ebe3272e3ee"
+    },
+    {
+        "sha": "6a91820ad29fe2082d85d44d63fdcd4351fe3686",
+        "author": "Josh Hanley",
+        "email": "josh@hitsystems.com.au",
+        "date": "2026-06-27T02:49:37Z",
+        "message": "[4.x] Improve `#[Authorize]` argument resolution (#10371)",
+        "url": "https://github.com/livewire/livewire/commit/6a91820ad29fe2082d85d44d63fdcd4351fe3686"
+    },
+    {
+        "sha": "6bc0c0b5b17442b648c9c1e92693d681994856f7",
+        "author": "Hamdy Elbatal",
+        "email": "elbatalhamdy77@gmail.com",
+        "date": "2026-06-26T11:42:49Z",
+        "message": "[4.x] Preserve named error bags during component rendering (#10314)\n\nCo-authored-by: Josh Hanley <josh@hitsystems.com.au>",
+        "url": "https://github.com/livewire/livewire/commit/6bc0c0b5b17442b648c9c1e92693d681994856f7"
+    }
+]

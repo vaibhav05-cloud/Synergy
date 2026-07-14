@@ -1,0 +1,352 @@
+[
+    {
+        "id": 3249582163,
+        "number": 261,
+        "title": "Cannot find namespace 'JSX' on latest prism-react-renderer and TypeScript",
+        "state": "open",
+        "created_at": "2025-07-21T18:08:44Z",
+        "updated_at": "2025-07-21T18:08:44Z",
+        "closed_at": null,
+        "author": "Ciach0",
+        "comments": 0,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Is there an existing issue for this?\n\n- [x] I have searched the existing issues\n\n### Code of Conduct\n\n- [x] I agree to follow this project's Code of Conduct\n\n### Code Sandbox link\n\n_No response_\n\n### Bug report\n\n```markdown\nRecently, TypeScript removed the JSX namespace from the codebase. Now, developers have to use React.JSX. This makes it hard to use the library without modifying the library typings or enabling `skipLibCheck` within tsconfig.json.\n```",
+        "url": "https://github.com/FormidableLabs/prism-react-renderer/issues/261"
+    },
+    {
+        "id": 3060934442,
+        "number": 260,
+        "title": "Color for aliased tokens not applied correctly",
+        "state": "open",
+        "created_at": "2025-05-13T18:48:15Z",
+        "updated_at": "2025-05-14T09:31:17Z",
+        "closed_at": null,
+        "author": "Cykyrios",
+        "comments": 1,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Is there an existing issue for this?\n\n- [x] I have searched the existing issues\n\n### Code of Conduct\n\n- [x] I agree to follow this project's Code of Conduct\n\n### Code Sandbox link\n\n_No response_\n\n### Bug report\n\nI am using Docusaurus to build a code documentation site for a Godot GDScript library I'm working on. Prism's GDScript definition is completely outdated (because GDScript 2 was introduced with Godot 4), so I made my own version of the lexer, which works nicely. I also made a dark/light theme specifically for GDScript, making use of some of its specificities (documentation comments being colored differently from standard comments, builtin types, builtin objects, and user types being different, etc.), but I'm facing issues with the colors of such tokens not being applied as I expect them to.\n\nHere is a small code example:\n\n```gdscript\n# A standard comment\n## A documentation comment\nfunc test_function(param: int) -> float:\n    return called_function(param)\n```\nHere is the expected output (screenshot from the Godot editor):\n![Image](https://github.com/user-attachments/assets/d4ce9fdb-a57c-43dd-ad2e-649594999617)\nAnd how it looks currently with Docusaurus and my custom theme:\n![Image](https://github.com/user-attachments/assets/14ea3212-8cfb-412d-869a-c93695f37df0)\n\nThere are multiple instances of the same issue here: `doc-comment` is colored as `comment`, `function-definition` as `function`, and `control-flow` (for the `return` keyword) as `keyword`.\nFocusing on comments, my lexer is able to tokenize the first line as `comment`, and the second line as `doc-comment`. Following is an excerpt from my custom theme:\n\n```typescript\nimport type { PrismTheme } from \"prism-react-renderer\"\nconst theme: PrismTheme = {\n  plain: {\n    color: \"#CDCFD2\",\n    backgroundColor: \"#1D2229\",\n  },\n  styles: [\n    {\n      types: [\"doc-comment\"],\n      style: {\n        color: \"#99B3CC\", // same result with #99B3CCCC and no opacity field\n        opacity: 0.8,\n      },\n    },\n    {\n      types: [\"comment\"],\n      style: {\n        color: \"#CDCFD2\", // same result with #CDCFD280 and not opacity field\n        opacity: 0.5,\n      },\n    },\n    // etc.\n  ],\n}\nexport default theme\n```\n\nWith my updated Prism definition for GDScript, the first comment line is being tokenized as `class=\"token comment\"`, and the second line as `class=\"token doc-comment comment\"`; however, both get the exact same color (`rgb(205, 207, 210)`), and even the same opacity of 0.5. If I add `fontStyle: \"italic\"` to the doc-comment, however, only doc-comments correctly get stylized this way. Swapping the entries did not change the resulting behavior. However, if I remove the `comment` entry entirely, `doc-comment` tokens will get their color applied properly.\n\nIs there any known issue with aliased keywords not applying their color properly?\n\n(on a side note, you might want to update the report template to allow markdown preview and attaching screenshots, as I had to edit to add them)",
+        "url": "https://github.com/FormidableLabs/prism-react-renderer/issues/260"
+    },
+    {
+        "id": 2920171998,
+        "number": 259,
+        "title": "A new release is needed built on prismjs >=1.30.0 fixing CVE-2024-53382",
+        "state": "open",
+        "created_at": "2025-03-14T13:02:25Z",
+        "updated_at": "2025-03-14T13:11:25Z",
+        "closed_at": null,
+        "author": "mck3ni",
+        "comments": 0,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Is there an existing issue for this?\n\n- [x] I have searched the existing issues\n\n### Code of Conduct\n\n- [x] I agree to follow this project's Code of Conduct\n\n### Code Sandbox link\n\n_No response_\n\n### Bug report\n\n```markdown\nhttps://nvd.nist.gov/vuln/detail/CVE-2024-53382\n```",
+        "url": "https://github.com/FormidableLabs/prism-react-renderer/issues/259"
+    },
+    {
+        "id": 2835978781,
+        "number": 257,
+        "title": "React 19 support?",
+        "state": "closed",
+        "created_at": "2025-02-06T16:16:45Z",
+        "updated_at": "2025-02-14T18:40:24Z",
+        "closed_at": "2025-02-14T18:40:23Z",
+        "author": "chambleton-pcty",
+        "comments": 1,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "### Is there an existing issue for this?\n\n- [x] I have searched the existing issues\n\n### Code of Conduct\n\n- [x] I agree to follow this project's Code of Conduct\n\n### Feature Request\n\n```markdown\nhi - in looking at the package.json, it looks like this package has a devDependency on react 18.2.0 (or greater). Can you update react and react-dom to work with react 19+ also? Thanks!\n```",
+        "url": "https://github.com/FormidableLabs/prism-react-renderer/issues/257"
+    },
+    {
+        "id": 2756042006,
+        "number": 255,
+        "title": "Missing colors",
+        "state": "open",
+        "created_at": "2024-12-23T13:07:40Z",
+        "updated_at": "2025-01-02T18:26:21Z",
+        "closed_at": null,
+        "author": "jcubic",
+        "comments": 4,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Is there an existing issue for this?\n\n- [X] I have searched the existing issues\n\n### Code of Conduct\n\n- [X] I agree to follow this project's Code of Conduct\n\n### Code Sandbox link\n\n_No response_\n\n### Bug report\n\n```markdown\nThemes don't implement colors for all tokens, some of the themes don't support boolean and some of them don't implement regular expressions.\r\n\r\nThis means that it don't support everything what PrismJS supports.\n```\n",
+        "url": "https://github.com/FormidableLabs/prism-react-renderer/issues/255"
+    },
+    {
+        "id": 2756038500,
+        "number": 254,
+        "title": "Unit test don't run after cloing the repo",
+        "state": "closed",
+        "created_at": "2024-12-23T13:05:44Z",
+        "updated_at": "2025-01-02T17:20:03Z",
+        "closed_at": "2025-01-02T17:20:03Z",
+        "author": "jcubic",
+        "comments": 5,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Is there an existing issue for this?\n\n- [X] I have searched the existing issues\n\n### Code of Conduct\n\n- [X] I agree to follow this project's Code of Conduct\n\n### Code Sandbox link\n\n_No response_\n\n### Bug report\n\n```markdown\nWhen you clone the repo you can't run the tests, because vitest and dependenceis are not installed in package.json.\r\n\r\nI wanted to add a missing regex style, since the library didn't add colors for them in most themes.\n```\n",
+        "url": "https://github.com/FormidableLabs/prism-react-renderer/issues/254"
+    },
+    {
+        "id": 2727635833,
+        "number": 251,
+        "title": "Support for React Server Components?",
+        "state": "closed",
+        "created_at": "2024-12-09T16:29:20Z",
+        "updated_at": "2024-12-11T17:15:47Z",
+        "closed_at": "2024-12-11T17:15:47Z",
+        "author": "FezVrasta",
+        "comments": 5,
+        "labels": [
+            "enhancement",
+            "issue-accepted"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Is there an existing issue for this?\r\n\r\n- [X] I have searched the existing issues\r\n\r\n### Code of Conduct\r\n\r\n- [X] I agree to follow this project's Code of Conduct\r\n\r\n### Feature Request\r\n\r\n\r\nIt would be really nice if this worked with RSC, syntax highlighting should not involve client side rendering.\r\n\r\n",
+        "url": "https://github.com/FormidableLabs/prism-react-renderer/issues/251"
+    },
+    {
+        "id": 2630656744,
+        "number": 250,
+        "title": "access defaultprops in v2?",
+        "state": "closed",
+        "created_at": "2024-11-02T17:46:03Z",
+        "updated_at": "2024-12-13T13:17:58Z",
+        "closed_at": "2024-12-13T13:17:57Z",
+        "author": "JuliaWasala",
+        "comments": 3,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "### Is there an existing issue for this?\n\n- [X] I have searched the existing issues\n\n### Code of Conduct\n\n- [X] I agree to follow this project's Code of Conduct\n\n### Question\n\n```markdown\nthe migration guide tells you to remove the defaultProp import, but is it entirely gone? I'd like to have access to some additional props like file. How can I access those?\n```\n",
+        "url": "https://github.com/FormidableLabs/prism-react-renderer/issues/250"
+    },
+    {
+        "id": 2427133282,
+        "number": 246,
+        "title": "Request to expose useGetLineProps, useGetTokenProps, useThemeDictionary",
+        "state": "closed",
+        "created_at": "2024-07-24T10:03:47Z",
+        "updated_at": "2024-12-11T17:03:10Z",
+        "closed_at": "2024-12-11T17:03:10Z",
+        "author": "dentrado",
+        "comments": 4,
+        "labels": [
+            "enhancement"
+        ],
+        "assignees": [
+            "acharyakavita"
+        ],
+        "locked": false,
+        "body": "### Is there an existing issue for this?\r\n\r\n- [X] I have searched the existing issues\r\n\r\n### Code of Conduct\r\n\r\n- [X] I agree to follow this project's Code of Conduct\r\n\r\n### Feature Request\r\n\r\n```markdown\r\nHi! It would be great if you could expose:\r\n- `useGetLineProps()`\r\n- `useGetTokenProps()`\r\n- `useThemeDictionary()`\r\n\r\nPreviously you exposed `useTokenize` which is great!(https://github.com/FormidableLabs/prism-react-renderer/issues/236) \r\nBut to render those tokens in my own component it would help a lot if\r\nI could still use `getLineProps` and `getTokenProps`, which it\r\nseems like I should be able to do if the above three hooks were exposed.\r\n```\r\n",
+        "url": "https://github.com/FormidableLabs/prism-react-renderer/issues/246"
+    },
+    {
+        "id": 2426984797,
+        "number": 245,
+        "title": "Cursor jumps while writing",
+        "state": "closed",
+        "created_at": "2024-07-24T08:59:59Z",
+        "updated_at": "2024-11-19T11:50:23Z",
+        "closed_at": "2024-11-19T11:50:23Z",
+        "author": "alicemacl",
+        "comments": 1,
+        "labels": [
+            "bug",
+            "issue-accepted"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Is there an existing issue for this?\r\n\r\n- [X] I have searched the existing issues\r\n\r\n### Code of Conduct\r\n\r\n- [X] I agree to follow this project's Code of Conduct\r\n\r\n### Code Sandbox link\r\n\r\n_No response_\r\n\r\n### Bug report\r\n\r\n```markdown\r\nWhen writing code in the block the cursor jumps. Using the latest version.\r\n```\r\n\r\n\r\n![codeblock-text-pointer](https://github.com/user-attachments/assets/36e8d498-3d6f-4cc0-92b4-5beb86cf35db)\r\n\r\n",
+        "url": "https://github.com/FormidableLabs/prism-react-renderer/issues/245"
+    },
+    {
+        "id": 2264943583,
+        "number": 243,
+        "title": "Issue with <Highlight /> component in React/Remic",
+        "state": "closed",
+        "created_at": "2024-04-26T04:35:24Z",
+        "updated_at": "2024-08-29T16:04:36Z",
+        "closed_at": "2024-08-29T16:04:36Z",
+        "author": "alissanguyen",
+        "comments": 3,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### Is there an existing issue for this?\n\n- [X] I have searched the existing issues\n\n### Code of Conduct\n\n- [X] I agree to follow this project's Code of Conduct\n\n### Code Sandbox link\n\n_No response_\n\n### Bug report\n\n```markdown\nI'm getting this error:\r\n\r\nHighlight' cannot be used as a JSX component.\r\n  Its instance type 'Highlight' is not a valid JSX element.\r\n    The types returned by 'render()' are incompatible between these types.\r\n      Type 'React.ReactNode' is not assignable to type 'import(\"/Users/nouveau/Documents/workspaces/alissanguyen-dot-dev/node_modules/@remix-run/server-runtime/node_modules/@types/react/index\").ReactNode'.\r\n        Type '{}' is not assignable to type 'ReactNode'.\r\n\r\nI'm using react v18.3.0 and PRR v1.3.1\n```\n",
+        "url": "https://github.com/FormidableLabs/prism-react-renderer/issues/243"
+    },
+    {
+        "id": 2141292438,
+        "number": 241,
+        "title": "C# Syntax Highlighting",
+        "state": "closed",
+        "created_at": "2024-02-19T01:05:57Z",
+        "updated_at": "2024-02-19T01:13:47Z",
+        "closed_at": "2024-02-19T01:13:47Z",
+        "author": "thomhurst",
+        "comments": 0,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "### Is there an existing issue for this?\n\n- [X] I have searched the existing issues\n\n### Code of Conduct\n\n- [X] I agree to follow this project's Code of Conduct\n\n### Feature Request\n\n```markdown\nCurrently here, C# isn't listed as a supported language:\r\n\r\nhttps://github.com/FormidableLabs/prism-react-renderer/blob/master/packages/generate-prism-languages/index.ts#L9-L23\n```\n",
+        "url": "https://github.com/FormidableLabs/prism-react-renderer/issues/241"
+    },
+    {
+        "id": 2123083326,
+        "number": 239,
+        "title": "Improve tokenize ",
+        "state": "closed",
+        "created_at": "2024-02-07T13:49:27Z",
+        "updated_at": "2024-04-15T14:32:34Z",
+        "closed_at": "2024-04-15T14:32:34Z",
+        "author": "AlmostBuddist",
+        "comments": 2,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "I use this library for displays Python code, and it is truly one of the best libraries of its kind. But in most cases there are too few tokens, and I can’t find how to add them or set more rules for them. I would like to know if there is any mechanism for this or if you can add more tokens?",
+        "url": "https://github.com/FormidableLabs/prism-react-renderer/issues/239"
+    },
+    {
+        "id": 2041809977,
+        "number": 236,
+        "title": "Request to expose internal methods",
+        "state": "closed",
+        "created_at": "2023-12-14T14:24:35Z",
+        "updated_at": "2024-01-19T22:49:12Z",
+        "closed_at": "2023-12-18T15:43:43Z",
+        "author": "deammer",
+        "comments": 3,
+        "labels": [
+            "enhancement"
+        ],
+        "assignees": [
+            "carloskelly13"
+        ],
+        "locked": false,
+        "body": "Hello, it would be amazing to expose the following as exports:\r\n- `normalizeTokens()`\r\n- `useTokenize()`\r\n\r\nI'm currently facing a situation where I want to insert elements _between_ lines of code and I'd like to do it outside of the `<Highlight>` component, but I still want the tokenization improvements performed by `normalizeTokens()`.\r\n\r\nDoes this make sense?",
+        "url": "https://github.com/FormidableLabs/prism-react-renderer/issues/236"
+    },
+    {
+        "id": 2008896550,
+        "number": 235,
+        "title": "Unable to start demo",
+        "state": "closed",
+        "created_at": "2023-11-23T23:46:01Z",
+        "updated_at": "2024-02-07T15:04:50Z",
+        "closed_at": "2024-02-07T15:04:50Z",
+        "author": "rickyzhangca",
+        "comments": 2,
+        "labels": [
+            "bug",
+            "good first issue",
+            "issue-accepted"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "steps to reproduce\r\n- clone repo\r\n- `pnpm i`\r\n- `pnpm run start:demo`\r\n\r\n```\r\n[plugin:vite:import-analysis] Failed to resolve entry for package \"prism-react-renderer\". The package may have incorrect main/module/exports specified in its package.json.\r\n/Users/rickyzhangca/Documents/prism-react-renderer/packages/demo/src/App.tsx\r\n    at packageEntryFailure (file:///Users/rickyzhangca/Documents/prism-react-renderer/node_modules/.pnpm/vite@4.2.1_@types+node@18.15.11/node_modules/vite/dist/node/chunks/dep-79892de8.js:23266:11)\r\n    at resolvePackageEntry (file:///Users/rickyzhangca/Documents/prism-react-renderer/node_modules/.pnpm/vite@4.2.1_@types+node@18.15.11/node_modules/vite/dist/node/chunks/dep-79892de8.js:23263:5)\r\n    at tryNodeResolve (file:///Users/rickyzhangca/Documents/prism-react-renderer/node_modules/.pnpm/vite@4.2.1_@types+node@18.15.11/node_modules/vite/dist/node/chunks/dep-79892de8.js:23000:20)\r\n    at Context.resolveId (file:///Users/rickyzhangca/Documents/prism-react-renderer/node_modules/.pnpm/vite@4.2.1_@types+node@18.15.11/node_modules/vite/dist/node/chunks/dep-79892de8.js:22762:28)\r\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)\r\n    at async Object.resolveId (file:///Users/rickyzhangca/Documents/prism-react-renderer/node_modules/.pnpm/vite@4.2.1_@types+node@18.15.11/node_modules/vite/dist/node/chunks/dep-79892de8.js:43314:32)\r\n    at async TransformContext.resolve (file:///Users/rickyzhangca/Documents/prism-react-renderer/node_modules/.pnpm/vite@4.2.1_@types+node@18.15.11/node_modules/vite/dist/node/chunks/dep-79892de8.js:43043:23)\r\n    at async normalizeUrl (file:///Users/rickyzhangca/Documents/prism-react-renderer/node_modules/.pnpm/vite@4.2.1_@types+node@18.15.11/node_modules/vite/dist/node/chunks/dep-79892de8.js:41370:34)\r\n    at async TransformContext.transform (file:///Users/rickyzhangca/Documents/prism-react-renderer/node_modules/.pnpm/vite@4.2.1_@types+node@18.15.11/node_modules/vite/dist/node/chunks/dep-79892de8.js:41512:47)\r\n    at async Object.transform (file:///Users/rickyzhangca/Documents/prism-react-renderer/node_modules/.pnpm/vite@4.2.1_@types+node@18.15.11/node_modules/vite/dist/node/chunks/dep-79892de8.js:43387:30)\r\n    at async loadAndTransform (file:///Users/rickyzhangca/Documents/prism-react-renderer/node_modules/.pnpm/vite@4.2.1_@types+node@18.15.11/node_modules/vite/dist/node/chunks/dep-79892de8.js:41105:29\r\n\r\n```",
+        "url": "https://github.com/FormidableLabs/prism-react-renderer/issues/235"
+    },
+    {
+        "id": 2005717897,
+        "number": 234,
+        "title": "Leading spaces ignored for the first line",
+        "state": "closed",
+        "created_at": "2023-11-22T07:15:34Z",
+        "updated_at": "2024-02-07T16:22:38Z",
+        "closed_at": "2024-02-07T16:22:38Z",
+        "author": "zenera",
+        "comments": 1,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "For the first line of a code block, always leading spaces are ignored.\r\nFor example:\r\n\r\n```\r\n   begin\r\n   end\r\n```\r\n\r\nThe output is:\r\n```\r\nbegin\r\n   end\r\n```\r\n",
+        "url": "https://github.com/FormidableLabs/prism-react-renderer/issues/234"
+    },
+    {
+        "id": 1995124947,
+        "number": 231,
+        "title": "Prime trender",
+        "state": "closed",
+        "created_at": "2023-11-15T16:29:05Z",
+        "updated_at": "2024-02-07T15:02:58Z",
+        "closed_at": "2024-02-07T15:02:58Z",
+        "author": "Uzomahopeujunwa",
+        "comments": 0,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": null,
+        "url": "https://github.com/FormidableLabs/prism-react-renderer/issues/231"
+    },
+    {
+        "id": 1927303960,
+        "number": 228,
+        "title": "page fails to render",
+        "state": "closed",
+        "created_at": "2023-10-05T03:17:39Z",
+        "updated_at": "2024-08-29T16:06:02Z",
+        "closed_at": "2024-08-29T16:06:02Z",
+        "author": "ttasovac",
+        "comments": 1,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "I have installed prism-react-renderer with:\r\n\r\n```node\r\nnpm install prism-react-renderer\r\n```\r\n\r\nThen in a component, I do:\r\n\r\n```javascript\r\nimport Highlight, { defaultProps } from \"prism-react-renderer\";\r\n```\r\nSo far so good, no errors.\r\n\r\nBut when I try to test syntax highlighting from the same component with:\r\n\r\n```javascript\r\nconst CodeBlock = `\r\n<p>Test.</p> \r\n`\r\n\r\n<Highlight language=\"html\" code={CodeBlock}></Highlight>\r\n```\r\n\r\nI still get no errors in the console (`success Re-building development bundle`), but I get a blank page in the browser. \r\n\r\nAny idea what could be going wrong or how to troubleshoot this? Many thanks in advance. \r\n",
+        "url": "https://github.com/FormidableLabs/prism-react-renderer/issues/228"
+    },
+    {
+        "id": 1905332540,
+        "number": 223,
+        "title": "Using Old Prism CSS Files",
+        "state": "closed",
+        "created_at": "2023-09-20T16:18:43Z",
+        "updated_at": "2023-12-21T19:42:09Z",
+        "closed_at": "2023-12-21T18:55:14Z",
+        "author": "shellscape",
+        "comments": 3,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "I cannot for the life of me figure out how to use old prism css files for theming. Doesn't look like there's any mention in the docs for that, just one line in the README which says that we can. What's the proper procedure to use those? For example: https://github.com/konnyakuxzy/prism-one-monokai/blob/master/prism-one-monokai.css",
+        "url": "https://github.com/FormidableLabs/prism-react-renderer/issues/223"
+    },
+    {
+        "id": 1878049136,
+        "number": 222,
+        "title": "Themes and other folders not included after npm install",
+        "state": "closed",
+        "created_at": "2023-09-01T21:11:11Z",
+        "updated_at": "2023-09-26T15:15:12Z",
+        "closed_at": "2023-09-26T15:15:11Z",
+        "author": "angeloluidens",
+        "comments": 2,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "I have used several methods to get the package to install with all its dependencies, however, for example, the following statements in my tsx code:\r\n\r\nimport darkTheme from 'prism-react-renderer/themes/nightOwl'\r\nimport lightTheme from 'prism-react-renderer/themes/nightOwlLight'\r\n\r\nrender the following error statement:\r\nCannot find module 'prism-react-renderer/themes/nightOwl' or its corresponding type declarations.ts(2307).\r\n\r\nMy package.json for the project shows version 2.0.6 of prism-react-renderer.\r\nI am using Nodejs version:  12.22.12\r\nNextjs verision: 13.4.19\r\nNPM version: 9.8.1\r\n\r\nUpon inspecting the node_modules/prism-react-renderer folder, only the following are present:\r\ndist\r\n   index.d.ts\r\n   index.js\r\n   index.js.map\r\n   index.mjs\r\nnode_modules / clsx\r\n   dist\r\n      clsx.m.js\r\n      clsx.min.js\r\n      clsx.d.ts\r\n      license\r\n      package.json\r\n      readme.md\r\n\r\nPlease, advice at your earliest!\r\n\r\nThank you in advance.",
+        "url": "https://github.com/FormidableLabs/prism-react-renderer/issues/222"
+    }
+]

@@ -1,0 +1,242 @@
+[
+    {
+        "sha": "d3b01d2c9bc3cfc3343d983dd9b66203bbc07e41",
+        "author": "Konstantin Haase",
+        "email": "konstantin.mailinglists@googlemail.com",
+        "date": "2026-05-13T07:33:37Z",
+        "message": "Merge pull request #395 from jeremyevans/repo-move\n\nUpdate gem homepage and have README point to new repository",
+        "url": "https://github.com/rtomayko/tilt/commit/d3b01d2c9bc3cfc3343d983dd9b66203bbc07e41"
+    },
+    {
+        "sha": "ba4362d3077396f1ca9e0435df2c9baded4fb7c1",
+        "author": "Jeremy Evans",
+        "email": "code@jeremyevans.net",
+        "date": "2023-02-13T19:16:38Z",
+        "message": "Have README point to new repository",
+        "url": "https://github.com/rtomayko/tilt/commit/ba4362d3077396f1ca9e0435df2c9baded4fb7c1"
+    },
+    {
+        "sha": "8345a1caf0f67a7818a22ff951de1ca81c794372",
+        "author": "Jeremy Evans",
+        "email": "code@jeremyevans.net",
+        "date": "2023-02-13T19:07:07Z",
+        "message": "Update gem homepage",
+        "url": "https://github.com/rtomayko/tilt/commit/8345a1caf0f67a7818a22ff951de1ca81c794372"
+    },
+    {
+        "sha": "9e2dba10cfd7a11b8e7b2b8f6214ad85ef2caac7",
+        "author": "Jeremy Evans",
+        "email": "code@jeremyevans.net",
+        "date": "2023-02-10T23:51:30Z",
+        "message": "Update CHANGELOG and bump version to 2.1.0\n\nUpdate tilt.gemspec so it doesn't need to be regenerated\nvia a rake task.\n\nFixes #301, #380, #385, #393, #384, #390",
+        "url": "https://github.com/rtomayko/tilt/commit/9e2dba10cfd7a11b8e7b2b8f6214ad85ef2caac7"
+    },
+    {
+        "sha": "094a12701c46a38a30217888b5f055deefb295fd",
+        "author": "Jeremy Evans",
+        "email": "code@jeremyevans.net",
+        "date": "2023-02-10T23:54:16Z",
+        "message": "Add Ruby 3.2 to CI",
+        "url": "https://github.com/rtomayko/tilt/commit/094a12701c46a38a30217888b5f055deefb295fd"
+    },
+    {
+        "sha": "8332fcec0eba902f03cd98296c02811ddc8b6b91",
+        "author": "Jeremy Evans",
+        "email": "code@jeremyevans.net",
+        "date": "2023-02-08T23:05:24Z",
+        "message": "Various README fixes\n\nDon't mention Tilt 1.4.  Tilt 2.0 came out over 9 years ago.\n\nRemove mentions of deprecated Less, BlueCloth, and Sigil templates.\n\nRemove mention of fastercsv, since we dropped Ruby 1.8 support.\n\nMake it clear that we will not accept new community maintained\ntemplate engines.\n\nAdd Erubi as supporting template compilation.",
+        "url": "https://github.com/rtomayko/tilt/commit/8332fcec0eba902f03cd98296c02811ddc8b6b91"
+    },
+    {
+        "sha": "934d3f45720cb7f9e81b9277bd45d0fffb525bb1",
+        "author": "Jeremy Evans",
+        "email": "code@jeremyevans.net",
+        "date": "2022-09-20T15:37:35Z",
+        "message": "Only add coffee-script in Gemfile in CI\n\ncoffee-script is soft-deprecated (no deprecation message, but\nconsidered deprecated by the maintainers). Not sure we should\ndeprecate tilt's support, but this makes it so `bundle install`\nwill not attempt to install something considered deprecated.\n\nFixes #384",
+        "url": "https://github.com/rtomayko/tilt/commit/934d3f45720cb7f9e81b9277bd45d0fffb525bb1"
+    },
+    {
+        "sha": "7a47037e8b16466802749a6a1d0f5063eda5b501",
+        "author": "Jeremy Evans",
+        "email": "code@jeremyevans.net",
+        "date": "2022-08-27T18:07:14Z",
+        "message": "Use UnboundMethod#bind_call on Ruby 2.7+\n\nbind_call is faster than bind.call, because it doesn't allocate a\nMethod object.",
+        "url": "https://github.com/rtomayko/tilt/commit/7a47037e8b16466802749a6a1d0f5063eda5b501"
+    },
+    {
+        "sha": "e957fe7cabe3ec4be858469f3c90ffa19ba86da7",
+        "author": "Jeremy Evans",
+        "email": "code@jeremyevans.net",
+        "date": "2016-11-14T16:36:18Z",
+        "message": "Add Tilt::Template#freeze_string_literals?\n\nIf this returns true, frozen-string-literal: true is set when\ncompiling the template method.  It is false by default, and\nwill need to be manually set to true in the template classes\nthat could support it.\n\nSupport :freeze option for ERB, Erubis, and Erubi template to\nuse frozen string literals.\n\nAvoid printing deprecation warnings when running Erubis tests.\nSimilar change already made when running the ERB tests.",
+        "url": "https://github.com/rtomayko/tilt/commit/e957fe7cabe3ec4be858469f3c90ffa19ba86da7"
+    },
+    {
+        "sha": "b6338e5e6d2be7d57f5d6fdfcb8b1161fe222fb3",
+        "author": "なつき",
+        "email": "i@ntk.me",
+        "date": "2022-12-31T20:40:54Z",
+        "message": "Prefer Haml::Template from Haml 6",
+        "url": "https://github.com/rtomayko/tilt/commit/b6338e5e6d2be7d57f5d6fdfcb8b1161fe222fb3"
+    },
+    {
+        "sha": "a8b10cae56606ba657eeb9a06f1077155909c425",
+        "author": "mishina",
+        "email": "temma182008@gmail.com",
+        "date": "2022-10-22T06:27:02Z",
+        "message": "Clean up Travis CI",
+        "url": "https://github.com/rtomayko/tilt/commit/a8b10cae56606ba657eeb9a06f1077155909c425"
+    },
+    {
+        "sha": "56e78dac1e4e8862209e60e8259acf82ac5946c3",
+        "author": "Jeremy Evans",
+        "email": "code@jeremyevans.net",
+        "date": "2022-08-27T18:15:24Z",
+        "message": "Use attr_reader for a couple methods\n\nattr_reader methods are faster than normal methods.",
+        "url": "https://github.com/rtomayko/tilt/commit/56e78dac1e4e8862209e60e8259acf82ac5946c3"
+    },
+    {
+        "sha": "e605a964e8fe40ea05f0eb5f4f490c6d3bc335b5",
+        "author": "Jeremy Evans",
+        "email": "code@jeremyevans.net",
+        "date": "2022-08-27T18:23:31Z",
+        "message": "Deprecate BlueCloth, Less, and Sigil support\n\nNone of these are tested in CI.\n\nBlueCloth conflicts with RDiscount.  It could theoretically be\ntested in CI if RDiscount was in primary templates and BlueCloth\nin secondary templates, but considering BlueCloth hasn't had a\nrelease in over 10 years, and Tilt supports many other markdown\nformats, there isn't a good reason to keep supporting it.\n\nLess on CRuby depends on therubyracer, which no longer works on\nmodern Ruby due to changes in Psych.  I tried enabling it in CI,\nand it won't install (https://github.com/jeremyevans/tilt/runs/7812514562?check_suite_focus=true#step:4:155).\nLess hasn't had a release in over 8 years, and therubyracer hasn't\nhad a release in over 5 years.\n\nSigil doesn't have a gem, and isn't even packaged for my operating\nsystem (OpenBSD).  It's possible we could test it in CI if it is\npackaged for whatever Linux distro CI uses, but I doubt the usage\nof tilt/sigil is high enough to justify that.\n\nIf any tilt user really needs these template engines, they can just\ncopy the related template file and require it manually.",
+        "url": "https://github.com/rtomayko/tilt/commit/e605a964e8fe40ea05f0eb5f4f490c6d3bc335b5"
+    },
+    {
+        "sha": "384553f256cb5b37ef3f63979432edd55e4264eb",
+        "author": "Jeremy Evans",
+        "email": "code@jeremyevans.net",
+        "date": "2022-07-25T19:26:03Z",
+        "message": "Support coverable templates\n\nRuby's coverage library does not support code loaded eval (and\nsimilar methods like {class,module,instance}_{eval,exec}). However,\nit would be nice to be able to get code coverage for your web\napplication views. One simple way to do this is to write a file\nwith the compiled template code, and then load it\n\nThis adds Tilt::Template#compiled_path=, for setting a path\nfor the template.  There may be multiple compiled files based\non this path if the template is render with multiple scope classes\nand/or local variables.\n\nload is used instead of require to prevent breaking things when\nthe same path would be reused.  The methods are unbound after\nthe file is loaded, so using load instead of require makes sense\nfor that.  We do not want to delete the file after loading, since\nthe main reason to use this feature is for coverage testing.\n\nTrying this in a real application showed indentation warnings in\nverbose warning mode.  Fix those by not indenting the compiled\ntemplate method preamble.\n\nIn my testing, the coverage library didn't pickup relative loads\nby default, so this uses File.expand_path to expand the paths\npassed on Tilt::Template#compiled_path=.  That's not required,\nbut it seems useful enough to make it the default behavior.",
+        "url": "https://github.com/rtomayko/tilt/commit/384553f256cb5b37ef3f63979432edd55e4264eb"
+    },
+    {
+        "sha": "d8a39992231d3557e76257d76e0a7e5f993290ab",
+        "author": "Jeremy Evans",
+        "email": "code@jeremyevans.net",
+        "date": "2022-08-12T19:42:12Z",
+        "message": "Add matrix gem to Gemfile on Ruby 3.1+, so prawn tests run",
+        "url": "https://github.com/rtomayko/tilt/commit/d8a39992231d3557e76257d76e0a7e5f993290ab"
+    },
+    {
+        "sha": "acd4a0a99914040d769e6431bda3f8df399eac68",
+        "author": "Jeremy Evans",
+        "email": "code@jeremyevans.net",
+        "date": "2022-08-12T19:33:22Z",
+        "message": "Remove less/therubyracer from Gemfile\n\ntherubyracer will not install in CI, and since it won't install,\nthere is no point installing less.\n\nSince we cannot test less in CI, I recommend deprecating less in\n2.1 and removing in 2.2.",
+        "url": "https://github.com/rtomayko/tilt/commit/acd4a0a99914040d769e6431bda3f8df399eac68"
+    },
+    {
+        "sha": "3426c7b1b73ce29bf16ffa6b5db933f2b5424c4c",
+        "author": "Jeremy Evans",
+        "email": "code@jeremyevans.net",
+        "date": "2022-08-12T19:22:58Z",
+        "message": "Fix Gemfile to get more template engines tested in CI\n\nThe erubi template was not tested in CI as it wasn't in the Gemfile.\nAdd erubi to Gemfile in the primary group, since it has priority for\n.erb files, and move erubis to the secondary group.\n\nThe less gem was installed in the primary group, but the tests\nwouldn't run as therubyracer gem wasn't installed.  Move less to\nthe secondary group, and install therubyracer.\n\nRemove the restriction on the pdf-reader gem, since tests pass with\nthe current version of pdf-reader. That should hopefully allow the\nprawn tests to run in CI (they previously didn't).\n\nAfter this, the only tests not run in CI are BlueCloth and Sigil.\nWe may want to deprecate those in 2.1 and remove in 2.2.",
+        "url": "https://github.com/rtomayko/tilt/commit/3426c7b1b73ce29bf16ffa6b5db933f2b5424c4c"
+    },
+    {
+        "sha": "8bb78603001146661dfcd8bd85a8b5e9207b83d3",
+        "author": "Jeremy Evans",
+        "email": "code@jeremyevans.net",
+        "date": "2022-08-12T19:19:09Z",
+        "message": "Fix broken rst-pandoc template\n\nThis template wasn't tested in CI, and has been broken since\na168cc9e7ae86c6e9769c4692ee7153b885906ef changed the require.\n\nWith the require fixed, their was one test failure, where it\nappears the :escape_html works now, so I updated the test.",
+        "url": "https://github.com/rtomayko/tilt/commit/8bb78603001146661dfcd8bd85a8b5e9207b83d3"
+    },
+    {
+        "sha": "3aa40f946ef868c4a96640b0a71bb81b85381a4d",
+        "author": "Jeremy Evans",
+        "email": "code@jeremyevans.net",
+        "date": "2022-08-12T19:18:44Z",
+        "message": "Make pandoc tests pass when default encoding is not UTF-8",
+        "url": "https://github.com/rtomayko/tilt/commit/3aa40f946ef868c4a96640b0a71bb81b85381a4d"
+    },
+    {
+        "sha": "a0e82290623ab40024b04120a8393bd1a72da711",
+        "author": "Jeremy Evans",
+        "email": "code@jeremyevans.net",
+        "date": "2022-08-04T21:52:27Z",
+        "message": "Add Mapping#unregister(*extensions)\n\nThis makes it simpler to remove already registered extensions.\n\nFixes #330",
+        "url": "https://github.com/rtomayko/tilt/commit/a0e82290623ab40024b04120a8393bd1a72da711"
+    },
+    {
+        "sha": "e3e5279357a6765447398b734b3de22fd9be835c",
+        "author": "Jeremy Evans",
+        "email": "code@jeremyevans.net",
+        "date": "2022-08-05T22:32:04Z",
+        "message": "Switch to minitest/spec\n\nInstead of building a poor clone of minitest/spec inside test_helper,\njust use minitest/spec since it is already loaded (by minitest/autorun).\n\nThis eliminates top-level constants being defined by tilt_template_test.rb.\nThe helper classes used in the file are now anonymous classes assigned to\nlocal variables.\n\nIn addition to switch to mintest/spec, the following fixes are made:\n\n1. Avoid displaying warning when testing deprecated\n   Tilt::ERBTemplate.default_output_variable in the Erubis tests\n   (similar change made previously in the ERB tests).\n\n2. The pandoc tests in tilt_markdown_test.rb are not run if\n   nokogiri is not installed (the tests depend on nokogiri).\n\n3. Avoid loading tilt/sigil if sigil is not installed.\n\n4. Paths adjusted in the markaby tests in order to get them\n   passing in my environment.\n\nIn my environment, there are test failures if both bluecoth and\nrdiscount are installed, since they both define the same\nnon-static function (markdown_version). If either is installed,\nbut not both, the related tests pass (this was true both before\nand after the change to minitest/spec).\n\nThe diff is best viewed with --color-words -b.",
+        "url": "https://github.com/rtomayko/tilt/commit/e3e5279357a6765447398b734b3de22fd9be835c"
+    },
+    {
+        "sha": "1ba7821ee682b152570cf49a9651c41fc39291f8",
+        "author": "Jeremy Evans",
+        "email": "code@jeremyevans.net",
+        "date": "2015-05-22T17:26:14Z",
+        "message": "Add Mapping#register_pipeline for handling template pipelines\n\nThis makes it easy to combine multiple template engines into\na single processing pipeline, by taking the output of one\ntemplate and using it as the input to another template,\nreturning the final output as the result of the pipeline.",
+        "url": "https://github.com/rtomayko/tilt/commit/1ba7821ee682b152570cf49a9651c41fc39291f8"
+    },
+    {
+        "sha": "aee481c8ea50636461fcf28c6a05e54850215710",
+        "author": "Jeremy Evans",
+        "email": "code@jeremyevans.net",
+        "date": "2022-08-05T22:08:46Z",
+        "message": "Remove more Ruby < 2 compatibility code\n\nSplit TiltTemplateTest into two classes. There is setup/teardown\nblocks in the middle of the file that you might expect are only\nfor the following tests, but they actually apply to all tests\nin the file, including the tests above the setup/teardown blocks\nthat aren't using what the setup/teardown blocks provide.\n\nThis is best viewed ignoring whitespace differences.",
+        "url": "https://github.com/rtomayko/tilt/commit/aee481c8ea50636461fcf28c6a05e54850215710"
+    },
+    {
+        "sha": "d1164cb15bb7c912299b65b4db8d2afa40e511dd",
+        "author": "Jeremy Evans",
+        "email": "code@jeremyevans.net",
+        "date": "2022-08-04T23:26:58Z",
+        "message": "Add with_default_encoding and with_utf8_default_encoding helper methods\n\nUse these to temporarily change the default external encoding for\nindividual tests, instead of setup/teardown blocks at the suite level.\n\nUse these to fix issues in the babel template tests when the default\nexternal encoding is not UTF-8.",
+        "url": "https://github.com/rtomayko/tilt/commit/d1164cb15bb7c912299b65b4db8d2afa40e511dd"
+    },
+    {
+        "sha": "27411bf8cc31f2bc8ec57b114e71cebfb32a8b4d",
+        "author": "Jeremy Evans",
+        "email": "code@jeremyevans.net",
+        "date": "2022-08-04T18:41:42Z",
+        "message": "Remove adding test to load path in rake test task",
+        "url": "https://github.com/rtomayko/tilt/commit/27411bf8cc31f2bc8ec57b114e71cebfb32a8b4d"
+    },
+    {
+        "sha": "38fab0be36350a81be551baf0ee0ec846e4a8584",
+        "author": "Jeremy Evans",
+        "email": "code@jeremyevans.net",
+        "date": "2022-08-04T18:36:36Z",
+        "message": "Avoid printing warning when running erb template tests\n\nThis tests the deprecated Tilt::ERBTemplate.default_output_variable\nfeature, which we do want to raise a warning so users know to change.\nHowever, there is no point printing the error when running Tilt's\ntests.",
+        "url": "https://github.com/rtomayko/tilt/commit/38fab0be36350a81be551baf0ee0ec846e4a8584"
+    },
+    {
+        "sha": "65e9fce382b64b03b724b6f14d3630eb900107d7",
+        "author": "Jeremy Evans",
+        "email": "code@jeremyevans.net",
+        "date": "2022-08-04T18:35:06Z",
+        "message": "Avoid \"Invalid ERB trim mode:\" warning\n\nPassing :trim=>false as the tests do should not result in a warning.",
+        "url": "https://github.com/rtomayko/tilt/commit/65e9fce382b64b03b724b6f14d3630eb900107d7"
+    },
+    {
+        "sha": "109e91537968faaaf0e62a6f9cd5afbaaa9c9a3b",
+        "author": "Jeremy Evans",
+        "email": "code@jeremyevans.net",
+        "date": "2022-08-04T18:27:09Z",
+        "message": "Fix incorrect test\n\nThe \"encoding with magic comment\" test was supposed to check\nthat Tilt will respect the magic comment of the template source.\nHowever, Tilt doesn't do that. Tilt will extract the magic comment\nof generated ruby code for precompiled templates.  However, the\ntemplate source code must be valid in the default external encoding\nif you do not provide a :default_encoding option.\n\nThe test worked correctly when the default external encoding was\ncompatible with the magic comment, but it didn't even\ncheck that the encoding of the resulting render matched.  Modify\nthe test to check that it will use the source encoding if given.\n\nAlso modify the following test to ensure it actually tests that\nrender result has the correct encoding.",
+        "url": "https://github.com/rtomayko/tilt/commit/109e91537968faaaf0e62a6f9cd5afbaaa9c9a3b"
+    },
+    {
+        "sha": "e0adbaca319e4e87f8e1c0cc1f188b1c90e23e86",
+        "author": "Jeremy Evans",
+        "email": "code@jeremyevans.net",
+        "date": "2022-08-04T18:20:37Z",
+        "message": "Fix errors when default external encoding is not UTF-8\n\nThis fixes 6 test errors/failures when the default external encoding\nwas set to US-ASCII instead of UTF-8.",
+        "url": "https://github.com/rtomayko/tilt/commit/e0adbaca319e4e87f8e1c0cc1f188b1c90e23e86"
+    },
+    {
+        "sha": "0de713df6f5230f5154718881a8536344e3e635d",
+        "author": "Jeremy Evans",
+        "email": "code@jeremyevans.net",
+        "date": "2022-08-04T18:01:45Z",
+        "message": "Chomp newline in sass tests\n\nIn my environment these fail due to render returning a string ending\nwith a newline.  Since the newline doesn't cause any problems in\nCSS, I don't think we should force remove it in the template engine.\nIt seems acceptable to allow output both with and without a newline.",
+        "url": "https://github.com/rtomayko/tilt/commit/0de713df6f5230f5154718881a8536344e3e635d"
+    }
+]

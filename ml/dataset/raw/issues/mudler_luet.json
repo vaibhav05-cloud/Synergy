@@ -1,0 +1,388 @@
+[
+    {
+        "id": 4777615468,
+        "number": 386,
+        "title": "Upgrade random crashes",
+        "state": "open",
+        "created_at": "2026-06-30T14:21:43Z",
+        "updated_at": "2026-06-30T14:35:58Z",
+        "closed_at": null,
+        "author": "msdobrescu",
+        "comments": 1,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [
+            "mudler"
+        ],
+        "locked": false,
+        "body": "<!-- Thanks for helping us to improve Luet! We welcome all bug reports. Please fill out each area of the template so we can better help you. Comments like this will be hidden when you post but you can delete them if you wish. -->\n\n**Luet version:**\n<!-- Provide the output from \"luet --version\" -->\nluet version 0.0.0 (Build time: 2026-03-04)\n\n**CPU architecture, OS, and Version:**\n<!-- Provide the output from \"uname -a\"  -->\nLinux MXT 7.0.10-mocaccino #7.0.10-Mocaccino SMP PREEMPT_DYNAMIC Mon May 25 10:05:45 UTC 20 x86_64 Intel(R) Core(TM) i7-3630QM CPU @ 2.40GHz GenuineIntel GNU/Linux\n\n**Describe the bug**\n<!-- A clear and concise description of what the bug is. -->\nDuring upgrade, some package (not necessarily the same) fails as follows:\n```\n WARNING   failed downloading image quay.io/mocaccino/desktop:X-layers-26.06-3: unexpected EOF\npanic: runtime error: invalid memory address or nil pointer dereference\n[signal SIGSEGV: segmentation violation code=0x1 addr=0x0 pc=0xb22d26]\n\ngoroutine 66 [running]:\ngithub.com/mudler/luet/pkg/api/core/types/artifact.(*Checksums).generateSum(0x3ef50269dd30, 0x3ef50269dc10?, {{0x10182e0?, 0x3ef50c952d00?}, {0xf8c40b?, 0x188db60?}})\n        /luetbuild/luet/pkg/api/core/types/artifact/checksum.go:78 +0x66\ngithub.com/mudler/luet/pkg/api/core/types/artifact.(*Checksums).generateSHA256(0x3ef50269dd30, 0x0)\n        /luetbuild/luet/pkg/api/core/types/artifact/checksum.go:73 +0x57\ngithub.com/mudler/luet/pkg/api/core/types/artifact.(*Checksums).Generate(...)\n        /luetbuild/luet/pkg/api/core/types/artifact/checksum.go:60\ngithub.com/mudler/luet/pkg/api/core/types/artifact.(*PackageArtifact).Verify(0x0)\n        /luetbuild/luet/pkg/api/core/types/artifact/artifact.go:104 +0xb1\ngithub.com/mudler/luet/pkg/installer.(*LuetInstaller).getPackage(0x3ef510c6f3e0?, {0x3ef5038f1680?, 0x3ef50016a990?, {0x1011d00?, 0x3ef502181d80?}}, {0x1027ca0?, 0x3ef4f9943130?})\n        /luetbuild/luet/pkg/installer/installer.go:962 +0x65\ngithub.com/mudler/luet/pkg/installer.(*LuetInstaller).downloadWorker(0x3ef4f9d94e00, 0x0?, 0x0?, 0x0, 0x3ef50dee4000, {0x1027ca0, 0x3ef4f9943130})\n        /luetbuild/luet/pkg/installer/installer.go:996 +0x10e\ncreated by github.com/mudler/luet/pkg/installer.(*LuetInstaller).download in goroutine 1\n        /luetbuild/luet/pkg/installer/installer.go:674 +0x645\n\\033[32;5mDone!\\033[0m\n```\n\n**To Reproduce**\n<!-- Steps to reproduce the behavior, including the luet command used -->\nIssue `luet upgrade`, but it happened on three systems today, randomly with regard to the package.\nEach upgrade brings other package that breaks the process. so it seems it is not related to a specific package.\nAll machines are AMD64, one AMD, two Intel based.\n\n**Expected behavior**\n<!-- A clear and concise description of what you expected to happen. -->\n\n**Logs**\n<!-- If applicable, add logs with the \"--debug\" flag enabled to help explain your problem. -->\nNot this time, sorry. It worked just when I've retried with `--debug`.\n\n**Additional context**\n<!-- Add any other context about the problem here. -->\n",
+        "url": "https://github.com/mudler/luet/issues/386"
+    },
+    {
+        "id": 2855594892,
+        "number": 372,
+        "title": "Luet v0.36.0 reports incorrect version",
+        "state": "open",
+        "created_at": "2025-02-15T16:44:46Z",
+        "updated_at": "2026-03-04T20:45:04Z",
+        "closed_at": null,
+        "author": "joostruis",
+        "comments": 2,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [
+            "mudler"
+        ],
+        "locked": false,
+        "body": "INFO   Downloaded luet-system-0.36.0.package.tar.zst of 8.10 MB ( 8.12 MiB/s )\n  SUCCESS    Package  system/luet-0.36.0 downloaded\n  INFO   Checking for file conflicts..\n  INFO    Package  system/luet-0.36.0 installed\n + '[' '!' -e /usr/bin/luet ]\n + rm -rf luet\n + luet install -y repository/mocaccino-extra\n  **INFO  Luet 0.0.0 (Build time: 2025-02-15)**\n  INFO  Copyright (C) 2019-2022 Ettore Di Giacinto\n        This program comes with ABSOLUTELY NO WARRANTY.\n        This is free software, and you are welcome to redistribute it under certain conditions.\n        For documentation, visit https://luet.io/.\n",
+        "url": "https://github.com/mudler/luet/issues/372"
+    },
+    {
+        "id": 2558657971,
+        "number": 367,
+        "title": "Luet memory usage",
+        "state": "open",
+        "created_at": "2024-10-01T09:19:43Z",
+        "updated_at": "2024-10-01T09:22:32Z",
+        "closed_at": null,
+        "author": "laurivosandi",
+        "comments": 0,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [
+            "mudler"
+        ],
+        "locked": false,
+        "body": "<!-- Thanks for helping us to improve Luet! We welcome all bug reports. Please fill out each area of the template so we can better help you. Comments like this will be hidden when you post but you can delete them if you wish. -->\r\n\r\n**Luet version:**\r\n```\r\nluet version 0.32.5-gd5d21653d7313ff396c0511af402834c89974ee3 2022-06-07\r\n```\r\n\r\n**CPU architecture, OS, and Version:**\r\n```\r\nLinux zzz 6.8.0-45-generic #45-Ubuntu SMP PREEMPT_DYNAMIC Fri Aug 30 12:02:04 UTC 2024 x86_64 x86_64 x86_64 GNU/Linux\r\n```\r\n\r\n**Describe the bug**\r\n\r\nLuet gets OOM-killed with 4GB Docker image on a machine with 8GB of free memory.\r\n\r\n**To Reproduce**\r\n\r\nIssue `docker build -t foobar` for `Dockerfile` that grows large in size:\r\n\r\n```\r\nFROM busybox AS build\r\nRUN dd if=/dev/zero of=foobar bs=65536 count=65536\r\nFROM scratch AS final\r\nCOPY --from=build foobar foobar\r\n```\r\n\r\nTry to unpack it with `luet`\r\n\r\n```\r\nluet util unpack  --local foobar unpacked -d\r\n```\r\n\r\n**Expected behavior**\r\n\r\nLuet's memory usage doesn't significantly depend on image size\r\n\r\n**Logs**\r\n\r\n```\r\n  DEBUG   (config.go:#204:github.com/mudler/luet/cmd/util.initContext)  System rootfs: /\r\n  DEBUG   (config.go:#205:github.com/mudler/luet/cmd/util.initContext)  Colors true\r\n  DEBUG   (config.go:#206:github.com/mudler/luet/cmd/util.initContext)  Logging level info\r\n  DEBUG   (config.go:#207:github.com/mudler/luet/cmd/util.initContext)  Debug mode true\r\n INFO   Downloading foobar to /home/lauri/unpacked\r\nKilled\r\n```\r\n\r\n**Additional context**\r\n\r\nTried `--concurrency=1` but still looks like 14 threads are spawned",
+        "url": "https://github.com/mudler/luet/issues/367"
+    },
+    {
+        "id": 2555670682,
+        "number": 366,
+        "title": "Luet for Unikernels and Binary / SysCalls based packaging",
+        "state": "open",
+        "created_at": "2024-09-30T06:20:22Z",
+        "updated_at": "2024-09-30T06:23:32Z",
+        "closed_at": null,
+        "author": "niranjanaryan",
+        "comments": 1,
+        "labels": [
+            "enhancement"
+        ],
+        "assignees": [
+            "mudler"
+        ],
+        "locked": false,
+        "body": "<!-- Thanks for helping us to improve Luet! We welcome all feature requests. Please fill out each area of the template so we can better help you. Comments like this will be hidden when you post but you can delete them if you wish. -->\r\n\r\n**Is your feature request related to a problem? Please describe.**\r\n<!-- A clear and concise description of what the problem is. Ex. I'm always frustrated when [...]  -->\r\n\r\n**Describe the solution you'd like**\r\n<!-- A clear and concise description of what you want to happen.  -->\r\n\r\n**Describe alternatives you've considered**\r\n<!-- A clear and concise description of any alternative solutions or features you've considered.  -->\r\n\r\n**Additional context**\r\n<!-- Add any other context or screenshots about the feature request here. -->\r\n",
+        "url": "https://github.com/mudler/luet/issues/366"
+    },
+    {
+        "id": 2481488315,
+        "number": 365,
+        "title": "I need to split a package while switching off unpacking for some of the subpackages",
+        "state": "open",
+        "created_at": "2024-08-22T18:44:57Z",
+        "updated_at": "2024-08-22T18:44:57Z",
+        "closed_at": null,
+        "author": "msdobrescu",
+        "comments": 0,
+        "labels": [
+            "enhancement"
+        ],
+        "assignees": [
+            "mudler"
+        ],
+        "locked": false,
+        "body": "<!-- Thanks for helping us to improve Luet! We welcome all feature requests. Please fill out each area of the template so we can better help you. Comments like this will be hidden when you post but you can delete them if you wish. -->\r\nThe purpose is to build once and to generate several subpackages out of it.\r\nThis saves time and power.\r\n\r\n**Is your feature request related to a problem? Please describe.**\r\n<!-- A clear and concise description of what the problem is. Ex. I'm always frustrated when [...]  -->\r\nIt took a while to experiment and figure out what happens.\r\nBasically, I've tried to build once and get a MocaccinoOS set of three packages out of one specification, a buildbase, a regular enduser package and a package that contains the same end user package contents and the portage meta-data files.\r\nA package split in subpackages would add unneeded parts when unpacking is enabled for the main package, because a buildbase must have the largest set of file, so it must be defined as the main package and have the unpack attribute on.\r\nThe subpackages must be small subsets of it, but to avoid the unpacking process. The difference for three python packages, for example, is from 2.5GB of packed buildbase (internally having about 8GB) to 7MB per each of the two subpackages.\r\nBut this is not possible to produce due to unpacking that is applied to all the subpackages which will be of 7.6-7.8 GB eventually, as effect.\r\n\r\n**Describe the solution you'd like**\r\n<!-- A clear and concise description of what you want to happen.  -->\r\nUnpacking should be applied per package and subpackages individually. So hidden attribute.\r\n\r\n**Describe alternatives you've considered**\r\n<!-- A clear and concise description of any alternative solutions or features you've considered.  -->\r\n\r\n**Additional context**\r\n<!-- Add any other context or screenshots about the feature request here. -->\r\n",
+        "url": "https://github.com/mudler/luet/issues/365"
+    },
+    {
+        "id": 2477198814,
+        "number": 364,
+        "title": "I need a way to show the finally rendered specification from templates",
+        "state": "open",
+        "created_at": "2024-08-21T06:41:40Z",
+        "updated_at": "2024-08-21T06:41:40Z",
+        "closed_at": null,
+        "author": "msdobrescu",
+        "comments": 0,
+        "labels": [
+            "enhancement"
+        ],
+        "assignees": [
+            "mudler"
+        ],
+        "locked": false,
+        "body": "<!-- Thanks for helping us to improve Luet! We welcome all feature requests. Please fill out each area of the template so we can better help you. Comments like this will be hidden when you post but you can delete them if you wish. -->\r\n\r\nUsing Luet 0.32.5-gd5d21653d7313ff396c0511af402834c89974ee3 2022-06-07.\r\n\r\n**Is your feature request related to a problem? Please describe.**\r\n<!-- A clear and concise description of what the problem is. Ex. I'm always frustrated when [...]  -->\r\nI need a way to show the finally rendered specification from templates, preferably focused on a specific package in a collection, if that is the case.\r\n\r\n**Describe the solution you'd like**\r\n<!-- A clear and concise description of what you want to happen.  -->\r\nWriting templates is sometimes complex, an undesired behavior may occur that needs diagnosis and the answer is most probably in the rendered specification.\r\n\r\n**Describe alternatives you've considered**\r\n<!-- A clear and concise description of any alternative solutions or features you've considered.  -->\r\nI've used various templating techniques to get the rendered specification parts that are aggregated during the specification generation process, but some times it's difficult to assess if there is a specific alignment that would lead to adding some part to the wrong item.\r\n\r\n**Additional context**\r\n<!-- Add any other context or screenshots about the feature request here. -->\r\nI apologize if the feature already exists, but I could not find it.",
+        "url": "https://github.com/mudler/luet/issues/364"
+    },
+    {
+        "id": 2441995500,
+        "number": 362,
+        "title": "Release 0.35.3 is missing precompiled binaries",
+        "state": "open",
+        "created_at": "2024-08-01T09:43:34Z",
+        "updated_at": "2024-08-01T09:43:34Z",
+        "closed_at": null,
+        "author": "nicholasdille",
+        "comments": 0,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [
+            "mudler"
+        ],
+        "locked": false,
+        "body": "The release workflow has not completed: https://github.com/mudler/luet/actions/runs/10193883641",
+        "url": "https://github.com/mudler/luet/issues/362"
+    },
+    {
+        "id": 2432829474,
+        "number": 360,
+        "title": "Can't create repository following documentation example with (`--type docker`)",
+        "state": "open",
+        "created_at": "2024-07-26T19:12:42Z",
+        "updated_at": "2024-07-26T19:12:42Z",
+        "closed_at": null,
+        "author": "RafaelPalomar",
+        "comments": 0,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [
+            "mudler"
+        ],
+        "locked": false,
+        "body": "<!-- Thanks for helping us to improve Luet! We welcome all bug reports. Please fill out each area of the template so we can better help you. Comments like this will be hidden when you post but you can delete them if you wish. -->\r\n\r\n**Luet version:**\r\nluet version 0.35.2 (Build time: 2024-04-22 08:57:59 UTC)\r\n\r\n**CPU architecture, OS, and Version:**\r\nAMD64, inside a suse linux distrobox container (it may not be relevant)\r\n\r\n**Describe the bug**\r\nI try to run through the repository creation in [https://luet.io/docs/concepts/overview/repositories/](https://luet.io/docs/concepts/overview/repositories/). Everything works as expected, but when I `create-repo` with the argument `--type docker` I get the following output:\r\n\r\n```output\r\nINFO   Generating docker images for packages in /tmp/out\r\n  ERROR    while building repository artifact index: while initializing repository generator: while pushing metadata file associated to the artifact: Failed generating metadata tree /tmp/out:foo-bar-0.1.metadata.yaml: while loading image: Failed loading image: invalid reference format\r\n          : exit status 1\r\n```\r\n\r\n**To Reproduce**\r\n<!-- Steps to reproduce the behavior, including the luet command used -->\r\n\r\n```\r\nmkdir package\r\ncat <<EOF > package/build.yaml\r\nimage: busybox\r\nsteps:\r\n- echo \"foo\" > /foo\r\nEOF\r\ncat <<EOF > package/definition.yaml\r\nname: \"foo\"\r\nversion: \"0.1\"\r\ncategory: \"bar\" # optional!\r\nEOF\r\nsudo luet build --all --destination $PWD/out/ --tree $PWD/package\r\nsudo luet create-repo --name \"test\" --output $PWD/out --packages $PWD/out --tree $PWD/package --type docker\r\n```\r\n\r\n**Expected behavior**\r\n<!-- A clear and concise description of what you expected to happen. -->\r\n\r\nI would expect the last command to run with no errors\r\n\r\n**Logs**\r\n<!-- If applicable, add logs with the \"--debug\" flag enabled to help explain your problem. -->\r\n\r\nhere is the output by `sudo luet create-repo --name \"test\" --output $PWD/out --packages $PWD/out --tree $PWD/package --type docker --debug`:\r\n\r\n```output\r\n DEBUG   (config.go:#204:github.com/mudler/luet/cmd/util.initContext)  System rootfs: /\r\n  DEBUG   (config.go:#205:github.com/mudler/luet/cmd/util.initContext)  Colors true\r\n  DEBUG   (config.go:#206:github.com/mudler/luet/cmd/util.initContext)  Logging level info\r\n  DEBUG   (config.go:#207:github.com/mudler/luet/cmd/util.initContext)  Debug mode true\r\n INFO   Generating docker images for packages in /tmp/out\r\n  DEBUG   (repository_docker.go:#54:github.com/mudler/luet/pkg/installer.(*dockerRepositoryGenerator).Initialize.func1)  Skipping directories\r\n  DEBUG   (repository_docker.go:#126:github.com/mudler/luet/pkg/installer.(*dockerRepositoryGenerator).pushFileFromArtifact)  Generating image /tmp/out:foo-bar-0.1.metadata.yaml\r\n  DEBUG   (simpledocker.go:#76:github.com/mudler/luet/pkg/compiler/backend.(*SimpleDocker).LoadImage)  🐋  Loading image: /var/tmp/luet/tempimage4186696045\r\n  ERROR    while building repository artifact index: while initializing repository generator: while pushing metadata file associated to the artifact: Failed generating metadata tree /tmp/out:foo-bar-0.1.metadata.yaml: while loading image: Failed loading image: invalid reference format\r\n          : exit status 1\r\n```\r\n\r\n**Additional context**\r\n<!-- Add any other context about the problem here. -->\r\n",
+        "url": "https://github.com/mudler/luet/issues/360"
+    },
+    {
+        "id": 2248944958,
+        "number": 355,
+        "title": "Unable to add a luet repo from an insecure / http development registry - have evidence of pull from development registry working without Luet",
+        "state": "open",
+        "created_at": "2024-04-17T18:19:43Z",
+        "updated_at": "2024-04-27T03:48:08Z",
+        "closed_at": null,
+        "author": "EmikVayts",
+        "comments": 1,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [
+            "mudler"
+        ],
+        "locked": false,
+        "body": "<!-- Thanks for helping us to improve Luet! We welcome all bug reports. Please fill out each area of the template so we can better help you. Comments like this will be hidden when you post but you can delete them if you wish. -->\r\n\r\n**Luet version:** luet version 0.34.0-g4c788ccbd18e287c15c9610594daa533b53ffdad 2024-03-15 08:27:52 UTC\r\n<!-- Provide the output from \"luet --version\" -->\r\n\r\n**CPU architecture, OS, and Version:** Linux buildkitsandbox 5.14.21-150500.55.28-default #1 SMP PREEMPT_DYNAMIC Fri Sep 22 10:04:29 UTC 2023 (c11336f) x86_64 x86_64 x86_64 GNU/Linux\r\n<!-- Provide the output from \"uname -a\"  -->\r\n\r\n**Describe the bug** \r\n<!-- A clear and concise description of what the bug is. -->\r\nI have a development registry which is insecure and uses HTTP. I have uploaded my Luet repo to this registry. I have already confirmed that the Luet repo is valid, because I have also uploaded it to a secure HTTPS registry, and had no issues accessing it via the luet command:\r\n\r\nWhen attempting to run 'luet repo add' command to add the Luet repo from my insecure and HTTP development registry, I am facing 'server gave HTTP response to HTTPS client' error message. \r\n![image](https://github.com/mudler/luet/assets/47996208/20b0f22c-2d93-4072-b999-4dc6432e8783)\r\n\r\n\r\nRegarding my environment - I am using Luet inside of a BuildKit container, and the buildkitd.toml configuration file has my insecure/HTTP development registry configured with 'http' and 'insecure' settings. I know that the buildkitd.toml configuration is working, because I am able to pull images from the same insecure/HTTP development registry using methods other than Luet, such as using 'FROM' in an Earthfile:\r\n![image](https://github.com/mudler/luet/assets/47996208/fed94a66-b5e0-48c2-bfff-a4ca27eba2a8)\r\n\r\n\r\n**To Reproduce**\r\n<!-- Steps to reproduce the behavior, including the luet command used -->\r\n\r\n1. Spin up a buildkit container with Luet installed\r\n2. Configure buildkitd.toml configuration file with an insecure/http development registry, for example:\r\n\r\n[registry.\"(registry IP here):80\"]\r\n  http = true\r\n  insecure = true\r\n\r\n3. Attempt to run 'luet repo add' to add the insecure/http development registry \r\n\r\n\r\n**Expected behavior**\r\n<!-- A clear and concise description of what you expected to happen. -->\r\nExpected that Luet would be able to use the buildkitd.toml configuration and be able to pull images from the insecure/http registry like other methods of pulling images are able to do.\r\n\r\n**Logs**\r\n<!-- If applicable, add logs with the \"--debug\" flag enabled to help explain your problem. -->\r\nScreenshots of logs shown above in the 'Describe the bug' section\r\n\r\n**Additional context**\r\n<!-- Add any other context about the problem here. -->\r\n",
+        "url": "https://github.com/mudler/luet/issues/355"
+    },
+    {
+        "id": 2210243511,
+        "number": 354,
+        "title": "Unable to Consume Luet Packages From Private Registry Due to Authentication Error",
+        "state": "open",
+        "created_at": "2024-03-27T09:07:00Z",
+        "updated_at": "2024-03-27T09:07:00Z",
+        "closed_at": null,
+        "author": "mokarage",
+        "comments": 0,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [
+            "mudler"
+        ],
+        "locked": false,
+        "body": "**Luet version:**\r\n0.32.5\r\n**CPU architecture, OS, and Version:**\r\nDebian 4.19.249-2 x86_64 GNU/Linux\r\n**Describe the bug**\r\nI'm trying to consume (install) a package which I successfully built and pushed to my private registry. I'm getting the following error while I use the command `luet install --config repositories.yaml category/package`:\r\n\r\n`failed downloading image my.private.registry.tld/path/to/packages:repository.yaml: GET https://my.private.registry.tld/v2/path/to/packages/manifests/repository.yaml: UNAUTHORIZED: authentication required; [map[Action:pull Class: Name:path/to/packages Type:repository]]`\r\n\r\nHere is my `repositories.yaml` configuration:\r\n```yaml\r\nrepositories:\r\n  - name: \"test\"\r\n    type: \"docker\"\r\n    priority: 1\r\n    enable: true\r\n    urls:\r\n       - \"my.private.registry.tld/path/to/packages\"\r\n```\r\n\r\n**To Reproduce**\r\n1. Prepare a private registry with htpasswd authentication\r\n2. Build a package (`luet build category/package`)\r\n3. Create repo (`luet create-repo --name \"test\" --type docker --output my.private.registry.tld/path/to/packages` --push-images)\r\n4. Try to install the package (`luet install --config repositories.yaml category/package`)\r\n5. The error appears\r\n\r\n\r\n**Expected behavior**\r\n\r\nSuccessfully install package from private registry\r\n\r\n**Logs**\r\n```\r\n  DEBUG   (config.go:#204:github.com/mudler/luet/cmd/util.initContext)  System rootfs: /\r\n  DEBUG   (config.go:#205:github.com/mudler/luet/cmd/util.initContext)  Colors true\r\n  DEBUG   (config.go:#206:github.com/mudler/luet/cmd/util.initContext)  Logging level info\r\n  DEBUG   (config.go:#207:github.com/mudler/luet/cmd/util.initContext)  Debug mode true\r\n INFO  Luet 0.32.5-gd5d21653d7313ff396c0511af402834c89974ee3 2022-06-07\r\n INFO  Copyright (C) 2019-2022 Ettore Di Giacinto\r\n       This program comes with ABSOLUTELY NO WARRANTY.\r\n       This is free software, and you are welcome to redistribute it under certain conditions.\r\n       For documentation, visit https://luet.io.\r\n  DEBUG   (install.go:#72:github.com/mudler/luet/cmd.glob..func10)  Solver type:  rate: 0.700000, discount: 1.000000, attempts: 9000, initialobserved: 999999\r\n INFO   :::> Install\r\n  DEBUG   (repository.go:#895:github.com/mudler/luet/pkg/installer.(*LuetSystemRepository).Sync)  Sync of the repository test in progress...\r\n INFO   Downloading my.private.registry.tld/path/to/packages:repository.yaml\r\n WARNING  failed downloading image my.private.registry.tld/path/to/packages:repository.yaml: GET https://my.private.registry.tld/v2/path/to/packages/manifests/repository.yaml: UNAUTHORIZED: authentication required; [map[Action:pull Class: Name:path/to/packages Type:repository]]`\r\nERROR    Error: Failed matching solutions against repository for category/package where are definitions coming from?!\r\n```\r\n**Additional context**\r\n",
+        "url": "https://github.com/mudler/luet/issues/354"
+    },
+    {
+        "id": 2196744868,
+        "number": 352,
+        "title": "Luet v0.35.1 show incorrect version as v0.34.0",
+        "state": "closed",
+        "created_at": "2024-03-20T06:20:50Z",
+        "updated_at": "2024-03-22T01:12:24Z",
+        "closed_at": "2024-03-22T01:12:23Z",
+        "author": "nianyush",
+        "comments": 2,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [
+            "mudler"
+        ],
+        "locked": false,
+        "body": "https://github.com/kairos-io/kairos/issues/2370#issuecomment-2008696336",
+        "url": "https://github.com/mudler/luet/issues/352"
+    },
+    {
+        "id": 2182397529,
+        "number": 349,
+        "title": "github.com/moby/buildkit v0.10.1 has a critical cve",
+        "state": "closed",
+        "created_at": "2024-03-12T18:24:11Z",
+        "updated_at": "2024-03-18T08:27:08Z",
+        "closed_at": "2024-03-18T08:27:08Z",
+        "author": "nianyush",
+        "comments": 1,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "Can we update this dependency and create a new release?\r\nReference:\r\nhttps://github.com/spectrocloud/CanvOS/issues/143",
+        "url": "https://github.com/mudler/luet/issues/349"
+    },
+    {
+        "id": 2154287623,
+        "number": 348,
+        "title": "Latest luet release does not include binaries",
+        "state": "open",
+        "created_at": "2024-02-26T14:14:27Z",
+        "updated_at": "2024-02-26T14:14:27Z",
+        "closed_at": null,
+        "author": "mauromorales",
+        "comments": 0,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [
+            "mudler"
+        ],
+        "locked": false,
+        "body": "Seems like the pipeline broke for https://github.com/mudler/luet/releases/tag/0.35.0",
+        "url": "https://github.com/mudler/luet/issues/348"
+    },
+    {
+        "id": 2028070876,
+        "number": 346,
+        "title": "Bind luet util {unpack, *} cli arguments to viper to be settable via config file and environment variables.",
+        "state": "open",
+        "created_at": "2023-12-06T09:03:43Z",
+        "updated_at": "2023-12-06T09:03:43Z",
+        "closed_at": null,
+        "author": "pocketbroadcast",
+        "comments": 0,
+        "labels": [
+            "enhancement"
+        ],
+        "assignees": [
+            "mudler"
+        ],
+        "locked": false,
+        "body": "<!-- Thanks for helping us to improve Luet! We welcome all feature requests. Please fill out each area of the template so we can better help you. Comments like this will be hidden when you post but you can delete them if you wish. -->\r\n\r\n**Is your feature request related to a problem? Please describe.**\r\n<!-- A clear and concise description of what the problem is. Ex. I'm always frustrated when [...]  -->\r\nMany tools support docker/config file to set authentication for private registries.\r\nLuet has `--auth-username` and `--auth-password` besides other cli arguments to set such.\r\nUnfortunately, in some cases (to be specific Auroraboot) these cli args cannot be set directly!\r\n\r\n**Describe the solution you'd like**\r\n<!-- A clear and concise description of what you want to happen.  -->\r\nBind the cli args (`cobra.Command.Flags`) to config file or environment variables (`viper.BindPFlag`)\r\nThat way, one could override these by setting appropriate environment variables.\r\n\r\n**Describe alternatives you've considered**\r\n<!-- A clear and concise description of any alternative solutions or features you've considered.  -->\r\nAn alternative was to follow the approach of other tools and support for docker config to read in authentication for registries.\r\n\r\n**Additional context**\r\n<!-- Add any other context or screenshots about the feature request here. -->\r\nFor now the proposed enhancement works for me and I was happy to contribute my changes\r\nFeel free to comment any alternatives, additional views on that!\r\n",
+        "url": "https://github.com/mudler/luet/issues/346"
+    },
+    {
+        "id": 1940774474,
+        "number": 345,
+        "title": "Trying to refer Mocaccino community repo in a local repo",
+        "state": "closed",
+        "created_at": "2023-10-12T20:50:39Z",
+        "updated_at": "2024-04-05T06:43:08Z",
+        "closed_at": "2024-04-05T06:43:08Z",
+        "author": "msdobrescu",
+        "comments": 1,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "I try to build in a local repo some packages based on Mocaccino repository.\r\n\r\nCurrently, the local repo has the following `Dockerfile`:\r\n\r\nFROM quay.io/mocaccino/desktop\r\n\r\n```\r\nENV LUET_YES=true\r\nENV LUET_NOLOCK=true\r\nRUN luet install --relax repository/mocaccino-extra mocaccino/cli\r\nRUN luet uninstall repository/mocaccino-desktop\r\nRUN luet install --relax repository/mocaccino-desktop-stable\r\nRUN luet install --relax repository/mocaccino-community-stable\r\nRUN luet install --relax -qy container/docker system/luet\r\n\r\nENTRYPOINT /usr/bin/luet\r\n```\r\n\r\nAnd `build_local.sh`:\r\n\r\n```\r\n#!/bin/bash\r\n\r\nroot=$(git rev-parse --show-toplevel)\r\n\r\nBASEDIR=$(dirname \"$0\")\r\nif [ -z \"$root\" ]; then\r\n  root=$BASEDIR\r\nfi\r\n\r\npushd $root\r\n\r\n#root=$(git rev-parse --show-toplevel)\r\ndocker build -t build-image $root\r\n\r\ndocker run --rm -ti -v /var/run/docker.sock:/var/run/docker.sock -v $PWD:/workdir --entrypoint /usr/bin/luet -w /workdir build-image build \\\r\n      -q --only-target-package \\\r\n      --pull-repository quay.io/mocaccino/mocaccino-community \\\r\n      --pull-repository quay.io/mocaccino/desktop \\\r\n      --pull-repository quay.io/mocaccino/os-commons \\\r\n      --pull-repository quay.io/mocaccino/extra \\\r\n      --pull --image-repository local-repo --from-repositories --no-spinner --live-output --tree packages \"$@\"\r\n\r\n```\r\n\r\nMocaccino community repo packages build fine there, but building in the local repo fails like this:\r\n\r\n\r\n```\r\n...\r\n\r\nINFO:  Downloaded compilertree.tar.gz of 0.00 MB ( 0.01 MiB/s )\r\nINFO:  Downloaded mocaccino-kernel-stable-repository-20211120.metadata.yaml of 0.00 MB ( 0.01 MiB/s )\r\nINFO:  Downloaded mocaccino-musl-universe-stable-repository-20211121.metadata.yaml of 0.00 MB ( 0.01 MiB/s )\r\nINFO:  Downloaded mocaccino-os-commons-repository-20211019.metadata.yaml of 0.00 MB ( 0.01 MiB/s )\r\nINFO:  Downloaded mocaccino-os-commons-stable-repository-20211016.metadata.yaml of 0.00 MB ( 0.01 MiB/s )\r\nINFO:  Downloaded mocaccino-desktop-stable-repo-updater-0.3.metadata.yaml of 0.01 MB ( 0.02 MiB/s )\r\nINFO:  Downloaded mocaccino-micro-stable-repo-updater-0.1.metadata.yaml of 0.01 MB ( 0.02 MiB/s )\r\nINFO:  Downloaded luet-repository-20200717.metadata.yaml of 0.00 MB ( 0.01 MiB/s )\r\nINFO:  Downloaded mocaccino-community-repository-20231012084218.metadata.yaml of 0.00 MB ( 0.01 MiB/s )\r\nINFO:  Downloaded mocaccino-repository-index-repository-20211120.metadata.yaml of 0.00 MB ( 0.01 MiB/s )\r\nINFO:  Downloaded mocaccino-stage3-repository-20210520.metadata.yaml of 0.00 MB ( 0.01 MiB/s )\r\nINFO:  Downloaded mocaccino-portage-stable-repository-20201028.metadata.yaml of 0.00 MB ( 0.01 MiB/s )\r\nINFO:  Downloaded mocaccino-community-stable-repo-updater-0.3+57.metadata.yaml of 0.01 MB ( 0.02 MiB/s )\r\nINFO:  Downloaded mocaccino-community-stable-repository-20231012084218.metadata.yaml of 0.00 MB ( 0.02 MiB/s )\r\nINFO:  Downloaded mocaccino-extra-repository-20211023.metadata.yaml of 0.00 MB ( 0.01 MiB/s )\r\nINFO:  Downloaded mocaccino-micro-repository-20211120.metadata.yaml of 0.00 MB ( 0.01 MiB/s )\r\nINFO:  Downloaded mocaccino-portage-repository-20201028.metadata.yaml of 0.00 MB ( 0.01 MiB/s )\r\nINFO:  Downloaded livecd-repository-20200704.metadata.yaml of 0.00 MB ( 0.01 MiB/s )\r\nINFO:  Downloaded mocaccino-desktop-repository-20220205011736.metadata.yaml of 0.00 MB ( 0.01 MiB/s )\r\nINFO:  Downloaded mocaccino-extra-arm-repository-20211204.metadata.yaml of 0.00 MB ( 0.01 MiB/s )\r\nINFO:  Downloaded mocaccino-musl-universe-repository-20211121.metadata.yaml of 0.00 MB ( 0.01 MiB/s )\r\nINFO:  Downloaded mocaccino-desktop-stable-repository-20231011145906.metadata.yaml of 0.00 MB ( 0.01 MiB/s )\r\nINFO:  Downloaded mocaccino-extra-stable-repository-20211023.metadata.yaml of 0.00 MB ( 0.01 MiB/s )\r\nINFO:  Downloaded mocaccino-kernel-repository-20211120.metadata.yaml of 0.00 MB ( 0.01 MiB/s )\r\nINFO:  Downloaded mocaccino-micro-stable-repository-20211120140355.metadata.yaml of 0.00 MB ( 0.01 MiB/s )\r\nINFO:  Building in /workdir/build\r\nINFO:  📦  Compiling libs/vdr-sc-0.9.3.20120815-r4+2 .... ☕ \r\nERROR:  Error: failed getting compile spec for package apps/dvdauthor-0.7.2-r2: while rendering package template: rendering file /var/tmp/luet/mocaccino-community-stable754556715/tree/packages/apps/build.yaml: template: :733:3: executing \"community.build\" at <include \"community.package_setup\" .Values>: error calling include: template: :971:96: executing \"community.package_setup\" at <$atom.atom>: can't evaluate field atom in type string\r\nERROR:  Bailing out\r\n```\r\n\r\nThe package failure looks random, each build attempt is reporting the same kind of error for some other package.\r\n\r\nIt obviously tries to render the community repo. As a note, there must be no template named the same in both, so the local repo and community repo have their own template namespaces. Besides that, the local repo is the same as the community repo with regards to the package collections and templates.\r\n\r\nAm I missing a luet plugin or something else?",
+        "url": "https://github.com/mudler/luet/issues/345"
+    },
+    {
+        "id": 1884558943,
+        "number": 344,
+        "title": "luet search --revdeps --installed returns incorrect results",
+        "state": "open",
+        "created_at": "2023-09-06T18:42:25Z",
+        "updated_at": "2023-09-06T18:52:07Z",
+        "closed_at": null,
+        "author": "joostruis",
+        "comments": 1,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [
+            "mudler"
+        ],
+        "locked": false,
+        "body": "<!-- Thanks for helping us to improve Luet! We welcome all bug reports. Please fill out each area of the template so we can better help you. Comments like this will be hidden when you post but you can delete them if you wish. -->\r\n\r\n**Luet version:**\r\n<!-- Provide the output from \"luet --version\" -->\r\nluet version 0.32.5-gd5d21653d7313ff396c0511af402834c89974ee3 2022-06-07\r\n**CPU architecture, OS, and Version:**\r\n<!-- Provide the output from \"uname -a\"  -->\r\nLinux xbox-360 6.4.12-mocaccino #6.4.12-Mocaccino SMP PREEMPT_DYNAMIC Sun Aug 27 10:30:54 UTC 20 x86_64 AMD Ryzen 5 5600 6-Core Processor AuthenticAMD GNU/Linux\r\n**Describe the bug**\r\n<!-- A clear and concise description of what the bug is. -->\r\nWhen passing --revdeps --installed it lists n times the initial search string instead of the actual revdeps.\r\n\r\n**To Reproduce**\r\n<!-- Steps to reproduce the behavior, including the luet command used -->\r\nxbox-360 /home/joost # luet search gnome-common --revdeps --installed\r\n> layers/gnome-common-1.2+2\r\n -> Category: layers\r\n -> Name: gnome-common\r\n -> Version: 1.2+2\r\n -> Description: \r\n -> Repository: system \r\n -> Uri:  \r\n -> Installed: true \r\n> layers/gnome-common-1.2+2\r\n -> Category: layers\r\n -> Name: gnome-common\r\n -> Version: 1.2+2\r\n -> Description: \r\n -> Repository: system \r\n -> Uri:  \r\n -> Installed: true \r\n> layers/gnome-common-1.2+2\r\n -> Category: layers\r\n -> Name: gnome-common\r\n -> Version: 1.2+2\r\n -> Description: \r\n -> Repository: system \r\n -> Uri:  \r\n -> Installed: true \r\n> layers/gnome-common-1.2+2\r\n -> Category: layers\r\n -> Name: gnome-common\r\n -> Version: 1.2+2\r\n -> Description: \r\n -> Repository: system \r\n -> Uri:  \r\n -> Installed: true \r\n\r\nxbox-360 /home/joost # luet uninstall layers/gnome-common\r\n INFO  Luet 0.32.5-gd5d21653d7313ff396c0511af402834c89974ee3 2022-06-07\r\n INFO  Copyright (C) 2019-2022 Ettore Di Giacinto\r\n       This program comes with ABSOLUTELY NO WARRANTY.\r\n       This is free software, and you are welcome to redistribute it under certain conditions.\r\n       For documentation, visit https://luet.io.\r\n INFO   :::> Uninstall\r\n  ERROR    Error: while computing uninstall: while computing uninstall: Could not solve the uninstall constraints. Tip: try with --solver-type qlearning or with --force, or by removing packages excluding their dependencies with --nodeps: while searching for layers/gnome-common-1.2+2 conflicts: \r\n          apps/gparted-1.5.0-r1+31\r\n          apps/virt-manager-4.1.0+35\r\n          apps/vscodium-1.80.2.23209\r\n          themes/arc-theme-20221218+13\r\n\r\n**Expected behavior**\r\n<!-- A clear and concise description of what you expected to happen. -->\r\n luet search gnome-common --revdeps --installed should return these packages :\r\n           apps/gparted-1.5.0-r1+31\r\n          apps/virt-manager-4.1.0+35\r\n          apps/vscodium-1.80.2.23209\r\n          themes/arc-theme-20221218+13\r\n**Logs**\r\n<!-- If applicable, add logs with the \"--debug\" flag enabled to help explain your problem. -->\r\n\r\n**Additional context**\r\n<!-- Add any other context about the problem here. -->\r\n",
+        "url": "https://github.com/mudler/luet/issues/344"
+    },
+    {
+        "id": 1795362406,
+        "number": 340,
+        "title": "Explain build process relationship",
+        "state": "open",
+        "created_at": "2023-07-09T11:39:09Z",
+        "updated_at": "2023-07-09T11:39:10Z",
+        "closed_at": null,
+        "author": "krise86",
+        "comments": 0,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [
+            "mudler"
+        ],
+        "locked": false,
+        "body": "<!-- Thanks for helping us to improve Luet! We welcome all bug reports. Please fill out each area of the template so we can better help you. Comments like this will be hidden when you post but you can delete them if you wish. -->\r\n\r\n**Luet version:**\r\n0.32.5\r\n\r\nWhen building a package that has build dependencies on other packages, if anyone of these packages change in the three luet will rebuild all packages from the changes package.\r\n\r\nLet's say we have \r\npkg a to d\r\n\r\na is base layer\r\nb is file and requires a\r\nc is file and requires a\r\nd requires b and c\r\n\r\n\r\nif b is changed Luet will rebuild c, even if c is already built and has not changed\r\nif c is changed Luet will rebuild c as it should. \r\n\r\nSo in cases where i have 15 different packages that is required to to build a single package, if i change anyone of those packages based on what order they are listed in the required section. Luet will rebuild all ascending packages. This causes unnecessary builds. Is this how luet is suppose to function?\r\n\r\nThe following repo can be used to test this\r\nhttps://github.com/krise86/luet-test\r\nmake a, b c d \r\nchange b make d (will rebuild c)",
+        "url": "https://github.com/mudler/luet/issues/340"
+    },
+    {
+        "id": 1740342003,
+        "number": 339,
+        "title": "Provides versions clarification",
+        "state": "open",
+        "created_at": "2023-06-04T12:16:18Z",
+        "updated_at": "2023-06-04T12:16:18Z",
+        "closed_at": null,
+        "author": "msdobrescu",
+        "comments": 0,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "Regarding provides, what is the role of the version? I've thought '>=0' means to accept any version available and having only one at a time in C-R, I've expected it would check and find one version and use it, regardless what is installed, so the installed package version would be replaced by the C-R available. But it seems it is actually bound to a version at build time so it throws things like this at upgrade time:\r\n```\r\n  ERROR    Error: failed computing upgrade: Failed solving solution for upgrade: Could not compute upgrade - couldn't uninstall candidates : could not satisfy the constraints: \r\n          twisted-libs-22.10.0-r1 and \r\n          deluge-apps-2.1.1-r3 and \r\n          !(deluge-apps-2.1.1-r3) or twisted-libs-22.10.0+1 and \r\n          !(twisted-libs-22.10.0+1) or !(twisted-libs-22.10.0+1) or !(twisted-libs-22.10.0-r1)\r\n```\r\nSo, what is the point of specifying `>=0` anyway if it can't use `any` version after all?",
+        "url": "https://github.com/mudler/luet/issues/339"
+    },
+    {
+        "id": 1713918522,
+        "number": 337,
+        "title": "Error: package 'meta/users->=0' not found",
+        "state": "open",
+        "created_at": "2023-05-17T13:25:52Z",
+        "updated_at": "2023-05-24T20:40:51Z",
+        "closed_at": null,
+        "author": "kingsd041",
+        "comments": 1,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [
+            "mudler"
+        ],
+        "locked": false,
+        "body": "<!-- Thanks for helping us to improve Luet! We welcome all bug reports. Please fill out each area of the template so we can better help you. Comments like this will be hidden when you post but you can delete them if you wish. -->\r\n\r\n**Luet version:**\r\n<!-- Provide the output from \"luet --version\" -->\r\nluet version 0.32.5-gd5d21653d7313ff396c0511af402834c89974ee3 2022-06-07\r\n**CPU architecture, OS, and Version:**\r\n<!-- Provide the output from \"uname -a\"  -->\r\nLinux ip-172-31-12-189 5.15.0-1033-aws #37~20.04.1-Ubuntu SMP Fri Mar 17 11:39:30 UTC 2023 x86_64 x86_64 x86_64 GNU/Linux\r\n**Describe the bug**\r\n<!-- A clear and concise description of what the bug is. -->\r\nI'm new to luet and it's an awesome tool. I'm getting an error when trying to install Catclock as per [Build a package](https://luet.io/docs/tutorials/build_package/)\r\n\r\n**To Reproduce**\r\n<!-- Steps to reproduce the behavior, including the luet command used -->\r\nAfter following the [Build a package](https://luet.io/docs/tutorials/build_package/) steps exactly, I got an error when installing meta/users: `Error: package 'meta/users->=0' not found`\r\n\r\n**Expected behavior**\r\n<!-- A clear and concise description of what you expected to happen. -->\r\n\r\n**Logs**\r\n<!-- If applicable, add logs with the \"--debug\" flag enabled to help explain your problem. -->\r\n```\r\nroot@ip-172-31-12-189:~/demo# luet repo update\r\n INFO   Downloaded repository.yaml of 0.00 MB ( 0.00 MiB/s )\r\n INFO   Downloaded tree.tar.zst of 0.00 MB ( 0.00 MiB/s )\r\n INFO   Downloaded repository.meta.yaml.tar.zst of 0.00 MB ( 0.02 MiB/s )\r\n INFO   🏠  Repository luet-official revision: 1 (2022-06-07 22:36:47 +0000 UTC)\r\n INFO   ℹ  Repository: luet Priority: 1 Type: http\r\n INFO   Downloaded repository.yaml of 0.00 MB ( 0.00 MiB/s )\r\n INFO   Downloaded tree.tar.gz of 0.00 MB ( 0.01 MiB/s )\r\n INFO   Downloaded repository.meta.yaml.tar.gz of 0.00 MB ( 0.02 MiB/s )\r\n INFO   🏠  Repository mocaccino-repository-index revision: 1 (2023-05-17 04:21:28 +0000 UTC)\r\n INFO   ℹ  Repository: mocaccino-repository-index Priority: 1 Type: http\r\nroot@ip-172-31-12-189:~/demo# luet install --config $PWD/conf/luet-dso-local.yaml meta/users\r\n INFO  Luet 0.32.5-gd5d21653d7313ff396c0511af402834c89974ee3 2022-06-07\r\n INFO  Copyright (C) 2019-2022 Ettore Di Giacinto\r\n       This program comes with ABSOLUTELY NO WARRANTY.\r\n       This is free software, and you are welcome to redistribute it under certain conditions.\r\n       For documentation, visit https://luet.io.\r\n INFO   :::> Install\r\n INFO   Copying file repository.yaml from /root/demo/build\r\n INFO   Copying file tree.tar.gz from /root/demo/build\r\n INFO   Copying file repository.meta.yaml.tar.gz from /root/demo/build\r\n INFO   🏠  Repository test repo revision: 1 (2023-05-17 13:06:18 +0000 UTC)\r\n INFO   ℹ  Repository: main Priority: 3 Type: disk\r\n  ERROR    Error: package 'meta/users->=0' not found\r\nroot@ip-172-31-12-189:~/demo# luet search meta/users\r\n INFO   --- Search results (meta/users): ---\r\n```\r\n**Additional context**\r\n<!-- Add any other context about the problem here. -->\r\n",
+        "url": "https://github.com/mudler/luet/issues/337"
+    },
+    {
+        "id": 1682405304,
+        "number": 334,
+        "title": "Provide `marcosnils/bin`  as an alternate installation method",
+        "state": "closed",
+        "created_at": "2023-04-25T04:22:17Z",
+        "updated_at": "2023-08-21T08:26:56Z",
+        "closed_at": "2023-08-21T08:26:56Z",
+        "author": "nandgator",
+        "comments": 1,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "[`bin`](https://github.com/marcosnils/bin) can grab proper `luet` version from `https://github.com/mudler/luet/releases`.\r\n\r\nSo in the `README.md` you can have:\r\n\r\n```markdown\r\n\r\n## Install\r\n\r\n- **Using official installer script:**\r\n\r\n    ```console\r\n    $ curl https://luet.io/install.sh | sudo sh\r\n    ```\r\n\r\n- **Or using [`bin`](https://github.com/marcosnils/bin)**\r\n\r\n    ```console\r\n    $ bin i github.com/mudler/luet\r\n    ```\r\n\r\n### Test installation:\r\n\r\n```console\r\n$ luet --help\r\n$ luet search ...\r\n$ luet install ..\r\n.```\r\n```\r\n\r\n---\r\n\r\n> Preview\r\n\r\n\r\n## Install\r\n\r\n- **Using official installer script:**\r\n\r\n    ```console\r\n    $ curl https://luet.io/install.sh | sudo sh\r\n    ```\r\n\r\n- **Or using [`bin`](https://github.com/marcosnils/bin)**\r\n\r\n    ```console\r\n    $ bin i github.com/mudler/luet\r\n    ```\r\n\r\n### **Test installation:**\r\n\r\n```console\r\n$ luet --help\r\n$ luet search ...\r\n$ luet install ..\r\n```\r\n\r\n---\r\n\r\nAre PRs on this welcome?",
+        "url": "https://github.com/mudler/luet/issues/334"
+    }
+]

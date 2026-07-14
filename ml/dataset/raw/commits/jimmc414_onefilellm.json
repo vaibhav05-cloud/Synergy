@@ -1,0 +1,242 @@
+[
+    {
+        "sha": "11f754636bd4798175dc2b9dd03e0946ac5c24d8",
+        "author": "Claus-Peter Käpplinger",
+        "email": "5921903+Clausinho@users.noreply.github.com",
+        "date": "2026-06-12T19:40:17Z",
+        "message": "Add --crawl-ignore-ssl flag to disable crawler SSL verification (#77)\n\nOpt-in flag for the async DocCrawler that disables TLS certificate\nverification via aiohttp.TCPConnector(ssl=False), for crawling sites with\nself-signed or otherwise invalid certificates. Off by default; prints a\nruntime warning when enabled.\n\nSquashed from PR #77 and resolved the _init_session conflict to keep the\nexisting aiohttp ClientTimeout alongside the new optional connector.",
+        "url": "https://github.com/jimmc414/onefilellm/commit/11f754636bd4798175dc2b9dd03e0946ac5c24d8"
+    },
+    {
+        "sha": "31d32ea0498fa5656afc3a10ae5fe14ab2aa2b55",
+        "author": "Jim McMillan",
+        "email": "jimmc414@gmail.com",
+        "date": "2026-06-08T23:49:10Z",
+        "message": "Fix web app mislabeling successful repos as errors + oversized error icon\n\nTwo Conduit rendering bugs, both triggered by processing a repo that contains\nXML-like tag text in its files — e.g. onefilellm's own repo (the most obvious\nthing to test):\n\n- classify() mislabeled a SUCCESSFUL fetch as a processing error. It stripped\n  <file>/<page> bodies and scanned the remainder for <error>, but file CONTENT\n  routinely contains literal </file> and <error...> strings (onefilellm's source\n  builds those tags), which broke the non-greedy strip and matched a regex\n  fragment from file content — surfacing \"]*>(.*?)\" as the error message on a\n  141k-token result. Now classify by the PRESENCE of <file>/<page> children: a\n  fetch that produced structured content is a success; a root-level <error> is a\n  hard failure only when there are no such children. Add a regression test.\n\n- The error-state icon had no width/height, so the inline <svg> ballooned to fill\n  the card and crushed the message into a one-character-per-line column. Constrain\n  .error__icon to 1em (1.5rem).\n\n80 web-app tests pass; the real jimmc414/onefilellm repo now classifies as\nsuccess (141,363 tokens) instead of showing a broken error card.",
+        "url": "https://github.com/jimmc414/onefilellm/commit/31d32ea0498fa5656afc3a10ae5fe14ab2aa2b55"
+    },
+    {
+        "sha": "c378fd50db57a30a8c8ef0e8b33e157f8554a893",
+        "author": "Jim McMillan",
+        "email": "jimmc414@gmail.com",
+        "date": "2026-06-08T21:09:25Z",
+        "message": "Fix SSRF protection bypass in web app URL guard (#79)\n\nThe web app's _is_safe_url() validated only urlparse(url).hostname, which an\nattacker can make disagree with the host requests/urllib3 actually connects to.\nReported payload: http://127.0.0.1:6666\\@arxiv.org — urlparse reads the host as\n\"arxiv.org\" while requests normalises the backslash and connects to 127.0.0.1.\n\nAn adversarial review of the hardened guard surfaced two further bypass classes\nand one over-block, all now fixed and regression-tested:\n\n- Parser / percent-encoding differential (the #79 class): validate the EXACT\n  host requests will dial, via requests.PreparedRequest.prepare_url (which\n  percent-decodes and IDNA-encodes), instead of urlparse's raw host. Closes the\n  backslash and user@host forms, the percent-encoded variants\n  (http://127.0.0.%31/, http://169.254.169.%32%35%34/ → cloud metadata), and the\n  legacy decimal/octal/hex IPv4 notations (2130706433, 0177.0.0.1, 0x7f000001).\n- Public name that resolves to a private IP: resolve the host and reject if any\n  address is private/loopback/link-local/reserved/multicast/unspecified — catches\n  *.nip.io, localtest.me, ip6-localhost. Fails open on resolution error so\n  offline/air-gapped use still works; IP literals are blocked without any lookup.\n- IDN over-block: validating the prepared (punycode) host means internationalised\n  domains (münchen.de, россия.рф) are no longer wrongly rejected.\n\nThe guard still rejects backslashes / control chars / whitespace and embedded\ncredentials before any fetch, and runs on both POST / and GET /stream ahead of\nevery network call.\n\nOut of scope (documented in the guard): DNS rebinding — a hostile resolver\nreturning a public address at validation and a private one at fetch time — would\nrequire pinning the connection to the validated IP in the HTTP layer.\n\nAdd SSRF regression coverage to tests/test_web_app.py: a verified 39-URL\nmust-block corpus (incl. the #79 payload and the percent-encoded/resolver\nvectors) and an 18-URL must-allow corpus, with DNS monkeypatched so the suite\nstays hermetic. 79 web-app tests pass.",
+        "url": "https://github.com/jimmc414/onefilellm/commit/c378fd50db57a30a8c8ef0e8b33e157f8554a893"
+    },
+    {
+        "sha": "a7900d46cd228a0887bdc2f5c8a4fb89ad19495f",
+        "author": "Jim McMillan",
+        "email": "jimmc414@gmail.com",
+        "date": "2026-06-08T02:40:29Z",
+        "message": "Redesign extras/web_app.py as \"Conduit\" with live SSE progress\n\nReplace the blocking, single-<pre> Flask web app with a single-column\ncommand console (terminal x SaaS) that streams progress and tames large\noutput, without weakening the security model. The whole front end is\noffline-safe (no CDN, no web fonts, no icon fonts, no build step; vanilla\nJS, system fonts, inline SVG) and degrades to a working no-JS fallback.\n\nBackend (extras/web_app.py):\n- Add GET /stream Server-Sent Events: a daemon worker thread runs the\n  pipeline and feeds a bounded queue that the Flask generator drains;\n  emits stage/page/done/error events with : connected, 15s keepalives,\n  and a None sentinel; sets text/event-stream headers with no\n  Content-Length and no compression.\n- Single-flight threading.Lock (a second concurrent job gets error(busy));\n  client disconnect sets a cancel Event that cooperatively stops the crawl\n  and (once set) switches all queue puts to drop-on-full so the worker can\n  never wedge the lock; the whole worker is wrapped so any exception\n  becomes a terminal error(internal) and the lock is always released.\n- Move clipboard copy client-side: add GET /result/raw (text/plain inline)\n  reusing the two-file download whitelist; remove the server-side pyperclip\n  copy and the dead processed_urls.txt write.\n- Add a robust result classifier (token-count empty backstop, then strip\n  <page>/<file> subtrees before matching a source-level <error>, so a\n  partially failed crawl still counts as success), metrics (estimated model\n  tokens = round(uncompressed * 1.37)), a 256 KB char-boundary-bounded\n  preview, and a server-parsed file/page node list. Keep _is_safe_url and\n  /download byte-for-byte; run with threaded=True.\n- Retain POST / as a synchronous no-JS fallback that renders the same\n  bounded result/error server-side.\n\nCore (onefilellm.py):\n- Add a backward-compatible progress_callback=None to crawl_and_extract_text\n  (guarded so a faulty callback can never break the crawl; returning False\n  cooperatively stops between pages). All existing callers and tests are\n  unaffected.\n\nFront end (extras/templates/index.html, extras/static/):\n- New app shell with empty-state teaching gallery, live input-type\n  detection badge, stage log, determinate/indeterminate progress, metrics\n  panel, virtualized overview tree, bounded raw preview, client-side copy,\n  downloads, toasts, optional session history, light/dark themes, and full\n  keyboard/ARIA support honoring prefers-reduced-motion.\n\nDocs & tests:\n- Add tests/test_web_app.py (Flask test_client, backend monkeypatched, no\n  network): endpoint behavior, the classifier, the /result/raw + /download\n  whitelist, and the security blocks. Save the approved design spec and the\n  upstream brief; update extras/readme.md and extras/requirements.txt\n  (Flask only).",
+        "url": "https://github.com/jimmc414/onefilellm/commit/a7900d46cd228a0887bdc2f5c8a4fb89ad19495f"
+    },
+    {
+        "sha": "cb4f3f27f58b810357a7b01f0ff3311d1091c751",
+        "author": "Jim McMillan",
+        "email": "jimmc414@gmail.com",
+        "date": "2026-06-06T20:32:30Z",
+        "message": "Add changelog and update docs for new YouTube transcript flow\n\n- Add CHANGELOG.md covering all 294 commits (2023-03 through 2026-06),\n  grouped by month with commit/PR links, generated from git history and\n  spot-verified against GitHub PRs\n- Update docs/architecture.md call tree to the current yt-dlp ->\n  subtitle-discovery -> transcript-api-fallback flow and add yt-dlp to\n  the dependency list\n- Expand README troubleshooting: explain the two-fetcher design, advise\n  upgrading yt-dlp and youtube-transcript-api when fetching breaks, and\n  recommend Node.js for reliable yt-dlp extraction",
+        "url": "https://github.com/jimmc414/onefilellm/commit/cb4f3f27f58b810357a7b01f0ff3311d1091c751"
+    },
+    {
+        "sha": "978de2c13acd5efc69addea10bbcce1a09020184",
+        "author": "Jim McMillan",
+        "email": "jimmc414@gmail.com",
+        "date": "2026-06-06T20:15:39Z",
+        "message": "Fix YouTube transcript fetching broken by yt-dlp and transcript-api changes\n\nyt-dlp path:\n- Use --write-auto-subs/--write-subs with --sub-langs \"en,en-orig\" and\n  --convert-subs srt; broad patterns like \"en.*\" expand to translation\n  codes (en-de, ...) and trigger HTTP 429\n- Add --js-runtimes node so extraction uses the full client instead of\n  the degraded android_vr fallback that intermittently yields zero\n  subtitle formats; retry without the flag on older yt-dlp releases\n- Replace hardcoded {id}.en.vtt lookup with glob-based discovery that\n  prefers English variants, surviving lang-code drift (en-orig, en-US)\n- Scan for subtitle files regardless of exit code: a 429 on a secondary\n  language returns nonzero even when the primary file was written\n- Skip Kind:/Language: header lines and collapse consecutive duplicate\n  lines from rolling auto-captions (previously ~3x duplicated output)\n\nyoutube_transcript_api fallback:\n- Migrate off static get_transcript(), deprecated in 1.0 and removed in\n  1.2, to the v1.x instance API (.fetch with .list fallback for\n  non-English videos); keep legacy path for <1.0\n- Bump pin from 0.4.1 (broken against current YouTube backend) to\n  >=1.1.0,<2 in requirements.txt and pyproject.toml\n- Report both failures when yt-dlp and the fallback both fail instead\n  of silently dropping the fallback exception",
+        "url": "https://github.com/jimmc414/onefilellm/commit/978de2c13acd5efc69addea10bbcce1a09020184"
+    },
+    {
+        "sha": "99c51a2cbe8cc01c0db037a9f800ca31fae9c2cd",
+        "author": "Jim McMillan",
+        "email": "jimmc414@gmail.com",
+        "date": "2026-02-08T08:05:01Z",
+        "message": "Fix 39 defects from comprehensive security and code quality audit\n\nCRITICAL:\n- Web app: fix path traversal in /download, block local path processing,\n  disable debug mode, bind to localhost only (C1-C3)\n- Fix unreachable duplicate except block in _fetch_url_content (C4)\n- Use aiohttp.ClientTimeout instead of raw int for crawler timeouts (C5)\n- Add asyncio.Lock to protect shared state in DocCrawler workers (C6)\n- Fix try/finally scoping so args is always defined after parsing (C7)\n\nHIGH:\n- Only send GitHub token to github.com domains, not arbitrary URLs (H1)\n- Wrap crawl regex patterns in try/except re.error for ReDoS safety (H2)\n- Cap issue fetching at 500 to prevent memory exhaustion (H3)\n- Add pagination to all comment-fetching endpoints (H4)\n- Sync yt-dlp/youtube-transcript-api across requirements.txt and pyproject.toml (H5)\n- Fix mutable default argument in get_token_count (H6)\n- Fix alias listing to show core aliases even when overridden (H7)\n- Use apparent_encoding to avoid ISO-8859-1 default for UTF-8 pages (H8)\n\nMEDIUM/LOW:\n- Strip query params from ArXiv URLs before PDF construction (M5)\n- Fix off-by-one in is_within_depth by filtering empty path segments (M9)\n- Add 50MB response size limit to async crawler (M10)\n- Use deque + set for O(1) URL dedup in sync crawler (M11)\n- Propagate download_file errors instead of silently swallowing (M12)\n- Replace bare except: with except Exception: (L2)\n- Remove redundant regex anchors with fullmatch (L8)",
+        "url": "https://github.com/jimmc414/onefilellm/commit/99c51a2cbe8cc01c0db037a9f800ca31fae9c2cd"
+    },
+    {
+        "sha": "6c5de3c09f7d9245fc431b4ecf54c60f1e23cef3",
+        "author": "Jim  McMillan",
+        "email": "jimmc414@gmail.com",
+        "date": "2025-09-24T16:35:46Z",
+        "message": "Merge pull request #73 from jimmc414/analyze-and-fix-issue-#72\n\nAllow CSS files to be processed",
+        "url": "https://github.com/jimmc414/onefilellm/commit/6c5de3c09f7d9245fc431b4ecf54c60f1e23cef3"
+    },
+    {
+        "sha": "1c20a1083e52efd5042448d74383f6c158c958bc",
+        "author": "Jim  McMillan",
+        "email": "jimmc414@gmail.com",
+        "date": "2025-09-24T16:35:25Z",
+        "message": "Allow CSS files to be processed",
+        "url": "https://github.com/jimmc414/onefilellm/commit/1c20a1083e52efd5042448d74383f6c158c958bc"
+    },
+    {
+        "sha": "bde4eb2f96b7a9c8f70a2124656c093edfbdf140",
+        "author": "Jim  McMillan",
+        "email": "jimmc414@gmail.com",
+        "date": "2025-09-22T16:53:41Z",
+        "message": "Merge pull request #71 from jimmc414/add-offline_mode-check-to-process_web_crawl\n\nRespect offline mode in new web crawler",
+        "url": "https://github.com/jimmc414/onefilellm/commit/bde4eb2f96b7a9c8f70a2124656c093edfbdf140"
+    },
+    {
+        "sha": "e4433ee9dfbdcf4f7f56879e9069b4c80cdfcca7",
+        "author": "Jim  McMillan",
+        "email": "jimmc414@gmail.com",
+        "date": "2025-09-22T16:53:25Z",
+        "message": "Respect offline mode in new web crawler",
+        "url": "https://github.com/jimmc414/onefilellm/commit/e4433ee9dfbdcf4f7f56879e9069b4c80cdfcca7"
+    },
+    {
+        "sha": "6d38eae120bb912bfdfc00fc81b7aeca99fa965a",
+        "author": "Jim  McMillan",
+        "email": "jimmc414@gmail.com",
+        "date": "2025-09-22T16:46:58Z",
+        "message": "Merge pull request #70 from jimmc414/extend-doi/pmid-detection-logic\n\nNormalize DOI/PMID handling in process_input",
+        "url": "https://github.com/jimmc414/onefilellm/commit/6d38eae120bb912bfdfc00fc81b7aeca99fa965a"
+    },
+    {
+        "sha": "37cc7b6b6e70536befb5e5c5b370e6b35711dde3",
+        "author": "Jim  McMillan",
+        "email": "jimmc414@gmail.com",
+        "date": "2025-09-22T16:44:51Z",
+        "message": "Normalize DOI/PMID inputs in process_input",
+        "url": "https://github.com/jimmc414/onefilellm/commit/37cc7b6b6e70536befb5e5c5b370e6b35711dde3"
+    },
+    {
+        "sha": "2a5637573f9d8c8ab804715847e29ed128b6098f",
+        "author": "Jim  McMillan",
+        "email": "jimmc414@gmail.com",
+        "date": "2025-09-22T16:11:47Z",
+        "message": "Merge pull request #69 from jimmc414/update-yaml-exception-handling-in-process_text_stream\n\nHandle YAML stream parsing without PyYAML",
+        "url": "https://github.com/jimmc414/onefilellm/commit/2a5637573f9d8c8ab804715847e29ed128b6098f"
+    },
+    {
+        "sha": "74ba22c3c996b452a0f6a186dad52e04b0bac32b",
+        "author": "Jim  McMillan",
+        "email": "jimmc414@gmail.com",
+        "date": "2025-09-22T16:11:09Z",
+        "message": "Handle missing PyYAML during stream parsing",
+        "url": "https://github.com/jimmc414/onefilellm/commit/74ba22c3c996b452a0f6a186dad52e04b0bac32b"
+    },
+    {
+        "sha": "14408c3f219ffdf1e44617c2616346d6f34281ff",
+        "author": "Jim  McMillan",
+        "email": "jimmc414@gmail.com",
+        "date": "2025-09-22T15:28:29Z",
+        "message": "Merge pull request #68 from jimmc414/edit-test-path-setup-for-imports\n\nEnsure tests set sys.path before importing repository modules",
+        "url": "https://github.com/jimmc414/onefilellm/commit/14408c3f219ffdf1e44617c2616346d6f34281ff"
+    },
+    {
+        "sha": "3616bcc498a48b93eefca90f0ab0b76dd83a4fba",
+        "author": "Jim  McMillan",
+        "email": "jimmc414@gmail.com",
+        "date": "2025-09-22T15:28:17Z",
+        "message": "Ensure sys.path modification precedes repo imports",
+        "url": "https://github.com/jimmc414/onefilellm/commit/3616bcc498a48b93eefca90f0ab0b76dd83a4fba"
+    },
+    {
+        "sha": "a438567c5f7ff4847d4fe0ece0170fdc0e6a7564",
+        "author": "Jim  McMillan",
+        "email": "jimmc414@gmail.com",
+        "date": "2025-09-22T15:23:33Z",
+        "message": "Merge pull request #67 from jimmc414/extend-filetype-checks-for-pdf-and-yaml\n\nAllow PDF and YML processing",
+        "url": "https://github.com/jimmc414/onefilellm/commit/a438567c5f7ff4847d4fe0ece0170fdc0e6a7564"
+    },
+    {
+        "sha": "3844fd985b37a113f1897ef064cc0ae9eb2ee4f0",
+        "author": "Jim  McMillan",
+        "email": "jimmc414@gmail.com",
+        "date": "2025-09-22T15:23:16Z",
+        "message": "Allow PDF and YML processing",
+        "url": "https://github.com/jimmc414/onefilellm/commit/3844fd985b37a113f1897ef064cc0ae9eb2ee4f0"
+    },
+    {
+        "sha": "017bc9589a7392f8a5c457c66dee968ddfea4861",
+        "author": "Jim  McMillan",
+        "email": "jimmc414@gmail.com",
+        "date": "2025-09-22T15:11:45Z",
+        "message": "Merge pull request #66 from jimmc414/modify-download_file-for-optional-headers\n\nEnsure GitHub downloads forward auth headers",
+        "url": "https://github.com/jimmc414/onefilellm/commit/017bc9589a7392f8a5c457c66dee968ddfea4861"
+    },
+    {
+        "sha": "b0c2f9697b9c504ccd5412e8a306cceb46ec9cf0",
+        "author": "Jim  McMillan",
+        "email": "jimmc414@gmail.com",
+        "date": "2025-09-22T15:11:31Z",
+        "message": "Ensure GitHub downloads include auth headers",
+        "url": "https://github.com/jimmc414/onefilellm/commit/b0c2f9697b9c504ccd5412e8a306cceb46ec9cf0"
+    },
+    {
+        "sha": "650d501b414a58571a7ebc879708ac52f21e7e09",
+        "author": "Jim  McMillan",
+        "email": "jimmc414@gmail.com",
+        "date": "2025-09-22T15:03:58Z",
+        "message": "Merge pull request #65 from jimmc414/load-configuration-from-.env-file\n\nLoad .env configuration before computing runtime globals",
+        "url": "https://github.com/jimmc414/onefilellm/commit/650d501b414a58571a7ebc879708ac52f21e7e09"
+    },
+    {
+        "sha": "aa1a0ef82af8d5d7a8e4eabcf4a9645c354c73ce",
+        "author": "Jim  McMillan",
+        "email": "jimmc414@gmail.com",
+        "date": "2025-09-22T14:57:32Z",
+        "message": "Load configuration from .env before computing globals",
+        "url": "https://github.com/jimmc414/onefilellm/commit/aa1a0ef82af8d5d7a8e4eabcf4a9645c354c73ce"
+    },
+    {
+        "sha": "8f0d04738c66b24aca2aa4d4c48139899383a2de",
+        "author": "Jim  McMillan",
+        "email": "jimmc414@gmail.com",
+        "date": "2025-09-16T05:08:52Z",
+        "message": "Merge pull request #64 from jimmc414/check-youtube-url-structure-changes\n\nHandle YouTube live URLs",
+        "url": "https://github.com/jimmc414/onefilellm/commit/8f0d04738c66b24aca2aa4d4c48139899383a2de"
+    },
+    {
+        "sha": "b26afd963ebb878c5f90fd324064b95cac707c23",
+        "author": "Jim  McMillan",
+        "email": "jimmc414@gmail.com",
+        "date": "2025-09-16T05:08:10Z",
+        "message": "Handle YouTube live URLs",
+        "url": "https://github.com/jimmc414/onefilellm/commit/b26afd963ebb878c5f90fd324064b95cac707c23"
+    },
+    {
+        "sha": "539869babc14e3d18d01e751c5ebfb321dccfcb7",
+        "author": "Jim  McMillan",
+        "email": "jimmc414@gmail.com",
+        "date": "2025-09-13T13:22:19Z",
+        "message": "Merge pull request #62 from jimmc414/refactor-filetype-check-and-add-tests\n\nSimplify URL filetype handling",
+        "url": "https://github.com/jimmc414/onefilellm/commit/539869babc14e3d18d01e751c5ebfb321dccfcb7"
+    },
+    {
+        "sha": "6f12550f450421aee0b1f09ca0b3a559aad1866e",
+        "author": "Jim  McMillan",
+        "email": "jimmc414@gmail.com",
+        "date": "2025-09-13T13:21:54Z",
+        "message": "Simplify URL filetype handling",
+        "url": "https://github.com/jimmc414/onefilellm/commit/6f12550f450421aee0b1f09ca0b3a559aad1866e"
+    },
+    {
+        "sha": "4c71e72e8aaab6400875c1598c1d8360a1e46178",
+        "author": "Jim  McMillan",
+        "email": "jimmc414@gmail.com",
+        "date": "2025-09-13T05:27:15Z",
+        "message": "Merge pull request #61 from jimmc414/inspect-subprocess-returncode-and-error-handling\n\nHandle yt-dlp subprocess failures when fetching YouTube transcripts",
+        "url": "https://github.com/jimmc414/onefilellm/commit/4c71e72e8aaab6400875c1598c1d8360a1e46178"
+    },
+    {
+        "sha": "c5aa42dab3879d01244bf992132a2cf76163213f",
+        "author": "Jim  McMillan",
+        "email": "jimmc414@gmail.com",
+        "date": "2025-09-13T05:26:22Z",
+        "message": "Handle yt-dlp errors when fetching YouTube transcripts",
+        "url": "https://github.com/jimmc414/onefilellm/commit/c5aa42dab3879d01244bf992132a2cf76163213f"
+    },
+    {
+        "sha": "38c565360657acd7b914696196cf185c2cce4f1d",
+        "author": "Jim  McMillan",
+        "email": "jimmc414@gmail.com",
+        "date": "2025-09-13T05:22:34Z",
+        "message": "Merge pull request #60 from jimmc414/inject-console-parameter-into-process_local_folder\n\nUse console for local folder processing output",
+        "url": "https://github.com/jimmc414/onefilellm/commit/38c565360657acd7b914696196cf185c2cce4f1d"
+    }
+]

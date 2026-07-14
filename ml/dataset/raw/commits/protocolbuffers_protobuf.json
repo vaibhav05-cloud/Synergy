@@ -1,0 +1,242 @@
+[
+    {
+        "sha": "750e6be4b290c90d7dbfd3a1a4e7466f79d8dafa",
+        "author": "Protobuf Team Bot",
+        "email": "protobuf-github-bot@google.com",
+        "date": "2026-07-14T06:28:37Z",
+        "message": "Optimize Java Lite Enum Verifier Codegen by introducing Parametric Verifiers\n\nIntroduce reusable `SequentialEnumVerifier` and `BitmaskEnumVerifier` in the runtime and instantiate them inline within the generated message schema to eliminate custom nested verifier classes and enable stripping unused enum classes.\n\nPiperOrigin-RevId: 947467062",
+        "url": "https://github.com/protocolbuffers/protobuf/commit/750e6be4b290c90d7dbfd3a1a4e7466f79d8dafa"
+    },
+    {
+        "sha": "44a1a0bbc3604034bfee91295e76354578241ba8",
+        "author": "Protobuf Team Bot",
+        "email": "protobuf-team-bot@google.com",
+        "date": "2026-07-14T05:43:50Z",
+        "message": "Auto-generate files after PR #28231",
+        "url": "https://github.com/protocolbuffers/protobuf/commit/44a1a0bbc3604034bfee91295e76354578241ba8"
+    },
+    {
+        "sha": "65fccf3b0680f24b285f95c5b3288e982a1645fe",
+        "author": "arshsmith",
+        "email": "arshi@bugqore.com",
+        "date": "2026-07-14T05:30:33Z",
+        "message": "reject mini_tables whose presence index overflows int16_t (#28231)\n\nThe MiniDescriptor decoder stores a field's presence in an int16_t, where a positive value is a hasbit index and a negative value is a negated oneof case offset. `upb_MtDecoder_AssignHasbits` hands out incrementing hasbit indices with no upper bound (the required-field loop right above it has a cap, but the hasbit loop does not), and `upb_MtDecoder_AssignOffsets` writes `~case_offset` into the same field. A descriptor with more than ~32704 presence fields, or a oneof whose case lands past INT16_MAX, wraps the value so a plain scalar field is silently reclassified as a oneof member (or the reverse), and accessing it then reads or writes at the wrong offset. Both messages still pass the existing 65535-byte size cap, so the corrupt mini_table is accepted. Add the missing range checks at both sites, matching the existing \"Too many required fields\" guard.\n\nCloses #28231\n\nCOPYBARA_INTEGRATE_REVIEW=https://github.com/protocolbuffers/protobuf/pull/28231 from arshsmith1:minitable-presence-int16-overflow 1737f298f3f18c23e1d1db666a5f81efaa1cf6a3\nPiperOrigin-RevId: 947444116",
+        "url": "https://github.com/protocolbuffers/protobuf/commit/65fccf3b0680f24b285f95c5b3288e982a1645fe"
+    },
+    {
+        "sha": "b0b22dd281917ea4a42f2638e3aa84133efb05e1",
+        "author": "Protobuf Team Bot",
+        "email": "protobuf-github-bot@google.com",
+        "date": "2026-07-14T04:06:53Z",
+        "message": "Use ConcurrentMap in GeneratedMessageLite parser registry to avoid unsafe Java 8 API usage.\n\nPiperOrigin-RevId: 947412307",
+        "url": "https://github.com/protocolbuffers/protobuf/commit/b0b22dd281917ea4a42f2638e3aa84133efb05e1"
+    },
+    {
+        "sha": "352d73a92efc969610ec0d071771adee368e71bf",
+        "author": "Mark Hansen",
+        "email": "markhansen@google.com",
+        "date": "2026-07-14T03:31:31Z",
+        "message": "s/Type/ExtensionT/ in GeneratedMessageLite\n\nFixes a minor style guide nit that generics should end in single\nuppercase chars.\n\nPiperOrigin-RevId: 947399879",
+        "url": "https://github.com/protocolbuffers/protobuf/commit/352d73a92efc969610ec0d071771adee368e71bf"
+    },
+    {
+        "sha": "b1a0d1bb8f25e4888d903f2ac5975af9c24410b2",
+        "author": "Mark Hansen",
+        "email": "markhansen@google.com",
+        "date": "2026-07-14T03:06:00Z",
+        "message": "Make generic types in GeneratedMessageLite end with single char\n\nThis fixes a minor style guide nit.\n\nPiperOrigin-RevId: 947391075",
+        "url": "https://github.com/protocolbuffers/protobuf/commit/b1a0d1bb8f25e4888d903f2ac5975af9c24410b2"
+    },
+    {
+        "sha": "b2671496b8cf409f7692d53b1c3b721b6ca061b2",
+        "author": "Kor Nielsen",
+        "email": "kor@google.com",
+        "date": "2026-07-14T03:00:49Z",
+        "message": "Don't use deprecated @rules_rust//crate_universe:extension.bzl (#28289)\n\nThe correct path is `@rules_rust//crate_universe:extensions.bzl`, and the other path will be removed in a future rules_rust release.\n\nCloses #28289\n\nCOPYBARA_INTEGRATE_REVIEW=https://github.com/protocolbuffers/protobuf/pull/28289 from korran:fix/crate-universe 97c399c25e6727fdc4e99acb186841a27b2b4d4c\nPiperOrigin-RevId: 947388727",
+        "url": "https://github.com/protocolbuffers/protobuf/commit/b2671496b8cf409f7692d53b1c3b721b6ca061b2"
+    },
+    {
+        "sha": "ec4703bbd04b8af41598ef4ca4ddc1cc0b999667",
+        "author": "Protobuf Team Bot",
+        "email": "protobuf-github-bot@google.com",
+        "date": "2026-07-14T02:46:43Z",
+        "message": "Optimize Java Lite Enum Verifier Codegen by introducing Parametric Verifiers\n\nIntroduce reusable `SequentialEnumVerifier` and `BitmaskEnumVerifier` in the runtime and instantiate them inline within the generated message schema to eliminate custom nested verifier classes and enable stripping unused enum classes.\n\nPiperOrigin-RevId: 947383511",
+        "url": "https://github.com/protocolbuffers/protobuf/commit/ec4703bbd04b8af41598ef4ca4ddc1cc0b999667"
+    },
+    {
+        "sha": "87102bc2156f7bbb8550a2fc901c9c5cce2bbd6f",
+        "author": "Brian M. Carr",
+        "email": "brian.carr@engine.com",
+        "date": "2026-07-14T02:41:07Z",
+        "message": "Add engine-public/protoc-gen-openapi to options documentation (#28284)\n\nAdd options to various FileDescriptorProto types to provide override capabilities to a protoc compiler that generates OAS 3.1 specs.\n\nThe  available annotations can be found [here](https://github.com/engine-public/protoc-gen-openapi/blob/main/model/src/main/proto/engine/protoc/openapi/annotations.proto#L143-L169).  They provide a mix of direct OAS definition, overrides, and syntactic sugar to make annotating gRPC services compile-time consistent with the output specs.\n\nCloses #28284\n\nCOPYBARA_INTEGRATE_REVIEW=https://github.com/protocolbuffers/protobuf/pull/28284 from engine-public:engine-protoc-gen-openapi-options 0a8d36df61adfe54e0b6e2b9512ab7cfff668985\nPiperOrigin-RevId: 947381308",
+        "url": "https://github.com/protocolbuffers/protobuf/commit/87102bc2156f7bbb8550a2fc901c9c5cce2bbd6f"
+    },
+    {
+        "sha": "e92b2f0d9c985c024815612c571438e88e556644",
+        "author": "Mark Hansen",
+        "email": "markhansen@google.com",
+        "date": "2026-07-14T02:34:57Z",
+        "message": "s/BuilderType/BuilderT/ in GeneratedMessageLite\n\nThis fixes a minor style guide issue where generic classes should end in\na single uppercase chart.\n\nWe could have gone with 'B' but there are so many generics in here that\nit seems reasonable to keep a longer name.\n\nPiperOrigin-RevId: 947378949",
+        "url": "https://github.com/protocolbuffers/protobuf/commit/e92b2f0d9c985c024815612c571438e88e556644"
+    },
+    {
+        "sha": "54c6d2e34b1bd3eebd19dce3d4441e7008b07795",
+        "author": "Mark Hansen",
+        "email": "markhansen@google.com",
+        "date": "2026-07-14T02:08:57Z",
+        "message": "s/MessageType/MessageT in GeneratedMessageLite\n\nFixes style guide rule that generic types should end in a single\nuppercase char.\n\nI could have made this `M` but it feels like there's enough generics in here that I narrowly chose the larger name.\n\nPiperOrigin-RevId: 947370402",
+        "url": "https://github.com/protocolbuffers/protobuf/commit/54c6d2e34b1bd3eebd19dce3d4441e7008b07795"
+    },
+    {
+        "sha": "e5cfe139bcdfd24c898be1c7320b3d584243f7ff",
+        "author": "Tony Liao",
+        "email": "tonyliaoss@google.com",
+        "date": "2026-07-14T00:01:48Z",
+        "message": "New unittest case to validate Java parseJson behavior with 1-element arrays.\n\nIn Java, it seems like the existing behavior is that we allow\nsingle-element arrays to be parsed into a non-repeated field.\n\nIn `public final class JsonArray extends JsonElement implements Iterable<JsonElement>`:\n```\n  @Override\n  public String getAsString() {\n    return getAsSingleElement().getAsString();\n  }\n```\n\nTBH I don't know if this behavior is necessarily _desired_, but here is\na unit test to validate this behavior so that we don't accidentally\nbreak it without intending to.\n\nPiperOrigin-RevId: 947320631",
+        "url": "https://github.com/protocolbuffers/protobuf/commit/e5cfe139bcdfd24c898be1c7320b3d584243f7ff"
+    },
+    {
+        "sha": "9b0d074ea661fcc3fac7b11a252fa847a8a63863",
+        "author": "Mark Hansen",
+        "email": "markhansen@google.com",
+        "date": "2026-07-13T23:48:20Z",
+        "message": "Unnecessarily suppressed warnings: unchecked\n\nPiperOrigin-RevId: 947315237",
+        "url": "https://github.com/protocolbuffers/protobuf/commit/9b0d074ea661fcc3fac7b11a252fa847a8a63863"
+    },
+    {
+        "sha": "f0bc0d75031c19809b9d703563eea70ba7ec97fa",
+        "author": "Samuel Benzaquen",
+        "email": "sbenza@google.com",
+        "date": "2026-07-13T21:36:39Z",
+        "message": "Use the PROTOBUF_ENABLE_STABLE_EXPERIMENTS flag to turn on the old layouts.\n\nThis way we can keep test coverage for them while they exist.\n\nPiperOrigin-RevId: 947249438",
+        "url": "https://github.com/protocolbuffers/protobuf/commit/f0bc0d75031c19809b9d703563eea70ba7ec97fa"
+    },
+    {
+        "sha": "e1acb1a02e904f679be19ded2c1eb0ad66cd3fe7",
+        "author": "Protobuf Team Bot",
+        "email": "protobuf-github-bot@google.com",
+        "date": "2026-07-13T20:26:46Z",
+        "message": "Optimize Java Lite Map Field Codegen by removing DefaultEntryHolder\n\nInline the default entry construction directly into the `BUILD_MESSAGE_INFO` case of `dynamicMethod` to save class definitions.\n\nPiperOrigin-RevId: 947211513",
+        "url": "https://github.com/protocolbuffers/protobuf/commit/e1acb1a02e904f679be19ded2c1eb0ad66cd3fe7"
+    },
+    {
+        "sha": "7db08e8f1b98cf0a7206c66d3e356eb413d8dd04",
+        "author": "Tony Liao",
+        "email": "tonyliaoss@google.com",
+        "date": "2026-07-13T18:52:58Z",
+        "message": "Automated rollback of commit 7a39a4e3136697bc1f87f55b79767a55d7aeaba3.\n\nPiperOrigin-RevId: 947163030",
+        "url": "https://github.com/protocolbuffers/protobuf/commit/7db08e8f1b98cf0a7206c66d3e356eb413d8dd04"
+    },
+    {
+        "sha": "a596ea688e84407690a6023dbf74e41829ed6c6b",
+        "author": "Sandy Zhang",
+        "email": "sandyzhang@google.com",
+        "date": "2026-07-13T18:50:53Z",
+        "message": "Rename spelling for isSortedAndDedupped to isSortedAndDeduped in SmallSortedMap.\n\nPiperOrigin-RevId: 947161688",
+        "url": "https://github.com/protocolbuffers/protobuf/commit/a596ea688e84407690a6023dbf74e41829ed6c6b"
+    },
+    {
+        "sha": "255635a7faebc6231304a7b0e470526193fd3fcc",
+        "author": "Protobuf Team Bot",
+        "email": "protobuf-team-bot@google.com",
+        "date": "2026-07-13T18:03:08Z",
+        "message": "Auto-generate files after cl/947129093",
+        "url": "https://github.com/protocolbuffers/protobuf/commit/255635a7faebc6231304a7b0e470526193fd3fcc"
+    },
+    {
+        "sha": "687c7d589200fa7f7b15d567beddef0665be8155",
+        "author": "Protobuf Team Bot",
+        "email": "protobuf-github-bot@google.com",
+        "date": "2026-07-13T17:51:40Z",
+        "message": "Optimize GeneratedMessageLite parser registry to reduce memory footprint.\n\nPiperOrigin-RevId: 947129093",
+        "url": "https://github.com/protocolbuffers/protobuf/commit/687c7d589200fa7f7b15d567beddef0665be8155"
+    },
+    {
+        "sha": "4db27e1f33702ca1d8593cfd640ccdc5c0c34c08",
+        "author": "Runze Wang",
+        "email": "runze@google.com",
+        "date": "2026-07-13T17:36:41Z",
+        "message": "Add UPB support for FileDescriptorProto.option_dependency.\n\nThis change adds API and implementation to read and write the option_dependency field from/to proto2.FileDescriptorProto in upb reflection.\n\nPiperOrigin-RevId: 947120641",
+        "url": "https://github.com/protocolbuffers/protobuf/commit/4db27e1f33702ca1d8593cfd640ccdc5c0c34c08"
+    },
+    {
+        "sha": "774721742bb816c8013afb5874a2fc66ca291576",
+        "author": "Protobuf Team Bot",
+        "email": "protobuf-team-bot@google.com",
+        "date": "2026-07-13T16:16:12Z",
+        "message": "Auto-generate files after cl/947071987",
+        "url": "https://github.com/protocolbuffers/protobuf/commit/774721742bb816c8013afb5874a2fc66ca291576"
+    },
+    {
+        "sha": "27e4846f282a223d32513bde7261c9a9f7c4d9ff",
+        "author": "Protobuf Team Bot",
+        "email": "protobuf-github-bot@google.com",
+        "date": "2026-07-13T16:04:12Z",
+        "message": "Automated Code Change\n\nPiperOrigin-RevId: 947071987",
+        "url": "https://github.com/protocolbuffers/protobuf/commit/27e4846f282a223d32513bde7261c9a9f7c4d9ff"
+    },
+    {
+        "sha": "bba54ac9ba4a398ab459130b46e52769b0ffd29b",
+        "author": "Protobuf Team Bot",
+        "email": "protobuf-github-bot@google.com",
+        "date": "2026-07-13T15:52:40Z",
+        "message": "Fix type confusion in PHP protobuf extension when message initializer array has integer keys\n\n`'0'` as a key is automatically converted to `0`, so we need to explicitly stringify the keys back to handle that case correctly.\n\nOriginal issue report from adalogics\n\nPiperOrigin-RevId: 947066825",
+        "url": "https://github.com/protocolbuffers/protobuf/commit/bba54ac9ba4a398ab459130b46e52769b0ffd29b"
+    },
+    {
+        "sha": "52e15dc46c8ce2bb4bb4fe7d7d7fbdb897b8369a",
+        "author": "Tony Liao",
+        "email": "tonyliaoss@google.com",
+        "date": "2026-07-13T15:19:05Z",
+        "message": "Automated rollback of commit 0acf2a471df297a1e7cf2b24261ba65238cf113c.\n\nPiperOrigin-RevId: 947052114",
+        "url": "https://github.com/protocolbuffers/protobuf/commit/52e15dc46c8ce2bb4bb4fe7d7d7fbdb897b8369a"
+    },
+    {
+        "sha": "740fdc768ae0c3bb34e31f6e7cbb2ca0c0e80c7c",
+        "author": "Rachel Goldfinger",
+        "email": "rgoldfinger@google.com",
+        "date": "2026-07-13T14:51:38Z",
+        "message": "Add release branch 36.x\n\nPiperOrigin-RevId: 947039280",
+        "url": "https://github.com/protocolbuffers/protobuf/commit/740fdc768ae0c3bb34e31f6e7cbb2ca0c0e80c7c"
+    },
+    {
+        "sha": "00538a473f2ea407f7627c3191ccddebd9b1a036",
+        "author": "Keegan Carruthers-Smith",
+        "email": "keegan.csmith@gmail.com",
+        "date": "2026-07-13T14:13:56Z",
+        "message": "fix: declare protoc authenticity action toolchain (#28328)\n\nThe --incompatible_auto_exec_groups flag requires Starlark actions to declare whether their executable/tools come from an action toolchain. This is not a Bazel default today, but it is exposed through strict preset configurations and is intended to catch rules that rely on implicit action toolchain inference.\n\nprotoc_authenticity runs protoc from protobuf's proto toolchain, but the validation action does not declare that action toolchain. Declare the matching proto toolchain so the action's toolchain behavior is explicit without changing its inputs or execution model.\n\nCloses #28328\n\nCOPYBARA_INTEGRATE_REVIEW=https://github.com/protocolbuffers/protobuf/pull/28328 from keegancsmith:k/auto-exec-groups-protoc-authenticity ca89641ab52c1a8705f9a685c7dbfad57095b31d\nPiperOrigin-RevId: 947023276",
+        "url": "https://github.com/protocolbuffers/protobuf/commit/00538a473f2ea407f7627c3191ccddebd9b1a036"
+    },
+    {
+        "sha": "7772bbf6e3ee619942b8a09de0a883ea565df264",
+        "author": "yashanil98",
+        "email": "79158725+yashanil98@users.noreply.github.com",
+        "date": "2026-07-13T14:12:10Z",
+        "message": "fix(cmake): guard uninitialized variable reads in module compatibility shim (#28426)\n\nThe backwards-compatibility loop at the bottom of protobuf-module.cmake.in maps each camel-case output variable to its uppercase alias with set(${UPPER} ${${Camel}}), but does not check the source is defined first. Configuring a consumer with --warn-uninitialized then reports uninitialized reads for the optional variables (Protobuf_SRC_ROOT_FOLDER, Protobuf_IMPORT_DIRS, Protobuf_DEBUG, and the *_DEBUG library variables).\n\nThe sibling loop just above, which maps in the other direction, already guards with if(DEFINED ${UPPER}). This applies the same guard to the second loop, which the earlier fix in #1778 missed.\n\nFixes #19683.\n\nTest plan: reproduced the warning and confirmed the fix with plain cmake, no build required. Extracting the loop into a script and running `cmake -P block.cmake --warn-uninitialized` reports 5 uninitialized-variable warnings before the change and 0 after. Behavior is unchanged when the variables are defined: the uppercase alias is still set.\n\nCloses #28426\n\nCOPYBARA_INTEGRATE_REVIEW=https://github.com/protocolbuffers/protobuf/pull/28426 from yashanil98:fix/issue-19683-cmake-uninitialized-vars b84e7f11b698f290e20918d0e4cf1a04b8ff6e1f\nPiperOrigin-RevId: 947022521",
+        "url": "https://github.com/protocolbuffers/protobuf/commit/7772bbf6e3ee619942b8a09de0a883ea565df264"
+    },
+    {
+        "sha": "2288b33629e92e517178ad7345b06285b1051389",
+        "author": "Mark Hansen",
+        "email": "markhansen@google.com",
+        "date": "2026-07-13T10:40:59Z",
+        "message": "Unnecessarily suppressed warnings: unchecked\n\nPiperOrigin-RevId: 946931584",
+        "url": "https://github.com/protocolbuffers/protobuf/commit/2288b33629e92e517178ad7345b06285b1051389"
+    },
+    {
+        "sha": "5de373b68333e35c394357400359ff649fc72480",
+        "author": "Mark Hansen",
+        "email": "markhansen@google.com",
+        "date": "2026-07-13T09:53:24Z",
+        "message": "Don't fully qualify function that doesn't need to be\n\nFixes a minor warning.\n\nPiperOrigin-RevId: 946910209",
+        "url": "https://github.com/protocolbuffers/protobuf/commit/5de373b68333e35c394357400359ff649fc72480"
+    },
+    {
+        "sha": "5820d6bbbe0ee6e06bb56097d52b7cda19194818",
+        "author": "Protobuf Team Bot",
+        "email": "protobuf-github-bot@google.com",
+        "date": "2026-07-13T03:34:20Z",
+        "message": "Automated Code Change\n\nPiperOrigin-RevId: 946759447",
+        "url": "https://github.com/protocolbuffers/protobuf/commit/5820d6bbbe0ee6e06bb56097d52b7cda19194818"
+    }
+]

@@ -1,0 +1,242 @@
+[
+    {
+        "sha": "df836f3bf2955c4f1199a852f618d2ac80866d47",
+        "author": "Ho Yun \"Bobby",
+        "email": "ho.chan@colorado.edu",
+        "date": "2022-06-16T22:10:43Z",
+        "message": "Update README.md",
+        "url": "https://github.com/sparkfun/Pro_Micro/commit/df836f3bf2955c4f1199a852f618d2ac80866d47"
+    },
+    {
+        "sha": "9e6632f752d4a3926fba16d0b379e3d310fe25a6",
+        "author": "Ho Yun \"Bobby",
+        "email": "ho.chan@colorado.edu",
+        "date": "2022-06-16T22:09:20Z",
+        "message": "Update README.md",
+        "url": "https://github.com/sparkfun/Pro_Micro/commit/9e6632f752d4a3926fba16d0b379e3d310fe25a6"
+    },
+    {
+        "sha": "ba04ad11a27b2ecb6288da48408c51a95546e1c0",
+        "author": "Ho Yun \"Bobby",
+        "email": "ho.chan@colorado.edu",
+        "date": "2022-06-16T22:06:18Z",
+        "message": "Update README.md",
+        "url": "https://github.com/sparkfun/Pro_Micro/commit/ba04ad11a27b2ecb6288da48408c51a95546e1c0"
+    },
+    {
+        "sha": "19edeff894545941fc184c5b44810f24dcef0531",
+        "author": "Ho Yun \"Bobby",
+        "email": "ho.chan@colorado.edu",
+        "date": "2022-06-16T22:05:41Z",
+        "message": "Update README.md",
+        "url": "https://github.com/sparkfun/Pro_Micro/commit/19edeff894545941fc184c5b44810f24dcef0531"
+    },
+    {
+        "sha": "1b8f2d2900a794dca5f6a97e1bd15e55b0f17bcf",
+        "author": "bboyho",
+        "email": "ho.chan@colorado.edu",
+        "date": "2022-06-16T21:48:57Z",
+        "message": "Add Older Version to Repo\n\nThe product pages for the Pro Micro and the Qwiic Pro Micro USB-C versions currently point to this repo without the older Pro Micro's Hardware Files. Since we are still selling both, I am adding the older files into the main repo as opposed to just having a tag.",
+        "url": "https://github.com/sparkfun/Pro_Micro/commit/1b8f2d2900a794dca5f6a97e1bd15e55b0f17bcf"
+    },
+    {
+        "sha": "2bdf474a43705ed5dbc3805250874abc092b3c55",
+        "author": "Nathan Seidle",
+        "email": "nathan@sparkfun.com",
+        "date": "2022-01-11T00:03:40Z",
+        "message": "Adding new firmware examples",
+        "url": "https://github.com/sparkfun/Pro_Micro/commit/2bdf474a43705ed5dbc3805250874abc092b3c55"
+    },
+    {
+        "sha": "dab07c9934540a551b12dc5519ffd9e76ddce26c",
+        "author": "Nathan Seidle",
+        "email": "nathan@sparkfun.com",
+        "date": "2022-01-11T00:02:50Z",
+        "message": "Merge pull request #10 from sparkfun/USBC\n\nMerging USB C branch to remove",
+        "url": "https://github.com/sparkfun/Pro_Micro/commit/dab07c9934540a551b12dc5519ffd9e76ddce26c"
+    },
+    {
+        "sha": "fec73a18ab1851e4ffddec937ba0fd281fd604ee",
+        "author": "Nathan Seidle",
+        "email": "nathan@sparkfun.com",
+        "date": "2022-01-11T00:02:43Z",
+        "message": "Resolving firmware conflicts",
+        "url": "https://github.com/sparkfun/Pro_Micro/commit/fec73a18ab1851e4ffddec937ba0fd281fd604ee"
+    },
+    {
+        "sha": "9c072e6462afe85e1764c35ed6bb593b8da6aa87",
+        "author": "Bobby Chan",
+        "email": "bobby.chan@sparkfun.com",
+        "date": "2020-02-12T19:40:16Z",
+        "message": "Update Old Pro Micro Examples\n\n- adjust the output for the hardware UART in **Blinkies.ino** file to distinguish betweeh the serial monitor\n- add `Keyboard.begin()` in `setup()` for **SimpleKeyboard_HID.ino**  (this appears to work without initializing it but it was added to be consistent with Arduino's reference example)\n- add `Mouse.begin()` in `setup()` to **SimpleJoystickMouse_HID.ino** (this appears to work without initializing it but it was added to be consistent with Arduino's reference example)\n- include the ability to invert the mouse using the joystick depending on the orientation of the joystick\n-autoformat",
+        "url": "https://github.com/sparkfun/Pro_Micro/commit/9c072e6462afe85e1764c35ed6bb593b8da6aa87"
+    },
+    {
+        "sha": "c61b946a1345b4ea0e32041608541068ea1110fd",
+        "author": "Bobby Chan",
+        "email": "bobby.chan@sparkfun.com",
+        "date": "2020-02-12T19:03:53Z",
+        "message": "Adjust File name\n\n- Remove redundant .ino from folder and file name",
+        "url": "https://github.com/sparkfun/Pro_Micro/commit/c61b946a1345b4ea0e32041608541068ea1110fd"
+    },
+    {
+        "sha": "65125df07256383dc092372c216a542befc24159",
+        "author": "Bobby Chan",
+        "email": "bobby.chan@sparkfun.com",
+        "date": "2020-02-12T19:02:25Z",
+        "message": "Update Pro Micro Examples\n\n- rename files to match the examples in the tutorial\n- adjust the output for the hardware UART in **Example_1_Blinkies_Hello.ino** file to distinguish betweeh the serial monitor\n- add `Keyboard.begin()` in `setup()` for **Example_2a_SimpleKeyboard_HID.ino**  (this appears to work without initializing it but it was added to be consistent with Arduino's reference example)\n- add `Mouse.begin()` in `setup()` to **Example_2b_SimpleJoystickMouse_HID.ino** (this appears to work without initializing it but it was added to be consistent with Arduino's reference example)\n- include the ability to invert the mouse using the joystick depending on the orientation of the joystick\n- include examples to that utilize Qwiic connect system using the Qwiic Joystick and Qwiic Keyboard\n- autoformat",
+        "url": "https://github.com/sparkfun/Pro_Micro/commit/65125df07256383dc092372c216a542befc24159"
+    },
+    {
+        "sha": "4c69b2c23fe076fc3c94d8849efe3f56e8a978f2",
+        "author": "AndyEngland521",
+        "email": "andrew.england@sparkfun.com",
+        "date": "2020-02-11T17:43:05Z",
+        "message": "Merge branch 'USBC' of https://github.com/sparkfun/Pro_Micro into USBC",
+        "url": "https://github.com/sparkfun/Pro_Micro/commit/4c69b2c23fe076fc3c94d8849efe3f56e8a978f2"
+    },
+    {
+        "sha": "674dc255aff5aeaed5463a540df1800bd2e91993",
+        "author": "AndyEngland521",
+        "email": "andrew.england@sparkfun.com",
+        "date": "2020-02-11T17:42:18Z",
+        "message": "changing PROD_ID on series D+/D- resistor to proper PROD_ID",
+        "url": "https://github.com/sparkfun/Pro_Micro/commit/674dc255aff5aeaed5463a540df1800bd2e91993"
+    },
+    {
+        "sha": "a576a679390cd45da50a977cc79313c768cbd127",
+        "author": "Bobby Chan",
+        "email": "bobby.chan@sparkfun.com",
+        "date": "2020-02-06T22:33:39Z",
+        "message": "Merge branch 'USBC' of https://github.com/sparkfun/Pro_Micro into USBC",
+        "url": "https://github.com/sparkfun/Pro_Micro/commit/a576a679390cd45da50a977cc79313c768cbd127"
+    },
+    {
+        "sha": "7ef0732ed80ec374db69db4f2e1a761c2fd2640e",
+        "author": "Bobby Chan",
+        "email": "bobby.chan@sparkfun.com",
+        "date": "2020-02-06T22:33:21Z",
+        "message": "Add Graphical Datasheets",
+        "url": "https://github.com/sparkfun/Pro_Micro/commit/7ef0732ed80ec374db69db4f2e1a761c2fd2640e"
+    },
+    {
+        "sha": "cdfaa209d47fb5ceb08b525068f922378582bf8f",
+        "author": "Ho Yun \"Bobby",
+        "email": "ho.chan@colorado.edu",
+        "date": "2020-02-06T22:27:18Z",
+        "message": "Update README.md",
+        "url": "https://github.com/sparkfun/Pro_Micro/commit/cdfaa209d47fb5ceb08b525068f922378582bf8f"
+    },
+    {
+        "sha": "c964c4886a7983356d2ec10605fd22f998c6ce3b",
+        "author": "Ho Yun \"Bobby",
+        "email": "ho.chan@colorado.edu",
+        "date": "2020-01-07T23:54:39Z",
+        "message": "Update README.md\n\nupdate links and description for the Qwiic Pro Micro version",
+        "url": "https://github.com/sparkfun/Pro_Micro/commit/c964c4886a7983356d2ec10605fd22f998c6ce3b"
+    },
+    {
+        "sha": "9f7cbf21f31e85578fd6a3e2a6d0acbaf7d9abe2",
+        "author": "Nathan Seidle",
+        "email": "nathan.seidle@sparkfun.local",
+        "date": "2020-01-07T23:47:44Z",
+        "message": "Remove old test files",
+        "url": "https://github.com/sparkfun/Pro_Micro/commit/9f7cbf21f31e85578fd6a3e2a6d0acbaf7d9abe2"
+    },
+    {
+        "sha": "e0215799afa28191e2e1f25d86a001afb6361b29",
+        "author": "Andrew England",
+        "email": "andrew.england@sparkfun.local",
+        "date": "2020-01-07T19:57:46Z",
+        "message": "fixing paste issue",
+        "url": "https://github.com/sparkfun/Pro_Micro/commit/e0215799afa28191e2e1f25d86a001afb6361b29"
+    },
+    {
+        "sha": "0f5cf75578eebf8af82dbed035ca0ea71ee43df9",
+        "author": "Bobby Chan",
+        "email": "bobby.chan@sparkfun.com",
+        "date": "2019-12-20T22:08:11Z",
+        "message": "Update SparkFun_Pro_Micro.brd\n\n-Add distance USB C connector off edge of board",
+        "url": "https://github.com/sparkfun/Pro_Micro/commit/0f5cf75578eebf8af82dbed035ca0ea71ee43df9"
+    },
+    {
+        "sha": "84a411e85ccd58677ec4229b63b6e1eb3b8371f5",
+        "author": "Bobby Chan",
+        "email": "bobby.chan@sparkfun.com",
+        "date": "2019-12-20T21:31:29Z",
+        "message": "Update SparkFun_Pro_Micro.brd\n\n- Adding board dimensions\n- Add additional distance between connectors to edge of board",
+        "url": "https://github.com/sparkfun/Pro_Micro/commit/84a411e85ccd58677ec4229b63b6e1eb3b8371f5"
+    },
+    {
+        "sha": "a2d8921edec751d70fef9a48322ff28dcf56d950",
+        "author": "Nathan Seidle",
+        "email": "nathan.seidle@sparkfun.local",
+        "date": "2019-12-11T16:25:28Z",
+        "message": "Correct prodID on 22 ohm resistors.",
+        "url": "https://github.com/sparkfun/Pro_Micro/commit/a2d8921edec751d70fef9a48322ff28dcf56d950"
+    },
+    {
+        "sha": "7f3cefda6415f44cb86ffbae876331cbe6d90e95",
+        "author": "Nathan Seidle",
+        "email": "nathan.seidle@sparkfun.local",
+        "date": "2019-11-19T17:15:55Z",
+        "message": "Udpate xtal to 16MHz",
+        "url": "https://github.com/sparkfun/Pro_Micro/commit/7f3cefda6415f44cb86ffbae876331cbe6d90e95"
+    },
+    {
+        "sha": "cbd5e6583db62df1b406633ae19ef8122274c7b1",
+        "author": "Nick Poole",
+        "email": "Nick.Poole@SparkFun.com",
+        "date": "2019-11-08T21:58:55Z",
+        "message": "Red boards ordered\n\nModify castellated 1x12 to larger diameter plated castellated holes. Panelize with route-out around castellated edges. Scoot Qwiic connector in to use that side of the board as the tab.",
+        "url": "https://github.com/sparkfun/Pro_Micro/commit/cbd5e6583db62df1b406633ae19ef8122274c7b1"
+    },
+    {
+        "sha": "db5a7c7b7a3ecc053878ecae66f5061a9a77079a",
+        "author": "Nick Poole",
+        "email": "Nick.Poole@SparkFun.com",
+        "date": "2019-11-08T05:37:01Z",
+        "message": "Updates to Pro Micro and Frank\n\n\"Castellated\" library '1x12CASTELLATED' and 'PRO_MICRO_C' footprints updated and 'PRO_MICRO_C' device updated.\n\nPro Micro C got uniform drill/ring sizing + added plated holes to outside in place of drills\n\nFrank got 1U Keycap standard switch spacing and updated Pro Micro footprint.",
+        "url": "https://github.com/sparkfun/Pro_Micro/commit/db5a7c7b7a3ecc053878ecae66f5061a9a77079a"
+    },
+    {
+        "sha": "94dce71c12cfef169f828ae4aa7159b1f946bf3e",
+        "author": "Nathan Seidle",
+        "email": "nathan@sparkfun.com",
+        "date": "2019-10-17T02:24:10Z",
+        "message": "Adding production panel, pro micro FP test brd, and castellated test lbr.",
+        "url": "https://github.com/sparkfun/Pro_Micro/commit/94dce71c12cfef169f828ae4aa7159b1f946bf3e"
+    },
+    {
+        "sha": "f7c3b0c3d5feca60359ed75a87434638acbbabc9",
+        "author": "Nathan Seidle",
+        "email": "nathan.seidle@sparkfun.local",
+        "date": "2019-10-10T21:27:46Z",
+        "message": "Commit before ordering v20",
+        "url": "https://github.com/sparkfun/Pro_Micro/commit/f7c3b0c3d5feca60359ed75a87434638acbbabc9"
+    },
+    {
+        "sha": "3edb18a87f62b73de4f56c261de0ea1e5172e09c",
+        "author": "Nathan Seidle",
+        "email": "nathan.seidle@sparkfun.local",
+        "date": "2019-10-10T21:27:24Z",
+        "message": "Commit before ordering v20",
+        "url": "https://github.com/sparkfun/Pro_Micro/commit/3edb18a87f62b73de4f56c261de0ea1e5172e09c"
+    },
+    {
+        "sha": "c610b5195cdddd04f3c12b01db2c19301e9c3d77",
+        "author": "Nathan Seidle",
+        "email": "nathan.seidle@sparkfun.local",
+        "date": "2019-10-09T17:54:07Z",
+        "message": "Rev to USB C",
+        "url": "https://github.com/sparkfun/Pro_Micro/commit/c610b5195cdddd04f3c12b01db2c19301e9c3d77"
+    },
+    {
+        "sha": "2875bd4c0ad9915d2ca95114b1ac610517c3a49b",
+        "author": "Nathan Seidle",
+        "email": "nathan@sparkfun.com",
+        "date": "2019-10-09T03:49:45Z",
+        "message": "Proto finished. Add ignore.",
+        "url": "https://github.com/sparkfun/Pro_Micro/commit/2875bd4c0ad9915d2ca95114b1ac610517c3a49b"
+    }
+]

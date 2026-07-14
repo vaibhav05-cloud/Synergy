@@ -1,0 +1,242 @@
+[
+    {
+        "sha": "852e971cddfabe222d2d5bcda466e130f53af207",
+        "author": "WaterWhisperer",
+        "email": "waterwhisperer24@qq.com",
+        "date": "2026-07-14T03:43:12Z",
+        "message": "Fix columns assignment in SizeInfo conversion\n\nCloses: #8994",
+        "url": "https://github.com/alacritty/alacritty/commit/852e971cddfabe222d2d5bcda466e130f53af207"
+    },
+    {
+        "sha": "bdb72b32eeb074e3a0b8559d8ccac458237474a3",
+        "author": "Nathan Lilienthal",
+        "email": "nathan@nixpulvis.com",
+        "date": "2026-06-22T14:16:01Z",
+        "message": "Fix overflow on line damage below the viewport\n\nrect_for_line computed the rect's y with unsigned arithmetic. When the\nwindow is small and the cell is tall, a damaged line can sit below what\nfits in the viewport, so (line + 1) * cell_height exceeds y_top and the\nsubtraction underflows, panicking in debug builds.\n\nThe Rect is built from i32, so compute y as a signed subtraction and let\nit go negative. overdamage already clamps the result back onto the\nscreen.\n\nI think there's probably room for improving the representation of a lot\nof these value in this area, but I'm not opening that can of worms right\nnow.",
+        "url": "https://github.com/alacritty/alacritty/commit/bdb72b32eeb074e3a0b8559d8ccac458237474a3"
+    },
+    {
+        "sha": "985394dd42ca1408868ccee8070c8c75cccd762f",
+        "author": "Neel",
+        "email": "neel@chot.ai",
+        "date": "2026-06-16T18:43:12Z",
+        "message": "Handle PTY non-blocking failure gracefully\n\nWe ran in to a application-wide panic from an `assert` in the terminal,\nthis PR makes `set_nonblocking` fallible and propagates the error rather\nthan using an assert.",
+        "url": "https://github.com/alacritty/alacritty/commit/985394dd42ca1408868ccee8070c8c75cccd762f"
+    },
+    {
+        "sha": "aaf3bd744a4f7608fe7d7168fb12b62a2155d311",
+        "author": "elia",
+        "email": "176603882+7elia@users.noreply.github.com",
+        "date": "2026-06-02T20:30:05Z",
+        "message": "Add Windows context menu entry for directories",
+        "url": "https://github.com/alacritty/alacritty/commit/aaf3bd744a4f7608fe7d7168fb12b62a2155d311"
+    },
+    {
+        "sha": "55f12aae2930b48d8727ae49ea1e472af16a9247",
+        "author": "Christian Duerr",
+        "email": "contact@christianduerr.com",
+        "date": "2026-05-23T07:02:00Z",
+        "message": "Add pull request template\n\nThis adds a minimal pull request template to confirm compliance with\nAlacritty's LLM policy before the PR is created.\n\nThe issue template is removed since GitHub has changed the format\n(repeatedly) and the current version is no longer supported. We seem to\nbe doing fine without it.",
+        "url": "https://github.com/alacritty/alacritty/commit/55f12aae2930b48d8727ae49ea1e472af16a9247"
+    },
+    {
+        "sha": "79adb086002be778cec5d3b90676594bfe2105bb",
+        "author": "jorgeloopzz",
+        "email": "80071604+jorgeloopzz@users.noreply.github.com",
+        "date": "2026-05-02T02:14:56Z",
+        "message": "Remove Clear Linux build instructions",
+        "url": "https://github.com/alacritty/alacritty/commit/79adb086002be778cec5d3b90676594bfe2105bb"
+    },
+    {
+        "sha": "8feb2cf126ca8ccd0ebfa6b4964f0b35f664af6f",
+        "author": "lclrc",
+        "email": "lclrc.3@gmail.com",
+        "date": "2026-05-01T16:07:23Z",
+        "message": "Fix macOS subprocess event permissions\n\nCloses #8937.",
+        "url": "https://github.com/alacritty/alacritty/commit/8feb2cf126ca8ccd0ebfa6b4964f0b35f664af6f"
+    },
+    {
+        "sha": "9b7419c3e4086476967e37e64372f412d1ebaa2b",
+        "author": "Nicholas Boyle",
+        "email": "nickeb96@gmail.com",
+        "date": "2026-04-28T01:21:51Z",
+        "message": "Add alacritty-escapes manpage to Makefile",
+        "url": "https://github.com/alacritty/alacritty/commit/9b7419c3e4086476967e37e64372f412d1ebaa2b"
+    },
+    {
+        "sha": "2f03c30283a111bdbfb6ccd7bcb03a6290ba1151",
+        "author": "Daniel Müller",
+        "email": "d-e-s-o@users.noreply.github.com",
+        "date": "2026-04-14T20:02:36Z",
+        "message": "Fix X11 clipboard warnings\n\nThis adds an override for the x11-clipboard dependency, which removed\nthe racy ownership check after writing text to the clipboard.\n\nCloses #6978.\n\nSigned-off-by: Daniel Müller <deso@posteo.net>",
+        "url": "https://github.com/alacritty/alacritty/commit/2f03c30283a111bdbfb6ccd7bcb03a6290ba1151"
+    },
+    {
+        "sha": "f99dc71708d31d5c32d4b3fa611f9a87bf22657e",
+        "author": "Viktor Jägersküpper",
+        "email": "viktor_jaegerskuepper@freenet.de",
+        "date": "2026-03-30T22:04:15Z",
+        "message": "Update link to TOML spec on alacritty(5) manpage",
+        "url": "https://github.com/alacritty/alacritty/commit/f99dc71708d31d5c32d4b3fa611f9a87bf22657e"
+    },
+    {
+        "sha": "48ff32f7c6bbe2c084f1abc39470487510687323",
+        "author": "Christian Duerr",
+        "email": "contact@christianduerr.com",
+        "date": "2026-03-21T08:25:08Z",
+        "message": "Fix release CI\n\nThis fixes an issue with the release CI script caused by outdated\nUbuntu mirrors.",
+        "url": "https://github.com/alacritty/alacritty/commit/48ff32f7c6bbe2c084f1abc39470487510687323"
+    },
+    {
+        "sha": "a19d9c894d1da18b19532bc565f418139aff936b",
+        "author": "Christian Duerr",
+        "email": "contact@christianduerr.com",
+        "date": "2026-03-21T06:25:58Z",
+        "message": "Bump development version to 0.18.0-dev\n\nThis is only an update to the development version and does not represent\na stable release.",
+        "url": "https://github.com/alacritty/alacritty/commit/a19d9c894d1da18b19532bc565f418139aff936b"
+    },
+    {
+        "sha": "99459c91802c965bcc872db03d8eea54eb4d6eb3",
+        "author": "Christian Duerr",
+        "email": "contact@christianduerr.com",
+        "date": "2026-03-21T01:47:24Z",
+        "message": "Add no-LLM contribution policy\n\nWhile likely a pointless addition, due to bad actors ignoring these\ninstructions anyway, this should clearly communicate the LLM\ncontribution preferences of the Alacritty project.\n\nThe text was copied from the Servo project with the detailed reasoning\nstripped, since people that care are usually aware of the issues of LLMs\nanyway.",
+        "url": "https://github.com/alacritty/alacritty/commit/99459c91802c965bcc872db03d8eea54eb4d6eb3"
+    },
+    {
+        "sha": "a0be6eb8240c30e4adf384dde29090406a0ae685",
+        "author": "Christian Duerr",
+        "email": "contact@christianduerr.com",
+        "date": "2026-03-14T02:52:35Z",
+        "message": "Fix signal cleanup polling\n\nThis fixes two minor issues introduced in 96f488d.\n\nThe main problem was the fact that the I/O event polling on Unix was\nonly started when the IPC socket feature is enabled. While generally\nthis is the main reason why we need to shutdown cleanly, there's no\nreason why we wouldn't *always* do so. This ensures the log file is\nalways cleaned up properly on Unix.\n\nAnother minor issue with the signal polling was that the pipe was\nregistered for reading, but never drained when it was ready to be read\nfrom. While this would mean we're already in the process of shutting\ndown anyway, this would redundantly send about 1000 shutdown requests,\nrather than just one.",
+        "url": "https://github.com/alacritty/alacritty/commit/a0be6eb8240c30e4adf384dde29090406a0ae685"
+    },
+    {
+        "sha": "96f488dd3fb08e636cb6a01818891ae2044184be",
+        "author": "Christian Duerr",
+        "email": "contact@christianduerr.com",
+        "date": "2026-03-05T05:14:21Z",
+        "message": "Fix resource cleanup for signal shutdown\n\nThis fixes an issue where Alacritty's resources, like its socket, would\nstick around after getting killed, since termination signals like\nSIGTERM were not handled explicitly.\n\nTo handle these signals, the IPC thread was changed to a general-purpose\nI/O polling thread, listening for events on a signal pipe and the IPC\nsocket.\n\nWhile this does not provide support for Windows, we also do not have an\nIPC socket on Windows we would need to clean up.\n\nCloses #8805.",
+        "url": "https://github.com/alacritty/alacritty/commit/96f488dd3fb08e636cb6a01818891ae2044184be"
+    },
+    {
+        "sha": "889fa412c11237099377fa0c47be7af7dd240b62",
+        "author": "Bradley Walters",
+        "email": "oss@walters.app",
+        "date": "2026-03-03T16:50:32Z",
+        "message": "Remove flash terminfo capability\n\nThe flash capability was using DECSCNM (ESC[?5h/ESC[?5l) to toggle\nreverse video mode for a visual bell effect. However, the vte crate\ndoes not implement DECSCNM (private mode 5), so the sequence is\nignored as an unknown mode.\n\nRemove the capability from terminfo so programs can accurately\ndetermine how to ring the user (e.g. by falling back to the audible\nbell as vi does).",
+        "url": "https://github.com/alacritty/alacritty/commit/889fa412c11237099377fa0c47be7af7dd240b62"
+    },
+    {
+        "sha": "51f742b3926cca4723e7c30766ee3a526eaa6da8",
+        "author": "Kirill Chibisov",
+        "email": "contact@kchibisov.com",
+        "date": "2026-03-03T00:48:54Z",
+        "message": "Bump winit to 0.30.13\n\nFixes #8791.",
+        "url": "https://github.com/alacritty/alacritty/commit/51f742b3926cca4723e7c30766ee3a526eaa6da8"
+    },
+    {
+        "sha": "e1779cbc5843fc856672b45c21d3ab26e518d72c",
+        "author": "Christian Duerr",
+        "email": "contact@christianduerr.com",
+        "date": "2026-02-25T01:09:30Z",
+        "message": "Move escape sequence docs to manpage\n\nCloses #7235.",
+        "url": "https://github.com/alacritty/alacritty/commit/e1779cbc5843fc856672b45c21d3ab26e518d72c"
+    },
+    {
+        "sha": "4225cea231432fb23442b1da2463b4ec9dfd726c",
+        "author": "Smit Barmase",
+        "email": "heysmitbarmase@gmail.com",
+        "date": "2026-01-29T01:10:12Z",
+        "message": "Use ExitStatus for tty shutdown events",
+        "url": "https://github.com/alacritty/alacritty/commit/4225cea231432fb23442b1da2463b4ec9dfd726c"
+    },
+    {
+        "sha": "08134af8533556034272a884e40c0aaf6bf6f930",
+        "author": "Ben Beasley",
+        "email": "code@musicinmybrain.net",
+        "date": "2026-01-14T22:30:36Z",
+        "message": "Add toml 1.1.0 support",
+        "url": "https://github.com/alacritty/alacritty/commit/08134af8533556034272a884e40c0aaf6bf6f930"
+    },
+    {
+        "sha": "6ee6e53ee3457c24137f117237b0ff1d84f6f836",
+        "author": "Kirill Chibisov",
+        "email": "contact@kchibisov.com",
+        "date": "2025-12-23T00:39:50Z",
+        "message": "Fix mouse wheel bindings not working in mouse mode\n\nSince bindings were never checked in mouse mode, the bindings defined in\n83f6443 could not be used while holding shift.",
+        "url": "https://github.com/alacritty/alacritty/commit/6ee6e53ee3457c24137f117237b0ff1d84f6f836"
+    },
+    {
+        "sha": "83f64435375216466a87c853ed1eb0d9c58b4470",
+        "author": "Jonas",
+        "email": "jonasfx21@gmail.com",
+        "date": "2025-12-21T21:38:34Z",
+        "message": "Add support for mouse wheel bindings",
+        "url": "https://github.com/alacritty/alacritty/commit/83f64435375216466a87c853ed1eb0d9c58b4470"
+    },
+    {
+        "sha": "18372031d1f1bda853b2027b7ef1c75b45942829",
+        "author": "Kirill Chibisov",
+        "email": "contact@kchibisov.com",
+        "date": "2025-12-05T15:27:56Z",
+        "message": "Use built-in font for `U+1FB82` to `U+1FB8B`\n\nThose are block elements in 'Symbols for Legacy Computing' that\ncomplements the ones from original block elements, but from the opposite\nside.\n\nPart-of: #7422.",
+        "url": "https://github.com/alacritty/alacritty/commit/18372031d1f1bda853b2027b7ef1c75b45942829"
+    },
+    {
+        "sha": "52031ea91980cee1ee0ec087d214e98b2b1de4bc",
+        "author": "Alisa Sireneva",
+        "email": "me@purplesyringa.moe",
+        "date": "2025-11-24T18:53:22Z",
+        "message": "Fix some non-async-signal-safety in pre_exec",
+        "url": "https://github.com/alacritty/alacritty/commit/52031ea91980cee1ee0ec087d214e98b2b1de4bc"
+    },
+    {
+        "sha": "6ea359d369c117bf7d196ccaf25a030242b454f2",
+        "author": "Niklas",
+        "email": "niklas.dusenlund@bitbox.swiss",
+        "date": "2025-11-17T22:32:53Z",
+        "message": "Bump makefile MACOSX_DEPLOYMENT_TARGET to 10.12",
+        "url": "https://github.com/alacritty/alacritty/commit/6ea359d369c117bf7d196ccaf25a030242b454f2"
+    },
+    {
+        "sha": "0346c993f5e1afb93fea8dfdd9eb026fc4341ac7",
+        "author": "Christian Duerr",
+        "email": "contact@christianduerr.com",
+        "date": "2025-11-16T15:47:51Z",
+        "message": "Fix broken IME with Wayland pointer devices\n\nThis is a second attempt at 1399545.\n\nThe previous implementation tried to use mouse focus tracking to control\nIME activity, which does not work since IME focus is unrelated to the\npointer.\n\nThis patch instead inhibits IME on the first touch sequence during focus\nloss, forcing a touch tap before enabling IME again. This effectively\ndisables IME with the touch event used to focus the window, assuming the\ncompositor sends the touch down before the focus-in event.\n\nTo avoid the IME opening for a brief period of time while the window is\ngaining focus again, we disable IME on focus loss, then reenable it once\nfocus is gained again. While this does theoretically change the behavior\nwith pointer input, it shouldn't impact usability since IME input\nwithout keyboard focus isn't usually possibly anyway.\n\nCo-authored-by: Kirill Chibisov <contact@kchibisov.com>",
+        "url": "https://github.com/alacritty/alacritty/commit/0346c993f5e1afb93fea8dfdd9eb026fc4341ac7"
+    },
+    {
+        "sha": "bf68154f9e4b91e5ba21dfb8151dbde23c46d47d",
+        "author": "Kirill Chibisov",
+        "email": "contact@kchibisov.com",
+        "date": "2025-11-12T02:40:24Z",
+        "message": "Allow disabling IME on X11\n\nPreviously IME was forced on X11 due to disable/enable not really\nworking on it. However, the new IME logic in winit had this issue\nfixed for a while.",
+        "url": "https://github.com/alacritty/alacritty/commit/bf68154f9e4b91e5ba21dfb8151dbde23c46d47d"
+    },
+    {
+        "sha": "cca394810aefc3b2d8d3ca72eb3ab085d81a4d41",
+        "author": "Kirill Chibisov",
+        "email": "contact@kchibisov.com",
+        "date": "2025-11-09T09:24:54Z",
+        "message": "Revert \"Ignore touch gestures for enabling IME\"\n\nPointer events shouldn't disable IME in any way, however without them\ntouch doesn't really work in the current implementation, so revert it\nfor now to make review of the proper patch for touch easier.\n\nThis reverts commit 1399545f48f3a7ec558377a7b935b9a94482d22b.",
+        "url": "https://github.com/alacritty/alacritty/commit/cca394810aefc3b2d8d3ca72eb3ab085d81a4d41"
+    },
+    {
+        "sha": "c2b75f293cec74532cc0115c81231ff37da812b0",
+        "author": "Kirill Chibisov",
+        "email": "contact@kchibisov.com",
+        "date": "2025-11-05T00:50:43Z",
+        "message": "Try both robust and non-robust configs\n\nIt was suggest to try building both robust and non-robust as a fallback\ndue to 1.5 not mandating robustness, and also not mandating extension,\nso the robustness can be supported, but without the extension present.\n\nThis reverts commit 7b33cbcbc287822ad0faf3744cff3db05fb20274.",
+        "url": "https://github.com/alacritty/alacritty/commit/c2b75f293cec74532cc0115c81231ff37da812b0"
+    },
+    {
+        "sha": "fff942ac54e2b8dd78ced619413565601f2ac1ea",
+        "author": "Laurence Tratt",
+        "email": "laurie@tratt.net",
+        "date": "2025-11-02T02:18:09Z",
+        "message": "Add foreground CWD implementation for OpenBSD",
+        "url": "https://github.com/alacritty/alacritty/commit/fff942ac54e2b8dd78ced619413565601f2ac1ea"
+    }
+]

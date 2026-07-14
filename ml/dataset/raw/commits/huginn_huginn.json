@@ -1,0 +1,242 @@
+[
+    {
+        "sha": "e2e8390ef6a71ab4156b70de41b9e332aa07f2c1",
+        "author": "renovate[bot]",
+        "email": "29139614+renovate[bot]@users.noreply.github.com",
+        "date": "2026-07-10T09:06:16Z",
+        "message": "Update minor updated gems (#3683)\n\nCo-authored-by: renovate[bot] <29139614+renovate[bot]@users.noreply.github.com>",
+        "url": "https://github.com/huginn/huginn/commit/e2e8390ef6a71ab4156b70de41b9e332aa07f2c1"
+    },
+    {
+        "sha": "3345c547c6f3e0647bc9c313ac6bd714023a9039",
+        "author": "renovate[bot]",
+        "email": "29139614+renovate[bot]@users.noreply.github.com",
+        "date": "2026-07-10T09:05:04Z",
+        "message": "Update dependency rubocop to v1.88.2 (#3682)\n\nCo-authored-by: renovate[bot] <29139614+renovate[bot]@users.noreply.github.com>",
+        "url": "https://github.com/huginn/huginn/commit/3345c547c6f3e0647bc9c313ac6bd714023a9039"
+    },
+    {
+        "sha": "211e7b352574131ac208639ad3ed2b0724e0a0f7",
+        "author": "renovate[bot]",
+        "email": "29139614+renovate[bot]@users.noreply.github.com",
+        "date": "2026-07-09T08:29:43Z",
+        "message": "Update patch updated gems (#3681)\n\nCo-authored-by: renovate[bot] <29139614+renovate[bot]@users.noreply.github.com>",
+        "url": "https://github.com/huginn/huginn/commit/211e7b352574131ac208639ad3ed2b0724e0a0f7"
+    },
+    {
+        "sha": "3faae62bfbbfe7b6a67c2ea2ce735785f48e0511",
+        "author": "renovate[bot]",
+        "email": "29139614+renovate[bot]@users.noreply.github.com",
+        "date": "2026-06-27T04:54:56Z",
+        "message": "Update dependency @fortawesome/fontawesome-free to v7.3.0 (#3678)\n\nCo-authored-by: renovate[bot] <29139614+renovate[bot]@users.noreply.github.com>",
+        "url": "https://github.com/huginn/huginn/commit/3faae62bfbbfe7b6a67c2ea2ce735785f48e0511"
+    },
+    {
+        "sha": "8bc6e7b93d432d1c8d33d4afa7debb08b6be2b19",
+        "author": "renovate[bot]",
+        "email": "29139614+renovate[bot]@users.noreply.github.com",
+        "date": "2026-06-26T04:48:42Z",
+        "message": "Lock file maintenance (#3676)\n\nCo-authored-by: renovate[bot] <29139614+renovate[bot]@users.noreply.github.com>",
+        "url": "https://github.com/huginn/huginn/commit/8bc6e7b93d432d1c8d33d4afa7debb08b6be2b19"
+    },
+    {
+        "sha": "2607e589468966ca490faad46e75ac620dbf703a",
+        "author": "renovate[bot]",
+        "email": "29139614+renovate[bot]@users.noreply.github.com",
+        "date": "2026-06-20T11:28:33Z",
+        "message": "Update actions/checkout action to v7 (#3674)\n\nCo-authored-by: renovate[bot] <29139614+renovate[bot]@users.noreply.github.com>",
+        "url": "https://github.com/huginn/huginn/commit/2607e589468966ca490faad46e75ac620dbf703a"
+    },
+    {
+        "sha": "54385be5ec6da0cc777947ed39e204d2f458e749",
+        "author": "Akinori Musha",
+        "email": "knu@idaemons.org",
+        "date": "2026-06-20T11:27:56Z",
+        "message": "Merge pull request #3675 from huginn/gemfile-cleanup\n\nGemfile cleanup",
+        "url": "https://github.com/huginn/huginn/commit/54385be5ec6da0cc777947ed39e204d2f458e749"
+    },
+    {
+        "sha": "e86a09e4d8c0e2f9d405af4cdafd8e1392ed3a19",
+        "author": "Akinori Musha",
+        "email": "knu@idaemons.org",
+        "date": "2026-06-20T10:35:16Z",
+        "message": "Remove uglifier and execjs leftovers from the terser switch\n\n- The asset JS compressor is terser (config.assets.js_compressor =\n  :terser in production.rb); uglifier is no longer referenced anywhere\n  and is dropped\n- execjs was only an explicit pin with no direct use; terser still\n  pulls it in transitively, so it stays resolved in Gemfile.lock",
+        "url": "https://github.com/huginn/huginn/commit/e86a09e4d8c0e2f9d405af4cdafd8e1392ed3a19"
+    },
+    {
+        "sha": "857c1ad0dac1f9b908d614f388f8d0d44756dd1c",
+        "author": "Akinori Musha",
+        "email": "knu@idaemons.org",
+        "date": "2026-06-20T10:26:36Z",
+        "message": "Drop redundant ffi dependency\n\n- ffi is already pulled in transitively (typhoeus via ethon, among\n  others), and the explicit `>= 1.17.4` floor is well below what those\n  dependents resolve to, so the pin no longer serves a purpose",
+        "url": "https://github.com/huginn/huginn/commit/857c1ad0dac1f9b908d614f388f8d0d44756dd1c"
+    },
+    {
+        "sha": "0ba969ca2711c24cc51b6e49e16048d145702c17",
+        "author": "Akinori Musha",
+        "email": "knu@idaemons.org",
+        "date": "2026-06-20T10:24:29Z",
+        "message": "Drop redundant tzinfo dependency\n\n- activesupport already requires tzinfo (~> 2.0, >= 2.0.5), so listing\n  it explicitly in the Gemfile is unnecessary",
+        "url": "https://github.com/huginn/huginn/commit/0ba969ca2711c24cc51b6e49e16048d145702c17"
+    },
+    {
+        "sha": "7c479bbc5232a41ebe44677080a5b967672d92d4",
+        "author": "Akinori Musha",
+        "email": "knu@idaemons.org",
+        "date": "2026-06-20T10:20:58Z",
+        "message": "Sort optional agent gems alphabetically by agent name\n\n- Reorder the optional libraries section so each gem is grouped under\n  an agent-name comment and the groups are sorted alphabetically",
+        "url": "https://github.com/huginn/huginn/commit/7c479bbc5232a41ebe44677080a5b967672d92d4"
+    },
+    {
+        "sha": "72e4b2e33231ce5ae9912cd016562aa4743c16f5",
+        "author": "Akinori Musha",
+        "email": "knu@idaemons.org",
+        "date": "2026-06-20T07:26:05Z",
+        "message": "Fix flaky JavaScriptAgent feature spec\n\nAdd a set_ace_editor_value helper that waits for the editor to finish\ninitializing before entering a value, so the value is no longer clobbered\nby buildAce seeding the editor on load.",
+        "url": "https://github.com/huginn/huginn/commit/72e4b2e33231ce5ae9912cd016562aa4743c16f5"
+    },
+    {
+        "sha": "1a02b470815faa93f84f03c6a8ffaa449dd3e654",
+        "author": "Akinori Musha",
+        "email": "knu@idaemons.org",
+        "date": "2026-06-20T07:23:48Z",
+        "message": "Sync ACE editor into its form field on change\n\nThe editor's value was only copied into its backing form field by the\nform submit handler (updateFromEditors).  Clicking Save could race that\nhandler and submit the original code, so an edit was occasionally lost.\n\nMirror the editor session into the source field on every change so the\nfield is always current regardless of submit timing.",
+        "url": "https://github.com/huginn/huginn/commit/1a02b470815faa93f84f03c6a8ffaa449dd3e654"
+    },
+    {
+        "sha": "6a231cff66984dd05af616ea76faf9b78fcbe1f3",
+        "author": "renovate[bot]",
+        "email": "29139614+renovate[bot]@users.noreply.github.com",
+        "date": "2026-06-20T03:49:20Z",
+        "message": "Update patch updated gems to '~> 1', '>= 1.226.0' (#3673)\n\nCo-authored-by: renovate[bot] <29139614+renovate[bot]@users.noreply.github.com>",
+        "url": "https://github.com/huginn/huginn/commit/6a231cff66984dd05af616ea76faf9b78fcbe1f3"
+    },
+    {
+        "sha": "c2ce5a46dc893a01e313b4094dc734b423e13155",
+        "author": "renovate[bot]",
+        "email": "29139614+renovate[bot]@users.noreply.github.com",
+        "date": "2026-06-19T19:15:38Z",
+        "message": "Lock file maintenance (#3672)\n\nCo-authored-by: renovate[bot] <29139614+renovate[bot]@users.noreply.github.com>",
+        "url": "https://github.com/huginn/huginn/commit/c2ce5a46dc893a01e313b4094dc734b423e13155"
+    },
+    {
+        "sha": "b1a39aaf1ba0dcc29d20ff118a1a43fd0cae0bc4",
+        "author": "tania paiva",
+        "email": "taniadaniela1803@gmail.com",
+        "date": "2024-11-19T12:07:59Z",
+        "message": "clear sf weather reference in seeds",
+        "url": "https://github.com/huginn/huginn/commit/b1a39aaf1ba0dcc29d20ff118a1a43fd0cae0bc4"
+    },
+    {
+        "sha": "d8fba5d8b181d3d4728a4253c5be059b98ab0481",
+        "author": "renovate[bot]",
+        "email": "29139614+renovate[bot]@users.noreply.github.com",
+        "date": "2026-06-19T18:56:32Z",
+        "message": "Update patch updated gems (#3671)\n\nCo-authored-by: renovate[bot] <29139614+renovate[bot]@users.noreply.github.com>",
+        "url": "https://github.com/huginn/huginn/commit/d8fba5d8b181d3d4728a4253c5be059b98ab0481"
+    },
+    {
+        "sha": "b7ad1667a33d9bd376e0fa406e1bf149e0034164",
+        "author": "renovate[bot]",
+        "email": "29139614+renovate[bot]@users.noreply.github.com",
+        "date": "2026-06-12T12:27:54Z",
+        "message": "Lock file maintenance (#3670)\n\nCo-authored-by: renovate[bot] <29139614+renovate[bot]@users.noreply.github.com>",
+        "url": "https://github.com/huginn/huginn/commit/b7ad1667a33d9bd376e0fa406e1bf149e0034164"
+    },
+    {
+        "sha": "10d1bfa076fe0f1771cf22f1a1a2dcaf407cf1f6",
+        "author": "Akinori Musha",
+        "email": "knu@idaemons.org",
+        "date": "2026-06-12T12:27:21Z",
+        "message": "Merge pull request #3669 from huginn/signed-file-pointers\n\nAdd signed file pointer validation",
+        "url": "https://github.com/huginn/huginn/commit/10d1bfa076fe0f1771cf22f1a1a2dcaf407cf1f6"
+    },
+    {
+        "sha": "9751c379dd9407d9da02782bce95c3f5b64627c0",
+        "author": "Akinori Musha",
+        "email": "knu@idaemons.org",
+        "date": "2026-06-11T05:36:20Z",
+        "message": "Add signed file pointer validation\n\nSign all file pointers emitted by FileHandling agents and add\n`require_signed_file_pointer` for consumers that need to reject forged\npointers.\n\nNew default options require signed file pointers for `ReadFileAgent`,\n`CsvAgent`, `PostAgent`, and `OpenaiSpeechAgent`.  Existing agents without\nthe option keep accepting legacy unsigned pointers, avoiding breakage for\nqueued or retained events from older workflows.\n\nThis preserves compatibility while allowing file-consuming workflows to\ntreat file pointers not signed by a file-handling agent as invalid.",
+        "url": "https://github.com/huginn/huginn/commit/9751c379dd9407d9da02782bce95c3f5b64627c0"
+    },
+    {
+        "sha": "17b043314f6cd578618fc60ca4fb4d5db8788e7d",
+        "author": "renovate[bot]",
+        "email": "29139614+renovate[bot]@users.noreply.github.com",
+        "date": "2026-06-09T17:07:50Z",
+        "message": "Lock file maintenance (#3664)\n\nCo-authored-by: renovate[bot] <29139614+renovate[bot]@users.noreply.github.com>",
+        "url": "https://github.com/huginn/huginn/commit/17b043314f6cd578618fc60ca4fb4d5db8788e7d"
+    },
+    {
+        "sha": "f75001ca362b79c9b14fd9ec5a99cc5ea5f33e2f",
+        "author": "Akinori Musha",
+        "email": "knu@idaemons.org",
+        "date": "2026-06-09T10:24:00Z",
+        "message": "Merge pull request #3667 from huginn/refresh-threads-tokens\n\nRefresh Threads tokens before expiry",
+        "url": "https://github.com/huginn/huginn/commit/f75001ca362b79c9b14fd9ec5a99cc5ea5f33e2f"
+    },
+    {
+        "sha": "09fc598056014ca843d1e1c7227dc57fe6f5afdc",
+        "author": "Akinori Musha",
+        "email": "knu@idaemons.org",
+        "date": "2026-06-09T03:37:13Z",
+        "message": "Refresh Threads tokens before expiry\n\nThreads long-lived access tokens must be refreshed before they expire.  Once\nMeta considers the session expired, the refresh endpoint returns an OAuth\nerror and the user has to reauthorize the service.\n\nRefresh Threads services during request preparation when the token is within\nseven days of expiry, while leaving other providers on the existing expired\ntoken path.  Also raise provider refresh errors instead of silently ignoring a\nfailed token update.\n\nRequire the initial Threads token exchange to succeed as well, so a short-lived\nOAuth token is not saved as if it were refreshable long-lived credentials.",
+        "url": "https://github.com/huginn/huginn/commit/09fc598056014ca843d1e1c7227dc57fe6f5afdc"
+    },
+    {
+        "sha": "40aaf0b65d5870d67a6566df4b1a6a6de7145e52",
+        "author": "Akinori Musha",
+        "email": "knu@idaemons.org",
+        "date": "2026-06-09T10:13:28Z",
+        "message": "Merge pull request #3668 from huginn/add-raindrop-agents\n\nAdd Raindrop service and agents",
+        "url": "https://github.com/huginn/huginn/commit/40aaf0b65d5870d67a6566df4b1a6a6de7145e52"
+    },
+    {
+        "sha": "05037e2510820fb883d2a78abb833ae4f52b2ca5",
+        "author": "Akinori Musha",
+        "email": "knu@idaemons.org",
+        "date": "2026-06-09T03:43:12Z",
+        "message": "Add Raindrop service and agents\n\n- Add Raindrop service authentication with OAuth token refresh.\n- Add RaindropBookmarksAgent for polling bookmarks.\n- Add RaindropPublishAgent for saving incoming links.",
+        "url": "https://github.com/huginn/huginn/commit/05037e2510820fb883d2a78abb833ae4f52b2ca5"
+    },
+    {
+        "sha": "e9df7521d9a0c030b95019d7998677da7f16ab70",
+        "author": "Akinori Musha",
+        "email": "knu@idaemons.org",
+        "date": "2026-06-08T19:16:27Z",
+        "message": "Handle native JSON values in JSON serializer\n\nDuring native JSON column migration or mixed boot paths, Active Record can\nstill route a serialized attribute through JsonWithIndifferentAccess even\nthough the database adapter has already decoded the JSON column value into a\nHash.  That inconsistent state makes the legacy serializer call JSON.parse on\nthe Hash and fail with \"no implicit conversion of Hash into String\".\n\nOnly parse String input as JSON so already-decoded Hash values are wrapped\nwith indifferent access.  Keep parser error handling scoped to JSON.parse and\ncover string, hash, and nil inputs.",
+        "url": "https://github.com/huginn/huginn/commit/e9df7521d9a0c030b95019d7998677da7f16ab70"
+    },
+    {
+        "sha": "7dcf5b622f44abda22dad66431c244734f33dac3",
+        "author": "renovate[bot]",
+        "email": "29139614+renovate[bot]@users.noreply.github.com",
+        "date": "2026-06-07T13:16:45Z",
+        "message": "Update patch updated gems to v1.24.6 (#3665)\n\nCo-authored-by: renovate[bot] <29139614+renovate[bot]@users.noreply.github.com>",
+        "url": "https://github.com/huginn/huginn/commit/7dcf5b622f44abda22dad66431c244734f33dac3"
+    },
+    {
+        "sha": "bdb0c653ba54904c30eb50f2b32899ae8ec0a8a3",
+        "author": "renovate[bot]",
+        "email": "29139614+renovate[bot]@users.noreply.github.com",
+        "date": "2026-06-07T13:16:27Z",
+        "message": "Update minor updated gems (#3661)\n\nCo-authored-by: renovate[bot] <29139614+renovate[bot]@users.noreply.github.com>",
+        "url": "https://github.com/huginn/huginn/commit/bdb0c653ba54904c30eb50f2b32899ae8ec0a8a3"
+    },
+    {
+        "sha": "84c05cac15c8a7ea5211ae774726a6f0800fedda",
+        "author": "renovate[bot]",
+        "email": "29139614+renovate[bot]@users.noreply.github.com",
+        "date": "2026-06-07T13:16:02Z",
+        "message": "Update development and test gems to v1.87.0 (#3659)\n\nCo-authored-by: renovate[bot] <29139614+renovate[bot]@users.noreply.github.com>",
+        "url": "https://github.com/huginn/huginn/commit/84c05cac15c8a7ea5211ae774726a6f0800fedda"
+    },
+    {
+        "sha": "12187af9ed0d49acf2798eb9b6f31807d6b59f4e",
+        "author": "Akinori Musha",
+        "email": "knu@idaemons.org",
+        "date": "2026-05-23T15:56:48Z",
+        "message": "Merge remote-tracking branch 'origin/improve-json-editor-ux'",
+        "url": "https://github.com/huginn/huginn/commit/12187af9ed0d49acf2798eb9b6f31807d6b59f4e"
+    }
+]

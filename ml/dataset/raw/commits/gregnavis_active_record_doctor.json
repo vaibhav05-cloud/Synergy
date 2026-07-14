@@ -1,0 +1,242 @@
+[
+    {
+        "sha": "c42816d5467df19800c46b3cca5fbe9827848fef",
+        "author": "Sai Asish Y",
+        "email": "say.apm35@gmail.com",
+        "date": "2026-07-09T13:59:32Z",
+        "message": "missing_presence_validation: support symbols in :in",
+        "url": "https://github.com/gregnavis/active_record_doctor/commit/c42816d5467df19800c46b3cca5fbe9827848fef"
+    },
+    {
+        "sha": "f3bdceca37da70eb15bbb9bdd04bb7f42adc8107",
+        "author": "fatkodima",
+        "email": "fatkodima123@gmail.com",
+        "date": "2026-01-12T13:18:18Z",
+        "message": "incorrect_length_validation: improve error message for array columns (#236)",
+        "url": "https://github.com/gregnavis/active_record_doctor/commit/f3bdceca37da70eb15bbb9bdd04bb7f42adc8107"
+    },
+    {
+        "sha": "69ed244d4eeefff4c446149f5a78fa856fba7791",
+        "author": "Greg Navis",
+        "email": "contact@gregnavis.com",
+        "date": "2025-09-26T10:05:01Z",
+        "message": "Release 2.0.1",
+        "url": "https://github.com/gregnavis/active_record_doctor/commit/69ed244d4eeefff4c446149f5a78fa856fba7791"
+    },
+    {
+        "sha": "316c94315f9224f15bb69b7402d3e61ba3a5171e",
+        "author": "Greg Navis",
+        "email": "contact@gregnavis.com",
+        "date": "2025-09-26T10:04:26Z",
+        "message": "missing_foreign_key: add ignore_associations setting",
+        "url": "https://github.com/gregnavis/active_record_doctor/commit/316c94315f9224f15bb69b7402d3e61ba3a5171e"
+    },
+    {
+        "sha": "ddf3fe06bc01adb8c1f7426c81b2635fcd97c861",
+        "author": "Greg Navis",
+        "email": "contact@gregnavis.com",
+        "date": "2025-09-26T09:25:13Z",
+        "message": "Fix missing_foreign_key test case",
+        "url": "https://github.com/gregnavis/active_record_doctor/commit/ddf3fe06bc01adb8c1f7426c81b2635fcd97c861"
+    },
+    {
+        "sha": "0e94a7d9f907f9bb644fb9df98cc5b848209ed40",
+        "author": "hatsu",
+        "email": "hajiwata0308@gmail.com",
+        "date": "2025-09-26T09:19:40Z",
+        "message": "missing_foreign_keys: use belongs_to to identify foreign keys",
+        "url": "https://github.com/gregnavis/active_record_doctor/commit/0e94a7d9f907f9bb644fb9df98cc5b848209ed40"
+    },
+    {
+        "sha": "eb16cde845f0e15471c8c66f1a087d8a59578eea",
+        "author": "fatkodima",
+        "email": "fatkodima123@gmail.com",
+        "date": "2025-09-26T09:09:35Z",
+        "message": "missing_presence_validator: fix regex ignores",
+        "url": "https://github.com/gregnavis/active_record_doctor/commit/eb16cde845f0e15471c8c66f1a087d8a59578eea"
+    },
+    {
+        "sha": "9a8158aa30970a1ac0f00f3d165a60f87ad094b6",
+        "author": "Greg Navis",
+        "email": "contact@gregnavis.com",
+        "date": "2025-09-26T09:08:17Z",
+        "message": "missing_presence_validation: recognize explicit foreign key validators\n\nThis commit allows a foreign key column to be explicitly validated via\na standalone validator. Without this change a false positive errors\nwould be reported. Additionally, only `belongs_to` associations are\nconsidered for marking as optional, as `has_*` don't support the\n`optional` nor `required` options.",
+        "url": "https://github.com/gregnavis/active_record_doctor/commit/9a8158aa30970a1ac0f00f3d165a60f87ad094b6"
+    },
+    {
+        "sha": "8d0edf96e0f4c6bf3d35370d5440a1f6cf27f519",
+        "author": "Greg Navis",
+        "email": "contact@gregnavis.com",
+        "date": "2025-09-25T09:10:01Z",
+        "message": "missing_presence_validation: properly report column and association names",
+        "url": "https://github.com/gregnavis/active_record_doctor/commit/8d0edf96e0f4c6bf3d35370d5440a1f6cf27f519"
+    },
+    {
+        "sha": "40eb725bd0a83bd3c1388a5ff1cd967504d30f8c",
+        "author": "Greg Navis",
+        "email": "contact@gregnavis.com",
+        "date": "2025-09-24T17:04:35Z",
+        "message": "Release 2.0.0",
+        "url": "https://github.com/gregnavis/active_record_doctor/commit/40eb725bd0a83bd3c1388a5ff1cd967504d30f8c"
+    },
+    {
+        "sha": "96b3dd63231125a96a78d9510f3841fc2e443ee5",
+        "author": "fatkodima",
+        "email": "fatkodima123@gmail.com",
+        "date": "2025-08-09T12:25:20Z",
+        "message": "incorrect_length_validation: consider inclusion validations as an alternative",
+        "url": "https://github.com/gregnavis/active_record_doctor/commit/96b3dd63231125a96a78d9510f3841fc2e443ee5"
+    },
+    {
+        "sha": "998780bf6a96ddf3da698e19bece09d5fe50d4f6",
+        "author": "Greg Navis",
+        "email": "contact@gregnavis.com",
+        "date": "2025-08-05T18:30:24Z",
+        "message": "Rewrite missing_presence_validation to handle polymorphic associations (#230)\n\nThis commits rewrites missing_presence_validation in a more imperative\nstyle with extensive commenting to make it clear why certain actions are\nperformed. The new structure made it simple to correctly handle\npolymorphic associations: if a polymorphic foreign key is NOT NULL then\nthe detector will suggest making the association as required, instead of\nsuggesting adding validators for the _id and _type column separately.",
+        "url": "https://github.com/gregnavis/active_record_doctor/commit/998780bf6a96ddf3da698e19bece09d5fe50d4f6"
+    },
+    {
+        "sha": "f226d2c9ee451d279867ec7fbf53646eff48eec7",
+        "author": "Viktor",
+        "email": "67437+vfonic@users.noreply.github.com",
+        "date": "2025-08-01T14:10:00Z",
+        "message": "Add global ignore_models example (#224)",
+        "url": "https://github.com/gregnavis/active_record_doctor/commit/f226d2c9ee451d279867ec7fbf53646eff48eec7"
+    },
+    {
+        "sha": "98d7d6ec79d2247c560ffe5c0b4ae520ecff9aaf",
+        "author": "hatsu",
+        "email": "hajiwata0308@gmail.com",
+        "date": "2025-05-22T19:05:47Z",
+        "message": "Add Ruby 3.4 support (#225)\n\nStarting from Ruby 3.4, mutex_m has been changed from a default gem to a bundled gem. In systems using Bundler (such as Rails applications), the gem needs to be explicitly listed in the Gemfile and installed. This change ensures that the mutex_m library is properly available in Ruby 3.4 environments.",
+        "url": "https://github.com/gregnavis/active_record_doctor/commit/98d7d6ec79d2247c560ffe5c0b4ae520ecff9aaf"
+    },
+    {
+        "sha": "0833796f309b2ca8b02a0aee02b5fa7a34255391",
+        "author": "fatkodima",
+        "email": "fatkodima123@gmail.com",
+        "date": "2025-04-24T11:49:38Z",
+        "message": "missing_foreign_keys: support tables with destroy_async (#219)",
+        "url": "https://github.com/gregnavis/active_record_doctor/commit/0833796f309b2ca8b02a0aee02b5fa7a34255391"
+    },
+    {
+        "sha": "a6f6ea6ab23ea9f0d596d160547403590cd0b81e",
+        "author": "fatkodima",
+        "email": "fatkodima123@gmail.com",
+        "date": "2025-04-24T11:25:17Z",
+        "message": "Add logger to gemfiles (#217)",
+        "url": "https://github.com/gregnavis/active_record_doctor/commit/a6f6ea6ab23ea9f0d596d160547403590cd0b81e"
+    },
+    {
+        "sha": "10411d43c4fe5d89f069f9388d1c959e90cf876a",
+        "author": "fatkodima",
+        "email": "fatkodima123@gmail.com",
+        "date": "2025-03-15T08:57:52Z",
+        "message": "missing_presence_validation: recognize inclusion/exclusion validations (#208)",
+        "url": "https://github.com/gregnavis/active_record_doctor/commit/10411d43c4fe5d89f069f9388d1c959e90cf876a"
+    },
+    {
+        "sha": "d9768c14c31c3688a4e846a3db4281aa632b8865",
+        "author": "fatkodima",
+        "email": "fatkodima123@gmail.com",
+        "date": "2025-03-15T08:53:00Z",
+        "message": "missing_presence_validation: ignore columns with default functions (#207)",
+        "url": "https://github.com/gregnavis/active_record_doctor/commit/d9768c14c31c3688a4e846a3db4281aa632b8865"
+    },
+    {
+        "sha": "7b349fe8e01e33e8e3d5bf0b0bb0784fe543e87c",
+        "author": "fatkodima",
+        "email": "fatkodima123@gmail.com",
+        "date": "2025-01-11T13:59:23Z",
+        "message": "unindexed_foreign_keys: consider column type for foreign key candidates (#206)",
+        "url": "https://github.com/gregnavis/active_record_doctor/commit/7b349fe8e01e33e8e3d5bf0b0bb0784fe543e87c"
+    },
+    {
+        "sha": "70bf5ad1a99005adfce7093b1a4e93e4b8050428",
+        "author": "fatkodima",
+        "email": "fatkodima123@gmail.com",
+        "date": "2025-01-11T13:58:36Z",
+        "message": "missing_non_null_constraint: ignore database views (#201)",
+        "url": "https://github.com/gregnavis/active_record_doctor/commit/70bf5ad1a99005adfce7093b1a4e93e4b8050428"
+    },
+    {
+        "sha": "88c85d0da362bd9a451eeaba7b454d9ff76f65aa",
+        "author": "fatkodima",
+        "email": "fatkodima123@gmail.com",
+        "date": "2025-01-04T08:14:52Z",
+        "message": "missing_presence_validation: ignore counter cache columns (#180)",
+        "url": "https://github.com/gregnavis/active_record_doctor/commit/88c85d0da362bd9a451eeaba7b454d9ff76f65aa"
+    },
+    {
+        "sha": "a1e60f9e3a93698ddb8be55d9bdd831ab949b979",
+        "author": "fatkodima",
+        "email": "fatkodima123@gmail.com",
+        "date": "2025-01-03T17:58:30Z",
+        "message": "table_without_timestamps: detect tables without timestamp columns (#197)",
+        "url": "https://github.com/gregnavis/active_record_doctor/commit/a1e60f9e3a93698ddb8be55d9bdd831ab949b979"
+    },
+    {
+        "sha": "8736fc78f1a84c27d10dda0f20619376c6976452",
+        "author": "fatkodima",
+        "email": "fatkodima123@gmail.com",
+        "date": "2025-01-03T17:57:45Z",
+        "message": "Fix incorrect_dependent_option on broken associations (#202)",
+        "url": "https://github.com/gregnavis/active_record_doctor/commit/8736fc78f1a84c27d10dda0f20619376c6976452"
+    },
+    {
+        "sha": "38753de61dc7610423b231595991ebf6a8f723b3",
+        "author": "fatkodima",
+        "email": "fatkodima123@gmail.com",
+        "date": "2025-01-03T11:59:08Z",
+        "message": "missing_foreign_keys: consider column type for foreign key candidates (#204)",
+        "url": "https://github.com/gregnavis/active_record_doctor/commit/38753de61dc7610423b231595991ebf6a8f723b3"
+    },
+    {
+        "sha": "ad7f04a39b1e02b7022019b1531f45fb7e8d287b",
+        "author": "Jon Dufresne",
+        "email": "jon.dufresne@gmail.com",
+        "date": "2025-01-03T11:57:59Z",
+        "message": "Check timestamps are NOT NULL (#186)\n\nOnce the timestamps columns are established on a table, they might as\r\nwell be NOT NULL to enforce their existence. All Active Record operations\r\nset these values so they will always exist under normal usage.",
+        "url": "https://github.com/gregnavis/active_record_doctor/commit/ad7f04a39b1e02b7022019b1531f45fb7e8d287b"
+    },
+    {
+        "sha": "b0d597f43992fd366f210af56930db6a02419641",
+        "author": "fatkodima",
+        "email": "fatkodima123@gmail.com",
+        "date": "2024-12-12T22:28:04Z",
+        "message": "Make missing_non_null_constraint skip contextual validators (#189)",
+        "url": "https://github.com/gregnavis/active_record_doctor/commit/b0d597f43992fd366f210af56930db6a02419641"
+    },
+    {
+        "sha": "c662c8f29d616021695daede28d4c321b63a415e",
+        "author": "fatkodima",
+        "email": "fatkodima123@gmail.com",
+        "date": "2024-12-12T22:23:33Z",
+        "message": "Use #through_reflection? from Rails (#193)",
+        "url": "https://github.com/gregnavis/active_record_doctor/commit/c662c8f29d616021695daede28d4c321b63a415e"
+    },
+    {
+        "sha": "a55eaf17c013b521c1a50cfe6814422a14a932dc",
+        "author": "fatkodima",
+        "email": "fatkodima123@gmail.com",
+        "date": "2024-12-12T22:22:29Z",
+        "message": "Fix checking for expression indexes support (#196)",
+        "url": "https://github.com/gregnavis/active_record_doctor/commit/a55eaf17c013b521c1a50cfe6814422a14a932dc"
+    },
+    {
+        "sha": "c493c266fbc9540fec6c6f7bc2358a744a8bf82a",
+        "author": "Greg Navis",
+        "email": "contact@gregnavis.com",
+        "date": "2024-11-10T14:16:59Z",
+        "message": "Add support for SQLite\n\nRails 8 ships with production-grade SQLite, which means\nactive_record_doctor should support it, too. This commit adds a test\nsuite for SQLite3. This required making a few changes:\n\n1. Making the database name used by the test suite depend on the adapter\n   as SQLite uses an in-memory database.\n2. Dedicated require_* methods for skipping test cases that are relevant\n   to the current database under test.\n3. Splitting a few test cases into SQLite-specific code and code for\n   other databases.\n4. Not testing against Ruby 3.0 as the SQLite gem requires 3.1.\n5. Adding a GitHub Actions workflow for SQLite.\n\nAdditionally, short_primary_key is effectively disabled in SQLite.",
+        "url": "https://github.com/gregnavis/active_record_doctor/commit/c493c266fbc9540fec6c6f7bc2358a744a8bf82a"
+    },
+    {
+        "sha": "d7509b654133c18228f9f20f77da1fa9928f4230",
+        "author": "Kristján Oddsson",
+        "email": "hi@koddsson.com",
+        "date": "2024-11-30T07:38:47Z",
+        "message": "Fix configuration option key in README (#190)",
+        "url": "https://github.com/gregnavis/active_record_doctor/commit/d7509b654133c18228f9f20f77da1fa9928f4230"
+    }
+]

@@ -1,0 +1,242 @@
+[
+    {
+        "sha": "4276d28cf2da61e13235dcb79ebe629cbcfaace8",
+        "author": "yusu",
+        "email": "yusu1210@126.com",
+        "date": "2025-10-05T09:08:19Z",
+        "message": "Merge remote-tracking branch 'origin/master'\n\n# Conflicts:\n#\tcompileflow-core/src/main/java/com/alibaba/compileflow/engine/core/builder/converter/parser/provider/AbstractParserProvider.java\n#\tcompileflow-core/src/main/java/com/alibaba/compileflow/engine/core/builder/generator/analyzer/DominatorTreeCalculator.java\n#\tcompileflow-core/src/main/java/com/alibaba/compileflow/engine/core/builder/generator/analyzer/TopDownCorrectionGraphAnalyzer.java\n#\tcompileflow-core/src/main/java/com/alibaba/compileflow/engine/core/builder/generator/analyzer/UpwardCheckingGraphAnalyzer.java\n#\tsrc/main/java/com/alibaba/compileflow/engine/ProcessEngine.java\n#\tsrc/main/java/com/alibaba/compileflow/engine/ProcessEngineFactory.java\n#\tsrc/main/java/com/alibaba/compileflow/engine/process/builder/compiler/impl/support/EcJavaCompiler.java\n#\tsrc/main/java/com/alibaba/compileflow/engine/process/builder/compiler/impl/support/JdkJavaCompiler.java\n#\tsrc/main/java/com/alibaba/compileflow/engine/process/impl/AbstractProcessEngine.java\n#\tsrc/main/resources/META-INF/extensions/com.alibaba.compileflow.engine.runtime.graph.ProcessGraphAnalyzer\n#\tsrc/test/java/com/alibaba/compileflow/engine/process/ProcessEngineTest.java\n#\tsrc/test/java/com/alibaba/compileflow/engine/process/mock/MockJavaClazz.java\n#\tsrc/test/resources/bpm/gateway/sampleBranchMerge.bpm\n#\tsrc/test/resources/bpm/ktv/ktvExample.bpm",
+        "url": "https://github.com/alibaba/compileflow/commit/4276d28cf2da61e13235dcb79ebe629cbcfaace8"
+    },
+    {
+        "sha": "3edb5fc7432add8e3b6132cbc1ba31e3462df770",
+        "author": "yusu",
+        "email": "yusu1210@126.com",
+        "date": "2025-10-05T09:07:10Z",
+        "message": "feat(core)!: Refactor engine and modules; unify parsing and runtime APIs\n\n- Refactor compileflow-core execution and model loading pipeline\n- Unify BPMN/TBBPM parsers and runtime interfaces\n- Introduce Spring Boot autoconfigure and starter\n- Adjust Engine/Executor/Model APIs and package structure\n- Remove deprecated extension points and configurations\n- Expand integration tests and documentation\n\nBREAKING CHANGE: Public APIs and package names have changed; follow the migration guide.",
+        "url": "https://github.com/alibaba/compileflow/commit/3edb5fc7432add8e3b6132cbc1ba31e3462df770"
+    },
+    {
+        "sha": "c4963ba15cfb050e341ed15802e2464a94f89296",
+        "author": "yusu",
+        "email": "kangzhiqiang@kuaishou.com",
+        "date": "2025-08-02T03:01:33Z",
+        "message": "update BPM configuration and add echoResult method in MockJavaClazz",
+        "url": "https://github.com/alibaba/compileflow/commit/c4963ba15cfb050e341ed15802e2464a94f89296"
+    },
+    {
+        "sha": "31f980b2dd3aca76ad5e4be972526c4673fc1d88",
+        "author": "yusu",
+        "email": "kangzhiqiang@kuaishou.com",
+        "date": "2025-08-02T03:00:29Z",
+        "message": "Refactor and enhance process engine",
+        "url": "https://github.com/alibaba/compileflow/commit/31f980b2dd3aca76ad5e4be972526c4673fc1d88"
+    },
+    {
+        "sha": "c473b0727d65bbd64e2868c2f40de3fb693e911a",
+        "author": "yusu",
+        "email": "kangzhiqiang@kuaishou.com",
+        "date": "2025-07-27T16:19:36Z",
+        "message": "feat: add flowchart for branch merge process in Mermaid format",
+        "url": "https://github.com/alibaba/compileflow/commit/c473b0727d65bbd64e2868c2f40de3fb693e911a"
+    },
+    {
+        "sha": "ff4e6a453df37cb4cc9721ffe8da4defb40bb81b",
+        "author": "yusu",
+        "email": "kangzhiqiang@kuaishou.com",
+        "date": "2025-07-27T16:16:30Z",
+        "message": "feat: implement dominator tree calculations and analysis context management",
+        "url": "https://github.com/alibaba/compileflow/commit/ff4e6a453df37cb4cc9721ffe8da4defb40bb81b"
+    },
+    {
+        "sha": "1d455923e271c7589b89c1f0e18a41aac387d7cf",
+        "author": "yusu",
+        "email": "kangzhiqiang@kuaishou.com",
+        "date": "2025-07-27T15:45:03Z",
+        "message": "refactor: streamline process graph node retrieval and improve start/end node handling",
+        "url": "https://github.com/alibaba/compileflow/commit/1d455923e271c7589b89c1f0e18a41aac387d7cf"
+    },
+    {
+        "sha": "181e53dbc3954f5ac05be16aae392193c62217cb",
+        "author": "yusu",
+        "email": "kangzhiqiang@kuaishou.com",
+        "date": "2025-07-27T14:51:56Z",
+        "message": "feat: add flowchart for complex branch merge process",
+        "url": "https://github.com/alibaba/compileflow/commit/181e53dbc3954f5ac05be16aae392193c62217cb"
+    },
+    {
+        "sha": "72b9201bf38ee005f73d35ebcd568116ab273013",
+        "author": "yusu",
+        "email": "kangzhiqiang@kuaishou.com",
+        "date": "2025-07-27T14:51:42Z",
+        "message": "refactor: simplify process graph analysis and improve structure",
+        "url": "https://github.com/alibaba/compileflow/commit/72b9201bf38ee005f73d35ebcd568116ab273013"
+    },
+    {
+        "sha": "d5f13a511e86b969dece28bfc67c8b06c5e38ffc",
+        "author": "yusu",
+        "email": "kangzhiqiang@kuaishou.com",
+        "date": "2025-07-27T12:16:24Z",
+        "message": "refactor: change visibility",
+        "url": "https://github.com/alibaba/compileflow/commit/d5f13a511e86b969dece28bfc67c8b06c5e38ffc"
+    },
+    {
+        "sha": "7d3e495f694b1b578e5224ef665344529b7ca6a6",
+        "author": "yusu",
+        "email": "kangzhiqiang@kuaishou.com",
+        "date": "2025-07-27T11:20:46Z",
+        "message": "refactor: format code for consistency and readability",
+        "url": "https://github.com/alibaba/compileflow/commit/7d3e495f694b1b578e5224ef665344529b7ca6a6"
+    },
+    {
+        "sha": "b061d4b797c6e76508a300fbd648a7042998bc9b",
+        "author": "yusu",
+        "email": "kangzhiqiang@kuaishou.com",
+        "date": "2025-07-27T11:17:48Z",
+        "message": "refactor: clean up code and improve process handling",
+        "url": "https://github.com/alibaba/compileflow/commit/b061d4b797c6e76508a300fbd648a7042998bc9b"
+    },
+    {
+        "sha": "4a95ce60b4c2614a42fe7ad4cbb1c115f3d908a3",
+        "author": "yusu",
+        "email": "kangzhiqiang@kuaishou.com",
+        "date": "2025-07-27T05:59:35Z",
+        "message": "feat: add ProcessCompiler and ProcessExecutor for improved process handling",
+        "url": "https://github.com/alibaba/compileflow/commit/4a95ce60b4c2614a42fe7ad4cbb1c115f3d908a3"
+    },
+    {
+        "sha": "c754969e0fc338fe8644217576ef5988ec5f747d",
+        "author": "yusu",
+        "email": "kangzhiqiang@kuaishou.com",
+        "date": "2025-07-27T05:31:04Z",
+        "message": "docs: update extension guide",
+        "url": "https://github.com/alibaba/compileflow/commit/c754969e0fc338fe8644217576ef5988ec5f747d"
+    },
+    {
+        "sha": "9e599b43d50ac5ccb4ac0f13301c1556b210d6a7",
+        "author": "yusu",
+        "email": "kangzhiqiang@kuaishou.com",
+        "date": "2025-07-27T05:22:42Z",
+        "message": "refactor: update package structure",
+        "url": "https://github.com/alibaba/compileflow/commit/9e599b43d50ac5ccb4ac0f13301c1556b210d6a7"
+    },
+    {
+        "sha": "e62dd18b0c3430197d58440a34246b10caade3a6",
+        "author": "yusu",
+        "email": "kangzhiqiang@kuaishou.com",
+        "date": "2025-07-26T11:55:07Z",
+        "message": "删除多个文件并重命名一个文件，同时添加了一个新的扩展文件。以下是简洁的提交信息：\n\n```\nRefactor projectstructure and optimize extensions- Removed multiple obsolete files-Renamed `AutoChargeActivity` to its appropriatepackage\n-Added newextensionfor `MockServiceWithParam`\n-Optimized commentsand fixed test cases```\n这个提交信息符合历史记录的要求，并且在10个词以内。",
+        "url": "https://github.com/alibaba/compileflow/commit/e62dd18b0c3430197d58440a34246b10caade3a6"
+    },
+    {
+        "sha": "b1f96e97cb92626e265f20857d973b553953a361",
+        "author": "yusu",
+        "email": "kangzhiqiang@kuaishou.com",
+        "date": "2024-07-31T07:12:17Z",
+        "message": "rename extension",
+        "url": "https://github.com/alibaba/compileflow/commit/b1f96e97cb92626e265f20857d973b553953a361"
+    },
+    {
+        "sha": "f454dc7f207ea52e7c12e35a208fba79fe2675a4",
+        "author": "yusu",
+        "email": "kangzhiqiang@kuaishou.com",
+        "date": "2024-04-28T12:39:13Z",
+        "message": "Optimize comments",
+        "url": "https://github.com/alibaba/compileflow/commit/f454dc7f207ea52e7c12e35a208fba79fe2675a4"
+    },
+    {
+        "sha": "e96a05224f71bf4aa3d9fb37bba85764b2fc153f",
+        "author": "yusu",
+        "email": "kangzhiqiang@kuaishou.com",
+        "date": "2024-02-06T09:29:14Z",
+        "message": "fix testcase",
+        "url": "https://github.com/alibaba/compileflow/commit/e96a05224f71bf4aa3d9fb37bba85764b2fc153f"
+    },
+    {
+        "sha": "460862fd87f7f45e642a151a338db8be48010d14",
+        "author": "yusu",
+        "email": "kangzhiqiang@kuaishou.com",
+        "date": "2024-02-06T09:21:17Z",
+        "message": "delete start API",
+        "url": "https://github.com/alibaba/compileflow/commit/460862fd87f7f45e642a151a338db8be48010d14"
+    },
+    {
+        "sha": "16ec8678756bb5a1cf0b35d15ba71d0de1b4b9fa",
+        "author": "yusu",
+        "email": "kangzhiqiang@kuaishou.com",
+        "date": "2024-02-05T07:58:51Z",
+        "message": "Add support for array type",
+        "url": "https://github.com/alibaba/compileflow/commit/16ec8678756bb5a1cf0b35d15ba71d0de1b4b9fa"
+    },
+    {
+        "sha": "c7f50f7dd2a4f5e8bad687341a9fe9f55a0fa735",
+        "author": "yusu",
+        "email": "kangzhiqiang@kuaishou.com",
+        "date": "2023-08-04T10:05:00Z",
+        "message": "Merge remote-tracking branch 'origin/master'",
+        "url": "https://github.com/alibaba/compileflow/commit/c7f50f7dd2a4f5e8bad687341a9fe9f55a0fa735"
+    },
+    {
+        "sha": "2e02259ef90bc88fe68c1fb3c249bb2729bbc41e",
+        "author": "yusu",
+        "email": "kangzhiqiang@kuaishou.com",
+        "date": "2023-08-04T10:04:41Z",
+        "message": "Add an api that can take bpm content as a parameter",
+        "url": "https://github.com/alibaba/compileflow/commit/2e02259ef90bc88fe68c1fb3c249bb2729bbc41e"
+    },
+    {
+        "sha": "060897d241805f39f4afc3f34332f5f64ddde6c6",
+        "author": "康志强",
+        "email": "kangzhiqiang@kuaishou.com",
+        "date": "2023-08-01T08:54:14Z",
+        "message": "fix flow class name bug",
+        "url": "https://github.com/alibaba/compileflow/commit/060897d241805f39f4afc3f34332f5f64ddde6c6"
+    },
+    {
+        "sha": "830847a60ffa721ad4f97558b68fc5d7074f02ef",
+        "author": "Jerry Lee",
+        "email": "oldratlee@gmail.com",
+        "date": "2022-12-17T10:56:16Z",
+        "message": "docs: fix github action badges",
+        "url": "https://github.com/alibaba/compileflow/commit/830847a60ffa721ad4f97558b68fc5d7074f02ef"
+    },
+    {
+        "sha": "eb2787c53e9ceafd702a5013da4d43a8f56dc5c4",
+        "author": "康志强",
+        "email": "kangzhiqiang@kuaishou.com",
+        "date": "2022-10-11T08:55:28Z",
+        "message": "Merge remote-tracking branch 'origin/master'",
+        "url": "https://github.com/alibaba/compileflow/commit/eb2787c53e9ceafd702a5013da4d43a8f56dc5c4"
+    },
+    {
+        "sha": "ee7686511d9abda7e5c9e2bed5e48463a8634d8a",
+        "author": "康志强",
+        "email": "kangzhiqiang@kuaishou.com",
+        "date": "2022-10-11T08:54:52Z",
+        "message": "merge extension branch",
+        "url": "https://github.com/alibaba/compileflow/commit/ee7686511d9abda7e5c9e2bed5e48463a8634d8a"
+    },
+    {
+        "sha": "5b038642d5338972c55e87d38e52be48f0ac34af",
+        "author": "dependabot[bot]",
+        "email": "49699333+dependabot[bot]@users.noreply.github.com",
+        "date": "2022-10-10T17:36:10Z",
+        "message": "Bump spotbugs-maven-plugin from 4.7.2.0 to 4.7.2.1\n\nBumps [spotbugs-maven-plugin](https://github.com/spotbugs/spotbugs-maven-plugin) from 4.7.2.0 to 4.7.2.1.\n- [Release notes](https://github.com/spotbugs/spotbugs-maven-plugin/releases)\n- [Commits](https://github.com/spotbugs/spotbugs-maven-plugin/compare/spotbugs-maven-plugin-4.7.2.0...spotbugs-maven-plugin-4.7.2.1)\n\n---\nupdated-dependencies:\n- dependency-name: com.github.spotbugs:spotbugs-maven-plugin\n  dependency-type: direct:production\n  update-type: version-update:semver-patch\n...\n\nSigned-off-by: dependabot[bot] <support@github.com>",
+        "url": "https://github.com/alibaba/compileflow/commit/5b038642d5338972c55e87d38e52be48f0ac34af"
+    },
+    {
+        "sha": "e2dc0b888ed756f4cb7b1cca93d1f9a85fa6daf5",
+        "author": "dependabot[bot]",
+        "email": "49699333+dependabot[bot]@users.noreply.github.com",
+        "date": "2022-09-16T17:17:24Z",
+        "message": "Bump maven-jar-plugin from 3.2.2 to 3.3.0\n\nBumps [maven-jar-plugin](https://github.com/apache/maven-jar-plugin) from 3.2.2 to 3.3.0.\n- [Release notes](https://github.com/apache/maven-jar-plugin/releases)\n- [Commits](https://github.com/apache/maven-jar-plugin/compare/maven-jar-plugin-3.2.2...maven-jar-plugin-3.3.0)\n\n---\nupdated-dependencies:\n- dependency-name: org.apache.maven.plugins:maven-jar-plugin\n  dependency-type: direct:production\n  update-type: version-update:semver-minor\n...\n\nSigned-off-by: dependabot[bot] <support@github.com>",
+        "url": "https://github.com/alibaba/compileflow/commit/e2dc0b888ed756f4cb7b1cca93d1f9a85fa6daf5"
+    },
+    {
+        "sha": "30b5dea7a1f30d7fcd9f8452abb28844323de810",
+        "author": "dependabot[bot]",
+        "email": "49699333+dependabot[bot]@users.noreply.github.com",
+        "date": "2022-09-09T16:46:46Z",
+        "message": "Bump mockito-core from 4.7.0 to 4.8.0\n\nBumps [mockito-core](https://github.com/mockito/mockito) from 4.7.0 to 4.8.0.\n- [Release notes](https://github.com/mockito/mockito/releases)\n- [Commits](https://github.com/mockito/mockito/compare/v4.7.0...v4.8.0)\n\n---\nupdated-dependencies:\n- dependency-name: org.mockito:mockito-core\n  dependency-type: direct:development\n  update-type: version-update:semver-minor\n...\n\nSigned-off-by: dependabot[bot] <support@github.com>",
+        "url": "https://github.com/alibaba/compileflow/commit/30b5dea7a1f30d7fcd9f8452abb28844323de810"
+    }
+]

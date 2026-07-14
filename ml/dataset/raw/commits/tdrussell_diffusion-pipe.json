@@ -1,0 +1,242 @@
+[
+    {
+        "sha": "a7e7decf4325c1f03e4b88b7de93640029abd011",
+        "author": "tdrussell",
+        "email": "6509934+tdrussell@users.noreply.github.com",
+        "date": "2026-06-29T18:13:25Z",
+        "message": "add .db to list of file extensions to skip",
+        "url": "https://github.com/tdrussell/diffusion-pipe/commit/a7e7decf4325c1f03e4b88b7de93640029abd011"
+    },
+    {
+        "sha": "cd0c8ec2d4fbe13a17a8870831b13e9ecec455e6",
+        "author": "tdrussell",
+        "email": "6509934+tdrussell@users.noreply.github.com",
+        "date": "2026-06-29T18:12:52Z",
+        "message": "fix Ideogram4 after ComfyUI update",
+        "url": "https://github.com/tdrussell/diffusion-pipe/commit/cd0c8ec2d4fbe13a17a8870831b13e9ecec455e6"
+    },
+    {
+        "sha": "a825957a2340ad9024819700fe08539c0cfb44e7",
+        "author": "tdrussell",
+        "email": "6509934+tdrussell@users.noreply.github.com",
+        "date": "2026-06-27T18:01:31Z",
+        "message": "Krea2: also target text layers with LoRA\n\nIt seems that the safety training really messed with the txtfusion and txtmlp layers. Targeting these layers with LoRA gives much better results for just about any dataset. AI Toolkit and Musubi Tuner also do this (AI Toolkit targets every linear layer in the model, Musubi targets txtfusion in addition to DiT layers).",
+        "url": "https://github.com/tdrussell/diffusion-pipe/commit/a825957a2340ad9024819700fe08539c0cfb44e7"
+    },
+    {
+        "sha": "bf762b485618393fa81bcd226e7a75ff53ea9a97",
+        "author": "tdrussell",
+        "email": "6509934+tdrussell@users.noreply.github.com",
+        "date": "2026-06-27T14:32:40Z",
+        "message": "Make Krea2 work with pipeline parallelism",
+        "url": "https://github.com/tdrussell/diffusion-pipe/commit/bf762b485618393fa81bcd226e7a75ff53ea9a97"
+    },
+    {
+        "sha": "c1239b532031e6621fbd90aaac1c77ba99693bc3",
+        "author": "tdrussell",
+        "email": "6509934+tdrussell@users.noreply.github.com",
+        "date": "2026-06-24T16:19:53Z",
+        "message": "Krea 2",
+        "url": "https://github.com/tdrussell/diffusion-pipe/commit/c1239b532031e6621fbd90aaac1c77ba99693bc3"
+    },
+    {
+        "sha": "cdd922b0f7478d5a6fb53f1f043bbdb939c544ca",
+        "author": "tdrussell",
+        "email": "6509934+tdrussell@users.noreply.github.com",
+        "date": "2026-06-23T15:03:44Z",
+        "message": "Disable custom LoKr weight init\n\nNeed to think more about the implications of it. Maybe just using a higher LR is fine.",
+        "url": "https://github.com/tdrussell/diffusion-pipe/commit/cdd922b0f7478d5a6fb53f1f043bbdb939c544ca"
+    },
+    {
+        "sha": "26d71bbfcf6080d03b242f184d83fc610ca168be",
+        "author": "tdrussell",
+        "email": "6509934+tdrussell@users.noreply.github.com",
+        "date": "2026-06-14T22:08:19Z",
+        "message": "Change LoKr init\n\nAvoids very small initial gradients. LR needs to be a lot lower now, similar to FFT LR.",
+        "url": "https://github.com/tdrussell/diffusion-pipe/commit/26d71bbfcf6080d03b242f184d83fc610ca168be"
+    },
+    {
+        "sha": "5aa65772168809346629d65a094d3a5523331669",
+        "author": "tdrussell",
+        "email": "6509934+tdrussell@users.noreply.github.com",
+        "date": "2026-06-07T16:35:00Z",
+        "message": "Update documentation",
+        "url": "https://github.com/tdrussell/diffusion-pipe/commit/5aa65772168809346629d65a094d3a5523331669"
+    },
+    {
+        "sha": "d6a8f5621d2f006239056417f195e7cc90f4fccc",
+        "author": "tdrussell",
+        "email": "6509934+tdrussell@users.noreply.github.com",
+        "date": "2026-06-07T16:23:11Z",
+        "message": "Support Ideogram4",
+        "url": "https://github.com/tdrussell/diffusion-pipe/commit/d6a8f5621d2f006239056417f195e7cc90f4fccc"
+    },
+    {
+        "sha": "833fc9939be11b961f6610420259f794047785e1",
+        "author": "tdrussell",
+        "email": "6509934+tdrussell@users.noreply.github.com",
+        "date": "2026-06-05T03:20:59Z",
+        "message": "fix flux2 attention masking\n\nThe model doesn't use masking, it takes the full padded 512-length sequence. Also adds basic sampler used for testing.",
+        "url": "https://github.com/tdrussell/diffusion-pipe/commit/833fc9939be11b961f6610420259f794047785e1"
+    },
+    {
+        "sha": "0d1ba6c9377ca8d2139d2ca08f4135b29cc59fb2",
+        "author": "tdrussell",
+        "email": "6509934+tdrussell@users.noreply.github.com",
+        "date": "2026-06-03T18:13:07Z",
+        "message": "Support LoKr. Barely tested.",
+        "url": "https://github.com/tdrussell/diffusion-pipe/commit/0d1ba6c9377ca8d2139d2ca08f4135b29cc59fb2"
+    },
+    {
+        "sha": "238b5e1a24f35047c6d37ea9ae36ff7e3e399b8b",
+        "author": "tdrussell",
+        "email": "6509934+tdrussell@users.noreply.github.com",
+        "date": "2026-05-19T17:26:35Z",
+        "message": "fix flux2 klein high loss\n\nCommit 81b3f4ed55a347abd326d18c92edd2b6f7499912 messed up the tokenization by causing the TE template to be skipped.",
+        "url": "https://github.com/tdrussell/diffusion-pipe/commit/238b5e1a24f35047c6d37ea9ae36ff7e3e399b8b"
+    },
+    {
+        "sha": "71ab2a1ad71ba4879e2a827468f5cec3d31cbd1b",
+        "author": "tdrussell",
+        "email": "6509934+tdrussell@users.noreply.github.com",
+        "date": "2026-05-19T16:35:51Z",
+        "message": "fix some ComfyUI-based models",
+        "url": "https://github.com/tdrussell/diffusion-pipe/commit/71ab2a1ad71ba4879e2a827468f5cec3d31cbd1b"
+    },
+    {
+        "sha": "bd6f2b8d568f74bffb4c4d7547c5668fe0f1ea90",
+        "author": "tdrussell",
+        "email": "6509934+tdrussell@users.noreply.github.com",
+        "date": "2026-05-15T16:05:51Z",
+        "message": "Update documentation for LTX 2.3",
+        "url": "https://github.com/tdrussell/diffusion-pipe/commit/bd6f2b8d568f74bffb4c4d7547c5668fe0f1ea90"
+    },
+    {
+        "sha": "886d0acc8c3dd793045f764c43a749fb6a09b206",
+        "author": "tdrussell",
+        "email": "6509934+tdrussell@users.noreply.github.com",
+        "date": "2026-05-10T12:26:32Z",
+        "message": "Partial LTX2.3 support\n\nT2I and T2V training only, no audio.",
+        "url": "https://github.com/tdrussell/diffusion-pipe/commit/886d0acc8c3dd793045f764c43a749fb6a09b206"
+    },
+    {
+        "sha": "5145971c57f3d834e386eb9c5525a5c843a0a384",
+        "author": "tdrussell",
+        "email": "6509934+tdrussell@users.noreply.github.com",
+        "date": "2026-05-03T14:14:27Z",
+        "message": "Add skip_empty_caption option and make it default true",
+        "url": "https://github.com/tdrussell/diffusion-pipe/commit/5145971c57f3d834e386eb9c5525a5c843a0a384"
+    },
+    {
+        "sha": "e752565cef5d6f9dec0849e68443f24afd248df3",
+        "author": "tdrussell",
+        "email": "6509934+tdrussell@users.noreply.github.com",
+        "date": "2026-05-03T14:07:15Z",
+        "message": "Skip images without caption instead of training with empty caption",
+        "url": "https://github.com/tdrussell/diffusion-pipe/commit/e752565cef5d6f9dec0849e68443f24afd248df3"
+    },
+    {
+        "sha": "535bc585391d7f7d861d5f8952f1e144bc997270",
+        "author": "tdrussell",
+        "email": "6509934+tdrussell@users.noreply.github.com",
+        "date": "2026-04-25T18:08:54Z",
+        "message": "Update ComfyUI submodule",
+        "url": "https://github.com/tdrussell/diffusion-pipe/commit/535bc585391d7f7d861d5f8952f1e144bc997270"
+    },
+    {
+        "sha": "81b3f4ed55a347abd326d18c92edd2b6f7499912",
+        "author": "tdrussell",
+        "email": "6509934+tdrussell@users.noreply.github.com",
+        "date": "2026-04-23T16:34:36Z",
+        "message": "Support Ernie-Image",
+        "url": "https://github.com/tdrussell/diffusion-pipe/commit/81b3f4ed55a347abd326d18c92edd2b6f7499912"
+    },
+    {
+        "sha": "b0aa4f1e03169f3280c8518d37570a448420f8be",
+        "author": "tdrussell",
+        "email": "6509934+tdrussell@users.noreply.github.com",
+        "date": "2026-04-19T14:00:16Z",
+        "message": "[Anima] don't fail when training on very high resolutions",
+        "url": "https://github.com/tdrussell/diffusion-pipe/commit/b0aa4f1e03169f3280c8518d37570a448420f8be"
+    },
+    {
+        "sha": "d5b78a2c49a07db8f7d9a4c795e4cfe7ba1c3dfe",
+        "author": "yszhangit",
+        "email": "31548076+yszhangit@users.noreply.github.com",
+        "date": "2026-04-13T16:41:04Z",
+        "message": "fix: use local_rank for set_device, broadcast run_dir, add cosine scheduler (#517)",
+        "url": "https://github.com/tdrussell/diffusion-pipe/commit/d5b78a2c49a07db8f7d9a4c795e4cfe7ba1c3dfe"
+    },
+    {
+        "sha": "518ba041d867e6d76c31806a8d0b6a0263fb22eb",
+        "author": "tdrussell",
+        "email": "6509934+tdrussell@users.noreply.github.com",
+        "date": "2026-04-12T17:54:06Z",
+        "message": "Update ComfyUI submodule to fix error with newer Transformers versions",
+        "url": "https://github.com/tdrussell/diffusion-pipe/commit/518ba041d867e6d76c31806a8d0b6a0263fb22eb"
+    },
+    {
+        "sha": "6e95020cad0b3cd7dcb93ce42b358669051bf6d2",
+        "author": "tdrussell",
+        "email": "6509934+tdrussell@users.noreply.github.com",
+        "date": "2026-04-07T04:43:33Z",
+        "message": "Improve data mixing a bit for multi-res training",
+        "url": "https://github.com/tdrussell/diffusion-pipe/commit/6e95020cad0b3cd7dcb93ce42b358669051bf6d2"
+    },
+    {
+        "sha": "89f0eeb85bfea8e1c36b6aa7e75283949c1321d4",
+        "author": "tdrussell",
+        "email": "6509934+tdrussell@users.noreply.github.com",
+        "date": "2026-04-07T04:42:46Z",
+        "message": "Change how Huber loss is configured to align with PyTorch standard loss functions",
+        "url": "https://github.com/tdrussell/diffusion-pipe/commit/89f0eeb85bfea8e1c36b6aa7e75283949c1321d4"
+    },
+    {
+        "sha": "7af9b26b15588c846146d5aec12396d2d5a1e11a",
+        "author": "tdrussell",
+        "email": "6509934+tdrussell@users.noreply.github.com",
+        "date": "2026-03-29T21:11:20Z",
+        "message": "Kahan buffer offload for GenericOptim",
+        "url": "https://github.com/tdrussell/diffusion-pipe/commit/7af9b26b15588c846146d5aec12396d2d5a1e11a"
+    },
+    {
+        "sha": "df4af496c87253eabd5cd86d4b6ba78829c20289",
+        "author": "tdrussell",
+        "email": "6509934+tdrussell@users.noreply.github.com",
+        "date": "2026-03-20T04:23:49Z",
+        "message": "Fix for newer Transformers versions",
+        "url": "https://github.com/tdrussell/diffusion-pipe/commit/df4af496c87253eabd5cd86d4b6ba78829c20289"
+    },
+    {
+        "sha": "0b069a685b5d47a2fd593ebf6df887ced3d8ea52",
+        "author": "tdrussell",
+        "email": "6509934+tdrussell@users.noreply.github.com",
+        "date": "2026-02-18T15:18:32Z",
+        "message": "add a few niche options for dataset\n\n- online captions: read captions directly from JSON file instead of from cached data\n- shuffle_metadata: default true. allows not shuffling metadata if you know images are already in random order",
+        "url": "https://github.com/tdrussell/diffusion-pipe/commit/0b069a685b5d47a2fd593ebf6df887ced3d8ea52"
+    },
+    {
+        "sha": "489f0ae73f3c8683894a88481c14a9c0d6039d7c",
+        "author": "tdrussell",
+        "email": "6509934+tdrussell@users.noreply.github.com",
+        "date": "2026-02-18T15:16:19Z",
+        "message": "fix Anima when not caching text embeddings",
+        "url": "https://github.com/tdrussell/diffusion-pipe/commit/489f0ae73f3c8683894a88481c14a9c0d6039d7c"
+    },
+    {
+        "sha": "8e6fd5e10c8dbca8d2e69fbd8288e318d454e3b9",
+        "author": "tdrussell",
+        "email": "6509934+tdrussell@users.noreply.github.com",
+        "date": "2026-02-18T15:14:58Z",
+        "message": "disable weight decay for bias, norm, and embed params",
+        "url": "https://github.com/tdrussell/diffusion-pipe/commit/8e6fd5e10c8dbca8d2e69fbd8288e318d454e3b9"
+    },
+    {
+        "sha": "a17e5c1da254afeae66cab809e3ca547501dd067",
+        "author": "tdrussell",
+        "email": "6509934+tdrussell@users.noreply.github.com",
+        "date": "2026-02-08T01:11:24Z",
+        "message": "[Anima] fix loading text encoder from single file",
+        "url": "https://github.com/tdrussell/diffusion-pipe/commit/a17e5c1da254afeae66cab809e3ca547501dd067"
+    }
+]

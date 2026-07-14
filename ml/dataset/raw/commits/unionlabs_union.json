@@ -1,0 +1,242 @@
+[
+    {
+        "sha": "a934195d1ff218ced97354836266180e1ff6b6a9",
+        "author": "cor",
+        "email": "cor@pruijs.dev",
+        "date": "2026-06-30T09:38:05Z",
+        "message": "fix(voyager/state-gno): template hardcoded core realm in query_packet_by_hash (#5476)\n\n## Problem\n\n`query_packet_by_hash` in the gno **state** module `_and`s two\n`PacketSend` event filters (one matched by `source_channel_id`, one by\n`packet_hash`). The first filter's `pkg_path` is templated from\n`ibc_core_realm`, but the second hardcodes\n`gno.land/r/core/ibc/v1/core`.\n\nFor any gno deployment whose IBC core realm differs from that default —\ne.g. the onbloc port at `gno.land/r/onbloc/ibc/union/core` — the second\nfilter matches zero events, the `_and` yields nothing, and\n`query_packet_by_hash` returns no transaction.\n\n## Fix\n\nTemplate **both** `pkg_path` filters from `ibc_core_realm` (bind it once\nas a `format!` captured identifier, like `channel_id`/`packet_hash`\nalready are, and drop the now-unused positional arg). Behavioral change\nis one filter; diff is +4/-4.\n\n## Notes\n\n- Found while wiring Voyager's gno modules against the onbloc\n`gno.land/r/onbloc/ibc/union/core` deployment; with `ibc_core_realm` set\nto that realm, packet-by-hash lookups resolve correctly after this\nchange.\n- I did not build voyager locally for this change — relying on CI; it's\na focused string-template fix with no logic change.\n\n---\n🤖 Disclosure: this PR was prepared by **Claude (an AI agent)** on behalf\nof @tbruyelle.",
+        "url": "https://github.com/unionlabs/union/commit/a934195d1ff218ced97354836266180e1ff6b6a9"
+    },
+    {
+        "sha": "6a94f8d0bfeedefa5b42c557ee26dcff9a65566c",
+        "author": "Thomas",
+        "email": "thomas.bruyelle@gmail.com",
+        "date": "2026-06-30T08:17:11Z",
+        "message": "fix(voyager/state-gno): template hardcoded core realm in query_packet_by_hash\n\nThe second PacketSend filter in query_packet_by_hash hardcoded the realm\n\"gno.land/r/core/ibc/v1/core\", while the sibling filter is templated from\nibc_core_realm. For any deployment whose IBC core realm differs from that\ndefault (e.g. gno.land/r/onbloc/ibc/union/core), the _and over the two filters\nmatches zero events, so packet-by-hash lookups return nothing. Template both\npkg_path filters from ibc_core_realm.\n\nAssisted-By: Claude (AI agent)",
+        "url": "https://github.com/unionlabs/union/commit/6a94f8d0bfeedefa5b42c557ee26dcff9a65566c"
+    },
+    {
+        "sha": "a76ef9e2b76fc8a1484a31f183cb735019fbd62f",
+        "author": "cor",
+        "email": "cor@pruijs.dev",
+        "date": "2026-06-22T13:20:52Z",
+        "message": "fix(gno): update CanonicalPartSetHeader amino encoding to match gnolang/gno#5716 (#5474)\n\n## Summary\nFixes the amino encoding of `CanonicalPartSetHeader` to match the field\norder and types defined in\n[gnolang/gno#5716](https://github.com/gnolang/gno/pull/5716).\n\nPreviously, `total` was encoded as `sint32` at field tag 2 and `hash` at\ntag 1, diverging from the upstream gno spec and causing signature\nverification failures against current gno testnet blocks.\n\n## Changes\n\n- **`lib/gno-types/src/part_set_header.rs`** — reorder fields in\n`CanonicalPartSetHeader`: `total` moved to tag 1 (`uint32`), `hash` to\ntag 2; update `canonicalize_part_set_header` accordingly\n- **`lib/gno-types/src/vote.rs`** — update expected amino-encoded bytes\nin unit test to reflect corrected field ordering\n- **`lib/gno-verifier/src/verify.rs`** — update testdata file references\n- **`lib/gno-verifier/testdata`** — replace stale mainnet testdata with\ncurrent test-13 block data (height 381822–381823)\n\n## Test\n\nExisting `verify_works` test in `lib/gno-verifier/src/verify.rs` runs\nagainst the new testnet13 testdata and passes with the corrected\nencoding.",
+        "url": "https://github.com/unionlabs/union/commit/a76ef9e2b76fc8a1484a31f183cb735019fbd62f"
+    },
+    {
+        "sha": "e4f5fadcb574319f07223c46b3c56f975e93b60e",
+        "author": "Aron Park",
+        "email": "arondev1007@gmail.com",
+        "date": "2026-06-22T04:37:27Z",
+        "message": "fix(gno): update CanonicalPartSetHeader amino encoding to match gnolang/gno#5716",
+        "url": "https://github.com/unionlabs/union/commit/e4f5fadcb574319f07223c46b3c56f975e93b60e"
+    },
+    {
+        "sha": "8cff0ff34f6baa4cdb1e4650a08985dd05de0c5a",
+        "author": "Connor Davis",
+        "email": "17688291+PoisonPhang@users.noreply.github.com",
+        "date": "2026-06-18T19:34:03Z",
+        "message": "fix(unionvisor): resolve symlinks in bundle (#5470)",
+        "url": "https://github.com/unionlabs/union/commit/8cff0ff34f6baa4cdb1e4650a08985dd05de0c5a"
+    },
+    {
+        "sha": "d91c5e94354e15801bd5f82dc658eae3b79f2dad",
+        "author": "cor",
+        "email": "cor@pruijs.dev",
+        "date": "2026-06-16T10:51:12Z",
+        "message": "fix: update base dispute game factory proxy contract abi (#5472)",
+        "url": "https://github.com/unionlabs/union/commit/d91c5e94354e15801bd5f82dc658eae3b79f2dad"
+    },
+    {
+        "sha": "531b3b279d650653a13091ccad36de62979ecb9e",
+        "author": "benluelo",
+        "email": "git@luelo.dev",
+        "date": "2026-06-15T20:08:32Z",
+        "message": "fix: update base dispute game factory proxy contract abi",
+        "url": "https://github.com/unionlabs/union/commit/531b3b279d650653a13091ccad36de62979ecb9e"
+    },
+    {
+        "sha": "10bced6314a80b3762916dbe42acbc39f429e105",
+        "author": "benluelo",
+        "email": "git@luelo.dev",
+        "date": "2026-06-13T20:04:03Z",
+        "message": "fix(unionvisor): resolve symlinks in bundle",
+        "url": "https://github.com/unionlabs/union/commit/10bced6314a80b3762916dbe42acbc39f429e105"
+    },
+    {
+        "sha": "edaacacccc3544d69ce1fac0aa1c7e9b6fe83216",
+        "author": "Connor Davis",
+        "email": "17688291+PoisonPhang@users.noreply.github.com",
+        "date": "2026-06-13T19:48:53Z",
+        "message": "chore: update narhash (#5469)",
+        "url": "https://github.com/unionlabs/union/commit/edaacacccc3544d69ce1fac0aa1c7e9b6fe83216"
+    },
+    {
+        "sha": "9fdda2659182cef66c8ea3fba22e161c6cdc59c2",
+        "author": "poisonphang",
+        "email": "17688291+PoisonPhang@users.noreply.github.com",
+        "date": "2026-06-13T19:40:26Z",
+        "message": "chore: update narhash",
+        "url": "https://github.com/unionlabs/union/commit/9fdda2659182cef66c8ea3fba22e161c6cdc59c2"
+    },
+    {
+        "sha": "1bb07590230e7c4d071f32ad7185be021a1a1789",
+        "author": "ben",
+        "email": "git@luelo.dev",
+        "date": "2026-06-11T08:25:16Z",
+        "message": "chore(devnet): small changes to make devnet deployment easier (#5468)",
+        "url": "https://github.com/unionlabs/union/commit/1bb07590230e7c4d071f32ad7185be021a1a1789"
+    },
+    {
+        "sha": "9ad9ea8816fbcbb43755893ce17bc2d083fb2eab",
+        "author": "benluelo",
+        "email": "git@luelo.dev",
+        "date": "2026-06-10T21:43:46Z",
+        "message": "chore(devnet): small changes to make devnet deployment easier",
+        "url": "https://github.com/unionlabs/union/commit/9ad9ea8816fbcbb43755893ce17bc2d083fb2eab"
+    },
+    {
+        "sha": "d6b57d34c997fea4a88ecbfa374e09177faf3e13",
+        "author": "Connor Davis",
+        "email": "17688291+PoisonPhang@users.noreply.github.com",
+        "date": "2026-06-08T22:29:18Z",
+        "message": "fix(uniond): re-add auth fee collector to mod accs (#5466)\n\nReverts changes from 5b49e95be2a4a4fc1235a592d85ccb96008aedce that\nremoved the auth types fee collector module account.",
+        "url": "https://github.com/unionlabs/union/commit/d6b57d34c997fea4a88ecbfa374e09177faf3e13"
+    },
+    {
+        "sha": "17c211aab5ea79175754ea05595bf92a049267f3",
+        "author": "hussein",
+        "email": "hussein.aitlahcen@gmail.com",
+        "date": "2026-06-08T12:52:51Z",
+        "message": "fix(zkgm): wrong sender field in _timeoutCall (#5461)\n\n_timeoutCall was passing call.contractAddress instead of call.sender to\nencodeCallCalldata. Both _executeCall and _acknowledgeCall use\ncall.sender correctly only the timeout path had the wrong argument.\n\nThis causes the inner IBC module to receive a packet with an incorrect\nsender field on timeout, which can result in a wrong refund address or a\nstuck packet.",
+        "url": "https://github.com/unionlabs/union/commit/17c211aab5ea79175754ea05595bf92a049267f3"
+    },
+    {
+        "sha": "e317235b61fdde20dfc4a9b7c96d920683bcd1bd",
+        "author": "ben",
+        "email": "git@luelo.dev",
+        "date": "2026-06-01T20:19:54Z",
+        "message": "gno (#5459)\n\ngno related changes:\n- add lc (`gno-verifier`, `gno-light-client`, `gno-light-client-types`)\n- add to `protos`\n- add types (`gno-types`) and jsonrpc client (`gno-rpc`)\n- add client (`gno-client`, similar to `cosmos-client`)\n- add all required gno voyager modules and plugins\n- add v3 to `state-lens/ics23/ics23` client spec, both evm and cosmwasm\n(may be removed in the future, see\nhttps://github.com/onbloc/gno-ibc/issues/39)\n- add various gno utilities to `u`\n\nnon gno related changes:\n- add `AbciQueryResponse::decode_merkle_proof` to deduplicate some code\nthroughout various abci-compatible voyager modules/plugins\n- add some more test cases to `ibc-union-spec`\n- fix `ucs03-zkgm-packet` `TokenOrderV2Metadata` metadata serde\n- fix `ethereum-light-client-types` `LightClientUpdate` serde\n- fix some voyager error messages\n- remove extraneous `ChainIdParseError` through voyager plugins/modules\n- add some more config checks throughout voyager plugins/modules",
+        "url": "https://github.com/unionlabs/union/commit/e317235b61fdde20dfc4a9b7c96d920683bcd1bd"
+    },
+    {
+        "sha": "0d9d0512d809c3ceb22b2006577e7537b80e9ea0",
+        "author": "benluelo",
+        "email": "git@luelo.dev",
+        "date": "2026-06-01T18:55:10Z",
+        "message": "chore(gno-verifier): include testdata in nix tests",
+        "url": "https://github.com/unionlabs/union/commit/0d9d0512d809c3ceb22b2006577e7537b80e9ea0"
+    },
+    {
+        "sha": "36c5882b82928f1557a5013716eaa66a62693055",
+        "author": "benluelo",
+        "email": "git@luelo.dev",
+        "date": "2026-06-01T18:52:09Z",
+        "message": "chore: clippy",
+        "url": "https://github.com/unionlabs/union/commit/36c5882b82928f1557a5013716eaa66a62693055"
+    },
+    {
+        "sha": "510f16b6951f6ec89b2f9160b37b28aeb84681cd",
+        "author": "benluelo",
+        "email": "git@luelo.dev",
+        "date": "2026-06-01T18:28:00Z",
+        "message": "chore: clean up nix",
+        "url": "https://github.com/unionlabs/union/commit/510f16b6951f6ec89b2f9160b37b28aeb84681cd"
+    },
+    {
+        "sha": "c0fb03fe425fce7a85921d38526711b20ba9c436",
+        "author": "benluelo",
+        "email": "git@luelo.dev",
+        "date": "2026-05-21T19:20:25Z",
+        "message": "chore(voyager,gno): implement more events",
+        "url": "https://github.com/unionlabs/union/commit/c0fb03fe425fce7a85921d38526711b20ba9c436"
+    },
+    {
+        "sha": "f77f545b42637eb06fb95b54f8ded4c9e64844e2",
+        "author": "benluelo",
+        "email": "git@luelo.dev",
+        "date": "2026-05-21T11:31:44Z",
+        "message": "chore(gno): fix some types",
+        "url": "https://github.com/unionlabs/union/commit/f77f545b42637eb06fb95b54f8ded4c9e64844e2"
+    },
+    {
+        "sha": "5e5dddd5c5544812d10c059ed182a86dfb4aae77",
+        "author": "benluelo",
+        "email": "git@luelo.dev",
+        "date": "2026-05-20T08:18:54Z",
+        "message": "chore: fix ci errors",
+        "url": "https://github.com/unionlabs/union/commit/5e5dddd5c5544812d10c059ed182a86dfb4aae77"
+    },
+    {
+        "sha": "ae7676ecbed03dc2d662d1a11c1fe6c2c195b7e7",
+        "author": "benluelo",
+        "email": "git@luelo.dev",
+        "date": "2026-05-11T12:36:38Z",
+        "message": "feat(voyager): gno\n\nwip: voyager gno\n\nwip: voyager gno\n\nwip: voyager gno\n\nwip: voyager gno\n\nwip: voyager gno\n\nwip: voyager gno\n\nwip: voyager gno\n\nwip: voyager gno\n\nwip: voyager gno",
+        "url": "https://github.com/unionlabs/union/commit/ae7676ecbed03dc2d662d1a11c1fe6c2c195b7e7"
+    },
+    {
+        "sha": "c55b45ca6cb02770e8e6799a2404415d3d80249e",
+        "author": "benluelo",
+        "email": "git@luelo.dev",
+        "date": "2026-05-11T12:21:10Z",
+        "message": "feat: gno-light-client init",
+        "url": "https://github.com/unionlabs/union/commit/c55b45ca6cb02770e8e6799a2404415d3d80249e"
+    },
+    {
+        "sha": "d179bdaf04a38bc625ed193db6ecab73d45828d3",
+        "author": "benluelo",
+        "email": "git@luelo.dev",
+        "date": "2026-05-08T17:08:27Z",
+        "message": "feat: gno-verifier",
+        "url": "https://github.com/unionlabs/union/commit/d179bdaf04a38bc625ed193db6ecab73d45828d3"
+    },
+    {
+        "sha": "fd2c5739a841a3f6ee0fd6f9297b59cd981c1ffa",
+        "author": "benluelo",
+        "email": "git@luelo.dev",
+        "date": "2026-05-08T14:25:15Z",
+        "message": "chore: update rust protos",
+        "url": "https://github.com/unionlabs/union/commit/fd2c5739a841a3f6ee0fd6f9297b59cd981c1ffa"
+    },
+    {
+        "sha": "4c921655a45d7a338da83541db92d8a2b732fc9a",
+        "author": "benluelo",
+        "email": "git@luelo.dev",
+        "date": "2026-05-07T21:34:34Z",
+        "message": "feat(gno): rpc types and client\n\nwip\n\nwip\n\nwip",
+        "url": "https://github.com/unionlabs/union/commit/4c921655a45d7a338da83541db92d8a2b732fc9a"
+    },
+    {
+        "sha": "6e0b45d3539ca9f91f74b1b9e93793954b7e9786",
+        "author": "PoisonPhang",
+        "email": "17688291+PoisonPhang@users.noreply.github.com",
+        "date": "2026-05-28T19:23:12Z",
+        "message": "fix(uniond): re-add auth fee collector to mod acc",
+        "url": "https://github.com/unionlabs/union/commit/6e0b45d3539ca9f91f74b1b9e93793954b7e9786"
+    },
+    {
+        "sha": "8e995803e311d62b9c05734133ae2599028455aa",
+        "author": "PoisonPhang",
+        "email": "17688291+PoisonPhang@users.noreply.github.com",
+        "date": "2026-05-28T19:22:49Z",
+        "message": "chore(devnet): enable dist fees on devnet",
+        "url": "https://github.com/unionlabs/union/commit/8e995803e311d62b9c05734133ae2599028455aa"
+    },
+    {
+        "sha": "a5252c28c47b6eb6fe0cf425367dcde6eac8e800",
+        "author": "Андрій Шовкошитний",
+        "email": "198119344+enlightened88@users.noreply.github.com",
+        "date": "2026-05-19T11:20:42Z",
+        "message": "test(zkgm): add regression test for correct sender field in _timeoutCall",
+        "url": "https://github.com/unionlabs/union/commit/a5252c28c47b6eb6fe0cf425367dcde6eac8e800"
+    },
+    {
+        "sha": "41b9a4038509d9618a12c3d166d96f543985677f",
+        "author": "Connor Davis",
+        "email": "17688291+PoisonPhang@users.noreply.github.com",
+        "date": "2026-05-18T20:15:28Z",
+        "message": "chore: update narhash (#5463)",
+        "url": "https://github.com/unionlabs/union/commit/41b9a4038509d9618a12c3d166d96f543985677f"
+    }
+]

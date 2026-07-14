@@ -1,0 +1,242 @@
+[
+    {
+        "sha": "7c6bc45238838a7b80c785335203efceef95e4f2",
+        "author": "Kevin Hermawan",
+        "email": "84965338+kevinhermawan@users.noreply.github.com",
+        "date": "2025-03-05T22:22:45Z",
+        "message": "release: 3.0.3",
+        "url": "https://github.com/kevinhermawan/Ollamac/commit/7c6bc45238838a7b80c785335203efceef95e4f2"
+    },
+    {
+        "sha": "ccc025509d78cf9aaf835f8eef75616cc76cfdc7",
+        "author": "Kevin Hermawan",
+        "email": "84965338+kevinhermawan@users.noreply.github.com",
+        "date": "2025-03-05T22:08:50Z",
+        "message": "chore: updates dependencies (#135)",
+        "url": "https://github.com/kevinhermawan/Ollamac/commit/ccc025509d78cf9aaf835f8eef75616cc76cfdc7"
+    },
+    {
+        "sha": "29f807b1092fd98606b703d9aafc0b150b914b62",
+        "author": "Philipp",
+        "email": "pd95@users.noreply.github.com",
+        "date": "2025-03-04T22:17:14Z",
+        "message": "Handle incomplete response (#131)\n\nDue to a task cancellation, the response can be incomplete.\n- `tempResponse` must be cleared\n- response should highlighted as incomplete/cancelled/aborted",
+        "url": "https://github.com/kevinhermawan/Ollamac/commit/29f807b1092fd98606b703d9aafc0b150b914b62"
+    },
+    {
+        "sha": "e8f86fdc5a0d4073c26595210516694f82220a40",
+        "author": "Philipp",
+        "email": "pd95@users.noreply.github.com",
+        "date": "2025-03-04T22:16:45Z",
+        "message": "Fix sidebar content (#129)\n\n* Ignore <think> tags in response shown in sidebar\n\n* Improve title generation (especially for DeepSeek)",
+        "url": "https://github.com/kevinhermawan/Ollamac/commit/e8f86fdc5a0d4073c26595210516694f82220a40"
+    },
+    {
+        "sha": "ef9ceb748ed69464ea7a73afb1d28db0819ed573",
+        "author": "Kevin Hermawan",
+        "email": "84965338+kevinhermawan@users.noreply.github.com",
+        "date": "2025-02-05T07:33:40Z",
+        "message": "release: 3.0.2",
+        "url": "https://github.com/kevinhermawan/Ollamac/commit/ef9ceb748ed69464ea7a73afb1d28db0819ed573"
+    },
+    {
+        "sha": "e06f9863cbd3b04cc7e1ea6ec7306b269c256bd3",
+        "author": "Philipp",
+        "email": "pd95@users.noreply.github.com",
+        "date": "2025-02-05T07:15:31Z",
+        "message": "Feature: Allow configuration of font size used for markdown rendering (#83)\n\n* Adding a font size setting which will modify the \"defaultFontSize\" setting\r\n\r\n* Make sure messages scale according to the configured \"font size\".\r\n\r\n* Show the system font size in the placeholder text\r\n\r\n* Adding menu entry with keyboard shortcuts\r\n\r\n* Make sure setting stays in sync with `Defaults` value\r\n\r\n* Rename to `fontSize` and use `NSFont.systemFontSize` as default value\r\n\r\n* Fix access to font size\r\n\r\n* Use `fontSize` from `Defaults` directly\r\nAdd a reset button to restore to default.\r\n\r\n* User `Defaults` features to reset and show \"default value\"\r\n\r\n* Move to independent GroupBox\r\n\r\n* Fix layout\r\n\r\n* Fix font size settings view\r\n\r\n* Fix some hardcoded font sizes\r\n\r\n* Make font size, code highlighting and color scheme dynamically adjustable",
+        "url": "https://github.com/kevinhermawan/Ollamac/commit/e06f9863cbd3b04cc7e1ea6ec7306b269c256bd3"
+    },
+    {
+        "sha": "5c9aecc981f9142aa0f58fd6439d7d7645cc744b",
+        "author": "Philipp",
+        "email": "pd95@users.noreply.github.com",
+        "date": "2025-02-05T03:34:29Z",
+        "message": "Fixing \"stop\" button while generation is ongoing (#128)",
+        "url": "https://github.com/kevinhermawan/Ollamac/commit/5c9aecc981f9142aa0f58fd6439d7d7645cc744b"
+    },
+    {
+        "sha": "9b31f7e21d5870931844bc1320860693bfadf429",
+        "author": "Philipp",
+        "email": "pd95@users.noreply.github.com",
+        "date": "2025-02-05T03:33:20Z",
+        "message": "Fix chat window shortcuts (#126)\n\n* Set keyboard shortcuts\r\n- CMD+Shift : open new Window\r\n- CMD+N: start new Chat\r\n\r\n* New chats should automatically focus on the prompt\r\n\r\n* Delay switching focus to prompt",
+        "url": "https://github.com/kevinhermawan/Ollamac/commit/9b31f7e21d5870931844bc1320860693bfadf429"
+    },
+    {
+        "sha": "47364a9919bc6cfc2b853c14b4180284384985c4",
+        "author": "Harry",
+        "email": "harry.jeffs2222@gmail.com",
+        "date": "2025-02-05T03:30:28Z",
+        "message": "Added blockquote markdown support for r1 model thinking (#125)\n\n* Added blockquote markdown support for r1 model thinking\r\n\r\n* Updated blockquote to accommodate empty tag content\r\n\r\n---------\r\n\r\nCo-authored-by: Harry <harry.heffs2222@gmail.com>",
+        "url": "https://github.com/kevinhermawan/Ollamac/commit/47364a9919bc6cfc2b853c14b4180284384985c4"
+    },
+    {
+        "sha": "b666407622492a2605899d0c87406a56ab1fbd02",
+        "author": "Kevin Hermawan",
+        "email": "84965338+kevinhermawan@users.noreply.github.com",
+        "date": "2025-02-03T21:57:35Z",
+        "message": "fix: title generation for `deepseek-r1` model (#127)",
+        "url": "https://github.com/kevinhermawan/Ollamac/commit/b666407622492a2605899d0c87406a56ab1fbd02"
+    },
+    {
+        "sha": "b399ec0d41c43bd7d73465a225f10d6a40aa7b33",
+        "author": "Philipp",
+        "email": "pd95@users.noreply.github.com",
+        "date": "2025-02-03T21:06:11Z",
+        "message": "Avoid empty prompts (#124)\n\n* Avoid sending empty prompt to Ollama\r\n- Disable `CircleButton` on empty prompt\r\n- Abort `generateAction` if prompt is empty\r\n\r\n* Trim whitespaces from prompt before processing",
+        "url": "https://github.com/kevinhermawan/Ollamac/commit/b399ec0d41c43bd7d73465a225f10d6a40aa7b33"
+    },
+    {
+        "sha": "61bf8c58f9eb0110f469538f97d431fd51e2fb22",
+        "author": "Kevin Hermawan",
+        "email": "84965338+kevinhermawan@users.noreply.github.com",
+        "date": "2025-01-28T10:32:13Z",
+        "message": "release: 3.0.1",
+        "url": "https://github.com/kevinhermawan/Ollamac/commit/61bf8c58f9eb0110f469538f97d431fd51e2fb22"
+    },
+    {
+        "sha": "8207b63f43d65c1f177c86e80ff8cc46fbe44203",
+        "author": "Philipp",
+        "email": "pd95@users.noreply.github.com",
+        "date": "2025-01-28T10:00:06Z",
+        "message": "Fix syntax highlighting issues (#121)\n\n* Fix unreadable code blocks if highlighting is disabled\r\n- Derive background colors from color scheme\r\n\r\n* `CodeBlocks` should depend on unique `CodeHighlighter` color scheme\r\nThis fixes \"unreadable code\" problem (as in #113) when no code highlighting is enabled.\r\nAlso this enables dynamic switching of dark/light mode and enabling/disabling syntax highlighting\r\n\r\n* Remove debugging `print()`",
+        "url": "https://github.com/kevinhermawan/Ollamac/commit/8207b63f43d65c1f177c86e80ff8cc46fbe44203"
+    },
+    {
+        "sha": "9a4e2588e0445724209e319989421c1267a67d38",
+        "author": "Szymon Łopaciuk",
+        "email": "szymon@lopaciuk.eu",
+        "date": "2025-01-28T09:57:51Z",
+        "message": "Increase margin and enable wrapping of bullet point items (#120)\n\nSigned-off-by: Szymon Łopaciuk <szymon@lopaciuk.eu>",
+        "url": "https://github.com/kevinhermawan/Ollamac/commit/9a4e2588e0445724209e319989421c1267a67d38"
+    },
+    {
+        "sha": "dac8991d0c7b54b08bf6977965c4d9c2abe23b0b",
+        "author": "Jonas",
+        "email": "36500001+newjonny@users.noreply.github.com",
+        "date": "2024-12-10T15:43:35Z",
+        "message": "closes #103: Ollamac should open to a New Chat automatically (#114)",
+        "url": "https://github.com/kevinhermawan/Ollamac/commit/dac8991d0c7b54b08bf6977965c4d9c2abe23b0b"
+    },
+    {
+        "sha": "6f151da356e9c33dc66585b53a5c1ca5a597fa39",
+        "author": "Kevin Hermawan",
+        "email": "84965338+kevinhermawan@users.noreply.github.com",
+        "date": "2024-08-09T20:50:57Z",
+        "message": "release: 3.0.0",
+        "url": "https://github.com/kevinhermawan/Ollamac/commit/6f151da356e9c33dc66585b53a5c1ca5a597fa39"
+    },
+    {
+        "sha": "ed2f501290ece0f296db1b6cbd9e1528e644d9e8",
+        "author": "Kevin Hermawan",
+        "email": "84965338+kevinhermawan@users.noreply.github.com",
+        "date": "2024-08-09T20:26:50Z",
+        "message": "feat: adds experimental settings (#99)",
+        "url": "https://github.com/kevinhermawan/Ollamac/commit/ed2f501290ece0f296db1b6cbd9e1528e644d9e8"
+    },
+    {
+        "sha": "c5c06e94ebb19e249a524469963dba0085865c02",
+        "author": "Kevin Hermawan",
+        "email": "84965338+kevinhermawan@users.noreply.github.com",
+        "date": "2024-08-09T01:38:35Z",
+        "message": "feat: adds footnotes in settings (#98)",
+        "url": "https://github.com/kevinhermawan/Ollamac/commit/c5c06e94ebb19e249a524469963dba0085865c02"
+    },
+    {
+        "sha": "aa6cc2d3f4a50cc4974e1e13ea896345c2ddf9db",
+        "author": "Kevin Hermawan",
+        "email": "84965338+kevinhermawan@users.noreply.github.com",
+        "date": "2024-08-08T23:18:20Z",
+        "message": "refactor: optimize generation process (#97)",
+        "url": "https://github.com/kevinhermawan/Ollamac/commit/aa6cc2d3f4a50cc4974e1e13ea896345c2ddf9db"
+    },
+    {
+        "sha": "2e1d4435460199d5e715068f2501bd8d7ada5541",
+        "author": "Kevin Hermawan",
+        "email": "84965338+kevinhermawan@users.noreply.github.com",
+        "date": "2024-08-08T22:14:33Z",
+        "message": "feat: adds regenerate keyboard shortcut (#96)",
+        "url": "https://github.com/kevinhermawan/Ollamac/commit/2e1d4435460199d5e715068f2501bd8d7ada5541"
+    },
+    {
+        "sha": "3102ba2c81bc9bab559f52e52fa3c485972e20f9",
+        "author": "Kevin Hermawan",
+        "email": "84965338+kevinhermawan@users.noreply.github.com",
+        "date": "2024-08-08T21:07:54Z",
+        "message": "chore: puts back copy and regenerate buttons (#94)\n\n* chore: puts back copy and regenerate buttons\r\n\r\n* removes hover functions",
+        "url": "https://github.com/kevinhermawan/Ollamac/commit/3102ba2c81bc9bab559f52e52fa3c485972e20f9"
+    },
+    {
+        "sha": "50deee2902acbf44fadcb1a60f1faac38a421aca",
+        "author": "Kevin Hermawan",
+        "email": "84965338+kevinhermawan@users.noreply.github.com",
+        "date": "2024-08-08T00:10:37Z",
+        "message": "improve: adds error message if host isn't reachable (#92)",
+        "url": "https://github.com/kevinhermawan/Ollamac/commit/50deee2902acbf44fadcb1a60f1faac38a421aca"
+    },
+    {
+        "sha": "6ec0868336be3b20da2bc530602117d2d41bcdad",
+        "author": "Kevin Hermawan",
+        "email": "84965338+kevinhermawan@users.noreply.github.com",
+        "date": "2024-08-06T22:31:37Z",
+        "message": "feat: adds auto-generated message title (#91)\n\n* feat: adds auto-generated message title\r\n\r\n* removes unused codes",
+        "url": "https://github.com/kevinhermawan/Ollamac/commit/6ec0868336be3b20da2bc530602117d2d41bcdad"
+    },
+    {
+        "sha": "a20c8ec69a9a5261bfc982b05e0c53db1f7823a9",
+        "author": "Kevin Hermawan",
+        "email": "84965338+kevinhermawan@users.noreply.github.com",
+        "date": "2024-08-06T21:32:23Z",
+        "message": "improve: adds error message if selected model is empty (#90)",
+        "url": "https://github.com/kevinhermawan/Ollamac/commit/a20c8ec69a9a5261bfc982b05e0c53db1f7823a9"
+    },
+    {
+        "sha": "1670ed41fd41d0c4482d8d7fbfbb7acb1c3950e1",
+        "author": "Kevin Hermawan",
+        "email": "84965338+kevinhermawan@users.noreply.github.com",
+        "date": "2024-08-06T20:08:53Z",
+        "message": "feat: adds default system prompt (#89)",
+        "url": "https://github.com/kevinhermawan/Ollamac/commit/1670ed41fd41d0c4482d8d7fbfbb7acb1c3950e1"
+    },
+    {
+        "sha": "eb301dc7bd9b09ddaa2b181e09b68a3b7b366052",
+        "author": "Kevin Hermawan",
+        "email": "84965338+kevinhermawan@users.noreply.github.com",
+        "date": "2024-08-06T19:23:38Z",
+        "message": "feat: better default model selection (#88)",
+        "url": "https://github.com/kevinhermawan/Ollamac/commit/eb301dc7bd9b09ddaa2b181e09b68a3b7b366052"
+    },
+    {
+        "sha": "95223cbcca5559d59673e1ee7254edcc01cfe63d",
+        "author": "Kevin Hermawan",
+        "email": "84965338+kevinhermawan@users.noreply.github.com",
+        "date": "2024-08-04T12:39:09Z",
+        "message": "refactor: rewrite the UI and functionality codes (#87)\n\n* refactor: rewrite the UI and functionality codes\r\n\r\n* feat: adds chat preferences\r\n\r\n* fix: disable generation when there is no model selected",
+        "url": "https://github.com/kevinhermawan/Ollamac/commit/95223cbcca5559d59673e1ee7254edcc01cfe63d"
+    },
+    {
+        "sha": "32596ce9b12919162202916267481a443c24b9f2",
+        "author": "Kevin Hermawan",
+        "email": "84965338+kevinhermawan@users.noreply.github.com",
+        "date": "2024-07-30T16:35:42Z",
+        "message": "release: 2.1.2",
+        "url": "https://github.com/kevinhermawan/Ollamac/commit/32596ce9b12919162202916267481a443c24b9f2"
+    },
+    {
+        "sha": "ab005434cbcbce170999add461f62e5e40959298",
+        "author": "Philipp",
+        "email": "pd95@users.noreply.github.com",
+        "date": "2024-07-30T08:20:36Z",
+        "message": "Fixes code blocks showing \"undefined\" (#82)\n\n* Fixes code blocks showing \"undefined\"\r\n\r\n* Highlight block even when language is not defined (using auto detection by Highlightr/highlight.js)",
+        "url": "https://github.com/kevinhermawan/Ollamac/commit/ab005434cbcbce170999add461f62e5e40959298"
+    },
+    {
+        "sha": "d7caacb82aaae2e2c0005ee0adeba004c4f5fc90",
+        "author": "Kevin Hermawan",
+        "email": "84965338+kevinhermawan@users.noreply.github.com",
+        "date": "2024-07-25T16:59:02Z",
+        "message": "release: 2.1.1",
+        "url": "https://github.com/kevinhermawan/Ollamac/commit/d7caacb82aaae2e2c0005ee0adeba004c4f5fc90"
+    }
+]

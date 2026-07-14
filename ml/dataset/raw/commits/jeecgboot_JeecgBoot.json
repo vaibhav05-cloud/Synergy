@@ -1,0 +1,242 @@
+[
+    {
+        "sha": "6e8f6011a9db988aa4a89dd16b8eb1f1d7785f38",
+        "author": "JEECG",
+        "email": "445654970@qq.com",
+        "date": "2026-07-14T03:47:10Z",
+        "message": "更换仓库地址",
+        "url": "https://github.com/jeecgboot/JeecgBoot/commit/6e8f6011a9db988aa4a89dd16b8eb1f1d7785f38"
+    },
+    {
+        "sha": "628b3e80c9f0be2ae3d863aa81d11faa44edc44e",
+        "author": "JEECG",
+        "email": "445654970@qq.com",
+        "date": "2026-07-13T04:41:34Z",
+        "message": "--author:JEECG--date:20260713--for:【vite8】消除 dev server 启动时两条 WARN（esbuildOptions 废弃、esbuild/oxc 同时设置）\n\n按 Vite 8 Rolldown/Oxc 的迁移规范，把两处已废弃的 esbuild 配置迁到新写法：\n\n1. optimizeDeps.esbuildOptions.target: 'es2020' → optimizeDeps.rolldownOptions.transform.target: 'es2020'\n   （消除 esbuildOptions deprecated 警告）\n\n2. 顶层 esbuild: { drop: isBuild ? ['console', 'debugger'] : [] } + build.minify: 'esbuild'\n   → 删除 esbuild 块，build.minify: true 改用 Oxc minifier，\n   drop 功能迁移到 build.rollupOptions.output.minify: { compress: { drop: ['console', 'debugger'] } }\n   （消除 esbuild/oxc 同时设置的警告，并保留生产构建删除 console.debugger 的能力）",
+        "url": "https://github.com/jeecgboot/JeecgBoot/commit/628b3e80c9f0be2ae3d863aa81d11faa44edc44e"
+    },
+    {
+        "sha": "3f4626fb4ef828848e73ecc068bf8618f83b7c71",
+        "author": "JEECG",
+        "email": "445654970@qq.com",
+        "date": "2026-07-12T02:39:29Z",
+        "message": "升级vite8",
+        "url": "https://github.com/jeecgboot/JeecgBoot/commit/3f4626fb4ef828848e73ecc068bf8618f83b7c71"
+    },
+    {
+        "sha": "1b7ed30b9e2e0a26517f5bf34b0c1d0ab1bbe3de",
+        "author": "JEECG",
+        "email": "445654970@qq.com",
+        "date": "2026-07-11T14:00:43Z",
+        "message": "补充升级日志：依赖版本变更总表\n\n记录本次 Vite8 + pinia3/vue-router5 升级过程中所有依赖包的版本变化。\n\n$Co-authored-by: Copilot <223556219+Copilot@users.noreply.github.com>",
+        "url": "https://github.com/jeecgboot/JeecgBoot/commit/1b7ed30b9e2e0a26517f5bf34b0c1d0ab1bbe3de"
+    },
+    {
+        "sha": "f390fe58bbf248cde5edabd367880f9ac13cd3d3",
+        "author": "JEECG",
+        "email": "445654970@qq.com",
+        "date": "2026-07-11T13:58:44Z",
+        "message": "升级pinia3和vue-router5\n\n解决了 pinia3 defineStore 单对象写法运行时报错、vue-router5 next() 回调废弃警告两个问题。\n\n$Co-authored-by: Copilot <223556219+Copilot@users.noreply.github.com>",
+        "url": "https://github.com/jeecgboot/JeecgBoot/commit/f390fe58bbf248cde5edabd367880f9ac13cd3d3"
+    },
+    {
+        "sha": "20d46e1443735222b84b845c609309c4bf8872ea",
+        "author": "JEECG",
+        "email": "445654970@qq.com",
+        "date": "2026-07-11T12:27:43Z",
+        "message": "升级vite8",
+        "url": "https://github.com/jeecgboot/JeecgBoot/commit/20d46e1443735222b84b845c609309c4bf8872ea"
+    },
+    {
+        "sha": "829b44cdee1caadaa2fa0acdefe5c11c5f46d05c",
+        "author": "JEECG",
+        "email": "445654970@qq.com",
+        "date": "2026-07-10T07:14:04Z",
+        "message": "nacos: 调换 Console 和 Web 启动顺序，让 IDEA Services 面板识别端口为 18080",
+        "url": "https://github.com/jeecgboot/JeecgBoot/commit/829b44cdee1caadaa2fa0acdefe5c11c5f46d05c"
+    },
+    {
+        "sha": "16ce33dada660c4d094014761e2a7eb8462e41fe",
+        "author": "JEECG",
+        "email": "445654970@qq.com",
+        "date": "2026-07-10T05:32:28Z",
+        "message": "升级springboot4 介绍更改",
+        "url": "https://github.com/jeecgboot/JeecgBoot/commit/16ce33dada660c4d094014761e2a7eb8462e41fe"
+    },
+    {
+        "sha": "153d648bcf50d524101eb7cb90307bc0e9e7885b",
+        "author": "JEECG",
+        "email": "445654970@qq.com",
+        "date": "2026-07-09T12:22:26Z",
+        "message": "依赖冲突，不更新也不影响功能",
+        "url": "https://github.com/jeecgboot/JeecgBoot/commit/153d648bcf50d524101eb7cb90307bc0e9e7885b"
+    },
+    {
+        "sha": "e5b740a332381b26db856b6b366f5153064bc95a",
+        "author": "JEECG",
+        "email": "445654970@qq.com",
+        "date": "2026-07-09T06:44:29Z",
+        "message": "防止端口冲突",
+        "url": "https://github.com/jeecgboot/JeecgBoot/commit/e5b740a332381b26db856b6b366f5153064bc95a"
+    },
+    {
+        "sha": "a7c584e3fbe0596b705008e73620ba780879a8c0",
+        "author": "JEECG",
+        "email": "445654970@qq.com",
+        "date": "2026-07-09T06:11:43Z",
+        "message": "网关轮询nacos就绪再启动",
+        "url": "https://github.com/jeecgboot/JeecgBoot/commit/a7c584e3fbe0596b705008e73620ba780879a8c0"
+    },
+    {
+        "sha": "24338e562cdb594f08af48139171cfe12f008b1e",
+        "author": "JEECG",
+        "email": "445654970@qq.com",
+        "date": "2026-07-09T06:09:55Z",
+        "message": "fix(docker): 单体前端nginx改用docker内嵌DNS运行时解析后端地址\n\n避免jeecg-boot-system容器重启换IP后nginx缓存旧IP导致502需手动重启，\n用rewrite保留/jeecgboot/->/jeecg-boot/路径映射。\n\nCo-authored-by: Copilot <223556219+Copilot@users.noreply.github.com>",
+        "url": "https://github.com/jeecgboot/JeecgBoot/commit/24338e562cdb594f08af48139171cfe12f008b1e"
+    },
+    {
+        "sha": "1cd59161a1a3dc7bcaaad54768d35081a49a823c",
+        "author": "JEECG",
+        "email": "445654970@qq.com",
+        "date": "2026-07-09T06:05:33Z",
+        "message": "数据库初始化慢导致，微服务docker启动模式，gateway和前端无法访问实例接口(网关轮询nacos就绪再启动、暴露nacos控制台18080、前端nginx动态DNS解析)",
+        "url": "https://github.com/jeecgboot/JeecgBoot/commit/1cd59161a1a3dc7bcaaad54768d35081a49a823c"
+    },
+    {
+        "sha": "56461aa3f43bb319e1dd93641953c7e65cc549cf",
+        "author": "JEECG",
+        "email": "445654970@qq.com",
+        "date": "2026-07-09T05:49:58Z",
+        "message": "加速首次初始化导入：关闭逐条提交与唯一性检查，整体批量提交",
+        "url": "https://github.com/jeecgboot/JeecgBoot/commit/56461aa3f43bb319e1dd93641953c7e65cc549cf"
+    },
+    {
+        "sha": "27da52054fad962fb40533defdacda089480c256",
+        "author": "JEECG",
+        "email": "445654970@qq.com",
+        "date": "2026-07-09T05:27:19Z",
+        "message": "删除无用库表日志，提高初始化速度",
+        "url": "https://github.com/jeecgboot/JeecgBoot/commit/27da52054fad962fb40533defdacda089480c256"
+    },
+    {
+        "sha": "37a5e6841d556602e5d1018d5fbd1699c9837b91",
+        "author": "JEECG",
+        "email": "445654970@qq.com",
+        "date": "2026-07-09T03:42:56Z",
+        "message": "升级 minio 到 9.0.3，适配 Method 类迁移及 stream 方法签名变更\n\nCo-authored-by: Copilot <223556219+Copilot@users.noreply.github.com>",
+        "url": "https://github.com/jeecgboot/JeecgBoot/commit/37a5e6841d556602e5d1018d5fbd1699c9837b91"
+    },
+    {
+        "sha": "2ebe098b5cd444aa0368bcf995ec3107c64ea552",
+        "author": "JEECG",
+        "email": "445654970@qq.com",
+        "date": "2026-07-09T03:33:41Z",
+        "message": "升级langchain4j从1.12.2到1.17.2、apache-tika.version>3.3.1、langchain4j-pgvector切回官方版本(官方已解决pgvector向量数据库不支持2000维度问题)",
+        "url": "https://github.com/jeecgboot/JeecgBoot/commit/2ebe098b5cd444aa0368bcf995ec3107c64ea552"
+    },
+    {
+        "sha": "77f06b5baa4bdbf4de0ac8b23810b6737f9fb2d8",
+        "author": "JEECG",
+        "email": "445654970@qq.com",
+        "date": "2026-07-09T03:24:26Z",
+        "message": "更新升级内容，增加底层依赖升级",
+        "url": "https://github.com/jeecgboot/JeecgBoot/commit/77f06b5baa4bdbf4de0ac8b23810b6737f9fb2d8"
+    },
+    {
+        "sha": "14cd042c6ba84a565d318828747a2bcec0c59e0f",
+        "author": "JEECG",
+        "email": "445654970@qq.com",
+        "date": "2026-07-09T03:17:06Z",
+        "message": "默认切换至 deepseek-v4-pro",
+        "url": "https://github.com/jeecgboot/JeecgBoot/commit/14cd042c6ba84a565d318828747a2bcec0c59e0f"
+    },
+    {
+        "sha": "40b7c1863110b4773f1865c058c0bc31cfccf629",
+        "author": "JEECG",
+        "email": "445654970@qq.com",
+        "date": "2026-07-09T03:14:54Z",
+        "message": "默认切换至 deepseek-v4-pro",
+        "url": "https://github.com/jeecgboot/JeecgBoot/commit/40b7c1863110b4773f1865c058c0bc31cfccf629"
+    },
+    {
+        "sha": "291f347330d44df651cf4d17daaca5695ad61d72",
+        "author": "JEECG",
+        "email": "445654970@qq.com",
+        "date": "2026-07-09T03:13:44Z",
+        "message": "升级langchain4j从1.12.2到1.17.2、apache-tika.version>3.3.1、langchain4j-pgvector切回官方版本(官方已解决pgvector向量数据库不支持2000维度问题)",
+        "url": "https://github.com/jeecgboot/JeecgBoot/commit/291f347330d44df651cf4d17daaca5695ad61d72"
+    },
+    {
+        "sha": "65a4b50ebc7f5070581879458559bbfca86be0d5",
+        "author": "JEECG",
+        "email": "445654970@qq.com",
+        "date": "2026-07-09T02:53:53Z",
+        "message": "升级commonmark.version>0.28.0、autopoi2.0.5、commons-io.version>2.21.0",
+        "url": "https://github.com/jeecgboot/JeecgBoot/commit/65a4b50ebc7f5070581879458559bbfca86be0d5"
+    },
+    {
+        "sha": "9ae962382afc3c3d5886bbe12ce8363335c8c181",
+        "author": "JEECG",
+        "email": "445654970@qq.com",
+        "date": "2026-07-09T01:36:01Z",
+        "message": "jeecg-starter的version升级到 3.9.4",
+        "url": "https://github.com/jeecgboot/JeecgBoot/commit/9ae962382afc3c3d5886bbe12ce8363335c8c181"
+    },
+    {
+        "sha": "704fa8efbb389503a040c7235a6f62d2675440d5",
+        "author": "JEECG",
+        "email": "445654970@qq.com",
+        "date": "2026-07-08T14:48:17Z",
+        "message": "提供springboot4版本的aiflow",
+        "url": "https://github.com/jeecgboot/JeecgBoot/commit/704fa8efbb389503a040c7235a6f62d2675440d5"
+    },
+    {
+        "sha": "74c60bbefb2ebe2a34814c3294b4f7841bd5eea6",
+        "author": "JEECG",
+        "email": "445654970@qq.com",
+        "date": "2026-07-08T12:51:55Z",
+        "message": "调整顺序",
+        "url": "https://github.com/jeecgboot/JeecgBoot/commit/74c60bbefb2ebe2a34814c3294b4f7841bd5eea6"
+    },
+    {
+        "sha": "f8dc79c36cbc1ec6da4abbec389b343d6d0192a6",
+        "author": "JEECG",
+        "email": "445654970@qq.com",
+        "date": "2026-07-08T12:50:55Z",
+        "message": "nacos需要开放新管理端口",
+        "url": "https://github.com/jeecgboot/JeecgBoot/commit/f8dc79c36cbc1ec6da4abbec389b343d6d0192a6"
+    },
+    {
+        "sha": "cbca341f2c4311fcf220e83c082936cf4ed9f3b3",
+        "author": "JEECG",
+        "email": "445654970@qq.com",
+        "date": "2026-07-08T10:48:25Z",
+        "message": "升级springboot4 优化配置，删除无用的配置",
+        "url": "https://github.com/jeecgboot/JeecgBoot/commit/cbca341f2c4311fcf220e83c082936cf4ed9f3b3"
+    },
+    {
+        "sha": "0953b01e9975258b08628eb4a6cf6a62e5e847a8",
+        "author": "JEECG",
+        "email": "445654970@qq.com",
+        "date": "2026-07-08T10:46:36Z",
+        "message": "升级积木报表和大屏，到springboot4版本，解决 “springboot4 版本启动报错 #9766”",
+        "url": "https://github.com/jeecgboot/JeecgBoot/commit/0953b01e9975258b08628eb4a6cf6a62e5e847a8"
+    },
+    {
+        "sha": "68d4b2d24c4ac5dd4add4780afd8b273fe08059a",
+        "author": "JEECG",
+        "email": "445654970@qq.com",
+        "date": "2026-07-07T13:56:22Z",
+        "message": "架构升级springboot4",
+        "url": "https://github.com/jeecgboot/JeecgBoot/commit/68d4b2d24c4ac5dd4add4780afd8b273fe08059a"
+    },
+    {
+        "sha": "fe26227ce5eb06b03b599d92ba5fb1cb73eeaaf1",
+        "author": "JEECG",
+        "email": "445654970@qq.com",
+        "date": "2026-07-07T13:56:13Z",
+        "message": "乱码改英文",
+        "url": "https://github.com/jeecgboot/JeecgBoot/commit/fe26227ce5eb06b03b599d92ba5fb1cb73eeaaf1"
+    }
+]

@@ -1,0 +1,242 @@
+[
+    {
+        "sha": "fc735acd0f419483e2e1e219d19977ba90b45eed",
+        "author": "Cory Snider",
+        "email": "csnider@mirantis.com",
+        "date": "2026-07-13T21:44:33Z",
+        "message": "Merge pull request #52984 from corhere/nftables-templates\n\nlibnetwork/internal/nftables: preparations for Swarm support",
+        "url": "https://github.com/moby/moby/commit/fc735acd0f419483e2e1e219d19977ba90b45eed"
+    },
+    {
+        "sha": "d7ebce017b2fb9ed0bdb43887e3efce10ce7ca87",
+        "author": "Paweł Gronowski",
+        "email": "pawel.gronowski@docker.com",
+        "date": "2026-07-13T18:06:43Z",
+        "message": "Merge pull request #53041 from vvoland/gotestsum-fmt\n\nhack/integration-test: Use testname format",
+        "url": "https://github.com/moby/moby/commit/d7ebce017b2fb9ed0bdb43887e3efce10ce7ca87"
+    },
+    {
+        "sha": "17855ab700c73c88a32ca278e39baac96f08127b",
+        "author": "Paweł Gronowski",
+        "email": "pawel.gronowski@docker.com",
+        "date": "2026-07-13T14:49:24Z",
+        "message": "Merge pull request #53062 from thaJeztah/stdlib_fuzzing\n\nreplace go-fuzz-headers for native Go fuzzing",
+        "url": "https://github.com/moby/moby/commit/17855ab700c73c88a32ca278e39baac96f08127b"
+    },
+    {
+        "sha": "22310f96ad38a39588719c326ae743760adcf6a6",
+        "author": "Akihiro Suda",
+        "email": "akihiro.suda.cz@hco.ntt.co.jp",
+        "date": "2026-07-13T14:37:42Z",
+        "message": "Merge pull request #53055 from thaJeztah/bump_x_deps\n\nvendor: update golang.org/x/* dependencies",
+        "url": "https://github.com/moby/moby/commit/22310f96ad38a39588719c326ae743760adcf6a6"
+    },
+    {
+        "sha": "23ac0631a5f828e6b04011836c16f7346f16115b",
+        "author": "Sebastiaan van Stijn",
+        "email": "thaJeztah@users.noreply.github.com",
+        "date": "2026-07-13T12:23:20Z",
+        "message": "Merge pull request #53053 from thaJeztah/bump_rootlesskit_bin\n\nDockerfile: update RootlessKit to v3.0.2",
+        "url": "https://github.com/moby/moby/commit/23ac0631a5f828e6b04011836c16f7346f16115b"
+    },
+    {
+        "sha": "f4c7eeabd0ef9a9d8a3f5c4ed784365bd639a9a7",
+        "author": "Sebastiaan van Stijn",
+        "email": "thaJeztah@users.noreply.github.com",
+        "date": "2026-07-13T11:24:16Z",
+        "message": "Merge pull request #53050 from thaJeztah/bump_containerd_bin\n\nDockerfile: update to containerd v2.3.3, runhcs v0.15.0-rc.3",
+        "url": "https://github.com/moby/moby/commit/f4c7eeabd0ef9a9d8a3f5c4ed784365bd639a9a7"
+    },
+    {
+        "sha": "38a3b4f4e2bc54c4f8dfff84d3762ac61551f0a1",
+        "author": "Sebastiaan van Stijn",
+        "email": "github@gone.nl",
+        "date": "2026-07-13T08:39:24Z",
+        "message": "daemon/pkg/oci: use native Go fuzzing\n\nReplace go-fuzz-headers with native fuzz parameters and construct Record\nvalues directly from the fuzz input.\n\nSigned-off-by: Sebastiaan van Stijn <github@gone.nl>",
+        "url": "https://github.com/moby/moby/commit/38a3b4f4e2bc54c4f8dfff84d3762ac61551f0a1"
+    },
+    {
+        "sha": "c9a4739cd041e6d3f0254f342e1722406eb5a180",
+        "author": "Sebastiaan van Stijn",
+        "email": "github@gone.nl",
+        "date": "2026-07-10T20:10:08Z",
+        "message": "daemon/libnetwork/etchosts: use native Go fuzzing\n\nReplace go-fuzz-headers with native fuzz parameters and construct Record\nvalues directly from the fuzz input. This also fuzzes netip.Addr values\ninstead of the zero value.\n\nSigned-off-by: Sebastiaan van Stijn <github@gone.nl>",
+        "url": "https://github.com/moby/moby/commit/c9a4739cd041e6d3f0254f342e1722406eb5a180"
+    },
+    {
+        "sha": "0015de4032efefaad5584e4f1a92c9e52ea86bab",
+        "author": "Sebastiaan van Stijn",
+        "email": "github@gone.nl",
+        "date": "2026-07-10T19:41:56Z",
+        "message": "daemon/logger/jsonfilelog/jsonlog: use native Go fuzzing\n\nReplace go-fuzz-headers with native fuzz parameters.\n\nConstructing JSONLogs directly simplifies the fuzz target and also\nallows exercising a range of valid time.Time values, whereas the\nprevious fuzzer left Created as the zero value.\n\nSigned-off-by: Sebastiaan van Stijn <github@gone.nl>",
+        "url": "https://github.com/moby/moby/commit/0015de4032efefaad5584e4f1a92c9e52ea86bab"
+    },
+    {
+        "sha": "149873ff1d05a65c9457085b823504c5aaf253d0",
+        "author": "Sebastiaan van Stijn",
+        "email": "github@gone.nl",
+        "date": "2026-07-10T19:25:41Z",
+        "message": "pkg/tailfile: use native Go fuzzing for FuzzTailFile\n\nThe fuzz target only requires []byte and uint64 inputs, so\ngo-fuzz-headers is unnecessary. Use native fuzz parameters instead.\n\nSigned-off-by: Sebastiaan van Stijn <github@gone.nl>",
+        "url": "https://github.com/moby/moby/commit/149873ff1d05a65c9457085b823504c5aaf253d0"
+    },
+    {
+        "sha": "3ada3d9d060a0ac14496b2ef123893d2818c5ffb",
+        "author": "Sebastiaan van Stijn",
+        "email": "github@gone.nl",
+        "date": "2026-07-10T17:33:35Z",
+        "message": "vendor: golang.org/x/tools v0.48.0\n\nfull diff: https://github.com/golang/tools/compare/v0.47.0...v0.48.0\n\nSigned-off-by: Sebastiaan van Stijn <github@gone.nl>",
+        "url": "https://github.com/moby/moby/commit/3ada3d9d060a0ac14496b2ef123893d2818c5ffb"
+    },
+    {
+        "sha": "0681dd057c40ac7123da3a55d6c9bb994c89df14",
+        "author": "Sebastiaan van Stijn",
+        "email": "github@gone.nl",
+        "date": "2026-07-10T17:15:27Z",
+        "message": "vendor: golang.org/x/net v0.57.0\n\nRelevant changes (in vendor):\n\n- bpf: add security considerations to package docs\n- http2: initialize Transport on NewClientConn\n  fixes: x/net/http2: zero Transport not ready for use\n- idna: reject all-ASCII xn-- labels on all Go versions\n  fixes x/net/idna: ToUnicode accepts Punycode labels encoding pure ASCII labels\n\nfull diff: https://github.com/golang/net/compare/v0.56.0...v0.57.0\n\nSigned-off-by: Sebastiaan van Stijn <github@gone.nl>",
+        "url": "https://github.com/moby/moby/commit/0681dd057c40ac7123da3a55d6c9bb994c89df14"
+    },
+    {
+        "sha": "d25454884d862f651804b00e3842d28b9cc7dc46",
+        "author": "Sebastiaan van Stijn",
+        "email": "github@gone.nl",
+        "date": "2026-07-10T17:03:39Z",
+        "message": "vendor: golang.org/x/crypto v0.54.0\n\nRelevant changes (in vendor):\n\n- argon2: update RFC 9106 parameter recommendations\n- ssh: sanitize client disconnect messages\n  A malicious peer can send control characters\n  and escape sequences in SSH_MSG_DISCONNECT;\n  strip these characters and %q escape it.\n- ssh: verify declared key type matches decoded key in authorized_keys\n  ParseAuthorizedKey and ParseKnownHosts previously ignored the key type\n  field (e.g. \"ssh-rsa\") in each entry, relying solely on the type\n  information embedded within the base64-encoded key blob.\n\nfull diff: https://github.com/golang/crypto/compare/v0.53.0...v0.54.0\n\nSigned-off-by: Sebastiaan van Stijn <github@gone.nl>",
+        "url": "https://github.com/moby/moby/commit/d25454884d862f651804b00e3842d28b9cc7dc46"
+    },
+    {
+        "sha": "2196db2b82e9d87fe3fe0ad9e22f6821cc97ac83",
+        "author": "Sebastiaan van Stijn",
+        "email": "github@gone.nl",
+        "date": "2026-07-10T16:52:49Z",
+        "message": "vendor: golang.org/x/text v0.39.0\n\n- unicode/norm: avoid infinite loop on invalid input\n\nfull diff: https://github.com/golang/text/compare/v0.38.0...v0.39.0\n\nSigned-off-by: Sebastiaan van Stijn <github@gone.nl>",
+        "url": "https://github.com/moby/moby/commit/2196db2b82e9d87fe3fe0ad9e22f6821cc97ac83"
+    },
+    {
+        "sha": "71ca8b8fa96b18b53c459b715495ab148b108651",
+        "author": "Sebastiaan van Stijn",
+        "email": "github@gone.nl",
+        "date": "2026-07-10T16:46:51Z",
+        "message": "vendor: golang.org/x/mod v0.38.0\n\nfull diff: https://github.com/golang/mod/compare/v0.37.0...v0.38.0\n\nSigned-off-by: Sebastiaan van Stijn <github@gone.nl>",
+        "url": "https://github.com/moby/moby/commit/71ca8b8fa96b18b53c459b715495ab148b108651"
+    },
+    {
+        "sha": "851ddebb207be5421e29122d060b4efb7e98644c",
+        "author": "Sebastiaan van Stijn",
+        "email": "github@gone.nl",
+        "date": "2026-07-10T16:50:38Z",
+        "message": "vendor: golang.org/x/tools v0.47.0\n\nfull diff: https://github.com/golang/tools/compare/v0.45.0...v0.47.0\n\nSigned-off-by: Sebastiaan van Stijn <github@gone.nl>",
+        "url": "https://github.com/moby/moby/commit/851ddebb207be5421e29122d060b4efb7e98644c"
+    },
+    {
+        "sha": "63cc351f31442bf844cf3f66821f85bcb9deba3b",
+        "author": "Sebastiaan van Stijn",
+        "email": "github@gone.nl",
+        "date": "2026-07-10T16:45:58Z",
+        "message": "vendor: golang.org/x/term v0.45.0\n\nfull diff: https://github.com/golang/term/compare/v0.44.0...v0.45.0\n\nSigned-off-by: Sebastiaan van Stijn <github@gone.nl>",
+        "url": "https://github.com/moby/moby/commit/63cc351f31442bf844cf3f66821f85bcb9deba3b"
+    },
+    {
+        "sha": "6dbd34245cbf83f9c7fa284a656cd6af8458a783",
+        "author": "Sebastiaan van Stijn",
+        "email": "github@gone.nl",
+        "date": "2026-07-10T16:45:11Z",
+        "message": "vendor: golang.org/x/sys v0.47.0\n\n- cpu: handle vendor suffixes in parseRelease\n- unix: update glibc to 2.43\n- unix: use epoll_pwait rather than epoll_wait\n- windows: avoid length overflow in NewNTString\n- windows: document safe usage of TrusteeValue\n\nfull diff: https://github.com/golang/sys/compare/v0.46.0...v0.47.0\n\nSigned-off-by: Sebastiaan van Stijn <github@gone.nl>",
+        "url": "https://github.com/moby/moby/commit/6dbd34245cbf83f9c7fa284a656cd6af8458a783"
+    },
+    {
+        "sha": "57a2acce6b61dc68ca225b5f16d48c2ab1b03073",
+        "author": "Sebastiaan van Stijn",
+        "email": "github@gone.nl",
+        "date": "2026-07-10T16:36:28Z",
+        "message": "vendor: golang.org/x/sync v0.22.0\n\nsemaphore: panic on negative weights\n\nfull diff: https://github.com/golang/sync/compare/v0.21.0...v0.22.0\n\nSigned-off-by: Sebastiaan van Stijn <github@gone.nl>",
+        "url": "https://github.com/moby/moby/commit/57a2acce6b61dc68ca225b5f16d48c2ab1b03073"
+    },
+    {
+        "sha": "d1c2e162eb2aeb0919a7805a72f798c226c0900d",
+        "author": "Sebastiaan van Stijn",
+        "email": "github@gone.nl",
+        "date": "2026-07-10T16:23:18Z",
+        "message": "Dockerfile: update RootlessKit to v3.0.2\n\nrelease notes: https://github.com/rootless-containers/rootlesskit/releases/tag/v3.0.2\nfull diff: https://github.com/rootless-containers/rootlesskit/compare/v3.0.1...v3.0.2\n\nSigned-off-by: Sebastiaan van Stijn <github@gone.nl>",
+        "url": "https://github.com/moby/moby/commit/d1c2e162eb2aeb0919a7805a72f798c226c0900d"
+    },
+    {
+        "sha": "294d1355cd34ee50e94b1f463099a38333225218",
+        "author": "Paweł Gronowski",
+        "email": "pawel.gronowski@docker.com",
+        "date": "2026-07-10T12:45:20Z",
+        "message": "Merge pull request #53047 from thaJeztah/vendor_containerd\n\nvendor: github.com/containerd/containerd/v2 v2.2.6",
+        "url": "https://github.com/moby/moby/commit/294d1355cd34ee50e94b1f463099a38333225218"
+    },
+    {
+        "sha": "41db869bd605fc8214d89083704c148600c3a7fe",
+        "author": "Sebastiaan van Stijn",
+        "email": "github@gone.nl",
+        "date": "2026-07-10T12:27:41Z",
+        "message": "Dockerfile: update to containerd v2.3.3, runhcs v0.15.0-rc.3\n\nThis also updates the runhcs binary to v0.15.0-rc.3\n\nHighlights\n\n- Set SystemTemp environment variable on Windows so temp directory overrides work for SYSTEM services\n\nContainer Runtime Interface (CRI)\n\n- Fix nil pointer dereference in NRI GetIPs during pod sandbox teardown or container exit\n- Reject CreateContainer calls when the target sandbox is not running\n- Ensure sandbox shutdown on RunPodSandbox hook failures to avoid mount leaks\n\nImage Distribution\n\n- Surface OCI error bodies in registry 403 responses by falling back to GET requests\n\nSnapshotters\n\n- Align default 4K mkfs block size for EROFS across all platforms\n\nrelease notes: https://github.com/containerd/containerd/releases/tag/v2.3.3\nfull diff: https://github.com/containerd/containerd/compare/v2.3.2...v2.3.3\n\nSigned-off-by: Sebastiaan van Stijn <github@gone.nl>",
+        "url": "https://github.com/moby/moby/commit/41db869bd605fc8214d89083704c148600c3a7fe"
+    },
+    {
+        "sha": "7413b6422e0be1343aadcce59136ea088e1bd9fc",
+        "author": "Sebastiaan van Stijn",
+        "email": "github@gone.nl",
+        "date": "2026-07-10T09:45:35Z",
+        "message": "vendor: github.com/containerd/containerd/v2 v2.2.6\n\nrelevant changes in vendor:\n\n- fix: avoid content storage pollution by limiting the fallback on ref resolution\n\nrelease notes: https://github.com/containerd/containerd/releases/tag/v2.2.6\nfull diff: https://github.com/containerd/containerd/compare/v2.2.5...v2.2.6\n\nSigned-off-by: Sebastiaan van Stijn <github@gone.nl>",
+        "url": "https://github.com/moby/moby/commit/7413b6422e0be1343aadcce59136ea088e1bd9fc"
+    },
+    {
+        "sha": "658b20b06a4ac16a23e1b852ae15fc4bde94f25a",
+        "author": "Paweł Gronowski",
+        "email": "pawel.gronowski@docker.com",
+        "date": "2026-07-09T17:20:36Z",
+        "message": "hack/integration-test: Forward CI env var into test containers\n\ngotestsum enables color output for known CI environments by checking\nwhether CI is set first, then looking for a vendor-specific variable\n(GITHUB_ACTIONS, GITLAB_CI, etc.).\n\nGITHUB_ACTIONS was already forwarded into the test containers, but CI\nwas not, so the check was never reached and gotestsum fell back to\nisatty, which returns no-color for the non-TTY pipes used inside Docker.\n\nSigned-off-by: Paweł Gronowski <pawel.gronowski@docker.com>",
+        "url": "https://github.com/moby/moby/commit/658b20b06a4ac16a23e1b852ae15fc4bde94f25a"
+    },
+    {
+        "sha": "2c299ea859b27b1d846e4750e68f52997cedc94c",
+        "author": "Paweł Gronowski",
+        "email": "pawel.gronowski@docker.com",
+        "date": "2026-07-09T13:11:53Z",
+        "message": "hack/integration-test: Use testname format\n\nSigned-off-by: Paweł Gronowski <pawel.gronowski@docker.com>",
+        "url": "https://github.com/moby/moby/commit/2c299ea859b27b1d846e4750e68f52997cedc94c"
+    },
+    {
+        "sha": "0657eaeb4ba0acf40013f75e5d49bb4afdce25d8",
+        "author": "Paweł Gronowski",
+        "email": "pawel.gronowski@docker.com",
+        "date": "2026-07-09T17:12:20Z",
+        "message": "Merge pull request #53032 from vvoland/flaky-testlogs\n\nintegration/container: Run logs test without networking",
+        "url": "https://github.com/moby/moby/commit/0657eaeb4ba0acf40013f75e5d49bb4afdce25d8"
+    },
+    {
+        "sha": "5106eaeabf182800b0cc3d2080bf98b9d82608ad",
+        "author": "Sebastiaan van Stijn",
+        "email": "thaJeztah@users.noreply.github.com",
+        "date": "2026-07-09T14:42:17Z",
+        "message": "Merge pull request #52973 from SABITHSAHEB/no-env-in-migration-log\n\ndaemon: do not log full environment on migration",
+        "url": "https://github.com/moby/moby/commit/5106eaeabf182800b0cc3d2080bf98b9d82608ad"
+    },
+    {
+        "sha": "5ecb126ca682e5104f4458acf13f56a3de165eb6",
+        "author": "Sebastiaan van Stijn",
+        "email": "thaJeztah@users.noreply.github.com",
+        "date": "2026-07-09T14:22:33Z",
+        "message": "Merge pull request #53017 from vvoland/flaky-inspectnetwork\n\nintegration/network: Fix flaky TestInspectNetwork/AfterLeaderChange",
+        "url": "https://github.com/moby/moby/commit/5ecb126ca682e5104f4458acf13f56a3de165eb6"
+    },
+    {
+        "sha": "bdf525cde6f0271c34a46e060dc326b11659778f",
+        "author": "Sebastiaan van Stijn",
+        "email": "thaJeztah@users.noreply.github.com",
+        "date": "2026-07-09T13:32:48Z",
+        "message": "Merge pull request #53039 from thaJeztah/cleanup_state_step1\n\ndaemon/container: State: fixes and cleanups",
+        "url": "https://github.com/moby/moby/commit/bdf525cde6f0271c34a46e060dc326b11659778f"
+    },
+    {
+        "sha": "1c7368915c01933c964efc6dea471524ee9e033c",
+        "author": "Paweł Gronowski",
+        "email": "pawel.gronowski@docker.com",
+        "date": "2026-07-09T13:06:16Z",
+        "message": "Merge pull request #53020 from thaJeztah/cleaner_buildContainerIdsFilter\n\nintegration/build: buildContainerIdsFilter: use strings.Cut",
+        "url": "https://github.com/moby/moby/commit/1c7368915c01933c964efc6dea471524ee9e033c"
+    }
+]

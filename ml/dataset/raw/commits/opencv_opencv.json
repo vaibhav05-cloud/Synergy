@@ -1,0 +1,242 @@
+[
+    {
+        "sha": "e6b1ef272ebe4fb9f2e3b6c3b7020e915dc3e812",
+        "author": "Alexander Smorkalov",
+        "email": "2536374+asmorkalov@users.noreply.github.com",
+        "date": "2026-07-14T05:42:06Z",
+        "message": "Merge pull request #29511 from Akansha-977:histogram_IPP_4.x\n\nExtracted IPP to HAL for calcHist function in 4.x",
+        "url": "https://github.com/opencv/opencv/commit/e6b1ef272ebe4fb9f2e3b6c3b7020e915dc3e812"
+    },
+    {
+        "sha": "1bea199e008070b3256d60854511682c9b102470",
+        "author": "Alexander Smorkalov",
+        "email": "2536374+asmorkalov@users.noreply.github.com",
+        "date": "2026-07-14T05:25:34Z",
+        "message": "Merge pull request #29437 from intel-staging:dev/tizmajlo/ippicv_20260630\n\nUpdate IPP ICV integration to IPP 2026.0.0 (20260630)",
+        "url": "https://github.com/opencv/opencv/commit/1bea199e008070b3256d60854511682c9b102470"
+    },
+    {
+        "sha": "42cd88d7376ad225bbccc75d34f2a31a408c2214",
+        "author": "Alexander Smorkalov",
+        "email": "2536374+asmorkalov@users.noreply.github.com",
+        "date": "2026-07-14T05:19:57Z",
+        "message": "Merge pull request #29509 from asmorkalov:as/ubuntu_26.04_warn_fix\n\nSamples build warning fix on Ubuntu 26.04",
+        "url": "https://github.com/opencv/opencv/commit/42cd88d7376ad225bbccc75d34f2a31a408c2214"
+    },
+    {
+        "sha": "4c3895e96cbb264b4be34b77dd85624e7cc552c3",
+        "author": "Alexander Smorkalov",
+        "email": "alexander.smorkalov@opencv.ai",
+        "date": "2026-07-13T07:45:42Z",
+        "message": "Samples build warning fix on Ubuntu 26.04",
+        "url": "https://github.com/opencv/opencv/commit/4c3895e96cbb264b4be34b77dd85624e7cc552c3"
+    },
+    {
+        "sha": "2c14cc189756913ec11ee3be3e9d29675df93830",
+        "author": "Akansha Mallick",
+        "email": "akanshamallick977@gmail.com",
+        "date": "2026-07-09T09:09:14Z",
+        "message": "Extracted IPP to HAL for calcHist function",
+        "url": "https://github.com/opencv/opencv/commit/2c14cc189756913ec11ee3be3e9d29675df93830"
+    },
+    {
+        "sha": "7f9f6acb83c6d8517dbad39d583904fe57f33eb2",
+        "author": "Alexander Smorkalov",
+        "email": "2536374+asmorkalov@users.noreply.github.com",
+        "date": "2026-07-12T14:11:55Z",
+        "message": "Merge pull request #29502 from asmorkalov:as/msmf_audio\n\nvideoio(MSMF): fix audio sample-rate validation and dropped last frame",
+        "url": "https://github.com/opencv/opencv/commit/7f9f6acb83c6d8517dbad39d583904fe57f33eb2"
+    },
+    {
+        "sha": "4533beab85eac32af1a4e0eeee438fc2e76e3769",
+        "author": "Varun Jaiswal",
+        "email": "varun.jaiswal@bigvisionllc.com",
+        "date": "2026-07-10T07:12:12Z",
+        "message": "videoio(MSMF): fix audio sample-rate validation and dropped last frame (#27438)",
+        "url": "https://github.com/opencv/opencv/commit/4533beab85eac32af1a4e0eeee438fc2e76e3769"
+    },
+    {
+        "sha": "87af90b84740358f9d982accb7258b9504fadd51",
+        "author": "Akansha-977",
+        "email": "akanshamallick977@gmail.com",
+        "date": "2026-07-10T15:28:10Z",
+        "message": "Merge pull request #29463 from Akansha-977:distransform_IPP_migration_4.x\n\nDistransform function IPP migration to HAL in 4.x #29463\n\n### Pull Request Readiness Checklist\n\nSee details at https://github.com/opencv/opencv/wiki/How_to_contribute#making-a-good-pull-request\n\n- [x] I agree to contribute to the project under Apache 2 License.\n- [x] To the best of my knowledge, the proposed patch is not based on a code under GPL or another license that is incompatible with OpenCV\n- [x] The PR is proposed to the proper branch\n- [x] There is a reference to the original bug report and related work\n- [x] There is accuracy test, performance test and test data in opencv_extra repository, if applicable\n      Patch to opencv_extra has the same branch name.\n- [x] The feature is well documented and sample code can be built with the project CMake",
+        "url": "https://github.com/opencv/opencv/commit/87af90b84740358f9d982accb7258b9504fadd51"
+    },
+    {
+        "sha": "d7e6e58652db60ee57b807086c3bfef0c5d836e6",
+        "author": "FAN YUCHEN",
+        "email": "2994114386@qq.com",
+        "date": "2026-07-10T12:59:29Z",
+        "message": "Merge pull request #29487 from Functionhx:fix/docs-combined\n\nFix calibration tutorial docs, decomposeProjectionMatrix, and convertMaps performance claims #29487\n\nFixes #25655, #26791, #27277.\n\nThree doc fixes:\n1. Calibration tutorial: rows/cols swapped, fixed np.mgrid consistency\n2. decomposeProjectionMatrix: clarified transVect is camera center in homogeneous coordinates\n3. convertMaps: replaced overstated 2x speed claim\n\n### Pull Request Readiness Checklist\n- [x] I agree to contribute under Apache 2 License\n- [x] Not based on GPL/incompatible license\n- [x] PR proposed to proper branch (4.x)\n- [x] Reference to original bug report and related work\n- [ ] Accuracy test, performance test, test data: N/A (doc-only)\n- [x] Feature well documented and sample code buildable",
+        "url": "https://github.com/opencv/opencv/commit/d7e6e58652db60ee57b807086c3bfef0c5d836e6"
+    },
+    {
+        "sha": "b21eae2b8bc057e854433efafb53f2de0efb7b1c",
+        "author": "LiuChenjiayi",
+        "email": "143918586+EuropaRanger@users.noreply.github.com",
+        "date": "2026-07-10T12:44:14Z",
+        "message": "Merge pull request #29149 from EuropaRanger:gapi_doc_update\n\nGapi doc update #29149\n\nThis PR improves G-API documentation by clarifying the introduction and kernel API pages\n- fixing some spelling errors\n- operator|() can now link to the overloaded version that is actually called.\n- supplemented and revised the doc based on the author's annotations.\n\nThe change is documentation-only and does not affect runtime behavior. I tested the doc reconstruction of this module. \n\n### Pull Request Readiness Checklist\n\nSee details at https://github.com/opencv/opencv/wiki/How_to_contribute#making-a-good-pull-request\n\n- [x] I agree to contribute to the project under Apache 2 License.\n- [x] To the best of my knowledge, the proposed patch is not based on a code under GPL or another license that is incompatible with OpenCV\n- [x] The PR is proposed to the proper branch\n- [ ] There is a reference to the original bug report and related work\n- [ ] There is accuracy test, performance test and test data in opencv_extra repository, if applicable\n      Patch to opencv_extra has the same branch name.\n- [ ] The feature is well documented and sample code can be built with the project CMake",
+        "url": "https://github.com/opencv/opencv/commit/b21eae2b8bc057e854433efafb53f2de0efb7b1c"
+    },
+    {
+        "sha": "b41dd0fdfff2d196c59e0434caff8d92e7ce4ade",
+        "author": "Alexander Smorkalov",
+        "email": "2536374+asmorkalov@users.noreply.github.com",
+        "date": "2026-07-10T12:06:40Z",
+        "message": "Merge pull request #29491 from Akansha-977:threshold_IPP_4.x\n\nExtracted IPP to HAL for threshold function in 4.x",
+        "url": "https://github.com/opencv/opencv/commit/b41dd0fdfff2d196c59e0434caff8d92e7ce4ade"
+    },
+    {
+        "sha": "be4ef205b10de3d0748cf6474a6bda1168e63b61",
+        "author": "Alexander Smorkalov",
+        "email": "2536374+asmorkalov@users.noreply.github.com",
+        "date": "2026-07-10T11:19:41Z",
+        "message": "Merge pull request #29490 from asmorkalov:as/disable_ipp_warpPerspective_F32C4_nearest\n\nDisabled IPP implementation for warpPerspective F32C4 as it triggers exception on Windows",
+        "url": "https://github.com/opencv/opencv/commit/be4ef205b10de3d0748cf6474a6bda1168e63b61"
+    },
+    {
+        "sha": "062a00bab33667c861d002fb09b30780ca37e73a",
+        "author": "Akansha Mallick",
+        "email": "akanshamallick977@gmail.com",
+        "date": "2026-07-07T09:51:34Z",
+        "message": "Extracted IPP to HAL for threshold function",
+        "url": "https://github.com/opencv/opencv/commit/062a00bab33667c861d002fb09b30780ca37e73a"
+    },
+    {
+        "sha": "b022a9b321f606cd70b5c6cef8f4f4a4d01c0364",
+        "author": "Prasad Ayush Kumar",
+        "email": "129419372+Prasadayus@users.noreply.github.com",
+        "date": "2026-07-10T10:59:24Z",
+        "message": "Merge pull request #29434 from Prasadayus:canny_ipp_extract\n\nExtracting IPP integaration as HAL for Canny #29434\n\nBackport of : https://github.com/opencv/opencv/pull/29433\n\n**Performance Numbers on Intel(R) Core(TM) i9-11900K:** https://docs.google.com/spreadsheets/d/1RMvUZP1tSQtdjuNQY9JasYmlx1L5iN9XWGhXtG5u1uI/edit?usp=sharing \n\n### Pull Request Readiness Checklist\n\nSee details at https://github.com/opencv/opencv/wiki/How_to_contribute#making-a-good-pull-request\n\n- [x] I agree to contribute to the project under Apache 2 License.\n- [x] To the best of my knowledge, the proposed patch is not based on a code under GPL or another license that is incompatible with OpenCV\n- [x] The PR is proposed to the proper branch\n- [x] There is a reference to the original bug report and related work\n- [x] There is accuracy test, performance test and test data in opencv_extra repository, if applicable\n      Patch to opencv_extra has the same branch name.\n- [x] The feature is well documented and sample code can be built with the project CMake",
+        "url": "https://github.com/opencv/opencv/commit/b022a9b321f606cd70b5c6cef8f4f4a4d01c0364"
+    },
+    {
+        "sha": "7230c1ce0872196e760907c0f9c8dbdaa955ed21",
+        "author": "Akansha-977",
+        "email": "akanshamallick977@gmail.com",
+        "date": "2026-07-10T09:16:45Z",
+        "message": "Merge pull request #29464 from Akansha-977:templatematch_IPP_4.x\n\nExtracting IPP to HAL for matchTemplate function in 4.x #29464\n\n### Pull Request Readiness Checklist\n\nSee details at https://github.com/opencv/opencv/wiki/How_to_contribute#making-a-good-pull-request\n\n- [x] I agree to contribute to the project under Apache 2 License.\n- [x] To the best of my knowledge, the proposed patch is not based on a code under GPL or another license that is incompatible with OpenCV\n- [x] The PR is proposed to the proper branch\n- [x] There is a reference to the original bug report and related work\n- [x] There is accuracy test, performance test and test data in opencv_extra repository, if applicable\n      Patch to opencv_extra has the same branch name.\n- [x] The feature is well documented and sample code can be built with the project CMake",
+        "url": "https://github.com/opencv/opencv/commit/7230c1ce0872196e760907c0f9c8dbdaa955ed21"
+    },
+    {
+        "sha": "818145f41d620625f7d117ebfe3ae9a244e0f125",
+        "author": "Alexander Smorkalov",
+        "email": "alexander.smorkalov@opencv.ai",
+        "date": "2026-07-10T06:13:56Z",
+        "message": "Disabled IPP implementation for warpPerspective F32C4 as it does not pass tests.",
+        "url": "https://github.com/opencv/opencv/commit/818145f41d620625f7d117ebfe3ae9a244e0f125"
+    },
+    {
+        "sha": "93cd614472d62044f61fb4da78476b316a06bbed",
+        "author": "Andrei Fedorov",
+        "email": "andrey.fedorov@intel.com",
+        "date": "2026-07-10T05:39:21Z",
+        "message": "Merge pull request #29477 from intel-staging:ipp/sort_enabling\n\nEnable ipp calls for sort, sortIdx#29477\n\nFollow up on https://github.com/opencv/opencv/pull/29184\nAlso introduced parallelization to sort similar to #29192\nPerformance is up to ~17x faster per our measurements\n+ ~127KB to binary size.\n\n### Pull Request Readiness Checklist\n\nSee details at https://github.com/opencv/opencv/wiki/How_to_contribute#making-a-good-pull-request\n\n- [x] I agree to contribute to the project under Apache 2 License.\n- [x] To the best of my knowledge, the proposed patch is not based on a code under GPL or another license that is incompatible with OpenCV\n- [x] The PR is proposed to the proper branch\n- [ ] There is a reference to the original bug report and related work\n- [ ] There is accuracy test, performance test and test data in opencv_extra repository, if applicable\n      Patch to opencv_extra has the same branch name.\n- [ ] The feature is well documented and sample code can be built with the project CMake",
+        "url": "https://github.com/opencv/opencv/commit/93cd614472d62044f61fb4da78476b316a06bbed"
+    },
+    {
+        "sha": "7507accf2e506f162cfe48a46e3be45e999f1ebe",
+        "author": "Alexander Smorkalov",
+        "email": "2536374+asmorkalov@users.noreply.github.com",
+        "date": "2026-07-09T15:06:28Z",
+        "message": "Merge pull request #29486 from asmorkalov:as/drop_yuv_gray_hal\n\nDrop HAL for cv_hal_cvtColorYUV2Gray as it's just copy.",
+        "url": "https://github.com/opencv/opencv/commit/7507accf2e506f162cfe48a46e3be45e999f1ebe"
+    },
+    {
+        "sha": "8eb2c8998c23700f8ef143eb407723d483b2adcb",
+        "author": "Alexander Smorkalov",
+        "email": "alexander.smorkalov@opencv.ai",
+        "date": "2026-07-09T13:51:20Z",
+        "message": "Drop HAL for cv_hal_cvtColorYUV2Gray as it's just copy.",
+        "url": "https://github.com/opencv/opencv/commit/8eb2c8998c23700f8ef143eb407723d483b2adcb"
+    },
+    {
+        "sha": "738739d7c23616aa715283d4ad0d1555b04895a2",
+        "author": "Alexander Smorkalov",
+        "email": "2536374+asmorkalov@users.noreply.github.com",
+        "date": "2026-07-09T12:35:03Z",
+        "message": "Merge pull request #29483 from asmorkalov:update_version_4.14.0-pre\n\npre: OpenCV 4.14.0 (version++)",
+        "url": "https://github.com/opencv/opencv/commit/738739d7c23616aa715283d4ad0d1555b04895a2"
+    },
+    {
+        "sha": "e978c193cf54b9b67ebbc097a768bbd2923c6187",
+        "author": "Alexander Smorkalov",
+        "email": "alexander.smorkalov@opencv.ai",
+        "date": "2026-07-09T09:35:42Z",
+        "message": "pre: OpenCV 4.14.0 (version++)",
+        "url": "https://github.com/opencv/opencv/commit/e978c193cf54b9b67ebbc097a768bbd2923c6187"
+    },
+    {
+        "sha": "b887e2fd3e6a50d26621ca298029c52eb11b476c",
+        "author": "yyyisyyy11",
+        "email": "lunhanyan@outlook.com",
+        "date": "2026-07-09T08:07:12Z",
+        "message": "Merge pull request #29018 from yyyisyyy11:project4_Lunhan_Yan\n\ndnn: add DynamicQuantizeLinear ONNX layer support #29018\n\n### Pull Request Readiness Checklist\n\n- [x] I agree to contribute to the project under Apache 2 License.\n- [x] To the best of my knowledge, the proposed patch is not based on a code under GPL or another license that is incompatible with OpenCV\n- [x] The PR is proposed to the proper branch\n- [x] There is a reference to the original bug report and target platform(s)\n- [x] There is an accuracy test\n- [ ] There is a performance test\n\n### Description\n\nImplements the ONNX `DynamicQuantizeLinear` operator (opset 11) for the OpenCV DNN module.\n\n**What it does:**\n\n- Adds `QuantizeDynamicLayer` and `DequantizeDynamicLayer` layer classes\n- Registers layers and adds ONNX importer dispatch for `DynamicQuantizeLinear`\n- Computes scale and zero-point at runtime from activation min/max\n- Quantizes FP32 input to int8 (stored as uint8 - 128, matching OpenCV convention)\n\n**Framework limitation & workaround:**\nDue to the single-dtype-per-layer constraint in `LayerData::dtype` (see #29017), the float32 scale output cannot be passed through the CV_8S blob pipeline directly. As a workaround, the scale is encoded as 4 raw bytes in a CV_8S `{1,4}` blob using `memcpy`, and decoded by the downstream `DequantizeDynamic` layer.\n\n**Testing:**\n\n- Custom accuracy tests reproduce all 3 ONNX conformance test cases: `test_dynamicquantizelinear`, `test_dynamicquantizelinear_max_adjusted`, `test_dynamicquantizelinear_min_adjusted`\n- Each test verifies: quantized values, scale, zero point, and round-trip dequantize accuracy\n- All existing quantization regression tests pass (42/42)\n\n**Conformance tests:**\nThe 6 conformance tests for `DynamicQuantizeLinear` remain in the parser denylist (they were already denylisted before this PR) because the framework cannot produce mixed-type outputs. The custom tests provide equivalent coverage.\n\n### Files changed\n\n- `modules/dnn/include/opencv2/dnn/all_layers.hpp` — layer class declarations\n- `modules/dnn/src/init.cpp` — layer registration\n- `modules/dnn/src/onnx/onnx_importer.cpp` — ONNX import dispatch\n- `modules/dnn/src/int8layers/quantization_utils.cpp` — layer implementations\n- `modules/dnn/test/test_onnx_importer.cpp` — custom accuracy tests",
+        "url": "https://github.com/opencv/opencv/commit/b887e2fd3e6a50d26621ca298029c52eb11b476c"
+    },
+    {
+        "sha": "0eb3778a1bc112bb3a1cc673e9d8173d2bbc109f",
+        "author": "Alexander Smorkalov",
+        "email": "2536374+asmorkalov@users.noreply.github.com",
+        "date": "2026-07-08T16:19:35Z",
+        "message": "Merge pull request #29473 from velonica0:28870\n\nimgproc: make RVV HAL resize bit-exact for 8U INTER_LINEAR (fixes #28870)",
+        "url": "https://github.com/opencv/opencv/commit/0eb3778a1bc112bb3a1cc673e9d8173d2bbc109f"
+    },
+    {
+        "sha": "9121ebe28b495d4f20e9b1a4e3b72f2b61a2f05c",
+        "author": "velonica0",
+        "email": "like@mail.nankai.edu.cn",
+        "date": "2026-07-08T12:24:31Z",
+        "message": "imgproc: make RVV HAL resize bit-exact for 8U INTER_LINEAR",
+        "url": "https://github.com/opencv/opencv/commit/9121ebe28b495d4f20e9b1a4e3b72f2b61a2f05c"
+    },
+    {
+        "sha": "d48bf69f65444a13f8a34b8982b083c1b78fa0e8",
+        "author": "Anushka",
+        "email": "anushkagupta200615@gmail.com",
+        "date": "2026-07-07T12:20:09Z",
+        "message": "Merge pull request #29455 from anushkagupta200615-jpg:fix-issue-29452\n\nFix #29452: Remove <complex.h> to prevent _Complex macro conflicts #29455\n\n### Pull Request Readiness Checklist\n\nSee details at https://github.com/opencv/opencv/wiki/How_to_contribute#making-a-good-pull-request\n\n- [x] I agree to contribute to the project under Apache 2 License.\n- [x] To the best of my knowledge, the proposed patch is not based on a code under GPL or another license that is incompatible with OpenCV\n- [x] The PR is proposed to the proper branch\n- [x] There is a reference to the original bug report and related work\n- [x] There is accuracy test, performance test and test data in opencv_extra repository, if applicable\n      Patch to opencv_extra has the same branch name.\n- [ ] The feature is well documented and sample code can be built with the project CMake\n\n---\n\n**Description:**\nResolves https://github.com/opencv/opencv/issues/29452\n\n**Reason for the issue:**\nThe C99 `<complex.h>` header defines the macro `complex` on some platforms (like NetBSD with GCC 14). Because it was included before C++ `<complex>`, this caused conflicts where `std::complex<T>` was being expanded into `std::_Complex<T>`, resulting in the reported syntax errors.\n\n**Changes made:**\n- Removed the unnecessary C-style `#include <complex.h>`.\n- Added a safety guard to `#undef complex` in case any transitive lapack headers attempt to define it, ensuring `std::complex` works cleanly without C-preprocessor interference.",
+        "url": "https://github.com/opencv/opencv/commit/d48bf69f65444a13f8a34b8982b083c1b78fa0e8"
+    },
+    {
+        "sha": "aa70c82ebe8317383af5ee2dbf76fe0e60de642d",
+        "author": "Alexander Smorkalov",
+        "email": "2536374+asmorkalov@users.noreply.github.com",
+        "date": "2026-07-07T11:42:49Z",
+        "message": "Merge pull request #29418 from uwezkhan:einsum-subscript-bound\n\nbound einsum subscript index before reading input shape",
+        "url": "https://github.com/opencv/opencv/commit/aa70c82ebe8317383af5ee2dbf76fe0e60de642d"
+    },
+    {
+        "sha": "c85397c3bbe536735e022a906e51fc60c0e824af",
+        "author": "Alexander Smorkalov",
+        "email": "2536374+asmorkalov@users.noreply.github.com",
+        "date": "2026-07-07T10:20:45Z",
+        "message": "Merge pull request #29462 from intel-staging:use_ipp_check_derive\n\nAdded missing IPP check in IPP HAL",
+        "url": "https://github.com/opencv/opencv/commit/c85397c3bbe536735e022a906e51fc60c0e824af"
+    },
+    {
+        "sha": "0488f6e942419ae64f31d90a6a41ab0a65a256b3",
+        "author": "Andrei Fedorov",
+        "email": "andrey.fedorov@intel.com",
+        "date": "2026-07-07T09:39:39Z",
+        "message": "Update deriv_ipp.cpp",
+        "url": "https://github.com/opencv/opencv/commit/0488f6e942419ae64f31d90a6a41ab0a65a256b3"
+    },
+    {
+        "sha": "51495995d2b99f7153c889245324c34893774145",
+        "author": "Alexander Smorkalov",
+        "email": "2536374+asmorkalov@users.noreply.github.com",
+        "date": "2026-07-07T08:45:59Z",
+        "message": "Merge pull request #29431 from asmorkalov:as/no_exact_ipp\n\nEnable non-exact IPP optimizations if build-time algorithm hint allows it",
+        "url": "https://github.com/opencv/opencv/commit/51495995d2b99f7153c889245324c34893774145"
+    },
+    {
+        "sha": "c344b7dcef3a7befdef92a5e56736fc0646bf1d7",
+        "author": "Alexander Smorkalov",
+        "email": "2536374+asmorkalov@users.noreply.github.com",
+        "date": "2026-07-07T07:21:31Z",
+        "message": "Merge pull request #29461 from rmsalinas:update-truco-ref\n\ndoc: update TRUCO publication status",
+        "url": "https://github.com/opencv/opencv/commit/c344b7dcef3a7befdef92a5e56736fc0646bf1d7"
+    }
+]

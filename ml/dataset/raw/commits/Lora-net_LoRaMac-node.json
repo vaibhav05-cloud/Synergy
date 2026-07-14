@@ -1,0 +1,242 @@
+[
+    {
+        "sha": "dcbcfb329b4a343ab007bc19ac43a8dc952b3354",
+        "author": "Martin Jäger",
+        "email": "17674105+martinjaeger@users.noreply.github.com",
+        "date": "2024-02-06T07:43:14Z",
+        "message": "mac: region: RegionCommon: fix implicit double promotion (#1600)\n\nThe calculation is done with float variables. However, the floor\r\nfunction is meant for double variables. floorf should be used instead.\r\n\r\nThe implicit double promotion leads to a warning/error if compiled with\r\nLLVM.\r\n\r\nSigned-off-by: Martin Jäger <martin@libre.solar>",
+        "url": "https://github.com/Lora-net/LoRaMac-node/commit/dcbcfb329b4a343ab007bc19ac43a8dc952b3354"
+    },
+    {
+        "sha": "99c2e5378dde37e3331bf3efdf9df8f77d4847ee",
+        "author": "Miguel Luis",
+        "email": "mluis@semtech.com",
+        "date": "2023-12-15T09:19:38Z",
+        "message": "Added a note concerning the LBM stack availability and LoRaMac-node moving to maintenance mode.",
+        "url": "https://github.com/Lora-net/LoRaMac-node/commit/99c2e5378dde37e3331bf3efdf9df8f77d4847ee"
+    },
+    {
+        "sha": "6384af8f4c4a57016c83f3d34430f0f68855e695",
+        "author": "Miguel Luis",
+        "email": "mluis@semtech.com",
+        "date": "2023-09-25T11:09:41Z",
+        "message": "Fixed PR #1569 for loop j variable wasn't being incremented.",
+        "url": "https://github.com/Lora-net/LoRaMac-node/commit/6384af8f4c4a57016c83f3d34430f0f68855e695"
+    },
+    {
+        "sha": "0dc490387e2228c792c0956c12d755f5bc33d732",
+        "author": "Miguel Luis",
+        "email": "mluis@semtech.com",
+        "date": "2023-06-08T13:31:20Z",
+        "message": "Fixed an issue where time to time the unicast and multicast ping-slot windows could stop being opened up until the next beacon reception",
+        "url": "https://github.com/Lora-net/LoRaMac-node/commit/0dc490387e2228c792c0956c12d755f5bc33d732"
+    },
+    {
+        "sha": "d08d0d548a2964834eeac430f06755dd58a444c4",
+        "author": "Miguel Luis",
+        "email": "mluis@semtech.com",
+        "date": "2023-06-08T13:27:49Z",
+        "message": "Fixed wrong variable being used to apply the multicast downlink data rate",
+        "url": "https://github.com/Lora-net/LoRaMac-node/commit/d08d0d548a2964834eeac430f06755dd58a444c4"
+    },
+    {
+        "sha": "b27aa872f03d0f40cea079302b2a3807b7669e5e",
+        "author": "Miguel Luis",
+        "email": "mluis@semtech.com",
+        "date": "2023-06-08T12:49:27Z",
+        "message": "Fixed potential continuous addition of DeviceTimeReq MAC command while Class B activation is pending",
+        "url": "https://github.com/Lora-net/LoRaMac-node/commit/b27aa872f03d0f40cea079302b2a3807b7669e5e"
+    },
+    {
+        "sha": "7518bb5d14c72cf3ae645071659a0caaa84d4f20",
+        "author": "Miguel Luis",
+        "email": "mluis@semtech.com",
+        "date": "2023-06-08T12:41:37Z",
+        "message": "Added a critical section protection for Ctx.PingSlotState and Ctx.MulticastSlotState variables update",
+        "url": "https://github.com/Lora-net/LoRaMac-node/commit/7518bb5d14c72cf3ae645071659a0caaa84d4f20"
+    },
+    {
+        "sha": "5c49ebc45591ce93db82d8e82af2c9f3f33aedc5",
+        "author": "Miguel Luis",
+        "email": "mluis@semtech.com",
+        "date": "2023-06-08T12:34:10Z",
+        "message": "Fixed the multicast downlink processing to only allow the reception if FCntDown is in the range of multicast group FCountMin..FCountMax",
+        "url": "https://github.com/Lora-net/LoRaMac-node/commit/5c49ebc45591ce93db82d8e82af2c9f3f33aedc5"
+    },
+    {
+        "sha": "4447cb83504d4e444d474a4ffe0eaf6e6843c84e",
+        "author": "Miguel Luis",
+        "email": "mluis@semtech.com",
+        "date": "2023-06-08T12:30:46Z",
+        "message": "Remove the possibility to receive multicast confirmed downlinks",
+        "url": "https://github.com/Lora-net/LoRaMac-node/commit/4447cb83504d4e444d474a4ffe0eaf6e6843c84e"
+    },
+    {
+        "sha": "6a10f355c2a9394493524882bece2eaededa2539",
+        "author": "Miguel Luis",
+        "email": "mluis@semtech.com",
+        "date": "2023-06-08T12:28:08Z",
+        "message": "Changed \"Check if we expect a ping or a multicast slot\" to not perform the check exclusively",
+        "url": "https://github.com/Lora-net/LoRaMac-node/commit/6a10f355c2a9394493524882bece2eaededa2539"
+    },
+    {
+        "sha": "70b00b346ab31523930dc81f776a20e1dd8359ec",
+        "author": "Jordan Yates",
+        "email": "jordan.yates.au@gmail.com",
+        "date": "2023-09-25T07:37:32Z",
+        "message": "utilities: fix shadowed variables (#1569)\n\nFix shadowed variables in the radio driver and utility functions.\r\n\r\nutilities.h:183:44: error: declaration of 'mask' shadows a previous\r\nlocal [-Werror=shadow]\r\n  183 | #define CRITICAL_SECTION_BEGIN( ) uint32_t mask; BoardCritica...\r\n\r\nSigned-off-by: Fabio Baltieri <fabiobaltieri@google.com>\r\nSigned-off-by: Jordan Yates <jordan.yates@data61.csiro.au>",
+        "url": "https://github.com/Lora-net/LoRaMac-node/commit/70b00b346ab31523930dc81f776a20e1dd8359ec"
+    },
+    {
+        "sha": "2bf36bde72f68257eb96b5c00900619546bedca8",
+        "author": "Miguel Luis",
+        "email": "mluis@semtech.com",
+        "date": "2023-01-10T13:08:02Z",
+        "message": "Fixed comment",
+        "url": "https://github.com/Lora-net/LoRaMac-node/commit/2bf36bde72f68257eb96b5c00900619546bedca8"
+    },
+    {
+        "sha": "672b37deec7589b2e7346d3acb6a0e8ba79fa9fe",
+        "author": "Miguel Luis",
+        "email": "mluis@semtech.com",
+        "date": "2022-12-09T13:48:26Z",
+        "message": "v4.7.0 release\n\nCloses #1394",
+        "url": "https://github.com/Lora-net/LoRaMac-node/commit/672b37deec7589b2e7346d3acb6a0e8ba79fa9fe"
+    },
+    {
+        "sha": "b566431647dce6fa5ba3a06a35c2927e03e8a9e0",
+        "author": "Miguel Luis",
+        "email": "mluis@semtech.com",
+        "date": "2022-12-09T12:35:02Z",
+        "message": "Fixed the way `RX2DataRate != 0x0F` is handled while processing a JoinAccept",
+        "url": "https://github.com/Lora-net/LoRaMac-node/commit/b566431647dce6fa5ba3a06a35c2927e03e8a9e0"
+    },
+    {
+        "sha": "f9bb6f9c7de1d30a37d65ead8e60bdbe5d09be3e",
+        "author": "Daniel Jaeckle",
+        "email": "daniel.jaeckle@stackforce.de",
+        "date": "2022-11-30T10:38:36Z",
+        "message": "Issue #1048 - Added a function to reset the stack internal state machine.",
+        "url": "https://github.com/Lora-net/LoRaMac-node/commit/f9bb6f9c7de1d30a37d65ead8e60bdbe5d09be3e"
+    },
+    {
+        "sha": "b6f383c2c66059f73c44cf7a1ec7bc20ecef3502",
+        "author": "Daniel Jaeckle",
+        "email": "daniel.jaeckle@stackforce.de",
+        "date": "2022-11-24T09:18:06Z",
+        "message": "Issue #1315 - Refactored and improved the way the duty-cycle is managed.",
+        "url": "https://github.com/Lora-net/LoRaMac-node/commit/b6f383c2c66059f73c44cf7a1ec7bc20ecef3502"
+    },
+    {
+        "sha": "23bb8cf67902ede0b9e28f2999c23a0ee1f472c7",
+        "author": "Daniel Jaeckle",
+        "email": "daniel.jaeckle@stackforce.de",
+        "date": "2022-11-22T14:50:41Z",
+        "message": "Fixed issue with RX2 data rate in case of 0x0F for RxParamSetupReq and JoinAccept",
+        "url": "https://github.com/Lora-net/LoRaMac-node/commit/23bb8cf67902ede0b9e28f2999c23a0ee1f472c7"
+    },
+    {
+        "sha": "c1090489931f2c407f840116360a02351fb7ad8a",
+        "author": "Miguel Luis",
+        "email": "mluis@semtech.com",
+        "date": "2022-11-22T14:47:45Z",
+        "message": "Fixed ABP join handling to be similar to OTAA join handling",
+        "url": "https://github.com/Lora-net/LoRaMac-node/commit/c1090489931f2c407f840116360a02351fb7ad8a"
+    },
+    {
+        "sha": "2f0df87b32cde514d25805ec9a7d197928ea18ac",
+        "author": "Johan Stokking",
+        "email": "johan@stokking.nl",
+        "date": "2022-11-18T12:38:38Z",
+        "message": "Support LoRaWAN 1.1 with ATECC608A/B secure element (#1382)\n\n* Clarify ATECC608B-TNGLORA is supported too\r\n\r\n* Support LoRaWAN 1.1 with ATECC608A/B secure element",
+        "url": "https://github.com/Lora-net/LoRaMac-node/commit/2f0df87b32cde514d25805ec9a7d197928ea18ac"
+    },
+    {
+        "sha": "0062112ab546457f711904c9cb41eca8381900f2",
+        "author": "Miguel Luis",
+        "email": "mluis@semtech.com",
+        "date": "2022-11-17T14:58:35Z",
+        "message": "Added support for new release of ARIB STD-T108 Ver1.4 under AS923 region",
+        "url": "https://github.com/Lora-net/LoRaMac-node/commit/0062112ab546457f711904c9cb41eca8381900f2"
+    },
+    {
+        "sha": "26dd83c228d54029cababb3c6fce9d87ccc6056d",
+        "author": "Jonathan Gordon",
+        "email": "github@jdgordon.info",
+        "date": "2022-11-04T12:30:03Z",
+        "message": "Allow USE_LRWAN_1_1_X_CRYPTO to be defined outside this header (#1373)\n\nCo-authored-by: Jonathan Gordon <jonathan.gordon@fleet.space>",
+        "url": "https://github.com/Lora-net/LoRaMac-node/commit/26dd83c228d54029cababb3c6fce9d87ccc6056d"
+    },
+    {
+        "sha": "b96e660137f58647491b0aa6dacc9b7ea181f9e0",
+        "author": "Miguel Luis",
+        "email": "mluis@semtech.com",
+        "date": "2022-11-04T10:21:51Z",
+        "message": "Issue #1372 - Added a check to verify that `SystemMaxRxError` provided value is in the range 0..500 ms",
+        "url": "https://github.com/Lora-net/LoRaMac-node/commit/b96e660137f58647491b0aa6dacc9b7ea181f9e0"
+    },
+    {
+        "sha": "7f25f7adb5b9bf7142f98f77c68363e8b1f7e8ee",
+        "author": "Miguel Luis",
+        "email": "mluis@semtech.com",
+        "date": "2022-10-25T11:59:00Z",
+        "message": "Issue #1086 - Fixed HardFault_Handler for Cortex-M0 targets",
+        "url": "https://github.com/Lora-net/LoRaMac-node/commit/7f25f7adb5b9bf7142f98f77c68363e8b1f7e8ee"
+    },
+    {
+        "sha": "b82cb6f17706bc4f3443953ae1f6cdce35015fe3",
+        "author": "Miguel Luis",
+        "email": "mluis@semtech.com",
+        "date": "2022-10-20T12:44:34Z",
+        "message": "Issue #1364 - Added ATECC608A_TNGLORA_SE to SECURE_ELEMENT_LIST in src/CMakeLists.txt",
+        "url": "https://github.com/Lora-net/LoRaMac-node/commit/b82cb6f17706bc4f3443953ae1f6cdce35015fe3"
+    },
+    {
+        "sha": "55f83f90ddbc4bc6aabd34a3262d3870548b3577",
+        "author": "Daniel Jaeckle",
+        "email": "daniel.jaeckle@stackforce.de",
+        "date": "2022-10-13T13:36:43Z",
+        "message": "Issue #913 - Added an option for MAC commands to verify against an explicit confirmation.",
+        "url": "https://github.com/Lora-net/LoRaMac-node/commit/55f83f90ddbc4bc6aabd34a3262d3870548b3577"
+    },
+    {
+        "sha": "2ca160bc518d0b94b365fcc3c51ee64cc7352b07",
+        "author": "Miguel Luis",
+        "email": "mluis@semtech.com",
+        "date": "2022-10-13T13:31:22Z",
+        "message": "Issue #1356 - Removed unused ACTIVE_REGION pre-processing check",
+        "url": "https://github.com/Lora-net/LoRaMac-node/commit/2ca160bc518d0b94b365fcc3c51ee64cc7352b07"
+    },
+    {
+        "sha": "0341ea712c41353d4f484acd5df18b48b17aeb84",
+        "author": "Miguel Luis",
+        "email": "mluis@semtech.com",
+        "date": "2022-10-13T12:34:19Z",
+        "message": "Issue #1359 - Fixed inconsistent handling of undefined callbacks\n\n- Ensured that every MacProcessNotify callback call has a guard (LoRaMac.c, LoRaMacClassB.c)\n- Added a guard to  GetRandomSeed callback call (LmHandler.c)\n- Added a guard to  OnNvmDataChange callback call (LmHandler.c)\n- Added a guard to OnNetworkParametersChange  callback call (LmHandler.c)\n- Added a guard to OnMacMcpsRequest, OnMacMlmeRequest, OnJoinRequest, OnTxData, OnRxData, OnClassChange, OnBeaconStatusChange,  and OnSysTimeUpdate callback calls (LmHandler.c, LmhpCompliance.c)",
+        "url": "https://github.com/Lora-net/LoRaMac-node/commit/0341ea712c41353d4f484acd5df18b48b17aeb84"
+    },
+    {
+        "sha": "aa2bef81931230facad19a4b4eadff4a39f06fbe",
+        "author": "Miguel Luis",
+        "email": "mluis@semtech.com",
+        "date": "2022-10-11T11:47:40Z",
+        "message": "Issue #1272 - Applied the proposed fix for the CRC check of empty struct",
+        "url": "https://github.com/Lora-net/LoRaMac-node/commit/aa2bef81931230facad19a4b4eadff4a39f06fbe"
+    },
+    {
+        "sha": "e851b079c82ba1bcf3f4d291ab69a571b0bf458a",
+        "author": "Simon Wörner",
+        "email": "git@simon-woerner.de",
+        "date": "2022-10-04T07:30:58Z",
+        "message": "Fixed potential buffer overflow in `ProcessRadioRxDone`",
+        "url": "https://github.com/Lora-net/LoRaMac-node/commit/e851b079c82ba1bcf3f4d291ab69a571b0bf458a"
+    },
+    {
+        "sha": "a16683053fc4b6a1fe69fb0fcc02483b0c951315",
+        "author": "Miguel Luis",
+        "email": "mluis@semtech.com",
+        "date": "2022-09-29T09:47:07Z",
+        "message": "Issue #1352 - Fixed uninitialized variable warning when O2 and O3 gcc compiler optimizations are used",
+        "url": "https://github.com/Lora-net/LoRaMac-node/commit/a16683053fc4b6a1fe69fb0fcc02483b0c951315"
+    }
+]

@@ -1,0 +1,194 @@
+[
+    {
+        "id": 2479996457,
+        "number": 217,
+        "title": "[Feature] Customize Ok/Failed Response, Tracing Request/Response Error, Logger",
+        "state": "closed",
+        "created_at": "2024-08-22T07:00:33Z",
+        "updated_at": "2024-08-22T16:31:43Z",
+        "closed_at": "2024-08-22T16:31:42Z",
+        "author": "dou-kaizen",
+        "comments": 5,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "Hi anh, em thấy hiện tại source mình chưa có custom cho response. Kiểu hiện tại em thấy các dự án lớn có một structure response cho Ok riêng, Error riêng để phía client có thể define đc Interface từ đầu.\r\n\r\nNgoài ra, việc bổ sung thêm Tracing (trace_id) ở request header và response, Logger là điều cần thiết.\r\n\r\nhttps://medium.com/@alexanderknips/open-telemetry-with-multiple-nestjs-and-logs-in-tracing-62453e3e6cb2",
+        "url": "https://github.com/vndevteam/nestjs-boilerplate/issues/217"
+    },
+    {
+        "id": 2448033856,
+        "number": 177,
+        "title": "Feature (Docker): Support to local develop based on Docker",
+        "state": "closed",
+        "created_at": "2024-08-05T09:13:50Z",
+        "updated_at": "2024-08-06T13:21:08Z",
+        "closed_at": "2024-08-06T13:21:08Z",
+        "author": "khuongln-1346",
+        "comments": 0,
+        "labels": [],
+        "assignees": [
+            "khuongln-1346"
+        ],
+        "locked": false,
+        "body": null,
+        "url": "https://github.com/vndevteam/nestjs-boilerplate/issues/177"
+    },
+    {
+        "id": 2448031637,
+        "number": 176,
+        "title": "Feature (Pubsub): Implement subscriber, publisher, connect to Redis",
+        "state": "open",
+        "created_at": "2024-08-05T09:12:54Z",
+        "updated_at": "2024-08-05T09:13:04Z",
+        "closed_at": null,
+        "author": "khuongln-1346",
+        "comments": 0,
+        "labels": [],
+        "assignees": [
+            "phanngoc"
+        ],
+        "locked": false,
+        "body": "- Implement worker (subscriber)\n- Implement publisher (Update API register user by email)\n- Integrate Redis",
+        "url": "https://github.com/vndevteam/nestjs-boilerplate/issues/176"
+    },
+    {
+        "id": 2439666678,
+        "number": 156,
+        "title": "Feature (Auth Module): Implement resend verify email API",
+        "state": "open",
+        "created_at": "2024-07-31T10:11:38Z",
+        "updated_at": "2024-07-31T10:15:54Z",
+        "closed_at": null,
+        "author": "khuongln-1346",
+        "comments": 0,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "- Implement **resend verify email API**\n- Write Unit test for this API",
+        "url": "https://github.com/vndevteam/nestjs-boilerplate/issues/156"
+    },
+    {
+        "id": 2439662507,
+        "number": 155,
+        "title": "Feature (Auth Module): Implement forgot password API",
+        "state": "open",
+        "created_at": "2024-07-31T10:09:37Z",
+        "updated_at": "2024-07-31T10:15:44Z",
+        "closed_at": null,
+        "author": "khuongln-1346",
+        "comments": 0,
+        "labels": [],
+        "assignees": [],
+        "locked": false,
+        "body": "- Implement **forgot password API**\n- Write Unit test for this API",
+        "url": "https://github.com/vndevteam/nestjs-boilerplate/issues/155"
+    },
+    {
+        "id": 2439659878,
+        "number": 154,
+        "title": "Feature (Auth Module): Implement verify email API",
+        "state": "open",
+        "created_at": "2024-07-31T10:08:19Z",
+        "updated_at": "2024-08-05T14:22:47Z",
+        "closed_at": null,
+        "author": "khuongln-1346",
+        "comments": 0,
+        "labels": [],
+        "assignees": [
+            "htrung1303"
+        ],
+        "locked": false,
+        "body": "- Implement **Verify email API**\n- Write Unit test for this API",
+        "url": "https://github.com/vndevteam/nestjs-boilerplate/issues/154"
+    },
+    {
+        "id": 2439654514,
+        "number": 153,
+        "title": "Feature (mail service)",
+        "state": "closed",
+        "created_at": "2024-07-31T10:05:40Z",
+        "updated_at": "2024-08-06T13:20:57Z",
+        "closed_at": "2024-08-06T13:20:57Z",
+        "author": "khuongln-1346",
+        "comments": 0,
+        "labels": [],
+        "assignees": [
+            "khuongln-1346"
+        ],
+        "locked": false,
+        "body": "- Implement **Mail service**\n- Custom mail log by using pino logger",
+        "url": "https://github.com/vndevteam/nestjs-boilerplate/issues/153"
+    },
+    {
+        "id": 2439652677,
+        "number": 152,
+        "title": "Feature (Post Module): Implement update post API",
+        "state": "open",
+        "created_at": "2024-07-31T10:04:48Z",
+        "updated_at": "2024-08-05T09:24:27Z",
+        "closed_at": null,
+        "author": "khuongln-1346",
+        "comments": 0,
+        "labels": [],
+        "assignees": [
+            "xxiihdc"
+        ],
+        "locked": false,
+        "body": "- Implement **Update Post API**\n- Write Unit test for this API",
+        "url": "https://github.com/vndevteam/nestjs-boilerplate/issues/152"
+    },
+    {
+        "id": 2439652030,
+        "number": 151,
+        "title": "Feature (Post Module): Implement delete post API",
+        "state": "open",
+        "created_at": "2024-07-31T10:04:28Z",
+        "updated_at": "2024-08-05T09:24:23Z",
+        "closed_at": null,
+        "author": "khuongln-1346",
+        "comments": 0,
+        "labels": [],
+        "assignees": [
+            "xxiihdc"
+        ],
+        "locked": false,
+        "body": "- Implement **Delete Post API**\n- Write Unit test for this API",
+        "url": "https://github.com/vndevteam/nestjs-boilerplate/issues/151"
+    },
+    {
+        "id": 2439648071,
+        "number": 150,
+        "title": "Feature (Post Module): Implement create post API",
+        "state": "open",
+        "created_at": "2024-07-31T10:02:35Z",
+        "updated_at": "2024-08-05T09:24:18Z",
+        "closed_at": null,
+        "author": "khuongln-1346",
+        "comments": 0,
+        "labels": [],
+        "assignees": [
+            "xxiihdc"
+        ],
+        "locked": false,
+        "body": "Implement **Create Post API**",
+        "url": "https://github.com/vndevteam/nestjs-boilerplate/issues/150"
+    },
+    {
+        "id": 2340619029,
+        "number": 3,
+        "title": "Dependency Dashboard",
+        "state": "open",
+        "created_at": "2024-06-07T14:37:42Z",
+        "updated_at": "2026-07-12T01:44:58Z",
+        "closed_at": null,
+        "author": "renovate[bot]",
+        "comments": 0,
+        "labels": [],
+        "assignees": [
+            "lamngockhuong"
+        ],
+        "locked": false,
+        "body": "This issue lists Renovate updates and detected dependencies. Read the [Dependency Dashboard](https://docs.renovatebot.com/key-concepts/dashboard/) docs to learn more.<br>[View this repository on the Mend.io Web Portal](https://developer.mend.io/github/vndevteam/nestjs-boilerplate).\n\n## Deprecations / Replacements\n> [!WARNING]\nThe following dependencies are either deprecated or have replacements available.\n\n| Datasource | Package | Replacement PR? |\n|------------|------|--------------|\n| npm | `@types/eslint__js` | ![Unavailable](https://img.shields.io/badge/unavailable-orange?style=flat-square) |\n| npm | `@types/uuid` | ![Unavailable](https://img.shields.io/badge/unavailable-orange?style=flat-square) |\n| npm | [cache-manager-ioredis-yet](https://redirect.github.com/jaredwray/cache-manager-stores) | ![Unavailable](https://img.shields.io/badge/unavailable-orange?style=flat-square) |\n\n## Rate-Limited\n\nThe following updates are currently rate-limited. To force their creation now, click on a checkbox below.\n\n - [ ] <!-- unlimit-branch=renovate/nestjs-bullmq-10.x-lockfile -->chore(deps): update dependency @nestjs/bullmq to v10.2.3\n - [ ] <!-- unlimit-branch=renovate/express-5.x-lockfile -->chore(deps): update dependency @types/express to v5.0.6\n - [ ] <!-- unlimit-branch=renovate/supertest-6.x-lockfile -->chore(deps): update dependency @types/supertest to v6.0.3\n - [ ] <!-- unlimit-branch=renovate/eslint-config-prettier-9.x-lockfile -->chore(deps): update dependency eslint-config-prettier to v9.1.2\n - [ ] <!-- unlimit-branch=renovate/rxjs-7.x-lockfile -->chore(deps): update dependency rxjs to v7.8.2\n - [ ] <!-- unlimit-branch=renovate/nest-monorepo -->chore(deps): update nest monorepo (`@nestjs/cli`, `@nestjs/common`, `@nestjs/platform-express`, `@nestjs/terminus`, `@nestjs/testing`)\n - [ ] <!-- unlimit-branch=renovate/vuepress-monorepo -->chore(deps): update vuepress monorepo (`@vuepress/plugin-search`, `@vuepress/theme-default`, `vuepress`)\n - [ ] <!-- unlimit-branch=renovate/commitlint-monorepo -->chore(deps): update commitlint monorepo to v19.8.1 (`@commitlint/cli`, `@commitlint/config-conventional`)\n - [ ] <!-- unlimit-branch=renovate/nestjs-modules-mailer-2.x-lockfile -->chore(deps): update dependency @nestjs-modules/mailer to v2.3.7\n - [ ] <!-- unlimit-branch=renovate/nestjs-mapped-types-2.x-lockfile -->chore(deps): update dependency @nestjs/mapped-types to v2.1.1\n - [ ] <!-- unlimit-branch=renovate/nestjs-swagger-8.x-lockfile -->chore(deps): update dependency @nestjs/swagger to v8.1.1\n - [ ] <!-- unlimit-branch=renovate/node-22.x-lockfile -->chore(deps): update dependency @types/node to v22.20.1\n - [ ] <!-- unlimit-branch=renovate/bullmq-5.x-lockfile -->chore(deps): update dependency bullmq to v5.80.2\n - [ ] <!-- unlimit-branch=renovate/compression-1.x-lockfile -->chore(deps): update dependency compression to v1.8.1 (`compression`, `@types/compression`)\n - [ ] <!-- unlimit-branch=renovate/helmet-8.x-lockfile -->chore(deps): update dependency helmet to v8.3.0\n - [ ] <!-- unlimit-branch=renovate/lint-staged-15.x-lockfile -->chore(deps): update dependency lint-staged to v15.5.2\n - [ ] <!-- unlimit-branch=renovate/nestjs-i18n-10.x-lockfile -->chore(deps): update dependency nestjs-i18n to v10.8.5\n - [ ] <!-- unlimit-branch=renovate/nestjs-pino-4.x-lockfile -->chore(deps): update dependency nestjs-pino to v4.6.1\n - [ ] <!-- unlimit-branch=renovate/pg-8.x-lockfile -->chore(deps): update dependency pg to v8.22.0\n - [ ] <!-- unlimit-branch=renovate/pino-http-10.x-lockfile -->chore(deps): update dependency pino-http to v10.5.0\n - [ ] <!-- unlimit-branch=renovate/prettier-3.x-lockfile -->chore(deps): update dependency prettier to v3.9.5\n - [ ] <!-- unlimit-branch=renovate/prettier-plugin-organize-imports-4.x-lockfile -->chore(deps): update dependency prettier-plugin-organize-imports to v4.3.0\n - [ ] <!-- unlimit-branch=renovate/sass-embedded-1.x-lockfile -->chore(deps): update dependency sass-embedded to v1.100.0\n - [ ] <!-- unlimit-branch=renovate/supertest-7.x-lockfile -->chore(deps): update dependency supertest to v7.2.2\n - [ ] <!-- unlimit-branch=renovate/ts-jest-29.x-lockfile -->chore(deps): update dependency ts-jest to v29.4.11\n - [ ] <!-- unlimit-branch=renovate/typeorm-extension-3.x-lockfile -->chore(deps): update dependency typeorm-extension to v3.9.0\n - [ ] <!-- unlimit-branch=renovate/typescript-5.x-lockfile -->chore(deps): update dependency typescript to v5.9.3\n - [ ] <!-- unlimit-branch=renovate/typescript-eslint-monorepo -->chore(deps): update dependency typescript-eslint to v8.63.0\n - [ ] <!-- unlimit-branch=renovate/uuid-11.x-lockfile -->chore(deps): update dependency uuid to v11.1.1\n - [ ] <!-- unlimit-branch=renovate/eslint-monorepo -->chore(deps): update eslint monorepo to v9.39.5 (`@eslint/js`, `eslint`)\n - [ ] <!-- unlimit-branch=renovate/node-20.x -->chore(deps): update node.js to v20.20.2\n - [ ] <!-- unlimit-branch=renovate/pnpm-9.x -->chore(deps): update pnpm to v9.15.9\n - [ ] <!-- unlimit-branch=renovate/swc-monorepo -->chore(deps): update swc monorepo (`@swc/cli`, `@swc/core`)\n - [ ] <!-- unlimit-branch=renovate/argon2-0.x -->fix(deps): update dependency argon2 to ^0.44.0\n - [ ] <!-- unlimit-branch=renovate/class-validator-0.x -->fix(deps): update dependency class-validator to ^0.15.0\n - [ ] <!-- unlimit-branch=renovate/actions-cache-6.x -->chore(deps): update actions/cache action to v6\n - [ ] <!-- unlimit-branch=renovate/actions-checkout-7.x -->chore(deps): update actions/checkout action to v7\n - [ ] <!-- unlimit-branch=renovate/actions-configure-pages-6.x -->chore(deps): update actions/configure-pages action to v6\n - [ ] <!-- unlimit-branch=renovate/actions-deploy-pages-5.x -->chore(deps): update actions/deploy-pages action to v5\n - [ ] <!-- unlimit-branch=renovate/actions-setup-node-6.x -->chore(deps): update actions/setup-node action to v6\n - [ ] <!-- unlimit-branch=renovate/actions-upload-pages-artifact-5.x -->chore(deps): update actions/upload-pages-artifact action to v5\n - [ ] <!-- unlimit-branch=renovate/amannn-action-semantic-pull-request-6.x -->chore(deps): update amannn/action-semantic-pull-request action to v6\n - [ ] <!-- unlimit-branch=renovate/major-commitlint-monorepo -->chore(deps): update commitlint monorepo to v21 (`@commitlint/cli`, `@commitlint/config-conventional`)\n - [ ] <!-- unlimit-branch=renovate/eslint__js-9.x -->chore(deps): update dependency @types/eslint__js to v9\n - [ ] <!-- unlimit-branch=renovate/ms-2.x -->chore(deps): update dependency @types/ms to v2\n - [ ] <!-- unlimit-branch=renovate/nodemailer-8.x -->chore(deps): update dependency @types/nodemailer to v8\n - [ ] <!-- unlimit-branch=renovate/supertest-7.x -->chore(deps): update dependency @types/supertest to v7\n - [ ] <!-- unlimit-branch=renovate/uuid-11.x -->chore(deps): update dependency @types/uuid to v11\n - [ ] <!-- unlimit-branch=renovate/env-cmd-11.x -->chore(deps): update dependency env-cmd to v11\n - [ ] <!-- unlimit-branch=renovate/eslint-config-prettier-10.x -->chore(deps): update dependency eslint-config-prettier to v10\n - [ ] <!-- unlimit-branch=renovate/lint-staged-17.x -->chore(deps): update dependency lint-staged to v17\n - [ ] <!-- unlimit-branch=renovate/typescript-7.x -->chore(deps): update dependency typescript to v7\n - [ ] <!-- unlimit-branch=renovate/major-eslint-monorepo -->chore(deps): update eslint monorepo to v10 (`@eslint/js`, `eslint`)\n - [ ] <!-- unlimit-branch=renovate/major-jest-monorepo -->chore(deps): update jest monorepo to v30 (`@types/jest`, `jest`)\n - [ ] <!-- unlimit-branch=renovate/marocchino-sticky-pull-request-comment-3.x -->chore(deps): update marocchino/sticky-pull-request-comment action to v3\n - [ ] <!-- unlimit-branch=renovate/node-24.x -->chore(deps): update node.js to v24 (`node`, `@types/node`)\n - [ ] <!-- unlimit-branch=renovate/pnpm-11.x -->chore(deps): update pnpm to v11\n - [ ] <!-- unlimit-branch=renovate/pnpm-action-setup-6.x -->chore(deps): update pnpm/action-setup action to v6\n - [ ] <!-- unlimit-branch=renovate/postgres-18.x -->chore(deps): update postgres docker tag to v18\n - [ ] <!-- unlimit-branch=renovate/nestjs-axios-4.x -->fix(deps): update dependency @nestjs/axios to v4\n - [ ] <!-- unlimit-branch=renovate/nestjs-bullmq-11.x -->fix(deps): update dependency @nestjs/bullmq to v11\n - [ ] <!-- unlimit-branch=renovate/nestjs-cache-manager-3.x -->fix(deps): update dependency @nestjs/cache-manager to v3\n - [ ] <!-- unlimit-branch=renovate/nestjs-jwt-11.x -->fix(deps): update dependency @nestjs/jwt to v11\n - [ ] <!-- unlimit-branch=renovate/nestjs-swagger-11.x -->fix(deps): update dependency @nestjs/swagger to v11\n - [ ] <!-- unlimit-branch=renovate/nestjs-typeorm-11.x -->fix(deps): update dependency @nestjs/typeorm to v11\n - [ ] <!-- unlimit-branch=renovate/cache-manager-7.x -->fix(deps): update dependency cache-manager to v7\n - [ ] <!-- unlimit-branch=renovate/pino-http-11.x -->fix(deps): update dependency pino-http to v11\n - [ ] <!-- unlimit-branch=renovate/pino-pretty-13.x -->fix(deps): update dependency pino-pretty to v13\n - [ ] <!-- unlimit-branch=renovate/uuid-14.x -->fix(deps): update dependency uuid to v14\n - [ ] <!-- unlimit-branch=renovate/major-nest-monorepo -->fix(deps): update nest monorepo (major) (`@nestjs/cli`, `@nestjs/common`, `@nestjs/config`, `@nestjs/platform-express`, `@nestjs/schematics`, `@nestjs/terminus`, `@nestjs/testing`)\n - [ ] <!-- create-all-rate-limited-prs -->🔐 **Create all rate-limited PRs at once** 🔐\n\n## Open\n\nThe following updates have all been created. To force a retry/rebase of any, click on a checkbox below.\n\n - [ ] <!-- rebase-branch=renovate/npm-handlebars-vulnerability -->[chore(deps): update dependency handlebars to v4.7.9 [security]](../pull/323)\n - [ ] <!-- rebase-branch=renovate/npm-typeorm-vulnerability -->[chore(deps): update dependency typeorm to v0.3.26 [security]](../pull/322)\n - [ ] <!-- rebase-branch=renovate/npm-axios-vulnerability -->[chore(deps): update dependency axios to v1.13.5 [security]](../pull/318)\n - [ ] <!-- rebase-branch=renovate/npm-nestjs-core-vulnerability -->[fix(deps): update dependency @nestjs/core to v11 [security]](../pull/324)\n - [ ] <!-- rebase-branch=renovate/npm-nodemailer-vulnerability -->[fix(deps): update dependency nodemailer to v8 [security]](../pull/320)\n - [ ] <!-- rebase-branch=renovate/nestjs-axios-3.x-lockfile -->[chore(deps): update dependency @nestjs/axios to v3.1.3](../pull/319)\n - [ ] <!-- rebase-branch=renovate/nodemailer-6.x-lockfile -->[chore(deps): update dependency @types/nodemailer to v6.4.24](../pull/310)\n - [ ] <!-- rebase-branch=renovate/vuepress-bundler-vite-2.x -->[chore(deps): update dependency @vuepress/bundler-vite to v2.0.0-rc.30](../pull/292)\n - [ ] <!-- rebase-branch=renovate/vuepress-plugin-markdown-image-2.x -->[chore(deps): update dependency @vuepress/plugin-markdown-image to v2.0.0-rc.132](../pull/294)\n - [ ] <!-- rebase-branch=renovate/vuepress-plugin-markdown-tab-2.x -->[chore(deps): update dependency @vuepress/plugin-markdown-tab to v2.0.0-rc.132](../pull/295)\n - [ ] <!-- rebase-branch=renovate/husky-9.x-lockfile -->[chore(deps): update dependency husky to v9.1.7](../pull/311)\n - [ ] <!-- rebase-branch=renovate/vue-monorepo -->[chore(deps): update dependency vue to v3.5.39](../pull/312)\n - [ ] <!-- rebase-branch=renovate/vuepress-plugin-md-enhance-2.x -->[chore(deps): update dependency vuepress-plugin-md-enhance to v2.0.0-rc.107](../pull/313)\n - [ ] <!-- rebase-branch=renovate/eslint-plugin-prettier-5.x-lockfile -->[chore(deps): update dependency eslint-plugin-prettier to v5.5.6](../pull/315)\n - [ ] <!-- rebase-branch=renovate/ts-loader-9.x-lockfile -->[chore(deps): update dependency ts-loader to v9.6.2](../pull/316)\n - [ ] <!-- rebase-all-open-prs -->**Click on this checkbox to rebase all open PRs at once**\n\n## Detected Dependencies\n\n<details><summary>docker-compose (2)</summary>\n<blockquote>\n\n<details><summary>docker-compose.local.yml (1)</summary>\n\n - `postgres 16` → [Updates: `18`]\n\n</details>\n\n<details><summary>docker-compose.yml (1)</summary>\n\n - `postgres 16` → [Updates: `18`]\n\n</details>\n\n</blockquote>\n</details>\n\n<details><summary>dockerfile (2)</summary>\n<blockquote>\n\n<details><summary>Dockerfile (2)</summary>\n\n - `node 20-alpine` → [Updates: `24-alpine`]\n - `node 20-alpine` → [Updates: `24-alpine`]\n\n</details>\n\n<details><summary>maildev.Dockerfile (1)</summary>\n\n - `node 20.18.0-alpine` → [Updates: `20.20.2-alpine`, `24.18.0-alpine`]\n\n</details>\n\n</blockquote>\n</details>\n\n<details><summary>github-actions (4)</summary>\n<blockquote>\n\n<details><summary>.github/workflows/check-semantic-prs.yml (3)</summary>\n\n - `amannn/action-semantic-pull-request v5` → [Updates: `v6`]\n - `marocchino/sticky-pull-request-comment v2` → [Updates: `v3.0.5`]\n - `marocchino/sticky-pull-request-comment v2` → [Updates: `v3.0.5`]\n\n</details>\n\n<details><summary>.github/workflows/ci.yml (4)</summary>\n\n - `actions/checkout v4` → [Updates: `v7`]\n - `actions/setup-node v4` → [Updates: `v6`]\n - `pnpm/action-setup v4` → [Updates: `v6`]\n - `actions/cache v4` → [Updates: `v6`]\n\n</details>\n\n<details><summary>.github/workflows/deploy-docs.yml (7)</summary>\n\n - `actions/checkout v4` → [Updates: `v7`]\n - `pnpm/action-setup v4` → [Updates: `v6`]\n - `actions/setup-node v4` → [Updates: `v6`]\n - `actions/configure-pages v5` → [Updates: `v6`]\n - `actions/upload-pages-artifact v3` → [Updates: `v5`]\n - `actions/deploy-pages v4` → [Updates: `v5`]\n - `node 20` → [Updates: `24`]\n\n</details>\n\n<details><summary>.github/workflows/release.yml (3)</summary>\n\n - `actions/checkout v4` → [Updates: `v7`]\n - `pnpm/action-setup v4` → [Updates: `v6`]\n - `actions/setup-node v4` → [Updates: `v6`]\n\n</details>\n\n</blockquote>\n</details>\n\n<details><summary>npm (1)</summary>\n<blockquote>\n\n<details><summary>package.json (80)</summary>\n\n - `@nestjs-modules/mailer ^2.0.2` → [Updates: `^2.0.2`]\n - `@nestjs/axios ^3.1.2` → [Updates: `^3.1.2`, `^4.0.0`]\n - `@nestjs/bullmq ^10.2.2` → [Updates: `^10.2.2`, `^11.0.0`]\n - `@nestjs/cache-manager ^2.3.0` → [Updates: `^3.0.0`]\n - `@nestjs/common ^10.4.7` → [Updates: `^10.4.7`, `^11.0.0`]\n - `@nestjs/config ^3.3.0` → [Updates: `^4.0.0`]\n - `@nestjs/core ^10.4.7` → [Updates: `^11.0.0`]\n - `@nestjs/jwt ^10.2.0` → [Updates: `^11.0.0`]\n - `@nestjs/mapped-types ^2.0.6` → [Updates: `^2.0.6`]\n - `@nestjs/platform-express ^10.4.7` → [Updates: `^10.4.7`, `^11.0.0`]\n - `@nestjs/swagger ^8.0.5` → [Updates: `^8.0.5`, `^11.0.0`]\n - `@nestjs/terminus ^10.2.3` → [Updates: `^10.2.3`, `^11.0.0`]\n - `@nestjs/typeorm ^10.0.2` → [Updates: `^11.0.0`]\n - `argon2 ^0.41.1` → [Updates: `^0.44.0`]\n - `axios ^1.7.7` → [Updates: `^1.7.7`]\n - `bullmq ^5.23.0` → [Updates: `^5.23.0`]\n - `cache-manager ^5.7.6` → [Updates: `^7.0.0`]\n - `cache-manager-ioredis-yet ^2.1.2`\n - `class-transformer ^0.5.1`\n - `class-validator ^0.14.1` → [Updates: `^0.15.0`]\n - `compression ^1.7.5` → [Updates: `^1.7.5`]\n - `handlebars ^4.7.8` → [Updates: `^4.7.8`]\n - `helmet ^8.0.0` → [Updates: `^8.0.0`]\n - `ms ^2.1.3`\n - `nestjs-i18n ^10.5.0` → [Updates: `^10.5.0`]\n - `nestjs-pino ^4.1.0` → [Updates: `^4.1.0`]\n - `nodemailer ^6.9.16` → [Updates: `^8.0.0`]\n - `pg ^8.13.1` → [Updates: `^8.13.1`]\n - `pino-http ^10.3.0` → [Updates: `^10.3.0`, `^11.0.0`]\n - `pino-pretty ^11.3.0` → [Updates: `^13.0.0`]\n - `reflect-metadata ^0.2.2`\n - `rxjs ^7.8.1` → [Updates: `^7.8.1`]\n - `tslib ^2.8.1`\n - `typeorm ^0.3.20` → [Updates: `^0.3.20`]\n - `typeorm-extension ^3.6.3` → [Updates: `^3.6.3`]\n - `uuid ^11.0.3` → [Updates: `^11.0.3`, `^14.0.0`]\n - `@commitlint/cli ^19.5.0` → [Updates: `^19.5.0`, `^21.0.0`]\n - `@commitlint/config-conventional ^19.5.0` → [Updates: `^19.5.0`, `^21.0.0`]\n - `@eslint/js ^9.14.0` → [Updates: `^9.14.0`, `^10.0.0`]\n - `@nestjs/cli ^10.4.5` → [Updates: `^10.4.5`, `^11.0.0`]\n - `@nestjs/schematics ^10.2.3` → [Updates: `^11.0.0`]\n - `@nestjs/testing ^10.4.6` → [Updates: `^10.4.6`, `^11.0.0`]\n - `@swc/cli ^0.5.0` → [Updates: `^0.8.0`]\n - `@swc/core ^1.7.42` → [Updates: `^1.7.42`]\n - `@types/compression ^1.7.5` → [Updates: `^1.7.5`]\n - `@types/eslint__js ^8.42.3` → [Updates: `^9.0.0`]\n - `@types/express ^5.0.0` → [Updates: `^5.0.0`]\n - `@types/jest ^29.5.14` → [Updates: `^30.0.0`]\n - `@types/ms ^0.7.34` → [Updates: `^2.0.0`]\n - `@types/node ^22.8.7` → [Updates: `^22.8.7`, `^24.0.0`]\n - `@types/nodemailer ^6.4.16` → [Updates: `^6.4.16`, `^8.0.0`]\n - `@types/supertest ^6.0.2` → [Updates: `^6.0.2`, `^7.0.0`]\n - `@types/uuid ^10.0.0` → [Updates: `^11.0.0`]\n - `@vuepress/bundler-vite 2.0.0-rc.17` → [Updates: `2.0.0-rc.30`]\n - `@vuepress/plugin-markdown-image 2.0.0-rc.52` → [Updates: `2.0.0-rc.132`]\n - `@vuepress/plugin-markdown-tab 2.0.0-rc.52` → [Updates: `2.0.0-rc.132`]\n - `@vuepress/plugin-search 2.0.0-rc.52` → [Updates: `2.0.0-rc.131`]\n - `@vuepress/theme-default 2.0.0-rc.52` → [Updates: `2.0.0-rc.132`]\n - `env-cmd ^10.1.0` → [Updates: `^11.0.0`]\n - `eslint ^9.14.0` → [Updates: `^9.14.0`, `^10.0.0`]\n - `eslint-config-prettier ^9.1.0` → [Updates: `^9.1.0`, `^10.0.0`]\n - `eslint-plugin-prettier ^5.2.1` → [Updates: `^5.2.1`]\n - `husky ^9.1.6` → [Updates: `^9.1.6`]\n - `jest ^29.7.0` → [Updates: `^30.0.0`]\n - `lint-staged ^15.2.10` → [Updates: `^15.2.10`, `^17.0.0`]\n - `prettier ^3.3.3` → [Updates: `^3.3.3`]\n - `prettier-plugin-organize-imports ^4.1.0` → [Updates: `^4.1.0`]\n - `sass-embedded ^1.80.6` → [Updates: `^1.80.6`]\n - `source-map-support ^0.5.21`\n - `supertest ^7.0.0` → [Updates: `^7.0.0`]\n - `ts-jest ^29.2.4` → [Updates: `^29.2.4`]\n - `ts-loader ^9.5.1` → [Updates: `^9.5.1`]\n - `ts-node ^10.9.2`\n - `tsconfig-paths ^4.2.0`\n - `typescript ^5.6.3` → [Updates: `^5.6.3`, `^7.0.0`]\n - `typescript-eslint ^8.12.2` → [Updates: `^8.12.2`]\n - `vue ^3.5.12` → [Updates: `^3.5.12`]\n - `vuepress 2.0.0-rc.17` → [Updates: `2.0.0-rc.30`]\n - `vuepress-plugin-md-enhance 2.0.0-rc.59` → [Updates: `2.0.0-rc.107`]\n - `pnpm 9.12.3+sha512.cce0f9de9c5a7c95bef944169cc5dfe8741abfb145078c0d508b868056848a87c81e626246cb60967cbd7fd29a6c062ef73ff840d96b3c86c40ac92cf4a813ee` → [Updates: `9.15.9`, `11.12.0`]\n\n</details>\n\n</blockquote>\n</details>\n\n<details><summary>nvm (1)</summary>\n<blockquote>\n\n<details><summary>.nvmrc (1)</summary>\n\n - `node 20.18.0` → [Updates: `20.20.2`, `24.18.0`]\n\n</details>\n\n</blockquote>\n</details>\n\n---\n\n- [ ] <!-- manual job -->Check this box to trigger a request for Renovate to run again on this repository\n\n",
+        "url": "https://github.com/vndevteam/nestjs-boilerplate/issues/3"
+    }
+]

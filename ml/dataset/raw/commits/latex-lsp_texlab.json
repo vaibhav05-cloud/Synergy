@@ -1,0 +1,242 @@
+[
+    {
+        "sha": "2809f5ef51d130d2be84c04aed8ae1ad24a12c9e",
+        "author": "Nolan",
+        "email": "nolanking90@users.noreply.github.com",
+        "date": "2026-07-04T20:43:18Z",
+        "message": "Update visit_beamer_frame() frame title logic (#1580)\n\nCurrently `visit_beamer_frame(...)` early returns `None` if no `\\frametitle` command is found in the environment.\n\nThis PR updates `visit_beamer_frame(...)` to handle cases when there is an optional title argument e.g. `\\begin{frame}{title}` or when no title is specified. A `\\frametitle` command takes precedence here (as it does in latex). The optional environment argument is the fallback if no `\\frametitle` is found, and if neither are present an untitled `Frame` symbol is still returned. The function has no path that can return `None`, but I have left the return type as an `Option` to match the pattern used at the call site. A helper function for extracting the title and a test to exercise the symbol name logic are provided.",
+        "url": "https://github.com/latex-lsp/texlab/commit/2809f5ef51d130d2be84c04aed8ae1ad24a12c9e"
+    },
+    {
+        "sha": "90836b9430639688576d52ca2dbc2f4216945d3b",
+        "author": "dependabot[bot]",
+        "email": "49699333+dependabot[bot]@users.noreply.github.com",
+        "date": "2026-06-28T12:27:17Z",
+        "message": "Bump notify-debouncer-full from 0.6.0 to 0.7.0 (#1535)\n\nBumps [notify-debouncer-full](https://github.com/notify-rs/notify) from 0.6.0 to 0.7.0.\n- [Release notes](https://github.com/notify-rs/notify/releases)\n- [Changelog](https://github.com/notify-rs/notify/blob/main/CHANGELOG.md)\n- [Commits](https://github.com/notify-rs/notify/compare/debouncer-full-0.6.0...debouncer-full-0.7.0)\n\n---\nupdated-dependencies:\n- dependency-name: notify-debouncer-full\n  dependency-version: 0.7.0\n  dependency-type: direct:production\n  update-type: version-update:semver-minor\n...\n\nSigned-off-by: dependabot[bot] <support@github.com>\nCo-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>",
+        "url": "https://github.com/latex-lsp/texlab/commit/90836b9430639688576d52ca2dbc2f4216945d3b"
+    },
+    {
+        "sha": "48f354c217dde31449d9f4a2cfeb8e7165accc58",
+        "author": "dependabot[bot]",
+        "email": "49699333+dependabot[bot]@users.noreply.github.com",
+        "date": "2026-06-28T12:27:01Z",
+        "message": "Bump libc from 0.2.180 to 0.2.186 (#1555)\n\nBumps [libc](https://github.com/rust-lang/libc) from 0.2.180 to 0.2.186.\n- [Release notes](https://github.com/rust-lang/libc/releases)\n- [Changelog](https://github.com/rust-lang/libc/blob/0.2.186/CHANGELOG.md)\n- [Commits](https://github.com/rust-lang/libc/compare/0.2.180...0.2.186)\n\n---\nupdated-dependencies:\n- dependency-name: libc\n  dependency-version: 0.2.186\n  dependency-type: direct:production\n  update-type: version-update:semver-patch\n...\n\nSigned-off-by: dependabot[bot] <support@github.com>\nCo-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>",
+        "url": "https://github.com/latex-lsp/texlab/commit/48f354c217dde31449d9f4a2cfeb8e7165accc58"
+    },
+    {
+        "sha": "c29594465bfe32acd4d82e456c072f393f30b1c9",
+        "author": "dependabot[bot]",
+        "email": "49699333+dependabot[bot]@users.noreply.github.com",
+        "date": "2026-06-28T12:26:52Z",
+        "message": "Bump shellexpand from 3.1.1 to 3.1.2 (#1564)\n\nBumps [shellexpand](https://gitlab.com/ijackson/rust-shellexpand) from 3.1.1 to 3.1.2.\n- [Commits](https://gitlab.com/ijackson/rust-shellexpand/compare/shellexpand-3.1.1...shellexpand-3.1.2)\n\n---\nupdated-dependencies:\n- dependency-name: shellexpand\n  dependency-version: 3.1.2\n  dependency-type: direct:production\n  update-type: version-update:semver-patch\n...\n\nSigned-off-by: dependabot[bot] <support@github.com>\nCo-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>",
+        "url": "https://github.com/latex-lsp/texlab/commit/c29594465bfe32acd4d82e456c072f393f30b1c9"
+    },
+    {
+        "sha": "c6897680fe6247f3c20f1201ad3b1e1ee68db9a7",
+        "author": "dependabot[bot]",
+        "email": "49699333+dependabot[bot]@users.noreply.github.com",
+        "date": "2026-06-28T12:26:40Z",
+        "message": "Bump rustc-hash from 2.1.1 to 2.1.2 (#1565)\n\nBumps [rustc-hash](https://github.com/rust-lang/rustc-hash) from 2.1.1 to 2.1.2.\n- [Changelog](https://github.com/rust-lang/rustc-hash/blob/master/CHANGELOG.md)\n- [Commits](https://github.com/rust-lang/rustc-hash/compare/v2.1.1...v2.1.2)\n\n---\nupdated-dependencies:\n- dependency-name: rustc-hash\n  dependency-version: 2.1.2\n  dependency-type: direct:production\n  update-type: version-update:semver-patch\n...\n\nSigned-off-by: dependabot[bot] <support@github.com>\nCo-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>",
+        "url": "https://github.com/latex-lsp/texlab/commit/c6897680fe6247f3c20f1201ad3b1e1ee68db9a7"
+    },
+    {
+        "sha": "032d61365a4a66917101106d04b1eeabb37a5855",
+        "author": "dependabot[bot]",
+        "email": "49699333+dependabot[bot]@users.noreply.github.com",
+        "date": "2026-06-28T12:26:29Z",
+        "message": "Bump actions/checkout from 6 to 7 (#1569)\n\nBumps [actions/checkout](https://github.com/actions/checkout) from 6 to 7.\n- [Release notes](https://github.com/actions/checkout/releases)\n- [Changelog](https://github.com/actions/checkout/blob/main/CHANGELOG.md)\n- [Commits](https://github.com/actions/checkout/compare/v6...v7)\n\n---\nupdated-dependencies:\n- dependency-name: actions/checkout\n  dependency-version: '7'\n  dependency-type: direct:production\n  update-type: version-update:semver-major\n...\n\nSigned-off-by: dependabot[bot] <support@github.com>\nCo-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>",
+        "url": "https://github.com/latex-lsp/texlab/commit/032d61365a4a66917101106d04b1eeabb37a5855"
+    },
+    {
+        "sha": "9b035d96d07b173093924e2ee0eef1f000dfe3cf",
+        "author": "Patrick Förster",
+        "email": "pfoerster@users.noreply.github.com",
+        "date": "2026-06-28T12:26:13Z",
+        "message": "Fix publishing on CTAN (#1571)\n\nBump Ubuntu version to 24.04 LTS so that tectonic can compile the PDF\ndocumentation required by CTAN.",
+        "url": "https://github.com/latex-lsp/texlab/commit/9b035d96d07b173093924e2ee0eef1f000dfe3cf"
+    },
+    {
+        "sha": "8f4cb7b9fedfb24d73b291f534027d679a528de5",
+        "author": "dependabot[bot]",
+        "email": "49699333+dependabot[bot]@users.noreply.github.com",
+        "date": "2026-06-25T19:30:49Z",
+        "message": "Bump serde_regex from 1.1.0 to 1.2.0 (#1566)\n\nBumps [serde_regex](https://github.com/tailhook/serde-regex) from 1.1.0 to 1.2.0.\n- [Release notes](https://github.com/tailhook/serde-regex/releases)\n- [Commits](https://github.com/tailhook/serde-regex/compare/v1.1.0...v1.2.0)\n\n---\nupdated-dependencies:\n- dependency-name: serde_regex\n  dependency-version: 1.2.0\n  dependency-type: direct:production\n  update-type: version-update:semver-minor\n...\n\nSigned-off-by: dependabot[bot] <support@github.com>\nCo-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>",
+        "url": "https://github.com/latex-lsp/texlab/commit/8f4cb7b9fedfb24d73b291f534027d679a528de5"
+    },
+    {
+        "sha": "749446160f2f2eee4b7b2e9f871ed11aa4848cdb",
+        "author": "dependabot[bot]",
+        "email": "49699333+dependabot[bot]@users.noreply.github.com",
+        "date": "2026-06-25T19:30:36Z",
+        "message": "Bump serde_json from 1.0.147 to 1.0.150 (#1567)\n\nBumps [serde_json](https://github.com/serde-rs/json) from 1.0.147 to 1.0.150.\n- [Release notes](https://github.com/serde-rs/json/releases)\n- [Commits](https://github.com/serde-rs/json/compare/v1.0.147...v1.0.150)\n\n---\nupdated-dependencies:\n- dependency-name: serde_json\n  dependency-version: 1.0.150\n  dependency-type: direct:production\n  update-type: version-update:semver-patch\n...\n\nSigned-off-by: dependabot[bot] <support@github.com>\nCo-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>",
+        "url": "https://github.com/latex-lsp/texlab/commit/749446160f2f2eee4b7b2e9f871ed11aa4848cdb"
+    },
+    {
+        "sha": "45c3ced6790b508a12a2aab1938e58023173017e",
+        "author": "Patrick Förster",
+        "email": "pfoerster@users.noreply.github.com",
+        "date": "2026-06-25T19:17:40Z",
+        "message": "Bump version to v5.26.0 (#1570)",
+        "url": "https://github.com/latex-lsp/texlab/commit/45c3ced6790b508a12a2aab1938e58023173017e"
+    },
+    {
+        "sha": "28f9c6e7bfb277732608f1ec3d868222df3cf931",
+        "author": "leongross",
+        "email": "leon.gross@rub.de",
+        "date": "2026-06-21T16:39:01Z",
+        "message": "feat(definition): add goto_definition for acronym commands (#1568)\n\nEnable goto_definition for acronym reference commands (\\acrshort,\n\\acrlong, \\acrfull, \\ac, and all variants) to resolve to their\ndefinitions (\\newacronym, \\DeclareAcronym).\n\nCo-authored-by: Claude <noreply@anthropic.com>",
+        "url": "https://github.com/latex-lsp/texlab/commit/28f9c6e7bfb277732608f1ec3d868222df3cf931"
+    },
+    {
+        "sha": "9fedf51768191844d4d0d8c03ffe83babfb11f62",
+        "author": "dependabot[bot]",
+        "email": "49699333+dependabot[bot]@users.noreply.github.com",
+        "date": "2026-06-12T19:59:09Z",
+        "message": "Bump rand from 0.8.5 to 0.8.6 (#1554)\n\nBumps [rand](https://github.com/rust-random/rand) from 0.8.5 to 0.8.6.\n- [Release notes](https://github.com/rust-random/rand/releases)\n- [Changelog](https://github.com/rust-random/rand/blob/0.8.6/CHANGELOG.md)\n- [Commits](https://github.com/rust-random/rand/compare/0.8.5...0.8.6)\n\n---\nupdated-dependencies:\n- dependency-name: rand\n  dependency-version: 0.8.6\n  dependency-type: indirect\n...\n\nSigned-off-by: dependabot[bot] <support@github.com>\nCo-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>",
+        "url": "https://github.com/latex-lsp/texlab/commit/9fedf51768191844d4d0d8c03ffe83babfb11f62"
+    },
+    {
+        "sha": "ca3cec1062b4b05db19ba40c5044850692136956",
+        "author": "dependabot[bot]",
+        "email": "49699333+dependabot[bot]@users.noreply.github.com",
+        "date": "2026-06-12T19:58:54Z",
+        "message": "Bump chrono from 0.4.42 to 0.4.44 (#1557)\n\nBumps [chrono](https://github.com/chronotope/chrono) from 0.4.42 to 0.4.44.\n- [Release notes](https://github.com/chronotope/chrono/releases)\n- [Changelog](https://github.com/chronotope/chrono/blob/main/CHANGELOG.md)\n- [Commits](https://github.com/chronotope/chrono/compare/v0.4.42...v0.4.44)\n\n---\nupdated-dependencies:\n- dependency-name: chrono\n  dependency-version: 0.4.44\n  dependency-type: direct:production\n  update-type: version-update:semver-patch\n...\n\nSigned-off-by: dependabot[bot] <support@github.com>\nCo-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>",
+        "url": "https://github.com/latex-lsp/texlab/commit/ca3cec1062b4b05db19ba40c5044850692136956"
+    },
+    {
+        "sha": "a4531ce4f0d095c9ea42dd988e6e78f2d43cfb0f",
+        "author": "dependabot[bot]",
+        "email": "49699333+dependabot[bot]@users.noreply.github.com",
+        "date": "2026-06-12T19:58:35Z",
+        "message": "Bump rayon from 1.11.0 to 1.12.0 (#1558)\n\nBumps [rayon](https://github.com/rayon-rs/rayon) from 1.11.0 to 1.12.0.\n- [Changelog](https://github.com/rayon-rs/rayon/blob/main/RELEASES.md)\n- [Commits](https://github.com/rayon-rs/rayon/compare/rayon-core-v1.11.0...rayon-core-v1.12.0)\n\n---\nupdated-dependencies:\n- dependency-name: rayon\n  dependency-version: 1.12.0\n  dependency-type: direct:production\n  update-type: version-update:semver-minor\n...\n\nSigned-off-by: dependabot[bot] <support@github.com>\nCo-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>",
+        "url": "https://github.com/latex-lsp/texlab/commit/a4531ce4f0d095c9ea42dd988e6e78f2d43cfb0f"
+    },
+    {
+        "sha": "49acb7f2245d57630037e4c9737b85fc3e545cfb",
+        "author": "dependabot[bot]",
+        "email": "49699333+dependabot[bot]@users.noreply.github.com",
+        "date": "2026-06-12T19:58:15Z",
+        "message": "Bump criterion from 0.8.1 to 0.8.2 (#1559)\n\nBumps [criterion](https://github.com/criterion-rs/criterion.rs) from 0.8.1 to 0.8.2.\n- [Release notes](https://github.com/criterion-rs/criterion.rs/releases)\n- [Changelog](https://github.com/criterion-rs/criterion.rs/blob/master/CHANGELOG.md)\n- [Commits](https://github.com/criterion-rs/criterion.rs/compare/criterion-v0.8.1...criterion-v0.8.2)\n\n---\nupdated-dependencies:\n- dependency-name: criterion\n  dependency-version: 0.8.2\n  dependency-type: direct:production\n  update-type: version-update:semver-patch\n...\n\nSigned-off-by: dependabot[bot] <support@github.com>\nCo-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>",
+        "url": "https://github.com/latex-lsp/texlab/commit/49acb7f2245d57630037e4c9737b85fc3e545cfb"
+    },
+    {
+        "sha": "cff05c7148fbbd61ecfef73353f8d659eeb5513d",
+        "author": "Hethon",
+        "email": "65696516+hethon@users.noreply.github.com",
+        "date": "2026-06-12T19:58:00Z",
+        "message": "Respect `texlab.build.pdfDirectory` for Tectonic projects (#1562)\n\nUse `texlab.build.pdfDirectory` instead of assuming a fixed\n`build/` output directory when resolving Tectonic outputs.\n\nCloses #1561",
+        "url": "https://github.com/latex-lsp/texlab/commit/cff05c7148fbbd61ecfef73353f8d659eeb5513d"
+    },
+    {
+        "sha": "adc91ff8a3b56ba4b72c489db33f32cfbb8b2c5c",
+        "author": "Nguyen Tri Nghia",
+        "email": "nghiant@mailbox.org",
+        "date": "2026-04-18T07:20:19Z",
+        "message": "fix: refresh diagnostic when watched files change (#1553)\n\n- route workspace/didChangeWatchedFiles through the same server-owned file reload path used by internal file watcher events\n- send explicit empty diagnostic publishes for URIs whose diagnostics disappeared, so stale build-log diagnostics are cleared correctly",
+        "url": "https://github.com/latex-lsp/texlab/commit/adc91ff8a3b56ba4b72c489db33f32cfbb8b2c5c"
+    },
+    {
+        "sha": "3e144bc97ae33fe1aec45745f7471fcf13dc4c49",
+        "author": "dependabot[bot]",
+        "email": "49699333+dependabot[bot]@users.noreply.github.com",
+        "date": "2026-04-18T07:11:58Z",
+        "message": "Bump libc from 0.2.178 to 0.2.180 (#1529)\n\nBumps [libc](https://github.com/rust-lang/libc) from 0.2.178 to 0.2.180.\n- [Release notes](https://github.com/rust-lang/libc/releases)\n- [Changelog](https://github.com/rust-lang/libc/blob/0.2.180/CHANGELOG.md)\n- [Commits](https://github.com/rust-lang/libc/compare/0.2.178...0.2.180)\n\n---\nupdated-dependencies:\n- dependency-name: libc\n  dependency-version: 0.2.180\n  dependency-type: direct:production\n  update-type: version-update:semver-patch\n...\n\nSigned-off-by: dependabot[bot] <support@github.com>\nCo-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>",
+        "url": "https://github.com/latex-lsp/texlab/commit/3e144bc97ae33fe1aec45745f7471fcf13dc4c49"
+    },
+    {
+        "sha": "e90c5b011c706d3e17979f611b2523559ecae419",
+        "author": "dependabot[bot]",
+        "email": "49699333+dependabot[bot]@users.noreply.github.com",
+        "date": "2026-04-18T07:11:37Z",
+        "message": "Bump thiserror from 2.0.17 to 2.0.18 (#1530)\n\nBumps [thiserror](https://github.com/dtolnay/thiserror) from 2.0.17 to 2.0.18.\n- [Release notes](https://github.com/dtolnay/thiserror/releases)\n- [Commits](https://github.com/dtolnay/thiserror/compare/2.0.17...2.0.18)\n\n---\nupdated-dependencies:\n- dependency-name: thiserror\n  dependency-version: 2.0.18\n  dependency-type: direct:production\n  update-type: version-update:semver-patch\n...\n\nSigned-off-by: dependabot[bot] <support@github.com>\nCo-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>",
+        "url": "https://github.com/latex-lsp/texlab/commit/e90c5b011c706d3e17979f611b2523559ecae419"
+    },
+    {
+        "sha": "d3bdd5e08732091da26a466ac74c3cd2f83e19b8",
+        "author": "dependabot[bot]",
+        "email": "49699333+dependabot[bot]@users.noreply.github.com",
+        "date": "2026-04-18T07:09:24Z",
+        "message": "Bump clap from 4.5.53 to 4.5.57 (#1539)\n\nBumps [clap](https://github.com/clap-rs/clap) from 4.5.53 to 4.5.57.\n- [Release notes](https://github.com/clap-rs/clap/releases)\n- [Changelog](https://github.com/clap-rs/clap/blob/master/CHANGELOG.md)\n- [Commits](https://github.com/clap-rs/clap/compare/clap_complete-v4.5.53...clap_complete-v4.5.57)\n\n---\nupdated-dependencies:\n- dependency-name: clap\n  dependency-version: 4.5.57\n  dependency-type: direct:production\n  update-type: version-update:semver-patch\n...\n\nSigned-off-by: dependabot[bot] <support@github.com>\nCo-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>",
+        "url": "https://github.com/latex-lsp/texlab/commit/d3bdd5e08732091da26a466ac74c3cd2f83e19b8"
+    },
+    {
+        "sha": "7d1b8d655b6ba55f1029e9a6dd658435d2783cf9",
+        "author": "dependabot[bot]",
+        "email": "49699333+dependabot[bot]@users.noreply.github.com",
+        "date": "2026-04-18T07:09:10Z",
+        "message": "Bump regex from 1.12.2 to 1.12.3 (#1540)\n\nBumps [regex](https://github.com/rust-lang/regex) from 1.12.2 to 1.12.3.\n- [Release notes](https://github.com/rust-lang/regex/releases)\n- [Changelog](https://github.com/rust-lang/regex/blob/master/CHANGELOG.md)\n- [Commits](https://github.com/rust-lang/regex/compare/1.12.2...1.12.3)\n\n---\nupdated-dependencies:\n- dependency-name: regex\n  dependency-version: 1.12.3\n  dependency-type: direct:production\n  update-type: version-update:semver-patch\n...\n\nSigned-off-by: dependabot[bot] <support@github.com>\nCo-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>",
+        "url": "https://github.com/latex-lsp/texlab/commit/7d1b8d655b6ba55f1029e9a6dd658435d2783cf9"
+    },
+    {
+        "sha": "9efb8ace9939f01ef3da39685176b4825e75831c",
+        "author": "dependabot[bot]",
+        "email": "49699333+dependabot[bot]@users.noreply.github.com",
+        "date": "2026-04-18T07:08:09Z",
+        "message": "Bump flate2 from 1.1.5 to 1.1.9 (#1541)\n\nBumps [flate2](https://github.com/rust-lang/flate2-rs) from 1.1.5 to 1.1.9.\n- [Release notes](https://github.com/rust-lang/flate2-rs/releases)\n- [Commits](https://github.com/rust-lang/flate2-rs/compare/1.1.5...1.1.9)\n\n---\nupdated-dependencies:\n- dependency-name: flate2\n  dependency-version: 1.1.9\n  dependency-type: direct:production\n  update-type: version-update:semver-patch\n...\n\nSigned-off-by: dependabot[bot] <support@github.com>\nCo-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>",
+        "url": "https://github.com/latex-lsp/texlab/commit/9efb8ace9939f01ef3da39685176b4825e75831c"
+    },
+    {
+        "sha": "66cb50a2bf0dc0a2021146b1dc675116024e5973",
+        "author": "Niklas Mohrin",
+        "email": "dev@niklasmohrin.de",
+        "date": "2026-04-18T07:07:48Z",
+        "message": "Run latexindent from server process CWD (#1533)",
+        "url": "https://github.com/latex-lsp/texlab/commit/66cb50a2bf0dc0a2021146b1dc675116024e5973"
+    },
+    {
+        "sha": "74461ae08fbaef54f0254ddfa40505ff6e2ee0a8",
+        "author": "MithicSpirit",
+        "email": "rpc01234@gmail.com",
+        "date": "2026-04-08T17:56:32Z",
+        "message": "Handle \\bibitem optional argument (#1550)\n\nFixes #1549.",
+        "url": "https://github.com/latex-lsp/texlab/commit/74461ae08fbaef54f0254ddfa40505ff6e2ee0a8"
+    },
+    {
+        "sha": "ef2cbb703cb924d75e2df247c66939ccf8acc0f0",
+        "author": "Niklas Mohrin",
+        "email": "dev@niklasmohrin.de",
+        "date": "2026-01-27T21:29:12Z",
+        "message": "Send TextEdit only if latexindent changed something (#1534)",
+        "url": "https://github.com/latex-lsp/texlab/commit/ef2cbb703cb924d75e2df247c66939ccf8acc0f0"
+    },
+    {
+        "sha": "d89bf0fa65bd931ab57183d067f66189fc31e6c9",
+        "author": "Patrick Förster",
+        "email": "pfoerster@users.noreply.github.com",
+        "date": "2025-12-30T08:27:53Z",
+        "message": "Bump version to v5.25.1",
+        "url": "https://github.com/latex-lsp/texlab/commit/d89bf0fa65bd931ab57183d067f66189fc31e6c9"
+    },
+    {
+        "sha": "d4e86ef6b2330d8ce5bec3130b2fa2472ef559b9",
+        "author": "Patrick Förster",
+        "email": "pfoerster@users.noreply.github.com",
+        "date": "2025-12-30T08:27:12Z",
+        "message": "FIx path of latexmk in project detection (#1521)",
+        "url": "https://github.com/latex-lsp/texlab/commit/d4e86ef6b2330d8ce5bec3130b2fa2472ef559b9"
+    },
+    {
+        "sha": "fb9cb83e52eca93b43e417a96581aa274f9fa6d7",
+        "author": "Patrick Förster",
+        "email": "pfoerster@users.noreply.github.com",
+        "date": "2025-12-28T19:45:53Z",
+        "message": "Bump version to v5.25.0",
+        "url": "https://github.com/latex-lsp/texlab/commit/fb9cb83e52eca93b43e417a96581aa274f9fa6d7"
+    },
+    {
+        "sha": "08ef9edb1d53f8a4d3e5605e4e196721fdd056fa",
+        "author": "dependabot[bot]",
+        "email": "49699333+dependabot[bot]@users.noreply.github.com",
+        "date": "2025-12-28T19:42:47Z",
+        "message": "Bump tempfile from 3.23.0 to 3.24.0 (#1516)\n\nBumps [tempfile](https://github.com/Stebalien/tempfile) from 3.23.0 to 3.24.0.\n- [Changelog](https://github.com/Stebalien/tempfile/blob/master/CHANGELOG.md)\n- [Commits](https://github.com/Stebalien/tempfile/compare/v3.23.0...v3.24.0)\n\n---\nupdated-dependencies:\n- dependency-name: tempfile\n  dependency-version: 3.24.0\n  dependency-type: direct:production\n  update-type: version-update:semver-minor\n...\n\nSigned-off-by: dependabot[bot] <support@github.com>\nCo-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>",
+        "url": "https://github.com/latex-lsp/texlab/commit/08ef9edb1d53f8a4d3e5605e4e196721fdd056fa"
+    },
+    {
+        "sha": "7b9804cbdaa270d47e7c8bfd42d00cec5a6a446d",
+        "author": "dependabot[bot]",
+        "email": "49699333+dependabot[bot]@users.noreply.github.com",
+        "date": "2025-12-28T19:42:33Z",
+        "message": "Bump serde_json from 1.0.145 to 1.0.147 (#1517)\n\nBumps [serde_json](https://github.com/serde-rs/json) from 1.0.145 to 1.0.147.\n- [Release notes](https://github.com/serde-rs/json/releases)\n- [Commits](https://github.com/serde-rs/json/compare/v1.0.145...v1.0.147)\n\n---\nupdated-dependencies:\n- dependency-name: serde_json\n  dependency-version: 1.0.147\n  dependency-type: direct:production\n  update-type: version-update:semver-patch\n...\n\nSigned-off-by: dependabot[bot] <support@github.com>\nCo-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>",
+        "url": "https://github.com/latex-lsp/texlab/commit/7b9804cbdaa270d47e7c8bfd42d00cec5a6a446d"
+    }
+]

@@ -1,0 +1,242 @@
+[
+    {
+        "sha": "c319f64c0ac6268e044ed82e739259af37a5f459",
+        "author": "Tanvi Jagtap - Google LLC",
+        "email": "139093547+tanvi-jagtap@users.noreply.github.com",
+        "date": "2026-07-14T06:51:30Z",
+        "message": "[Experiment] (#42971)\n\n[Experiment]\n\nCloses #42971\n\nCOPYBARA_INTEGRATE_REVIEW=https://github.com/grpc/grpc/pull/42971 from tanvi-jagtap:tjagtap_2026_07_14_expt 087c0d05743ac1dfe017a8a7a3cff60d3e9c66ad\nPiperOrigin-RevId: 947476812",
+        "url": "https://github.com/grpc/grpc/commit/c319f64c0ac6268e044ed82e739259af37a5f459"
+    },
+    {
+        "sha": "50cdc000568343d2238b1febf5838a7b3e50c827",
+        "author": "Aadi Kapur",
+        "email": "aadik@google.com",
+        "date": "2026-07-13T21:31:41Z",
+        "message": "[metrics] Update RLS metrics to include application-defined label (#42805)\n\nAdd the application-defined per-call label described in [gRFC A108](https://github.com/grpc/proposal/blob/master/A108-otel-custom-per-call-label.md) to the following RLS metrics:\n* `grpc.lb.rls.default_target_picks`\n* `grpc.lb.rls.target_picks`\n* `grpc.lb.rls.failed_picks`\n\nCloses #42805\n\nCOPYBARA_INTEGRATE_REVIEW=https://github.com/grpc/grpc/pull/42805 from aadikapur:rls-metrics d8a3218ae8dc632ff03e5d7c0678edbb454be198\nPiperOrigin-RevId: 947246752",
+        "url": "https://github.com/grpc/grpc/commit/50cdc000568343d2238b1febf5838a7b3e50c827"
+    },
+    {
+        "sha": "73d889ce6a3afb43784df4393e60c68ab68f2569",
+        "author": "Mark D. Roth",
+        "email": "roth@google.com",
+        "date": "2026-07-13T19:53:49Z",
+        "message": "[xDS gRPC transport] handle call creds per-call instead of per-channel (#42949)\n\nThis way, we won't needlessly recreate the channel if the call creds change.\n\nCloses #42949\n\nCOPYBARA_INTEGRATE_REVIEW=https://github.com/grpc/grpc/pull/42949 from markdroth:xds_transport_grpc_call_creds 151a53424a2709a56a216caf5d123a0f12911cdf\nPiperOrigin-RevId: 947194963",
+        "url": "https://github.com/grpc/grpc/commit/73d889ce6a3afb43784df4393e60c68ab68f2569"
+    },
+    {
+        "sha": "06e470a02d64a597512951f9eadb3b607a315518",
+        "author": "Pawan Bhardwaj",
+        "email": "bpawan@google.com",
+        "date": "2026-07-13T17:28:14Z",
+        "message": "fix(core): Prevent message bypass on stalled initial metadata (#42823)\n\nExperiment Added: recv_message_filter_bypass_fix\n\nIssues seen and fix:\n1. on receiving trailing metadata while initial metadata and message is queued causing filter mutation to bypass.\n2. stop upper stack filter resolve trailing metadata promise while the below filter is still processing IM, message, TM. (Added a new queue state for Trailing metadata)\n3.  Handle out of band cancellation with the changes with proper return code.\n\nAdded test showcasing the scenario.\n\nCloses #42823\n\nCOPYBARA_INTEGRATE_REVIEW=https://github.com/grpc/grpc/pull/42823 from pawbhard:filter_fixes 72c873befb97fa8d5f3e5069eb87e1cd9b1ba79c\nPiperOrigin-RevId: 947115571",
+        "url": "https://github.com/grpc/grpc/commit/06e470a02d64a597512951f9eadb3b607a315518"
+    },
+    {
+        "sha": "1ad4b41aab4141e92b98e1be35383ceb3039086b",
+        "author": "Sreenithi Sridharan",
+        "email": "ssreenithi@google.com",
+        "date": "2026-07-13T16:18:16Z",
+        "message": "[Python] Remove unused import of `Metadata` from `aio._base_server.py`. (#42962)\n\nRemove unused import of `Metadata` from `_base_server.py`. Removing this import had caused some internal test breakage about 2+ years ago and hence had to be re-introduced in https://github.com/grpc/grpc/pull/37022\n\nTrying to remove it again now to see if this unused import is still needed or safe to remove. Internal tests doesn't show any failures associated with this change now, so I assume this is fine.\n\nCloses #42962\n\nCOPYBARA_INTEGRATE_REVIEW=https://github.com/grpc/grpc/pull/42962 from sreenithi:remove_unused_import 876e4adce59c9cf058bf92f0bfb7556ec33f4942\nPiperOrigin-RevId: 947078630",
+        "url": "https://github.com/grpc/grpc/commit/1ad4b41aab4141e92b98e1be35383ceb3039086b"
+    },
+    {
+        "sha": "3f9028753e1300549eea7c5c58fa2b15de0e2310",
+        "author": "Akshit Patel",
+        "email": "akshitpatel@google.com",
+        "date": "2026-07-13T15:52:37Z",
+        "message": "[PH2][Bug] Fix a shutdown race condition\n\nThis change fixes a race where new streams may be added to the `stream_list` after transport has cleaned up the `stream_list` in the shutdown flow.\n\nPiperOrigin-RevId: 947066804",
+        "url": "https://github.com/grpc/grpc/commit/3f9028753e1300549eea7c5c58fa2b15de0e2310"
+    },
+    {
+        "sha": "e3e0c8b891643a50062f836b9decb39e57a56171",
+        "author": "Akshit Patel",
+        "email": "akshitpatel@google.com",
+        "date": "2026-07-13T07:25:59Z",
+        "message": "[CallV3] Add batch validations\n\nPiperOrigin-RevId: 946841032",
+        "url": "https://github.com/grpc/grpc/commit/e3e0c8b891643a50062f836b9decb39e57a56171"
+    },
+    {
+        "sha": "2a84b1d64625fc4fbc6c1f30f9410e08a51483c9",
+        "author": "Tanvi Jagtap",
+        "email": "tjagtap@google.com",
+        "date": "2026-07-13T05:24:14Z",
+        "message": "[PH2][Refactor] Add helper for Reset Stream\n\nPiperOrigin-RevId: 946793889",
+        "url": "https://github.com/grpc/grpc/commit/2a84b1d64625fc4fbc6c1f30f9410e08a51483c9"
+    },
+    {
+        "sha": "9da91ad94a0f77c06f58addcc601cad94636a410",
+        "author": "Siddharth Nohria",
+        "email": "snohria@google.com",
+        "date": "2026-07-12T00:54:16Z",
+        "message": "Modify gRPC Session Reactor to return virtual channel instead of the call object.\n\nThe ClientSessionReactor's OnSessionReady callback now returns a std::shared_ptr<grpc::Channel> directly. The virtual channel is created internally, using the ChannelArguments provided during PrepareSessionCall.\n\nPiperOrigin-RevId: 946352492",
+        "url": "https://github.com/grpc/grpc/commit/9da91ad94a0f77c06f58addcc601cad94636a410"
+    },
+    {
+        "sha": "6f707fa93ff0a8562707b41cc596f95f3590be6a",
+        "author": "Aadi Kapur",
+        "email": "aadik@google.com",
+        "date": "2026-07-11T00:09:54Z",
+        "message": "Support new counters in fake stats plugin (#42867)\n\nSupport counters for new non-per-call metrics API in fake stats plugin.\n\n* These changes were already implemented in #41073. They are being pulled out here so they can be merged to unblock #42606.\n\nThe only further changes are:\n* Add support for stubbed out metrics like histogram.\n* Add tests.\n\nCloses #42867\n\nCOPYBARA_INTEGRATE_REVIEW=https://github.com/grpc/grpc/pull/42867 from aadikapur:hist fc6d89cb3bba3d8804ff8b564cecefe4026ba44f\nPiperOrigin-RevId: 945962949",
+        "url": "https://github.com/grpc/grpc/commit/6f707fa93ff0a8562707b41cc596f95f3590be6a"
+    },
+    {
+        "sha": "dc5bf65c0eae98dd47cf0ba4a8f2468b7708958b",
+        "author": "Mark D. Roth",
+        "email": "roth@google.com",
+        "date": "2026-07-10T20:08:03Z",
+        "message": "[xDS] add layer of abstraction to xDS filter chain builder (#42939)\n\nThis changes `RouteConfigFilterChainBuilder` to use an xDS-specific filter chain builder API.  This will be needed on the server side, where we need to store the `XdsHttpFilterImpl` pointer instead of the actual C-core filter when we call `RouteConfigFilterChainBuilder`, since we won't be constructing the real filter chain until connection establishment time.\n\nPrior to #42921, this wasn't going to be needed, because the list of filters was always the same for every route, so there was going to be no need to store the actual filter implementations in each individual route.  However, I realized that with the changes in that PR, the list of filters may now be different for each route, so we will actually need to store the filter implementation in each route.\n\nAs a nice side-benefit, this approach allowed me to remove the hacky `add_last_filter` parameter to `RouteConfigFilterChainBuilder`.\n\nCloses #42939\n\nCOPYBARA_INTEGRATE_REVIEW=https://github.com/grpc/grpc/pull/42939 from markdroth:xds_routing_builder_indirection e9173b256009972fa435b2e5fe9c4149b64c0bcb\nPiperOrigin-RevId: 945856666",
+        "url": "https://github.com/grpc/grpc/commit/dc5bf65c0eae98dd47cf0ba4a8f2468b7708958b"
+    },
+    {
+        "sha": "a90dd958d3cac6aada7e7534c670b5d6e88ba2f2",
+        "author": "metsw24-max",
+        "email": "metsw24@gmail.com",
+        "date": "2026-07-10T19:22:15Z",
+        "message": "fix size_t underflow in alts_tsi_handshaker_result_set_unused_bytes (#42505)\n\nbytes_consumed comes straight from the handshaker response; if it exceeds the recv_bytes length the size_t subtraction underflows and feeds a wild gpr_zalloc/memcpy, so cap it.\n\nCloses #42505\n\nCOPYBARA_INTEGRATE_REVIEW=https://github.com/grpc/grpc/pull/42505 from metsw24-max:alts-unused-bytes-underflow df52f8d3a95799952b1cd8a38681c9998e9e8328\nPiperOrigin-RevId: 945835639",
+        "url": "https://github.com/grpc/grpc/commit/a90dd958d3cac6aada7e7534c670b5d6e88ba2f2"
+    },
+    {
+        "sha": "218093dc11fa346e73479c2ae0390ac79fc2188f",
+        "author": "Clayton Knittel",
+        "email": "cknittel@google.com",
+        "date": "2026-07-10T18:03:21Z",
+        "message": "Call the concrete request type destructor in `RpcMethodHandler::Deserialize`, instead of the `proto2::Message` destructor in `UnaryDeserializeHelper`.\n\nPiperOrigin-RevId: 945797970",
+        "url": "https://github.com/grpc/grpc/commit/218093dc11fa346e73479c2ae0390ac79fc2188f"
+    },
+    {
+        "sha": "67994d8284b99556614e78773eea36ad5425d9eb",
+        "author": "Alisha Nanda",
+        "email": "alishananda@google.com",
+        "date": "2026-07-10T16:08:49Z",
+        "message": "Move insecure credentials into separate BUILD target.\n\nPiperOrigin-RevId: 945741205",
+        "url": "https://github.com/grpc/grpc/commit/67994d8284b99556614e78773eea36ad5425d9eb"
+    },
+    {
+        "sha": "2f6c59cb1708b20c3048acac5f68c56b4c2a3808",
+        "author": "Alisha Nanda",
+        "email": "alishananda@google.com",
+        "date": "2026-07-10T16:05:37Z",
+        "message": "Refactor Mitigation to return EvaluationResult instead of Action\n\nPiperOrigin-RevId: 945739798",
+        "url": "https://github.com/grpc/grpc/commit/2f6c59cb1708b20c3048acac5f68c56b4c2a3808"
+    },
+    {
+        "sha": "8baee4f7ed0b4320174b00996d0451e34765cfc1",
+        "author": "Tanvi Jagtap",
+        "email": "tjagtap@google.com",
+        "date": "2026-07-10T11:49:36Z",
+        "message": "[PH2] Implement ping_on_rst_stream_percent for PH2 Server\n\nPiperOrigin-RevId: 945643662",
+        "url": "https://github.com/grpc/grpc/commit/8baee4f7ed0b4320174b00996d0451e34765cfc1"
+    },
+    {
+        "sha": "bc07c47a3b8ddf7e4d3fac8badf4e6f08a5d6f88",
+        "author": "Akshit Patel",
+        "email": "akshitpatel@google.com",
+        "date": "2026-07-10T10:21:36Z",
+        "message": "[PH2][Server][Ping] Implement NextAllowedPingInterval\n\nPiperOrigin-RevId: 945611325",
+        "url": "https://github.com/grpc/grpc/commit/bc07c47a3b8ddf7e4d3fac8badf4e6f08a5d6f88"
+    },
+    {
+        "sha": "d83bb3b54c9082bdeec37e6323f116060d4e12f8",
+        "author": "Aananth V",
+        "email": "aananthv@google.com",
+        "date": "2026-07-10T08:52:18Z",
+        "message": "chaotic_good: Reject incoming frames after stream half-close\n\n* For server transport: Reject incoming frames after the client has sent a half-close (`ClientEndOfStream`) frame.\n\nPiperOrigin-RevId: 945575411",
+        "url": "https://github.com/grpc/grpc/commit/d83bb3b54c9082bdeec37e6323f116060d4e12f8"
+    },
+    {
+        "sha": "4b8fed5eba19ff2edee317fc71dca538b7925e07",
+        "author": "Akshit Patel",
+        "email": "akshitpatel@google.com",
+        "date": "2026-07-10T08:26:44Z",
+        "message": "[CallV3] Apply channel args mutator for V3 channel\n\nPiperOrigin-RevId: 945565882",
+        "url": "https://github.com/grpc/grpc/commit/4b8fed5eba19ff2edee317fc71dca538b7925e07"
+    },
+    {
+        "sha": "231c7c1f2cff5ea636942ba50ab7bd2fdee3fc61",
+        "author": "Rishesh Agarwal",
+        "email": "rishesh@google.com",
+        "date": "2026-07-10T06:30:31Z",
+        "message": "[xDS] Support disabling HTTP filters via LDS/RDS (#42921)\n\nThis PR implements the mechanism to support disabling HTTP Connection Manager (HCM) filters at different levels (Virtual Host, Route, Weighted Cluster) via LDS/RDS.\n\nSpecifically:\n\n- Adds a disabled field to HttpFilter (LDS) and FilterConfigOverride (RDS) resource structures.\n- Parses the disabled field from Envoy FilterConfig protos in LDS/RDS.\n- Updates routing logic in XdsRouting to skip disabled filters when building filter chains or generating service configs.\n- Adds unit tests in xds_routing_test.cc to verify correct disabling behavior and override priority (HCM < Vhost < Route < ClusterWeight).\n\nCloses #42921\n\nCOPYBARA_INTEGRATE_REVIEW=https://github.com/grpc/grpc/pull/42921 from rishesh007:add_disable_override_config_implementation bc495d561419b758e5039c678ce46350bbba64ef\nPiperOrigin-RevId: 945519331",
+        "url": "https://github.com/grpc/grpc/commit/231c7c1f2cff5ea636942ba50ab7bd2fdee3fc61"
+    },
+    {
+        "sha": "f7a662343a9170cf4d00aca86d92665b180dcea5",
+        "author": "Tanvi Jagtap",
+        "email": "tjagtap@google.com",
+        "date": "2026-07-10T06:23:10Z",
+        "message": "[PH2][Trivial] TODOs\nDowngrading all Client TODOs a litte. P1 and P2 are for Server work.\n\nPiperOrigin-RevId: 945516525",
+        "url": "https://github.com/grpc/grpc/commit/f7a662343a9170cf4d00aca86d92665b180dcea5"
+    },
+    {
+        "sha": "89e027932848de18019c967d62e69d3149123fc7",
+        "author": "Mark D. Roth",
+        "email": "roth@google.com",
+        "date": "2026-07-09T20:52:51Z",
+        "message": "[xDS] change ServerConfigSelector to return filter chain (#42478)\n\nInstead of using a channel stack modifier to inject xDS HTTP filters, we now have the `ServerConfigSelector` return the filter chain to use for each RPC.\n\nThis rewrites the server config selector filter as an interceptor called `ServerConfigSelectorInterceptor`, which is responsible for injecting the xDS HTTP filters.  The interceptor itself is now automatically added to the filter stack whenever a `ServerConfigSelectorProvider` is present in channel args, which eliminates the need to inject it via the channel stack modifier.  This approach has the nice property that it also adds support for server-side xDS functionality in the v3 stack, which had been previously unsupported, since the channel stack modifier API does not work in the v3 stack.\n\nThe filter chains still need to be built for each connection, because they need to be given an `UnstartedCallDestination` that forwards to the next segment of the connection's filter chain.  However, we want to use the same `ServerConfigSelector` object for multiple connections, so that we aren't needlessly duplicating all of the xDS routing state that really needs to exist only once for each L4 filter chain, no matter how many connections use that L4 filter chain.  Therefore, I have added a mechanism whereby the `ServerConfigSelector` can store the filter chains in a separate, per-connection object.\n\nSpecifically, I have added a new `ServerConfigSelector::BuildFilterChains()` method that builds the per-connection filter chains.  It returns an object of type `ConnectionState`, which it will use to store the per-connection filter chains.  This connection state object is opaque to the interceptor: it cannot interact with it directly, but it must pass it to `ServerConfigSelector::GetCallConfig()` when determining the call config for each RPC.  The return from `GetCallConfig()` now includes the filter chain to use, and the interceptor will delegate to this filter chain.\n\nFor now, the `XdsServerConfigSelector` always uses the same filter chain, regardless of which route is chosen, and it continues to use the existing service config-based mechanism for passing different configs to the filters for each route.  In a subsequent PR, I will change it to instead create a separate filter chain for each route, where the appropriate config is passed to each filter at filter chain build time.\n\nCloses #42478\n\nCOPYBARA_INTEGRATE_REVIEW=https://github.com/grpc/grpc/pull/42478 from markdroth:xds_server_filter_chain_per_route1 081cbf77f776e2b041ad59df8b1019b774091adf\nPiperOrigin-RevId: 945299735",
+        "url": "https://github.com/grpc/grpc/commit/89e027932848de18019c967d62e69d3149123fc7"
+    },
+    {
+        "sha": "75cd0a7cf8d772f5984c6dc5f873c4b6e8a8fffd",
+        "author": "Mark D. Roth",
+        "email": "roth@google.com",
+        "date": "2026-07-09T18:47:46Z",
+        "message": "Automated rollback of commit 725c173a43110bc2363b900c01a1351382f773bb.\n\nPiperOrigin-RevId: 945236017",
+        "url": "https://github.com/grpc/grpc/commit/75cd0a7cf8d772f5984c6dc5f873c4b6e8a8fffd"
+    },
+    {
+        "sha": "f9041ee71fba5b92d815208a01936635dabdb880",
+        "author": "Luwei Ge",
+        "email": "lwge@google.com",
+        "date": "2026-07-09T16:35:12Z",
+        "message": "[TLS] Certificate selector supports handshake hints (#42868)\n\nCloses #42868\n\nCOPYBARA_INTEGRATE_REVIEW=https://github.com/grpc/grpc/pull/42868 from rockspore:handshake_hints 2d7267fc60c174293d7c4989819ea9aeb79df54d\nPiperOrigin-RevId: 945162997",
+        "url": "https://github.com/grpc/grpc/commit/f9041ee71fba5b92d815208a01936635dabdb880"
+    },
+    {
+        "sha": "cb4bbd97f973a4c83d73e7f50db28672ff6241f7",
+        "author": "Vignesh Babu",
+        "email": "vigneshbabu@google.com",
+        "date": "2026-07-09T16:11:06Z",
+        "message": "Expose packages and files to grpc \"friends\" package group\n\nPiperOrigin-RevId: 945151326",
+        "url": "https://github.com/grpc/grpc/commit/cb4bbd97f973a4c83d73e7f50db28672ff6241f7"
+    },
+    {
+        "sha": "ade656bdf8834478bd43ff5ca8ec7dfc3755dc35",
+        "author": "Rishesh Agarwal",
+        "email": "rishesh@google.com",
+        "date": "2026-07-09T15:55:13Z",
+        "message": "[xds] Plumb XdsTransportFactory into XdsHttpFilterImpl::MergeConfigs (#42922)\n\nThis change plumbs XdsTransportFactory into XdsHttpFilterImpl::MergeConfigs. This is a prerequisite for filters that need to create channels or transports (such as the upcoming ExtProc filter).\n\nCloses #42922\n\nCOPYBARA_INTEGRATE_REVIEW=https://github.com/grpc/grpc/pull/42922 from rishesh007:plumb_transport_factory 341f08beccf79bad156d4749d6d6bbfa66453f43\nPiperOrigin-RevId: 945143446",
+        "url": "https://github.com/grpc/grpc/commit/ade656bdf8834478bd43ff5ca8ec7dfc3755dc35"
+    },
+    {
+        "sha": "39750a40f293cacfc095e6ab347a68710f94c1ed",
+        "author": "aslam ansari",
+        "email": "aslam.ansari678@gmail.com",
+        "date": "2026-07-09T15:51:45Z",
+        "message": "updated basictests examples cfg for testing (#42910)\n\nFix cocoapods installation issue in CI\n\nCloses #42910\n\nCOPYBARA_INTEGRATE_REVIEW=https://github.com/grpc/grpc/pull/42910 from aslam9691:Basic_Test_CI_Failure 1006828da1b717bbd7beeb7fbdfeaae45a40d25d\nPiperOrigin-RevId: 945141838",
+        "url": "https://github.com/grpc/grpc/commit/39750a40f293cacfc095e6ab347a68710f94c1ed"
+    },
+    {
+        "sha": "103bc1f965f91230a1a9e18ee6e4435e5a26121b",
+        "author": "Mark D. Roth",
+        "email": "roth@google.com",
+        "date": "2026-07-09T15:26:40Z",
+        "message": "[telemetry] add plumbing for locality label (roll forward) (#42915)\n\nRolling forward https://github.com/grpc/grpc/pull/42803, which was reverted in https://github.com/grpc/grpc/pull/42870 due to introducing a flake in the outlier detection test.\n\nThis PR fixes the flake by changing the test to not change the locality associated with the subchannel when we move it from priority 0 to priority 1.\n\nCloses #42915\n\nCOPYBARA_INTEGRATE_REVIEW=https://github.com/grpc/grpc/pull/42915 from markdroth:locality_label_roll_forward 6a6e84e0bf15d9a0c36ff284feb2702afdbfd4d6\nPiperOrigin-RevId: 945130694",
+        "url": "https://github.com/grpc/grpc/commit/103bc1f965f91230a1a9e18ee6e4435e5a26121b"
+    },
+    {
+        "sha": "6e3ca3cf4359d910475c47efc63e1b1788620ab3",
+        "author": "Vignesh Babu",
+        "email": "vigneshbabu@google.com",
+        "date": "2026-07-09T15:21:15Z",
+        "message": "[EventEngine] Cancel all pending timers in PosixEventEngine destructor\n\nPiperOrigin-RevId: 945128123",
+        "url": "https://github.com/grpc/grpc/commit/6e3ca3cf4359d910475c47efc63e1b1788620ab3"
+    },
+    {
+        "sha": "8f3bb3418de351ea23c938c3290f2a1aaf48b585",
+        "author": "Rishesh Agarwal",
+        "email": "rishesh@google.com",
+        "date": "2026-07-09T11:32:01Z",
+        "message": "[Release] Bump version to 1.84.0-dev (on master branch) (#42935)\n\nChange was created by the release automation script. See go/grpc-release.\n\nCloses #42935\n\nCOPYBARA_INTEGRATE_REVIEW=https://github.com/grpc/grpc/pull/42935 from rishesh007:bump_dev_version_202607090858 b0da26464e07a2f3cd3a10941ba30d09b9cc3caa\nPiperOrigin-RevId: 945038629",
+        "url": "https://github.com/grpc/grpc/commit/8f3bb3418de351ea23c938c3290f2a1aaf48b585"
+    }
+]

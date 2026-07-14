@@ -1,0 +1,242 @@
+[
+    {
+        "sha": "d2437adea9a08341fc2d9d2a887fd75f81b147dc",
+        "author": "Andrea Barberio",
+        "email": "insomniac@slackware.it",
+        "date": "2026-05-29T22:07:17Z",
+        "message": "[go] Update go-graphviz to v0.2.10 and migrate ToDOT\n\nv0.2 is a breaking API change (context-based New/Render, Create*ByName, Node.Name returns an error); migrate results.ToDOT(). It also drops cgo for a pure-Go WASM backend, so the module builds with CGO_ENABLED=0.\n\nCo-Authored-By: Claude Opus 4.8 (1M context) <noreply@anthropic.com>\nSigned-off-by: Andrea Barberio <insomniac@slackware.it>",
+        "url": "https://github.com/insomniacslk/dublin-traceroute/commit/d2437adea9a08341fc2d9d2a887fd75f81b147dc"
+    },
+    {
+        "sha": "fa741c76e7398fb70c493ab65889561f93a89d6c",
+        "author": "Andrea Barberio",
+        "email": "insomniac@slackware.it",
+        "date": "2026-05-29T21:48:01Z",
+        "message": "[go] Clamp negative RTT to avoid a uint64 underflow\n\nOn fast paths (e.g. routest loopback) the reply can be timestamped before the send, making received-sent negative; clamp it to zero before the uint64 conversion in the v4 and v6 probes.\n\nCo-Authored-By: Claude Opus 4.8 (1M context) <noreply@anthropic.com>\nSigned-off-by: Andrea Barberio <insomniac@slackware.it>",
+        "url": "https://github.com/insomniacslk/dublin-traceroute/commit/fa741c76e7398fb70c493ab65889561f93a89d6c"
+    },
+    {
+        "sha": "a0a371b7da59b9ef9e3a2d6c1a431b46f27ded44",
+        "author": "Andrea Barberio",
+        "email": "insomniac@slackware.it",
+        "date": "2026-05-29T21:27:57Z",
+        "message": "[go] Update Go dependencies\n\nRefresh all dependencies via 'go get -u ./...' + 'go mod tidy': go-nfqueue v1.3.1->v1.3.2, go-graphviz v0.1.2->v0.1.3, logrus v1.9.3->v1.9.4, pflag v1.0.5->v1.0.10, testify v1.8.2->v1.10.0, golang.org/x/net v0.38.0->v0.55.0, golang.org/x/sys v0.31.0->v0.45.0, plus the indirect dependencies.\n\ngo-graphviz is held on the v0.1.x line: v0.2.x is a breaking change (context-based API, cgraph Node.Name() now returns an error, and a switch to a pure-Go WASM backend) that requires migrating results.ToDOT(); that is left for a separate change.\n\nCo-Authored-By: Claude Opus 4.8 (1M context) <noreply@anthropic.com>\nSigned-off-by: Andrea Barberio <insomniac@slackware.it>",
+        "url": "https://github.com/insomniacslk/dublin-traceroute/commit/a0a371b7da59b9ef9e3a2d6c1a431b46f27ded44"
+    },
+    {
+        "sha": "ad97c3a175f2e1a8595adc2794d7e419911df198",
+        "author": "Andrea Barberio",
+        "email": "insomniac@slackware.it",
+        "date": "2026-05-29T20:48:55Z",
+        "message": "[go] Build routest only on Linux\n\nroutest depends on Linux-only facilities -- NFQUEUE (via go-nfqueue and netlink) and unix.BindToDevice (SO_BINDTODEVICE) -- so it cannot build on macOS, where it failed with 'cmd/routest/send.go: undefined: unix.BindToDevice'. Add a //go:build linux constraint to the package's files; with the ./... wildcard, go build/vet/test/list silently skip packages whose files are all excluded for the target platform, so the macOS CI jobs no longer compile routest while the Linux integ build is unchanged.\n\nCo-Authored-By: Claude Opus 4.8 (1M context) <noreply@anthropic.com>\nSigned-off-by: Andrea Barberio <insomniac@slackware.it>",
+        "url": "https://github.com/insomniacslk/dublin-traceroute/commit/ad97c3a175f2e1a8595adc2794d7e419911df198"
+    },
+    {
+        "sha": "f01d4bc3fc531b5441b5c5525215cfccf1c2a7ea",
+        "author": "Andrea Barberio",
+        "email": "insomniac@slackware.it",
+        "date": "2026-05-29T20:05:03Z",
+        "message": "[go] Fix broken net unit tests and run the suite in CI\n\nThe net and probev6 test packages no longer built/vetted: net/icmp_test.go called the misspelled UnmarshalBinaryBinary; udp_test.go and ipv6_test.go used the pre-refactor API (the removed IPv4 type, UDP.SetPrev, and SetNext on a *UDP, which is no longer a Layer); and probev6/udpv6.go used the %w verb in log.Printf. Update the tests to the current net API (UDP.PseudoHeader for checksums, Raw payload chaining) and switch the log verb to %v.\n\nAlso fix the test_go CI job, which ran 'go list ./...' from cmd/dublin-traceroute and therefore only matched the CLI main package (no test files), so the real test packages were never exercised. Run it from the module root instead.\n\nBump the Go version to 1.26.3 in go.mod and across the Tests workflow (build/test matrices and the C++ and integ jobs), replacing the previous 1.21/1.22 pins.\n\nCo-Authored-By: Claude Opus 4.8 (1M context) <noreply@anthropic.com>\nSigned-off-by: Andrea Barberio <insomniac@slackware.it>",
+        "url": "https://github.com/insomniacslk/dublin-traceroute/commit/f01d4bc3fc531b5441b5c5525215cfccf1c2a7ea"
+    },
+    {
+        "sha": "c78d68c242881f8b951900c5af8f58258d75cce3",
+        "author": "Andrea Barberio",
+        "email": "insomniac@slackware.it",
+        "date": "2026-05-29T20:05:03Z",
+        "message": "[go] Remove dead net/ipv4.go and its stale test\n\nThe body of net/ipv4.go was entirely commented out in 06d4c88 (\"[go] replace ipv6/ipv6 network library with golang.org/x/net\"), when the local IPv4 header implementation was superseded by golang.org/x/net/ipv4. The file has defined nothing since, but net/ipv4_test.go still referenced the removed types (IPv4, DontFragment, Option, Version4, ...) and broke 'go test' for the net package. No non-test code uses the local net.IPv4 type, and the still-needed IPv4HeaderToPseudoHeader helper lives in net/udp.go.\n\nCo-Authored-By: Claude Opus 4.8 (1M context) <noreply@anthropic.com>\nSigned-off-by: Andrea Barberio <insomniac@slackware.it>",
+        "url": "https://github.com/insomniacslk/dublin-traceroute/commit/c78d68c242881f8b951900c5af8f58258d75cce3"
+    },
+    {
+        "sha": "ccb515d875615d726233fe82590fe3e76d144ddf",
+        "author": "Andrea Barberio",
+        "email": "insomniac@slackware.it",
+        "date": "2026-05-29T19:30:52Z",
+        "message": "Fix several crashes in the C++ implementation\n\n- udpv4probe.cc: build the probe RawPDU from an explicit [begin, end)\n  byte range instead of `RawPDU((char *)payload)`. The bare char* selected\n  the std::string(const char*) constructor, which runs strlen over the\n  buffer; since the trailing identifier bytes are usually non-zero there is\n  no NUL terminator, so it read past the end of the stack array (confirmed\n  stack-buffer-overflow under AddressSanitizer).\n\n- dublin_traceroute.cc: always stop and join the ICMP listener thread before\n  traceroute() returns. Previously any exception thrown after the thread was\n  created (e.g. a failed probe send / no route to host) unwound past a still\n  joinable std::thread, calling std::terminate() and aborting the process.\n  A ListenerGuard RAII object now joins the thread on every exit path, and an\n  atomic stop flag lets the error path tear down promptly.\n\n- dublin_traceroute.cc: hold mutex_tracerouting with a std::unique_lock\n  (try_to_lock) instead of a manual try_lock()/unlock(). The manual unlock()\n  was skipped on the exception path, leaving the mutex locked and deadlocking\n  the destructor; also close(sock) before throwing on setsockopt failure.\n\n- dublin_traceroute.cc: replace the uninitialized msg_control pointer with a\n  properly sized control buffer so recvmsg no longer references garbage (and\n  SO_TIMESTAMP kernel timestamps now actually work), and use ssize_t for the\n  recvmsg return value.\n\n- hop.cc, traceroute_results.cc: require a full 4-byte entry before parsing an\n  MPLS label stack entry, so a malformed (non-multiple-of-4) ICMP MPLS\n  extension from the network cannot cause an out-of-bounds vector read. Also\n  remove dead code in TracerouteResults::show() that re-parsed the inner IP\n  and could throw an uncaught exception.\n\nCo-Authored-By: Claude Opus 4.8 (1M context) <noreply@anthropic.com>\nSigned-off-by: Andrea Barberio <insomniac@slackware.it>",
+        "url": "https://github.com/insomniacslk/dublin-traceroute/commit/ccb515d875615d726233fe82590fe3e76d144ddf"
+    },
+    {
+        "sha": "617f144029d3df071df9ea2e5fb1fdd089d70101",
+        "author": "dependabot[bot]",
+        "email": "49699333+dependabot[bot]@users.noreply.github.com",
+        "date": "2026-03-30T16:24:44Z",
+        "message": "Bump golang.org/x/image from 0.23.0 to 0.38.0\n\nBumps [golang.org/x/image](https://github.com/golang/image) from 0.23.0 to 0.38.0.\n- [Commits](https://github.com/golang/image/compare/v0.23.0...v0.38.0)\n\n---\nupdated-dependencies:\n- dependency-name: golang.org/x/image\n  dependency-version: 0.38.0\n  dependency-type: indirect\n...\n\nSigned-off-by: dependabot[bot] <support@github.com>",
+        "url": "https://github.com/insomniacslk/dublin-traceroute/commit/617f144029d3df071df9ea2e5fb1fdd089d70101"
+    },
+    {
+        "sha": "ea3a974f50c7465bf79d7adab83799332f864b40",
+        "author": "dependabot[bot]",
+        "email": "49699333+dependabot[bot]@users.noreply.github.com",
+        "date": "2025-04-16T22:52:53Z",
+        "message": "Bump golang.org/x/net from 0.33.0 to 0.38.0\n\nBumps [golang.org/x/net](https://github.com/golang/net) from 0.33.0 to 0.38.0.\n- [Commits](https://github.com/golang/net/compare/v0.33.0...v0.38.0)\n\n---\nupdated-dependencies:\n- dependency-name: golang.org/x/net\n  dependency-version: 0.38.0\n  dependency-type: direct:production\n...\n\nSigned-off-by: dependabot[bot] <support@github.com>",
+        "url": "https://github.com/insomniacslk/dublin-traceroute/commit/ea3a974f50c7465bf79d7adab83799332f864b40"
+    },
+    {
+        "sha": "d81c77e55a03872b9e8e89a65be3509ae03d71ab",
+        "author": "Andrea Barberio",
+        "email": "insomniac@slackware.it",
+        "date": "2025-01-02T10:46:16Z",
+        "message": "Bump to C++14 and remove deprecated unary_function, binary_function\n\nSigned-off-by: Andrea Barberio <insomniac@slackware.it>",
+        "url": "https://github.com/insomniacslk/dublin-traceroute/commit/d81c77e55a03872b9e8e89a65be3509ae03d71ab"
+    },
+    {
+        "sha": "af52c54ee63cf34ce022fd7fc0e536d27b4b8e9a",
+        "author": "Andrea Barberio",
+        "email": "insomniac@slackware.it",
+        "date": "2024-12-25T19:05:35Z",
+        "message": "Updated dependencies\n\nSigned-off-by: Andrea Barberio <insomniac@slackware.it>",
+        "url": "https://github.com/insomniacslk/dublin-traceroute/commit/af52c54ee63cf34ce022fd7fc0e536d27b4b8e9a"
+    },
+    {
+        "sha": "f3675f0c82f42ef0c90b13be78f817a90096087f",
+        "author": "Andrea Barberio",
+        "email": "insomniac@slackware.it",
+        "date": "2024-12-19T08:38:33Z",
+        "message": "Update golang.org/x/net\n\nSigned-off-by: Andrea Barberio <insomniac@slackware.it>",
+        "url": "https://github.com/insomniacslk/dublin-traceroute/commit/f3675f0c82f42ef0c90b13be78f817a90096087f"
+    },
+    {
+        "sha": "f9b18538ca052817b3e618dff3d7c860ca7dd5cd",
+        "author": "Andrea Barberio",
+        "email": "insomniac@slackware.it",
+        "date": "2024-08-29T10:55:14Z",
+        "message": "Fixed build on macos\n\nSigned-off-by: Andrea Barberio <insomniac@slackware.it>",
+        "url": "https://github.com/insomniacslk/dublin-traceroute/commit/f9b18538ca052817b3e618dff3d7c860ca7dd5cd"
+    },
+    {
+        "sha": "68a3befe913c84f8ca6344bedd7bef0ca50e7652",
+        "author": "insomniac",
+        "email": "insomniacslk@users.noreply.github.com",
+        "date": "2024-05-01T18:23:53Z",
+        "message": "Create dependabot.yml",
+        "url": "https://github.com/insomniacslk/dublin-traceroute/commit/68a3befe913c84f8ca6344bedd7bef0ca50e7652"
+    },
+    {
+        "sha": "a92118d93fd1fa7bdb827e741dd848b7f7083a1e",
+        "author": "Andrea Barberio",
+        "email": "insomniac@slackware.it",
+        "date": "2024-04-11T14:00:21Z",
+        "message": "Fix Go CI build\n\nSigned-off-by: Andrea Barberio <insomniac@slackware.it>",
+        "url": "https://github.com/insomniacslk/dublin-traceroute/commit/a92118d93fd1fa7bdb827e741dd848b7f7083a1e"
+    },
+    {
+        "sha": "fedb3b41ec7a95229481f4875d338c5c535895b9",
+        "author": "Andrea Barberio",
+        "email": "insomniac@slackware.it",
+        "date": "2024-04-10T14:52:17Z",
+        "message": "go: fixed `todot`instructions\n\nSigned-off-by: Andrea Barberio <insomniac@slackware.it>",
+        "url": "https://github.com/insomniacslk/dublin-traceroute/commit/fedb3b41ec7a95229481f4875d338c5c535895b9"
+    },
+    {
+        "sha": "b136db81cfbb30d5fd324dfccc97fca49a5ecee1",
+        "author": "Andrea Barberio",
+        "email": "insomniac@slackware.it",
+        "date": "2024-01-09T08:55:37Z",
+        "message": "Updated dependencies to address dependabot alerts\n\nSigned-off-by: Andrea Barberio <insomniac@slackware.it>",
+        "url": "https://github.com/insomniacslk/dublin-traceroute/commit/b136db81cfbb30d5fd324dfccc97fca49a5ecee1"
+    },
+    {
+        "sha": "2fb78ea05596dfdf8f7764b497eb8d3a812cb695",
+        "author": "Andrea Barberio",
+        "email": "insomniac@slackware.it",
+        "date": "2023-04-12T19:42:25Z",
+        "message": "Address issue when parsing ICMPv6 packets with multi-part extensions\n\nSigned-off-by: Andrea Barberio <insomniac@slackware.it>",
+        "url": "https://github.com/insomniacslk/dublin-traceroute/commit/2fb78ea05596dfdf8f7764b497eb8d3a812cb695"
+    },
+    {
+        "sha": "600c6ea35cb4c49e7b03d4e6f37ff87a429efa73",
+        "author": "Andrea Barberio",
+        "email": "insomniac@slackware.it",
+        "date": "2023-03-11T13:50:31Z",
+        "message": "Added --output-format/-f flag to support both JSON and DOT\n\nSigned-off-by: Andrea Barberio <insomniac@slackware.it>",
+        "url": "https://github.com/insomniacslk/dublin-traceroute/commit/600c6ea35cb4c49e7b03d4e6f37ff87a429efa73"
+    },
+    {
+        "sha": "6ef1832301fc100d95bddf9321970c7cdfed53cb",
+        "author": "Andrea Barberio",
+        "email": "insomniac@slackware.it",
+        "date": "2023-03-11T08:35:42Z",
+        "message": "Updated dependencies\n\nSigned-off-by: Andrea Barberio <insomniac@slackware.it>",
+        "url": "https://github.com/insomniacslk/dublin-traceroute/commit/6ef1832301fc100d95bddf9321970c7cdfed53cb"
+    },
+    {
+        "sha": "d0f6dda863f7179f10e4496dd05dd13695e491ee",
+        "author": "Andrea Barberio",
+        "email": "insomniac@slackware.it",
+        "date": "2023-03-10T23:07:20Z",
+        "message": "[Go] cmd/todot: allow reading from stdin\n\nSigned-off-by: Andrea Barberio <insomniac@slackware.it>",
+        "url": "https://github.com/insomniacslk/dublin-traceroute/commit/d0f6dda863f7179f10e4496dd05dd13695e491ee"
+    },
+    {
+        "sha": "7554a8d782db2307d615ab494a6a26f18b03a171",
+        "author": "Andrea Barberio",
+        "email": "insomniac@slackware.it",
+        "date": "2023-03-10T22:58:22Z",
+        "message": "[Go] Added Results.ToDOT, and cmd/todot utility\n\nSigned-off-by: Andrea Barberio <insomniac@slackware.it>",
+        "url": "https://github.com/insomniacslk/dublin-traceroute/commit/7554a8d782db2307d615ab494a6a26f18b03a171"
+    },
+    {
+        "sha": "859ee5b2a6423d6d518fd345a4035da59652fe12",
+        "author": "Andrea Barberio",
+        "email": "insomniac@slackware.it",
+        "date": "2023-03-10T10:10:12Z",
+        "message": "Removed deprecated io/ioutil\n\nSigned-off-by: Andrea Barberio <insomniac@slackware.it>",
+        "url": "https://github.com/insomniacslk/dublin-traceroute/commit/859ee5b2a6423d6d518fd345a4035da59652fe12"
+    },
+    {
+        "sha": "3904ae18e579c93eed31d6899ffdb64c5e7b2436",
+        "author": "Andrea Barberio",
+        "email": "insomniac@slackware.it",
+        "date": "2023-03-09T11:42:01Z",
+        "message": "Migrated to go modules\n\nSigned-off-by: Andrea Barberio <insomniac@slackware.it>",
+        "url": "https://github.com/insomniacslk/dublin-traceroute/commit/3904ae18e579c93eed31d6899ffdb64c5e7b2436"
+    },
+    {
+        "sha": "16c002cff5788c2d0a767fd3f6b8f33caa4264ae",
+        "author": "Andrea Barberio",
+        "email": "insomniac@slackware.it",
+        "date": "2022-02-19T21:37:52Z",
+        "message": "[docs] make link to blog.dublin-traceroute.net\n\nSigned-off-by: Andrea Barberio <insomniac@slackware.it>",
+        "url": "https://github.com/insomniacslk/dublin-traceroute/commit/16c002cff5788c2d0a767fd3f6b8f33caa4264ae"
+    },
+    {
+        "sha": "06d4c881bded5dabf397bcce789840ec118ce874",
+        "author": "Andrea Barberio",
+        "email": "insomniac@slackware.it",
+        "date": "2021-03-19T22:11:40Z",
+        "message": "[go] replace ipv6/ipv6 network library with golang.org/x/net\n\nGo's x/net/ipv{6,4} packages provide fewer and more basic facilities for\npacket handling, but their portability is better than the embedded `net`\nlibrary in dublin-traceroute. For better portability I am replacing the\nipv6 and ipv4 layers with Go's ones, while leaving UDP and ICMP handling\nin the embedded net library.\n\nSigned-off-by: Andrea Barberio <insomniac@slackware.it>",
+        "url": "https://github.com/insomniacslk/dublin-traceroute/commit/06d4c881bded5dabf397bcce789840ec118ce874"
+    },
+    {
+        "sha": "3c66ca0ba53acaa8ffd2de1a92c5527ccb7a03bf",
+        "author": "Andrea Barberio",
+        "email": "insomniac@slackware.it",
+        "date": "2021-01-31T22:36:01Z",
+        "message": "Added feature matrix to README.md\n\nSigned-off-by: Andrea Barberio <insomniac@slackware.it>",
+        "url": "https://github.com/insomniacslk/dublin-traceroute/commit/3c66ca0ba53acaa8ffd2de1a92c5527ccb7a03bf"
+    },
+    {
+        "sha": "0a20773baafcb33c1ba99dc69723657cc551e6a7",
+        "author": "Andrea Barberio",
+        "email": "insomniac@slackware.it",
+        "date": "2021-01-21T11:11:06Z",
+        "message": "Added SPDX license headers\n\nSigned-off-by: Andrea Barberio <insomniac@slackware.it>",
+        "url": "https://github.com/insomniacslk/dublin-traceroute/commit/0a20773baafcb33c1ba99dc69723657cc551e6a7"
+    },
+    {
+        "sha": "04932e3aaba9c139885255de7eb2248dc2107659",
+        "author": "Andrea Barberio",
+        "email": "insomniac@slackware.it",
+        "date": "2021-01-21T10:18:24Z",
+        "message": "[CI] Build Go version on macOS too\n\nSigned-off-by: Andrea Barberio <insomniac@slackware.it>",
+        "url": "https://github.com/insomniacslk/dublin-traceroute/commit/04932e3aaba9c139885255de7eb2248dc2107659"
+    },
+    {
+        "sha": "84a3533ca0f0ad0337babe976abc8b597e7448c4",
+        "author": "Andrea Barberio",
+        "email": "insomniac@slackware.it",
+        "date": "2021-01-21T00:16:16Z",
+        "message": "Explicit use of Tins namespace\n\nSigned-off-by: Andrea Barberio <insomniac@slackware.it>",
+        "url": "https://github.com/insomniacslk/dublin-traceroute/commit/84a3533ca0f0ad0337babe976abc8b597e7448c4"
+    }
+]

@@ -1,0 +1,242 @@
+[
+    {
+        "sha": "54d9bf228338a16fb5dc2fb967d88bb37d9c5760",
+        "author": "bonbon",
+        "email": "yosiox@gmail.com",
+        "date": "2026-06-15T01:04:28Z",
+        "message": "Merge pull request #481 from wbonbon/topic/disable-conflict-checker\n\nアセンブリ競合検出機能の一時無効化",
+        "url": "https://github.com/anoyetta/ACT.Hojoring/commit/54d9bf228338a16fb5dc2fb967d88bb37d9c5760"
+    },
+    {
+        "sha": "9cd3b8946766e9cabeef16efa90987b52c51c0c2",
+        "author": "wbonbon",
+        "email": "yosiox@gmail.com",
+        "date": "2026-06-15T01:02:10Z",
+        "message": "feat: temporarily disable assembly conflict checker warning dialog\n\n- version bump to 11.0.8\n- comment out CheckConflicts task run in AssemblyResolver.cs to prevent excessive warning dialogs on non-critical assembly version mismatches",
+        "url": "https://github.com/anoyetta/ACT.Hojoring/commit/9cd3b8946766e9cabeef16efa90987b52c51c0c2"
+    },
+    {
+        "sha": "2999a91912ec0cb798a91d53a30922e758a7cf96",
+        "author": "bonbon",
+        "email": "yosiox@gmail.com",
+        "date": "2026-06-12T00:54:06Z",
+        "message": "Merge pull request #480 from wbonbon/topic/ttssub\n\nfeat(spespe): add /ttssub text command to play TTS on sub device",
+        "url": "https://github.com/anoyetta/ACT.Hojoring/commit/2999a91912ec0cb798a91d53a30922e758a7cf96"
+    },
+    {
+        "sha": "16a558f3dece4cb248f5e9dbb706fd6ed6914d99",
+        "author": "wbonbon",
+        "email": "yosiox@gmail.com",
+        "date": "2026-06-10T05:01:36Z",
+        "message": "feat(spespe): add /ttssub text command to play TTS on sub device\n\n- version bump to 11.0.7\n- implement PlaySub in SoundController\n- implement ttsSubCommand regex, MatchTTSSubCommand, and MatchCommandCore evaluation order in TextCommandController to support /ttssub command without breaking compatibility with /tts",
+        "url": "https://github.com/anoyetta/ACT.Hojoring/commit/16a558f3dece4cb248f5e9dbb706fd6ed6914d99"
+    },
+    {
+        "sha": "ea5a459c1ffa04b599f093c86490a3c84d9d1f66",
+        "author": "bonbon",
+        "email": "yosiox@gmail.com",
+        "date": "2026-06-09T08:45:11Z",
+        "message": "Merge pull request #479 from wbonbon/master\n\nDiscord連携機能の安定化および不要な古い参照のクリーンアップ",
+        "url": "https://github.com/anoyetta/ACT.Hojoring/commit/ea5a459c1ffa04b599f093c86490a3c84d9d1f66"
+    },
+    {
+        "sha": "2c9bd3cd7c71a0aa79803cbbade17d6db9137fe0",
+        "author": "wbonbon",
+        "email": "yosiox@gmail.com",
+        "date": "2026-06-09T08:38:56Z",
+        "message": "Discord連携機能の安定化および不要な古い参照のクリーンアップ\n\n- Discord.Net および Discord.Net.Dave を 3.20.1 にアップデート\n- EnableVoiceDaveEncryption = true に設定し、他ユーザー入室時のDAVE(E2EE)クラッシュを対策\n- Hojoring本体側 (ACT.Hojoring, ACT.TTSYukkuri) から不要な古い Discord.Net (3.18.0-nightly) の PackageReference を削除\n- UI側 (DiscordViewModel) での操作ボタン連続クリックによるコントロール無効化時間を3秒に延長\n- ヘルパー側 (DiscordBotService) で接続・ボイス操作のセマフォによる排他制御と3秒のクールダウンを実装、レートリミット検知時の日本語警告を追加\n- make.ps1 の文字コードを UTF-8 (BOM付き) に変換し、PowerShell実行時のパースエラーを修正",
+        "url": "https://github.com/anoyetta/ACT.Hojoring/commit/2c9bd3cd7c71a0aa79803cbbade17d6db9137fe0"
+    },
+    {
+        "sha": "b6d77ea52180583d0838cc449c24f822718ce43f",
+        "author": "wbonbon",
+        "email": "yosiox@gmail.com",
+        "date": "2026-06-04T05:46:41Z",
+        "message": "fix(discord): disable voice DAVE encryption temporarily to fix audio loss with 3+ participants",
+        "url": "https://github.com/anoyetta/ACT.Hojoring/commit/b6d77ea52180583d0838cc449c24f822718ce43f"
+    },
+    {
+        "sha": "61ad55e2c7a81bc8571fe1257381e3fc8c38eb8e",
+        "author": "wbonbon",
+        "email": "yosiox@gmail.com",
+        "date": "2026-05-28T03:12:00Z",
+        "message": "feat(conflict-checker): detect and warn assembly version conflicts dynamically",
+        "url": "https://github.com/anoyetta/ACT.Hojoring/commit/61ad55e2c7a81bc8571fe1257381e3fc8c38eb8e"
+    },
+    {
+        "sha": "fb5388946cee832129bb0b24a76199a153d4cd5f",
+        "author": "bonbon",
+        "email": "yosiox@gmail.com",
+        "date": "2026-05-28T00:41:11Z",
+        "message": "Merge pull request #478 from wbonbon/topic/discord-helper-ipc\n\nfeat(discord): support Discord voice E2EE (DAVE / MLS)",
+        "url": "https://github.com/anoyetta/ACT.Hojoring/commit/fb5388946cee832129bb0b24a76199a153d4cd5f"
+    },
+    {
+        "sha": "dd09afd001139e0f61f220a54a1e2faff96606ee",
+        "author": "Antigravity Dev",
+        "email": "dev@antigravity.local",
+        "date": "2026-05-28T00:30:32Z",
+        "message": "build(discord): publish DiscordHelper as framework-dependent single-file to drastically reduce size",
+        "url": "https://github.com/anoyetta/ACT.Hojoring/commit/dd09afd001139e0f61f220a54a1e2faff96606ee"
+    },
+    {
+        "sha": "966e8efc2879c65463ca9fde421ab7340e13298b",
+        "author": "Antigravity Dev",
+        "email": "dev@antigravity.local",
+        "date": "2026-05-28T00:28:50Z",
+        "message": "build(discord): convert helper to framework-dependent to dramatically reduce file size",
+        "url": "https://github.com/anoyetta/ACT.Hojoring/commit/966e8efc2879c65463ca9fde421ab7340e13298b"
+    },
+    {
+        "sha": "f8b58a7c83c271b7618db00aa4c5434b49de7431",
+        "author": "Antigravity Dev",
+        "email": "dev@antigravity.local",
+        "date": "2026-05-28T00:23:20Z",
+        "message": "build: comment out component and full package zip/7z archiving in make.ps1",
+        "url": "https://github.com/anoyetta/ACT.Hojoring/commit/f8b58a7c83c271b7618db00aa4c5434b49de7431"
+    },
+    {
+        "sha": "16196fa9ebe259014340690240f917c0d85a8cb4",
+        "author": "Antigravity Dev",
+        "email": "dev@antigravity.local",
+        "date": "2026-05-28T00:21:40Z",
+        "message": "fix(build): copy libdave.dll and dave.dll to output directory on build",
+        "url": "https://github.com/anoyetta/ACT.Hojoring/commit/16196fa9ebe259014340690240f917c0d85a8cb4"
+    },
+    {
+        "sha": "4cbe8d2be5817e31a0a5b182c6a12864d26e273e",
+        "author": "Antigravity Dev",
+        "email": "dev@antigravity.local",
+        "date": "2026-05-28T00:16:06Z",
+        "message": "fix(discord): fix audio playback caching, NullReferenceException on exit, and graceful bot logout",
+        "url": "https://github.com/anoyetta/ACT.Hojoring/commit/4cbe8d2be5817e31a0a5b182c6a12864d26e273e"
+    },
+    {
+        "sha": "69f7c60f1ea62598745014874b39879ecc7b11f2",
+        "author": "Antigravity Dev",
+        "email": "dev@antigravity.local",
+        "date": "2026-05-27T15:18:38Z",
+        "message": "WIP Improve Discord Bot",
+        "url": "https://github.com/anoyetta/ACT.Hojoring/commit/69f7c60f1ea62598745014874b39879ecc7b11f2"
+    },
+    {
+        "sha": "b159f9074ff9517720aa60084cb68e710b7051f8",
+        "author": "bonbon",
+        "email": "yosiox@gmail.com",
+        "date": "2026-05-24T11:16:11Z",
+        "message": "Merge pull request #477 from wbonbon/topic/voicevox-tts\n\nfix: VOICEVOX設定画面の表示崩れ修正およびスライダー調整精度の向上 (Issue #476)",
+        "url": "https://github.com/anoyetta/ACT.Hojoring/commit/b159f9074ff9517720aa60084cb68e710b7051f8"
+    },
+    {
+        "sha": "fc99d60c889f3bb30f22cb002e04789e4439dc58",
+        "author": "wbonbon",
+        "email": "yosiox@gmail.com",
+        "date": "2026-05-24T11:02:46Z",
+        "message": "fix: VOICEVOX設定画面の表示崩れ修正およびスライダー調整精度の向上 (Issue #476)",
+        "url": "https://github.com/anoyetta/ACT.Hojoring/commit/fc99d60c889f3bb30f22cb002e04789e4439dc58"
+    },
+    {
+        "sha": "e6c7d1a5b9ad3f1a7cb30e6dfa3c2ef7d3f1e813",
+        "author": "bonbon",
+        "email": "yosiox@gmail.com",
+        "date": "2026-05-24T00:11:18Z",
+        "message": "Merge pull request #475 from wbonbon/topic/voicevox-tts\n\nsupport voicevox",
+        "url": "https://github.com/anoyetta/ACT.Hojoring/commit/e6c7d1a5b9ad3f1a7cb30e6dfa3c2ef7d3f1e813"
+    },
+    {
+        "sha": "f29e32de476f54f6f5a45ba4a3651c522fb9a6b9",
+        "author": "wbonbon",
+        "email": "yosiox@gmail.com",
+        "date": "2026-05-24T00:01:32Z",
+        "message": "Merge branch 'topic/voicevox-tts' of C:\\temp\\Antigravity\\ACT.Hojoring into topic/voicevox-tts",
+        "url": "https://github.com/anoyetta/ACT.Hojoring/commit/f29e32de476f54f6f5a45ba4a3651c522fb9a6b9"
+    },
+    {
+        "sha": "374c871e25ef3a981fa07fe8b68ce9e56304c98c",
+        "author": "Antigravity Dev",
+        "email": "dev@antigravity.local",
+        "date": "2026-05-23T23:57:14Z",
+        "message": "VOICEVOX連携機能の実装\n\n- VOICEVOX用の設定クラス (VoicevoxConfig) を追加\n- SettingsマネージャーへVOICEVOX設定の追加\n- 音声合成制御クラス (VoicevoxSpeechController) を作成\n    - WAVキャッシュ、パラメータ調整、話者一覧取得機能を含む\n- 設定画面のViewおよびViewModel (VoicevoxConfigView, ViewModel) を作成\n- 共通ビューへの依存注入とローカライズ文字列の追加\n- プロジェクトファイル (.csproj) への各ファイルの登録",
+        "url": "https://github.com/anoyetta/ACT.Hojoring/commit/374c871e25ef3a981fa07fe8b68ce9e56304c98c"
+    },
+    {
+        "sha": "49ceb360c7a27b1f3c0adaf897b5bce73affe7ad",
+        "author": "wbonbon",
+        "email": "yosiox@gmail.com",
+        "date": "2026-05-23T01:03:10Z",
+        "message": "force update node.js",
+        "url": "https://github.com/anoyetta/ACT.Hojoring/commit/49ceb360c7a27b1f3c0adaf897b5bce73affe7ad"
+    },
+    {
+        "sha": "9e5a68018153bc5234cbdad0e7b36e626a302741",
+        "author": "wbonbon",
+        "email": "yosiox@gmail.com",
+        "date": "2026-05-23T00:51:16Z",
+        "message": "bug fix 3",
+        "url": "https://github.com/anoyetta/ACT.Hojoring/commit/9e5a68018153bc5234cbdad0e7b36e626a302741"
+    },
+    {
+        "sha": "a36adfe8d3ff9320a709ac2c962367fe3d9951c6",
+        "author": "wbonbon",
+        "email": "yosiox@gmail.com",
+        "date": "2026-05-23T00:42:49Z",
+        "message": "bug fix",
+        "url": "https://github.com/anoyetta/ACT.Hojoring/commit/a36adfe8d3ff9320a709ac2c962367fe3d9951c6"
+    },
+    {
+        "sha": "b1ac0c8a37fe0123de60bdc987e25ba1d26e682c",
+        "author": "wbonbon",
+        "email": "yosiox@gmail.com",
+        "date": "2026-05-23T00:38:12Z",
+        "message": "bug fix",
+        "url": "https://github.com/anoyetta/ACT.Hojoring/commit/b1ac0c8a37fe0123de60bdc987e25ba1d26e682c"
+    },
+    {
+        "sha": "8d3928cf6a589bfdc9e48e95b036ccaea465f95b",
+        "author": "wbonbon",
+        "email": "yosiox@gmail.com",
+        "date": "2026-05-23T00:20:34Z",
+        "message": "Improve Github Security",
+        "url": "https://github.com/anoyetta/ACT.Hojoring/commit/8d3928cf6a589bfdc9e48e95b036ccaea465f95b"
+    },
+    {
+        "sha": "97fb1bca04b01d4b415750b8f67ad808d4b6eecc",
+        "author": "Antigravity Dev",
+        "email": "dev@antigravity.local",
+        "date": "2026-05-08T04:10:16Z",
+        "message": "リモートOBS WebSocket対応を追加\n\n- Config.cs: ObsWebSocketHost/Port/Password プロパティと IsRemoteObs 判定を追加\n- VideoCapture.cs: 接続先ハードコード(127.0.0.1:4455)を設定値に変更\n- VideoCapture.cs: リモートOBS時に録画開始前にSetProfileParameterでファイル名をセット\n- VideoCapture.cs: リモートOBS時はFinishRecordingでリネーム・タグ付けをスキップ\n- ConfigView.xaml: OBS WebSocket V5接続設定UI(Host/Port/Password)を追加",
+        "url": "https://github.com/anoyetta/ACT.Hojoring/commit/97fb1bca04b01d4b415750b8f67ad808d4b6eecc"
+    },
+    {
+        "sha": "532e42edfbe54d96f813308a1d710415869c15f2",
+        "author": "bonbon",
+        "email": "yosiox@gmail.com",
+        "date": "2026-03-08T22:08:46Z",
+        "message": "Merge pull request #474 from wbonbon/master\n\nfix(updater): downgrade Markdig to 0.18.3 and fix version parsing",
+        "url": "https://github.com/anoyetta/ACT.Hojoring/commit/532e42edfbe54d96f813308a1d710415869c15f2"
+    },
+    {
+        "sha": "2abc652410c02f4d9bb20ca1ee8c2fd56e77c59d",
+        "author": "Antigravity Dev",
+        "email": "dev@antigravity.local",
+        "date": "2026-03-08T22:07:36Z",
+        "message": "fix(updater): downgrade Markdig to 0.18.3 and fix version parsing\n\n- Downgraded Markdig.Signed from 0.44.0 to 0.18.3 to avoid MissingMethodException conflicts with other ACT plugins like Cactbot/OverlayPlugin in the shared AppDomain.\n- Reverted the reflection-based ToHtml method call back to a direct invocation since 0.18.3 is compatible.\n- Fixed an issue where a 4-segment Hojoring assembly version (e.g. 11.0.0.1) was parsed incorrectly by truncating it back to a 3-segment string (11.0.1) so it properly matches GitHub release tags.",
+        "url": "https://github.com/anoyetta/ACT.Hojoring/commit/2abc652410c02f4d9bb20ca1ee8c2fd56e77c59d"
+    },
+    {
+        "sha": "f1be1e4c9e4c3677240e304dce7f79aa94280d22",
+        "author": "bonbon",
+        "email": "yosiox@gmail.com",
+        "date": "2026-03-07T15:40:54Z",
+        "message": "Merge pull request #473 from wbonbon/master\n\nbug fix",
+        "url": "https://github.com/anoyetta/ACT.Hojoring/commit/f1be1e4c9e4c3677240e304dce7f79aa94280d22"
+    },
+    {
+        "sha": "4ccd5bc08fe54f51cc086e5680ccc121b0c649ba",
+        "author": "Antigravity Dev",
+        "email": "dev@antigravity.local",
+        "date": "2026-03-07T15:38:47Z",
+        "message": "bug fix",
+        "url": "https://github.com/anoyetta/ACT.Hojoring/commit/4ccd5bc08fe54f51cc086e5680ccc121b0c649ba"
+    }
+]

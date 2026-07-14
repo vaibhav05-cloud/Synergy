@@ -1,0 +1,366 @@
+[
+    {
+        "id": 3854634807,
+        "number": 184,
+        "title": "Is this project still active?",
+        "state": "open",
+        "created_at": "2026-01-26T06:08:06Z",
+        "updated_at": "2026-04-21T12:48:13Z",
+        "closed_at": null,
+        "author": "levin-kitty",
+        "comments": 1,
+        "labels": [
+            "feature"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### What feature are you requesting?\n\nHi, just wondering if this project is still being maintained.\nI noticed there hasn't been much activity since the Databricks acquisition.\nAny updates on the project status?\n\n### Why are you requesting this feature?\n\nN/A\n\n### What is your proposed implementation for this feature?\n\n_No response_",
+        "url": "https://github.com/Mooncake-Labs/pg_mooncake/issues/184"
+    },
+    {
+        "id": 3688184499,
+        "number": 181,
+        "title": "When executing the query in different clients, the error occurs with pg_mooncake: ERROR: (PGDuckDB/CreatePlan) Prepared query returned an error: Binder Error: Catalog \"mooncake\" does not exist!",
+        "state": "closed",
+        "created_at": "2025-12-03T02:14:02Z",
+        "updated_at": "2025-12-04T05:52:12Z",
+        "closed_at": "2025-12-03T05:50:09Z",
+        "author": "justso007-kc",
+        "comments": 5,
+        "labels": [
+            "help wanted"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### What happens?\n\nIn PostgreSQL 18, I executed the following SQL statement to create a table:\nCREATE EXTENSION pg_mooncake CASCADE;\nset search_path to mooncake;\nCREATE TABLE bmsql_config (cfg_name VARCHAR(30) PRIMARY KEY, cfg_value VARCHAR(50));\nAfter that, I executed the following command ：\nCALL mooncake.create_table('test_bmsql_config', 'bmsql_config');\nThe command executed successfully. However, when I try to query the columnar storage table using SELECT * FROM test_bmsql_config;, it works only in the current psql session. When I try to execute the same query in a different client, I get the following error:\nERROR: (PGDuckDB/CreatePlan) Prepared query returned an error: Binder Error: Catalog \"mooncake\" does not exist!\n\n<img width=\"785\" height=\"555\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/90f472bf-d88d-4be9-a179-d73e1cf87ddf\" />\n\n### To Reproduce\n\n1.CREATE EXTENSION pg_mooncake CASCADE;\n2.set search_path to mooncake;\n3.CREATE TABLE bmsql_config (cfg_name VARCHAR(30) PRIMARY KEY, cfg_value VARCHAR(50));\n4.CALL mooncake.create_table('test_bmsql_config', 'bmsql_config');\n5.SELECT * FROM test_bmsql_config;--success\n6.When switching to another psql connection and executing the query:SELECT * FROM test_bmsql_config;  the following error occurs:\nERROR: (PGDuckDB/CreatePlan) Prepared query returned an error: Binder Error: Catalog \"mooncake\" does not exist!\n\n### OS:\n\ncentos8\n\n### pg_mooncake Version:\n\ncommit b7c67e0a08c11c45c4ac5cb5ec5ef231779c1db4\n\n### Postgres Version:\n\n18\n\n### Are you using pg_mooncake Docker, Neon, or the extension standalone?\n\npg_mooncake extension standalone",
+        "url": "https://github.com/Mooncake-Labs/pg_mooncake/issues/181"
+    },
+    {
+        "id": 3588712715,
+        "number": 178,
+        "title": "Supports offline/isolated network environments",
+        "state": "open",
+        "created_at": "2025-11-05T01:35:13Z",
+        "updated_at": "2025-11-05T01:35:13Z",
+        "closed_at": null,
+        "author": "filefox",
+        "comments": 0,
+        "labels": [
+            "feature"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### What feature are you requesting?\n\nUsing the latest Docker image and enabling the plugin results in the following error:\n\n(PGDuckDB/install_extension_cpp) IO Error: Failed to download extension \"mooncake\" at URL \"http://community-extensions.duckdb.org/v1.4.1/linux_amd64/mooncake.duckdb_extension.gz\"\n\nCandidate extensions: \"motherduck\", \"autocomplete\", \"mysql_scanner\", \"json\", \"ducklake\"\n\nFor more info, visit https://duckdb.org/docs/stable/extensions/troubleshooting?version=v1.4.1&platform=linux_amd64&extension=mooncake (ERROR Could not establish connection)\n\nWhere: SQL statement \"SELECT duckdb.install_extension('mooncake', 'community')\"\nextension script file \"pg_mooncake--0.2.0.sql\", near line 14\n\n### Why are you requesting this feature?\n\nThe company's intranet environment cannot connect to the external network, preventing the download of the duckdb plugin. \n\n### What is your proposed implementation for this feature?\n\n_No response_",
+        "url": "https://github.com/Mooncake-Labs/pg_mooncake/issues/178"
+    },
+    {
+        "id": 3526205564,
+        "number": 176,
+        "title": "pg_dump does not work for iceberg tables.",
+        "state": "open",
+        "created_at": "2025-10-17T13:32:52Z",
+        "updated_at": "2025-10-17T13:32:52Z",
+        "closed_at": null,
+        "author": "thebf",
+        "comments": 0,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### What happens?\n\n[2025-10-17 15:18:59] \"C:/Program Files/PostgreSQL/17/bin/pg_dump.exe\" --dbname=database_name --format=c --file=C:\\DatabaseBackup\\database_name_2025_10_17_15_18_59.psql --username=app_superuser--host=localhost --port=5432\npg_dump: error: Dumping the contents of table \"tablename\" failed: PQgetResult() failed.\npg_dump: detail: Error message from server: ERROR:  not implemented: mooncake_scan_getnextslot\npg_dump: detail: Command was: COPY tablename(column_a, column_b, column_c, column_d, column_e, column_f) TO stdout;\n[2025-10-17 15:21:10] pg_dump process finished\n\n### To Reproduce\n\npg_dump.exe --dbname=database_name --format=c --file=C:\\DatabaseBackup\\database_name_2025_10_17_15_18_59.psql --username=app_superuser--host=localhost --port=5432\n\n### OS:\n\nLinux\n\n### pg_mooncake Version:\n\nsha256:8a38e7726604b0800e5ac3b873ed05130c2a2fc7c84ff55372e948f1c6e44217\n\n### Postgres Version:\n\n17\n\n### Are you using pg_mooncake Docker, Neon, or the extension standalone?\n\npg_mooncake Docker Image",
+        "url": "https://github.com/Mooncake-Labs/pg_mooncake/issues/176"
+    },
+    {
+        "id": 3460805237,
+        "number": 173,
+        "title": "Simple Cardinality is not enough for join planning",
+        "state": "open",
+        "created_at": "2025-09-27T22:20:37Z",
+        "updated_at": "2025-09-27T22:47:43Z",
+        "closed_at": null,
+        "author": "zhousun",
+        "comments": 3,
+        "labels": [
+            "feature"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### What feature are you requesting?\n\n```\nselect     n_name,\n     sum(ol_amount) as revenue\nfrom     mooncake_cs_customer, mooncake_cs_orders, mooncake_cs_order_line, mooncake_cs_stock, mooncake_cs_supplier, mooncake_cs_nation, mooncake_cs_region\nwhere     c_id = o_c_id\n     and c_w_id = o_w_id\n     and c_d_id = o_d_id\n     and ol_o_id = o_id\n     and ol_w_id = o_w_id\n     and ol_d_id=o_d_id\n     and ol_w_id = s_w_id\n     and ol_i_id = s_i_id\n     and mod((s_w_id * s_i_id),10000) = su_suppkey\n     and ascii(substr(c_state,1,1)) = su_nationkey\n     and su_nationkey = n_nationkey\n     and n_regionkey = r_regionkey\n     and r_name = 'Europe'\n     and o_entry_d >= '2015-01-02 00:00:00.000000'\ngroup by n_name\norder by revenue desc LIMIT 10;\n\n                                                                                               QUERY PLAN                                                                                                  \n-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------\n Custom Scan (DuckDBScan)  (cost=0.00..0.00 rows=0 width=0)\n   DuckDB Execution Plan: \n \n ┌───────────────────────────┐\n │           TOP_N           │\n │    ────────────────────   │\n │          Top: 10          │\n │                           │\n │         Order By:         │\n │    sum(mooncake.public    │\n │  .mooncake_cs_order_line  │\n │      .ol_amount) DESC     │\n └─────────────┬─────────────┘\n ┌─────────────┴─────────────┐\n │       HASH_GROUP_BY       │\n │    ────────────────────   │\n │         Groups: #0        │\n │    Aggregates: sum(#1)    │\n │                           │\n │       ~98903986 Rows      │\n └─────────────┬─────────────┘\n ┌─────────────┴─────────────┐\n │         PROJECTION        │\n │    ────────────────────   │\n │           n_name          │\n │         ol_amount         │\n │                           │\n │      ~120000000 Rows      │\n └─────────────┬─────────────┘\n ┌─────────────┴─────────────┐\n │         HASH_JOIN         │\n │    ────────────────────   │\n │      Join Type: INNER     │\n │                           │\n │        Conditions:        │\n │ ascii(substr(c_state, 1, 1├──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐\n │      )) = n_nationkey     │                                                                                                                                  │\n │ su_nationkey = n_nationkey│                                                                                                                                  │\n │                           │                                                                                                                                  │\n │      ~120000000 Rows      │                                                                                                                                  │\n └─────────────┬─────────────┘                                                                                                                                  │\n ┌─────────────┴─────────────┐                                                                                                                    ┌─────────────┴─────────────┐\n │         HASH_JOIN         │                                                                                                                    │         HASH_JOIN         │\n │    ────────────────────   │                                                                                                                    │    ────────────────────   │\n │      Join Type: INNER     │                                                                                                                    │      Join Type: INNER     │\n │                           │                                                                                                                    │                           │\n │        Conditions:        │                                                                                                                    │        Conditions:        │\n │ ascii(substr(c_state, 1, 1├─────────────────────────────────────────────────────────────────────────────────────────────────────┐              │ n_regionkey = r_regionkey ├──────────────┐\n │     )) = su_nationkey     │                                                                                                     │              │                           │              │\n │   mod((s_w_id * s_i_id),  │                                                                                                     │              │                           │              │\n │     10000) = su_suppkey   │                                                                                                     │              │                           │              │\n │                           │                                                                                                     │              │                           │              │\n │      ~600000000 Rows      │                                                                                                     │              │          ~20 Rows         │              │\n └─────────────┬─────────────┘                                                                                                     │              └─────────────┬─────────────┘              │\n ┌─────────────┴─────────────┐                                                                                       ┌─────────────┴─────────────┐┌─────────────┴─────────────┐┌─────────────┴─────────────┐\n │         HASH_JOIN         │                                                                                       │         MOON_SCAN         ││         MOON_SCAN         ││         MOON_SCAN         │\n │    ────────────────────   │                                                                                       │    ────────────────────   ││    ────────────────────   ││    ────────────────────   │\n │      Join Type: INNER     │                                                                                       │           Table:          ││           Table:          ││           Table:          │\n │                           │                                                                                       │    mooncake_cs_supplier   ││     mooncake_cs_nation    ││     mooncake_cs_region    │\n │        Conditions:        │                                                                                       │                           ││                           ││                           │\n │      c_w_id = s_w_id      │                                                                                       │        Projections:       ││        Projections:       ││        Projections:       │\n │      c_d_id = ol_d_id     ├──────────────┐                                                                        │         su_suppkey        ││        n_nationkey        ││        r_regionkey        │\n │       c_id = o_c_id       │              │                                                                        │        su_nationkey       ││        n_regionkey        ││                           │\n │                           │              │                                                                        │                           ││           n_name          ││          Filters:         │\n │                           │              │                                                                        │                           ││                           ││      r_name='Europe'      │\n │                           │              │                                                                        │                           ││                           ││                           │\n │      ~600000000 Rows      │              │                                                                        │        ~10000 Rows        ││         ~100 Rows         ││          ~2 Rows          │\n └─────────────┬─────────────┘              │                                                                        └───────────────────────────┘└───────────────────────────┘└───────────────────────────┘\n ┌─────────────┴─────────────┐┌─────────────┴─────────────┐\n │         MOON_SCAN         ││         HASH_JOIN         │\n │    ────────────────────   ││    ────────────────────   │\n │           Table:          ││      Join Type: INNER     │\n │    mooncake_cs_customer   ││                           │\n │                           ││        Conditions:        │\n │        Projections:       ││      ol_w_id = o_w_id     │\n │            c_id           ││       ol_o_id = o_id      ├──────────────┐\n │           c_w_id          ││      ol_d_id = o_d_id     │              │\n │           c_d_id          ││      ol_i_id = s_i_id     │              │\n │          c_state          ││                           │              │\n │                           ││                           │              │\n │      ~300000000 Rows      ││       ~60000000 Rows      │              │\n └───────────────────────────┘└─────────────┬─────────────┘              │\n                              ┌─────────────┴─────────────┐┌─────────────┴─────────────┐\n                              │         MOON_SCAN         ││         HASH_JOIN         │\n                              │    ────────────────────   ││    ────────────────────   │\n                              │           Table:          ││      Join Type: INNER     │\n                              │   mooncake_cs_order_line  ││                           │\n                              │                           ││        Conditions:        │\n                              │        Projections:       ││      s_w_id = o_w_id      │\n                              │          ol_o_id          ││                           ├──────────────┐\n                              │          ol_w_id          ││                           │              │\n                              │          ol_d_id          ││                           │              │\n                              │          ol_i_id          ││                           │              │\n                              │         ol_amount         ││                           │              │\n                              │                           ││                           │              │\n                              │      ~300000000 Rows      ││       ~20000000 Rows      │              │\n                              └───────────────────────────┘└─────────────┬─────────────┘              │\n                                                           ┌─────────────┴─────────────┐┌─────────────┴─────────────┐\n                                                           │         MOON_SCAN         ││         MOON_SCAN         │\n                                                           │    ────────────────────   ││    ────────────────────   │\n                                                           │           Table:          ││           Table:          │\n                                                           │     mooncake_cs_stock     ││     mooncake_cs_orders    │\n                                                           │                           ││                           │\n                                                           │        Projections:       ││        Projections:       │\n                                                           │           s_w_id          ││           o_c_id          │\n                                                           │           s_i_id          ││           o_w_id          │\n                                                           │                           ││           o_d_id          │\n                                                           │                           ││            o_id           │\n                                                           │                           ││                           │\n                                                           │                           ││          Filters:         │\n                                                           │                           ││ o_entry_d>='2015-01-02 00 │\n                                                           │                           ││ :00:00+00'::TIMESTAMP WITH│\n                                                           │                           ││          TIME ZONE        │\n                                                           │                           ││                           │\n                                                           │      ~100000000 Rows      ││       ~6000000 Rows       │\n                                                           └───────────────────────────┘└───────────────────────────┘\n \n \n(118 rows)\n\n```\n\n### Why are you requesting this feature?\n\nit's generating very bad plan\n\n### What is your proposed implementation for this feature?\n\n_No response_",
+        "url": "https://github.com/Mooncake-Labs/pg_mooncake/issues/173"
+    },
+    {
+        "id": 3446378771,
+        "number": 171,
+        "title": "Consolidate integration tests",
+        "state": "closed",
+        "created_at": "2025-09-23T19:10:25Z",
+        "updated_at": "2025-09-23T19:11:27Z",
+        "closed_at": "2025-09-23T19:11:12Z",
+        "author": "nbiscaro",
+        "comments": 0,
+        "labels": [
+            "feature"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### What feature are you requesting?\n\ndisacard\n\n### Why are you requesting this feature?\n\ndiscard\n\n### What is your proposed implementation for this feature?\n\n_No response_",
+        "url": "https://github.com/Mooncake-Labs/pg_mooncake/issues/171"
+    },
+    {
+        "id": 3346873913,
+        "number": 168,
+        "title": "Add TLS Postgres support",
+        "state": "closed",
+        "created_at": "2025-08-22T21:50:37Z",
+        "updated_at": "2025-08-25T19:11:54Z",
+        "closed_at": "2025-08-25T19:11:54Z",
+        "author": "lohpaul9",
+        "comments": 0,
+        "labels": [
+            "feature"
+        ],
+        "assignees": [
+            "lohpaul9"
+        ],
+        "locked": false,
+        "body": "### What feature are you requesting?\n\nCurrently pg_mooncake relies on noTLS for postgres connections, will need to change this for full TLS support.\n\n### Why are you requesting this feature?\n\nTLS support is needed for connection in production instances. \n\n### What is your proposed implementation for this feature?\n\n_No response_",
+        "url": "https://github.com/Mooncake-Labs/pg_mooncake/issues/168"
+    },
+    {
+        "id": 3336709676,
+        "number": 167,
+        "title": "libcrypto and libstdc++ not found on macOS 26 beta 4",
+        "state": "closed",
+        "created_at": "2025-08-20T06:16:48Z",
+        "updated_at": "2025-08-20T08:02:54Z",
+        "closed_at": "2025-08-20T08:02:54Z",
+        "author": "SteveLauC",
+        "comments": 2,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### What happens?\n\nHi, I am trying to build `pg_mooncake` on my mac:\n\n```sh\n$ sw_vers                              \nProductName:            macOS\nProductVersion:         26.0\nBuildVersion:           25A5316i\n```\n\nLibraries `crypto` and `stdc++` can not be found by the linker:\n\nhttps://github.com/Mooncake-Labs/pg_mooncake/blob/c4daebe720eb3b2f873be349616cbc3bff478779/build.rs#L14-L16\n\nFor `crypto`, I have OpenSSL installed via Homebrew, the .dylib file is placed in:\n\n```sh\n$ pwd\n/opt/homebrew/opt/openssl@3/lib\n\n$ l\nPermissions Links Size User  Group Date Modified Name\ndrwxr-xr-x@     3    - steve admin  5 Aug 20:09  cmake\ndrwxr-xr-x@     5    - steve admin 15 Aug 14:58  engines-3\n.r--r--r--@     1 4.7M steve admin 15 Aug 14:58  libcrypto.3.dylib\n.r--r--r--@     1 8.3M steve admin  5 Aug 20:09  libcrypto.a\nlrwxr-xr-x@     1    - steve admin  5 Aug 20:09  libcrypto.dylib -> libcrypto.3.dylib\n.r--r--r--@     1 882k steve admin 15 Aug 14:58  libssl.3.dylib\n.r--r--r--@     1 1.5M steve admin  5 Aug 20:09  libssl.a\nlrwxr-xr-x@     1    - steve admin  5 Aug 20:09  libssl.dylib -> libssl.3.dylib\ndrwxr-xr-x@     3    - steve admin 15 Aug 14:58  ossl-modules\ndrwxr-xr-x@     5    - steve admin 15 Aug 14:58  pkgconfig\n```\n\nI fixed this by letting the linker search in `/opt/homebrew/opt/openssl@3/lib`:\n\n```rust\n// build.rs\n\n    println!(\"cargo::rustc-link-search=native=/opt/homebrew/opt/openssl@3/lib\");\n```\n\nFor `stdc++`, AI told me that it is typically provided by macOS. And it is deprecated, replacing it with `c++` fixes the issue:\n\n```diff\n-    println!(\"cargo::rustc-link-lib=dylib=stdc++\");\n+    println!(\"cargo::rustc-link-lib=dylib=c++\");\n```\n\n### To Reproduce\n\nNot quite sure this can be reproduced on other macOS machines, especially because I am running a beta OS.\n\n### OS:\n\nmacOS 26 beta 4\n\n### pg_mooncake Version:\n\nc4daebe720eb3b2f873be349616cbc3bff478779\n\n### Postgres Version:\n\n17 (distributed via pgrx)\n\n### Are you using pg_mooncake Docker, Neon, or the extension standalone?\n\npg_mooncake Docker Image",
+        "url": "https://github.com/Mooncake-Labs/pg_mooncake/issues/167"
+    },
+    {
+        "id": 3336615202,
+        "number": 166,
+        "title": "Build `pg_duckdb` using more threads",
+        "state": "closed",
+        "created_at": "2025-08-20T05:26:58Z",
+        "updated_at": "2025-09-22T17:21:24Z",
+        "closed_at": "2025-09-22T17:21:24Z",
+        "author": "SteveLauC",
+        "comments": 2,
+        "labels": [
+            "feature"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### What feature are you requesting?\n\nhttps://github.com/Mooncake-Labs/pg_mooncake/blob/c4daebe720eb3b2f873be349616cbc3bff478779/Makefile#L40-L46\n\nHi there!  Currently, we are not using the `-j` option or the `CMAKE_BUILD_PARALLEL_LEVEL` environment variable while building `pg_duckdb`, so we are using only 1 thread.  Is there any specific reason for this? If not, maybe we can set the `CMAKE_BUILD_PARALLEL_LEVEL` variable to build faster.\n\n### Why are you requesting this feature?\n\nTo make build faster\n\n### What is your proposed implementation for this feature?\n\nSee above",
+        "url": "https://github.com/Mooncake-Labs/pg_mooncake/issues/166"
+    },
+    {
+        "id": 3331683263,
+        "number": 165,
+        "title": "Add pgbench test",
+        "state": "open",
+        "created_at": "2025-08-18T18:24:58Z",
+        "updated_at": "2025-11-14T05:04:21Z",
+        "closed_at": null,
+        "author": "dpxcc",
+        "comments": 10,
+        "labels": [
+            "feature"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### What feature are you requesting?\n\nAdd pgbench test\n\n### Why are you requesting this feature?\n\nstress testing\n\n### What is your proposed implementation for this feature?\n\n_No response_",
+        "url": "https://github.com/Mooncake-Labs/pg_mooncake/issues/165"
+    },
+    {
+        "id": 3316743296,
+        "number": 164,
+        "title": "Add CI",
+        "state": "open",
+        "created_at": "2025-08-13T03:06:03Z",
+        "updated_at": "2025-08-13T08:26:22Z",
+        "closed_at": null,
+        "author": "dpxcc",
+        "comments": 4,
+        "labels": [
+            "feature"
+        ],
+        "assignees": [
+            "pohanhuang"
+        ],
+        "locked": false,
+        "body": "### What feature are you requesting?\n\nn/a\n\n### Why are you requesting this feature?\n\nn/a\n\n### What is your proposed implementation for this feature?\n\n_No response_",
+        "url": "https://github.com/Mooncake-Labs/pg_mooncake/issues/164"
+    },
+    {
+        "id": 3316742044,
+        "number": 163,
+        "title": "Add test for various types",
+        "state": "open",
+        "created_at": "2025-08-13T03:05:09Z",
+        "updated_at": "2025-08-13T03:05:09Z",
+        "closed_at": null,
+        "author": "dpxcc",
+        "comments": 0,
+        "labels": [
+            "feature"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### What feature are you requesting?\n\nn/a\n\n### Why are you requesting this feature?\n\nn/a\n\n### What is your proposed implementation for this feature?\n\n_No response_",
+        "url": "https://github.com/Mooncake-Labs/pg_mooncake/issues/163"
+    },
+    {
+        "id": 3243794944,
+        "number": 161,
+        "title": "Feature Request: Support AWS AssumeRole for Enhanced Security",
+        "state": "open",
+        "created_at": "2025-07-18T16:50:33Z",
+        "updated_at": "2026-01-08T10:02:43Z",
+        "closed_at": null,
+        "author": "duncancfraser",
+        "comments": 1,
+        "labels": [
+            "feature"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### What feature are you requesting?\n\n## Summary\nRequest to add support for AWS AssumeRole access patterns in pg_mooncake to enable more secure credential management and avoid storing long-term AWS credentials.\n\n### Why are you requesting this feature?\n\n## Problem Statement\nCurrently, pg_mooncake only supports static AWS credentials (`AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY`), which creates several security concerns:\n\n1. **Long-term credential exposure**: Static credentials are more vulnerable to compromise\n2. **Credential rotation challenges**: Manual rotation of static credentials across environments\n3. **Principle of least privilege violations**: Static credentials often have broader permissions than needed\n4. **Compliance issues**: Many organizations require temporary credentials for security compliance\n\n## Use Case\nIn our data pipeline architecture, we use pg_mooncake to load Parquet files from S3 to Neon PostgreSQL. Our current setup requires:\n\n- Snowflake unloading data to S3 using storage integrations with assumeRole\n- pg_mooncake loading data from S3 to Neon using static credentials\n\nThis creates an inconsistent security model where one part of the pipeline uses temporary credentials while another requires long-term credentials.\n\n## Security Benefits\n1. **Temporary credentials**: Credentials expire automatically, reducing exposure window\n2. **Consistent security model**: Aligns with other AWS services and best practices\n3. **External ID support**: Enables cross-account access with additional security controls\n4. **Session naming**: Better audit trails and monitoring\n5. **Credential rotation**: Automatic rotation through role assumption\n\n### What is your proposed implementation for this feature?\n\n## Proposed Solution\nAdd support for AWS AssumeRole in pg_mooncake with the following capabilities:\n\n### Option 1: Environment Variable Configuration\n```sql\n-- Set assumeRole configuration via environment variables\nSET mooncake.aws_role_arn = 'arn:aws:iam::123456789012:role/MyRole';\nSET mooncake.aws_external_id = 'optional-external-id';\nSET mooncake.aws_session_name = 'pg_mooncake_session';\n\n-- Use temporary credentials automatically\nSELECT * FROM mooncake.read_parquet('s3://bucket/path/file.parquet');\n```\n\n### Option 2: Session-Level Configuration\n```sql\n-- Configure assumeRole for current session\nSELECT mooncake.assume_role(\n    role_arn := 'arn:aws:iam::123456789012:role/MyRole',\n    external_id := 'optional-external-id',\n    session_name := 'pg_mooncake_session'\n);\n\n-- Subsequent operations use temporary credentials\nSELECT * FROM mooncake.read_parquet('s3://bucket/path/file.parquet');\n```\n\n### Option 3: Per-Operation Configuration\n```sql\n-- Specify assumeRole parameters per operation\nSELECT * FROM mooncake.read_parquet(\n    's3://bucket/path/file.parquet',\n    role_arn := 'arn:aws:iam::123456789012:role/MyRole',\n    external_id := 'optional-external-id'\n);\n```",
+        "url": "https://github.com/Mooncake-Labs/pg_mooncake/issues/161"
+    },
+    {
+        "id": 3225945302,
+        "number": 160,
+        "title": "`make test` gets blocked forever",
+        "state": "closed",
+        "created_at": "2025-07-12T23:59:58Z",
+        "updated_at": "2025-07-23T18:44:07Z",
+        "closed_at": "2025-07-23T18:44:07Z",
+        "author": "dentiny",
+        "comments": 1,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### What happens?\n\nRunning `make test` for regression test almost never works for me somehow, as long as I'm not at a brand new devcontainer :(\n\nPg logging message:\n```sh\n2025-07-12 23:57:10.736 UTC [8722] LOG:  still waiting for backend with PID 8695 to accept ProcSignalBarrier\n2025-07-12 23:57:10.736 UTC [8722] STATEMENT:  DROP DATABASE pg_mooncake_regress;\n2025-07-12 23:57:15.742 UTC [8722] LOG:  still waiting for backend with PID 8695 to accept ProcSignalBarrier\n2025-07-12 23:57:15.742 UTC [8722] STATEMENT:  DROP DATABASE pg_mooncake_regress;\n```\n\nI could still make progress by rebuilding devcontainer every time, but it's not ideal when I'm working on small changes.\n\n### To Reproduce\n\n```sh\nmake test\n```\n\n### OS:\n\nlinux, aarch64\n\n### pg_mooncake Version:\n\nlatest commit on main branch\n\n### Postgres Version:\n\n17.0\n\n### Are you using pg_mooncake Docker, Neon, or the extension standalone?\n\npg_mooncake extension standalone",
+        "url": "https://github.com/Mooncake-Labs/pg_mooncake/issues/160"
+    },
+    {
+        "id": 3149360841,
+        "number": 156,
+        "title": "Error occurs when updating or deleting data",
+        "state": "closed",
+        "created_at": "2025-06-16T10:04:55Z",
+        "updated_at": "2025-06-18T01:09:33Z",
+        "closed_at": "2025-06-17T21:33:24Z",
+        "author": "zjial",
+        "comments": 3,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### What happens?\n\nI encountered an error when using pg_mooncake in a primary-replica PostgreSQL architecture with version 0.1.2.\n\nWhen I created a table, inserted data on the primary node, and queried on the replica node, everything worked as expected.\n\nHowever, when updating or deleting data on the primary node, I received the following error: `(PGDuckDB/Duckdb_ExecCustomScan) Executor Error: (PGDuckDB/DataFilesDelete) stack depth limit exceeded`. \n\nWhat is the cause of the error and Is there a solution?\n\nThere is a demo.\ninsert, update on the primary node:\n\n![Image](https://github.com/user-attachments/assets/d666b13b-2b0c-41ac-ab16-67ad3c96e508)\n\nquery on the replica node:\n\n![Image](https://github.com/user-attachments/assets/20ff13d7-c5ef-4f9c-8f8c-63d3e0365c8c)\n\n### To Reproduce\n\ndeploy primary-replica PostgreSQL architecture on two node;\n\ncreate pg_mooncake extension;\n\ncreate columnstore table, insert, update on the primary node;\n\n### OS:\n\nLinux\n\n### pg_mooncake Version:\n\n0.1.2\n\n### Postgres Version:\n\n15\n\n### Are you using pg_mooncake Docker, Neon, or the extension standalone?\n\npg_mooncake extension standalone",
+        "url": "https://github.com/Mooncake-Labs/pg_mooncake/issues/156"
+    },
+    {
+        "id": 3121912788,
+        "number": 154,
+        "title": "README.md in readme branch shows inaccurate command for source installation",
+        "state": "closed",
+        "created_at": "2025-06-05T16:51:13Z",
+        "updated_at": "2025-06-06T20:41:28Z",
+        "closed_at": "2025-06-06T20:41:27Z",
+        "author": "sam-hieken",
+        "comments": 2,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### What happens?\n\nThe [readme](https://github.com/Mooncake-Labs/pg_mooncake/tree/readme) branch's readme file contains inaccurate installation instructions:\n\n```\nmake release -j$(nproc)\nmake install\n```\n\nThe makefile of the main branch was recently updated and no longer includes the `release` goal.\n\n### To Reproduce\n\nFollow the [Option 2: From Source](https://github.com/Mooncake-Labs/pg_mooncake/tree/readme?tab=readme-ov-file#option-2-from-source) instructions when installing pg_mooncake 0.2.\n\n### OS:\n\nUbuntu 22.04 x86_64\n\n### pg_mooncake Version:\n\n0.2\n\n### Postgres Version:\n\n17\n\n### Are you using pg_mooncake Docker, Neon, or the extension standalone?\n\npg_mooncake extension standalone",
+        "url": "https://github.com/Mooncake-Labs/pg_mooncake/issues/154"
+    },
+    {
+        "id": 3117220286,
+        "number": 151,
+        "title": "Slack links on GitHub and website not working",
+        "state": "closed",
+        "created_at": "2025-06-04T09:52:35Z",
+        "updated_at": "2025-06-05T14:42:55Z",
+        "closed_at": "2025-06-05T14:42:55Z",
+        "author": "chris-gooch",
+        "comments": 1,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### What happens?\n\nPlease can you update the slack links as they no longer work\n\n### To Reproduce\n\nNA\n\n### OS:\n\nLinux\n\n### pg_mooncake Version:\n\nNA\n\n### Postgres Version:\n\nNA\n\n### Are you using pg_mooncake Docker, Neon, or the extension standalone?\n\npg_mooncake Docker Image",
+        "url": "https://github.com/Mooncake-Labs/pg_mooncake/issues/151"
+    },
+    {
+        "id": 3059017780,
+        "number": 149,
+        "title": "Support ALTER TABLE ADD COLUMN",
+        "state": "open",
+        "created_at": "2025-05-13T07:17:43Z",
+        "updated_at": "2025-07-07T06:17:46Z",
+        "closed_at": null,
+        "author": "qinxingnet",
+        "comments": 12,
+        "labels": [
+            "feature"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### What happens?\n\nI am creating a table SQL using the public.user_activity table stored in columnstore as follows:\n```sql\nCREATE TABLE user_activity(\nuser_id BIGINT,\nactivity_type TEXT,\nactivity_timestamp TIMESTAMP,\nduration INT\n) USING columnstore;\n```\nThe above is just a demo. When I inserted 20 million production environment data, I need to add a \"from source\" column field to distinguish whether it is from H5 or PC or mobile app,.\n```sql\nALTER TABLE \"public\".\"user_activity\" \nADD COLUMN \"from_source\" varchar(120);\n```\nBut the engine reported an error:\nERROR:  ALTER TABLE on columnstore table is not supported\n\n\n### To Reproduce\n\n\nI'm wondering if adding fields like this is not allowed in existing column storage fields? Alternatively, other SQL should be used to modify the table structure so that new fields can be added to meet the requirements?\n\n### OS:\n\nCentOS 9.2\n\n### pg_mooncake Version:\n\n0.1.2\n\n### Postgres Version:\n\n17.0\n\n### Are you using pg_mooncake Docker, Neon, or the extension standalone?\n\npg_mooncake Docker Image",
+        "url": "https://github.com/Mooncake-Labs/pg_mooncake/issues/149"
+    },
+    {
+        "id": 3026586654,
+        "number": 147,
+        "title": "Abnormal table space growth after insert operation failure.",
+        "state": "closed",
+        "created_at": "2025-04-29T00:13:24Z",
+        "updated_at": "2025-06-05T23:54:19Z",
+        "closed_at": "2025-06-05T23:54:18Z",
+        "author": "zhang-wenchao",
+        "comments": 1,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### What happens?\n\nI observed abnormal table space growth after a failed insert operation. Although the insert operation terminated with an error, it appears that some data or temporary storage was not properly cleaned up.\n\nIs this a pg_mooncake issue? If not, I apologize and will report upstream.\n\n```\nCREATE UNLOGGED TABLE temp.user_activity(\nuser_id BIGINT,\nactivity_type TEXT,\nactivity_timestamp TIMESTAMP,\nduration INT\n) USING columnstore;\n```\n\n```\nINSERT INTO temp.user_activity (user_id, activity_type, activity_timestamp, duration)\nSELECT \n  (random() * 1000000)::BIGINT AS user_id,\n  CASE (random() * 8)::INT % 8\n    WHEN 0 THEN 'login'\n    WHEN 1 THEN 'logout'\n    WHEN 2 THEN 'view'\n    WHEN 3 THEN 'click'\n    WHEN 4 THEN 'purchase'CREATE UNLOGGED TABLE temp.user_activity(\nuser_id BIGINT,\nactivity_type TEXT,\nactivity_timestamp TIMESTAMP,\nduration INT\n);\n    WHEN 5 THEN 'comment'\n    WHEN 6 THEN 'share'\n    ELSE 'like'\n  END AS activity_type,\n  TIMESTAMP '2023-01-01 00:00:00'  AS activity_timestamp,\n  (random() * 3600)::INT AS duration\nFROM generate_series(1, 3000000);\n```\n\n```\nroot@cloud-pigsty:/data/postgres/pg-meta-17/data/mooncake_local_tables# du -h --max-depth=2 ./ | sort -hr\n27M     ./\n26M     ./mooncake_data_user_activity_21819\n13K     ./mooncake_data_user_activity_21819/_delta_log\n7.0K    ./mooncake_data_pg_temp_21325_21340\n6.5K    ./mooncake_data_pg_temp_21325_21340/_delta_log\n```\n\n```\nINSERT INTO temp.user_activity (user_id, activity_type, activity_timestamp, duration)\nSELECT \n  (random() * 1000000)::BIGINT AS user_id,\n  CASE (random() * 8)::INT % 8\n    WHEN 0 THEN 'login'\n    WHEN 1 THEN 'logout'\n    WHEN 2 THEN 'view'\n    WHEN 3 THEN 'click'\n    WHEN 4 THEN 'purchase'\n    WHEN 5 THEN 'comment'\n    WHEN 6 THEN 'share'\n    ELSE 'like'\n  END AS activity_type,\n  TIMESTAMP '2023-01-01 00:00:00'  AS activity_timestamp,\n  (random() * 3600)::INT AS duration\nFROM generate_series(1, 5000000);\n```\n\n```\nERROR： (PGDuckDB/Duckdb_ExplainCustomScan) INTERNAL Error: Attempted to access index 1 within vector of size 1\nThis error signals an assertion failure within DuckDB. This usually occurs due to unexpected conditions or errors in the program's logic.\nFor more information, see https://duckdb.org/docs/dev/internal_errors \n\nERROR:  (PGDuckDB/Duckdb_ExplainCustomScan) INTERNAL Error: Attempted to access index 1 within vector of size 1\nThis error signals an assertion failure within DuckDB. This usually occurs due to unexpected conditions or errors in the program's logic.\nFor more information, see https://duckdb.org/docs/dev/internal_errors\nSQL status: XX000\n```\n\n```\nroot@cloud-pigsty:/data/postgres/pg-meta-17/data/mooncake_local_tables# du -h --max-depth=2 ./ | sort -hr\n113M    ./mooncake_data_user_activity_21819\n113M    ./\n13K     ./mooncake_data_user_activity_21819/_delta_log\n7.0K    ./mooncake_data_pg_temp_21325_21340\n6.5K    ./mooncake_data_pg_temp_21325_21340/_delta_log\n```\n\n```\nSELECT COUNT(*) AS count\nFROM temp.user_activity;\n\n\"count\"\n3000000\n```\n\n\n### To Reproduce\n\n```\nINSERT INTO temp.user_activity (user_id, activity_type, activity_timestamp, duration)\nSELECT \n  (random() * 1000000)::BIGINT AS user_id,\n  CASE (random() * 8)::INT % 8\n    WHEN 0 THEN 'login'\n    WHEN 1 THEN 'logout'\n    WHEN 2 THEN 'view'\n    WHEN 3 THEN 'click'\n    WHEN 4 THEN 'purchase'\n    WHEN 5 THEN 'comment'\n    WHEN 6 THEN 'share'\n    ELSE 'like'\n  END AS activity_type,\n  TIMESTAMP '2023-01-01 00:00:00'  AS activity_timestamp,\n  (random() * 3600)::INT AS duration\nFROM generate_series(1, 5000000);\n```\n\n### OS:\n\nLinux, Debian, x86_64\n\n### pg_mooncake Version:\n\n0.1.2\n\n### Postgres Version:\n\n17.0\n\n### Are you using pg_mooncake Docker, Neon, or the extension standalone?\n\npg_mooncake extension standalone",
+        "url": "https://github.com/Mooncake-Labs/pg_mooncake/issues/147"
+    },
+    {
+        "id": 2984611822,
+        "number": 146,
+        "title": "PostgreSQL crashes when malformed JSON is passed to delta_options (trailing comma)",
+        "state": "closed",
+        "created_at": "2025-04-10T06:33:38Z",
+        "updated_at": "2025-06-05T23:55:14Z",
+        "closed_at": "2025-06-05T23:55:13Z",
+        "author": "ydj0415",
+        "comments": 2,
+        "labels": [
+            "bug"
+        ],
+        "assignees": [],
+        "locked": false,
+        "body": "### What happens?\n\nWhen a malformed JSON string with a trailing comma is assigned to mooncake.secrets.delta_options,\nattempting to create a columnstore table causes a panic in the extension, leading to a PostgreSQL crash.\n\nThe error is not caught as a user-facing SQL error, but instead causes the server process to terminate\nwith signal 6 (Aborted), triggering a full database recovery cycle.\n\nThis results in service interruption and data loss risk if running in production.\n\n### To Reproduce\n\n-- Step 1: Create the extension and set default bucket\nCREATE EXTENSION pg_mooncake;\nALTER DATABASE postgres SET mooncake.default_bucket = 's3://pgdeltalake';\nSET mooncake.default_bucket = 's3://pgdeltalake';\n\n-- Step 2: Register a valid secret\nSELECT mooncake.create_secret(\n  'test',\n  'S3',\n  '[MASKED_ACCESS_KEY_ID]',\n  '[MASKED_SECRET_ACCESS_KEY]',\n  '{\"ENDPOINT\":\"[MASKED_IP]:[MASKED_PORT]\", \"USE_SSL\": 0}'\n);\n\n-- Step 3: Set malformed delta_options (notice trailing comma)\nUPDATE mooncake.secrets SET delta_options = '{\n  \"ALLOW_HTTP\": \"true\",\n  \"AWS_ENDPOINT\": \"http://[MASKED_IP]:[MASKED_PORT]\",\n  \"AWS_ACCESS_KEY_ID\": \"[MASKED]\",\n  \"AWS_SECRET_ACCESS_KEY\": \"[MASKED]\",\n}';\n\n-- Step 4: Try to create a columnstore table (this causes crash)\nCREATE TABLE test_columnstore (\n  user_id BIGINT,\n  activity_type TEXT,\n  activity_timestamp TIMESTAMP,\n  duration INT\n) USING columnstore;\n\n\n### OS:\n\nDebian GNU/Linux 12 (bookworm)\n\n### pg_mooncake Version:\n\n0.1.2\n\n### Postgres Version:\n\n17.4\n\n### Are you using pg_mooncake Docker, Neon, or the extension standalone?\n\npg_mooncake Docker Image",
+        "url": "https://github.com/Mooncake-Labs/pg_mooncake/issues/146"
+    }
+]

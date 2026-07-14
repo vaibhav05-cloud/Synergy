@@ -1,0 +1,242 @@
+[
+    {
+        "sha": "14d3ba45f3369e75a308212399cfada5d349883b",
+        "author": "Pasha Khosravi",
+        "email": "khosravipasha@users.noreply.github.com",
+        "date": "2026-07-14T04:52:00Z",
+        "message": "metal : add Q2_0 support (#25419)",
+        "url": "https://github.com/ggml-org/llama.cpp/commit/14d3ba45f3369e75a308212399cfada5d349883b"
+    },
+    {
+        "sha": "2969d6d15d67a08e7b83f26164b15350c79c5248",
+        "author": "Satinder Grewal",
+        "email": "grewal@lavabit.com",
+        "date": "2026-07-13T22:31:04Z",
+        "message": "model: add Hy3 (hy_v3) support with MTP speculative decoding (#25395)\n\n* model: add Hy3 (hy_v3) architecture support\n\nAdds Tencent Hunyuan 3 (HF architecture HYV3ForCausalLM, GGUF arch\nhy_v3): a MoE decoder stack with per-head Q/K RMSNorm, a sigmoid\nrouter with expert selection bias, an always-active ungated shared\nexpert, and leading dense block(s) (first_k_dense_replace).\n\nThe base implementation is ported from charlie12345's fork\n(https://github.com/charlie12345/ROCmFPX, src/models/hyv3.cpp),\nadapted to current mainline APIs (hparams.n_layer(), build_qkv,\nbuild_moe_ffn with fused gate_up + scale tensors, output_s).\n\nNote: blk.N.exp_probs_b is stored without a .bias suffix for\ncompatibility with existing hy_v3 GGUFs produced by that fork.\n\nCo-Authored-By: charlie12345 <charlie12345@users.noreply.github.com>\nCo-authored-by: Piotr Wilkin <ilintar@gmail.com>\nAssisted-by: Claude Fable 5",
+        "url": "https://github.com/ggml-org/llama.cpp/commit/2969d6d15d67a08e7b83f26164b15350c79c5248"
+    },
+    {
+        "sha": "6eddde06a4f25d55d538b5d15628dcc2b6882147",
+        "author": "Johannes Gäßler",
+        "email": "johannesg@5d6.de",
+        "date": "2026-07-13T16:37:57Z",
+        "message": "CUDA: refactor MMQ kernel configuration (#24127)\n\n* CUDA: refactor MMQ kernel configuration\n\n* fix Blackwell config\n\n* remove legacy code",
+        "url": "https://github.com/ggml-org/llama.cpp/commit/6eddde06a4f25d55d538b5d15628dcc2b6882147"
+    },
+    {
+        "sha": "e920c523e3b8a0163fe498af5bf90df35ff51d25",
+        "author": "Jeff Bolz",
+        "email": "jbolz@nvidia.com",
+        "date": "2026-07-13T13:44:17Z",
+        "message": "vulkan: Use native e2m1 and e4m3 conversions for mxfp4/nvfp4 (#25338)\n\nThis uses the new VK_EXT_shader_ocp_microscaling_types extension to do fp4 type\npromotions, and also uses the float8 extension to do ue4m3 promotions for\nnvfp4. It's reasonable to assume that an implementation that supports fp4 will\nalso support fp8, so we don't need to handle all possible combinations of\nsupport.",
+        "url": "https://github.com/ggml-org/llama.cpp/commit/e920c523e3b8a0163fe498af5bf90df35ff51d25"
+    },
+    {
+        "sha": "259ae1df8b5277a57a5092636bfcbcbb2f753219",
+        "author": "Adrian",
+        "email": "40185566+adrianisk@users.noreply.github.com",
+        "date": "2026-07-13T13:22:37Z",
+        "message": "spec: add Minimax2 eagle3 support\n\n* Fix nullptr in minimax2 EAGLE3\n\n* minor : add newline\n\n---------\n\nCo-authored-by: Georgi Gerganov <ggerganov@gmail.com>",
+        "url": "https://github.com/ggml-org/llama.cpp/commit/259ae1df8b5277a57a5092636bfcbcbb2f753219"
+    },
+    {
+        "sha": "4193ea697f0406e2ccbc16f84251ca5d76a83914",
+        "author": "Georgi Gerganov",
+        "email": "ggerganov@gmail.com",
+        "date": "2026-07-13T13:07:58Z",
+        "message": "readme : add link to maintainer PRs (#25621)",
+        "url": "https://github.com/ggml-org/llama.cpp/commit/4193ea697f0406e2ccbc16f84251ca5d76a83914"
+    },
+    {
+        "sha": "f4253ef965c59e902fac7b8193f96bcc89f66e55",
+        "author": "Christian Kastner",
+        "email": "ckk@kvr.at",
+        "date": "2026-07-13T12:36:51Z",
+        "message": "tests: Harmonize header use (#25616)\n\n* tests: Harmonize the use of private ggml includes\n\n* tests: In test-backend-ops, use quoted includes\n\nAs with all other tests. This is to ensure that the build uses shipped\nheaders over possibly system-installed ones.",
+        "url": "https://github.com/ggml-org/llama.cpp/commit/f4253ef965c59e902fac7b8193f96bcc89f66e55"
+    },
+    {
+        "sha": "ad8d8219915df8e423768d082d1dccfccb6e8437",
+        "author": "QuintinShaw",
+        "email": "yx6f20@soton.ac.uk",
+        "date": "2026-07-13T10:55:15Z",
+        "message": "gguf : add tensor shape accessor (#24405)\n\n* gguf : add tensor shape accessors\n\n* gguf : return tensor shape as const int64_t *\n\n* gguf : remove n_dims accessor, keep only gguf_get_tensor_ne",
+        "url": "https://github.com/ggml-org/llama.cpp/commit/ad8d8219915df8e423768d082d1dccfccb6e8437"
+    },
+    {
+        "sha": "91c631b21d6e5d09e9c6659efdf6baeef5a44ddb",
+        "author": "Frosty40",
+        "email": "newjordan@gmail.com",
+        "date": "2026-07-13T07:45:10Z",
+        "message": "chat : fix reasoning leak with force-opened bare <think> templates (#24674)\n\n* chat : fix reasoning leak with force-opened bare <think> templates\n\nThe reasoning start tag inferred from prior turns can carry trailing\nwhitespace (e.g. <think>\\n) while a force-open template prefills a bare\n<think>. Trim the tag used for the prefix split so the bare prefill is\nmatched instead of being swallowed into content.\n\n* chat : fix Nemotron Nano v2 regression\n\n---------\n\nCo-authored-by: Alde Rojas <hello@alde.dev>",
+        "url": "https://github.com/ggml-org/llama.cpp/commit/91c631b21d6e5d09e9c6659efdf6baeef5a44ddb"
+    },
+    {
+        "sha": "efb3036c1826573c0b151ba428000d07adcb6856",
+        "author": "Frosty40",
+        "email": "newjordan@gmail.com",
+        "date": "2026-07-13T06:56:41Z",
+        "message": "sycl: add fused top-k MoE (#25217)\n\n* sycl: add fused top-k MoE\n\n* sycl: address review: GGML_SYCL_ENABLE_FUSION env, move fusion dispatch to topk-moe\n\n* sycl: print GGML_SYCL_ENABLE_FUSION at startup like other env vars\n\nCo-Authored-By: Claude Fable 5 <noreply@anthropic.com>\n\n---------\n\nCo-authored-by: Claude Fable 5 <noreply@anthropic.com>",
+        "url": "https://github.com/ggml-org/llama.cpp/commit/efb3036c1826573c0b151ba428000d07adcb6856"
+    },
+    {
+        "sha": "e474bba7af8b67d9b39c8db21347ec59219ceb3d",
+        "author": "Todd Malsbary",
+        "email": "todd.malsbary@intel.com",
+        "date": "2026-07-13T06:53:39Z",
+        "message": "sycl: add Q2_K to DMMV reorder path (#25064)\n\nSigned-off-by: Todd Malsbary <todd.malsbary@intel.com>",
+        "url": "https://github.com/ggml-org/llama.cpp/commit/e474bba7af8b67d9b39c8db21347ec59219ceb3d"
+    },
+    {
+        "sha": "38fd5c99931576bdf57263fc934bbbb4fd5a5513",
+        "author": "Aleksander Grygier",
+        "email": "aleksander.grygier@gmail.com",
+        "date": "2026-07-13T06:45:04Z",
+        "message": "ui: Remove recommended MCP Servers + improve MCP Servers Settings UI/UX (#25535)\n\n* fix: drop MCP recommendations auto-popup and silent preloads\n\n* feat: Add consent-driven MCP recommendations inside Add New Server dialog\n\n* refactor: Drop mcpDefaultServerOverrides for mcpServers[i].enabled\n\n* feat: Center the empty state on the MCP settings page\n\n* fix: keep existing MCP cards intact when adding a new server\n\n* fix: keep MCP cards stable when a new server is added\n\n* refactor: keep MCP server list in config insertion order\n\n* feat: shrink the recommended-MCP cards to two tools each and fit them in one row\n\n* feat: make recommended MCP cards click-to-fill and tighten copy\n\n* feat: highlight the selected MCP recommendation and stop auto-focus on dialog open\n\n* feat: derive MCP recommendation selection from the form URL\n\n* fix: make recommendation MCP cards fully non-focusable\n\n* fix: redirect focus from first card to the URL input on consent\n\n* chore: Formatting\n\n* refactor: Remove Recommended MCP Servers completely\n\n* fix: Preserve legacy mcpDefaultServerOverrides key after merge migration for downgrade compatibility",
+        "url": "https://github.com/ggml-org/llama.cpp/commit/38fd5c99931576bdf57263fc934bbbb4fd5a5513"
+    },
+    {
+        "sha": "99f3dc32296f825fec94f202da1e9fede1e78cf9",
+        "author": "Bernard Ladenthin",
+        "email": "bernard.ladenthin@gmail.com",
+        "date": "2026-07-12T23:58:44Z",
+        "message": "server: honour per-request reasoning_budget_tokens in chat completions (#23116)\n\n* server: honour per-request reasoning_budget_tokens in chat completions\n\nThe reasoning-budget block in oaicompat_chat_params_parse read only the\nserver-level default (opt.reasoning_budget, typically -1) and the\nAnthropic-style alias thinking_budget_tokens, but never the canonical\nreasoning_budget_tokens field from the request body.  Because the key\nwas then written into llama_params before the generic body-copy loop\nran, the copy loop found the key already present and silently skipped\nthe caller-supplied value.  Any per-request override (e.g. 0 to\nsuppress thinking entirely) was therefore discarded.\n\nFix: read reasoning_budget_tokens from the request body first, so the\nvalue that reaches the sampling layer is the one the caller intended.\n\nAdd a unit test in test-chat.cpp that exercises this path via\noaicompat_chat_params_parse with a Qwen3 template (which the autoparser\ndetects as a thinking-capable model) and asserts the returned\nllama_params carries reasoning_budget_tokens == 0.\n\n* server: honour per-request reasoning_budget_message in chat completions\n\nThe reasoning-budget block in oaicompat_chat_params_parse wrote\nreasoning_budget_message into llama_params straight from the server-level\ndefault (opt.reasoning_budget_message) and never read the canonical\nreasoning_budget_message field from the request body. Because the key\nwas written before the generic body-copy loop ran, that loop found the\nkey already present and silently skipped the caller-supplied value. Any\nper-request override of the message injected before the end tag when the\nbudget is exhausted was therefore discarded, even though server-task.cpp\nalready reads reasoning_budget_message from that data.\n\nThis mirrors the reasoning_budget_tokens bug fixed in the previous commit.\n\nFix: read reasoning_budget_message from the request body first, falling\nback to the server default, so the value that reaches the sampling layer\nis the one the caller intended.\n\nWhile here, collapse the adjacent reasoning_budget_tokens override to a\nsingle json_value() call; json_value already falls back to the default on\na missing/null/wrong-type key, so the explicit body.contains() guard was\nredundant. No behavioral change.\n\nAdd a unit test in test-chat.cpp that exercises this path via\noaicompat_chat_params_parse with a Qwen3 template (which the autoparser\ndetects as a thinking-capable model) and asserts the returned\nllama_params carries the per-request reasoning_budget_message rather than\nthe server default.\n\n* cleanup\n\n---------\n\nCo-authored-by: Xuan Son Nguyen <son@huggingface.co>",
+        "url": "https://github.com/ggml-org/llama.cpp/commit/99f3dc32296f825fec94f202da1e9fede1e78cf9"
+    },
+    {
+        "sha": "34558825a27f4d74dcfd7a91bfde4464baa2a30a",
+        "author": "Alessandro de Oliveira Faria (A.K.A.CABELO)",
+        "email": "cabelo@opensuse.org",
+        "date": "2026-07-12T23:10:03Z",
+        "message": "vendor : update cpp-httplib to 0.50.1 (#25576)",
+        "url": "https://github.com/ggml-org/llama.cpp/commit/34558825a27f4d74dcfd7a91bfde4464baa2a30a"
+    },
+    {
+        "sha": "8014d2cf97a2419ca00d9d902be73ee411d61630",
+        "author": "Sebastian Dröge",
+        "email": "slomo@coaxion.net",
+        "date": "2026-07-12T22:48:13Z",
+        "message": "server: Don't consider models with --no-mmproj-auto as multimodal (#25590)\n\nIf mmproj is explicitly disabled via the model preset or command-line\nparameters then the model won't be able to handle image/audio inputs and\nthis shouldn't be declared as supported input modality on the /v1/models\nendpoint.",
+        "url": "https://github.com/ggml-org/llama.cpp/commit/8014d2cf97a2419ca00d9d902be73ee411d61630"
+    },
+    {
+        "sha": "4114ba18b208c2e9c1689a8316d410e649309dbc",
+        "author": "Pascal",
+        "email": "admin@serveurperso.com",
+        "date": "2026-07-12T22:47:25Z",
+        "message": "mtmd: fix silent prompt truncation on embedded NUL (#25548)\n\n* mtmd: fix silent prompt truncation on embedded NUL\n\nmtmd_input_text carried the prompt as a bare const char* with no\nlength, so a NUL byte in message content cut the prompt at the\ntokenizer boundary and dropped every later message plus the assistant\nmarker, with no log. Add an explicit text_len and thread it through,\nmatching llama_tokenize and the text only path.\n\n* cleanup\n\n---------\n\nCo-authored-by: Xuan Son Nguyen <son@huggingface.co>",
+        "url": "https://github.com/ggml-org/llama.cpp/commit/4114ba18b208c2e9c1689a8316d410e649309dbc"
+    },
+    {
+        "sha": "0c4fa7a989f94a9fef9e52a887e3376bb60d0848",
+        "author": "Aldehir Rojas",
+        "email": "hello@alde.dev",
+        "date": "2026-07-12T20:59:14Z",
+        "message": "server : evict checkpoints within min-step of each other (#25472)",
+        "url": "https://github.com/ggml-org/llama.cpp/commit/0c4fa7a989f94a9fef9e52a887e3376bb60d0848"
+    },
+    {
+        "sha": "6b4dc2116a92c5c8f2782bfe51fabe5ee66fb5ef",
+        "author": "quei",
+        "email": "56998528+quei4r@users.noreply.github.com",
+        "date": "2026-07-12T15:43:51Z",
+        "message": "server : fix image blocks in tool_result being dropped during Anthropic OpenAI conversion (#22536)\n\n* server : fix image blocks in tool_result being dropped during Anthropic→OpenAI conversion\n\nserver_chat_convert_anthropic_to_oai() silently discarded image blocks\n\ninside Anthropic tool_result content. This broke multimodal tool outputs\n\n(e.g. a tool that returns an image) because the model never received the\n\nimage.\n\nWhen tool_result contains image blocks, convert them to OpenAI\n\nmultimodal content parts (text + image_url array). Plain-text results\n\nremain simple strings for backwards compatibility.\n\n* server : add test for image blocks in Anthropic tool_result conversion",
+        "url": "https://github.com/ggml-org/llama.cpp/commit/6b4dc2116a92c5c8f2782bfe51fabe5ee66fb5ef"
+    },
+    {
+        "sha": "e3546c7948e3af463d0b401e6421d5a4c2faf565",
+        "author": "kdkd",
+        "email": "2569413+kdkd@users.noreply.github.com",
+        "date": "2026-07-11T18:03:24Z",
+        "message": "Fix conditional to display 'LLAMA_SPLIT_MODE_TENSOR not implemented for architecture' message (#24926)",
+        "url": "https://github.com/ggml-org/llama.cpp/commit/e3546c7948e3af463d0b401e6421d5a4c2faf565"
+    },
+    {
+        "sha": "d72bfa38f77b4491e36e99f5447e73cb6cd227a3",
+        "author": "Rohit Mahesh",
+        "email": "74331568+rohitmahesh1@users.noreply.github.com",
+        "date": "2026-07-11T18:02:44Z",
+        "message": "gguf : reject empty metadata keys (#24917)",
+        "url": "https://github.com/ggml-org/llama.cpp/commit/d72bfa38f77b4491e36e99f5447e73cb6cd227a3"
+    },
+    {
+        "sha": "3cec3bcd162a410171ded45c11d44725678f0880",
+        "author": "cphlipot",
+        "email": "9103367+cphlipot@users.noreply.github.com",
+        "date": "2026-07-11T17:13:43Z",
+        "message": "cuda: Don't crash when querying memory on device with no free memory. (#25157)\n\nIf a Cuda device has no or limited available memory, the actual call\nto cudaMemGetInfo() itself can cause a fatal crash due to a cuda out\nof memory error (there is not enough memory to actually query memory)\n\nThis causes an issue because we query memory for all devices at\nstartup even if the user isn't trying to use the device for inference.\n\nFix this by making the error non-fatal and assigning zero total/free\nmemory to the device. This will have the downstream effect of the fit\nalgorithm not trying to put any layers on it, which is desired outcome\nvs hard crashing.\n\nthis also prevents crashes in cuda enabled builds when user explicitly\npasses '-dev none'",
+        "url": "https://github.com/ggml-org/llama.cpp/commit/3cec3bcd162a410171ded45c11d44725678f0880"
+    },
+    {
+        "sha": "13f2b28b098623391b1aacfd27995e1c8b7de9a9",
+        "author": "Aman Gupta",
+        "email": "amangupta052@gmail.com",
+        "date": "2026-07-11T15:35:45Z",
+        "message": "DeepseekV4: clear cache only for seq rather than full (#25521)",
+        "url": "https://github.com/ggml-org/llama.cpp/commit/13f2b28b098623391b1aacfd27995e1c8b7de9a9"
+    },
+    {
+        "sha": "c92e806d1c81091c9035edce99c35374da1b465e",
+        "author": "Xuan-Son Nguyen",
+        "email": "son@huggingface.co",
+        "date": "2026-07-11T10:42:55Z",
+        "message": "server: allow stream for exec_shell_command (#25526)\n\n* init stream\n\n* add stream for shell tool\n\n* add test\n\n* nits\n\n* update docs",
+        "url": "https://github.com/ggml-org/llama.cpp/commit/c92e806d1c81091c9035edce99c35374da1b465e"
+    },
+    {
+        "sha": "ea1f7bbb5df26fbc18e8d46f72a6de43a84616dd",
+        "author": "Xuan-Son Nguyen",
+        "email": "son@huggingface.co",
+        "date": "2026-07-11T10:41:47Z",
+        "message": "server: refactor server_stream (#25541)\n\n* server: refactoring, remove spipe from server_http_res\n\n* wip\n\n* remove non-thread-safe rd.stop() call\n\n* move server_res_spipe\n\n* nits\n\n* improve server_stream_create_spipe\n\n* server-stream: update dev docs for the improved API\n\n---------\n\nCo-authored-by: Pascal <admin@serveurperso.com>",
+        "url": "https://github.com/ggml-org/llama.cpp/commit/ea1f7bbb5df26fbc18e8d46f72a6de43a84616dd"
+    },
+    {
+        "sha": "00f5442cc4e805293280c8f85d21d8f9d4aad206",
+        "author": "fairydreaming",
+        "email": "166155368+fairydreaming@users.noreply.github.com",
+        "date": "2026-07-11T09:39:07Z",
+        "message": "ggml : add GGML_OP_LIGHTNING_INDEXER that implements DeepSeek V3.2/V4 lightning indexer (#24231)\n\n* ggml : add GGML_OP_LIGHTNING_INDEXER that implements DeepSeek V3.2/V4 lightning indexer\n\n* ggml : remove scale parameters from lightning indexer OP, add f16 mask parameter\n\n* tests : add GGML_OP_LIGHTNING_INDEXER tests\n\n* ggml : bump RPC version\n\n* chore : check if lightning indexer input tensors are not transposed\n\n* tests : count flops instead of bandwidth in lightning indexer test\n\n* chore : add missing const\n\n* chore : whitespace\n\n* ggml : renamed variables in CPU lightning indexer implementation\n\n* ggml : fix lightning indexer mask broadcasting\n\n* tests : tests for lightning indexer mask broadcasting\n\n* chore : whitespace\n\n* llama : use GGML_OP_LIGHTNING_INDEXER in DeepSeek V3.2 and DeepSeek V4 models\n\n---------\n\nCo-authored-by: Stanisław Szymczyk <sszymczy@gmail.com>",
+        "url": "https://github.com/ggml-org/llama.cpp/commit/00f5442cc4e805293280c8f85d21d8f9d4aad206"
+    },
+    {
+        "sha": "76f2798059575a96a12e4d34342165a4b6a6a312",
+        "author": "Raman Shinde",
+        "email": "raman.shinde15@gmail.com",
+        "date": "2026-07-11T08:28:29Z",
+        "message": "Vulkan: route large matmuls to medium tile on Adreno (#24877)\n\n* [Vulkan] Fixes llama-cli breaking over longer promts sizes\n\nThe llama-cli was breaking for longer promts sizes for q4_0 quantized networks. Causing due to insufficient shared memory.\n\n* Removed the un-used Adreno device\n\n* Updated matmul for small pipeline.",
+        "url": "https://github.com/ggml-org/llama.cpp/commit/76f2798059575a96a12e4d34342165a4b6a6a312"
+    },
+    {
+        "sha": "1d1d9a9ed7a4f09c4225ea4cc8fd3bd1cf2c940f",
+        "author": "Hongqiang Wang",
+        "email": "wangh@qti.qualcomm.com",
+        "date": "2026-07-11T06:05:58Z",
+        "message": "opencl: add int8 dp4 dense and MoE prefill optimization for Adreno GPUs (#25537)\n\n* opencl: add int8 dp4 dense and moe GEMM\n\n* opencl: refactor\n\n---------\n\nCo-authored-by: Li He <lih@qti.qualcomm.com>",
+        "url": "https://github.com/ggml-org/llama.cpp/commit/1d1d9a9ed7a4f09c4225ea4cc8fd3bd1cf2c940f"
+    },
+    {
+        "sha": "4f37f519722aa3242eecb7649466b4a4a2d6d6da",
+        "author": "Pascal",
+        "email": "admin@serveurperso.com",
+        "date": "2026-07-10T20:07:29Z",
+        "message": "server: accept null sampling params (#25538)\n\n* server: accept null sampling params\n\nExtend the schema validation to treat a null value as absent, so\nclients can send null on nullable params (temperature, top_p, ...)\nto request the server default. This matches the OpenAI spec and the\njson_value convention used elsewhere.\n\nAdd has_field() to skip null in the field eval guards.\n\n* has_field -> has_value​",
+        "url": "https://github.com/ggml-org/llama.cpp/commit/4f37f519722aa3242eecb7649466b4a4a2d6d6da"
+    },
+    {
+        "sha": "c749cb041706647f460bb918cccc9d91995205ab",
+        "author": "eduardopessin",
+        "email": "100053075+eduardopessin@users.noreply.github.com",
+        "date": "2026-07-10T17:04:12Z",
+        "message": "llama : make tensor-split regex patterns static (#24710)\n\nllama_meta_device_get_split_state() recompiled 29 std::regex on every call.\nIn -sm tensor mode the callback runs once per tensor per token, so this\ndominated the decode thread in profiling. Mark them static const so they are\ncompiled once. Kept inside the function (local statics are thread-safe since\nC++11). Patterns are literal and stateless, so behavior is unchanged.",
+        "url": "https://github.com/ggml-org/llama.cpp/commit/c749cb041706647f460bb918cccc9d91995205ab"
+    },
+    {
+        "sha": "67776eaee549be9e1e0359726c13c399b9224d2e",
+        "author": "Max Krasnyansky",
+        "email": "maxk@qti.qualcomm.com",
+        "date": "2026-07-10T16:06:06Z",
+        "message": "hexagon: improve ARGSORT performance for small tensors (#25512)\n\n* hex-sort: add efficient bitomic sort in hvx regs up to 1024 elements\n\n* hex-sort: fix inverted vrors\n\n* hex-sort: specialize sort functions for the common cases\n\n* hex-sort: add tracing and local context",
+        "url": "https://github.com/ggml-org/llama.cpp/commit/67776eaee549be9e1e0359726c13c399b9224d2e"
+    }
+]
