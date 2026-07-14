@@ -1,0 +1,77 @@
+{
+  "row_count": 1482,
+  "repo_count": 12,
+  "split_strategy": "stratified_temporal",
+  "time_range": {
+    "start": "2025-12-18T00:25:52+00:00",
+    "end": "2026-07-14T11:17:37+00:00"
+  },
+  "risk_class_counts": {
+    "Low": 666,
+    "Medium": 519,
+    "High": 297
+  },
+  "risk_class_by_split": {
+    "train": {
+      "Low": 466,
+      "Medium": 363,
+      "High": 207
+    },
+    "validation": {
+      "Low": 100,
+      "Medium": 78,
+      "High": 45
+    },
+    "test": {
+      "Low": 100,
+      "Medium": 78,
+      "High": 45
+    }
+  },
+  "dominant_repo_by_class": {
+    "Low": {
+      "repo": "microsoft/vscode",
+      "rows": 113,
+      "share": 0.1697
+    },
+    "Medium": {
+      "repo": "apache/airflow",
+      "rows": 79,
+      "share": 0.1522
+    },
+    "High": {
+      "repo": "apache/airflow",
+      "rows": 52,
+      "share": 0.1751
+    }
+  },
+  "dataset_warnings": [],
+  "split_summary": {
+    "train": {
+      "rows": 1036,
+      "start": "2025-12-18T00:25:52+00:00",
+      "end": "2026-07-14T00:55:43+00:00"
+    },
+    "validation": {
+      "rows": 223,
+      "start": "2026-07-14T00:19:34+00:00",
+      "end": "2026-07-14T10:55:38+00:00"
+    },
+    "test": {
+      "rows": 223,
+      "start": "2026-07-14T10:00:51+00:00",
+      "end": "2026-07-14T11:17:37+00:00"
+    }
+  },
+  "commit_details_coverage": 1.0,
+  "observed_workflow_failure_rate": 0.0472,
+  "simulated_incident_rate": 0.6883,
+  "simulated_rollback_rate": 0.305,
+  "null_model_feature_count": 0,
+  "label_thresholds": {
+    "low_medium_cutoff": 45.97,
+    "medium_high_cutoff": 79.39
+  },
+  "model_feature_count": 48,
+  "collection_seed": 20260714
+}

@@ -1,0 +1,49 @@
+feature,type,available_before_deployment,description
+repo_domain,categorical,True,Configured public-project domain; reduces repository-name memorization.
+candidate_type,categorical,True,Whether the run has explicit deploy wording or is a mainline delivery proxy.
+primary_service,categorical,True,Highest-risk service area inferred from changed file paths.
+branch_type,categorical,True,"Main, release, hotfix, feature, or other branch category."
+workflow_kind,categorical,True,Workflow-name category available before the deployment starts.
+hour,numeric,True,UTC hour when the candidate deployment was created.
+day_of_week,numeric,True,"UTC weekday, Monday=0."
+is_weekend,binary,True,Candidate occurs on Saturday or Sunday.
+is_friday,binary,True,Candidate occurs on Friday.
+is_off_hours,binary,True,Candidate is outside 07:00-19:59 UTC.
+is_deployment_intent,binary,True,Workflow name contains deployment-oriented language.
+run_attempt,numeric,True,GitHub Actions rerun attempt number.
+commit_age_hours,numeric,True,Hours from commit author time to workflow creation.
+commit_parent_count,numeric,True,Number of commit parents; merge commits can carry broader risk.
+additions,numeric,True,Lines added in the candidate commit.
+deletions,numeric,True,Lines deleted in the candidate commit.
+code_churn,numeric,True,Total added plus deleted lines.
+changed_files,numeric,True,Number of files changed in the candidate commit.
+file_extension_entropy,numeric,True,Diversity of changed file types; broader changes have higher entropy.
+service_area_count,numeric,True,Number of distinct service areas touched.
+service_criticality,numeric,True,1-5 criticality based on affected path categories.
+is_database_migration,binary,True,"Commit contains schema, migration, or database paths."
+is_infrastructure_change,binary,True,Commit contains infrastructure or deployment configuration paths.
+is_dependency_change,binary,True,Commit changes package manifests or dependency declarations.
+is_config_change,binary,True,Commit changes application or deployment configuration.
+is_security_change,binary,True,"Commit touches auth, identity, permissions, or secrets paths."
+is_test_change,binary,True,Commit includes a test file change.
+test_to_source_file_ratio,numeric,True,Changed test files divided by changed source files.
+is_docs_only,binary,True,All touched files are documentation-like files.
+has_lockfile_change,binary,True,Commit changes a dependency lock file.
+is_hotfix,binary,True,Branch or commit message signals a hotfix.
+is_revert,binary,True,Commit message signals a revert.
+is_breaking_change,binary,True,Commit message signals a breaking change.
+deployments_7d,numeric,True,Earlier candidate deployments in the repository during the prior 7 days.
+deployments_30d,numeric,True,Earlier candidate deployments in the repository during the prior 30 days.
+recent_change_velocity_7d,numeric,True,Prior seven-day repository code churn.
+past_failed_runs_7d,numeric,True,Earlier observed GitHub workflow failures in the prior 7 days.
+past_failure_rate_30d,numeric,True,Earlier 30-day observed workflow failure rate.
+past_incidents_14d,numeric,True,Earlier simulated post-deployment incidents in the prior 14 days.
+past_rollbacks_30d,numeric,True,Earlier simulated rollbacks in the prior 30 days.
+time_since_last_deployment_hours,numeric,True,Elapsed hours since the prior repository candidate deployment.
+actor_prior_deployments,numeric,True,Earlier candidate deployments created by the same public GitHub actor.
+actor_prior_failure_rate,numeric,True,Earlier observed workflow failure rate for that actor in this repository.
+service_deployments_30d,numeric,True,Earlier 30-day deployments affecting the same inferred service area.
+service_incident_rate_30d,numeric,True,Earlier simulated incident rate for the inferred service area.
+on_call_available,binary,True,"Synthetic, pre-scheduled on-call availability at candidate time."
+expected_on_call_response_minutes,numeric,True,Synthetic expected response time derived before deployment.
+on_call_load_24h,numeric,True,Earlier candidate deployments in the prior 24 hours.

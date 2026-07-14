@@ -1,0 +1,27 @@
+{
+  "target": "risk_level",
+  "class_order": [
+    "Low",
+    "Medium",
+    "High"
+  ],
+  "thresholds": {
+    "low_medium_cutoff": 45.97,
+    "medium_high_cutoff": 79.39
+  },
+  "method": "Causal synthetic risk simulation calibrated with global, repository-relative, and domain-relative percentiles.",
+  "split_strategy": "stratified_temporal",
+  "forbidden_model_columns": [
+    "calibrated_risk_index",
+    "completed_at",
+    "current_conclusion",
+    "latent_reliability_shock",
+    "post_deploy_incident_7d",
+    "risk_probability",
+    "risk_score",
+    "rollback_within_24h",
+    "run_duration_seconds",
+    "workflow_conclusion_observed",
+    "workflow_failed_observed"
+  ]
+}
