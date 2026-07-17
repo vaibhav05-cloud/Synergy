@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8"><title>DeploySense AI — Training Report</title>
+<style>
+body { font-family: 'Segoe UI', Arial, sans-serif; background:#fafafa; color:#222; max-width:1100px; margin:30px auto; padding:0 20px; }
+h1 { color:#0F6E56; }
+.summary { background:#fff; border:1px solid #ddd; border-radius:10px; padding:20px 24px; margin-bottom:24px; }
+.summary b { color:#0F6E56; }
+table { border-collapse: collapse; width:100%; margin-top:10px; }
+th, td { border:1px solid #ddd; padding:6px 12px; text-align:center; }
+th { background:#E1F5EE; }
+.grid { display:grid; grid-template-columns: 1fr 1fr; gap:20px; }
+.card { background:#fff; border:1px solid #ddd; border-radius:10px; padding:10px; text-align:center; }
+.card img { max-width:100%; }
+</style></head>
+<body>
+<h1>DeploySense AI — Training Report</h1>
+<div class="summary">
+  <p><b>Best model:</b> xgboost</p>
+  <p><b>Test accuracy:</b> 74.4% &nbsp;&nbsp; <b>Test macro-F1:</b> 0.744</p>
+  <table>
+    <tr><th>Risk level</th><th>Precision</th><th>Recall</th><th>F1</th><th>Support (rows)</th></tr>
+    <tr><td>High</td><td>0.97</td><td>0.62</td><td>0.76</td><td>45</td></tr><tr><td>Low</td><td>0.81</td><td>0.80</td><td>0.80</td><td>100</td></tr><tr><td>Medium</td><td>0.61</td><td>0.74</td><td>0.67</td><td>78</td></tr>
+  </table>
+</div>
+<div class="grid">
+<div class="card"><img src="plots/01_class_distribution.png"></div>
+<div class="card"><img src="plots/02_model_comparison.png"></div>
+<div class="card"><img src="plots/03_confusion_matrix.png"></div>
+<div class="card"><img src="plots/04_per_class_metrics.png"></div>
+<div class="card"><img src="plots/05_roc_curves.png"></div>
+<div class="card"><img src="plots/06_feature_importance.png"></div>
+<div class="card"><img src="plots/07_shap_overview.png"></div>
+<div class="card"><img src="plots/08_shap_high.png"></div>
+<div class="card"><img src="plots/08_shap_low.png"></div>
+<div class="card"><img src="plots/08_shap_medium.png"></div>
+</div>
+</body></html>
